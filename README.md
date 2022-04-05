@@ -1,2 +1,2 @@
-# cybnity
-Open source cybersecurity platform
+# CYBNITY
+Open source cybersecurity platform. More information on www.cybnity.org.
