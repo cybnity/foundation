@@ -3,7 +3,7 @@
 > _CYBNITY open source cybersecurity platform help you to govern the cyber defense of your digital assets for operate them with complete serenity._
 
 ## PURPOSE
-Discover on www.cybnity.org all public informations about the CYBNITY program which target to deliver an Open Source Security Platform efficient and flexible for each company with need to design its Information Security Management System (ISMS) and/or to operate IoT systems in a secure way against the cyberthreats.
+Welcome on the CYBNITY open souce program which target to deliver a security platform efficient and flexible for each company with need to design its Information Security Management System (ISMS) and/or to operate digital systems in a secure way against the cyberthreats.
 ### Our Mission?
 We develop an open source technological defense platform to help the security teams designing and managing companies’ security solutions, create resilient digital systems with efficient responses against to cyber-threats.
 ### How It Works?
@@ -19,3 +19,7 @@ The CYBNITY platform makes it possible to design the strategic governance of the
   
 </p>
 </details>
+
+## OTHER RESOURCES
+- [Information web site](https://cybnity.notion.site/CYBNITY-Universe-c707ba2ebc3047c6ad533f18b2e0f9db) about the project latest news, and documentations about concept, requirements, business/technology/systems architectures...
+- [CYBNITY LinkedIn page](https://www.linkedin.com/company/cybnity)
