@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_pfHOMLTpEeyJEdlqInuo_A" name="Process view">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_pffBoLTpEeyJEdlqInuo_A">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Package" xmi:id="_r3ieILTpEeyJEdlqInuo_A" name="performance"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_tdhkgLTpEeyJEdlqInuo_A" name="scalability"/>
+</uml:Model>
