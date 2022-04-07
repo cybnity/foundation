@@ -1,4 +1,4 @@
-## Welcome to CYBNITY Wiki
+## Welcome to CYBNITY Implementation documentation
 
 You can use the [editor on GitHub](https://github.com/cybnity/foundation/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
 
