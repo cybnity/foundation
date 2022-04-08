@@ -12,7 +12,7 @@ This technical documentations are supporting the functional, architectural and/o
 
 # DEVELOPMENT DOCUMENTATIONS
 ### Software Design
-- [UML documentation](uml/README.md) presenting the domain analysis, the software specifications over several views according to an Unified Process (UP) approach (e.g Use case view, Design view, Deployment view, Implementation view and Process view).
+- [UML documentation](uml) presenting the domain analysis, the software specifications over several views according to an Unified Process (UP) approach (e.g Use case view, Design view, Deployment view, Implementation view and Process view).
 
 ### Packages Assembly
 
