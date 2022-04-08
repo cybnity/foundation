@@ -20,7 +20,8 @@ The CYBNITY platform makes it possible to design the strategic governance of the
 </p>
 </details>
 
-## WHAT WE BUILD
+
+# WHAT WE BUILD
 We develop a technology, deployable as a platform (in-house, on-cloud, in hybrid environment) based on a modular architecture, that support security activities performed by security teams (e.g CISO, ISSO, Risk Executive, RSSI...) with easy implementation of standard (e.g NIST, ISO/IEC 27001).
 #### Modular architecture
 ![image](https://user-images.githubusercontent.com/16148082/161945892-1b72d3b7-a54a-4364-a005-7931b65a6938.png)
@@ -39,7 +40,7 @@ We capitalize experiences and best defense practices (e.g military or police sys
 #### Applications (domain contexts)
 ![image](https://user-images.githubusercontent.com/16148082/161947182-720d987a-e1d0-4a5f-a043-571fa03f0270.png)
 
-## HOW THE PROJECT IS MANAGED
+# HOW THE PROJECT IS MANAGED
 Based on several standard methods (e.g Lean UX for requirements validation, MVP for releasing, SCRUM for tasks execution, TOGAF for architecture, COBIT for project's resources governance, and of course, NIST for project's security ;) ).
 
 #### Build Process
@@ -50,6 +51,11 @@ The idea creation process implemented by the project (for definition of more rel
 #### Iterative Delivery Process
 ![image](https://user-images.githubusercontent.com/16148082/161949445-0c2ab441-745e-44d4-972b-f24cb7680fbd.png)
 
-## OTHER RESOURCES
+
+# OTHER RESOURCES
+## Project Documentations
 - [Information web site](https://cybnity.notion.site/CYBNITY-Universe-c707ba2ebc3047c6ad533f18b2e0f9db) about the project latest news, and documentations about concept, requirements, business/technology/systems architectures...
-- [CYBNITY LinkedIn page](https://www.linkedin.com/company/cybnity)
+- [Technical documentations](docs/README.md) for solution designers, developers, maintainers, testers.
+
+## Project Visibility
+- [CYBNITY LinkedIn page](https://www.linkedin.com/company/cybnity) where project news are promoted to professional ecosystem.

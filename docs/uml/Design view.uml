@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_ffDCALTqEeyJEdlqInuo_A" name="Design view">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_ffaOYLTqEeyJEdlqInuo_A">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Package" xmi:id="_hlUK8LTqEeyJEdlqInuo_A" name="cockpit-foundations">
+    <packagedElement xmi:type="uml:Interface" xmi:id="_jwWCoLTrEeyJEdlqInuo_A" name="OperationalRecovery"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_jwWpsLTrEeyJEdlqInuo_A" name="DefensiveResponse"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_jwXQwLTrEeyJEdlqInuo_A" name="OperationalExcellence"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_jwXQwbTrEeyJEdlqInuo_A" name="AreasAssetsProtection"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_jwX30LTrEeyJEdlqInuo_A" name="ThreatsRisksPreventionTreatment"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_jwX30bTrEeyJEdlqInuo_A" name="BehavioursSituationsAnticipationControl"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_jwYe4LTrEeyJEdlqInuo_A" name="VulnerabilitiesPreventionTreatment"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiMnILTsEeyJEdlqInuo_A" name="GoalsEvidences"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiNOMLTsEeyJEdlqInuo_A" name="StakeholdersResponsibilities"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiNOMbTsEeyJEdlqInuo_A" name="AwarenessTraining"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiNOMrTsEeyJEdlqInuo_A" name="StandardsCompliances"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiN1QLTsEeyJEdlqInuo_A" name="Automation"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiN1QbTsEeyJEdlqInuo_A" name="StrategicCommand"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiOcULTsEeyJEdlqInuo_A" name="Coordination"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiOcUbTsEeyJEdlqInuo_A" name="DefensiveResponseCommandPost"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiOcUrTsEeyJEdlqInuo_A" name="MissionsCommitmentsScheduling"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiPDYLTsEeyJEdlqInuo_A" name="ISMSDesign"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiPDYbTsEeyJEdlqInuo_A" name="Planning"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiPqcLTsEeyJEdlqInuo_A" name="SKPI"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiPqcbTsEeyJEdlqInuo_A" name="Dashboard"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiQRgLTsEeyJEdlqInuo_A" name="Cartography"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_jqIiYLTqEeyJEdlqInuo_A" name="feature-modules">
+    <packagedElement xmi:type="uml:Package" xmi:id="_IJCdgLTtEeyJEdlqInuo_A" name="access-control">
+      <packagedElement xmi:type="uml:Package" xmi:id="_Mm5v8LTtEeyJEdlqInuo_A" name="access_control.application"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_OuRsILTtEeyJEdlqInuo_A" name="access_control.domain"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_QEfRILTtEeyJEdlqInuo_A" name="access_control.infrastructure"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_YlUpwLTtEeyJEdlqInuo_A" name="access_control.ui">
+        <packagedElement xmi:type="uml:Interface" xmi:id="_hRH8QLTtEeyJEdlqInuo_A" name="AccessControlContext" isAbstract="true">
+          <ownedOperation xmi:type="uml:Operation" xmi:id="_oxcTELTtEeyJEdlqInuo_A" name="ManageSubjectAccessRequests"/>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_gbb08LTuEeyJEdlqInuo_A" name="api-management"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_h4AgoLTuEeyJEdlqInuo_A" name="asset-control"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_jURqULTuEeyJEdlqInuo_A" name="audit-management"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_kkxB0LTuEeyJEdlqInuo_A" name="awareness-culture-management"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_mdNKILTuEeyJEdlqInuo_A" name="behavior-intelligence"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_oYoVALTuEeyJEdlqInuo_A" name="compliance-certification-management"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_qo6VkLTuEeyJEdlqInuo_A" name="detection-intelligence"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_sGqF8LTuEeyJEdlqInuo_A" name="governance-management"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_tq-YYLTuEeyJEdlqInuo_A" name="posture-prevention-management"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_vjO6gLTuEeyJEdlqInuo_A" name="quality-management"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_xQCakLTuEeyJEdlqInuo_A" name="response-management"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_y816oLTuEeyJEdlqInuo_A" name="risk-management"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_0k4PcLTuEeyJEdlqInuo_A" name="security-event-management"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_2jYjgLTuEeyJEdlqInuo_A" name="threat-intelligence"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_35jsQLTuEeyJEdlqInuo_A" name="trial-training-management"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_51J2QLTuEeyJEdlqInuo_A" name="vulnerability-management"/>
+  </packagedElement>
+</uml:Model>

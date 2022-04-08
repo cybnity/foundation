@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.3/notation" xmlns:style="http://www.eclipse.org/papyrus/infra/gmfdiag/style" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <notation:Diagram xmi:id="_EmoVcLTnEeyJEdlqInuo_A" type="UseCase" name="Functional general overview" measurementUnit="Pixel">
+    <styles xmi:type="notation:StringValueStyle" xmi:id="_EmoVcbTnEeyJEdlqInuo_A" name="diagram_compatibility_version" stringValue="1.4.0"/>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_EmoVcrTnEeyJEdlqInuo_A"/>
+    <styles xmi:type="style:PapyrusDiagramStyle" xmi:id="_EmoVc7TnEeyJEdlqInuo_A" diagramKindId="org.eclipse.papyrus.uml.diagram.useCase">
+      <owner xmi:type="uml:Model" href="Use%20case%20view.uml#_8UtikLTmEeyJEdlqInuo_A"/>
+    </styles>
+    <element xmi:type="uml:Model" href="Use%20case%20view.uml#_8UtikLTmEeyJEdlqInuo_A"/>
+  </notation:Diagram>
+  <notation:Diagram xmi:id="_fIylgLTnEeyJEdlqInuo_A" type="UseCase" name="Access control" measurementUnit="Pixel">
+    <children xmi:type="notation:Shape" xmi:id="_fsDqoLTnEeyJEdlqInuo_A" type="UseCase_Shape">
+      <children xmi:type="notation:DecorationNode" xmi:id="_fsDqorTnEeyJEdlqInuo_A" type="UseCase_NameLabel"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_fsDqo7TnEeyJEdlqInuo_A" type="UseCase_FloatingNameLabel">
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_fsERsLTnEeyJEdlqInuo_A" y="15"/>
+      </children>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_fsERsbTnEeyJEdlqInuo_A" type="UseCase_ExtensionPointCompartment">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_fsERsrTnEeyJEdlqInuo_A"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_fsERs7TnEeyJEdlqInuo_A"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fsERtLTnEeyJEdlqInuo_A"/>
+      </children>
+      <element xmi:type="uml:UseCase" href="Use%20case%20view.uml#_LQN4kLTnEeyJEdlqInuo_A"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fsDqobTnEeyJEdlqInuo_A" x="320" y="240"/>
+    </children>
+    <styles xmi:type="notation:StringValueStyle" xmi:id="_fIylgbTnEeyJEdlqInuo_A" name="diagram_compatibility_version" stringValue="1.4.0"/>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_fIylgrTnEeyJEdlqInuo_A"/>
+    <styles xmi:type="style:PapyrusDiagramStyle" xmi:id="_fIylg7TnEeyJEdlqInuo_A" diagramKindId="org.eclipse.papyrus.uml.diagram.useCase">
+      <owner xmi:type="uml:Package" href="Use%20case%20view.uml#_Hkz90LTnEeyJEdlqInuo_A"/>
+    </styles>
+    <element xmi:type="uml:Package" href="Use%20case%20view.uml#_Hkz90LTnEeyJEdlqInuo_A"/>
+  </notation:Diagram>
+</xmi:XMI>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_8UtikLTmEeyJEdlqInuo_A" name="use-case-view">
+  <packagedElement xmi:type="uml:Package" xmi:id="_Hkz90LTnEeyJEdlqInuo_A" name="access-control-context">
+    <packagedElement xmi:type="uml:UseCase" xmi:id="_LQN4kLTnEeyJEdlqInuo_A" name="Manage subject access requests"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_wEwXYLTnEeyJEdlqInuo_A" name="asset-control-context"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_zQrg0LTnEeyJEdlqInuo_A" name="audit-management-context"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_1bZr8LTnEeyJEdlqInuo_A" name="awareness-culture-management-context"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_4uo-ULTnEeyJEdlqInuo_A" name="behavior-intelligence-context"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_RsY1ULToEeyJEdlqInuo_A" name="compliance-certification-management-context"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_UtMT4LToEeyJEdlqInuo_A" name="detection-intelligence-context"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_XTRlULToEeyJEdlqInuo_A" name="governance-management-context"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_Zl7kcLToEeyJEdlqInuo_A" name="posture-prevention-management-context"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_cYkrMLToEeyJEdlqInuo_A" name="quality-management-context"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_eQhrULToEeyJEdlqInuo_A" name="response-management-context"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_gOMR4LToEeyJEdlqInuo_A" name="risk-management-context"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_isTTELToEeyJEdlqInuo_A" name="security-event-management-context"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_lA5L4LToEeyJEdlqInuo_A" name="threat-intelligence-context"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_nVx_oLToEeyJEdlqInuo_A" name="trial-training-management-context"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_puMBcLToEeyJEdlqInuo_A" name="vulnerability-management-context"/>
+</uml:Model>
