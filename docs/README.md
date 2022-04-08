@@ -23,5 +23,3 @@ This technical documentations are supporting the functional, architectural and/o
 ### Systems Configuration & Deployment
 
 ### Applications Operating
-
-[Back To Home](./)
