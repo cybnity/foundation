@@ -1,3 +1,10 @@
+## PURPOSE
+Welcome on the CYBNITY technical documentation using Unified Modeling Language (UML) notation for analysis and design activities.
+
+The source artifacts are managed into this directory are generated and maintained under the [Eclipse Papyrus](https://www.eclipse.org/papyrus/) open source tool.
+
+
+## TO CHANGE
 ---USE CASE VIEW---
 - Show the functionality of the system as perceived by the external actors;
 - Exposes the requirements of the system.
