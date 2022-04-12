@@ -1,45 +1,288 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_ffDCALTqEeyJEdlqInuo_A" name="Design view">
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_ffDCALTqEeyJEdlqInuo_A" name="Design view">
+  <ownedComment xmi:type="uml:Comment" xmi:id="_jhoIoLm2Eey-FIO7TtIcIA" annotatedElement="_ojSWkLm0Eey-FIO7TtIcIA">
+    <body>E.g &quot;Approve a security plan&quot; function</body>
+  </ownedComment>
+  <ownedComment xmi:type="uml:Comment" xmi:id="_F2690Lm3Eey-FIO7TtIcIA" annotatedElement="_xSVfcLm2Eey-FIO7TtIcIA">
+    <body>E.g security data/information</body>
+  </ownedComment>
+  <ownedComment xmi:type="uml:Comment" xmi:id="_QJ4bYLm3Eey-FIO7TtIcIA" annotatedElement="_ZplXYLm0Eey-FIO7TtIcIA">
+    <body>E.g Bounded context accessible via a remote api, and/or a Graphical User Interface</body>
+  </ownedComment>
   <packageImport xmi:type="uml:PackageImport" xmi:id="_ffaOYLTqEeyJEdlqInuo_A">
     <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
   </packageImport>
-  <packagedElement xmi:type="uml:Package" xmi:id="_hlUK8LTqEeyJEdlqInuo_A" name="cockpit-foundations">
-    <packagedElement xmi:type="uml:Interface" xmi:id="_jwWCoLTrEeyJEdlqInuo_A" name="OperationalRecovery"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_jwWpsLTrEeyJEdlqInuo_A" name="DefensiveResponse"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_jwXQwLTrEeyJEdlqInuo_A" name="OperationalExcellence"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_jwXQwbTrEeyJEdlqInuo_A" name="AreasAssetsProtection"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_jwX30LTrEeyJEdlqInuo_A" name="ThreatsRisksPreventionTreatment"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_jwX30bTrEeyJEdlqInuo_A" name="BehavioursSituationsAnticipationControl"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_jwYe4LTrEeyJEdlqInuo_A" name="VulnerabilitiesPreventionTreatment"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_LiMnILTsEeyJEdlqInuo_A" name="GoalsEvidences"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_LiNOMLTsEeyJEdlqInuo_A" name="StakeholdersResponsibilities"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_LiNOMbTsEeyJEdlqInuo_A" name="AwarenessTraining"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_LiNOMrTsEeyJEdlqInuo_A" name="StandardsCompliances"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_LiN1QLTsEeyJEdlqInuo_A" name="Automation"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_LiN1QbTsEeyJEdlqInuo_A" name="StrategicCommand"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_LiOcULTsEeyJEdlqInuo_A" name="Coordination"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_LiOcUbTsEeyJEdlqInuo_A" name="DefensiveResponseCommandPost"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_LiOcUrTsEeyJEdlqInuo_A" name="MissionsCommitmentsScheduling"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_LiPDYLTsEeyJEdlqInuo_A" name="ISMSDesign"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_LiPDYbTsEeyJEdlqInuo_A" name="Planning"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_LiPqcLTsEeyJEdlqInuo_A" name="SKPI"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_LiPqcbTsEeyJEdlqInuo_A" name="Dashboard"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_LiQRgLTsEeyJEdlqInuo_A" name="Cartography"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_hlUK8LTqEeyJEdlqInuo_A" name="cockpit-foundations" visibility="public">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_MIU1oLljEey-FIO7TtIcIA" annotatedElement="_HKyE8LlgEey-FIO7TtIcIA">
+      <body>Manageable UI component type (e.g panel, menuItem) or referential cockpit allowing management (e.g show, update, delete, call of feature) of one or several resources according to a set of permissions (authorized)</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_uip7ILp8EeyM_KAQg3-k_g" annotatedElement="_3mYr4LnAEey-FIO7TtIcIA">
+      <body>Capability allowed as a cockpit function regarding one or several application context's feature(s)</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="__EZPILp8EeyM_KAQg3-k_g" annotatedElement="_6Z1ekEvEEeuM_KAQg3-k_g">
+      <body>Provider of capabilities according to the user's permission(s) identified from his authorization(s)</body>
+    </ownedComment>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_jwWCoLTrEeyJEdlqInuo_A" name="OperationalRecovery">
+      <generalization xmi:type="uml:Generalization" xmi:id="_BoNWILnBEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_jwWpsLTrEeyJEdlqInuo_A" name="DefensiveResponse">
+      <generalization xmi:type="uml:Generalization" xmi:id="_DHfXkLnBEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_jwXQwLTrEeyJEdlqInuo_A" name="OperationalExcellence">
+      <generalization xmi:type="uml:Generalization" xmi:id="_E7KUoLnBEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_jwXQwbTrEeyJEdlqInuo_A" name="AreasAssetsProtection">
+      <generalization xmi:type="uml:Generalization" xmi:id="_IZfcsLnBEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_jwX30LTrEeyJEdlqInuo_A" name="ThreatsRisksPreventionTreatment">
+      <generalization xmi:type="uml:Generalization" xmi:id="_enMwMLodEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_jwX30bTrEeyJEdlqInuo_A" name="BehavioursSituationsAnticipationControl">
+      <generalization xmi:type="uml:Generalization" xmi:id="_dA9yMLodEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_jwYe4LTrEeyJEdlqInuo_A" name="VulnerabilitiesPreventionTreatment">
+      <generalization xmi:type="uml:Generalization" xmi:id="_jyrWkLodEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiMnILTsEeyJEdlqInuo_A" name="GoalsEvidences">
+      <generalization xmi:type="uml:Generalization" xmi:id="_9taUgLnAEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiNOMLTsEeyJEdlqInuo_A" name="StakeholdersResponsibilities">
+      <generalization xmi:type="uml:Generalization" xmi:id="_5FTmsLodEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiNOMbTsEeyJEdlqInuo_A" name="AwarenessTraining">
+      <generalization xmi:type="uml:Generalization" xmi:id="_7N0LULodEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiNOMrTsEeyJEdlqInuo_A" name="StandardsCompliances">
+      <generalization xmi:type="uml:Generalization" xmi:id="_9HfCsLodEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiN1QLTsEeyJEdlqInuo_A" name="Automation">
+      <generalization xmi:type="uml:Generalization" xmi:id="_CIvWELoeEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiN1QbTsEeyJEdlqInuo_A" name="StrategicCommand">
+      <generalization xmi:type="uml:Generalization" xmi:id="_3z0JoLodEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiOcULTsEeyJEdlqInuo_A" name="Coordination">
+      <generalization xmi:type="uml:Generalization" xmi:id="_EREUgLoeEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiOcUbTsEeyJEdlqInuo_A" name="DefensiveResponseCommandPost">
+      <generalization xmi:type="uml:Generalization" xmi:id="_FlXN8LoeEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiOcUrTsEeyJEdlqInuo_A" name="MissionsCommitmentsScheduling">
+      <generalization xmi:type="uml:Generalization" xmi:id="_HFC4ALoeEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiPDYLTsEeyJEdlqInuo_A" name="ISMSDesign">
+      <generalization xmi:type="uml:Generalization" xmi:id="_1WRJILodEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiPDYbTsEeyJEdlqInuo_A" name="Planning">
+      <generalization xmi:type="uml:Generalization" xmi:id="_MYbdMLoeEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiPqcLTsEeyJEdlqInuo_A" name="SKPI">
+      <generalization xmi:type="uml:Generalization" xmi:id="_2pbaILodEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiPqcbTsEeyJEdlqInuo_A" name="Dashboard">
+      <generalization xmi:type="uml:Generalization" xmi:id="_I0KFMLoeEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_LiQRgLTsEeyJEdlqInuo_A" name="Cartography">
+      <generalization xmi:type="uml:Generalization" xmi:id="_Kh1vALoeEey-FIO7TtIcIA" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_HKyE8LlgEey-FIO7TtIcIA" name="CockpitUIComponent" isAbstract="true">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_0jRP4LliEey-FIO7TtIcIA" name="uniqueName" visibility="private">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_f4ew8LlkEey-FIO7TtIcIA" name="subElements" type="_HKyE8LlgEey-FIO7TtIcIA" aggregation="composite" association="_f4c7wLlkEey-FIO7TtIcIA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_f4fYALlkEey-FIO7TtIcIA"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_f4fYAblkEey-FIO7TtIcIA" value="*"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_iZ76cEvFEeuM_KAQg3-k_g" name="capabilityprovider" type="_6Z1ekEvEEeuM_KAQg3-k_g" aggregation="shared" association="_iZ43IEvFEeuM_KAQg3-k_g">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_iZ8hgEvFEeuM_KAQg3-k_g"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_iZ8hgUvFEeuM_KAQg3-k_g" value="*"/>
+      </ownedAttribute>
+      <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_yJ6dwLlgEey-FIO7TtIcIA" client="_HKyE8LlgEey-FIO7TtIcIA" supplier="_UXPpwLlhEey-FIO7TtIcIA" contract="_UXPpwLlhEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_f4c7wLlkEey-FIO7TtIcIA" name="including" visibility="package" memberEnd="_f4ew8LlkEey-FIO7TtIcIA _f4f_ELlkEey-FIO7TtIcIA">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_f4di0LlkEey-FIO7TtIcIA" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_f4di0blkEey-FIO7TtIcIA" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_f4f_ELlkEey-FIO7TtIcIA" name="parent" type="_HKyE8LlgEey-FIO7TtIcIA" association="_f4c7wLlkEey-FIO7TtIcIA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_7eZyMLmzEey-FIO7TtIcIA"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_3mYr4LnAEey-FIO7TtIcIA" name="Capability"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_RS7L0LofEey-FIO7TtIcIA" name="expose operable capabilities" client="_HKyE8LlgEey-FIO7TtIcIA" supplier="_3mYr4LnAEey-FIO7TtIcIA"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_6Z1ekEvEEeuM_KAQg3-k_g" name="CapabilityProvider" isAbstract="true">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_Tmi-oEvFEeuM_KAQg3-k_g" name="providedCapabilities" visibility="public" isAbstract="true">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_d5q0QEvFEeuM_KAQg3-k_g" direction="return" effect="read">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EEList"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_TgzaMLqDEeyM_KAQg3-k_g" name="allowedAccordingTo" type="_JHVsALqDEeyM_KAQg3-k_g" effect="read"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_O5I0UEvFEeuM_KAQg3-k_g" name="use" client="_hlUK8LTqEeyJEdlqInuo_A" supplier="_ojSWkLm0Eey-FIO7TtIcIA"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_iZ43IEvFEeuM_KAQg3-k_g" visibility="private" memberEnd="_iZ76cEvFEeuM_KAQg3-k_g _iZ8hgkvFEeuM_KAQg3-k_g">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_iZ7TYEvFEeuM_KAQg3-k_g" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_iZ7TYUvFEeuM_KAQg3-k_g" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_iZ8hgkvFEeuM_KAQg3-k_g" name="cockpituicomponent" type="_HKyE8LlgEey-FIO7TtIcIA" association="_iZ43IEvFEeuM_KAQg3-k_g">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_r0UKMEvFEeuM_KAQg3-k_g"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_m4Zp0EvFEeuM_KAQg3-k_g" value="*"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_ywCmMEvFEeuM_KAQg3-k_g" name="deliver" client="_6Z1ekEvEEeuM_KAQg3-k_g" supplier="_3mYr4LnAEey-FIO7TtIcIA"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_id0lYLp-EeyM_KAQg3-k_g" name="BoundedContextControlerImpl"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_uvv0kLp_EeyM_KAQg3-k_g" name="AccessControl">
+      <generalization xmi:type="uml:Generalization" xmi:id="_yGV88Lp_EeyM_KAQg3-k_g" general="_3mYr4LnAEey-FIO7TtIcIA"/>
+    </packagedElement>
   </packagedElement>
   <packagedElement xmi:type="uml:Package" xmi:id="_jqIiYLTqEeyJEdlqInuo_A" name="feature-modules">
     <packagedElement xmi:type="uml:Package" xmi:id="_IJCdgLTtEeyJEdlqInuo_A" name="access-control">
-      <packagedElement xmi:type="uml:Package" xmi:id="_Mm5v8LTtEeyJEdlqInuo_A" name="access_control.application"/>
-      <packagedElement xmi:type="uml:Package" xmi:id="_OuRsILTtEeyJEdlqInuo_A" name="access_control.domain"/>
-      <packagedElement xmi:type="uml:Package" xmi:id="_QEfRILTtEeyJEdlqInuo_A" name="access_control.infrastructure"/>
-      <packagedElement xmi:type="uml:Package" xmi:id="_YlUpwLTtEeyJEdlqInuo_A" name="access_control.ui">
+      <packagedElement xmi:type="uml:Package" xmi:id="_Mm5v8LTtEeyJEdlqInuo_A" name="access_control.application">
         <packagedElement xmi:type="uml:Interface" xmi:id="_hRH8QLTtEeyJEdlqInuo_A" name="AccessControlContext" isAbstract="true">
           <ownedOperation xmi:type="uml:Operation" xmi:id="_oxcTELTtEeyJEdlqInuo_A" name="ManageSubjectAccessRequests"/>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="_dXDJwLqHEeyM_KAQg3-k_g" name="providedFeatures" isAbstract="true">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="_lBtIULqHEeyM_KAQg3-k_g" isUnique="false" direction="return" effect="read">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EEList"/>
+            </ownedParameter>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_WBN2kLqFEeyM_KAQg3-k_g" name="ManageSubjectAccessRequests" visibility="public">
+          <generalization xmi:type="uml:Generalization" xmi:id="_gJcq0LqFEeyM_KAQg3-k_g" general="_ojSWkLm0Eey-FIO7TtIcIA"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_wyQasLqGEeyM_KAQg3-k_g" name="AccessControlContextImpl">
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_6MQ3ArqGEeyM_KAQg3-k_g" name="providedFeatures" type="_WBN2kLqFEeyM_KAQg3-k_g" aggregation="composite" association="_6MQP8LqGEeyM_KAQg3-k_g">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6MSsMLqGEeyM_KAQg3-k_g"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6MUhYLqGEeyM_KAQg3-k_g" value="*"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Realization" xmi:id="_3E8gwLqGEeyM_KAQg3-k_g" client="_wyQasLqGEeyM_KAQg3-k_g" supplier="_hRH8QLTtEeyJEdlqInuo_A"/>
+        <packagedElement xmi:type="uml:Association" xmi:id="_6MQP8LqGEeyM_KAQg3-k_g" name="expose" visibility="private" memberEnd="_6MQ3ArqGEeyM_KAQg3-k_g _6MW9oLqGEeyM_KAQg3-k_g">
+          <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_6MQ3ALqGEeyM_KAQg3-k_g" source="org.eclipse.papyrus">
+            <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_6MQ3AbqGEeyM_KAQg3-k_g" key="nature" value="UML_Nature"/>
+          </eAnnotations>
+          <ownedEnd xmi:type="uml:Property" xmi:id="_6MW9oLqGEeyM_KAQg3-k_g" name="ownedByBoundedContext" type="_wyQasLqGEeyM_KAQg3-k_g" association="_6MQP8LqGEeyM_KAQg3-k_g"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Dependency" xmi:id="_25xWELqHEeyM_KAQg3-k_g" name="provide" client="_hRH8QLTtEeyJEdlqInuo_A" supplier="_ojSWkLm0Eey-FIO7TtIcIA"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_OuRsILTtEeyJEdlqInuo_A" name="access_control.domain">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_xOY1sLqJEeyM_KAQg3-k_g" annotatedElement="_RwVTYLqJEeyM_KAQg3-k_g">
+          <body>Formal consent regarding a type of usage is defined by the permission type (e.g read, write, use, delete, execute) coming from pre-known actions or identified from systems uses (e.g file operators, operating system capability names)
+</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Class" xmi:id="_JHVsALqDEeyM_KAQg3-k_g" name="Authorization">
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_gs510LqIEeyM_KAQg3-k_g" name="validFrom" visibility="private">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EDate"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_nX35ALqIEeyM_KAQg3-k_g" name="expireAt" visibility="private">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EDate"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_tDYDQLqIEeyM_KAQg3-k_g"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_3wP1obqIEeyM_KAQg3-k_g" name="controledResource" type="_vSv4MLm0Eey-FIO7TtIcIA" aggregation="shared" association="_3wPOkLqIEeyM_KAQg3-k_g"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_YQt3MrqJEeyM_KAQg3-k_g" name="grantedPrivileges" type="_RwVTYLqJEeyM_KAQg3-k_g" aggregation="shared" association="_YQtQILqJEeyM_KAQg3-k_g">
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YQt3NLqJEeyM_KAQg3-k_g" value="*"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Association" xmi:id="_3wPOkLqIEeyM_KAQg3-k_g" name="authorizing access to" visibility="public" memberEnd="_3wP1obqIEeyM_KAQg3-k_g _3wP1pLqIEeyM_KAQg3-k_g">
+          <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_3wPOkbqIEeyM_KAQg3-k_g" source="org.eclipse.papyrus">
+            <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_3wP1oLqIEeyM_KAQg3-k_g" key="nature" value="UML_Nature"/>
+          </eAnnotations>
+          <ownedEnd xmi:type="uml:Property" xmi:id="_3wP1pLqIEeyM_KAQg3-k_g" name="authorizations" type="_JHVsALqDEeyM_KAQg3-k_g" association="_3wPOkLqIEeyM_KAQg3-k_g">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Ekwp8LqJEeyM_KAQg3-k_g"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EkztQLqJEeyM_KAQg3-k_g" value="*"/>
+          </ownedEnd>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_RwVTYLqJEeyM_KAQg3-k_g" name="Permission">
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_rMT-gLqJEeyM_KAQg3-k_g" name="type" visibility="public">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Association" xmi:id="_YQtQILqJEeyM_KAQg3-k_g" name="given privileges" memberEnd="_YQt3MrqJEeyM_KAQg3-k_g _YQueQLqJEeyM_KAQg3-k_g">
+          <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_YQt3MLqJEeyM_KAQg3-k_g" source="org.eclipse.papyrus">
+            <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_YQt3MbqJEeyM_KAQg3-k_g" key="nature" value="UML_Nature"/>
+          </eAnnotations>
+          <ownedEnd xmi:type="uml:Property" xmi:id="_YQueQLqJEeyM_KAQg3-k_g" name="grantedBy" type="_JHVsALqDEeyM_KAQg3-k_g" association="_YQtQILqJEeyM_KAQg3-k_g">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gEsJ0LqJEeyM_KAQg3-k_g"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gE8BcLqJEeyM_KAQg3-k_g" value="*"/>
+          </ownedEnd>
         </packagedElement>
       </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_QEfRILTtEeyJEdlqInuo_A" name="access_control.infrastructure"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_YlUpwLTtEeyJEdlqInuo_A" name="access_control.ui">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_TfD1ILqAEeyM_KAQg3-k_g" annotatedElement="_uvv0kLp_EeyM_KAQg3-k_g">
+          <body>Capabilities exposed by AccessControl applicative domain</body>
+        </ownedComment>
+        <ownedComment xmi:type="uml:Comment" xmi:id="_sVSu4LqAEeyM_KAQg3-k_g" annotatedElement="_Q4OLMLp_EeyM_KAQg3-k_g">
+          <body>Real implementation of bounded context capability on client side (e.g executed on UI thread). Can include surface controls on exchanged information. Use proxy (e.g adapter) to delegate remote calls to application (e.g bounded context realized on a server side)</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Class" xmi:id="_l8IEcLofEey-FIO7TtIcIA" name="AccessControlUI">
+          <generalization xmi:type="uml:Generalization" xmi:id="_vnevcLofEey-FIO7TtIcIA" general="_HKyE8LlgEey-FIO7TtIcIA"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Dependency" xmi:id="_1SubALofEey-FIO7TtIcIA" name="delegate to" visibility="private" client="_ghhT8LqCEeyM_KAQg3-k_g" supplier="_4M9soLohEey-FIO7TtIcIA"/>
+        <packagedElement xmi:type="uml:Class" xmi:id="_Xg9rsLp9EeyM_KAQg3-k_g" name="AccessControlCapabilityProviderImpl" visibility="public" isActive="true">
+          <generalization xmi:type="uml:Generalization" xmi:id="_8Sgg4Lp9EeyM_KAQg3-k_g" general="_6Z1ekEvEEeuM_KAQg3-k_g"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_Q4OLMLp_EeyM_KAQg3-k_g" name="AccessControlCapabilityImpl">
+          <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_q6PtMLqAEeyM_KAQg3-k_g" client="_Q4OLMLp_EeyM_KAQg3-k_g" supplier="_uvv0kLp_EeyM_KAQg3-k_g" contract="_uvv0kLp_EeyM_KAQg3-k_g"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_ghhT8LqCEeyM_KAQg3-k_g" name="AccessControlAdapterImpl">
+          <generalization xmi:type="uml:Generalization" xmi:id="_j5G60LqCEeyM_KAQg3-k_g" general="_id0lYLp-EeyM_KAQg3-k_g"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Usage" xmi:id="_2zaosLqCEeyM_KAQg3-k_g" client="_Q4OLMLp_EeyM_KAQg3-k_g" supplier="_ghhT8LqCEeyM_KAQg3-k_g"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_4M9soLohEey-FIO7TtIcIA" name="AccessControlAdapter"/>
+      <packagedElement xmi:type="uml:Usage" xmi:id="_JSRAsLoiEey-FIO7TtIcIA" visibility="private" client="_YlUpwLTtEeyJEdlqInuo_A" supplier="_YlUpwLTtEeyJEdlqInuo_A"/>
+      <packagedElement xmi:type="uml:Usage" xmi:id="_7tx_ALqEEeyM_KAQg3-k_g" name="called functions" client="_4M9soLohEey-FIO7TtIcIA" supplier="_ojSWkLm0Eey-FIO7TtIcIA"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_gbb08LTuEeyJEdlqInuo_A" name="api-management"/>
     <packagedElement xmi:type="uml:Package" xmi:id="_h4AgoLTuEeyJEdlqInuo_A" name="asset-control"/>
-    <packagedElement xmi:type="uml:Package" xmi:id="_jURqULTuEeyJEdlqInuo_A" name="audit-management"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_jURqULTuEeyJEdlqInuo_A" name="audit-management">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_JvnUYLm8Eey-FIO7TtIcIA" annotatedElement="_EzTLYLm8Eey-FIO7TtIcIA">
+        <body>Trace, observed event (e.g user's pointing system click)</body>
+      </ownedComment>
+      <ownedComment xmi:type="uml:Comment" xmi:id="_vP4JYLm_Eey-FIO7TtIcIA" annotatedElement="_4fASwLm8Eey-FIO7TtIcIA">
+        <body>State of used privileges during the resource access</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Association" xmi:id="_4qf4cLm5Eey-FIO7TtIcIA"/>
+      <packagedElement xmi:type="uml:Association" xmi:id="_jsCFALm6Eey-FIO7TtIcIA" name="accessed" memberEnd="_jsCsErm6Eey-FIO7TtIcIA _jsDTILm6Eey-FIO7TtIcIA">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_jsCsELm6Eey-FIO7TtIcIA" source="org.eclipse.papyrus">
+          <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_jsCsEbm6Eey-FIO7TtIcIA" key="nature" value="UML_Nature"/>
+        </eAnnotations>
+        <ownedEnd xmi:type="uml:Property" xmi:id="_jsCsErm6Eey-FIO7TtIcIA" name="resource" type="_vSv4MLm0Eey-FIO7TtIcIA" aggregation="shared" association="_jsCFALm6Eey-FIO7TtIcIA"/>
+        <ownedEnd xmi:type="uml:Property" xmi:id="_jsDTILm6Eey-FIO7TtIcIA" name="auditlog" type="_KBrcILm5Eey-FIO7TtIcIA" association="_jsCFALm6Eey-FIO7TtIcIA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_mwVjgLm6Eey-FIO7TtIcIA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_mwjl8Lm6Eey-FIO7TtIcIA" value="*"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_wecLELm7Eey-FIO7TtIcIA" name="audit_management.application"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_zhnBILm7Eey-FIO7TtIcIA" name="audit_management.domain">
+        <packagedElement xmi:type="uml:Class" xmi:id="_KBrcILm5Eey-FIO7TtIcIA" name="AuditLog">
+          <ownedOperation xmi:type="uml:Operation" xmi:id="_O6m58Lm5Eey-FIO7TtIcIA" name="createdAt" visibility="public" concurrency="concurrent">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="_ZHnggLm5Eey-FIO7TtIcIA" isUnique="false" direction="return" effect="read">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EDate"/>
+            </ownedParameter>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_EzTLYLm8Eey-FIO7TtIcIA" name="AuditRecord"/>
+        <packagedElement xmi:type="uml:Class" xmi:id="_WoTMILm-Eey-FIO7TtIcIA" name="AuthorizationStatus"/>
+        <packagedElement xmi:type="uml:Class" xmi:id="_LVQVILm_Eey-FIO7TtIcIA" name="PermissionStatus" visibility="private"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_1ujZ0Lm7Eey-FIO7TtIcIA" name="audit_management.infrastructure"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_4pPpULm7Eey-FIO7TtIcIA" name="audit_management.ui"/>
+      <packagedElement xmi:type="uml:AssociationClass" xmi:id="_4fASwLm8Eey-FIO7TtIcIA" name="ControlledAccessForOperate" visibility="private" memberEnd="_4fA50rm8Eey-FIO7TtIcIA _4fA507m8Eey-FIO7TtIcIA">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_4fA50Lm8Eey-FIO7TtIcIA" source="org.eclipse.papyrus">
+          <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_4fA50bm8Eey-FIO7TtIcIA" key="nature" value="UML_Nature"/>
+        </eAnnotations>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_FDXgULm_Eey-FIO7TtIcIA" name="authorizedBy" visibility="private" type="_WoTMILm-Eey-FIO7TtIcIA" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_ZdCvMLm_Eey-FIO7TtIcIA" name="allowedBy" type="_LVQVILm_Eey-FIO7TtIcIA" isUnique="false">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_e3NR0Lm_Eey-FIO7TtIcIA" value="*"/>
+        </ownedAttribute>
+        <ownedEnd xmi:type="uml:Property" xmi:id="_4fA50rm8Eey-FIO7TtIcIA" name="auditedBy" type="_KBrcILm5Eey-FIO7TtIcIA" association="_4fASwLm8Eey-FIO7TtIcIA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5FKeYLm9Eey-FIO7TtIcIA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5FPW4Lm9Eey-FIO7TtIcIA" value="*"/>
+        </ownedEnd>
+        <ownedEnd xmi:type="uml:Property" xmi:id="_4fA507m8Eey-FIO7TtIcIA" name="tracked" type="_EzTLYLm8Eey-FIO7TtIcIA" association="_4fASwLm8Eey-FIO7TtIcIA">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_PMsLoLm9Eey-FIO7TtIcIA" value="*"/>
+        </ownedEnd>
+      </packagedElement>
+    </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_kkxB0LTuEeyJEdlqInuo_A" name="awareness-culture-management"/>
     <packagedElement xmi:type="uml:Package" xmi:id="_mdNKILTuEeyJEdlqInuo_A" name="behavior-intelligence"/>
     <packagedElement xmi:type="uml:Package" xmi:id="_oYoVALTuEeyJEdlqInuo_A" name="compliance-certification-management"/>
@@ -53,5 +296,65 @@
     <packagedElement xmi:type="uml:Package" xmi:id="_2jYjgLTuEeyJEdlqInuo_A" name="threat-intelligence"/>
     <packagedElement xmi:type="uml:Package" xmi:id="_35jsQLTuEeyJEdlqInuo_A" name="trial-training-management"/>
     <packagedElement xmi:type="uml:Package" xmi:id="_51J2QLTuEeyJEdlqInuo_A" name="vulnerability-management"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_HPoTQLlhEey-FIO7TtIcIA" name="api">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_k9udwLm3Eey-FIO7TtIcIA" annotatedElement="_rqkbwLlgEey-FIO7TtIcIA">
+      <body>Point of contact type</body>
+    </ownedComment>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_rqkbwLlgEey-FIO7TtIcIA" name="ControlledInterface" isAbstract="true">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_CUYr0LliEey-FIO7TtIcIA">
+        <body>Type of point of contact, allowed by a system to other system and/or user.</body>
+      </ownedComment>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_eq778Lm1Eey-FIO7TtIcIA" name="urn" visibility="package" isAbstract="true">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_i6ynkLm1Eey-FIO7TtIcIA" name="urn" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_UXPpwLlhEey-FIO7TtIcIA" name="CockpitInterface" visibility="public" isAbstract="true">
+      <generalization xmi:type="uml:Generalization" xmi:id="_ZzB9ALlhEey-FIO7TtIcIA" general="_rqkbwLlgEey-FIO7TtIcIA"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_Xk3m4LliEey-FIO7TtIcIA" name="name">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_jX8MULliEey-FIO7TtIcIA" name="interfaceName" direction="return" effect="read">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_g4sYILlhEey-FIO7TtIcIA" name="RemoteAccessInterface" isAbstract="true">
+      <generalization xmi:type="uml:Generalization" xmi:id="_oS2ckLlhEey-FIO7TtIcIA" general="_rqkbwLlgEey-FIO7TtIcIA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_jn1e8LlhEey-FIO7TtIcIA" name="LocalAccessInterface" isAbstract="true">
+      <generalization xmi:type="uml:Generalization" xmi:id="_ruUd4LlhEey-FIO7TtIcIA" general="_rqkbwLlgEey-FIO7TtIcIA"/>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_ZplXYLm0Eey-FIO7TtIcIA" name="Application" isAbstract="true">
+    <generalization xmi:type="uml:Generalization" xmi:id="_0E2VQLm0Eey-FIO7TtIcIA" general="_vSv4MLm0Eey-FIO7TtIcIA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_ojSWkLm0Eey-FIO7TtIcIA" name="Feature" isAbstract="true">
+    <generalization xmi:type="uml:Generalization" xmi:id="_3qQVsLm0Eey-FIO7TtIcIA" general="_vSv4MLm0Eey-FIO7TtIcIA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_smWjYLm0Eey-FIO7TtIcIA" name="System" isAbstract="true">
+    <generalization xmi:type="uml:Generalization" xmi:id="_6GOB0Lm0Eey-FIO7TtIcIA" general="_vSv4MLm0Eey-FIO7TtIcIA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_vSv4MLm0Eey-FIO7TtIcIA" name="ResourceType" isAbstract="true">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_OtFisrm2Eey-FIO7TtIcIA" name="api" type="_rqkbwLlgEey-FIO7TtIcIA" aggregation="shared" association="_OtE7oLm2Eey-FIO7TtIcIA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_caHTYLm2Eey-FIO7TtIcIA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_OtFitLm2Eey-FIO7TtIcIA" value="*"/>
+    </ownedAttribute>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_AbDc8Lm1Eey-FIO7TtIcIA" name="name" visibility="package" isAbstract="true">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_PFOyYLm1Eey-FIO7TtIcIA" direction="return" effect="read">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_OtE7oLm2Eey-FIO7TtIcIA" name="accessibleVia" visibility="package" memberEnd="_OtFisrm2Eey-FIO7TtIcIA _OtGJwLm2Eey-FIO7TtIcIA">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_OtFisLm2Eey-FIO7TtIcIA" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_OtFisbm2Eey-FIO7TtIcIA" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_OtGJwLm2Eey-FIO7TtIcIA" name="allowUsageOf" type="_vSv4MLm0Eey-FIO7TtIcIA" association="_OtE7oLm2Eey-FIO7TtIcIA">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_RU4ZcLm4Eey-FIO7TtIcIA" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_xSVfcLm2Eey-FIO7TtIcIA" name="InformationType" isAbstract="true">
+    <generalization xmi:type="uml:Generalization" xmi:id="_5iUYoLm2Eey-FIO7TtIcIA" general="_vSv4MLm0Eey-FIO7TtIcIA"/>
   </packagedElement>
 </uml:Model>
