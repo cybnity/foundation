@@ -39,6 +39,8 @@ Source file named "Design view":
       - domain layer
       - infrastructure layer
 
+[Exported diagrams](design) as images.
+
 ## Usage
 Formalizes the specification of the software and sub-components produced during the solution analysis and technical design activities.
 
