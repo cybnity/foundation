@@ -7,21 +7,21 @@ The version of each diagram shown in this area is the latest produced via the so
 # APPLICATION LAYER
 
 ## AccessControlContextImpl
-![image](application\AccessControlContextImpl_description.PNG)
+![image](application/AccessControlContextImpl_description.PNG)
 
 # DOMAIN LAYER
 
 ## Authorization
-![image](domain\Authorization_description.PNG)
+![image](domain/Authorization_description.PNG)
 ## Identity
-![image](domain\Identity_description.PNG)
+![image](domain/Identity_description.PNG)
 ## Mission
-![image](domain\Mission_description.PNG)
+![image](domain/Mission_description.PNG)
 ## RACIMatrix
-![image](domain\RACIMatrix_description.PNG)
+![image](domain/RACIMatrix_description.PNG)
 ## Responsibility
-![image](domain\Responsibility_description.PNG)
+![image](domain/Responsibility_description.PNG)
 ## UserRole
-![image](domain\UserRole_description.PNG)
+![image](domain/UserRole_description.PNG)
 
 # INFRASTRUCTURE LAYER
