@@ -30,6 +30,14 @@ Source file named "Design view":
   - [Cockpits Foundations](cockpit-foundations)
     - Captures how the capabilities provided by the Cockpits User Interfaces (UI) are designed inside the UI layer).
   - Feature Modules
+    - Show how the internal functionalities (e.g logical features) are designed inside each domain context, in terms of the static structure and dynamic behavior;
+    - Captures the vocabulary of the problem(s) space(s) and solution space per domain context;
+    - Captures the sub-interface's capabilities per domain context (e.g context specification), sub-layers (e.g Domain-Driven-Development oriented) and realization of context described in specification use-case-view.
+    - Each module include a sub-package per layer of design (Domain-Drive-Development)
+      - ui layer
+      - application layer
+      - domain layer
+      - infrastructure layer
     - [common](design)
     - [access-control](design/access-control)
     - [api](design/api)
@@ -49,14 +57,6 @@ Source file named "Design view":
     - [threat-intelligence](design/threat-intelligence)
     - [trial-training-management](design/trial-training-management)
     - [vulnerability-management](design/vulnerability-management)
-    - Show how the internal functionalities (e.g logical features) are designed inside each domain context, in terms of the static structure and dynamic behavior;
-    - Captures the vocabulary of the problem(s) space(s) and solution space per domain context;
-    - Captures the sub-interface's capabilities per domain context (e.g context specification), sub-layers (e.g Domain-Driven-Development oriented) and realization of context described in specification use-case-view.
-    - Each module include a sub-package per layer of design (Domain-Drive-Development)
-      - ui layer
-      - application layer
-      - domain layer
-      - infrastructure layer
 
 ## Usage
 Formalizes the specification of the software and sub-components produced during the solution analysis and technical design activities.
