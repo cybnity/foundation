@@ -27,7 +27,7 @@ Source file named "Design view":
 - Static aspects (structural diagrams): classes, objects;
 - Dynamic aspects (behavioral diagrams): interactions, statecharts, activities, sequences.
 - Model sub-packages:
-  - [Cockpits Foundations](cockpit-foundations)
+  - [Cockpits Foundations](design/cockpit-foundations)
     - Captures how the capabilities provided by the Cockpits User Interfaces (UI) are designed inside the UI layer).
   - Feature Modules
     - Show how the internal functionalities (e.g logical features) are designed inside each domain context, in terms of the static structure and dynamic behavior;
