@@ -13,11 +13,11 @@ This technical documentations are supporting the functional, architectural and/o
 # DEVELOPMENT DOCUMENTATIONS
 ### Software Design
 - [UML documentation](uml) presenting the domain analysis, the software specifications over several views according to an Unified Process (UP) approach (e.g Use case view, Design view, Deployment view, Implementation view and Process view).
-
+### Softwares Build
+Software build chain is implemented via Maven 3.
 ### Packages Assembly
 
 ### Systems Build & Delivery
-
 
 # DELIVERY DOCUMENTATIONS
 ### Systems Configuration & Deployment
