@@ -27,17 +27,36 @@ Source file named "Design view":
 - Static aspects (structural diagrams): classes, objects;
 - Dynamic aspects (behavioral diagrams): interactions, statecharts, activities, sequences.
 - Model sub-packages:
-  - Cockpits Foundations
+  - [Cockpits Foundations](cockpit-foundations)
     - Captures how the capabilities provided by the Cockpits User Interfaces (UI) are designed inside the UI layer).
   - Feature Modules
     - Show how the internal functionalities (e.g logical features) are designed inside each domain context, in terms of the static structure and dynamic behavior;
     - Captures the vocabulary of the problem(s) space(s) and solution space per domain context;
     - Captures the sub-interface's capabilities per domain context (e.g context specification), sub-layers (e.g Domain-Driven-Development oriented) and realization of context described in specification use-case-view.
-    - Each module include a sub-package par layer of design (Domain-Drive-Development)
+    - Each module include a sub-package per layer of design (Domain-Drive-Development)
       - ui layer
       - application layer
       - domain layer
       - infrastructure layer
+    - [common](design)
+    - [access-control](design/access-control)
+    - [api](design/api)
+    - [api-management](design/api-management)
+    - [asset-control](design/asset-control)
+    - [audit-management](design/audit-management)
+    - [awareness-culture-management](design/awareness-culture-management)
+    - [behavior-intelligence](design/behavior-intelligence)
+    - [compliance-certification-management](design/compliance-certification-management)
+    - [detection-intelligence](design/detection-intelligence)
+    - [governance-management](design/governance-management)
+    - [posture-prevention-management](design/posture-prevention-management)
+    - [quality-management](design/quality-management)
+    - [response-management](design/response-management)
+    - [risk-management](design/risk-management)
+    - [security-event-management](design/security-event-management)
+    - [threat-intelligence](design/threat-intelligence)
+    - [trial-training-management](design/trial-training-management)
+    - [vulnerability-management](design/vulnerability-management)
 
 ## Usage
 Formalizes the specification of the software and sub-components produced during the solution analysis and technical design activities.
