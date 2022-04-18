@@ -11,12 +11,12 @@
 	<version>${revision}</version>
 	<packaging>pom</packaging>
 	<name>Compliance and certification management application (bounded context)</name>
-	<!--
+
 	<modules>
 		<module>domain-model</module>
 		<module>translator</module>
 		<module>adapter</module>
 		<module>service</module>
 		<module>ui</module>
-	</modules>-->
+	</modules>
 </project>
