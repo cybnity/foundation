@@ -6,13 +6,12 @@
 		<version>${revision}</version>
 		<relativePath>..</relativePath>
 	</parent>
-
 	<groupId>org.cybnity</groupId>
 	<artifactId>features</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>CYBNITY features supporting applications</name>
-	<!--
+	<name>CYBNITY features</name>
+
 	<modules>
 		<module>workflow-process</module>
 		<module>security</module>
@@ -21,5 +20,5 @@
 		<module>operating-system</module>
 		<module>physical</module>
 		<module>integrated-partners</module>
-	</modules>-->
+	</modules>
 </project>
