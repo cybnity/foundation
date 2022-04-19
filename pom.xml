@@ -26,7 +26,6 @@
 
 	<modules>
 		<!-- Project modules -->
-		<module>common</module>
 		<module>infrastructures</module>
 		<module>features</module>
 		<module>applications</module>
