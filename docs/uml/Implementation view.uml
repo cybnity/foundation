@@ -50,7 +50,7 @@
       <packagedElement xmi:type="uml:Dependency" xmi:id="_ThIiYMAKEeyozKux1Te43w" name="realize services contract" client="_lYLHUMAIEeyozKux1Te43w" supplier="_JdzcQMAKEeyozKux1Te43w"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_JdzcQMAKEeyozKux1Te43w" name="&lt;&lt;infrastructure service specification>>"/>
-    <packagedElement xmi:type="uml:Package" xmi:id="_B5qMAMAjEeyqEILEjQVaPw" name="infrastructure clients and connectors implementation">
+    <packagedElement xmi:type="uml:Package" xmi:id="_B5qMAMAjEeyqEILEjQVaPw" name="&lt;&lt;infrastructure clients and connectors implementation>>">
       <packagedElement xmi:type="uml:Dependency" xmi:id="_URmMoMAjEeyqEILEjQVaPw" name="realize" client="_B5qMAMAjEeyqEILEjQVaPw" supplier="_JdzcQMAKEeyozKux1Te43w"/>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_jUTW0MAjEeyqEILEjQVaPw" name="integrated protocol adapters" client="_B5qMAMAjEeyqEILEjQVaPw" supplier="_lYLHUMAIEeyozKux1Te43w"/>
     </packagedElement>
