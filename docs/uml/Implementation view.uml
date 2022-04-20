@@ -1,8 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_z-_tcLTpEeyJEdlqInuo_A" name="Implementation view">
+  <ownedComment xmi:type="uml:Comment" xmi:id="_ARJm0MAHEeyozKux1Te43w" annotatedElement="_khtLoMADEeyozKux1Te43w">
+    <body>Integrated protocol through Access Control Layer for sync (e.g Remote Procedure Call) or async (e.g messages middleware) executions of processes/features (e.g specification classes) provided by the bounded context</body>
+  </ownedComment>
+  <ownedComment xmi:type="uml:Comment" xmi:id="_1s_v8MAkEeyqEILEjQVaPw" annotatedElement="_z-_tcLTpEeyJEdlqInuo_A">
+    <body>E.g web or desktop cockpit systems</body>
+  </ownedComment>
   <packageImport xmi:type="uml:PackageImport" xmi:id="_z_Xg4LTpEeyJEdlqInuo_A">
     <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
   </packageImport>
   <packagedElement xmi:type="uml:Package" xmi:id="_14dJcLTpEeyJEdlqInuo_A" name="configuration-management"/>
   <packagedElement xmi:type="uml:Package" xmi:id="_4P5h8LTpEeyJEdlqInuo_A" name="system-assembly"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_9Z77YMABEeyozKux1Te43w" name="&lt;&lt;application system>>" visibility="public">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_zcVloMAIEeyozKux1Te43w" annotatedElement="_91ojcMACEeyozKux1Te43w">
+      <body>E.g data entities, business rules, domain processes</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="__wh7IMAIEeyozKux1Te43w" annotatedElement="_2s-esMACEeyozKux1Te43w">
+      <body>Configuration and instantiation contents managing the coupling of specification and implementation components</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_RY2csMAJEeyozKux1Te43w" annotatedElement="_CBzPoMAIEeyozKux1Te43w">
+      <body>E.g security features owned by the domain as sub-domains of capabilities implementation</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_dWnPMMAJEeyozKux1Te43w" annotatedElement="_lYLHUMAIEeyozKux1Te43w">
+      <body>Technical and/or infrastructure services (e.g experience, process, system api) and configurations (e.g spec/impl mapping)</body>
+    </ownedComment>
+    <packagedElement xmi:type="uml:Package" xmi:id="_RYq6sMACEeyozKux1Te43w" name="&lt;&lt;ui>>" visibility="public"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_2s-esMACEeyozKux1Te43w" name="&lt;&lt;domain services configuration>>">
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_75G6cMAEEeyozKux1Te43w" client="_Ayo1MMAFEeyozKux1Te43w" supplier="_91ojcMACEeyozKux1Te43w"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_91ojcMACEeyozKux1Te43w" name="&lt;&lt;domain model>>">
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_CuiEsMAGEeyozKux1Te43w" name="process features over" client="_91ojcMACEeyozKux1Te43w" supplier="_2s-esMACEeyozKux1Te43w"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_LDDfoMAGEeyozKux1Te43w" name="delegate or manage other domains contributions via" client="_91ojcMACEeyozKux1Te43w" supplier="_UI8NcMADEeyozKux1Te43w"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_UI8NcMADEeyozKux1Te43w" name="&lt;&lt;other domain adapter>>">
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_tLnyUMAEEeyozKux1Te43w" name="exchange objects with domain" client="_UI8NcMADEeyozKux1Te43w" supplier="_m8QtEMAEEeyozKux1Te43w"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_4tY40MBmEeyqEILEjQVaPw" name="event"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_rodNcMBnEeyqEILEjQVaPw" name="impl"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_m8QtEMAEEeyozKux1Te43w" name="&lt;&lt;other domain translator>>"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_Ayo1MMAFEeyozKux1Te43w" name="&lt;&lt;domain controlled interface>>">
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_5EWeYMAFEeyozKux1Te43w" name="process features over" client="_Ayo1MMAFEeyozKux1Te43w" supplier="_2s-esMACEeyozKux1Te43w"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_banWYMAmEeyqEILEjQVaPw" name="provide domain processes and features" client="_Ayo1MMAFEeyozKux1Te43w" supplier="_QFqQUMAmEeyqEILEjQVaPw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_CBzPoMAIEeyozKux1Te43w" name="&lt;&lt;owned features set>>">
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_J3L3gMAIEeyozKux1Te43w" name="embedded injection" client="_CBzPoMAIEeyozKux1Te43w" supplier="_2s-esMACEeyozKux1Te43w"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_lYLHUMAIEeyozKux1Te43w" name="&lt;&lt;domain services set>>">
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_p1Ia0MAIEeyozKux1Te43w" name="integrated technical services " client="_lYLHUMAIEeyozKux1Te43w" supplier="_2s-esMACEeyozKux1Te43w"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_ThIiYMAKEeyozKux1Te43w" name="realize services contract" client="_lYLHUMAIEeyozKux1Te43w" supplier="_JdzcQMAKEeyozKux1Te43w"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_JdzcQMAKEeyozKux1Te43w" name="&lt;&lt;infrastructure service specification>>"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_B5qMAMAjEeyqEILEjQVaPw" name="infrastructure clients and connectors implementation">
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_URmMoMAjEeyqEILEjQVaPw" name="realize" client="_B5qMAMAjEeyqEILEjQVaPw" supplier="_JdzcQMAKEeyozKux1Te43w"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_jUTW0MAjEeyqEILEjQVaPw" name="integrated protocol adapters" client="_B5qMAMAjEeyqEILEjQVaPw" supplier="_lYLHUMAIEeyozKux1Te43w"/>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_P7UWcMADEeyozKux1Te43w" name="&lt;&lt;other application system>>">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_rBjVMMAJEeyozKux1Te43w" annotatedElement="_fnDPgMADEeyozKux1Te43w">
+      <body>Functions provided by the bounded context</body>
+    </ownedComment>
+    <packagedElement xmi:type="uml:Package" xmi:id="_fnDPgMADEeyozKux1Te43w" name="&lt;&lt;domain controlled interface>>">
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_khtLoMADEeyozKux1Te43w" name="provide domain features" client="_fnDPgMADEeyozKux1Te43w" supplier="_UI8NcMADEeyozKux1Te43w"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_0cKewMBnEeyqEILEjQVaPw" name="&lt;&lt;impl>>"/>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_7AMkYMAjEeyqEILEjQVaPw" name="&lt;&lt;infrastructure system>>">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_O_aE0MAkEeyqEILEjQVaPw" annotatedElement="_AvCWgMAkEeyqEILEjQVaPw">
+      <body>E.g messages broker, persistence system</body>
+    </ownedComment>
+    <packagedElement xmi:type="uml:Package" xmi:id="_AvCWgMAkEeyqEILEjQVaPw" name="&lt;&lt;technical services implementations>>">
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_d9X48MAkEeyqEILEjQVaPw" name="provide services and resources management capabilities" client="_AvCWgMAkEeyqEILEjQVaPw" supplier="_B5qMAMAjEeyqEILEjQVaPw"/>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_rhx5IMAkEeyqEILEjQVaPw" name="&lt;&lt;user interface system>>">
+    <packagedElement xmi:type="uml:Package" xmi:id="_LB20sMAlEeyqEILEjQVaPw" name="&lt;&lt;domain services set>>">
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_1cKMsMAmEeyqEILEjQVaPw" client="_LB20sMAlEeyqEILEjQVaPw" supplier="_nUegUMAmEeyqEILEjQVaPw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_Pufi8MAlEeyqEILEjQVaPw" name="&lt;&lt;ui foundation capabilities>>">
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_VZ2GwMAmEeyqEILEjQVaPw" name="execute processes and features via" client="_Pufi8MAlEeyqEILEjQVaPw" supplier="_QFqQUMAmEeyqEILEjQVaPw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_djDfAMAlEeyqEILEjQVaPw" name="&lt;&lt;ui components set>>">
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_mJ7OMMAlEeyqEILEjQVaPw" name="realize" client="_djDfAMAlEeyqEILEjQVaPw" supplier="_Pufi8MAlEeyqEILEjQVaPw"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_vtfZsMAmEeyqEILEjQVaPw" name="use" client="_djDfAMAlEeyqEILEjQVaPw" supplier="_nUegUMAmEeyqEILEjQVaPw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_vwgG4MAlEeyqEILEjQVaPw" name="&lt;&lt;domain ui>>">
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_5TkYkMAlEeyqEILEjQVaPw" name="dynamically aggregate" client="_vwgG4MAlEeyqEILEjQVaPw" supplier="_Pufi8MAlEeyqEILEjQVaPw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_QFqQUMAmEeyqEILEjQVaPw" name="&lt;&lt;domain adapter>>">
+      <packagedElement xmi:type="uml:Package" xmi:id="_SX8WAMBoEeyqEILEjQVaPw" name="&lt;&lt;experience api>>"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_jSOs4MBoEeyqEILEjQVaPw" name="&lt;&lt;process api>>"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_xfgq8MBoEeyqEILEjQVaPw" name="&lt;&lt;system api>>"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="__YGLYMBoEeyqEILEjQVaPw" client="_QFqQUMAmEeyqEILEjQVaPw" supplier="_nUegUMAmEeyqEILEjQVaPw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_nUegUMAmEeyqEILEjQVaPw" name="&lt;&lt;domain services configuration>>"/>
+  </packagedElement>
 </uml:Model>

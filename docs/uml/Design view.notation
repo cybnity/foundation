@@ -784,7 +784,7 @@
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_57S2vLohEey-FIO7TtIcIA"/>
       </children>
       <element xmi:type="uml:Interface" href="Design%20view.uml#_4M9soLohEey-FIO7TtIcIA"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_57SPobohEey-FIO7TtIcIA" x="120" y="240" width="110" height="60"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_57SPobohEey-FIO7TtIcIA" x="120" y="240" width="130" height="60"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_acBuoLp9EeyM_KAQg3-k_g" type="NamedElement_DefaultShape">
       <children xmi:type="notation:DecorationNode" xmi:id="_acBuorp9EeyM_KAQg3-k_g" type="NamedElement_NameLabel"/>
@@ -920,9 +920,9 @@
       </children>
       <styles xmi:type="notation:FontStyle" xmi:id="_1SvpIbofEey-FIO7TtIcIA"/>
       <element xmi:type="uml:Dependency" href="Design%20view.uml#_1SubALofEey-FIO7TtIcIA"/>
-      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_1SvpIrofEey-FIO7TtIcIA" points="[260, 340, -643984, -643984]$[140, 340, -643984, -643984]$[140, 320, -643984, -643984]"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_1SvpIrofEey-FIO7TtIcIA" points="[260, 340, -643984, -643984]$[160, 340, -643984, -643984]$[160, 300, -643984, -643984]"/>
       <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_1S72YLofEey-FIO7TtIcIA" id="(0.0,0.4)"/>
-      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_1S72YbofEey-FIO7TtIcIA" id="(0.18181818181818182,1.0)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_1S72YbofEey-FIO7TtIcIA" id="(0.3076923076923077,1.0)"/>
     </edges>
     <edges xmi:type="notation:Connector" xmi:id="_JSSO0LoiEey-FIO7TtIcIA" type="Usage_Edge" source="_57SPoLohEey-FIO7TtIcIA" target="_hlbYULTtEeyJEdlqInuo_A">
       <children xmi:type="notation:DecorationNode" xmi:id="_JSSO07oiEey-FIO7TtIcIA" type="Usage_NameLabel">
@@ -936,7 +936,7 @@
       <styles xmi:type="notation:FontStyle" xmi:id="_JSSO0boiEey-FIO7TtIcIA"/>
       <element xmi:type="uml:Usage" href="Design%20view.uml#_JSRAsLoiEey-FIO7TtIcIA"/>
       <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_JSSO0roiEey-FIO7TtIcIA" points="[160, 260, -643984, -643984]$[160, 240, -643984, -643984]$[160, 180, -643984, -643984]"/>
-      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_JSm-8LoiEey-FIO7TtIcIA" id="(0.5454545454545454,0.0)"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_JSm-8LoiEey-FIO7TtIcIA" id="(0.46153846153846156,0.0)"/>
       <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_JSm-8boiEey-FIO7TtIcIA" id="(0.47337278106508873,1.0)"/>
     </edges>
     <edges xmi:type="notation:Connector" xmi:id="_8SmAcLp9EeyM_KAQg3-k_g" type="Generalization_Edge" source="_acBuoLp9EeyM_KAQg3-k_g" target="_uhBG8Lp9EeyM_KAQg3-k_g">

@@ -85,6 +85,7 @@ Source file named "Implementation view":
 - Static aspects (structural diagrams): components, packages;
 - Dynamic aspects (behavioral diagrams): interactions, statecharts, activities.
 - Model sub-packages:
+  - [Implementation guidelines and principles](implementation)
   - Configuration-management
   - System-assembly
 	
