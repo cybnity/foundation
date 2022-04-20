@@ -7,10 +7,15 @@ Identify the guidelines and principles of implementation that are framing the im
 
 ## Principles
 Definition of the implementation principles respected by the CYBNITY technical designers and developers.
+
 ### Application System Packaging
 The packaging of technical and business components is framed according to dependencies and embedding principles.
 ![image](Application_system_packaging_principle.PNG)
 
 ## Guidelines
+
+### Source Code Projects Structure
+The CYBNITY open source is organized via a structure of Maven project's sub-modules regarding all the source codes developed by the team.
+![image](Implementation_projects_structure.PNG)
 
 [Back To Parent](../)

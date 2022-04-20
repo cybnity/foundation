@@ -94,4 +94,64 @@
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_nUegUMAmEeyqEILEjQVaPw" name="&lt;&lt;domain services configuration>>"/>
   </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_ErZCQMBvEeyqEILEjQVaPw" name="defense-platform">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_EikWEMByEeyqEILEjQVaPw" annotatedElement="_hSbz0MByEeyqEILEjQVaPw">
+      <body>One Maven sub-project dedicated to logical environment's (e.g test, preprod, prod) configuration files (e.g variables required by build and deliveray chain) and tools (e.g ansible, docker, jenkins)</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_2S-1cMByEeyqEILEjQVaPw" annotatedElement="_zY64EMByEeyqEILEjQVaPw">
+      <body>One Maven sub-project per type of infrastructure (e.g integration hub, registry) built (e.g docker image)</body>
+    </ownedComment>
+    <packagedElement xmi:type="uml:Package" xmi:id="_JsPtAMBvEeyqEILEjQVaPw" name="applications">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_X-Xu0MBvEeyqEILEjQVaPw" annotatedElement="_P-OocMBvEeyqEILEjQVaPw">
+        <body>One sub-project structure per application module (bounded context)</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Package" xmi:id="_MjF-UMBvEeyqEILEjQVaPw" name="access-control"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_P-OocMBvEeyqEILEjQVaPw" name="behavior-intelligence"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_TehfYMBvEeyqEILEjQVaPw" name="...">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_-kDbIMBvEeyqEILEjQVaPw" annotatedElement="_jyp1MMBvEeyqEILEjQVaPw _scLPwMBvEeyqEILEjQVaPw">
+          <body>Dedicated Maven sub-project per type of deliverable required by the application domain.</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Package" xmi:id="_h0jJwMBvEeyqEILEjQVaPw" name="adapter"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_jyp1MMBvEeyqEILEjQVaPw" name="domain-model"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_scLPwMBvEeyqEILEjQVaPw" name="service"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_1CFVoMBvEeyqEILEjQVaPw" name="translator"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_2-xEwMBvEeyqEILEjQVaPw" name="ui"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_X8KS4MBwEeyqEILEjQVaPw" name="cockpit-foundations">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_r5ye8MBwEeyqEILEjQVaPw" annotatedElement="_e5f4cMBwEeyqEILEjQVaPw _mVfv8MBwEeyqEILEjQVaPw">
+        <body>One sub-project per capability type categorized in the core foundations</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Package" xmi:id="_cPyrQMBwEeyqEILEjQVaPw" name="cartography"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_e5f4cMBwEeyqEILEjQVaPw" name="awareness-training"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_mVfv8MBwEeyqEILEjQVaPw" name="..."/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_RcQawMBxEeyqEILEjQVaPw" name="features">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_flGkwMBxEeyqEILEjQVaPw" annotatedElement="_b5WrwMBxEeyqEILEjQVaPw _WgfwsMBxEeyqEILEjQVaPw">
+        <body>One Maven sub-project per feature category</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Package" xmi:id="_WgfwsMBxEeyqEILEjQVaPw" name="cccccbcfcgeehuliiikkffdjrevihhkettcciuuftgkh">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_2ZLZgMBxEeyqEILEjQVaPw" annotatedElement="_0RhJcMBxEeyqEILEjQVaPw _wgMM4MBxEeyqEILEjQVaPw">
+          <body>One Maven sub-project per feature module</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Package" xmi:id="_udCpYMBxEeyqEILEjQVaPw" name="alert"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_wgMM4MBxEeyqEILEjQVaPw" name="asset"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_0RhJcMBxEeyqEILEjQVaPw" name="..."/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_X8l7QMBxEeyqEILEjQVaPw" name="technical"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_b5WrwMBxEeyqEILEjQVaPw" name="..."/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_A2g7EMByEeyqEILEjQVaPw" name="environment">
+      <packagedElement xmi:type="uml:Package" xmi:id="_hSbz0MByEeyqEILEjQVaPw" name="dev"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_na5m4MByEeyqEILEjQVaPw" name="test"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_pbatIMByEeyqEILEjQVaPw" name="..."/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_zY64EMByEeyqEILEjQVaPw" name="infrastructures"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_ZsFXwMDFEeyqEILEjQVaPw" name="systems">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_B5WF4MDGEeyqEILEjQVaPw" annotatedElement="_cOo0EMDFEeyqEILEjQVaPw">
+        <body>One Maven sub-project dedicated to assembly of components (e.g applications and features) per system capable to be deployed and runnable (e.g in Space Based Architecture approach)</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Package" xmi:id="_cOo0EMDFEeyqEILEjQVaPw" name="..."/>
+    </packagedElement>
+  </packagedElement>
 </uml:Model>
