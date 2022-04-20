@@ -102,9 +102,9 @@ Source file named "Deployment view":
 - Static aspects (structural diagrams): components, deployment.
 - Model sub-packages:
   - Installation
-  - Delivery
+  - [Delivery](deployment/systems_delivery.md)
   - System-distribution
-  - System-typology
+  - System-topology
 
 ## Usage
 Describes the environment(s), infrastructure and operating conditions required to install, activate and operate the systems safely.
