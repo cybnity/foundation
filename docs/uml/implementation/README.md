@@ -10,7 +10,13 @@ Definition of the implementation principles respected by the CYBNITY technical d
 
 ### Application Packaging
 The packaging of technical and business components is framed according to dependencies and embedding principles.
+
 ![image](Application_system_packaging_principle.PNG)
+
+### Solution Assembly
+The assembly of specific modules can be customized for delivery of a business solution (e.g alternative to a proprietary applicative solution covering only a specific security domain).
+
+![image](security_solution_oriented_architecture.png)
 
 ## GUIDELINES
 
