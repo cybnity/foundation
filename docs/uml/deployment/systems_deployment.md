@@ -16,5 +16,8 @@ Each CYBNITY module is packaged as an element according to a Container As a Serv
 
 Several Feature modules are optionally execution deployed and executed independently, or in a group of packaged modules constituting a CYBNITY System.
 
+__Example of Tactical Workstation Components Deployment Model__
+![image](tactical_workstation_components.png)
+
 ## Platforms
 The isolation of environments (e.g UI experience, application and micro-services), which execute the Systems, implements a Space Based Architecture (SBA) approach to organize the deployment model via an infrastructure providing technical services (e.g network service, persistence systems solution, operations monitoring, security systems).
