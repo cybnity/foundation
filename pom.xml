@@ -17,7 +17,7 @@
 
 		<!-- Activate warning about java deprecations (deprecation) or without (unchecked) -->
 		<lint.activation>deprecation</lint.activation>
-		<junit.version>4.12</junit.version>
+		<junit.version>[4.13.1,)</junit.version>
 		<javafx.version>13</javafx.version>
 
 		<!-- CYBNITY project revision -->
