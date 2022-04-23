@@ -3,8 +3,66 @@
   <packageImport xmi:type="uml:PackageImport" xmi:id="_Dp1OoLTqEeyJEdlqInuo_A">
     <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
   </packageImport>
-  <packagedElement xmi:type="uml:Package" xmi:id="_FoWw0LTqEeyJEdlqInuo_A" name="delivery"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_FoWw0LTqEeyJEdlqInuo_A" name="delivery">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_RTXNwMDPEeyqEILEjQVaPw" annotatedElement="_Ya1RoMDNEeyqEILEjQVaPw">
+      <body>Capabilities allowing a module (e.g application component, processing component) to be installed independently or complementary to other modules. Provide installation control and settings regarding the packaged module (e.g version, installation status scheme, dedicated target environment)</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_388ioMDPEeyqEILEjQVaPw" annotatedElement="_s_BucMDNEeyqEILEjQVaPw">
+      <body>Capabilities allowing the operational control (e.g start, restart, stop commands) and status monitoring (e.g module life cycle metrics) regarding a module executed into an environment (e.g on a virtualized infrastructure, on a hardware platform) with possible tracking and management of the runtime lifecycle (e.g current resources consumption visibility)</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_nm5r0MDQEeyqEILEjQVaPw" annotatedElement="_tprqcMDMEeyqEILEjQVaPw">
+      <body>Applicative component providing services according to a bounded context (e.g application domain)</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_NJDekMDREeyqEILEjQVaPw" annotatedElement="_tprqcMDMEeyqEILEjQVaPw">
+      <body>Include assembled elements of an User Interface system</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_XOCKgMDREeyqEILEjQVaPw" annotatedElement="_z7tpMMDMEeyqEILEjQVaPw _3JlTYMDMEeyqEILEjQVaPw">
+      <body>Include assembled elements of an application system grouped (e.g processes, features, technical) for autonomous installation (e.g on a laptop environment) or independent with coupling system (e.g process module, low coupled with feature module over a middleware) allowing operability on server-side infrastructure</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_B4ukYMDSEeyqEILEjQVaPw" annotatedElement="_8Put0MDMEeyqEILEjQVaPw">
+      <body>Include assembled elements of dedicated (e.g persistence system reserved to an application domain; common infrastructure systems) technical services with optional coupling system with external systems (e.g client, API connectors to compatible partner's security systems)</body>
+    </ownedComment>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_Ya1RoMDNEeyqEILEjQVaPw" name="Installable"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_s_BucMDNEeyqEILEjQVaPw" name="Operable"/>
+    <packagedElement xmi:type="uml:ExecutionEnvironment" xmi:id="_VGHaIMExEeyNdM9_bOnh6w" name="CYBNITY application api container image" visibility="private" isActive="true">
+      <nestedClassifier xmi:type="uml:Component" xmi:id="_z7tpMMDMEeyqEILEjQVaPw" name="Process Module">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="__VbokMDOEeyqEILEjQVaPw" client="_z7tpMMDMEeyqEILEjQVaPw" supplier="_Ya1RoMDNEeyqEILEjQVaPw" contract="_Ya1RoMDNEeyqEILEjQVaPw"/>
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_NCcyMMDPEeyqEILEjQVaPw" client="_z7tpMMDMEeyqEILEjQVaPw" supplier="_s_BucMDNEeyqEILEjQVaPw" contract="_s_BucMDNEeyqEILEjQVaPw"/>
+        <packagedElement xmi:type="uml:Dependency" xmi:id="_Z2uQIME2EeyNdM9_bOnh6w" client="_z7tpMMDMEeyqEILEjQVaPw" supplier="_8Put0MDMEeyqEILEjQVaPw"/>
+      </nestedClassifier>
+      <nestedClassifier xmi:type="uml:DeploymentSpecification" xmi:id="_rK_-4ME3EeyNdM9_bOnh6w" name="Bins and libs"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:ExecutionEnvironment" xmi:id="_ijs2EMEwEeyNdM9_bOnh6w" name="CYBNITY experience api container image">
+      <nestedClassifier xmi:type="uml:Component" xmi:id="_tprqcMDMEeyqEILEjQVaPw" name="UI Module" isActive="true">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_dvBIEMDNEeyqEILEjQVaPw" client="_tprqcMDMEeyqEILEjQVaPw" supplier="_Ya1RoMDNEeyqEILEjQVaPw" contract="_Ya1RoMDNEeyqEILEjQVaPw"/>
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_LpCvQMDPEeyqEILEjQVaPw" client="_tprqcMDMEeyqEILEjQVaPw" supplier="_s_BucMDNEeyqEILEjQVaPw" contract="_s_BucMDNEeyqEILEjQVaPw"/>
+        <packagedElement xmi:type="uml:Dependency" xmi:id="_eMYBwME2EeyNdM9_bOnh6w" client="_tprqcMDMEeyqEILEjQVaPw" supplier="_8Put0MDMEeyqEILEjQVaPw"/>
+      </nestedClassifier>
+      <nestedClassifier xmi:type="uml:DeploymentSpecification" xmi:id="_lNR4sME2EeyNdM9_bOnh6w" name="Bins and libs"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:ExecutionEnvironment" xmi:id="_qExlYMExEeyNdM9_bOnh6w" name="CYBNITY micro-services container image" visibility="private" isActive="true">
+      <nestedClassifier xmi:type="uml:Component" xmi:id="_3JlTYMDMEeyqEILEjQVaPw" name="Feature Module">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_B0QbcMDPEeyqEILEjQVaPw" client="_3JlTYMDMEeyqEILEjQVaPw" supplier="_Ya1RoMDNEeyqEILEjQVaPw" contract="_Ya1RoMDNEeyqEILEjQVaPw"/>
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_OX5iMMDPEeyqEILEjQVaPw" client="_3JlTYMDMEeyqEILEjQVaPw" supplier="_s_BucMDNEeyqEILEjQVaPw" contract="_s_BucMDNEeyqEILEjQVaPw"/>
+        <packagedElement xmi:type="uml:Dependency" xmi:id="_g1RWoME2EeyNdM9_bOnh6w" client="_3JlTYMDMEeyqEILEjQVaPw" supplier="_8Put0MDMEeyqEILEjQVaPw"/>
+      </nestedClassifier>
+      <nestedClassifier xmi:type="uml:DeploymentSpecification" xmi:id="_jfK7oME3EeyNdM9_bOnh6w" name="Bins and libs"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:ExecutionEnvironment" xmi:id="_MnSXMMEyEeyNdM9_bOnh6w" name="Infrastructure services container image" visibility="private" isActive="true">
+      <nestedClassifier xmi:type="uml:Component" xmi:id="_8Put0MDMEeyqEILEjQVaPw" name="Technical Service Module">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_GVS9sMDPEeyqEILEjQVaPw" client="_8Put0MDMEeyqEILEjQVaPw" supplier="_Ya1RoMDNEeyqEILEjQVaPw" contract="_Ya1RoMDNEeyqEILEjQVaPw"/>
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_QZVOcMDPEeyqEILEjQVaPw" client="_8Put0MDMEeyqEILEjQVaPw" supplier="_s_BucMDNEeyqEILEjQVaPw" contract="_s_BucMDNEeyqEILEjQVaPw"/>
+        <packagedElement xmi:type="uml:Component" xmi:id="_Au5AwMDNEeyqEILEjQVaPw" name="Integration API Connector"/>
+      </nestedClassifier>
+      <nestedClassifier xmi:type="uml:DeploymentSpecification" xmi:id="_ZMo74ME3EeyNdM9_bOnh6w" name="Bins and libs"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Node" xmi:id="_vvyqoME1EeyNdM9_bOnh6w" name="Host Hardware" isActive="true">
+      <nestedClassifier xmi:type="uml:ExecutionEnvironment" xmi:id="_gLa90ME1EeyNdM9_bOnh6w" name="Host Operating System">
+        <nestedNode xmi:type="uml:ExecutionEnvironment" xmi:id="_AqtBsME4EeyNdM9_bOnh6w" name="Container Engine"/>
+      </nestedClassifier>
+    </packagedElement>
+  </packagedElement>
   <packagedElement xmi:type="uml:Package" xmi:id="_GwF08LTqEeyJEdlqInuo_A" name="installation"/>
   <packagedElement xmi:type="uml:Package" xmi:id="_H-UioLTqEeyJEdlqInuo_A" name="system-distribution"/>
-  <packagedElement xmi:type="uml:Package" xmi:id="_JToIsLTqEeyJEdlqInuo_A" name="system-typology"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_JToIsLTqEeyJEdlqInuo_A" name="system-topology"/>
 </uml:Model>

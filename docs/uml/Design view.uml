@@ -161,7 +161,7 @@
         </packagedElement>
         <packagedElement xmi:type="uml:Dependency" xmi:id="_25xWELqHEeyM_KAQg3-k_g" name="provide" client="_hRH8QLTtEeyJEdlqInuo_A" supplier="_ojSWkLm0Eey-FIO7TtIcIA"/>
       </packagedElement>
-      <packagedElement xmi:type="uml:Package" xmi:id="_OuRsILTtEeyJEdlqInuo_A" name="access_control.domain">
+      <packagedElement xmi:type="uml:Package" xmi:id="_OuRsILTtEeyJEdlqInuo_A" name="access_control.domain" visibility="package">
         <ownedComment xmi:type="uml:Comment" xmi:id="_xOY1sLqJEeyM_KAQg3-k_g" annotatedElement="_RwVTYLqJEeyM_KAQg3-k_g">
           <body>Formal consent regarding a type of usage is defined by the permission type (e.g read, write, use, delete, execute) coming from pre-known actions or identified from systems uses (e.g file operators, operating system capability names)
 </body>

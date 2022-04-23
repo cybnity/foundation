@@ -1,16 +1,73 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.cybnity</groupId>
-    <artifactId>defense-platform</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <javafx.version>13</javafx.version>
-    </properties>
-    <dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.cybnity</groupId>
+	<artifactId>defense-platform</artifactId>
+	<version>${revision}</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<maven.min-version>3.8.5</maven.min-version>
+		<java.version>11</java.version>
+		<!-- Align Maven default configuration about JDK version to use -->
+		<maven.compiler.source>${java.versions}</maven.compiler.source>
+		<maven.compiler.target>${java.versions}</maven.compiler.target>
+		<maven.compiler.release>${java.versions}</maven.compiler.release>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!-- Activate warning about java deprecations (deprecation) or without (unchecked) -->
+		<lint.activation>deprecation</lint.activation>
+		<junit.version>4.12</junit.version>
+		<javafx.version>13</javafx.version>
+
+		<!-- CYBNITY project revision -->
+		<revision>0.0.1-SNAPSHOT</revision>
+	</properties>
+
+	<modules>
+		<!-- Project modules -->
+		<module>infrastructures</module>
+		<module>features</module>
+		<module>applications</module>
+		<module>systems</module>
+		<module>cockpit-foundations</module>
+	</modules>
+
+	<organization>
+		<name>CYBNITY</name>
+		<url>http://www.cybnity.org</url>
+	</organization>
+
+	<distributionManagement>
+		<!-- Artifacts distribution -->
+	</distributionManagement>
+
+	<repositories></repositories>
+
+	<pluginRepositories>
+		<!--
+		<pluginRepository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net repository for Maven</name>
+			<url>http://download.java.net/maven/2</url>
+			<layout>default</layout>
+		</pluginRepository>-->
+	</pluginRepositories>
+
+	<!-- Generalized dependency versions -->
+	<dependencyManagement>
+		<dependencies></dependencies>
+	</dependencyManagement>
+
+	<!-- Common and projects transversal dependencies -->
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!--
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -20,33 +77,221 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
-        </dependency>
-    </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <release>${maven.compiler.target}</release>
-                </configuration>
-            </plugin>
+        </dependency>-->
+	</dependencies>
+
+	<!-- Lits of advise about project -->
+	<mailingLists>
+		<mailingList>
+			<name>${project.name} developers list</name>
+		</mailingList>
+		<mailingList>
+			<name>${project.name} testers list</name>
+		</mailingList>
+		<mailingList>
+			<name>${project.name} users list</name>
+		</mailingList>
+	</mailingLists>
+
+	<!-- Contributors -->
+	<developers>
+		<developer>
+			<id>o.lemee</id>
+			<name>Olivier Lemee</name>
+			<email>olivier@agnet.fr</email>
+			<organization>AG Net</organization>
+			<organizationUrl>http://corp.agnet.fr</organizationUrl>
+			<timezone>FR</timezone>
+			<roles>
+				<role>Produc Owner</role>
+				<role>Software Architect</role>
+				<role>Release Manager</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<!-- Build chain configuration -->
+	<build>
+		<directory>target</directory>
+		<outputDirectory>target/classes</outputDirectory>
+		<finalName>${project.artifactId}-${project.version}</finalName>
+		<testOutputDirectory>target/test-classes</testOutputDirectory>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<scriptSourceDirectory>src/main/scripts</scriptSourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+			<testResource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.10.1</version>
+					<configuration>
+						<showDeprecation>false</showDeprecation>
+						<showWarnings>true</showWarnings>
+						<!-- Use release node alone in place of source & target nodes when equals value (8, 9, 11, 12) -->
+
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+						<compilerVersion>${java.version}</compilerVersion>
+						<release>${maven.compiler.target}</release>
+						<encoding>${project.build.sourceEncoding}}</encoding>
+						<compilerArgument>-Xlint:${lint.activation}</compilerArgument>
+					</configuration>
+				</plugin>
+				<!-- Tests execution management -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.0.0-M6</version>
+					<configuration>
+						<includes>
+							<include>**/*UseCaseTest.java</include>
+							<include>**/*Test.java</include>
+						</includes>
+						<skip>false</skip>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.2.0</version>
+					<configuration>
+						<encoding>${project.build.sourceEncoding}</encoding>
+						<nonFilteredFileExtensions>
+							<nonFilteredFileExtension>jar</nonFilteredFileExtension>
+							<nonFilteredFileExtension>gif</nonFilteredFileExtension>
+							<nonFilteredFileExtension>jpeg</nonFilteredFileExtension>
+							<nonFilteredFileExtension>jpg</nonFilteredFileExtension>
+							<nonFilteredFileExtension>png</nonFilteredFileExtension>
+							<nonFilteredFileExtension>xls</nonFilteredFileExtension>
+							<nonFilteredFileExtension>otf</nonFilteredFileExtension>
+						</nonFilteredFileExtensions>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>3.2.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>3.0.0-M2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.2.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-changes-plugin</artifactId>
+					<version>2.12.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>3.0.0-M5</version>
+				</plugin>
+				<!--
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.6</version>
                 <executions>
                     <execution>
-                        <!-- Default configuration for running -->
-                        <!-- Usage: mvn clean javafx:run -->
+                        Default configuration for running
+                        Usage: mvn clean javafx:run 
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>com.cybnity.ui.App</mainClass>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-        </plugins>
-    </build>
+            </plugin>-->
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-changes-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+	<reporting>
+		<outputDirectory>target/site</outputDirectory>
+	</reporting>
+
+	<profiles>
+		<profile>
+			<!-- Build regarding a development version on developer station -->
+			<id>localhost</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+
+		<profile>
+			<!-- Build regarding a development version on development platforms -->
+			<id>dev</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+		</profile>
+
+		<profile>
+			<!-- Build regarding a qualification version on test environment -->
+			<id>test</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+		</profile>
+
+		<profile>
+			<!-- Build regarding a release version on pre-production environment -->
+			<id>pre-prod</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+		</profile>
+
+		<profile>
+			<!-- Build regarding a release version on production environment -->
+			<id>prod</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
 </project>

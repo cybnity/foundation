@@ -85,6 +85,7 @@ Source file named "Implementation view":
 - Static aspects (structural diagrams): components, packages;
 - Dynamic aspects (behavioral diagrams): interactions, statecharts, activities.
 - Model sub-packages:
+  - [Implementation guidelines and principles](implementation/README.md)
   - Configuration-management
   - System-assembly
 	
@@ -101,9 +102,10 @@ Source file named "Deployment view":
 - Static aspects (structural diagrams): components, deployment.
 - Model sub-packages:
   - Installation
+    - [Systems deployment](deployment/systems_deployment.md)
   - Delivery
   - System-distribution
-  - System-typology
+  - System-topology
 
 ## Usage
 Describes the environment(s), infrastructure and operating conditions required to install, activate and operate the systems safely.
