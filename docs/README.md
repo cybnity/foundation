@@ -23,6 +23,3 @@ Software build chain is implemented via Maven 3.
 ### Systems Configuration & Deployment
 
 ### Applications Operating
-
-#
-[Back To Home](/README.cmd)
