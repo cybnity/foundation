@@ -23,5 +23,10 @@ The assembly of specific modules can be customized for delivery of a business so
 ### Source Code Projects Structure
 The CYBNITY open source is organized via a structure of Maven project's sub-modules regarding all the source codes developed by the team.
 ![image](Implementation_projects_structure.PNG)
+
+### Components & Solutions Development
+The build and delivery of the CYBNITY systems' features is performed through several sub-projects dedicated to specific activities and/or output, supported by several branches.
+![image](CYBNITY_solution_development_guidance.png)
+
 #
 [Back To Parent](../)
