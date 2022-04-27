@@ -46,7 +46,13 @@ We capitalize experiences and best defense practices (e.g military or police sys
 
 # THE PROJECT
 Based on several standard methods (e.g Lean UX for requirements validation, MVP for releasing, SCRUM for tasks execution, TOGAF for architecture, COBIT for project's resources governance, and of course, NIST for project's security ;) ).
+
 ## PLANS
+
+### CYBNITY Open Source project Plan
+The general plan of 3 years vision give visibility on the main delivery objectives supported by the [components and solutions development guidelines](docs/uml/implementation/README.md).
+
+![image](governance/CYBNITY_open_source_project_plan.jpeg)
 
 ## METHODS
 <details><summary>BUILD PROCESS</summary>

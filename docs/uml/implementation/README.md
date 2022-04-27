@@ -26,6 +26,7 @@ The CYBNITY open source is organized via a structure of Maven project's sub-modu
 
 ### Components & Solutions Development
 The build and delivery of the CYBNITY systems' features is performed through several sub-projects dedicated to specific activities and/or output, supported by several branches.
+
 ![image](CYBNITY_solution_development_guidance.png)
 
 #
