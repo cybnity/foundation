@@ -15,13 +15,9 @@ Based on several standard methods (e.g Lean UX for requirements validation, MVP 
 
 ## ENGAGEMENT PLAN
 
-## ENGAGEMENT EFFEECTIVENESS ASSESSMENTS
+## ENGAGEMENT EFFECTIVENESS ASSESSMENTS
 
 # PROGRAM PLAN
-
-## PROGRAM BUDGET & BENEFITS REGISTER
-
-## RESOURCE REQUIREMENTS & ROLES
 
 ## THE PROJECTS PLAN
 The general plan give visibility on the main delivery objectives supported by the [components and solutions development guidelines](../docs/uml/implementation/README.md).
@@ -29,6 +25,10 @@ The general plan give visibility on the main delivery objectives supported by th
 ### 3 Years Trajectory
 
 ![image](managed-programs/CYBNITY_open_source_project_plan.png)
+
+## PROGRAM BUDGET & BENEFITS REGISTER
+
+## RESOURCE REQUIREMENTS & ROLES
 
 # LAUNCH & EXECUTION
 
@@ -52,8 +52,8 @@ The general plan give visibility on the main delivery objectives supported by th
 
 # PROGRAM RISKS
 
+## RISK MANAGEMENT PLAN
+
 ## PROGRAM RISK REGISTER
 
 ## RISK ASSESSMENT RESULTS
-
-## RISK MANAGEMENT PLAN
