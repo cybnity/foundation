@@ -17,13 +17,13 @@ Based on several standard methods (e.g Lean UX for requirements validation, MVP 
 
 ## ENGAGEMENT EFFEECTIVENESS ASSESSMENTS
 
-# PROGRAM PLAN (THE PLANS)
+# PROGRAM PLAN
 
 ## PROGRAM BUDGET & BENEFITS REGISTER
 
 ## RESOURCE REQUIREMENTS & ROLES
 
-## THE PLAN
+## THE PROJECTS PLAN
 The general plan of 3 years vision give visibility on the main delivery objectives supported by the [components and solutions development guidelines](docs/uml/implementation/README.md).
 
 ![image](managed-programs/CYBNITY_open_source_project_plan.png)
