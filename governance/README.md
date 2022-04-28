@@ -19,10 +19,10 @@ Based on several standard methods (e.g Lean UX for requirements validation, MVP 
 
 # PROGRAM PLAN
 
-## THE PROJECTS PLAN
+## THE PLAN
 The general plan give visibility on the main delivery objectives supported by the [components and solutions development guidelines](../docs/uml/implementation/README.md).
 
-### 3 Years Trajectory
+### Program 3 Years Trajectory
 
 ![image](managed-programs/CYBNITY_open_source_project_plan.png)
 
