@@ -46,7 +46,7 @@ We capitalize experiences and best defense practices (e.g military or police sys
 
 # THE PROGRAM
 
-- [The Program & Projects Governance](governance/README.md)
+- [The Program & Projects Governance](docs/governance/managed-programs/README.md)
 
 ### Our Methods
 <details><summary>BUILD PROCESS</summary>
@@ -68,7 +68,6 @@ The idea creation process implemented by the project (for definition of more rel
 
 ### Support & Docs
 - [Technical documentations](docs/README.md) for solution designers, developers, maintainers, testers.
-
 
 # OTHER RESOURCES
 ## COMMUNICATION CHANNELS

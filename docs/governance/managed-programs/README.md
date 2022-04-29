@@ -24,9 +24,10 @@ The general plan give visibility on the main delivery objectives supported by th
 
 ### Program 3 Years Trajectory
 
-![image](managed-programs/CYBNITY_open_source_project_plan.png)
+![image](CYBNITY_open_source_project_plan.png)
 
 ## PROGRAM BUDGET & BENEFITS REGISTER
+
 
 ## RESOURCE REQUIREMENTS & ROLES
 
@@ -57,3 +58,5 @@ The general plan give visibility on the main delivery objectives supported by th
 ## PROGRAM RISK REGISTER
 
 ## RISK ASSESSMENT RESULTS
+#
+[Back To Summary](../../README.md)
