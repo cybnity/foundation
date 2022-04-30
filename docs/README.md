@@ -23,7 +23,13 @@ Software build chain is implemented via Maven 3.
 ## SYSTEMS BUILD & DELIVERY
 
 #### Components & Solutions Development
-The build and delivery of the CYBNITY systems' features is performed through several sub-projects dedicated to specific activities and/or output, supported by several branches.
+The build and delivery of the CYBNITY systems' features is performed through several sub-projects dedicated to specific activities and/or outputs:
+
+- CYBNITY Demonstrator versions via [MPP Project Line](../demonstrators-line/README.md)
+- CYBNITY Prototype versions via [MVF Project Line](../prototypes-line/README.md)
+- CYBNITY Implementation Components versions via [Foundation Project Production Line](../implementations-line/README.md)
+- CYBNITY validated Systems versions via [Beta-Test Project Line](../systems-line/README.md)
+- CYBNITY Defense Platform versions via [Production Project Line](../production-line/README.md)
 
 ![image](uml/implementation/CYBNITY_solution_development_guidance.png)
 
