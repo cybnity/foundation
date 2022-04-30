@@ -44,11 +44,11 @@ We capitalize experiences and best defense practices (e.g military or police sys
 </p>
 </details>
 
-# THE PROJECT
-Based on several standard methods (e.g Lean UX for requirements validation, MVP for releasing, SCRUM for tasks execution, TOGAF for architecture, COBIT for project's resources governance, and of course, NIST for project's security ;) ).
-## PLANS
+# THE PROGRAM
 
-## METHODS
+- [The Program & Projects Governance](docs/governance/managed-programs/README.md)
+
+### Our Methods
 <details><summary>BUILD PROCESS</summary>
 <p>
 
@@ -66,9 +66,8 @@ The idea creation process implemented by the project (for definition of more rel
 </p>
 </details>
 
-## SUPPORT & DOCS
+### Support & Docs
 - [Technical documentations](docs/README.md) for solution designers, developers, maintainers, testers.
-
 
 # OTHER RESOURCES
 ## COMMUNICATION CHANNELS

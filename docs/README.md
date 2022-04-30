@@ -12,14 +12,25 @@ This technical documentations are supporting the functional, architectural and/o
 
 # DEVELOPMENT DOCUMENTATIONS
 ### Software Design
-- [UML documentation](uml) presenting the domain analysis, the software specifications over several views according to an Unified Process (UP) approach (e.g Use case view, Design view, Deployment view, Implementation view and Process view).
+- [Architecture Models](architecture/README.md) presenting the systems and general description about components.
+- [UML documentation](uml/README.md) presenting the domain analysis, and the software specifications over several views according to an Unified Process (UP) approach (e.g Use case view, Design view, Deployment view, Implementation view and Process view).
+
 ### Software Build
 Software build chain is implemented via Maven 3.
-### Packages Assembly
 
-### Systems Build & Delivery
+#### Packages Assembly
+
+## SYSTEMS BUILD & DELIVERY
+
+#### Components & Solutions Development
+The build and delivery of the CYBNITY systems' features is performed through several sub-projects dedicated to specific activities and/or output, supported by several branches.
+
+![image](uml/implementation/CYBNITY_solution_development_guidance.png)
 
 # DELIVERY DOCUMENTATIONS
 ### Systems Configuration & Deployment
 
 ### Applications Operating
+
+#
+[Back To Home](../README.md)
