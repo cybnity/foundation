@@ -26,7 +26,6 @@
 
 	<modules>
 		<!-- Project lines -->
-		<module>demonstrators-line</module>
 		<module>prototypes-line</module>
 		<module>implementations-line</module>
 		<module>systems-line</module>
