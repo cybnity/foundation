@@ -11,7 +11,6 @@
 	<version>${revision}</version>
 	<packaging>pom</packaging>
 	<name>Audit management application (bounded context)</name>
-
 	<modules>
 		<module>domain-model</module>
 		<module>translator</module>

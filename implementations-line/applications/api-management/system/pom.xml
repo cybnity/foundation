@@ -7,8 +7,12 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>org.cybnity.application.api-management</groupId>
-	<artifactId>system</artifactId>
+	<artifactId>systems</artifactId>
 	<version>${revision}</version>
-	<packaging>jar</packaging>
-	<name>API management system</name>
+	<packaging>pom</packaging>
+	<name>API management application systems</name>
+	<modules>
+		<module>rts-computation-unit</module>
+		<module>domain-gateway-server</module>
+	</modules>
 </project>

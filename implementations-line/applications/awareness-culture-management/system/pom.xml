@@ -7,8 +7,12 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>org.cybnity.application.awareness-culture-management</groupId>
-	<artifactId>system</artifactId>
+	<artifactId>systems</artifactId>
 	<version>${revision}</version>
-	<packaging>jar</packaging>
-	<name>Awareness and culture management system</name>
+	<packaging>pom</packaging>
+	<name>Awareness and culture management systems</name>
+	<modules>
+		<module>rts-computation-unit</module>
+		<module>domain-gateway-server</module>
+	</modules>
 </project>

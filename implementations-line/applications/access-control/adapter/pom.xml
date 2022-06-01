@@ -9,6 +9,10 @@
 	<groupId>org.cybnity.application.access-control</groupId>
 	<artifactId>adapter</artifactId>
 	<version>${revision}</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<name>Access control domain adapter</name>
+	<modules>
+		<module>api</module>
+		<module>impl</module>
+	</modules>
 </project>
