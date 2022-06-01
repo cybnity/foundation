@@ -11,6 +11,6 @@
 	<artifactId>environments-impl</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>CYBNITY environment configurations</name>
+	<name>CYBNITY environment settings</name>
 
 </project>

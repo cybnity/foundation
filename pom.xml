@@ -4,7 +4,7 @@
 	<artifactId>defense-platform</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-
+	<name>CYBNITY defense platform</name>
 	<properties>
 		<maven.min-version>3.8.5</maven.min-version>
 		<java.version>11</java.version>

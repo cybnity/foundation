@@ -10,6 +10,6 @@
 	<artifactId>security</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Security features</name>
+	<name>Security features libraries</name>
 
 </project>

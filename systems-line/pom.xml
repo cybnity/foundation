@@ -14,9 +14,10 @@
 	<name>CYBNITY packaged systems</name>
 
 	<modules>
-		<!-- Project modules -->
+		<!-- Packages systems settings including containerization elements -->
 		<module>environments</module>
-		<module>systems</module>
+		<!-- Packaged systems as modules that are installable and operable-->
+		<module>modules</module>
 	</modules>
 
 </project>

@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>security</artifactId>
+		<groupId>org.cybnity.infrastructure</groupId>
+		<version>${revision}</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<groupId>org.cybnity.infrastructure.security</groupId>
+	<artifactId>systems</artifactId>
+	<version>${revision}</version>
+	<packaging>pom</packaging>
+	<name>Security systems infrastructure</name>
+	<modules>
+		<module>identities-access-management</module>
+		<module>secret-management</module>
+		<module>access-control-sso</module>
+	</modules>
+</project>
