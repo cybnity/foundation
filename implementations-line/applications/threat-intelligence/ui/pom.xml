@@ -9,6 +9,10 @@
 	<groupId>org.cybnity.application.threat-intelligence</groupId>
 	<artifactId>ui</artifactId>
 	<version>${revision}</version>
-	<packaging>jar</packaging>
-	<name>Threat intelligence UI</name>
+	<packaging>pom</packaging>
+	<name>Threat intelligence UI components</name>
+	<modules>
+		<module>api</module>
+		<module>system</module>
+	</modules>
 </project>

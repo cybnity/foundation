@@ -9,6 +9,10 @@
 	<groupId>org.cybnity.application.posture-prevention-management</groupId>
 	<artifactId>ui</artifactId>
 	<version>${revision}</version>
-	<packaging>jar</packaging>
-	<name>Posture and prevention management UI</name>
+	<packaging>pom</packaging>
+	<name>Posture and prevention management UI components</name>
+	<modules>
+		<module>api</module>
+		<module>system</module>
+	</modules>
 </project>

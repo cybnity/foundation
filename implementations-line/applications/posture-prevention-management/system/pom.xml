@@ -7,8 +7,12 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>org.cybnity.application.posture-prevention-management</groupId>
-	<artifactId>system</artifactId>
+	<artifactId>systems</artifactId>
 	<version>${revision}</version>
-	<packaging>jar</packaging>
-	<name>Posture and prevention management application system</name>
+	<packaging>pom</packaging>
+	<name>Posture and prevention management application systems</name>
+	<modules>
+		<module>rts-computation-unit</module>
+		<module>domain-gateway-server</module>
+	</modules>
 </project>

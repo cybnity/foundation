@@ -7,8 +7,12 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>org.cybnity.application.detection-intelligence</groupId>
-	<artifactId>system</artifactId>
+	<artifactId>systems</artifactId>
 	<version>${revision}</version>
-	<packaging>jar</packaging>
-	<name>Detection intelligence system</name>
+	<packaging>pom</packaging>
+	<name>Detection intelligence application systems</name>
+	<modules>
+		<module>rts-computation-unit</module>
+		<module>domain-gateway-server</module>
+	</modules>
 </project>

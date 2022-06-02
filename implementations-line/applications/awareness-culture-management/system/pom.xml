@@ -10,7 +10,7 @@
 	<artifactId>systems</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Awareness and culture management systems</name>
+	<name>Awareness and culture management application systems</name>
 	<modules>
 		<module>rts-computation-unit</module>
 		<module>domain-gateway-server</module>

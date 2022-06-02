@@ -1,0 +1,15 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>systems</artifactId>
+		<groupId>org.cybnity.application.risk-management.ui</groupId>
+		<version>${revision}</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<groupId>org.cybnity.application.risk-management.ui.system</groupId>
+	<artifactId>backend-server</artifactId>
+	<version>${revision}</version>
+	<packaging>jar</packaging>
+	<name>Risk management UI backend implementation module</name>
+	
+</project>

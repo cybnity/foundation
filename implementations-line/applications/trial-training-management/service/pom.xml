@@ -9,6 +9,10 @@
 	<groupId>org.cybnity.application.trial-training-management</groupId>
 	<artifactId>service</artifactId>
 	<version>${revision}</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<name>Trial and training management service components</name>
+	<modules>
+		<module>api</module>
+		<module>impl</module>
+	</modules>
 </project>
