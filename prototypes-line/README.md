@@ -11,6 +11,6 @@ The developed prototypes are categorized according to:
 
 # MANAGED PROTOTYPES
 
-| PROTOTYPE NAME | TYPE | RELATED TO |
-| :--- | :--: | :--- |
-| v0 Foundation TechStack | `TECHSTACK` | [Demonstrator V0](https://github.com/cybnity/foundation-techstack/blob/0aa4d70e4b1c880e1ebec00f51ea7dd7947fee4d/demonstrators-line/demonstrator-v0/technologies-stack-analysis.md) |
+| PROTOTYPE NAME | TYPE | RELATED TO | PROJECT DIRECTORY |
+| :--- | :--: | :--- | :--- |
+| v0 Foundation TechStack | `TECHSTACK` | [Demonstrator V0](https://github.com/cybnity/foundation-techstack/blob/0aa4d70e4b1c880e1ebec00f51ea7dd7947fee4d/demonstrators-line/demonstrator-v0/technologies-stack-analysis.md) | [Prototype space](techstack/v0) |
