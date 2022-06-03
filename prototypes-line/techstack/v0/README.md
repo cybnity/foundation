@@ -59,22 +59,24 @@ The main infrastructure services focused for the POC are:
 - For check of tracking capabilities regarding systems
   - **Event Logging server** (event logging infrastructure implementation module) **as activity/event logs store**.
 
-graph TB
+```mermaid
+flowchart TB
     backend -.-> idm;
     backend -.-> sso;
     uispace -.-> logging;
-    subgraph infrastructure[Infrastructure Services];
+    subgraph infrastructure[Infrastructure Services]
         sso[Access Control SSO server] --> secret[Secret management server];
         idm[Identities & Access management server];
         logging[Event Logging Server];
-    end;
-    subgraph domain[Access Control Domain];
+    end
+    subgraph domain[Access Control Domain]
         frontui[Frontend UI server] --> backend[Backend UI server];
         backend --> uispace[Users Interactions broker];
         gateway[Domain Gateway server] --> domainspace[Domains Interactions broker];
         rtscomput[RTS Computation Unit server] --> domainspace;
-    end;
+    end
     gateway --> uispace;
+```
 
 ## TECHNOLOGY
 Several technologies are selected into the stack version for implementation of components and systems.
