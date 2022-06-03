@@ -62,7 +62,7 @@ The main infrastructure services focused for the POC are:
 ```mermaid
 flowchart LR
     subgraph domain[Access Control Domain]
-        frontui:::system[Frontend UI server] --> backend:::system[Backend UI server];
+        frontui[Frontend UI server]:::system --> backend[Backend UI server]:::system;
         backend --> uispace[Users Interactions broker];
         gateway[Domain Gateway server] --> domainspace[Domains Interactions broker];
         rtscomput[RTS Computation Unit server] --> domainspace;
