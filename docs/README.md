@@ -39,7 +39,7 @@ The build and delivery of the CYBNITY systems' features is performed through sev
 ### Applications Operating
 
 # QUALITY CONTROL
-Several quality scopes are considered during the development and operating of delivered systems. 
+Several quality scopes are considered during the development and operating of delivered systems.
 They are formalized via requirements defined and controlled by project team with validation protocols and quality measures.
 
 | REQUIREMENTS TYPE | SCOPE & DESCRIPTION | QUALITY VALIDATION | QUALITY SCORING |
@@ -49,6 +49,6 @@ They are formalized via requirements defined and controlled by project team with
 | Maintainability | Software source codes readability and complexity level, design and implementation architecture, language patterns, documentation level of functional/technical implementation | Unit tests, code quality check (e.g automated and/or manual reviews) | Anomalies and defects count/trend |
 | Operating | Deployment documentation and procedures, tools compatibility, applications configuration, administration capabilities and support elements | Technical review, repetition tests | Problems and incidents count/trend |
 | Observability | Monitoring capabilities, supervision features (e.g robustness capacity level, resources allocation trend), metrics (e.g application usages, performance level) | Monitoring tests | Anomalies and defects count/trend |
- 
+
 #
 [Back To Home](../README.md)

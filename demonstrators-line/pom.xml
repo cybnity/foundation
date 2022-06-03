@@ -2,15 +2,19 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.cybnity</groupId>
-		<artifactId>systems</artifactId>
+		<artifactId>defense-platform</artifactId>
 		<version>${revision}</version>
 		<relativePath>..</relativePath>
 	</parent>
 
 	<groupId>org.cybnity</groupId>
-	<artifactId>environments-impl</artifactId>
+	<artifactId>demonstrators</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>CYBNITY environment settings</name>
+	<name>CYBNITY demonstrators</name>
+
+	<modules>
+		<!-- Project modules -->
+	</modules>
 
 </project>

@@ -8,9 +8,9 @@
 	</parent>
 
 	<groupId>org.cybnity</groupId>
-	<artifactId>environments-impl</artifactId>
+	<artifactId>systems-impl</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>CYBNITY environment settings</name>
+	<name>CYBNITY packaged implementation systems</name>
 
 </project>

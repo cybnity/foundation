@@ -26,6 +26,7 @@
 
 	<modules>
 		<!-- Project lines -->
+		<module>demonstrators-line</module>
 		<module>prototypes-line</module>
 		<module>implementations-line</module>
 		<module>systems-line</module>
@@ -230,7 +231,7 @@
                 <executions>
                     <execution>
                         Default configuration for running
-                        Usage: mvn clean javafx:run 
+                        Usage: mvn clean javafx:run
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>com.cybnity.ui.App</mainClass>
