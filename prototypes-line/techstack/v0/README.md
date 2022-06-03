@@ -6,34 +6,28 @@ Main goal is to validate the compatibility of technologies set assembly, their p
 ## EVALUATED SET
 | TECHNOLOGY | VERSION | COMMENTS | SUPPORT |
 | :--- | :--- | :--- | :--- |
-| ReactBootstrap | | | |
-| Eclipse Vert.x SockJS Client | | | |
-| ReactJS | | | |
-| Eclipse Vert.x Core | | | |
-| Eclipse Vert.x Web | | | |
-| Gravitee | | | |
-| Apache Directory Server | | | |
-| midPoint | | | |
-| Keycloack | | | |
-| Jedis | | | |
-| Redis | | | |
-| Apache Kafka | | | |
-| Apache Flink | | | |
-| Apache Solr | | | |
-| MongoDB | | | |
-| Telegraf Agent | | | |
-| Grafana | | | |
-| InfluxDB | | | |
-| Spring Core | | | |
-| Spring Boot | | | |
-| Apache Zookeeper | | | |
-| Liberica JDK | | | |
-| Eclipse OpenJ9 8/11 JRE | | | |
-| Consul | | | |
+| [ReactBootstrap](https://react-bootstrap.github.io/) | | |- [Getting started](https://react-bootstrap.github.io/getting-started/introduction)|
+| [Eclipse Vert.x SockJS Client](https://github.com/sockjs/sockjs-client) | | | |
+| [ReactJS](https://reactjs.org/) | | |- [Documentations](https://reactjs.org/docs/getting-started.html)|
+| Eclipse Vert.x Core | | |- [Documentation](https://vertx.io/docs/vertx-core/java/)|
+| Eclipse Vert.x Web | | |- [Documentation](https://vertx.io/docs/vertx-web/java/)|
+| [Apache Directory Server](https://directory.apache.org/) | | |- [Apache directory studio](https://directory.apache.org/studio/) LDAP browser|
+| midPoint | | |- [Installation requirements](https://docs.evolveum.com/midpoint/install/system-requirements/)<br>- [Docker Alpine image installation](https://docs.evolveum.com/midpoint/install/docker/)<br>- [Tutorial](https://evolveum.com/get-started/)|
+| [Vault](https://www.vaultproject.io/) | | |- [docker image](https://hub.docker.com/_/vault/)<br>- [Installations](https://www.vaultproject.io/downloads)<br>- [Helm example](https://www.vaultproject.io/docs/platform/k8s/helm)<br>- [Vault Helm Charts](https://github.com/hashicorp/vault-helm)|
+| [Keycloack](https://www.keycloak.org/) | | |- [Docker image](https://www.keycloak.org/server/containers)<br>- [Extensions](https://www.keycloak.org/extensions.html)<br>- [Theming extension with React](https://www.keycloakify.dev/)|
+| [Jedis](https://github.com/redis/jedis) | | | |
+| Redis | | |- [Documentations](https://redis.io/docs/)|
+| [Apache Kafka](https://kafka.apache.org/) | | |- [Documentations](https://kafka.apache.org/documentation/)|
+| Apache Flink | | |- [Installation](https://flink.apache.org/downloads.html)<br>- [Visualizer web app](https://flink.apache.org/visualizer/)<br>- [Redis Connector](https://bahir.apache.org/docs/flink/current/flink-streaming-redis/)<br>- [Connectors](https://flink-packages.org/)|
+| [Telegraf Agent](https://www.influxdata.com/time-series-platform/telegraf/) | | |- [Documentation](https://docs.influxdata.com/telegraf/v1.22/)|
+| [InfluxDB](https://www.influxdata.com/) | | |- [Installation](https://portal.influxdata.com/downloads/)|
+| Spring Core | | |- [Core documentation](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html)<br>- [Spring Vault](https://spring.io/projects/spring-vault)<br>- [Accessing Vault](https://spring.io/guides/gs/accessing-vault/)<br>- [Valut configuration](https://spring.io/guides/gs/vault-config/)<br>- [Spring Kafka](https://spring.io/projects/spring-kafka)<br>- [Messaging with Redis](https://spring.io/guides/gs/messaging-redis/)|
+| [Spring Boot](https://spring.io/projects/spring-boot) | | |- [SpringBoot with Docker](https://spring.io/guides/gs/spring-boot-docker/)|
+| [Apache Zookeeper](https://zookeeper.apache.org) | | |- [Documentation](https://zookeeper.apache.org/doc/r3.8.0/index.html)<br>- [Java example](https://zookeeper.apache.org/doc/r3.8.0/javaExample.html)<br>- [Standalone local instance installation](https://zookeeper.apache.org/doc/r3.8.0/zookeeperStarted.html#sc_InstallingSingleMode)|
+| Eclipse OpenJ9 8/11 JRE | | |- [Documentation](https://www.eclipse.org/openj9/docs/index.html)<br>- [Developer tooling](https://www.eclipse.org/openj9/docs/tool_migration/)|
 | Linux Ubuntu LTS (minimal for Docker)| | | |
-| Docker | | | |
-| MicroK8s | | | |
-| Kubernetes | | | |
+| Docker | | |- [Documentations](https://docs.docker.com/)|
+| MicroK8s | | |[Snapd install](https://snapcraft.io/snapd)|
 
 ## TARGETED ACTIONS
 - Installation of each technology according to the Foundation architecture
@@ -73,7 +67,7 @@ Several technologies are selected into the stack version for implementation of c
 |Asset Control FrontEnd server|Web Reactive FrontEnd|- ReactBootstrap<br>- ReactJS<br>Vert.x SockJS Client<br>- Google Chrome web browser| |
 |Asset Control BackEnd server|Reactive BackEnd Server|- Vert.x Web<br>- Jedis<br>- Vert.x Core<br>- OpenJ9 JVM<br>- Ubuntu OS<br>- Docker Image<br>- MicroK8s|JSON/HTTPS over SSO|
 |Asset Control & SSO server|Security Services|- Keycloack<br>- OpenJ9 JVM<br>- Ubuntu OS<br>- Docker Image<br>- MicroK8s|Token management for front/backend's user access|
-|Identities Access Management server|Security Services|- midPoint<br>- Apache Directory Server<br>- OpenJ9 JVM<br>- Ubuntu OS<br>- Docker Image<br>- MicroK8s|including test account allowing call of Access domain read feature, and access check by application layer when coming from UI layer|
+|Identities Access Management server|Security Services|- midPoint<br>- Apache Directory Server<br>- OpenJ9 JVM<br>- Alpine Linux OS<br>- Docker Image<br>- MicroK8s|including test account allowing call of Access domain read feature, and access check by application layer when coming from UI layer|
 |Secret Management server|Security Services|- Vault<br>- Ubuntu OS<br>- Docker Image<br>- MicroK8s|test of storage/retrieve of user token used by Asset Control & SSO server|
 |Users Interactions broker|Users Interactions Space|- Redis Cluster<br>- Telegraf Agent<br>- Ubuntu OS<br>- Docker Image<br>- MicroK8s|Telegrag agent (plugin for Redis cluster) push monitoring to Event Logging Server|
 |Event Logging server|Logging|- InfluxDB<br>- Ubuntu OS<br>- Docker Image<br>- MicroK8s|Logs repository regarding Redis instances' activities|
