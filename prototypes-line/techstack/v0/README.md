@@ -82,12 +82,12 @@ flowchart LR
 	classDef system fill:#3a5572,stroke:#3a5572,color:#fff;
 	classDef techcomp fill:#fff,stroke:#3a5572,color:#3a5572;
 	classDef techsys fill:#e5302a,stroke:#e5302a,color:#fff;
+	classDef area fill:#fff,stroke:#fff,color:#3a5572,stroke-width:1px,stroke-dasharray: 5 5;
 	
     classDef influencefactor fill:#ffffff,stroke:#e5302a,stroke-width:1px,color:#e5302a,stroke-dasharray: 5 5;
 	classDef influenceactor fill:#888888,stroke:#888888,stroke-width:1px,color:#fff;
 	classDef opportunitycriteria fill:#efefef,stroke:#afafaf,stroke-width:1px,color:#000;
 	
-	classDef area fill:#3a5572,stroke:#3a5572,color:#fff,stroke-width:1px,stroke-dasharray: 5 5;
 ```
 
 ## TECHNOLOGY
