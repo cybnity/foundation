@@ -4,14 +4,14 @@ Main goal is to validate the compatibility of technologies set assembly, their p
 
 # PROTOTYPE PERIMETER
 ## EVALUATED SET
-| TECHNOLOGY | VERSION | COMMENTS | SUPPORT |
+| TECHNOLOGY | VERSION | COMMENTS | HELP / SUPPORT |
 | :--- | :--- | :--- | :--- |
-| [ReactBootstrap](https://react-bootstrap.github.io/) | | |- [Getting started](https://react-bootstrap.github.io/getting-started/introduction)|
-| [Eclipse Vert.x SockJS Client](https://github.com/sockjs/sockjs-client) | | | |
-| [ReactJS](https://reactjs.org/) | | |- [Documentations](https://reactjs.org/docs/getting-started.html)|
-| Eclipse Vert.x Core | | |- [Documentation](https://vertx.io/docs/vertx-core/java/)|
-| Eclipse Vert.x Web | | |- [Documentation](https://vertx.io/docs/vertx-web/java/)|
-| [Apache Directory Server](https://directory.apache.org/) | | |- [Apache directory studio](https://directory.apache.org/studio/) LDAP browser|
+| [ReactBootstrap](https://react-bootstrap.github.io/) |v2.4.0 (Bootstrap 5.1)| |- [Getting started](https://react-bootstrap.github.io/getting-started/introduction)|
+| [Eclipse Vert.x SockJS Client](https://github.com/sockjs/sockjs-client) |1.6.1| | |
+| [ReactJS](https://reactjs.org/) |18.1.0| |- [Documentations](https://reactjs.org/docs/getting-started.html)|
+| Eclipse Vert.x Core |4.3.1| |- [Documentation](https://vertx.io/docs/vertx-core/java/)<br>- JDK 1.8+<br>- [GitHub project](https://github.com/eclipse-vertx/vert.x/releases)|
+| Eclipse Vert.x Web |4.3.1| |- [Documentation](https://vertx.io/docs/vertx-web/java/)|
+| [Apache Directory Server](https://directory.apache.org/) |2.0.0| |- [Apache directory studio](https://directory.apache.org/studio/) LDAP browser|
 | midPoint | | |- [Installation requirements](https://docs.evolveum.com/midpoint/install/system-requirements/)<br>- [Docker Alpine image installation](https://docs.evolveum.com/midpoint/install/docker/)<br>- [Tutorial](https://evolveum.com/get-started/)|
 | [Vault](https://www.vaultproject.io/) | | |- [docker image](https://hub.docker.com/_/vault/)<br>- [Installations](https://www.vaultproject.io/downloads)<br>- [Helm example](https://www.vaultproject.io/docs/platform/k8s/helm)<br>- [Vault Helm Charts](https://github.com/hashicorp/vault-helm)|
 | [Keycloack](https://www.keycloak.org/) | | |- [Docker image](https://www.keycloak.org/server/containers)<br>- [Extensions](https://www.keycloak.org/extensions.html)<br>- [Theming extension with React](https://www.keycloakify.dev/)|
@@ -27,7 +27,7 @@ Main goal is to validate the compatibility of technologies set assembly, their p
 | Eclipse OpenJ9 8/11 JRE | | |- [Documentation](https://www.eclipse.org/openj9/docs/index.html)<br>- [Developer tooling](https://www.eclipse.org/openj9/docs/tool_migration/)|
 | Linux Ubuntu LTS (minimal for Docker)| | | |
 | Docker | | |- [Documentations](https://docs.docker.com/)|
-| MicroK8s | | |[Snapd install](https://snapcraft.io/snapd)|
+| MicroK8s | | |- [Snapd install](https://snapcraft.io/snapd)|
 
 ## TARGETED ACTIONS
 - Installation of each technology according to the Foundation architecture
