@@ -63,9 +63,9 @@ The main infrastructure services focused for the POC are:
 flowchart LR
     subgraph domain[Access Control Domain]
         frontui[Frontend UI server]:::system --> backend[Backend UI server]:::system;
-        backend --> uispace[Users Interactions broker];
-        gateway[Domain Gateway server] --> domainspace[Domains Interactions broker];
-        rtscomput[RTS Computation Unit server] --> domainspace;
+        backend --> uispace[Users Interactions broker]:::techcomp;
+        gateway[Domain Gateway server]:::system --> domainspace[Domains Interactions broker]:::techcomp;
+        rtscomput[RTS Computation Unit server]:::system --> domainspace;
     end
     subgraph infrastructure[Infrastructure Services]
         sso[Access Control SSO server] --> secret[Secret management server];
@@ -77,11 +77,13 @@ flowchart LR
     uispace -.-> logging;
     gateway --> uispace;
     
+	classDef system fill:#3a5572,stroke:#3a5572,color:#fff;
+	classDef techcomp fill:#fff,stroke:#3a5572,color:#3a5572;
+	
     classDef influencefactor fill:#ffffff,stroke:#e5302a,stroke-width:1px,color:#e5302a,stroke-dasharray: 5 5;
 	classDef influenceactor fill:#888888,stroke:#888888,stroke-width:1px,color:#fff;
 	classDef opportunitycriteria fill:#efefef,stroke:#afafaf,stroke-width:1px,color:#000;
-	classDef system fill:#3a5572,stroke:#3a5572,color:#fff;
-	classDef opportunitydomain fill:#fff,stroke:#3a5572,color:#3a5572;
+	
 	classDef opportunitysegment fill:#3a5572,stroke:#3a5572,color:#fff;
 ```
 
