@@ -63,8 +63,8 @@ The main infrastructure services focused for the POC are:
 flowchart LR
     subgraph domain[Access Control Domain]
         frontui[Frontend UI server]:::system --> backend[Backend UI server]:::system;
-        backend --> uispace[Users Interactions broker]:::techcomp;
-        gateway[Domain Gateway server]:::system --> domainspace[Domains Interactions broker]:::techcomp;
+        backend --> uispace[(Users Interactions broker)]:::techcomp;
+        gateway[Domain Gateway server]:::system --> domainspace[(Domains Interactions broker)]:::techcomp;
         rtscomput[RTS Computation Unit server]:::system --> domainspace;
     end
     subgraph infrastructure[Infrastructure Services]
