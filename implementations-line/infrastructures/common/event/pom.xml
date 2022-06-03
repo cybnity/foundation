@@ -10,5 +10,5 @@
 	<artifactId>event</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Common event library</name>
+	<name>Infrastructure common events library</name>
 </project>

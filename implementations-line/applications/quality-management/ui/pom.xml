@@ -9,6 +9,10 @@
 	<groupId>org.cybnity.application.quality-management</groupId>
 	<artifactId>ui</artifactId>
 	<version>${revision}</version>
-	<packaging>jar</packaging>
-	<name>Quality management UI</name>
+	<packaging>pom</packaging>
+	<name>Quality management UI components</name>
+	<modules>
+		<module>api</module>
+		<module>system</module>
+	</modules>
 </project>

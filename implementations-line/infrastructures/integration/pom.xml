@@ -11,5 +11,7 @@
 	<version>${revision}</version>
 	<packaging>pom</packaging>
 	<name>Integration infrastructure solution</name>
-
+	<modules>
+		<module>system</module>
+	</modules>
 </project>

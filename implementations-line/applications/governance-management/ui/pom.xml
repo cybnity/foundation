@@ -9,6 +9,10 @@
 	<groupId>org.cybnity.application.governance-management</groupId>
 	<artifactId>ui</artifactId>
 	<version>${revision}</version>
-	<packaging>jar</packaging>
-	<name>Governance management UI</name>
+	<packaging>pom</packaging>
+	<name>Governance management UI components</name>
+	<modules>
+		<module>api</module>
+		<module>system</module>
+	</modules>
 </project>

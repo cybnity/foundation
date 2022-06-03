@@ -9,6 +9,10 @@
 	<groupId>org.cybnity.application.compliance-certification-management</groupId>
 	<artifactId>service</artifactId>
 	<version>${revision}</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<name>Compliance and certification management service components</name>
+	<modules>
+		<module>api</module>
+		<module>impl</module>
+	</modules>
 </project>

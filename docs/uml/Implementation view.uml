@@ -130,7 +130,7 @@
       <ownedComment xmi:type="uml:Comment" xmi:id="_flGkwMBxEeyqEILEjQVaPw" annotatedElement="_b5WrwMBxEeyqEILEjQVaPw _WgfwsMBxEeyqEILEjQVaPw">
         <body>One Maven sub-project per feature category</body>
       </ownedComment>
-      <packagedElement xmi:type="uml:Package" xmi:id="_WgfwsMBxEeyqEILEjQVaPw" name="cccccbcfcgeehuliiikkffdjrevihhkettcciuuftgkh">
+      <packagedElement xmi:type="uml:Package" xmi:id="_WgfwsMBxEeyqEILEjQVaPw" name="security">
         <ownedComment xmi:type="uml:Comment" xmi:id="_2ZLZgMBxEeyqEILEjQVaPw" annotatedElement="_0RhJcMBxEeyqEILEjQVaPw _wgMM4MBxEeyqEILEjQVaPw">
           <body>One Maven sub-project per feature module</body>
         </ownedComment>

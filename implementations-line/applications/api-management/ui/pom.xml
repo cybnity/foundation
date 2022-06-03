@@ -9,6 +9,10 @@
 	<groupId>org.cybnity.application.api-management</groupId>
 	<artifactId>ui</artifactId>
 	<version>${revision}</version>
-	<packaging>jar</packaging>
-	<name>API management UI</name>
+	<packaging>pom</packaging>
+	<name>API management UI components</name>
+	<modules>
+		<module>api</module>
+		<module>system</module>
+	</modules>
 </project>

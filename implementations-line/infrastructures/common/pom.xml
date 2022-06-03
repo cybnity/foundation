@@ -10,7 +10,7 @@
 	<artifactId>common</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Common core libraries</name>
+	<name>Infrastructure common core libraries</name>
 
 	<modules>
 		<module>event</module>

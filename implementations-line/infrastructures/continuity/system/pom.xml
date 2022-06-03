@@ -1,0 +1,18 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>continuity</artifactId>
+		<groupId>org.cybnity.infrastructure</groupId>
+		<version>${revision}</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<groupId>org.cybnity.infrastructure.continuity</groupId>
+	<artifactId>systems</artifactId>
+	<version>${revision}</version>
+	<packaging>pom</packaging>
+	<name>Business continuity systems infrastructure</name>
+	<modules>
+		<module>users-interactions-space-backup</module>
+		<module>domains-interactions-space-backup</module>
+	</modules>
+</project>

@@ -5,7 +5,7 @@
 ## PURPOSE
 Welcome on the CYBNITY open souce program which target to deliver a security platform efficient and flexible for each company with need to design its Information Security Management System (ISMS) and/or to operate digital systems in a secure way against the cyberthreats.
 ### Our Mission
-We develop an open source technological defense platform to help the security teams designing and managing companies’ security solutions, create resilient digital systems with efficient responses against to cyber-threats.
+We develop an open source technological defense platform to help the security teams designing and managing companies’ security solutions, create sustainable digital systems with efficient responses against to cyber-threats.
 ### How It Works?
 The CYBNITY platform makes it possible to design the strategic governance of the digital assets cybersecurity, and to pilot tactical operational protection systems guaranteeing the neutralization of security incidents.
 <details><summary>WHAT CYBERSECURITY PROBLEM THE PROJECT SOLVE?</summary>

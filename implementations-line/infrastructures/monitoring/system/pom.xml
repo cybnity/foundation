@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>monitoring</artifactId>
+		<groupId>org.cybnity.infrastructure</groupId>
+		<version>${revision}</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<groupId>org.cybnity.infrastructure.monitoring</groupId>
+	<artifactId>systems</artifactId>
+	<version>${revision}</version>
+	<packaging>pom</packaging>
+	<name>Monitoring systems infrastructure</name>
+	<modules>
+		<module>event-logging</module>
+		<module>data-visualization</module>
+		<module>alerting</module>
+	</modules>
+</project>

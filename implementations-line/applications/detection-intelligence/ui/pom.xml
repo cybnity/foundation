@@ -9,6 +9,10 @@
 	<groupId>org.cybnity.application.detection-intelligence</groupId>
 	<artifactId>ui</artifactId>
 	<version>${revision}</version>
-	<packaging>jar</packaging>
-	<name>Detection intelligence UI</name>
+	<packaging>pom</packaging>
+	<name>Detection intelligence UI components</name>
+	<modules>
+		<module>api</module>
+		<module>system</module>
+	</modules>
 </project>
