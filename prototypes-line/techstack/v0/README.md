@@ -55,20 +55,38 @@ The main infrastructure services focused for the POC are:
 - For check of security integration tests between applicative systems
   - **Access Control SSO server** (access control and Single-Sign-On infrastructure implementation module) **as security manager of frontend access**;
   - **Identities & Access management server** (identity and access management infrastructure implementation module) **as UIAM system**;
-  - **Secret management server** (secret management infrastructure implementation module) **as strongbox system**.
+  - **Secret management server** (secret management infrastructure implementation module) **as strong-box system**.
 - For check of tracking capabilities regarding systems
   - **Event Logging server** (event logging infrastructure implementation module) **as activity/event logs store**.
+
+graph TB
+    backend -.-> idm
+    backend -.-> sso
+    uispace -.-> logging
+    subgraph infrastructure[Infrastructure Services]
+        sso[Access Control SSO server] --> secret[Secret management server]
+        idm[Identities & Access management server]
+        logging[Event Logging Server]
+    end
+    subgraph domain[Access Control Domain]
+        frontui[Frontend UI server] --> backend[Backend UI server]
+        backend --> uispace[Users Interactions broker]
+        gateway[Domain Gateway server] --> domainspace[Domains Interactions broker]
+        rtscomput[RTS Computation Unit server] --> domainspace
+    end
+    gateway --> uispace
+
 
 ## TECHNOLOGY
 Several technologies are selected into the stack version for implementation of components and systems.
 
 | SYSTEM | TYPE | TECHNOLOGIES | COMMENTS |
 | :--- | :--- | :--- | :--- |
-|Asset Control FrontEnd server|Web Reactive FrontEnd|- ReactBootstrap<br>- ReactJS<br>Vert.x SockJS Client<br>- Google Chrome web browser| |
-|Asset Control BackEnd server|Reactive BackEnd Server|- Vert.x Web<br>- Jedis<br>- Vert.x Core<br>- OpenJ9 JVM<br>- Ubuntu OS<br>- Docker Image<br>- MicroK8s|JSON/HTTPS over SSO|
+|Asset Control FrontEnd UI server|Web Reactive FrontEnd|- ReactBootstrap<br>- ReactJS<br>Vert.x SockJS Client<br>- Google Chrome web browser| |
+|Asset Control BackEnd UI server|Reactive BackEnd Server|- Vert.x Web<br>- Jedis<br>- Vert.x Core<br>- OpenJ9 JVM<br>- Ubuntu OS<br>- Docker Image<br>- MicroK8s|JSON/HTTPS over SSO|
 |Asset Control & SSO server|Security Services|- Keycloack<br>- OpenJ9 JVM<br>- Ubuntu OS<br>- Docker Image<br>- MicroK8s|Token management for front/backend's user access|
-|Identities Access Management server|Security Services|- midPoint<br>- Apache Directory Server<br>- OpenJ9 JVM<br>- Alpine Linux OS<br>- Docker Image<br>- MicroK8s|including test account allowing call of Access domain read feature, and access check by application layer when coming from UI layer|
-|Secret Management server|Security Services|- Vault<br>- Ubuntu OS<br>- Docker Image<br>- MicroK8s|test of storage/retrieve of user token used by Asset Control & SSO server|
+|Identities Access Management server|Security Services|- midPoint<br>- Apache Directory Server<br>- OpenJ9 JVM<br>- Alpine Linux OS<br>- Docker Image<br>- MicroK8s|Include test account allowing call of Access domain read feature, and access check by application layer when coming from UI layer|
+|Secret Management server|Security Services|- Vault<br>- Ubuntu OS<br>- Docker Image<br>- MicroK8s|Test of storage/retrieve of user token used by Asset Control & SSO server|
 |Users Interactions broker|Users Interactions Space|- Redis Cluster<br>- Telegraf Agent<br>- Ubuntu OS<br>- Docker Image<br>- MicroK8s|Telegrag agent (plugin for Redis cluster) push monitoring to Event Logging Server|
 |Event Logging server|Logging|- InfluxDB<br>- Ubuntu OS<br>- Docker Image<br>- MicroK8s|Logs repository regarding Redis instances' activities|
 |Asset Control Domain Gateway server|Domains Gateway Server|- Java Kafka POJO<br>- Zookeeper Client<br>- Jedis<br>- Kafka Connector<br>- Spring Core<br>- SpringBoot<br>- OpenJ9 JVM<br>- Ubuntu OS<br>- Docker Image<br>- MicroK8s|Sample code which integrate the request (e.g validate a request parameter like "asset name to read") of UI layer to domain, and execute the requested feature (e.g read of an asset description) via delegation to a RT computation unit (e.g domain model of Asset Control implementing the Security Feature named Asset);<br>Java Processor/Consumer as domain application service layer|
