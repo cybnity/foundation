@@ -76,8 +76,7 @@ flowchart LR
     backend -.-> sso;
     uispace -.-> logging;
     gateway --> uispace;
-    infrastructure:::area;
-    domain:::area;
+    domain:::area -.-> infrastructure:::area;
     
 	classDef system fill:#3a5572,stroke:#3a5572,color:#fff;
 	classDef techcomp fill:#fff,stroke:#3a5572,color:#3a5572;
