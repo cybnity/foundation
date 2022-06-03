@@ -67,7 +67,7 @@ flowchart LR
         gateway[Domain Gateway server]:::system --> domainspace[Domains Interactions broker]:::techcomp;
         rtscomput[RTS Computation Unit server]:::system --> domainspace;
     end
-    subgraph infrastructure[Infrastructure Services]:::area;
+    subgraph infrastructure[Infrastructure Services]
         sso[Access Control SSO server]:::techsys --> secret[Secret management server]:::techsys;
         idm[Identities & Access management server]:::techsys;
         logging[Event Logging Server]:::techsys;
@@ -76,6 +76,8 @@ flowchart LR
     backend -.-> sso;
     uispace -.-> logging;
     gateway --> uispace;
+    infrastructure:::area;
+    domain:::area;
     
 	classDef system fill:#3a5572,stroke:#3a5572,color:#fff;
 	classDef techcomp fill:#fff,stroke:#3a5572,color:#3a5572;
