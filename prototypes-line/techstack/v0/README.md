@@ -59,7 +59,7 @@ The main infrastructure services focused for the POC are:
 - For check of tracking capabilities regarding systems
   - **Event Logging server** (event logging infrastructure implementation module) **as activity/event logs store**.
 
-graph TB;
+graph TB
     backend -.-> idm;
     backend -.-> sso;
     uispace -.-> logging;
