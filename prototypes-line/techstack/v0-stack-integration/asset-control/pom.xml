@@ -12,8 +12,9 @@
 	<packaging>pom</packaging>
 	<name>- CYBNITY Domain's MVF POC</name>
 	<modules>
-		<module>rts-computation-unit</module>
+		<module>rts-computation-unit-server</module>
 		<module>domain-gateway-server</module>
-		<module>backend-server</module>
+		<module>backend-ui-server</module>
+		<module>frontend-ui-server</module>
 	</modules>
 </project>

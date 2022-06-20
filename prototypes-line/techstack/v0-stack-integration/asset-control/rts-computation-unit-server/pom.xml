@@ -8,7 +8,7 @@
 	</parent>
 
 	<groupId>org.cybnity.prototypes.techstack.asset-control</groupId>
-	<artifactId>rts-computation-unit</artifactId>
+	<artifactId>rts-computation-unit-server</artifactId>
 	<packaging>jar</packaging>
 	<name>  - Asset Control rts computation unit</name>
 </project>
