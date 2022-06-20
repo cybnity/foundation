@@ -9,8 +9,17 @@
 
 	<groupId>org.cybnity.prototypes</groupId>
 	<artifactId>techstack</artifactId>
-	<version>V0-SNAPSHOT</version>
-	<packaging>jar</packaging>
-	<name>CYBNITY technologies stack integrations prototype</name>
+	<version>${proto-revision}</version>
+	<packaging>pom</packaging>
+	<name>CYBNITY V0 techstack integration POC</name>
 
+	<properties>
+		<!-- CYBNITY prototype revision number -->
+		<proto-revision>V0-SNAPSHOT</proto-revision>
+	</properties>
+
+	<modules>
+		<module>infrastructures</module>
+		<module>asset-control</module>
+	</modules>
 </project>
