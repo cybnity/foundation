@@ -4,17 +4,17 @@
 		<groupId>org.cybnity</groupId>
 		<artifactId>defense-platform</artifactId>
 		<version>${revision}</version>
-		<relativePath>..</relativePath>
+		<relativePath>../..</relativePath>
 	</parent>
 
 	<groupId>org.cybnity</groupId>
-	<artifactId>prototypes</artifactId>
+	<artifactId>demonstrators</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>CYBNITY prototypes</name>
+	<name>CYBNITY demonstrators</name>
 
 	<modules>
-		<!-- Project modules -->
+		<!-- Demonstration modules -->
 	</modules>
 
 </project>

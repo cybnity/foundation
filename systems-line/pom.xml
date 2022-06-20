@@ -18,6 +18,7 @@
 		<module>environments</module>
 		<!-- Packaged systems as modules that are installable and operable-->
 		<module>modules</module>
+		<module>systems</module>
 	</modules>
 
 </project>

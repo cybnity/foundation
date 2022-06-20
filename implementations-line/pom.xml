@@ -14,7 +14,7 @@
 	<name>CYBNITY implementation components</name>
 
 	<modules>
-		<!-- Project modules -->
+		<!-- Implementation modules -->
 		<module>infrastructures</module>
 		<module>features</module>
 		<module>applications</module>
