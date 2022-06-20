@@ -15,6 +15,11 @@
 
 	<modules>
 		<!-- Prototyping modules -->
+		<module>v0-stack-integration</module>
 	</modules>
 
+	<properties>
+		<!-- CYBNITY prototype default revision number -->
+		<revision>0.0.1-SNAPSHOT</revision>
+	</properties>
 </project>
