@@ -4,7 +4,7 @@
 		<groupId>org.cybnity</groupId>
 		<artifactId>defense-platform</artifactId>
 		<version>${revision}</version>
-		<relativePath>..</relativePath>
+		<relativePath>../..</relativePath>
 	</parent>
 
 	<groupId>org.cybnity</groupId>
@@ -14,7 +14,7 @@
 	<name>CYBNITY demonstrators</name>
 
 	<modules>
-		<!-- Project modules -->
+		<!-- Demonstration modules -->
 	</modules>
 
 </project>
