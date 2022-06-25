@@ -6,7 +6,7 @@ Based on the accepted innovations and needs, on basic features identified by the
 The developed prototypes are categorized according to:
 | PROTOTYPE CATEGORY | STANDARD OBJECTIVES | TYPES OF PROTOTYPE VERSION | USAGE TYPE |
 | :--- | :--- | :--- | :--- |
-| 'CONCEPT' |- Validation of technical and/or behavioral concept|Usable screen(s) (e.g web wireframe, visual prototype with possible interactivity) and/or platform prototype version including specific scenario of test paths which is usable online without need of deployment|Support the Product and/or Solution design activities (e.g during Lean UX process or software design phase)|
+| `CONCEPT` |- Validation of technical and/or behavioral concept|Usable screen(s) (e.g web wireframe, visual prototype with possible interactivity) and/or platform prototype version including specific scenario of test paths which is usable online without need of deployment|Support the Product and/or Solution design activities (e.g during Lean UX process or software design phase)|
 | `MVF` |- Basic features usage and value validation<br>- Demonstration of software capabilities to collect users' feedbacks before real development|Usable software and platform prototype version including basic features which can be deployed in a isolated context without impact on current official software developed|Support Lean UX process during evaluation of new features version opportunity to develop (e.g with a partner) for demonstration and/or value evaluation before entry into the production line|
 
 ### Sources Structure
