@@ -27,7 +27,6 @@
 	<modules>
 		<!-- Project lines -->
 		<module>demonstrators-line/sources</module>
-		<module>prototypes-line/techstack</module>
 		<module>implementations-line</module>
 		<module>systems-line</module>
 	</modules>
