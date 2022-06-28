@@ -16,4 +16,4 @@ Prototypes are built via Maven tool using a [standard Maven project structure](h
 # MANAGED PROTOTYPES
 | PROTOTYPE NAME | TYPE | RELATED TO | PROJECT DIRECTORY | COMMENTS |
 | :--- | :--: | :--- | :--- | :--- |
-| UI Cockpit Principles | `MVF` | | |Ergonomic validation and usage testing via first UX/UI demonstrator allowing to valid hypothesis of initial CYBNITY UI structure|
+| UI Cockpit Principles | `CONCEPT` | | |Ergonomic validation and usage testing via first UX/UI demonstrator allowing to valid hypothesis of initial CYBNITY UI structure|
