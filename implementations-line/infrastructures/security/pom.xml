@@ -10,7 +10,7 @@
 	<artifactId>security</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Security services infrastructure</name>
+	<name>Security measures and control services infrastructure</name>
 	<modules>
 		<module>system</module>
 	</modules>
