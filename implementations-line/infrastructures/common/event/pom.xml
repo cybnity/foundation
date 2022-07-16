@@ -6,9 +6,9 @@
 		<version>${revision}</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<groupId>org.cybnity.infrastruture.common</groupId>
+	<groupId>org.cybnity.infrastructure.common</groupId>
 	<artifactId>event</artifactId>
 	<version>${revision}</version>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	<name>Infrastructure common events library</name>
 </project>
