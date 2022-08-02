@@ -1,0 +1,62 @@
+
+tache MPP V1 target technology architecture definition
+
+- [ ]  step 2 validate POC prerequisite (build & assembly poc  test)
+
+le backene envois les events dans redis sous client redis de vertx testé ok
+test ok publish vers channel redis
+ok par les verticles du domaine
+
+continuer
+teste et firni l'ajout du registration de channel avec listner et sa délégation à la feature qui traite l'evt (PubSubChannelListener) 
+
+continuer la factory jedis
+    coder l'iterator d'exemple permettant de créer un scan sur map ou file de redis 7.2 de https://www.baeldung.com/redis-list-available-keys
+
+
+    tester l'instanciation des properties depuis le fichier 
+
+    implémenter la connexion de gateway en utilisant Jedis client (déjà plugué maven) et non plus vertx redis
+
+       nommer un verticle (selon le domaine des cockpit features et non des security fetaure du domain sous-jacent, voir le PPT) par capability dans le projet domain gateway
+       qui se connecte par jedis et traite les évènements entrant de la db 1 (par une factory options mais sous jedis)
+
+    écouter les entrées d'évènemtn dans la redis db 1 pour en interpré^ter les json (string) comme capability handler
+
+    vidage de la réponse de l'appel depuis client js (page html) selon event structuré sous CommandEvent
+    envoyer à redis
+
+   après la page html standard, basculer en framework reactjs sur le projet frontend
+
+
+   créer le système assemblé: continuer la construction d'une image container embarquant un système propre cybnity, composant construit par maven > l'insérer dans le répertoire système d'un premier composant
+
+- [OK]  write documentation presenting the MPP v1 eligible implementation HW/SW technologies set
+
+
+TODO-------------
+
+-----------
+tache transprency plan & open source project contributors motivation (branche mpp)
+        pour chaque phase, documenter les étapes workstream (kanban règles standard, par projet selon sa ligne/finalité) avec des catégories de plan (zones dans un tableau standardisé de plan & programmation) au sein du sous-répertoire concerné
+
+       dans projet github:
+	  -créer la doc d'explication du projet et du line comment manipuler le projet dans github selon les politiques de tag, process, type de artifact (feature, bug etc comme glossaire)
+          - tager pour chaque line de production (mpp, mvp etc..) permettant de créer des groupes par ce tag qui montre une line de production avec toutes ses issues
+           - construire des milestones pour les phases
+          - créer les types de issues (comme sur jira pour feature, bug, requirement etc...) qui navigue dans le kanban du projet
+          - constuire le projet pour la démonstration permetttant de valider le fonctionnement/structuration d'un milestone
+
+         - funding & budget: tableau spreadsheet par Quarter, de visibilité sur les sources de financement (montant, ressources/compétences, outils fournis) par sponsor, les thématiques de dépenses avec une synthèse de X pour indiquer où les ressources ont été consacrées mais sans indication de montant qui seraient trop détaillés à gérer)
+         - technology
+         - ... (reprendre les thématiques/catégories clefs indiquées en notion)
+
+
+- rédiger une image d'illustration des couches de la stack techno dans le page de official stack comme chez freeduse https://freeduse.atlassian.net/wiki/spaces/IR/pages/577175582/BAI03.02+Technology+Stacks+Detailed+Design+Specification
+
+
+------------
+
+tache "page organisation profile" dans github pour cybnity présentant (depuis accueil cybnity sur github, voir la doc "organization profile") :
+- finalité projet /communauté
+- page "inspired by" avec une histoire de suivre le modèle de dassautl, le rafale fleuron de l'industrie française de la défense, mais que cybnity fabrique le "rafale de la cyber défense". Montrer un map avec des images de l'excellence française (ou on voient des prototypes...) pour faire comprendre qu'un crée une approche inspirée par les prototypages comme dassault, mais dans le logiciel > puis faire le lien avec les lignes de projets (foundation intrégant un espace mpp, autre projet/repor ecosystem partners, etc...)
