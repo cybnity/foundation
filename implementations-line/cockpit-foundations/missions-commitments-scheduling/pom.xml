@@ -6,7 +6,7 @@
 		<version>${revision}</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<groupId>org.cybnity.cockpit-foundations</groupId>
+	<groupId>org.cybnity.cockpit-foundation</groupId>
 	<artifactId>missions-commitments-scheduling</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
