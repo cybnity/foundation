@@ -1,23 +1,7 @@
 
-tache MPP V1 target technology architecture definition
-
-- [ ]  step 2 validate POC prerequisite (build & assembly poc  test)
-
-- fait:
-  - la réception du accesstoekn côté backend est bon
-
-Todo
-    Tester apache flink mutualité dans projet RTS pour tester intégration avec kayak pour l'event de findAssets (command chain pattern that build the asset description)
-    Lecture bouquins react
-
-   créer le système assemblé: continuer la construction d'une image container embarquant un système propre cybnity, composant construit par maven > l'insérer dans le répertoire système d'un premier composant
-
-- [OK]  write documentation presenting the MPP v1 eligible implementation HW/SW technologies set
-
 
 TODO-------------
 
------------
 tache transprency plan & open source project contributors motivation (branche mpp)
         pour chaque phase, documenter les étapes workstream (kanban règles standard, par projet selon sa ligne/finalité) avec des catégories de plan (zones dans un tableau standardisé de plan & programmation) au sein du sous-répertoire concerné
 
