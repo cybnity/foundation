@@ -3,31 +3,12 @@ tache MPP V1 target technology architecture definition
 
 - [ ]  step 2 validate POC prerequisite (build & assembly poc  test)
 
-le backene envois les events dans redis sous client redis de vertx testé ok
-test ok publish vers channel redis
-ok par les verticles du domaine
+- fait:
+  - la réception du accesstoekn côté backend est bon
 
-continuer
-teste et firni l'ajout du registration de channel avec listner et sa délégation à la feature qui traite l'evt (PubSubChannelListener) 
-
-continuer la factory jedis
-    coder l'iterator d'exemple permettant de créer un scan sur map ou file de redis 7.2 de https://www.baeldung.com/redis-list-available-keys
-
-
-    tester l'instanciation des properties depuis le fichier 
-
-    implémenter la connexion de gateway en utilisant Jedis client (déjà plugué maven) et non plus vertx redis
-
-       nommer un verticle (selon le domaine des cockpit features et non des security fetaure du domain sous-jacent, voir le PPT) par capability dans le projet domain gateway
-       qui se connecte par jedis et traite les évènements entrant de la db 1 (par une factory options mais sous jedis)
-
-    écouter les entrées d'évènemtn dans la redis db 1 pour en interpré^ter les json (string) comme capability handler
-
-    vidage de la réponse de l'appel depuis client js (page html) selon event structuré sous CommandEvent
-    envoyer à redis
-
-   après la page html standard, basculer en framework reactjs sur le projet frontend
-
+Todo
+    Tester apache flink mutualité dans projet RTS pour tester intégration avec kayak pour l'event de findAssets (command chain pattern that build the asset description)
+    Lecture bouquins react
 
    créer le système assemblé: continuer la construction d'une image container embarquant un système propre cybnity, composant construit par maven > l'insérer dans le répertoire système d'un premier composant
 
