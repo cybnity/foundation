@@ -7,8 +7,7 @@ You can find documentations relative to software maintenance like:
 - Support to software build process and packaging;
 - Systems configuration and deployment procedure.
 
-This technical documentations are supporting the functional, architectural and/or organizational documentations available on [CYBNITY Universe](https://cybnity.notion.site/CYBNITY-Universe-c707ba2ebc3047c6ad533f18b2e0f9db) public web site about concept, requirements, business/technology/systems architectures...
-
+These technical documentations are supporting the functional, architectural and/or organizational documentations available on [CYBNITY Universe](https://cybnity.notion.site/CYBNITY-Universe-c707ba2ebc3047c6ad533f18b2e0f9db) public web site about concept, requirements, business/technology/systems architectures...
 
 # DEVELOPMENT DOCUMENTATIONS
 ### Software Design
@@ -40,7 +39,9 @@ The build and delivery of the CYBNITY systems' features is performed through sev
 
 # QUALITY CONTROL
 Several quality scopes are considered during the development and operating of delivered systems.
-They are formalized via requirements defined and controlled by project team with validation protocols and quality measures.
+They are formalized via requirements defined and controlled by project team with validation protocols and quality measures:
+- [Software development requirements](https://www.notion.so/cybnity/20cfa36c18e6458d93026ab77b87671a?v=324438a3426c48a3897e04525908de22);
+- [Architecture requirements](https://www.notion.so/cybnity/cc16991ccd3f4325a910f44512c6d401?v=3d7746e5e44a4d2cb0466c15a3320ad2).
 
 | REQUIREMENTS TYPE | SCOPE & DESCRIPTION | QUALITY VALIDATION | QUALITY SCORING |
 | :--- | :---| :--- | :-- |
