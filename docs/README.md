@@ -39,15 +39,13 @@ The build and delivery of the CYBNITY systems' features is performed through sev
 
 # QUALITY CONTROL
 Several quality scopes are considered during the development and operating of delivered systems.
-They are formalized via requirements defined and controlled by project team with validation protocols and quality measures:
-- [Software development requirements](https://www.notion.so/cybnity/20cfa36c18e6458d93026ab77b87671a?v=324438a3426c48a3897e04525908de22);
-- [Architecture requirements](https://www.notion.so/cybnity/cc16991ccd3f4325a910f44512c6d401?v=3d7746e5e44a4d2cb0466c15a3320ad2).
+They are formalized via requirements defined and controlled by project team with validation protocols and quality measures.
 
 | REQUIREMENTS TYPE | SCOPE & DESCRIPTION | QUALITY VALIDATION | QUALITY SCORING |
 | :--- | :---| :--- | :-- |
 | Functional | Application features behavior | Integration tests, non-regression tests, usage acceptance tests (UAT) | Anomalies (deviation from a rule) and defects (fault/malfunction) count/trend |
-| Security | Software and system security concepts and control measures implemented by the asset | Technical & non technical measures tests, third-party audit (e.g regulation), NIST certification | NIST Cybersecurity Framework (CSF) maturity level state, anomalies count/trend, security incidents (e.g Confidential, Integrity, Availability violations) and defects (e.g malfunction of security measure) count/trend |
-| Maintainability | Software source codes readability and complexity level, design and implementation architecture, language patterns, documentation level of functional/technical implementation | Unit tests, code quality check (e.g automated and/or manual reviews) | Anomalies and defects count/trend |
+| Security | Software and system security concepts and control measures implemented by the asset. See [Software development requirements](https://www.notion.so/cybnity/20cfa36c18e6458d93026ab77b87671a?v=324438a3426c48a3897e04525908de22) based on NIST SP800-218 Secure Software Development Framework (SSDF) | Technical & non technical measures tests, third-party audit (e.g regulation), NIST certification | NIST Cybersecurity Framework (CSF) maturity level state, anomalies count/trend, security incidents (e.g Confidential, Integrity, Availability violations) and defects (e.g malfunction of security measure) count/trend |
+| Maintainability | Software source codes readability and complexity level, design and implementation architecture, language patterns, documentation level of functional/technical implementation. See [Architecture requirements](https://www.notion.so/cybnity/cc16991ccd3f4325a910f44512c6d401?v=3d7746e5e44a4d2cb0466c15a3320ad2) based on NIST SP800-27 Engineering principles | Unit tests, code quality check (e.g automated and/or manual reviews) | Anomalies and defects count/trend |
 | Operating | Deployment documentation and procedures, tools compatibility, applications configuration, administration capabilities and support elements | Technical review, repetition tests | Problems and incidents count/trend |
 | Observability | Monitoring capabilities, supervision features (e.g robustness capacity level, resources allocation trend), metrics (e.g application usages, performance level) | Monitoring tests | Anomalies and defects count/trend |
 
