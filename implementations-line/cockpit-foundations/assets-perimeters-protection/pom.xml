@@ -7,7 +7,7 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>org.cybnity.cockpit-foundation</groupId>
-	<artifactId>areas-assets-protection</artifactId>
+	<artifactId>assets-perimeters-protection</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
 	<name>Areas and assets protection capability</name>

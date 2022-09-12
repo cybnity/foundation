@@ -7,9 +7,9 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>org.cybnity.cockpit-foundation</groupId>
-	<artifactId>missions-commitments-scheduling</artifactId>
+	<artifactId>isms-strategy</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Missions and commitments scheduling capability</name>
+	<name>ISMS design capability</name>
 
 </project>

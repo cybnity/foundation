@@ -1,27 +1,8 @@
 
-
-TODO-------------
-
-tache transprency plan & open source project contributors motivation (branche mpp)
-        pour chaque phase, documenter les étapes workstream (kanban règles standard, par projet selon sa ligne/finalité) avec des catégories de plan (zones dans un tableau standardisé de plan & programmation) au sein du sous-répertoire concerné
-
-       dans projet github:
-	  -créer la doc d'explication du projet et du line comment manipuler le projet dans github selon les politiques de tag, process, type de artifact (feature, bug etc comme glossaire)
-          - tager pour chaque line de production (mpp, mvp etc..) permettant de créer des groupes par ce tag qui montre une line de production avec toutes ses issues
-           - construire des milestones pour les phases
-          - créer les types de issues (comme sur jira pour feature, bug, requirement etc...) qui navigue dans le kanban du projet
-          - constuire le projet pour la démonstration permetttant de valider le fonctionnement/structuration d'un milestone
-
-         - funding & budget: tableau spreadsheet par Quarter, de visibilité sur les sources de financement (montant, ressources/compétences, outils fournis) par sponsor, les thématiques de dépenses avec une synthèse de X pour indiquer où les ressources ont été consacrées mais sans indication de montant qui seraient trop détaillés à gérer)
-         - technology
-         - ... (reprendre les thématiques/catégories clefs indiquées en notion)
+----TODO-------------
+Enregistrer la video et son de l'introduction à devenir co-designer, publier sur Vimeo et envoyer aux CISO déjà impliqués en proposant un atelier de sélection d'un a deux scénarios d'usage sur lesquels ils souhaiteraient devenir co-designer
 
 
-- rédiger une image d'illustration des couches de la stack techno dans le page de official stack comme chez freeduse https://freeduse.atlassian.net/wiki/spaces/IR/pages/577175582/BAI03.02+Technology+Stacks+Detailed+Design+Specification
+Envoyer un msg Linkedin standard à tous les rssi pour participer au votes des fonctions
 
-
-------------
-
-tache "page organisation profile" dans github pour cybnity présentant (depuis accueil cybnity sur github, voir la doc "organization profile") :
-- finalité projet /communauté
-- page "inspired by" avec une histoire de suivre le modèle de dassautl, le rafale fleuron de l'industrie française de la défense, mais que cybnity fabrique le "rafale de la cyber défense". Montrer un map avec des images de l'excellence française (ou on voient des prototypes...) pour faire comprendre qu'un crée une approche inspirée par les prototypages comme dassault, mais dans le logiciel > puis faire le lien avec les lignes de projets (foundation intrégant un espace mpp, autre projet/repor ecosystem partners, etc...)
+Rédiger le déploiement model sous K8s qui montre la cible de déploiement et donc packaging des systèmes pour pouvoir ensuite concevoir les sous-project d'assembly  pour K8s (voir pour cocher dans le 360° l'artifact "deployment model une fois rédigé et intégré dans le source de la doc gihut pour foundation).

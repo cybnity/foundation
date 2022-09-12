@@ -7,9 +7,9 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>org.cybnity.cockpit-foundation</groupId>
-	<artifactId>defensive-response-command-post</artifactId>
+	<artifactId>actions-scheduling</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Defensive response command post capability</name>
+	<name>Mission actions and commitments scheduling capability</name>
 
 </project>

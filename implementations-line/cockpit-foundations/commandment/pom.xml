@@ -7,9 +7,9 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>org.cybnity.cockpit-foundation</groupId>
-	<artifactId>planning</artifactId>
+	<artifactId>commandment</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Planning capability</name>
+	<name>Strategic commandment capability</name>
 
 </project>

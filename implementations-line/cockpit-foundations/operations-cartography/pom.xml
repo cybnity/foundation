@@ -7,9 +7,9 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>org.cybnity.cockpit-foundation</groupId>
-	<artifactId>defensive-response</artifactId>
+	<artifactId>operations-cartography</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Defensive response capability</name>
+	<name>Cartography capability</name>
 
 </project>
