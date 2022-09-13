@@ -26,3 +26,5 @@ The isolation of environments (e.g UI experience, application and micro-services
 The CYBNITY systems are packaged to be deployable into a standard virtualized infrastructure (e.g cloud PAAS provided by Google Cloud, Amazon Web Service, Microsoft Azure, company's in-hosting hybrid platform) that support Docker containerized applications (e.g CYBNITY applications packaged in executable Docker images considered as CYBNITY deployable system) and Kubernetes (e.g CYBNITY virtual cluster of deployable systems).
 
 See the catalog of [CYBNITY deployable systems](https://www.notion.so/cybnity/5a681e57f2164d4f8a3f228129294db9?v=51e2c78132c74b11b97c07ef4e2528c4) for more details about each assembled system.
+
+![image](cybnity-deployment-strategy.png)
