@@ -1,8 +1,12 @@
 
 ----TODO-------------
+
+Copie le diagramme dans notion et GitHub
+
+Rédiger le déploiement model sous K8s qui montre la cible de déploiement et donc packaging des systèmes pour pouvoir ensuite concevoir les sous-project d'assembly  pour K8s (voir pour cocher dans le 360° l'artifact "deployment model une fois rédigé et intégré dans le source de la doc gihut pour foundation).
+
+
 Enregistrer la video et son de l'introduction à devenir co-designer, publier sur Vimeo et envoyer aux CISO déjà impliqués en proposant un atelier de sélection d'un a deux scénarios d'usage sur lesquels ils souhaiteraient devenir co-designer
 
 
 Envoyer un msg Linkedin standard à tous les rssi pour participer au votes des fonctions
-
-Rédiger le déploiement model sous K8s qui montre la cible de déploiement et donc packaging des systèmes pour pouvoir ensuite concevoir les sous-project d'assembly  pour K8s (voir pour cocher dans le 360° l'artifact "deployment model une fois rédigé et intégré dans le source de la doc gihut pour foundation).
