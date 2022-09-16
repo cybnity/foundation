@@ -10,20 +10,16 @@ You can find documentations relative to software maintenance like:
 These technical documentations are supporting the functional, architectural and/or organizational documentations available on [CYBNITY Universe](https://cybnity.notion.site/CYBNITY-Universe-c707ba2ebc3047c6ad533f18b2e0f9db) public web site about concept, requirements, business/technology/systems architectures...
 
 # DEVELOPMENT DOCUMENTATIONS
-## SYSTEMS BUILD & DELIVERY
+## COMPONENTS & SYSTEMS BUILD
 ### Software Design
 - [Architecture Models](architecture/README.md) presenting the systems and general description about components.
 - [UML documentation](uml/README.md) presenting the domain analysis, and the software specifications over several views according to an Unified Process (UP) approach (e.g Use case view, Design view, Deployment view, Implementation view and Process view).
 
-### Build & Delivery Standard
-Supported by industrialization platform including several factory tools, several CYBNITY standards and delivery guidelines are applied via pipeline models:
-- Continuous Integration (CI)
-  - Build Pipeline Model
-- Continuous Delivery (CD)
-  - Releasing Pipeline Model
-  - Deployment Pipeline Model
+### Build Standards
+Supported by industrialization platform including several factory tools, several CYBNITY standards and guidelines are applied as Continuous Integration (CI) protocol via pipeline models:
+- Build Pipeline Model
 
-#### Components, Systems & Solutions Delivered
+### Components, Systems & Solutions Delivered
 The build and delivery of the CYBNITY systems' features is performed through several sub-projects dedicated to specific activities and/or outputs:
 
 - CYBNITY Demonstrator versions via [MPP Project Line](../demonstrators-line/README.md)
@@ -35,7 +31,13 @@ The build and delivery of the CYBNITY systems' features is performed through sev
 ![image](uml/implementation/CYBNITY_solution_development_guidance.png)
 
 # DELIVERY DOCUMENTATIONS
-### Systems Configuration & Deployment
+## SYSTEMS & INFRASTRUCTURES DELIVERY
+### Systems Deployment & Deployment Standards
+Supported by industrialization platform including several factory tools, several CYBNITY standards and guidelines are applied as Continuons Delivery (CD) protocol via pipeline models:
+- Releasing Pipeline Model
+- Deployment Pipeline Model
+
+### Systems Configuration
 
 ### Applications Operating
 
