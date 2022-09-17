@@ -17,7 +17,7 @@ These technical documentations are supporting the functional, architectural and/
 
 ### Build Standards
 Supported by industrialization platform including several factory tools, several CYBNITY standards and guidelines are applied as Continuous Integration (CI) protocol via pipeline models:
-- Build Pipeline Model
+- Commit Stage Pipeline Model
 
 ### Components, Systems & Solutions Delivered
 The build and delivery of the CYBNITY systems' features is performed through several sub-projects dedicated to specific activities and/or outputs:
@@ -32,7 +32,8 @@ The build and delivery of the CYBNITY systems' features is performed through sev
 
 # DELIVERY DOCUMENTATIONS
 ## SYSTEMS & INFRASTRUCTURES DELIVERY
-### Systems Deployment & Deployment Standards
+
+### Systems Deployment Standards
 Supported by industrialization platform including several factory tools, several CYBNITY standards and guidelines are applied as Continuons Delivery (CD) protocol via pipeline models:
 - Releasing Pipeline Model
 - Deployment Pipeline Model
