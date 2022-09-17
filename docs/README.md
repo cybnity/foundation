@@ -32,6 +32,7 @@ The build and delivery of the CYBNITY systems' features is performed through sev
 
 # DELIVERY DOCUMENTATIONS
 ## SYSTEMS & INFRASTRUCTURES DELIVERY
+![image](CYBNITY_Software_Systems_Production_Chain.png)
 
 ### Systems Deployment Standards
 Supported by industrialization platform including several factory tools, several CYBNITY standards and guidelines are applied as Continuons Delivery (CD) protocol via pipeline models:
