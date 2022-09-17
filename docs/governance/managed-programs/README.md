@@ -27,7 +27,8 @@ The general plan give visibility on the main delivery objectives supported by th
 ![image](CYBNITY_open_source_project_plan.png)
 
 ## PROGRAM BUDGET & BENEFITS REGISTER
-
+Presentation of the budgets regarding the open source program is publically available:
+- [CYBNITY 2022 Foundations Budget](https://cybnity.notion.site/CYBNITY-2022-Foundations-Budget-d5b2332dd91e41c28785da83bf3fb12e)
 
 ## RESOURCE REQUIREMENTS & ROLES
 
