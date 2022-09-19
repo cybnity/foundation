@@ -23,10 +23,10 @@ Supported by industrialization platform including several factory tools, several
 The build and delivery of the CYBNITY systems' features is performed through several sub-projects dedicated to specific activities and/or outputs:
 
 - CYBNITY Demonstrator versions via [MPP Project Line](https://github.com/cybnity/mpp-demonstrators)
-- CYBNITY Prototype versions via [MVF Project Line](../prototypes-line/README.md)
+- CYBNITY Prototype versions via [MVF Project Line](../prototypes-line)
 - CYBNITY Implementation Components versions via [Foundation Project Production Line](../implementations-line)
-- CYBNITY validated Systems versions via [Beta-Test Project Line](../systems-line/README.md)
-- CYBNITY Defense Platform versions via [Production Project Line](../production-line/README.md)
+- CYBNITY validated Systems versions via [Beta-Test Project Line](../systems-line)
+- CYBNITY Defense Platform versions via [Production Project Line](../production-line)
 
 ![image](uml/implementation/CYBNITY_solution_development_guidance.png)
 
