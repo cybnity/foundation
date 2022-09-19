@@ -24,7 +24,7 @@ The build and delivery of the CYBNITY systems' features is performed through sev
 
 - CYBNITY Demonstrator versions via [MPP Project Line](https://github.com/cybnity/mpp-demonstrators)
 - CYBNITY Prototype versions via [MVF Project Line](../prototypes-line/README.md)
-- CYBNITY Implementation Components versions via [Foundation Project Production Line](../implementations-line/README.md)
+- CYBNITY Implementation Components versions via [Foundation Project Production Line](../implementations-line)
 - CYBNITY validated Systems versions via [Beta-Test Project Line](../systems-line/README.md)
 - CYBNITY Defense Platform versions via [Production Project Line](../production-line/README.md)
 
