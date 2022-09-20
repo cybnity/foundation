@@ -10,7 +10,7 @@ Implementation components are built via Maven tool using a [standard Maven proje
 
 # APPLICATIONS MODULES
 Each application module dedicated repository manages its source codes structure via repositories with prefix "domain-":
-- [Vulnerability Management module](cybnity/domain-vulnerability-mgt)
+- [Vulnerability Management module](/cybnity/domain-vulnerability-mgt)
 
 # FEATURES MODULES
 The source code are managed in this area of Foundation project.
