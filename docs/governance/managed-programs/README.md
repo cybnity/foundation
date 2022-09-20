@@ -20,7 +20,7 @@ Based on several standard methods (e.g Lean UX for requirements validation, MVP 
 # PROGRAM PLAN
 
 ## THE PLAN
-The general plan give visibility on the main delivery objectives supported by the [components and solutions development guidelines](../docs/uml/implementation/README.md).
+The general plan give visibility on the main delivery objectives supported by the [components and solutions development guidelines](../../../docs/uml/implementation/README.md).
 
 ### Program 3 Years Trajectory
 
