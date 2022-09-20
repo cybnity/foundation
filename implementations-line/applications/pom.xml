@@ -14,7 +14,6 @@
 	<name>CYBNITY business domain applications</name>
 
 	<modules>
-		<module>access-control</module>
 		<module>api-management</module>
 		<module>asset-control</module>
 		<module>audit-management</module>
