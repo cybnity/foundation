@@ -17,7 +17,6 @@
 		<!-- Implementation modules -->
 		<module>infrastructures</module>
 		<module>features</module>
-		<module>applications</module>
 		<module>cockpit-foundations</module>
 	</modules>
 
