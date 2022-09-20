@@ -1,7 +1,6 @@
 
 ----TODO-------------
-Créer un repo pour chaque application project de domaine capable d'accueillir en liaison tout issue créée dans le projet Foundation
-
+Migrer les sources et structure de chaque repository collectant ce qu'il existe dans foundation/implementation line
 
 
 -- programme sécurité
