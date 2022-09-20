@@ -6,5 +6,14 @@ Feature specifications API versions (e.g interface versions) are delivered accor
 Feature implementations versions are designed and delivered as official Foundation Core implementation software.
 
 ### Sources Structure
-Application implementation source codes allowing build of software components reusable for systems build.
 Implementation components are built via Maven tool using a [standard Maven project structure](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html).
+
+# APPLICATIONS MODULES
+Each application module dedicated repository manages its source codes structure via repositories with prefix "domain-":
+- [Vulnerability Management module](githug/domain-vulnerability-mgt)
+
+# FEATURES MODULES
+The source code are managed in this area of Foundation project.
+
+# SYSTEMS
+System implementation source codes allowing to build the deploybale software components (e.g as virtualized systems) are managed in this repository.
