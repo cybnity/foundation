@@ -1,6 +1,5 @@
 
 ----TODO-------------
-Migrer les sources et structure de chaque repository collectant ce qu'il existe dans foundation/implementation line
 
 
 -- programme sécurité
@@ -9,6 +8,9 @@ Isoler chaque security control requirement permettant d'y référencer une solut
 Construire un backlog projet pour le programme sécurité dans lequel on positionnera les design de controls
 
 Créer les propal de solutions par requirements archi
+
+--- repo maven pour développements foundation et module applications
+- créer un repo GitHub et configurer les comptes pour l'utiliser depuis les projets maven de fondation et de chaque projet application
 
 -- backlogs github
 Créer un plan de milestones pour le programme sécurité et architecture comme projet initial de socle
