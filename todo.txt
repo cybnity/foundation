@@ -1,10 +1,21 @@
 
 ----TODO-------------
+Migrer les sources et structure de chaque repository collectant ce qu'il existe dans foundation/implementation line
 
-Copie le diagramme dans notion et GitHub 
 
-Rédiger le déploiement model sous K8s qui montre la cible de déploiement et donc packaging des systèmes pour pouvoir ensuite concevoir les sous-project d'assembly  pour K8s (voir pour cocher dans le 360° l'artifact "deployment model une fois rédigé et intégré dans le source de la doc gihut pour foundation).
+-- programme sécurité
+Isoler chaque security control requirement permettant d'y référencer une solution de design 
 
+Construire un backlog projet pour le programme sécurité dans lequel on positionnera les design de controls
+
+Créer les propal de solutions par requirements archi
+
+-- backlogs github
+Créer un plan de milestones pour le programme sécurité et architecture comme projet initial de socle
+Créer un milestone de factory logicielle avec priorité
+   - milestones factory+ envt build, puis milestone envt test/quald/prod 
+
+------
 
 Enregistrer la video et son de l'introduction à devenir co-designer, publier sur Vimeo et envoyer aux CISO déjà impliqués en proposant un atelier de sélection d'un a deux scénarios d'usage sur lesquels ils souhaiteraient devenir co-designer
 

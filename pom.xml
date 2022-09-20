@@ -100,7 +100,7 @@
 			<organizationUrl>http://corp.agnet.fr</organizationUrl>
 			<timezone>FR</timezone>
 			<roles>
-				<role>Produc Owner</role>
+				<role>Product Owner</role>
 				<role>Software Architect</role>
 				<role>Release Manager</role>
 			</roles>
@@ -151,7 +151,7 @@
 						<target>${java.version}</target>
 						<compilerVersion>${java.version}</compilerVersion>
 						<release>${maven.compiler.target}</release>
-						<encoding>${project.build.sourceEncoding}}</encoding>
+						<encoding>${project.build.sourceEncoding}</encoding>
 						<compilerArgument>-Xlint:${lint.activation}</compilerArgument>
 					</configuration>
 				</plugin>

@@ -14,7 +14,7 @@
 
 	<modules>
 		<module>workflow-process</module>
-		<module>security</module>
+		<module>domain</module>
 		<module>technical</module>
 		<module>transport</module>
 		<module>operating-system</module>

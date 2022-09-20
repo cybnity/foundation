@@ -13,23 +13,4 @@
 	<packaging>pom</packaging>
 	<name>CYBNITY business domain applications</name>
 
-	<modules>
-		<module>access-control</module>
-		<module>api-management</module>
-		<module>asset-control</module>
-		<module>audit-management</module>
-		<module>awareness-culture-management</module>
-		<module>behavior-intelligence</module>
-		<module>compliance-certification-management</module>
-		<module>detection-intelligence</module>
-		<module>governance-management</module>
-		<module>posture-prevention-management</module>
-		<module>quality-management</module>
-		<module>response-management</module>
-		<module>risk-management</module>
-		<module>security-event-management</module>
-		<module>threat-intelligence</module>
-		<module>trial-training-management</module>
-		<module>vulnerability-management</module>
-	</modules>
 </project>
