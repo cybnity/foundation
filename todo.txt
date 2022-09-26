@@ -1,25 +1,44 @@
-
-----TODO-------------
-
-
 -- programme sécurité
-Isoler chaque security control requirement permettant d'y référencer une solution de design 
+Faire le lien entre les techno d'implémentation et chaque control
+
+Puis faire une déduction entre les controls et la catégorie de module pour savoir quelles techno a un rôle d'implorations éligible pour supporter l'implémentation des contrôles
+De manière à identifier les potentiels stacks où il sera nécessaire d'implémenter certains security control
+
+--- catalogue exigences sécurité
+- ajouter lien vers category de module (implementation component category)
+- ajouter lien vers technology set
+- valoriser pour chaque archi requirement quelle technology et/ou component (d'implémentation métier) est éligible pour supporter cette exigence
+
+
+--- préparer les vdd tests en notion éligible à backlogs projets
+Créer au moins un BDD test par Cybnity key features liées à chaque feature = test entrant en eligible roadmap backlog entonnoir selon la priorité de la feature déjà priorisée
+  - préparer la liste des BDD story à développer au sein du backlog de son application concernée en GitHub.  
+
+Créer un Security PRD - Countermeasures Tests sous https://www.notion.so/cybnity/BAI03-07-PRD-Requirements-Validation-1301c685ab494d5eb2d158a9512f9b89. Pour accueillir la définition des BDD test au moins un par security control
+    - les rédiger et faire pointer vers les common security control considérés comme "features" de sécurité intrinsèques testées. Créer un bdd scénario test au moins par security control du catalogue, pour en permettre l'ajout en project d'imll GitHub open source
+
+
+-- miletones backlogs GitHub
 
 Construire un backlog projet pour le programme sécurité dans lequel on positionnera les design de controls
 
-Créer les propal de solutions par requirements archi
+Créer un plan de milestones pour le programme sécurité et architecture comme projet initial de socle
+Créer un milestone de factory logicielle avec priorité
+   - milestones factory+ envt build, puis milestone envt test/quald/prod 
+- priorisation ordonnées selon le poids must/should/could déjà définir par feature
+- définir priorité dans le catalog des mesures de contrôle selon qu'elles sont low, medium, high en commençant par les low puis medium puis high en priorités 1 vers 3
+
+
+--- créer un repo GitHub privé dédié aux extensions
+- créer un sous projet pour les extensions métier, celles "countermeasure" pour les implications de mesures de sécurité vendues (eg dans l'offre saas mais pas fournie en open source)
+- transférer les tickets GitHub de développements backlogs plutôt fournie en extension pro vers le repo qui les concerne côté projet privé
+
 
 --- repo maven pour développements foundation et module applications
 - créer un repo GitHub et configurer les comptes pour l'utiliser depuis les projets maven de fondation et de chaque projet application
 
--- backlogs github
-Créer un plan de milestones pour le programme sécurité et architecture comme projet initial de socle
-Créer un milestone de factory logicielle avec priorité
-   - milestones factory+ envt build, puis milestone envt test/quald/prod 
 
 ------
 
 Enregistrer la video et son de l'introduction à devenir co-designer, publier sur Vimeo et envoyer aux CISO déjà impliqués en proposant un atelier de sélection d'un a deux scénarios d'usage sur lesquels ils souhaiteraient devenir co-designer
 
-
-Envoyer un msg Linkedin standard à tous les rssi pour participer au votes des fonctions
