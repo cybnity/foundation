@@ -33,6 +33,8 @@ The build and delivery of the CYBNITY systems' features is performed through sev
 # DELIVERY DOCUMENTATIONS
 ## COLLABORATIVE WORKSPACES
 
+![image](CYBNITY-workspaces-OS.png)
+
 ## SYSTEMS & INFRASTRUCTURES DELIVERY
 ![image](CYBNITY_Software_Systems_Production_Chain.png)
 
