@@ -54,7 +54,7 @@ We capitalize experiences and best defense practices (e.g military or police sys
 
 The idea creation process implemented by the project (for definition of more relevant features to develop for enhance the solution), is based on a mix of inspirations coming from proprietary solutions available on the market (maturity level to have), standards and frameworks relevant for the companies (e.g regulation to support), problems and need meet by customers (e.g companies with digital assets, electronic solutions manufacturers) and contextual drivers (e.g countries conflicts increasing cyber-attacks).
 
-![image](https://user-images.githubusercontent.com/16148082/161950290-d910d90b-d97f-40a0-b827-62ef23201c3c.png)
+![image](cybnity-product-build-process.png)
   
 </p>
 </details>
