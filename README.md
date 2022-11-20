@@ -1,3 +1,4 @@
+![image](cybnity-logo.png)
 > _Let's Make Safe Digital World!_
 > 
 > _CYBNITY open source cybersecurity platform help you to govern the cyber defense of your digital assets for operate them with complete serenity._
