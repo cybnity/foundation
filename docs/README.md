@@ -39,11 +39,14 @@ The build and delivery of the CYBNITY systems' features is performed through sev
 ![image](CYBNITY_Software_Systems_Production_Chain.png)
 
 ### Systems Deployment Standards
-Supported by industrialization platform including several factory tools, several CYBNITY standards and guidelines are applied as Continuons Delivery (CD) protocol via pipeline models:
+Supported by industrialization platform including several factory tools, several CYBNITY standards and guidelines are applied as Continuous Delivery (CD) protocol via pipeline models:
 - Releasing Pipeline Model
 - Deployment Pipeline Model
 
 ### Systems Configuration
+The branching strategy including the practices and usage rules that should be followed by the developers are presented in detail on [CYBNITY software configuration and integration management model](https://cybnity.notion.site/BAI03-05-CYBNITY-Software-Configuration-Integration-Management-Model-89b9e65d8b2043a0845b2c8216b0c38a)
+
+![image](Release-branching-strategy.svg)
 
 ### Applications Operating
 
