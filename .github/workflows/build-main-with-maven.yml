@@ -8,7 +8,7 @@
 
 name: Java components CI with Maven
 
-run-name: CI triggered the workflow
+run-name: Java components built by CI
 
 on:
   push:
