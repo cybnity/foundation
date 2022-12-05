@@ -6,9 +6,9 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java components build with Maven
+name: Foundation modules build with Maven
 
-run-name: Java components build
+run-name: Foundation components build
 
 on:
   push:
