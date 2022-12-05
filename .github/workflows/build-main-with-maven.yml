@@ -6,9 +6,9 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java components CI with Maven
+name: Java components build with Maven
 
-run-name: Java components built by CI
+run-name: Java components build
 
 on:
   push:
