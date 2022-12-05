@@ -22,10 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: read
-      contents: read|write
-      packages: read|write
+      contents: read
+      packages: write
       pull-requests: write
-      deployments: read|write
+      deployments: write
       
     steps:
     # Patch of workflow regarding save-state and set-output commands when nto defined by user environment variable file
