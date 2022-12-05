@@ -6,9 +6,10 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: Java components CI with Maven
 
 on:
+  workflow_distpatch:
   push:
     branches: [ "main" ]
   pull_request:
