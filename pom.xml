@@ -37,8 +37,13 @@
 
 	<distributionManagement>
 		<!-- Artifacts distribution -->
+	    	<repository>
+	      		<id>github</id>
+	      		<name>GitHub Packages</name>
+	      		<url>https://maven.pkg.github.com/octocat/hello-world</url>
+	      	</repository>
 	</distributionManagement>
-
+	
 	<repositories></repositories>
 
 	<pluginRepositories>
