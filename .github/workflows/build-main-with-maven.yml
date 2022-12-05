@@ -51,17 +51,22 @@ jobs:
         cache: maven
         
     - name: VALIDATION & COMPILING
-    
+      run: echo "VALIDATION & COMPILING"
+      
     - name: UNIT TESTING
+      run: echo "TESTING"
     
     - name: BINARY PACKAGING
       run: mvn --batch-mode package --file pom.xml
       
     - name: QUALITY VERIFICATION
+      run: echo "QUALITY VERIFICATION"
     
     - name: LOCAL INSTALLATION
+      run: echo "LOCAL INSTALLATION"
     
     - name: REMOTE INSTALLATION
+      run: echo "REMOTE INSTALLATION"
     
     #- name: Build project component with Maven
     #  run: mvn --batch-mode -B package --file pom.xml
