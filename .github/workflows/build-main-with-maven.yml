@@ -8,8 +8,9 @@
 
 name: Java components CI with Maven
 
+run-name: ${{ github.actor }} triggere the workflow
+
 on:
-  workflow_distpatch:
   push:
     branches: [ "main" ]
   pull_request:
@@ -19,9 +20,12 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      packages: write
+      
     steps:
-    - name: Checkout Main branch
+    - name: Checkout MAIN branch's source codes
       uses: actions/checkout@v3
       with:
         repository: ${{ github.repository }}
@@ -36,7 +40,7 @@ jobs:
         cache: maven
         
     - name: Build project component with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn --batch-mode -B package --file pom.xml
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
