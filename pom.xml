@@ -36,13 +36,13 @@
 	</organization>
 
 	<distributionManagement>
-		<!-- GitHub Packages development artifacts distribution -->
+		<!-- GitHub Packages development artifacts distribution
 	    	<snapshotRepository>
 	      		<id>github</id>
 	      		<name>CYBNITY Snapshot Packages</name>
       			<uniqueVersion>true</uniqueVersion>
 	      		<url>https://maven.pkg.github.com/cybnity/foundation</url>
-	      	</snapshotRepository>
+	      	</snapshotRepository> -->
 		<!-- CYBNITY Open Source releases distribution -->
 		<repository>
         		<id>space-cybnity-open-source</id>
