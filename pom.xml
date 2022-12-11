@@ -42,12 +42,6 @@
 	      		<name>CYBNITY Snapshot Packages</name>
       			<uniqueVersion>true</uniqueVersion>
 	      		<url>https://maven.pkg.github.com/cybnity/foundation</url>
-			<snapshots>
-			    <enabled>true</enabled>
-			</snapshots>
-			<releases>
-			    <enabled>false</enabled>
-			</releases>
 	      	</snapshotRepository>
 		<!-- CYBNITY Open Source releases distribution -->
 		<repository>
@@ -56,12 +50,6 @@
 			<uniqueVersion>false</uniqueVersion>
         		<url>https://maven.pkg.jetbrains.space/cybnity/p/cybnity-os/cybnity-open-source</url>
 			<layout>default</layout>
-			<snapshots>
-			    <enabled>true</enabled>
-			</snapshots>
-			<releases>
-			    <enabled>true</enabled>
-			</releases>
     		</repository>
 	</distributionManagement>
 	
@@ -69,11 +57,23 @@
     		<repository>
         		<id>space-cybnity-open-source</id>
         		<url>https://maven.pkg.jetbrains.space/cybnity/p/cybnity-os/cybnity-open-source</url>
+			<snapshots>
+			    <enabled>false</enabled>
+			</snapshots>
+			<releases>
+			    <enabled>true</enabled>
+			</releases>
     		</repository>
 		<repository>
 	      		<id>github</id>
 	      		<name>GitHub Packages</name>
 	      		<url>https://maven.pkg.github.com/cybnity/foundation</url>
+			<snapshots>
+			    <enabled>true</enabled>
+			</snapshots>
+			<releases>
+			    <enabled>false</enabled>
+			</releases>
 	      	</repository>
 	</repositories>
 	<pluginRepositories>
