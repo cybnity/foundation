@@ -36,16 +36,25 @@
 	</organization>
 
 	<distributionManagement>
-		<!-- Artifacts distribution -->
+		<!-- Package artifacts distribution -->
 	    	<repository>
 	      		<id>github</id>
 	      		<name>GitHub Packages</name>
-	      		<url>https://maven.pkg.github.com/octocat/hello-world</url>
+	      		<url>https://maven.pkg.github.com/cybnity/foundation</url>
 	      	</repository>
+		<!-- CYBNITY Open Source projects artifacts distribution -->
+		<repository>
+        		<id>space-cybnity-open-source</id>
+        		<url>https://maven.pkg.jetbrains.space/cybnity/p/cybnity-os/cybnity-open-source</url>
+    		</repository>
 	</distributionManagement>
 	
-	<repositories></repositories>
-
+	<repositories>
+    		<repository>
+        		<id>space-cybnity-open-source</id>
+        		<url>https://maven.pkg.jetbrains.space/cybnity/p/cybnity-os/cybnity-open-source</url>
+    		</repository>
+	</repositories>
 	<pluginRepositories>
 		<!--
 		<pluginRepository>
