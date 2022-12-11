@@ -36,17 +36,20 @@
 	</organization>
 
 	<distributionManagement>
-		<!-- Package artifacts distribution
-	    	<repository>
+		<!-- GitHub Packages development artifacts distribution -->
+	    	<snapshotRepository>
 	      		<id>github</id>
-	      		<name>GitHub Packages</name>
+	      		<name>CYBNITY Snapshot Packages</name>
+      			<uniqueVersion>true</uniqueVersion>
 	      		<url>https://maven.pkg.github.com/cybnity/foundation</url>
-	      	</repository> -->
-		<!-- CYBNITY Open Source projects artifacts distribution -->
+	      	</snapshotRepository>
+		<!-- CYBNITY Open Source releases distribution -->
 		<repository>
         		<id>space-cybnity-open-source</id>
-			<name>CYBNITY OS projects Repo</name>
+			<name>CYBNITY OS Releases</name>
+			<uniqueVersion>false</uniqueVersion>
         		<url>https://maven.pkg.jetbrains.space/cybnity/p/cybnity-os/cybnity-open-source</url>
+			<layout>default</layout>
     		</repository>
 	</distributionManagement>
 	
