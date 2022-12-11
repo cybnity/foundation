@@ -73,7 +73,7 @@ jobs:
       run: echo "REMOTE INSTALLATION"
     
     - name: Build, verify and install parent pom.xml into local repository
-      run: mvn --batch-mode clean install -N -U --file pom.xml
+      run: mvn --batch-mode clean install -U --file pom.xml
       env:
           MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
