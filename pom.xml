@@ -36,12 +36,12 @@
 	</organization>
 
 	<distributionManagement>
-		<!-- Package artifacts distribution -->
+		<!-- Package artifacts distribution
 	    	<repository>
 	      		<id>github</id>
 	      		<name>GitHub Packages</name>
 	      		<url>https://maven.pkg.github.com/cybnity/foundation</url>
-	      	</repository>
+	      	</repository> -->
 		<!-- CYBNITY Open Source projects artifacts distribution -->
 		<repository>
         		<id>space-cybnity-open-source</id>
