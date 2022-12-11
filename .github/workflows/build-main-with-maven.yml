@@ -80,7 +80,7 @@ jobs:
 
     - name: Build, package and publish to CYBNITY Open Source projects repository
       run: mvn --batch-mode deploy -V --file pom.xml
-        env:
+      env:
           MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
     #  env:
