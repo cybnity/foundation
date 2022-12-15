@@ -16,7 +16,7 @@ on:
 
 jobs:
   java_build:
-    name: Java components build
+    name: Java artefacts publishing
     runs-on: ubuntu-latest
     permissions:
       contents: read
