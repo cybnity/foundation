@@ -58,19 +58,19 @@ jobs:
     #- name: Update dependency graph
     #  uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
 
-  artefact_publish:
-    if: ${{ always() }}
-    needs: java_build
-    name: Java artefacts publish
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      deployments: write
-    steps:
-    - name: REMOTE INSTALLATION
+    - name: Publish artefacts into remote repository
       run: echo "REMOTE INSTALLATION"
     - name: Publish artifacts to CYBNITY Open Source remote repository
       run: mvn --batch-mode deploy --file pom.xml
       env:
           MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+  #artefact_publish:
+  #  if: ${{ always() }}
+  #  needs: java_build
+  #  name: Java artefacts publish
+  #  runs-on: ubuntu-latest
+  #  permissions:
+  #    contents: read
+ #   deployments: write
+ #   steps:
