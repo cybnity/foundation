@@ -63,6 +63,9 @@ jobs:
     needs: java_build
     name: Java artefacts publish
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
     steps:
     - name: REMOTE INSTALLATION
       run: echo "REMOTE INSTALLATION"
