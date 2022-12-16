@@ -21,7 +21,7 @@
 		<javafx.version>13</javafx.version>
 
 		<!-- CYBNITY project default revision -->
-		<revision>SNAPSHOT</revision>
+		<revision>0.0.1-SNAPSHOT</revision>
 	</properties>
 
 	<!-- Project lines
