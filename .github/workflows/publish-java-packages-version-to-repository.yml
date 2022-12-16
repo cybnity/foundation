@@ -6,10 +6,12 @@ run-name: Build & publish java packages
 on:
   workflow_call:
     inputs:
-      branch-ref:
-        description: 'A name of branch including java project to build'
+      config-path:
         required: true
         type: string
+    secrets:
+      token:
+        required: true
 jobs:
   java_build:
     name: Java components COMMIT STAGE
@@ -32,7 +34,7 @@ jobs:
       with:
         repository: ${{ github.repository }}
         token: ${{ github.token }}
-        ref: ${{ inputs.branch-ref }}
+        ref: ${{ inputs.config-path }}
 
     - name: Set up Java for publishing to CYBNITY Maven Repository
       uses: actions/setup-java@v3

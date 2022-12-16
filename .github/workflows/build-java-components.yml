@@ -52,6 +52,7 @@ jobs:
       #  run: echo "{name}={value}" >> $GITHUB_OUTPUT
 
       - name: Checkout source codes from origin branch
+        id: checkout_step
         uses: actions/checkout@v3
         with:
           repository: ${{ github.repository }}
@@ -80,7 +81,7 @@ jobs:
       needs: [build_and_verify_packages]
       name: Publish artifacts to remote repository
       if: ${{ success() }}
-      uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
-      with:
-        branch-ref: ${{ inputs.branch_name }}
+      uses: ./.github/workflows/publish-java-packages-version-to-repository.yml@${{ build_and_verify_packages.steps.checkout_step.ref }}
+      #with:
+      #  branch-ref: ${{ inputs.branch_name }}
       secrets: inherit
