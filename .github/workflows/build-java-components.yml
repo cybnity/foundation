@@ -1,7 +1,7 @@
 # Mandatory automatic build of java components before to manage a pull request
 # that allow to detect valid compilation before to merge source codes via a pull request effort by a reviewer
 
-name: Java components COMMIT STAGE
+name: Maven CI
 
 run-name: Unit testing & quality verification
 
@@ -38,8 +38,8 @@ jobs:
     steps:
       - run: echo Review is requested from ${{ github.event.requested_team.name }}
 
-  java_verify:
-    name: Java components build
+  build_and_verify_packages:
+    name: Build and verify java packages
     runs-on: ubuntu-latest
     outputs:
       output1: ${{ steps.step_verify.outputs.state }}
@@ -81,14 +81,16 @@ jobs:
       - name:  Verify the java packages quality (phases validate, compile, test, package, verify)
         id: step_verify
         run: mvn --batch-mode --update-snapshots --show-version --file pom.xml verify
-        run: echo "::set-output name=state::SUCCESS"
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-  build_result:
+      - name: Save result
+        run: echo "::set-output name=state::SUCCESS"
+
+  analyze_result:
     runs-on: ubuntu-latest
-    needs: java_verify
+    needs: [build_and_verify_packages]
     #if: ${{ github.event.requested_team.name == 'octo-team' }}
     steps:
       - run: echo Result of quality verification is a ${{ needs.java_verify.outputs.output1 }}
