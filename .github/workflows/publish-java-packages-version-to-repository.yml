@@ -1,19 +1,15 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
 
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
+name: Java artifacts COMMIT STAGE
 
-name: Staging java artifacts COMMIT STAGE
-
-run-name: Build & publish java packages to remote repository
+run-name: Build java packages
 
 on:
-  push:
-    branches: [ "staging" ]
-
+  workflow_call:
+    inputs:
+      branch_name:
+        description: 'A name of branch including java project to build'
+        required: true
+        type: string
 jobs:
   java_build:
     name: Java components COMMIT STAGE

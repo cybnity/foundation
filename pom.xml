@@ -24,11 +24,11 @@
 		<revision>0.0.1-SNAPSHOT</revision>
 	</properties>
 
-	<!-- Project lines
+	<!-- Project lines -->
 	<modules>
 		<module>implementations-line</module>
 		<module>systems-line</module>
-	</modules>-->
+	</modules>
 
 	<organization>
 		<name>CYBNITY</name>
