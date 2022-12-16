@@ -8,7 +8,7 @@
 
 name: Java artifacts COMMIT STAGE
 
-run-name: Build & publish Alpha java packages to CYBNITY remote Maven repository
+run-name: Build & publish java packages to CYBNITY remote Maven repository
 
 on:
   push:
