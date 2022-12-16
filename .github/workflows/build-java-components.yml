@@ -81,7 +81,7 @@ jobs:
       needs: [build_and_verify_packages]
       name: Publish artifacts to remote repository
       if: ${{ success() }}
-      uses: ./.github/workflows/publish-java-packages-version-to-repository.yml@${{ build_and_verify_packages.steps.checkout_step.ref }}
+      uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
       #with:
       #  branch-ref: ${{ inputs.branch_name }}
       secrets: inherit
