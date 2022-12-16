@@ -74,13 +74,17 @@ jobs:
 
       - name:  Verify the java packages quality (phases validate, compile, test, package, verify)
         id: step_verify
-        run: mvn --batch-mode --update-snapshots --show-version --file pom.xml verify
+        # set the MAVEN_RESULT environment variable to the value of the mvn command output text
+        run: |
+          echo 'MAVEN_RESULT<<EOF' >> $GITHUB_ENV
+          mvn --batch-mode --update-snapshots --show-version --file pom.xml verify >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-      - name: Save result
-        run: echo "::set-output name=state::SUCCESS"
+      - name: Identify build result
+        run: echo "state=SUCCESS" >> $GITHUB_OUTPUT
 
   analyze_result:
     name: Check build result
