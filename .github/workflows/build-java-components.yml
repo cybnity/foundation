@@ -6,7 +6,16 @@ name: Java components COMMIT STAGE
 run-name: Unit testing & quality verification
 
 on:
+  push:
+    # execution when commit is pushed by a developer of a feature
+    branches:
+      - 'feature*'
+      - 'hotfix*'
+      - 'fix*'
+      - 'dev*'
+
   pull_request:
+    # execution when pull request is requested by a developer (e.g to reviewer) on his development branch or another branch
     types: [opened, reopened]
     branches:
       - 'feature*'
