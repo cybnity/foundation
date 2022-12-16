@@ -37,20 +37,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      #packages: write
       pull-requests: write
-      #deployments: write
 
     steps:
-      - name : Identify the branch of java project to build with Maven
-        run: echo "The branch to build is ${{ inputs.branch_name }}"
-
-      # Patch of workflow regarding save-state and set-output commands when not defined by user environment variable file
-      #- name: Save state
-      #  run: echo "{name}={value}" >> $GITHUB_STATE
-      #- name: Set output
-      #  run: echo "{name}={value}" >> $GITHUB_OUTPUT
-
       - name: Checkout source codes from origin branch
         id: checkout_step
         uses: actions/checkout@v3
@@ -79,10 +68,9 @@ jobs:
 
   call-workflow-in-local-repo:
       needs: [build_and_verify_packages]
-      name: Publish artifacts to remote repository
+      name: Refresh artifacts repository
       if: ${{ success() }}
       uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
       with:
         config-path: ${{ needs.build_and_verify_packages.steps.checkout_step.ref }}
-        #config-path: ${{ inputs.branch_name }}
       secrets: inherit

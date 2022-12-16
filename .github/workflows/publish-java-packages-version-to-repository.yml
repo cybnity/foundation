@@ -15,17 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      #packages: write
-      #pull-requests: write
-      #deployments: write
-
+      
     steps:
-    # Patch of workflow regarding save-state and set-output commands when not defined by user environment variable file
-    - name: Save state
-      run: echo start for ${{ inputs.config-path }}
-    #- name: Set output
-    #  run: echo "{name}={value}" >> $GITHUB_OUTPUT
-
     - name: Checkout source codes from branch
       uses: actions/checkout@v3
       with:
