@@ -1,12 +1,12 @@
 
 name: Java artifacts COMMIT STAGE
 
-run-name: Build java packages
+run-name: Build & publish java packages
 
 on:
   workflow_call:
     inputs:
-      branch_name:
+      branch-ref:
         description: 'A name of branch including java project to build'
         required: true
         type: string
@@ -22,17 +22,17 @@ jobs:
 
     steps:
     # Patch of workflow regarding save-state and set-output commands when not defined by user environment variable file
-    - name: Save state
-      run: echo "{name}={value}" >> $GITHUB_STATE
-    - name: Set output
-      run: echo "{name}={value}" >> $GITHUB_OUTPUT
+    #- name: Save state
+    #  run: echo "{name}={value}" >> $GITHUB_STATE
+    #- name: Set output
+    #  run: echo "{name}={value}" >> $GITHUB_OUTPUT
 
-    - name: Checkout source codes from STAGING branch
+    - name: Checkout source codes from branch
       uses: actions/checkout@v3
       with:
         repository: ${{ github.repository }}
         token: ${{ github.token }}
-        ref: staging
+        ref: ${{ inputs.branch-ref }}
 
     - name: Set up Java for publishing to CYBNITY Maven Repository
       uses: actions/setup-java@v3
@@ -44,7 +44,7 @@ jobs:
         server-username: MAVEN_USERNAME
         server-password: MAVEN_PASSWORD
 
-    - name: Publish staging version of java components to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
+    - name: Publish version of java packages to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
       run: mvn --batch-mode --update-snapshots --show-version --file pom.xml deploy
       env:
           MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}

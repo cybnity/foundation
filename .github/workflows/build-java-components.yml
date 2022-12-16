@@ -35,9 +35,6 @@ jobs:
   build_and_verify_packages:
     name: Build and verify java packages
     runs-on: ubuntu-latest
-    outputs:
-      result: ${{ steps.result_promotion.outputs.result }}
-
     permissions:
       contents: read
       #packages: write
@@ -73,15 +70,15 @@ jobs:
           server-password: MAVEN_PASSWORD
 
       - name:  Verify the java packages quality (phases validate, compile, test, package, verify)
-        id: verify_step
         # set the MAVEN_RESULT environment variable to the value of the mvn command output text
         run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean verify
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-      - name: Promote build result
-        id: result_promotion
-        run: |
-          echo Result of quality verification step is a ${{ verify_step.outcome }}
-          if [[ ${{ verify_step.outcome }} == "failure" ]]; then echo "result=failure" >> $GITHUB_OUTPUT; else echo "result=success" >> $GITHUB_OUTPUT; fi
+  call-workflow-passing-data:
+      - name: Publish artifacts to remote repository
+        if: ${{ success() }}
+        uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
+        with:
+          branch-ref: ${{ inputs.branch_name }}
