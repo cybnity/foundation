@@ -77,7 +77,7 @@ jobs:
         # set the MAVEN_RESULT environment variable to the value of the mvn command output text
         run: |
           echo 'MAVEN_RESULT<<EOF' >> $GITHUB_ENV
-          mvn --batch-mode --update-snapshots --show-version --file pom.xml verify >> $GITHUB_ENV
+          mvn --batch-mode --update-snapshots --show-version --fail-fast --quiet --file pom.xml verify >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
@@ -89,7 +89,7 @@ jobs:
   analyze_result:
     name: Check build result
     runs-on: ubuntu-latest
-    needs: [build_and_verify_packages]
+    needs: build_and_verify_packages
     #if: ${{ github.event.requested_team.name == 'octo-team' }}
     steps:
       - run: echo Result of quality verification is a ${{ needs.build_and_verify_packages.outputs.output1 }}
