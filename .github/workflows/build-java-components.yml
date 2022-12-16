@@ -36,7 +36,7 @@ jobs:
     name: Build and verify java packages
     runs-on: ubuntu-latest
     outputs:
-      result: ${{ steps.verify_step.outputs.result }}
+      result: ${{ steps.result_promotion.outputs.result }}
 
     permissions:
       contents: read
@@ -46,7 +46,7 @@ jobs:
 
     steps:
       - name : Identify the branch of java project to build with Maven
-        run: echo "The branch to build is ${{ github.ref }}"
+        run: echo "The branch to build is ${{ inputs.branch_name }}"
 
       # Patch of workflow regarding save-state and set-output commands when not defined by user environment variable file
       #- name: Save state
@@ -79,9 +79,9 @@ jobs:
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
-            
+
       - name: Promote build result
         id: result_promotion
         run: |
-          echo Result of quality verification step is a ${{ needs.build_and_verify_packages.outcome }}
-          if [[ ${{ needs.build_and_verify_packages.outcome }} == "failure" ]]; then echo "result=failure" >> $GITHUB_OUTPUT; else echo "result=success" >> $GITHUB_OUTPUT; fi
+          echo Result of quality verification step is a ${{ verify_step.outcome }}
+          if [[ ${{ verify_step.outcome }} == "failure" ]]; then echo "result=failure" >> $GITHUB_OUTPUT; else echo "result=success" >> $GITHUB_OUTPUT; fi
