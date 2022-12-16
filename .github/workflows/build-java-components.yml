@@ -77,11 +77,12 @@ jobs:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-  call-workflow-passing-data:
+  call-workflow-in-local-repo:
       needs: [build_and_verify_packages]
       name: Publish artifacts to remote repository
       if: ${{ success() }}
       uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
-      #with:
-      #  branch-ref: ${{ inputs.branch_name }}
+      with:
+        config-path: ${{ needs.build_and_verify_packages.steps.checkout_step.ref }}
+        #config-path: ${{ inputs.branch_name }}
       secrets: inherit
