@@ -21,8 +21,8 @@ jobs:
     permissions:
       contents: read
       packages: write
-      pull-requests: write
-      deployments: write
+      #pull-requests: write
+      #deployments: write
 
     steps:
     # Patch of workflow regarding save-state and set-output commands when not defined by user environment variable file
@@ -38,7 +38,7 @@ jobs:
         token: ${{ github.token }}
         ref: staging
 
-    - name: Set up Temurin JDK 11
+    - name: Set up Java for publishing to CYBNITY Maven Repository
       uses: actions/setup-java@v3
       with:
         java-version: '11'
@@ -48,12 +48,23 @@ jobs:
         server-username: MAVEN_USERNAME
         server-password: MAVEN_PASSWORD
 
-    - name: Build and deploy staging version to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
-      run: mvn --batch-mode clean deploy -U --file pom.xml
+    - name: Publish staging version of java components to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
+      run: mvn --batch-mode --update-snapshots --show-version --file pom.xml deploy
       env:
           MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
+    - name: Set up Java for publishing to GitHub Packages
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Publish staging version of java components to GitHub Packages
+      run: mvn --batch-mode --update-snapshots --file pom.xml deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     # Optional: Uploads the full dependency graph to GitHub (output variable) to improve the quality of Dependabot alerts this repository can receive
     #- name: Update dependency graph
     #  uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
