@@ -77,8 +77,8 @@ jobs:
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
   call-workflow-passing-data:
-      - name: Publish artifacts to remote repository
-        if: ${{ success() }}
-        uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
-        with:
-          branch-ref: ${{ inputs.branch_name }}
+      name: Publish artifacts to remote repository
+      if: ${{ success() }}
+      uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
+      with:
+        branch-ref: ${{ inputs.branch_name }}
