@@ -23,7 +23,6 @@ on:
       - 'fix*'
       - 'dev*'
       - 'staging*'
-      - 'integration*'
 
     # when changes detected on files or java sub-projects
     paths:
