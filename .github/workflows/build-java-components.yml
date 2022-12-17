@@ -3,7 +3,7 @@
 
 name: Java Project Quality Check
 
-run-name: Java unit testing & quality verification
+run-name: Java components unit testing & quality verification
 
 on:
   push:
