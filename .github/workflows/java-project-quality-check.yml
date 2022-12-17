@@ -1,12 +1,21 @@
 # Mandatory automatic build of java components before to manage a pull request
 # that allow to detect valid compilation before to merge source codes via a pull request effort by a reviewer
 
-name: Java components COMMIT STAGE
+name: Java Project Quality Check
 
-run-name: Unit testing & quality verification
+run-name: Java components unit testing & quality verification
 
 on:
+  push:
+    # execution when commit is pushed by a developer of a feature
+    branches:
+      - 'feature*'
+      - 'hotfix*'
+      - 'fix*'
+      - 'dev*'
+
   pull_request:
+    # execution when pull request is requested by a developer (e.g to reviewer) on his development branch or another branch
     types: [opened, reopened]
     branches:
       - 'feature*'
@@ -23,35 +32,16 @@ on:
       - 'systems-line/**'
 
 jobs:
-  specific_review_requested:
+  build_and_verify_packages:
+    name: Build and verify java codes quality
     runs-on: ubuntu-latest
-    #if: ${{ github.event.requested_team.name == 'octo-team'}}
-    steps:
-      - run: echo Review is requested from ${{ github.event.requested_team.name }}
-
-  java_verify:
-    name: Java components build
-    runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.step_verify.outputs.state }}
-
     permissions:
       contents: read
-      #packages: write
       pull-requests: write
-      #deployments: write
 
     steps:
-      - name : Identify the branch of java project to build with Maven
-        run: echo The branch to build is ${{ inputs.branch_name }}
-
-      # Patch of workflow regarding save-state and set-output commands when not defined by user environment variable file
-      #- name: Save state
-      #  run: echo "{name}={value}" >> $GITHUB_STATE
-      #- name: Set output
-      #  run: echo "{name}={value}" >> $GITHUB_OUTPUT
-
       - name: Checkout source codes from origin branch
+        id: checkout_step
         uses: actions/checkout@v3
         with:
           repository: ${{ github.repository }}
@@ -69,17 +59,18 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
 
-      - name:  Verify the java packages quality (phases validate, compile, test, package, verify)
-        id: step_verify
-        run: mvn --batch-mode --update-snapshots --show-version --file pom.xml verify
-        run: echo "::set-output name=state::SUCCESS"
+      - name:  Test and verify the packages quality (phases validate, compile, test, package, verify)
+        # set the MAVEN_RESULT environment variable to the value of the mvn command output text
+        run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean verify
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-  build_result:
-    runs-on: ubuntu-latest
-    needs: java_verify
-    #if: ${{ github.event.requested_team.name == 'octo-team' }}
-    steps:
-      - run: echo Result of quality verification is a ${{ needs.java_verify.outputs.output1 }}
+  call-workflow-in-local-repo:
+    name: Refresh artifacts repository
+    needs: [build_and_verify_packages]
+    if: ${{ success() }}
+    uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
+    with:
+      config-path: ${{ needs.build_and_verify_packages.steps.checkout_step.ref }}
+    secrets: inherit

@@ -23,7 +23,7 @@
 		<!-- CYBNITY project default revision -->
 		<revision>0.0.1-SNAPSHOT</revision>
 	</properties>
-
+	
 	<!-- Project lines -->
 	<modules>
 		<module>implementations-line</module>
