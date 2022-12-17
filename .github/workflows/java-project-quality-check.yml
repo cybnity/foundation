@@ -27,7 +27,7 @@ on:
 
     # when changes detected on files or java sub-projects
     paths:
-      - '**pom.xml'
+      - 'pom.xml'
       - 'implementations-line/**'
       - 'systems-line/**'
 
