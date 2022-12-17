@@ -1,9 +1,9 @@
 # Mandatory automatic build of java components before to manage a pull request
 # that allow to detect valid compilation before to merge source codes via a pull request effort by a reviewer
 
-name: Maven CI
+name: Java Project Quality Check
 
-run-name: Unit testing & quality verification
+run-name: Java unit testing & quality verification
 
 on:
   push:
@@ -33,7 +33,7 @@ on:
 
 jobs:
   build_and_verify_packages:
-    name: Build and verify java packages
+    name: Build and verify java codes quality
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -59,7 +59,7 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
 
-      - name:  Verify the java packages quality (phases validate, compile, test, package, verify)
+      - name:  Test and verify the packages quality (phases validate, compile, test, package, verify)
         # set the MAVEN_RESULT environment variable to the value of the mvn command output text
         run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean verify
         env:
@@ -67,10 +67,10 @@ jobs:
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
   call-workflow-in-local-repo:
-      needs: [build_and_verify_packages]
-      name: Refresh artifacts repository
-      if: ${{ success() }}
-      uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
-      with:
-        config-path: ${{ needs.build_and_verify_packages.steps.checkout_step.ref }}
-      secrets: inherit
+    name: Refresh artifacts repository
+    needs: [build_and_verify_packages]
+    if: ${{ success() }}
+    uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
+    with:
+      config-path: ${{ needs.build_and_verify_packages.steps.checkout_step.ref }}
+    secrets: inherit
