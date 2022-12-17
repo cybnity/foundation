@@ -20,12 +20,12 @@
 		<junit.version>[4.13.1,)</junit.version>
 		<javafx.version>13</javafx.version>
 
-		<!-- CYBNITY project revision -->
+		<!-- CYBNITY project default revision -->
 		<revision>0.0.1-SNAPSHOT</revision>
 	</properties>
-
+	
+	<!-- Project lines -->
 	<modules>
-		<!-- Project lines -->
 		<module>implementations-line</module>
 		<module>systems-line</module>
 	</modules>
@@ -52,7 +52,7 @@
 			<layout>default</layout>
     		</repository>
 	</distributionManagement>
-	
+
 	<repositories>
     		<repository>
         		<id>space-cybnity-open-source</id>
