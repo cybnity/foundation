@@ -40,19 +40,10 @@ jobs:
         server-username: MAVEN_USERNAME
         server-password: MAVEN_PASSWORD
 
-    - name: Output Run ID
-      run: echo ${{ github.run_id }}
-
-    - name: Output Run Number
-      run: echo ${{ github.run_number }}
-
-    - name: Output Run Attempt
-      run: echo ${{ github.run_attempt }}
-
     - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>.<<commit time>>)
       run: |
           echo "read git commit revision abbreviation based on 7 characters (default) maximum"
-          git rev-parse --short ${{ inputs.branch_name }}
+          git show ${git rev-parse --short ${{ inputs.branch_name }} }
 
     - name : Shortify Git Revision
         # You may pin to the exact commit or the version.
