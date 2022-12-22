@@ -39,17 +39,19 @@ jobs:
         server-id: space-cybnity-open-source
         server-username: MAVEN_USERNAME
         server-password: MAVEN_PASSWORD
-
-    - name: Get Hash
-      id: hash
-      run: echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_SHA
-
-    - name: Check Hash
-      run: echo "${{ env.hash }}"
+        
+    - name: short-sha
+      id: short_sha
+      # You may pin to the exact commit or the version.
+      # uses: benjlevesque/short-sha@56c9032868f85fc82058ff0793e58ab97bb2b856
+      uses: benjlevesque/short-sha@v1.2
+      with:
+        # length of the sha1
+        length: 7
 
     - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>.<<commit time>>)
       run: |
-          echo "read git commit revision ${{ env.GITHUB_SHA }} abbreviation based on 7 characters (default) maximum"
+          echo "read git commit revision ${{ short_sha }} abbreviation based on 7 characters (default) maximum"
 
     - name: Publish version of java packages to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
       run: mvn --batch-mode --update-snapshots --show-version --file pom.xml deploy
