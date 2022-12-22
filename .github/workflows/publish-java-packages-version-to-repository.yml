@@ -9,6 +9,12 @@ on:
       config-path:
         required: true
         type: string
+
+  push:
+    # execute only when changes detected on files or java sub-projects contents
+    paths:
+      - '.github/workflows/**'
+
 jobs:
   build_and_deploy_packages:
     name: Build and deploy packages to remote repository
