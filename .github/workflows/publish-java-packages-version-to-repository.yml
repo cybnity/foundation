@@ -14,10 +14,6 @@ on:
         required: false
         default: 'SNAPSHOT'
         type: string
-  push:
-    # execute only when changes detected on files or java sub-projects contents
-    paths:
-      - '.github/workflows/**'
 
 jobs:
   build_and_deploy_packages:
