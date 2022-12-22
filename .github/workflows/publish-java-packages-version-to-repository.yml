@@ -66,7 +66,7 @@ jobs:
     - name: Snapshots remote repository is targeted to be updated
       if: ${{ contains(inputs.target_repository, 'snapshot') || inputs.target_repository == '' }}
       run: |
-          echo "current_artifacts_revision_id=${{ env.current_artifacts_revision_id }}-snapshot" >> $GITHUB_ENV
+          echo "current_artifacts_revision_id=${{ env.current_artifacts_revision_id }}-SNAPSHOT" >> $GITHUB_ENV
           echo "Snapshot packages will be published"
 
     - name: Prepare a Maven project customized ${{ env.current_artifacts_revision_id }} version to publish
