@@ -13,6 +13,11 @@ on:
       - 'hotfix*'
       - 'fix*'
       - 'dev*'
+    # execute only when changes detected on files or java sub-projects contents
+    paths:
+      - 'pom.xml'
+      - 'implementations-line/**'
+      - 'systems-line/**'
 
   pull_request:
     # execution when pull request is requested by a developer (e.g to reviewer) on his development branch or another branch
@@ -23,13 +28,22 @@ on:
       - 'fix*'
       - 'dev*'
       - 'staging*'
-      - 'integration*'
-
-    # when changes detected on files or java sub-projects
+    # execute only when changes detected on files or java sub-projects contents
     paths:
-      - '**pom.xml'
-      - 'implementations-line/**'
-      - 'systems-line/**'
+    - 'pom.xml'
+    - 'implementations-line/**'
+    - 'systems-line/**'
+
+  pull_request_target:
+    # execution when feature's artifacts (e.g implementation doc, java source code) are reviewed
+    branches:
+      - 'feature*'
+      - 'hotfix*'
+      - 'fix*'
+      - 'dev*'
+      - 'staging*'
+    # when a pull request merges, the pull request is automatically closed (so check the merged state)
+    types: [closed]
 
 jobs:
   build_and_verify_packages:
@@ -66,9 +80,18 @@ jobs:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-  call-workflow-in-local-repo:
-    name: Refresh artifacts repository
+  decide_artifacts_repository_refresh:
+    # execute only if the pull request was merged by the reviewer (e.g software developer)
+    if: github.event.pull_request.merged == true
     needs: [build_and_verify_packages]
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo the PR was merged and refresh of artifact versions repository is taken
+
+  call_workflow_to_publish_contents_version_to_remote_repository:
+    name: Refresh artifacts repository
+    needs: [build_and_verify_packages,decide_artifacts_repository_refresh]
     if: ${{ success() }}
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
