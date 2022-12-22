@@ -40,10 +40,18 @@ jobs:
         server-username: MAVEN_USERNAME
         server-password: MAVEN_PASSWORD
 
+    - name: Get Hash
+      id: hash
+      run: echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_HASH
+
+    - name: Check Hash
+      run: echo "${{ env.hash }}"
+
     - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>.<<commit time>>)
       run: |
-          echo "read git commit revision abbreviation based on 7 characters (default) maximum"
-          git show ${git rev-parse --short ${{ inputs.branch_name }} }
+          echo "read git commit revision (${GITHUB_SHA::7}) abbreviation based on 7 characters (default) maximum"
+          echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_HASH
+
 
     - name : Shortify Git Revision
         # You may pin to the exact commit or the version.
