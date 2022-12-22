@@ -302,7 +302,7 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
 				<configuration>
-					<flattenMode>minimum</flattenMode>
+					<flattenMode>oss</flattenMode>
 				</configuration>
         <executions>
           <execution>

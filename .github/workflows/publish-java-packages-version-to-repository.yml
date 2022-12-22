@@ -51,7 +51,6 @@ jobs:
       run: |
           echo "Git commit revision $CI_SHA_SHORT abbreviation based on 7 characters (default) maximum (origin based: $CI_SHA)"
           echo "commit_id=$CI_SHA_SHORT" >> $GITHUB_ENV
-          echo "Redefined pre-release revision as ${{ env.commit_id }}"
           echo "feature_name=$CI_ACTION_REF_NAME_SLUG" >> $GITHUB_ENV
 
     - name: Identify the origin release name of the project (currently statically defined as 0.0.1 NEED TO BE EVOLUATED)
