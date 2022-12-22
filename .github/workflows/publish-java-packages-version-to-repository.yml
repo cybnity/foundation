@@ -11,7 +11,7 @@ on:
         type: string
       target_repository:
         description: 'Type of release type to publish to dedicated Maven artifacts repository'
-        required: true
+        required: false
         default: 'snapshot'
         type: string
   push:
