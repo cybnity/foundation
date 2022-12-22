@@ -13,6 +13,11 @@ on:
       - 'hotfix*'
       - 'fix*'
       - 'dev*'
+    # execute only when changes detected on files or java sub-projects contents
+    paths:
+      - 'pom.xml'
+      - 'implementations-line/**'
+      - 'systems-line/**'
 
   pull_request:
     # execution when pull request is requested by a developer (e.g to reviewer) on his development branch or another branch
@@ -23,13 +28,22 @@ on:
       - 'fix*'
       - 'dev*'
       - 'staging*'
-      - 'integration*'
-
-    # when changes detected on files or java sub-projects
+    # execute only when changes detected on files or java sub-projects contents
     paths:
-      - '**pom.xml'
-      - 'implementations-line/**'
-      - 'systems-line/**'
+    - 'pom.xml'
+    - 'implementations-line/**'
+    - 'systems-line/**'
+
+  pull_request_target:
+    # execution when feature's artifacts (e.g implementation doc, java source code) are reviewed
+    branches:
+      - 'feature*'
+      - 'hotfix*'
+      - 'fix*'
+      - 'dev*'
+      - 'staging*'
+    # when a pull request merges, the pull request is automatically closed (so check the merged state)
+    types: [closed]
 
 jobs:
   build_and_verify_packages:
@@ -66,11 +80,16 @@ jobs:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-  call-workflow-in-local-repo:
+  call_workflow_to_publish_contents_version_to_remote_repository:
     name: Refresh artifacts repository
     needs: [build_and_verify_packages]
-    if: ${{ success() }}
+    if: |
+      ${{ success()
+        && github.event.pull_request.merged == true
+        && github.event.pull_request.reviewDecision == 'approved'
+        }}
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
       config-path: ${{ needs.build_and_verify_packages.steps.checkout_step.ref }}
+      target_repository: RELEASE
     secrets: inherit
