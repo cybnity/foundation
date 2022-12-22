@@ -36,16 +36,18 @@ jobs:
 
     - name: Output Run ID
       run: echo ${{ github.run_id }}
+
     - name: Output Run Number
       run: echo ${{ github.run_number }}
+
     - name: Output Run Attempt
       run: echo ${{ github.run_attempt }}
-  
+
     - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>.<<commit time>>)
       run: |
           echo "read git commit revision abbreviation based on 7 characters (default) maximum"
           git rev-parse --short ${{ inputs.branch_name }}
-        
+
     - name : Shortify Git Revision
         # You may pin to the exact commit or the version.
         # uses: rlespinasse/shortify-git-revision@c90ba7007ef6c152254d10b9f1a327966ab13077
@@ -61,12 +63,12 @@ jobs:
         # Still short it if the git revision isn't valid
         #short-on-error: # optional, default is false
         # Value to prepend to each generated variable
-        #prefix: # optional, default is 
+        #prefix: # optional, default is
         # Value to configure the length of the shorted sha
-        #length: # optional, default is 
+        #length: # optional, default is
         # Publish short as environment variable
         #publish-env: # optional, default is true
-    
+
     - name: Publish version of java packages to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
       run: mvn --batch-mode --update-snapshots --show-version --file pom.xml deploy
       env:
