@@ -17,6 +17,7 @@ Based on several standard methods (e.g Lean UX for requirements validation, MVP 
 
 ## ENGAGEMENT EFFECTIVENESS ASSESSMENTS
 
+
 # PROGRAM PLAN
 
 ## THE PLAN
@@ -46,6 +47,7 @@ Presentation of the budgets regarding the open source program is publically avai
 
 ## RESULTS OF PROGRAM PERFORMANCE REVIEWS
 
+
 # PROGRAM QUALITY
 
 ## QUALITY MANAGEMENT PLAN
@@ -59,5 +61,6 @@ Presentation of the budgets regarding the open source program is publically avai
 ## PROGRAM RISK REGISTER
 
 ## RISK ASSESSMENT RESULTS
+
 #
 [Back To Summary](../../README.md)
