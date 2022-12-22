@@ -1,5 +1,5 @@
 
-name: Java artifacts COMMIT STAGE
+name: Java Project COMMIT STAGE
 
 run-name: Build & publish java packages
 
@@ -10,8 +10,8 @@ on:
         required: true
         type: string
 jobs:
-  java_build:
-    name: Java components COMMIT STAGE
+  build_and_deploy_packages:
+    name: Build and deploy packages to remote repository
     runs-on: ubuntu-latest
     permissions:
       contents: read
