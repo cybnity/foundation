@@ -13,6 +13,11 @@ on:
       - 'hotfix*'
       - 'fix*'
       - 'dev*'
+    # when changes detected on files or java sub-projects
+    paths:
+      - 'pom.xml'
+      - 'implementations-line/**'
+      - 'systems-line/**'
 
   pull_request:
     # execution when pull request is requested by a developer (e.g to reviewer) on his development branch or another branch
@@ -23,12 +28,6 @@ on:
       - 'fix*'
       - 'dev*'
       - 'staging*'
-
-    # when changes detected on files or java sub-projects
-    paths:
-      - 'pom.xml'
-      - 'implementations-line/**'
-      - 'systems-line/**'
 
 jobs:
   build_and_verify_packages:
