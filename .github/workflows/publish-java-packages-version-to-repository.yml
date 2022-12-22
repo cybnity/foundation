@@ -49,29 +49,7 @@ jobs:
 
     - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>.<<commit time>>)
       run: |
-          echo "read git commit revision $env:GITHUB_SHA::7 abbreviation based on 7 characters (default) maximum"
-
-
-    - name : Shortify Git Revision
-        # You may pin to the exact commit or the version.
-        # uses: rlespinasse/shortify-git-revision@c90ba7007ef6c152254d10b9f1a327966ab13077
-      uses: rlespinasse/shortify-git-revision@v1.6.0
-      with:
-        # Environment variable that will hold the value and serve as prefix to shortify value
-        # Read branch name of feature since origin/feature/<branch name>
-        name: ${{ inputs.branch_name }}
-        # Revision to short
-        #revision: # optional
-        # Don't fail the action if the git revision isn't valid
-        #continue-on-error: # optional, default is false
-        # Still short it if the git revision isn't valid
-        #short-on-error: # optional, default is false
-        # Value to prepend to each generated variable
-        #prefix: # optional, default is
-        # Value to configure the length of the shorted sha
-        #length: # optional, default is
-        # Publish short as environment variable
-        #publish-env: # optional, default is true
+          echo "read git commit revision ${{ env.GITHUB_SHA::7 }} abbreviation based on 7 characters (default) maximum"
 
     - name: Publish version of java packages to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
       run: mvn --batch-mode --update-snapshots --show-version --file pom.xml deploy
