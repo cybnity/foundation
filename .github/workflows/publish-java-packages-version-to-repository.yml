@@ -10,9 +10,9 @@ on:
         required: true
         type: string
       target_repository:
-        description: 'Type of release type to publish to dedicated Maven artifacts repository'
+        description: 'Type of release type (SNAPSHOT, RELEASE) to publish to dedicated Maven artifacts repository'
         required: false
-        default: 'snapshot'
+        default: 'SNAPSHOT'
         type: string
   push:
     # execute only when changes detected on files or java sub-projects contents
@@ -64,7 +64,7 @@ jobs:
           echo "current_artifacts_revision_id=${{ env.version_name }}-${{ env.feature_name }}.${{ env.commit_id }}" >> $GITHUB_ENV
 
     - name: Snapshots remote repository is targeted to be updated
-      if: ${{ contains(inputs.target_repository, 'snapshot') || inputs.target_repository == '' }}
+      if: ${{ contains(inputs.target_repository, 'SNAPSHOT') || inputs.target_repository == '' }}
       run: |
           echo "current_artifacts_revision_id=${{ env.current_artifacts_revision_id }}-SNAPSHOT" >> $GITHUB_ENV
           echo "Snapshot packages will be published"
