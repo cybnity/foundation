@@ -49,7 +49,7 @@ jobs:
 
     - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>.<<commit time>>)
       run: |
-          echo "read git commit revision ${{ env.GITHUB_SHA::7 }} abbreviation based on 7 characters (default) maximum"
+          echo "read git commit revision ${{ env.GITHUB_SHA }} abbreviation based on 7 characters (default) maximum"
 
     - name: Publish version of java packages to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
       run: mvn --batch-mode --update-snapshots --show-version --file pom.xml deploy
