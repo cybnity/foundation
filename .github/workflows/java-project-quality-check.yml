@@ -79,9 +79,11 @@ jobs:
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
-           
+
   call_workflow_to_publish_contents_version_to_remote_repository:
     name: Refresh artifacts repository
+    env:
+      target_repository: release
     needs: [build_and_verify_packages]
     if: |
       ${{ success()

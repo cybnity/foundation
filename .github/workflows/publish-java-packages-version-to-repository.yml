@@ -48,21 +48,35 @@ jobs:
           echo "Git commit revision $CI_SHA_SHORT abbreviation based on 7 characters (default) maximum (origin based: $CI_SHA)"
           echo "commit_id=$CI_SHA_SHORT" >> $GITHUB_ENV
           echo "Redefined pre-release revision as ${{ env.commit_id }}"
-          echo "version_name=1.0.0" >> $GITHUB_ENV
           echo "feature_name=$CI_ACTION_REF_NAME_SLUG" >> $GITHUB_ENV
+
+    - name: Identify the origin release name of the project (currently statically defined as 0.0.1 NEED TO BE EVOLUATED)
+      # todo: possible to identify from the GitHub current release information defined on the branch ?
+      run: |
+          echo "version_name=0.0.1" >> $GITHUB_ENV
 
     - name: Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)
       run: |
           echo "current_artifacts_revision_id=${{ env.version_name }}-${{ env.feature_name }}.${{ env.commit_id }}" >> $GITHUB_ENV
 
-    - name: Prepare the Maven project customized version to publish
+    - name: Releases remote repository is targeted to be updated
+      if: ${{ contains(env.target_repository, 'release') }}
+      run: echo "Release packages will be published"
+
+    - name: Snapshots remote repository is targeted to be updated
+      if: ${{ !contains(env.target_repository, 'release') }}
+      run: |
+          echo "current_artifacts_revision_id=${{ env.current_artifacts_revision_id }}-snapshot"
+          echo "Snapshot packages will be published"
+
+    - name: Prepare a Maven project customized ${{ env.current_artifacts_revision_id }} version to publish
       run: |
           echo "Set the project artifacts version"
           echo "mvn versions:set -DnewVersion=${{ env.current_artifacts_revision_id }} -B -DgenerateBackupPoms=true -DprocessAllModules=true"
           echo "Build the project technical documentation web site (generated via Maven) and the Java documentations (libraries javadoc, unit tests javadoc) with an aggregated vision and included into the project website"
           echo "mvn site site:stage -Drevision=${{ env.current_artifacts_revision_id }} -B -DskipTests"
 
-    - name: Publish version of java packages to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
+    - name: Publish ${{ env.current_artifacts_revision_id }} version of java packages to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
       run: mvn --batch-mode --update-snapshots --show-version --file pom.xml -Drevision=${{ env.current_artifacts_revision_id }} deploy
       env:
           MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
