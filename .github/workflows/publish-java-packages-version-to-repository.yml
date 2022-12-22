@@ -49,8 +49,7 @@ jobs:
 
     - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>.<<commit time>>)
       run: |
-          echo "read git commit revision (${GITHUB_SHA::7}) abbreviation based on 7 characters (default) maximum"
-          echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_HASH
+          echo "read git commit revision $env:GITHUB_SHA::7 abbreviation based on 7 characters (default) maximum"
 
 
     - name : Shortify Git Revision
