@@ -28,8 +28,7 @@ on:
       - 'fix*'
       - 'dev*'
       - 'staging*'
-
-    # when changes detected on files or java sub-projects
+    # execute only when changes detected on files or java sub-projects
     paths:
     - 'pom.xml'
     - 'implementations-line/**'
