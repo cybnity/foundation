@@ -96,7 +96,7 @@ jobs:
     if: |
       ${{ success()
         && github.event.pull_request.merged == true
-        && github.event.pull_request.reviewDecision == "approved"
+        && github.event.pull_request.reviewDecision == approved
         }}
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
