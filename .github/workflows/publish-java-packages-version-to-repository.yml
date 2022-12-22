@@ -54,7 +54,7 @@ jobs:
     - name: Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)
       run: |
           echo "current_artifacts_revision_id=${{ env.version_name }}-${{ env.feature_name }}.${{ env.commit_id }}" >> $GITHUB_ENV
-    
+
     - name: Prepare the Maven project customized version to publish
       run: |
           echo "Set the project artifacts version"
@@ -63,7 +63,7 @@ jobs:
           echo "mvn site site:stage -Drevision=${{ env.current_artifacts_revision_id }} -B -DskipTests"
 
     - name: Publish version of java packages to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
-      run: mvn --batch-mode --update-snapshots --show-version --file pom.xml --Drevision=${{ env.current_artifacts_revision_id }} deploy
+      run: mvn --batch-mode --update-snapshots --show-version --file pom.xml -Drevision=${{ env.current_artifacts_revision_id }} deploy
       env:
           MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
