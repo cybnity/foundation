@@ -9,7 +9,14 @@ on:
       config-path:
         required: true
         type: string
-
+      target_repository:
+        description: 'Type of release type to publish to dedicated Maven artifacts repository'
+        required: false
+        type: string
+        default: 'snapshot'
+        options:
+          - snapshot
+          - release
   push:
     # execute only when changes detected on files or java sub-projects contents
     paths:
@@ -60,7 +67,7 @@ jobs:
           echo "current_artifacts_revision_id=${{ env.version_name }}-${{ env.feature_name }}.${{ env.commit_id }}" >> $GITHUB_ENV
 
     - name: Snapshots remote repository is targeted to be updated
-      if: ${{ !contains(env.target_repository, 'release') }}
+      if: ${{ contains(inputs.target_repository, 'snapshot') }}
       run: |
           echo "current_artifacts_revision_id=${{ env.current_artifacts_revision_id }}-snapshot" >> $GITHUB_ENV
           echo "Snapshot packages will be published"
@@ -72,7 +79,7 @@ jobs:
           echo "Build the project technical documentation web site (generated via Maven) and the Java documentations (libraries javadoc, unit tests javadoc) with an aggregated vision and included into the project website"
           echo "mvn site site:stage -Drevision=${{ env.current_artifacts_revision_id }} -B -DskipTests"
 
-    - name: Publish ${{ env.current_artifacts_revision_id }} version of java packages to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
+    - name: Build and publish ${{ env.current_artifacts_revision_id }} version of java packages to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
       run: mvn --batch-mode --update-snapshots --show-version --file pom.xml -Drevision=${{ env.current_artifacts_revision_id }} deploy
       env:
           MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}

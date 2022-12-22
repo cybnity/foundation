@@ -82,8 +82,6 @@ jobs:
 
   call_workflow_to_publish_contents_version_to_remote_repository:
     name: Refresh artifacts repository
-    env:
-      target_repository: release
     needs: [build_and_verify_packages]
     if: |
       ${{ success()
@@ -93,4 +91,5 @@ jobs:
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
       config-path: ${{ needs.build_and_verify_packages.steps.checkout_step.ref }}
+      target_repository: release
     secrets: inherit
