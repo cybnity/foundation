@@ -11,12 +11,12 @@ on:
         type: string
       target_repository:
         description: 'Type of release type to publish to dedicated Maven artifacts repository'
-        required: false
-        type: string
+        required: true
         default: 'snapshot'
+        type: string
         options:
-          - snapshot
-          - release
+        - snapshot
+        - release
   push:
     # execute only when changes detected on files or java sub-projects contents
     paths:
