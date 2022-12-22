@@ -64,7 +64,7 @@ jobs:
           echo "current_artifacts_revision_id=${{ env.version_name }}-${{ env.feature_name }}.${{ env.commit_id }}" >> $GITHUB_ENV
 
     - name: Snapshots remote repository is targeted to be updated
-      if: ${{ contains(inputs.target_repository, 'snapshot') }}
+      if: ${{ contains(inputs.target_repository, 'snapshot') || inputs.target_repository == '' }}
       run: |
           echo "current_artifacts_revision_id=${{ env.current_artifacts_revision_id }}-snapshot" >> $GITHUB_ENV
           echo "Snapshot packages will be published"
