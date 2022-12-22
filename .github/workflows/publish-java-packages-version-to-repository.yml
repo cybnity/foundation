@@ -13,7 +13,7 @@ on:
         description: 'Type of release type to publish to dedicated Maven artifacts repository'
         required: true
         default: 'snapshot'
-        type: string
+        type: choice
         options:
         - snapshot
         - release
