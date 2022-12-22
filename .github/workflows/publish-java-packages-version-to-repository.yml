@@ -40,7 +40,7 @@ jobs:
         server-username: MAVEN_USERNAME
         server-password: MAVEN_PASSWORD
         
-    - name: Git Hashes
+    - name: Git Hashes in environment variables
       # You may pin to the exact commit or the version.
       # uses: Im-Fran/git-hashes-action@cb213fc0f4cfc352cc1f4f7cc03abb8b9b170f6d
       uses: Im-Fran/git-hashes-action@v1.0.3
@@ -50,9 +50,16 @@ jobs:
         # Should we save the short form of the commit hash?
         short-form: true
     
+    - name: GitHub Environment Variables Action
+      uses: FranzDiebold/github-env-vars-action@v2.7.0
+
     - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>.<<commit time>>)
       run: |
-          echo "read git commit revision abbreviation based on 7 characters (default) maximum"
+          echo "Git commit revision $GIT_COMMIT_SHORT_HASH abbreviation based on 7 characters (default) maximum (origin based: $GIT_COMMIT_LONG_HASH)"
+          
+    #- name: Redefine the Alpha pre-release version
+    #  run : |
+    #     echo "" >> $VERSION_NAME
 
     - name: Publish version of java packages to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
       run: mvn --batch-mode --update-snapshots --show-version --file pom.xml deploy
