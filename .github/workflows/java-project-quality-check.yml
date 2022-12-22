@@ -80,19 +80,24 @@ jobs:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-  decide_artifacts_repository_refresh:
+#  decide_artifacts_repository_refresh:
+#    name: Check remote repository refresh need
     # execute only if the pull request was merged by the reviewer (e.g software developer)
-    if: github.event.pull_request.merged == true
-    needs: [build_and_verify_packages]
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo the PR was merged and refresh of artifact versions repository is taken
+#    if: github.event.pull_request.merged == true
+#    needs: [build_and_verify_packages]
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Remote artifacts repository refresh decided
+#        run: echo "The PR was merged and refresh of artifact versions repository is taken"
 
   call_workflow_to_publish_contents_version_to_remote_repository:
     name: Refresh artifacts repository
-    needs: [build_and_verify_packages,decide_artifacts_repository_refresh]
-    if: ${{ success() }}
+    needs: [build_and_verify_packages]
+    if: |
+      ${{ success()
+        && github.event.pull_request.merged == true
+        && github.event.pull_request.reviewDecision == 'approved'
+        }}
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
       config-path: ${{ needs.build_and_verify_packages.steps.checkout_step.ref }}
