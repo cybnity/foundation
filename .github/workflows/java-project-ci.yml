@@ -118,13 +118,12 @@ jobs:
       contents: read
     steps:
       - name: Package compiled java code in its distributable format (e.g JAR)
-        with:
-          ref: ${{ needs.unit_testing.steps.tested_codes.ref }}
         id: packaged_artifacts
         run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml package
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+            config-path: ${{ needs.unit_testing.steps.tested_codes.ref }}
 
   quality_verification:
     name: Quality verification
