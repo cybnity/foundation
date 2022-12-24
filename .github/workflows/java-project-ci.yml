@@ -47,8 +47,8 @@ jobs:
             echo "Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
             echo "RELEASE_NAME=${{ env.VERSION_NAME }}-${{ env.FEATURE_NAME }}.${{ env.COMMIT_ID }}" >> $GITHUB_ENV
 
-  java_project_quality_verification:
-    name: Java quality verification
+  java_project_compilation:
+    name: Validation & compiling
     if: success() && github.event_name == 'push'
     needs: [prepare_build_context, define_project_release_name]
     runs-on: ubuntu-latest
@@ -74,29 +74,72 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
 
-      - name:  Validate all necessary information is available and compile the source code
+      - name: Validate all necessary information and compile source code
+        id: validated_compilation
         # set the MAVEN_RESULT environment variable to the value of the mvn command output text
         run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-      - name: Test the compiled source code
+  unit_testing:
+    name: Unit testing of compiled code
+    if: success() && github.event_name == 'push'
+    needs: [java_project_compilation]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Execute tests of the compiled source code
+        id: tested_codes
+        with:
+          ref: ${{ needs.java_project_compilation.steps.validated_compilation.ref }}
         run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
+  packaging:
+    name: Binary packaging
+    if: success() && github.event_name == 'push'
+    needs: [unit_testing]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
       - name: Package compiled java code in its distributable format (e.g JAR)
+        with:
+          ref: ${{ needs.unit_testing.steps.tested_codes.ref }}
+        id: packaged_artifacts
         run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml package
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-      - name: Ensure quality criteria are met
+  quality_verification:
+    name: Quality verification
+    if: success() && github.event_name == 'push'
+    needs: [packaging]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      - name: QUALITY VERIFICATION of packaged components
+        with:
+          ref: ${{ needs.packaging.steps.packaged_artifacts.ref }}
         run: |
           echo "Run any checks to very the package is valid and meets quality criteria"
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+
+#  maven_parent_pom_publishing:
+#    name: Maven parent pom.xml publishing
+#    if: success() && github.event_name == 'push'
+#    needs: [java_project_quality_verification]
+#    with:
+#      ref: ${{ needs.java_project_quality_verification.steps. }}
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: read
+#    steps:
