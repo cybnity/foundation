@@ -200,7 +200,7 @@ jobs:
     name: Publish release to Snapshot repository
     if: ${{ success()
           && github.event.pull_request.merged == true
-          && && github.event.pull_request.reviewDecision == 'approved'
+          && github.event.pull_request.reviewDecision == 'approved'
           }}
     needs: [prepare_build_context, define_project_release_name]
     runs-on: ubuntu-latest
