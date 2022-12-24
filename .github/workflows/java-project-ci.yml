@@ -46,11 +46,10 @@ jobs:
             echo "VERSION_NAME=0.0.1" >> $GITHUB_ENV
             echo "Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
             echo "RELEASE_NAME=${{ env.VERSION_NAME }}-${{ env.FEATURE_NAME }}.${{ env.COMMIT_ID }}" >> $GITHUB_ENV
-            echo "The built unique revision name is ${{ env.RELEASE_NAME }}"
 
   java_project_compiling:
     name: Java validation & compiling
-    if: ${{ github.event.push && success() }}
+    if: ${{ github.event.push }}
     needs: [prepare_build_context, define_project_release_name]
     runs-on: ubuntu-latest
     permissions:
