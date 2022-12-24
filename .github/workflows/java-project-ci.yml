@@ -166,13 +166,16 @@ jobs:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-#  maven_parent_pom_publishing:
-#    name: Maven parent pom.xml publishing
-#    if: success() && github.event_name == 'push'
-#    needs: [java_project_quality_verification]
-#    with:
-#      ref: ${{ needs.java_project_quality_verification.steps. }}
-#    runs-on: ubuntu-latest
-#    permissions:
-#      contents: read
-#    steps:
+  maven_parent_pom_only_publishing:
+    # publish only upgraded pom.xlm reusable by other projects
+    name: Maven parent pom.xml publishing
+    if: success() && github.event_name == 'push'
+    needs: [prepare_build_context, define_project_release_name]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - env:
+          EVENT_CONTEXT: ${{ toJSON(github.event) }}
+        run: |
+          echo $EVENT_CONTEXT
