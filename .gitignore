@@ -14,3 +14,4 @@ buildNumber.properties
 #.project
 #.classpath
 #.settings/
+.flattened-pom.xml
