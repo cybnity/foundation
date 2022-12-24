@@ -127,6 +127,11 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Retrieve cached maven workspace
+        uses: actions/download-artifact@v3
+        with:
+          name: maven-workspace
+
       - name: Package compiled java code in its distributable format (e.g JAR)
         run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml package
         env:
@@ -141,6 +146,11 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Retrieve cached maven workspace
+        uses: actions/download-artifact@v3
+        with:
+          name: maven-workspace
+
       - name: Verify packaged components
         run: |
           echo "Run any checks to very the package is valid and meets quality criteria"
