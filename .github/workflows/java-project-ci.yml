@@ -89,6 +89,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      config-path: ${{ needs.java_project_compilation.steps.validated_compilation.ref }}
     steps:
       - name: Set up java runtime (Temurin JDK)
         uses: actions/setup-java@v3
@@ -100,7 +102,6 @@ jobs:
           server-id: space-cybnity-open-source
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
-          config-path: ${{ needs.java_project_compilation.steps.validated_compilation.ref }}
 
       - name: Execute tests of the compiled source code
         id: tested_codes
@@ -108,7 +109,6 @@ jobs:
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
-            config-path: ${{ needs.java_project_compilation.steps.validated_compilation.ref }}
 
   packaging:
     name: Binary packaging
