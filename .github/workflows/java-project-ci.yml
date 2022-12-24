@@ -77,7 +77,6 @@ jobs:
       - name: Validate all necessary information and compile source code
         run: |
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile
-          tree
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
@@ -86,7 +85,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: maven-workspace
-          path: path/to/artifacts
+          path: **/*
           retention-days: 1
 
   unit_testing:
@@ -101,7 +100,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: maven-workspace
-          path: path/to/artifacts
 
       - name: Set up java runtime (Temurin JDK)
         uses: actions/setup-java@v3
