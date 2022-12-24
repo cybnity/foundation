@@ -102,7 +102,7 @@ jobs:
       contents: read
     steps:
       - name: Execute tests of the compiled source code
-        if: java_project_compilation.steps.cache-workspace.outputs.cache-hit != 'true'
+        if: needs.java_project_compilation.steps.cache-workspace.outputs.cache-hit != 'true'
         id: tested_codes
         run: |
           tree
