@@ -70,6 +70,7 @@ jobs:
             echo "FEATURE_NAME=$CI_ACTION_REF_NAME_SLUG" >> $GITHUB_ENV
             echo "VERSION_NAME=0.0.1" >> $GITHUB_ENV
             echo "Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
+            echo "RELEASE_NAME=${{ env.VERSION_NAME }}-${{ env.FEATURE_NAME }}.${{ env.COMMIT_ID }}" >> $GITHUB_ENV
             echo "RELEASE_NAME=${{ env.VERSION_NAME }}-${{ env.FEATURE_NAME }}.${{ env.COMMIT_ID }}" >> $GITHUB_OUTPUT
       - name: The revision name is built
         run: echo "Prepared release name is equals to ${{ env.RELEASE_NAME }}"
