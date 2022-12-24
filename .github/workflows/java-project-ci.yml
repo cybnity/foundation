@@ -100,7 +100,7 @@ jobs:
 
       - name: Validate all necessary information and compile source code
         run: |
-          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile
+          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile -Drevision=${{ env.RELEASE_NAME }}
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
