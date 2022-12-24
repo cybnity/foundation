@@ -1,0 +1,126 @@
+# Main COMMIT STAGE workflow regarding the java project managed via Maven tool
+
+name: Java project CI (commit stage)
+
+on:
+  push:
+    # execution when development java source codes commit is pushed by a developer of a feature, hotfix, or fix branch
+    branches:
+      - 'feature*'
+      - 'hotfix*'
+      - 'fix*'
+    # execute only when changes detected on files or java sub-projects contents
+    paths:
+      - 'pom.xml'
+      - 'implementations-line/**'
+      - 'systems-line/**'
+
+# The commit stage workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  prepare_build_context:
+    name: Java context preparation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:    
+      - name: Define reusable environment variables about current commit
+        uses: FranzDiebold/github-env-vars-action@v2.7.0
+
+      - name: Set up java runtime (Temurin JDK)
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          # defined settings.xml values allowing use of CYBNITY Maven remote repository
+          server-id: space-cybnity-open-source
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          
+  define_project_release_name:
+    name: Project release name preparation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check existing project defined version name
+        id: release_naming
+        # Read the release name defined into the GitHub project
+        run: echo "RELEASE_NAME=''" >> $GITHUB_ENV
+
+      - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>)
+        if: ${{ steps.release_naming.outputs.RELEASE_NAME == '' }}
+        run: |
+            echo "Git commit revision $CI_SHA_SHORT abbreviation based on 7 characters (default) maximum (origin based: $CI_SHA)"
+            echo "COMMIT_ID=$CI_SHA_SHORT" >> $GITHUB_ENV
+            echo "FEATURE_NAME=$CI_ACTION_REF_NAME_SLUG" >> $GITHUB_ENV
+            echo "VERSION_NAME=0.0.1" >> $GITHUB_ENV
+            echo "Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
+            echo "RELEASE_NAME=${{ env.VERSION_NAME }}-${{ env.FEATURE_NAME }}.${{ env.COMMIT_ID }}" >> $GITHUB_ENV
+
+  java_project_compiling:
+    name: Java validation & compiling
+    if: ${{ github.event.push && success() }}
+    needs: [prepare_build_context, define_project_release_name]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout source codes from branch
+        id: checkout_step
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository }}
+          token: ${{ github.token }}
+          ref: ${{ inputs.branch_name }}
+
+      - name:  Validate all necessary information is available and compile the source code
+        # set the MAVEN_RESULT environment variable to the value of the mvn command output text
+        run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile
+        env:
+            MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
+            MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+
+  java_unit_testing:
+    name: Compiled source code unit testing
+    needs: [java_project_compiling]
+    if: ${{ github.event.push && success() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test the compiled source code
+        run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test
+        env:
+            MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
+            MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+
+  java_binary_packaging:
+    name: Compiled java code packaging
+    if: ${{ github.event.push && success() }}
+    needs: [java_unit_testing]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Package compiled java code in its distributable format (e.g JAR)
+        run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml package
+        env:
+            MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
+            MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+      
+  quality_verification:
+    name: Quality verification
+    if: ${{ github.event.push && success() }}
+    needs: [java_binary_packaging]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure quality criteria are met
+        run: |
+          echo "Run any checks to very the package is valid and meets quality criteria"
+          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify
+        env:
+            MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
+            MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+
+
+
+
+
+
