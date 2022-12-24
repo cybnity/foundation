@@ -57,10 +57,10 @@ jobs:
       - name: Check existing project defined version name
         id: release_naming
         # Read the release name defined into the GitHub project
-        run: echo "RELEASE_NAME='' >> $GITHUB_ENV
+        run: echo "RELEASE_NAME="" >> $GITHUB_ENV
 
       - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>)
-        if: ${{ steps.release_naming.outputs.RELEASE_NAME == '' }}
+        if: ${{ steps.release_naming.outputs.RELEASE_NAME == "" }}
         run: |
             echo "Git commit revision $CI_SHA_SHORT abbreviation based on 7 characters (default) maximum (origin based: $CI_SHA)"
             echo "COMMIT_ID=$CI_SHA_SHORT" >> $GITHUB_ENV
