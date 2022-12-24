@@ -80,7 +80,7 @@ jobs:
         run: |
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile
           mkdir -p path/to/project
-          cp -R path/to/project
+          cp -R . path/to/project
           echo "MAVEN_WORKSPACE=path/to/project" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
