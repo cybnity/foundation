@@ -76,8 +76,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      RELEASE_NAME: ${{ needs.define_project_release_name.outputs.release_name }}
     outputs:
       release_name: ${{ steps.compilation.outputs.RELEASE_NAME }}
     steps:
@@ -111,6 +109,7 @@ jobs:
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+            RELEASE_NAME: ${{ needs.define_project_release_name.outputs.release_name }}
 
       - name: Cache entire workspace directory
         uses: actions/upload-artifact@v3
@@ -126,8 +125,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      RELEASE_NAME: ${{ needs.java_project_compilation.outputs.release_name }}
     outputs:
       release_name: ${{ steps.testing.outputs.RELEASE_NAME }}
     steps:
@@ -150,11 +147,12 @@ jobs:
       - name: Execute tests of the compiled source code
         id: testing
         run: |
-          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test -Drevision=${{ env.RELEASE_NAME }}
+          echo "mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test -Drevision=$RELEASE_NAME"
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+            RELEASE_NAME: ${{ needs.java_project_compilation.outputs.release_name }}
 
   packaging:
     name: Binary packaging
@@ -163,8 +161,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      RELEASE_NAME: ${{ needs.unit_testing.outputs.release_name }}
     outputs:
       release_name: ${{ steps.packaging.outputs.RELEASE_NAME }}
     steps:
@@ -176,11 +172,12 @@ jobs:
       - name: Package compiled java code in its distributable format (e.g JAR)
         id: packaging
         run: |
-          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml package -Drevision=${{ env.RELEASE_NAME }}
+          echo "mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml package -Drevision=$RELEASE_NAME"
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+            RELEASE_NAME: ${{ needs.unit_testing.outputs.release_name }}
 
       - name: Refresh entire workspace directory cache
         uses: actions/upload-artifact@v3
@@ -196,8 +193,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      RELEASE_NAME: ${{ needs.packaging.outputs.release_name }}
     outputs:
       release_name: ${{ steps.verifying.outputs.RELEASE_NAME }}
     steps:
@@ -210,11 +205,12 @@ jobs:
         id: verifying
         run: |
           echo "Run any checks to very the package is valid and meets quality criteria"
-          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify -Drevision=${{ env.RELEASE_NAME }} -DskipTests
+          echo "mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify -Drevision=$RELEASE_NAME -DskipTests"
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+            RELEASE_NAME: ${{ needs.packaging.outputs.release_name }}
 
   publish_version_to_remote_repository:
     # publish only alpha release closed (with success by approved review) on RELEASE remote repository only
