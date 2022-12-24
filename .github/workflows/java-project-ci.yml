@@ -78,6 +78,8 @@ jobs:
       contents: read
     env:
       RELEASE_NAME: ${{ needs.define_project_release_name.outputs.release_name }}
+    outputs:
+      release_name: ${{ steps.compilation.outputs.RELEASE_NAME }}
     steps:
       - name: Checkout source codes from branch
         id: checkout_step
@@ -99,11 +101,13 @@ jobs:
           server-password: MAVEN_PASSWORD
 
       - name: Validate all necessary information and compile source code
+        id: compilation
         run: |
           echo "Set the project artifacts version"
           mvn versions:set -DnewVersion=${{ env.RELEASE_NAME }} -B -DgenerateBackupPoms=true -DprocessAllModules=true
           echo "Execute the java project(s) build via Maven tool"
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile -Drevision=${{ env.RELEASE_NAME }}
+          echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
@@ -122,6 +126,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      RELEASE_NAME: ${{ needs.java_project_compilation.outputs.release_name }}
     steps:
       - name: Retrieve cached maven workspace
         uses: actions/download-artifact@v3
