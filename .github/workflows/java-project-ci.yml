@@ -188,11 +188,21 @@ jobs:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
+      - name: Refresh entire workspace directory cache
+        uses: actions/upload-artifact@v3
+        with:
+          name: maven-workspace
+          path: .
+          retention-days: 1
+
   publish_snapshot_version_to_remote_repository:
     # publish only alpha release closed with success by approved review on SNAPSHOT remote repository only
     name: Publish release to Snapshot repository
-    if: ${{ success() && github.event.pull_request.merged == true }}
-    needs: [quality_verification]
+    if: ${{ success()
+          && github.event.pull_request.merged == true
+          && && github.event.pull_request.reviewDecision == 'approved'
+          }}
+    needs: [prepare_build_context, define_project_release_name]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -202,4 +212,6 @@ jobs:
         run: |
           echo The PR was merged
           echo Check the alpha tag is attached (when it's a pull_request_target type with reviewer who assigned alpha tag)
-          echo build with maven and deploy on remote snapshot repository for release named (available for other developers)
+          echo Prepare (alpha version as version name)
+          echo Build with maven
+          echo Deploy on remote snapshot repository for release named (available for other developers)
