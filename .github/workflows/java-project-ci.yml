@@ -103,12 +103,11 @@ jobs:
 
       - name: Execute tests of the compiled source code
         id: tested_codes
-        env:
-          config-path: ${{ needs.java_project_compilation.steps.validated_compilation.ref }}
         run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+            config-path: ${{ needs.java_project_compilation.steps.validated_compilation.ref }}
 
   packaging:
     name: Binary packaging
@@ -136,14 +135,13 @@ jobs:
       contents: read
     steps:
       - name: QUALITY VERIFICATION of packaged components
-        with:
-          ref: ${{ needs.packaging.steps.packaged_artifacts.ref }}
         run: |
           echo "Run any checks to very the package is valid and meets quality criteria"
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+            config-path: ${{ needs.packaging.steps.packaged_artifacts.ref }}
 
 #  maven_parent_pom_publishing:
 #    name: Maven parent pom.xml publishing
