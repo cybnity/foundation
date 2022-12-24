@@ -90,10 +90,21 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Set up java runtime (Temurin JDK)
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          # defined settings.xml values allowing use of CYBNITY Maven remote repository
+          server-id: space-cybnity-open-source
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+
       - name: Execute tests of the compiled source code
         id: tested_codes
-        with:
-          ref: ${{ needs.java_project_compilation.steps.validated_compilation.ref }}
+        env:
+          config-path: ${{ needs.java_project_compilation.steps.validated_compilation.ref }}
         run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
