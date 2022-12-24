@@ -49,7 +49,7 @@ jobs:
 
   java_project_compiling:
     name: Java validation & compiling
-    if: ${{ github.event.push }}
+    if: github.event.push
     needs: [prepare_build_context, define_project_release_name]
     runs-on: ubuntu-latest
     permissions:
