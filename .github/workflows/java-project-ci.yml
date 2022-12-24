@@ -49,7 +49,7 @@ jobs:
         uses: FranzDiebold/github-env-vars-action@v2.7.0
 
   define_project_release_name:
-    name: Project release name preparation
+    name: Release name preparation
     runs-on: ubuntu-latest
     permissions:
       contents: read
