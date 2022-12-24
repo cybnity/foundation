@@ -49,7 +49,7 @@ jobs:
 
   java_project_compiling:
     name: Java validation & compiling
-    if: github.event_name == 'push' && success()
+    if: success() && github.event_name == 'push'
     needs: [prepare_build_context, define_project_release_name]
     runs-on: ubuntu-latest
     permissions:
@@ -84,9 +84,20 @@ jobs:
   java_unit_testing:
     name: Compiled source code unit testing
     needs: [java_project_compiling]
-    if: ${{ github.event_name == 'push' && success() }}
+    if: success() && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
+      - name: Set up java runtime (Temurin JDK)
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          # defined settings.xml values allowing use of CYBNITY Maven remote repository
+          server-id: space-cybnity-open-source
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+
       - name: Test the compiled source code
         run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test
         env:
@@ -95,7 +106,7 @@ jobs:
 
   java_binary_packaging:
     name: Compiled java code packaging
-    if: ${{ github.event_name == 'push' && success() }}
+    if: success() && github.event_name == 'push'
     needs: [java_unit_testing]
     runs-on: ubuntu-latest
     steps:
@@ -107,7 +118,7 @@ jobs:
 
   quality_verification:
     name: Quality verification
-    if: ${{ github.event_name == 'push' && success() }}
+    if: success() && github.event_name == 'push'
     needs: [java_binary_packaging]
     runs-on: ubuntu-latest
     steps:
