@@ -65,7 +65,7 @@ jobs:
             echo "VERSION_NAME=0.0.1" >> $GITHUB_ENV
             echo "Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
             echo "RELEASE_NAME=0.0.1-$CI_ACTION_REF_NAME_SLUG.$CI_SHA_SHORT" >> $GITHUB_ENV
-            echo "RELEASE_NAME=0.0.1-$CI_ACTION_REF_NAME_SLUG.$CI_SHA_SHORT" >> $GITHUB_OUTPUT
+            echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_OUTPUT
       - name: The revision name is built
         run: echo "Prepared release name is equals to $RELEASE_NAME"
 
@@ -128,6 +128,8 @@ jobs:
       contents: read
     env:
       RELEASE_NAME: ${{ needs.java_project_compilation.outputs.release_name }}
+    outputs:
+      release_name: ${{ steps.testing.outputs.RELEASE_NAME }}
     steps:
       - name: Retrieve cached maven workspace
         uses: actions/download-artifact@v3
@@ -146,8 +148,10 @@ jobs:
           server-password: MAVEN_PASSWORD
 
       - name: Execute tests of the compiled source code
+        id: testing
         run: |
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test -Drevision=${{ env.RELEASE_NAME }}
+          echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
@@ -160,7 +164,9 @@ jobs:
     permissions:
       contents: read
     env:
-      RELEASE_NAME: ${{ needs.unit_testing.env.RELEASE_NAME }}
+      RELEASE_NAME: ${{ needs.unit_testing.outputs.release_name }}
+    outputs:
+      release_name: ${{ steps.packaging.outputs.RELEASE_NAME }}
     steps:
       - name: Retrieve cached maven workspace
         uses: actions/download-artifact@v3
@@ -168,7 +174,10 @@ jobs:
           name: maven-workspace
 
       - name: Package compiled java code in its distributable format (e.g JAR)
-        run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml package -Drevision=${{ env.RELEASE_NAME }}
+        id: packaging
+        run: |
+          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml package -Drevision=${{ env.RELEASE_NAME }}
+          echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
@@ -187,6 +196,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      RELEASE_NAME: ${{ needs.packaging.outputs.release_name }}
+    outputs:
+      release_name: ${{ steps.verifying.outputs.RELEASE_NAME }}
     steps:
       - name: Retrieve cached maven workspace
         uses: actions/download-artifact@v3
@@ -194,10 +207,11 @@ jobs:
           name: maven-workspace
 
       - name: Verify packaged components
+        id: verifying
         run: |
           echo "Run any checks to very the package is valid and meets quality criteria"
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify -Drevision=${{ env.RELEASE_NAME }} -DskipTests
-
+          echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
@@ -214,6 +228,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      RELEASE_NAME: ${{ needs.define_project_release_name.outputs.release_name }}
     steps:
       - env:
           EVENT_CONTEXT: ${{ toJSON(github.event) }}
