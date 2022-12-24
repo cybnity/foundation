@@ -1,6 +1,6 @@
 # Main COMMIT STAGE workflow regarding the java project managed via Maven tool
 name: Java Project CI (commit stage)
-run-name: Java project CI execution
+run-name: Java Project COMMIT STAGE execution
 on:
   push:
     # execution when development java source codes commit is pushed by a developer of a feature, hotfix, or fix branch
