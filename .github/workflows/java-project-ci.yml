@@ -138,6 +138,13 @@ jobs:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
+      - name: Refresh entire workspace directory cache
+        uses: actions/upload-artifact@v3
+        with:
+          name: maven-workspace
+          path: .
+          retention-days: 1
+
   quality_verification:
     name: Quality verification
     if: success() && github.event_name == 'push'
