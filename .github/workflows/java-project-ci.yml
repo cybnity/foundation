@@ -114,8 +114,6 @@ jobs:
 
       - name: Execute tests of the compiled source code
         run: |
-          cd path/to/artifacts
-          tree
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
