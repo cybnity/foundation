@@ -100,6 +100,7 @@ jobs:
           server-id: space-cybnity-open-source
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
+          config-path: ${{ needs.java_project_compilation.steps.validated_compilation.ref }}
 
       - name: Execute tests of the compiled source code
         id: tested_codes
