@@ -76,10 +76,12 @@ jobs:
 
       - name: Validate all necessary information and compile source code
         id: validated_compilation
-        # set the MAVEN_RESULT environment variable to the value of the mvn command output text
+        # cpy the built project into a directory shareed with other jobs
         run: |
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile
-          echo "MAVEN_WORKSPACE=${{ env.GITHUB_WORKSPACE }}" >> $GITHUB_OUTPUT
+          mkdir -p path/to/project
+          cp -R path/to/project
+          echo "MAVEN_WORKSPACE=path/to/project" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
