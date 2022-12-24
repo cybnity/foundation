@@ -69,6 +69,9 @@ jobs:
             echo "Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
             echo "RELEASE_NAME=${{ env.VERSION_NAME }}-${{ env.FEATURE_NAME }}.${{ env.COMMIT_ID }}" >> $GITHUB_ENV
 
+      - name: The revision name is built
+        run: echo "Prepared release name is equals to ${{env.RELEASE_NAME}}"
+
   java_project_compilation:
     name: Validation & compiling
     if: success() && github.event_name == 'push'
