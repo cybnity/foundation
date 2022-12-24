@@ -39,15 +39,6 @@ on:
 
 # The commit stage workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  prepare_build_context:
-    name: Java context preparation
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Define reusable environment variables about current commit
-        uses: FranzDiebold/github-env-vars-action@v2.7.0
-
   define_project_release_name:
     name: Release name preparation
     runs-on: ubuntu-latest
@@ -60,6 +51,9 @@ jobs:
         id: release_naming
         # Read the release name defined into the GitHub project
         run: echo "RELEASE_NAME=''" >> $GITHUB_ENV
+
+      - name: Define reusable environment variables about current commit
+        uses: FranzDiebold/github-env-vars-action@v2.7.0
 
       - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>)
         id: revision_naming
@@ -77,7 +71,7 @@ jobs:
   java_project_compilation:
     name: Validation & compiling
     if: success() && github.event_name == 'push'
-    needs: [prepare_build_context, define_project_release_name]
+    needs: [define_project_release_name]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -210,7 +204,7 @@ jobs:
           && github.event.pull_request.merged == true
           && github.event.pull_request.reviewDecision == 'approved'
           }}
-    needs: [prepare_build_context, define_project_release_name]
+    needs: [define_project_release_name]
     runs-on: ubuntu-latest
     permissions:
       contents: read
