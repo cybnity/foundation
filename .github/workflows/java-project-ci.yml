@@ -1,6 +1,6 @@
 # Main COMMIT STAGE workflow regarding the java project managed via Maven tool
 name: Java Project CI (commit stage)
-
+run-name: Java project CI execution
 on:
   push:
     # execution when development java source codes commit is pushed by a developer of a feature, hotfix, or fix branch
@@ -26,17 +26,6 @@ jobs:
       - name: Define reusable environment variables about current commit
         uses: FranzDiebold/github-env-vars-action@v2.7.0
 
-      - name: Set up java runtime (Temurin JDK)
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-          cache: maven
-          # defined settings.xml values allowing use of CYBNITY Maven remote repository
-          server-id: space-cybnity-open-source
-          server-username: MAVEN_USERNAME
-          server-password: MAVEN_PASSWORD
-
   define_project_release_name:
     name: Project release name preparation
     runs-on: ubuntu-latest
@@ -57,6 +46,7 @@ jobs:
             echo "VERSION_NAME=0.0.1" >> $GITHUB_ENV
             echo "Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
             echo "RELEASE_NAME=${{ env.VERSION_NAME }}-${{ env.FEATURE_NAME }}.${{ env.COMMIT_ID }}" >> $GITHUB_ENV
+            echo "The built unique revision name is ${{ env.RELEASE_NAME }}"
 
   java_project_compiling:
     name: Java validation & compiling
@@ -73,6 +63,17 @@ jobs:
           repository: ${{ github.repository }}
           token: ${{ github.token }}
           ref: ${{ inputs.branch_name }}
+
+      - name: Set up java runtime (Temurin JDK)
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          # defined settings.xml values allowing use of CYBNITY Maven remote repository
+          server-id: space-cybnity-open-source
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
 
       - name:  Validate all necessary information is available and compile the source code
         # set the MAVEN_RESULT environment variable to the value of the mvn command output text
