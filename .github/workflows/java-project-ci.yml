@@ -77,7 +77,9 @@ jobs:
       - name: Validate all necessary information and compile source code
         id: validated_compilation
         # set the MAVEN_RESULT environment variable to the value of the mvn command output text
-        run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile
+        run: |
+          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile
+          echo "MAVEN_WORKSPACE=${{ env.GITHUB_WORKSSPACE }}" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
@@ -90,22 +92,13 @@ jobs:
     permissions:
       contents: read
     env:
-      config-path: ${{ needs.java_project_compilation.steps.validated_compilation.ref }}
+      maven-workspace-path: ${{ needs.java_project_compilation.steps.validated_compilation.outputs.MAVEN_WORKSPACE }}
     steps:
-      - name: Set up java runtime (Temurin JDK)
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-          cache: maven
-          # defined settings.xml values allowing use of CYBNITY Maven remote repository
-          server-id: space-cybnity-open-source
-          server-username: MAVEN_USERNAME
-          server-password: MAVEN_PASSWORD
-
       - name: Execute tests of the compiled source code
         id: tested_codes
-        run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test
+        run: |
+          cd ${{ env.maven-workspace-path }}
+          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
