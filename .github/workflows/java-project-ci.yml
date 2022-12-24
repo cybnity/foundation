@@ -85,7 +85,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: maven-workspace
-          path: **/*
+          path: .
           retention-days: 1
 
   unit_testing:
