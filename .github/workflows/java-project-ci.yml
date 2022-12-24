@@ -95,13 +95,14 @@ jobs:
 
   unit_testing:
     name: Unit testing of compiled code
-    needs: java_project_compilation
-    if: success() && github.event_name == 'push' && java_project_compilation.steps.cache-workspace.outputs.cache-hit != 'true'
+    needs: [java_project_compilation]
+    if: success() && github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
       - name: Execute tests of the compiled source code
+        if: java_project_compilation.steps.cache-workspace.outputs.cache-hit != 'true'
         id: tested_codes
         run: |
           tree
