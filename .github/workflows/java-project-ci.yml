@@ -1,6 +1,5 @@
 # Main COMMIT STAGE workflow regarding the java project managed via Maven tool
-
-name: Java project CI (commit stage)
+name: Java Project CI (commit stage)
 
 on:
   push:
@@ -22,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    steps:    
+    steps:
       - name: Define reusable environment variables about current commit
         uses: FranzDiebold/github-env-vars-action@v2.7.0
 
@@ -36,7 +35,7 @@ jobs:
           server-id: space-cybnity-open-source
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
-          
+
   define_project_release_name:
     name: Project release name preparation
     runs-on: ubuntu-latest
@@ -104,7 +103,7 @@ jobs:
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
-      
+
   quality_verification:
     name: Quality verification
     if: ${{ github.event.push && success() }}
@@ -118,9 +117,3 @@ jobs:
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
-
-
-
-
-
-
