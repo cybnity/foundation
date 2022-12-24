@@ -77,21 +77,17 @@ jobs:
       - name: Validate all necessary information and compile source code
         run: |
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile
+          tree
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-      - name: Cache the artifacts produced by Maven
-        id: cache-workspace
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-maven-workspace
+      - name: Cache entire workspace directory
+        uses: actions/upload-artifact@v3
         with:
-          # files are stored in with other jobs
-          path: ~/**
-          key: ${{ runner.os }}-workspace-${{ hashFiles('**/*') }}
-          restore-keys: |
-            ${{ runner.os }}-workspace-
+          name: maven-workspace
+          path: path/to/artifacts
+          retention-days: 1
 
   unit_testing:
     name: Unit testing of compiled code
@@ -101,10 +97,26 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Retrieve cached maven workspace
+        uses: actions/download-artifact@v3
+        with:
+          name: maven-workspace
+          path: path/to/artifacts
+
+      - name: Set up java runtime (Temurin JDK)
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          # defined settings.xml values allowing use of CYBNITY Maven remote repository
+          server-id: space-cybnity-open-source
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+
       - name: Execute tests of the compiled source code
-        if: needs.java_project_compilation.steps.cache-workspace.outputs.cache-hit != 'true'
-        id: tested_codes
         run: |
+          cd path/to/artifacts
           tree
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test
         env:
@@ -120,12 +132,10 @@ jobs:
       contents: read
     steps:
       - name: Package compiled java code in its distributable format (e.g JAR)
-        id: packaged_artifacts
         run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml package
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
-            config-path: ${{ needs.unit_testing.steps.tested_codes.ref }}
 
   quality_verification:
     name: Quality verification
@@ -135,14 +145,13 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: QUALITY VERIFICATION of packaged components
+      - name: Verify packaged components
         run: |
           echo "Run any checks to very the package is valid and meets quality criteria"
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
-            config-path: ${{ needs.packaging.steps.packaged_artifacts.ref }}
 
 #  maven_parent_pom_publishing:
 #    name: Maven parent pom.xml publishing
