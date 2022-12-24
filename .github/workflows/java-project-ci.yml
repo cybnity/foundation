@@ -79,7 +79,7 @@ jobs:
         # set the MAVEN_RESULT environment variable to the value of the mvn command output text
         run: |
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile
-          echo "MAVEN_WORKSPACE=${{ env.GITHUB_WORKSSPACE }}" >> $GITHUB_OUTPUT
+          echo "MAVEN_WORKSPACE=${{ env.GITHUB_WORKSPACE }}" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
@@ -97,6 +97,7 @@ jobs:
       - name: Execute tests of the compiled source code
         id: tested_codes
         run: |
+          echo current Maven processed workspace is ${{ env.maven-workspace-path }}
           cd ${{ env.maven-workspace-path }}
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test
         env:
