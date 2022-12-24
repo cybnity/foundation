@@ -78,9 +78,11 @@ jobs:
         id: validated_compilation
         # cpy the built project into a directory shareed with other jobs
         run: |
-          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile
           mkdir -p path/to/project
-          cp -R . path/to/project
+          tree
+          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile
+          tree
+          echo runner temp is ${{ $RUNNER_TEMP }}
           echo "MAVEN_WORKSPACE=path/to/project" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
