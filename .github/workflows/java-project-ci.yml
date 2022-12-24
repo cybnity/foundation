@@ -123,6 +123,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    steps:
       - name: QUALITY VERIFICATION of packaged components
         with:
           ref: ${{ needs.packaging.steps.packaged_artifacts.ref }}
