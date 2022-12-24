@@ -75,34 +75,36 @@ jobs:
           server-password: MAVEN_PASSWORD
 
       - name: Validate all necessary information and compile source code
-        id: validated_compilation
-        # cpy the built project into a directory shareed with other jobs
         run: |
-          mkdir -p path/to/project
-          tree
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile
-          tree
-          echo runner temp is ${{ env.RUNNER_TEMP }}
-          echo "MAVEN_WORKSPACE=path/to/project" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
+      - name: Cache the artifacts produced by Maven
+        id: cache-workspace
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-maven-workspace
+        with:
+          # files are stored in with other jobs
+          path: ~/**
+          key: ${{ runner.os }}-workspace-${{ hashFiles('**/*') }}
+          restore-keys: |
+            ${{ runner.os }}-workspace-
+
   unit_testing:
     name: Unit testing of compiled code
-    if: success() && github.event_name == 'push'
-    needs: [java_project_compilation]
+    needs: java_project_compilation
+    if: success() && github.event_name == 'push' && java_project_compilation.steps.cache-workspace.outputs.cache-hit != 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      maven-workspace-path: ${{ needs.java_project_compilation.steps.validated_compilation.outputs.MAVEN_WORKSPACE }}
     steps:
       - name: Execute tests of the compiled source code
         id: tested_codes
         run: |
-          echo current Maven processed workspace is ${{ env.maven-workspace-path }}
-          cd ${{ env.maven-workspace-path }}
+          tree
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
