@@ -190,7 +190,7 @@ jobs:
 
   publish_snapshot_version_to_remote_repository:
     # publish only alpha release closed with success by approved review on SNAPSHOT remote repository only
-    name: Publish alpha release on Snapshot remote repository
+    name: Publish components release on Snapshot remote repository
     if: ${{ success() && github.event.pull_request.merged == true }}
     needs: [quality_verification]
     runs-on: ubuntu-latest
