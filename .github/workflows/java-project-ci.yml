@@ -15,6 +15,28 @@ on:
       - 'systems-line/**'
       - '.github/workflows/**'
 
+  pull_request:
+    # execution when pull request is requested by a developer (e.g to reviewer) on his development branch or another branch
+    types: [opened, reopened, review_requested]
+    branches:
+      - 'feature*'
+      - 'hotfix*'
+      - 'fix*'
+    # execute only when reviewed files or java sub-projects
+    paths:
+    - 'pom.xml'
+    - 'implementations-line/**'
+    - 'systems-line/**'
+
+  pull_request_target:
+    # when a pull request merges, the pull request is automatically closed (so check the merged state)
+    types: [closed]
+    # execution when feature's artifacts (e.g implementation doc, java source code) were reviewed
+    branches:
+      - 'feature*'
+      - 'hotfix*'
+      - 'fix*'
+
 # The commit stage workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   prepare_build_context:
@@ -166,11 +188,11 @@ jobs:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-  maven_parent_pom_only_publishing:
-    # publish only upgraded pom.xlm reusable by other projects
-    name: Maven parent pom.xml publishing
-    if: success() && github.event_name == 'push'
-    needs: [prepare_build_context, define_project_release_name]
+  deploy_reviewed_alpha_release:
+    # publish only alpha release closed with success by approved review on SNAPSHOT remote repository only
+    name: Publish alpha release on Snapshot remote repository
+    if: ${{ success() && github.event.pull_request.merged == true }}
+    needs: [quality_verification]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -178,4 +200,6 @@ jobs:
       - env:
           EVENT_CONTEXT: ${{ toJSON(github.event) }}
         run: |
-          echo $EVENT_CONTEXT
+          echo The PR was merged
+          echo Check the alpha tag is attached (when it's a pull_request_target type with reviewer who assigned alpha tag)
+          echo build with maven and deploy on remote snapshot repository for release named (available for other developers)
