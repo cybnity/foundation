@@ -49,7 +49,7 @@ jobs:
 
   java_project_compiling:
     name: Java validation & compiling
-    if: github.event.push
+    if: github.event_name == 'push' && success()
     needs: [prepare_build_context, define_project_release_name]
     runs-on: ubuntu-latest
     permissions:
@@ -84,7 +84,7 @@ jobs:
   java_unit_testing:
     name: Compiled source code unit testing
     needs: [java_project_compiling]
-    if: ${{ github.event.push && success() }}
+    if: ${{ github.event_name == 'push' && success() }}
     runs-on: ubuntu-latest
     steps:
       - name: Test the compiled source code
@@ -95,7 +95,7 @@ jobs:
 
   java_binary_packaging:
     name: Compiled java code packaging
-    if: ${{ github.event.push && success() }}
+    if: ${{ github.event_name == 'push' && success() }}
     needs: [java_unit_testing]
     runs-on: ubuntu-latest
     steps:
@@ -107,7 +107,7 @@ jobs:
 
   quality_verification:
     name: Quality verification
-    if: ${{ github.event.push && success() }}
+    if: ${{ github.event_name == 'push' && success() }}
     needs: [java_binary_packaging]
     runs-on: ubuntu-latest
     steps:
