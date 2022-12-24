@@ -100,6 +100,8 @@ jobs:
 
       - name: Validate all necessary information and compile source code
         run: |
+          echo "Set the project artifacts version"
+          mvn versions:set -DnewVersion=${{ env.RELEASE_NAME }} -B -DgenerateBackupPoms=true -DprocessAllModules=true
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile -Drevision=${{ env.RELEASE_NAME }}
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
