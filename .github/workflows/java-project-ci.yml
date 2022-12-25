@@ -110,13 +110,6 @@ jobs:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-      #- name: Cache entire workspace directory
-      #  uses: actions/upload-artifact@v3
-      #  with:
-      #    name: maven-workspace
-      #    path: .
-      #    retention-days: 1
-
   unit_testing:
     name: Unit testing of compiled code
     needs: [java_project_compilation]
@@ -129,11 +122,6 @@ jobs:
     outputs:
       release_name: ${{ steps.testing.outputs.RELEASE_NAME }}
     steps:
-      #- name: Retrieve cached maven workspace
-      #  uses: actions/download-artifact@v3
-      #  with:
-      #    name: maven-workspace
-
       - name: Checkout source codes from branch
         id: checkout_step
         uses: actions/checkout@v3
@@ -174,11 +162,6 @@ jobs:
     outputs:
       release_name: ${{ steps.packaging.outputs.RELEASE_NAME }}
     steps:
-      #- name: Retrieve cached maven workspace
-      #  uses: actions/download-artifact@v3
-      #  with:
-      #    name: maven-workspace
-
       - name: Checkout source codes from branch
         id: checkout_step
         uses: actions/checkout@v3
@@ -207,13 +190,6 @@ jobs:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-      #- name: Refresh entire workspace directory cache
-      #  uses: actions/upload-artifact@v3
-      #  with:
-      #    name: maven-workspace
-      #    path: .
-      #    retention-days: 1
-
   quality_verification:
     name: Quality verification
     if: success() && github.event_name == 'push'
@@ -226,11 +202,6 @@ jobs:
     outputs:
       release_name: ${{ steps.verifying.outputs.RELEASE_NAME }}
     steps:
-      #- name: Retrieve cached maven workspace
-      #  uses: actions/download-artifact@v3
-      #  with:
-      #    name: maven-workspace
-
       - name: Checkout source codes from branch
         id: checkout_step
         uses: actions/checkout@v3
