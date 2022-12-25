@@ -233,6 +233,30 @@ jobs:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
+  pre-release:
+    name: Generate latest pre-releases
+    if: success() && github.event_name == 'push'
+    needs: [quality_verification]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Generate a pre-release "latest" tag when changes land on branch
+        # Generate a changelog from all the commits between this, and the previous latest tag.
+        # Generate a new release associated with the latest tag (removing any previous associated releases).
+        # Update this new release with the specified title (e.g. Development Build).
+        # Upload LICENSE.txt and any jar files as release assets.
+        # Mark this release as a pre-release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development CI"
+          files: |
+            LICENSE
+            **/*.jar
+
   publish_version_to_remote_repository:
     # publish only alpha release closed (with success by approved review) on RELEASE remote repository only
     # publisg snapshot version of parent pom.xml (when approved review) on SNAPSHOT remote repository
@@ -260,19 +284,3 @@ jobs:
           echo Build with maven the java component packages according to the final version name
           echo CASE REVIEWED WITHOUT TAG : Deploy parent pom.xml on remote snapshot repository for version named (available for other developers)
           echo CASE QUALITY REVIEWED FEATURE AS ALPHA RELEASE : Deploy feature revision on remote release repository (reusable by other development, for e.g on development shared environment)
-
-      - name: Generate a pre-release "latest" tag when changes land on branch
-        # Generate a changelog from all the commits between this, and the previous latest tag.
-        # Generate a new release associated with the latest tag (removing any previous associated releases).
-        # Update this new release with the specified title (e.g. Development Build).
-        # Upload LICENSE.txt and any jar files as release assets.
-        # Mark this release as a pre-release
-        uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: true
-          title: "Development Build"
-          files: |
-            LICENSE.txt
-            *.jar
