@@ -45,28 +45,27 @@ jobs:
     permissions:
       contents: read
     outputs:
+      version_name: ${{ steps.release_naming.outputs.VERSION_NAME }}
       release_name: ${{ steps.revision_naming.outputs.RELEASE_NAME }}
     steps:
       - name: Check existing project defined version name
         id: release_naming
         # Read the release name defined into the GitHub project
-        run: echo "RELEASE_NAME=''" >> $GITHUB_ENV
+        run: echo "version_name=''" >> GITHUB_OUTPUT
 
       - name: Define reusable environment variables about current commit
         uses: FranzDiebold/github-env-vars-action@v2.7.0
 
       - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>)
         id: revision_naming
-        if: ${{ steps.release_naming.outputs.RELEASE_NAME == '' }}
+        if: ${{ steps.release_naming.outputs.version_name == '' }}
         run: |
             echo "Git commit revision $CI_SHA_SHORT abbreviation based on 7 characters (default) maximum (origin based: $CI_SHA)"
             echo "COMMIT_ID=$CI_SHA_SHORT" >> $GITHUB_ENV
             echo "FEATURE_NAME=$CI_ACTION_REF_NAME_SLUG" >> $GITHUB_ENV
             echo "VERSION_NAME=0.0.1" >> $GITHUB_ENV
             echo "Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
-            echo "RELEASE_NAME=0.0.1-$CI_ACTION_REF_NAME_SLUG.$CI_SHA_SHORT" >> $GITHUB_ENV
-            echo "Prepared release name is equals to $RELEASE_NAME"
-            echo "release_name=$RELEASE_NAME" >> $GITHUB_OUTPUT
+            echo "release_name=0.0.1-$CI_ACTION_REF_NAME_SLUG.$CI_SHA_SHORT" >> $GITHUB_OUTPUT
 
   java_project_compilation:
     name: Validation & compiling
