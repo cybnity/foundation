@@ -65,9 +65,8 @@ jobs:
             echo "VERSION_NAME=0.0.1" >> $GITHUB_ENV
             echo "Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
             echo "RELEASE_NAME=0.0.1-$CI_ACTION_REF_NAME_SLUG.$CI_SHA_SHORT" >> $GITHUB_ENV
-            echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_OUTPUT
-      - name: The revision name is built
-        run: echo "Prepared release name is equals to $RELEASE_NAME"
+            echo "Prepared release name is equals to $RELEASE_NAME"
+            echo "release_name=$RELEASE_NAME" >> $GITHUB_OUTPUT
 
   java_project_compilation:
     name: Validation & compiling
@@ -76,6 +75,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      RELEASE_NAME: ${{ needs.define_project_release_name.outputs.release_name }}
     outputs:
       release_name: ${{ steps.compilation.outputs.RELEASE_NAME }}
     steps:
@@ -102,14 +103,14 @@ jobs:
         id: compilation
         run: |
           echo "Set the project artifacts version"
-          mvn versions:set -DnewVersion=${{ env.RELEASE_NAME}} -B -DgenerateBackupPoms=true -DprocessAllModules=true
+          mvn versions:set -DnewVersion=${{ env.RELEASE_NAME }} -B -DgenerateBackupPoms=true -DprocessAllModules=true
           echo "Execute the java project(s) build via Maven tool"
-          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile -Drevision=${{ env.RELEASE_NAME}}
-          echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_OUTPUT
+          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile -Drevision=${{ env.RELEASE_NAME }}
+          echo "release_name=$RELEASE_NAME" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
-            RELEASE_NAME: ${{ needs.define_project_release_name.outputs.release_name }}
+            #RELEASE_NAME: ${{ needs.define_project_release_name.outputs.release_name }}
 
       - name: Cache entire workspace directory
         uses: actions/upload-artifact@v3
