@@ -104,7 +104,7 @@ jobs:
           echo "Set the project artifacts version"
           mvn versions:set -DnewVersion=${{ env.RELEASE_NAME }} -B -DgenerateBackupPoms=true -DprocessAllModules=true
           echo "Execute the java project(s) build via Maven tool"
-          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile -Drevision=${{ env.RELEASE_NAME }} -Dmaven.test.skip=true
+          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile -Drevision=${{ env.RELEASE_NAME }}
           echo "release_name=$RELEASE_NAME" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
@@ -184,7 +184,7 @@ jobs:
       - name: Package compiled java code in its distributable format (e.g JAR)
         id: packaging
         run: |
-          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml package -Drevision=${{ env.RELEASE_NAME }} -Dmaven.test.skip=true
+          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml package -Drevision=${{ env.RELEASE_NAME }}
           echo "release_name=$RELEASE_NAME" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
