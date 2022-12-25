@@ -13,7 +13,7 @@ on:
       - 'pom.xml'
       - 'implementations-line/**'
       - 'systems-line/**'
-      - '.github/workflows/**'
+      - '.github/workflows/java-project-ci.yml'
 
   pull_request:
     # execution when pull request is requested by a developer (e.g to reviewer) on his development branch or another branch
@@ -51,7 +51,9 @@ jobs:
       - name: Check existing project defined version name
         id: release_naming
         # Read the release name defined into the GitHub project
-        run: echo "version_name=''" >> GITHUB_OUTPUT
+        run: |
+          echo The current release tag is ${{ github.event.release.tag_name }}
+          echo "version_name=''" >> GITHUB_OUTPUT
 
       - name: Define reusable environment variables about current commit
         uses: FranzDiebold/github-env-vars-action@v2.7.0
@@ -184,7 +186,7 @@ jobs:
       - name: Package compiled java code in its distributable format (e.g JAR)
         id: packaging
         run: |
-          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml package -Drevision=${{ env.RELEASE_NAME }} --quiet
+          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml package -Drevision=${{ env.RELEASE_NAME }}
           echo "release_name=$RELEASE_NAME" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
@@ -225,7 +227,7 @@ jobs:
         id: verifying
         run: |
           echo "Run any checks to very the package is valid and meets quality criteria"
-          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify -Drevision=${{ env.RELEASE_NAME }} -DskipTests --quiet
+          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify -Drevision=${{ env.RELEASE_NAME }} -DskipTests
           echo "release_name=$RELEASE_NAME" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
