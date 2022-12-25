@@ -234,9 +234,9 @@ jobs:
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
   pre-release:
-    name: Generate latest pre-releases
+    name: Tag latest pre-release
     if: success() && github.event_name == 'push'
-    needs: [quality_verification]
+    needs: [quality_verification, publish_version_to_remote_repository]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -247,7 +247,7 @@ jobs:
         # Update this new release with the specified title (e.g. Development Build).
         # Upload LICENSE.txt and any jar files as release assets.
         # Mark this release as a pre-release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: "marvinpinto/action-automatic-releases@v1.2.1"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
