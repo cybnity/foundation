@@ -110,12 +110,12 @@ jobs:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-      - name: Cache entire workspace directory
-        uses: actions/upload-artifact@v3
-        with:
-          name: maven-workspace
-          path: .
-          retention-days: 1
+      #- name: Cache entire workspace directory
+      #  uses: actions/upload-artifact@v3
+      #  with:
+      #    name: maven-workspace
+      #    path: .
+      #    retention-days: 1
 
   unit_testing:
     name: Unit testing of compiled code
@@ -129,10 +129,18 @@ jobs:
     outputs:
       release_name: ${{ steps.testing.outputs.RELEASE_NAME }}
     steps:
-      - name: Retrieve cached maven workspace
-        uses: actions/download-artifact@v3
+      #- name: Retrieve cached maven workspace
+      #  uses: actions/download-artifact@v3
+      #  with:
+      #    name: maven-workspace
+
+      - name: Checkout source codes from branch
+        id: checkout_step
+        uses: actions/checkout@v3
         with:
-          name: maven-workspace
+          repository: ${{ github.repository }}
+          token: ${{ github.token }}
+          ref: ${{ inputs.branch_name }}
 
       - name: Set up java runtime (Temurin JDK)
         uses: actions/setup-java@v3
@@ -166,10 +174,29 @@ jobs:
     outputs:
       release_name: ${{ steps.packaging.outputs.RELEASE_NAME }}
     steps:
-      - name: Retrieve cached maven workspace
-        uses: actions/download-artifact@v3
+      #- name: Retrieve cached maven workspace
+      #  uses: actions/download-artifact@v3
+      #  with:
+      #    name: maven-workspace
+
+      - name: Checkout source codes from branch
+        id: checkout_step
+        uses: actions/checkout@v3
         with:
-          name: maven-workspace
+          repository: ${{ github.repository }}
+          token: ${{ github.token }}
+          ref: ${{ inputs.branch_name }}
+
+      - name: Set up java runtime (Temurin JDK)
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          # defined settings.xml values allowing use of CYBNITY Maven remote repository
+          server-id: space-cybnity-open-source
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
 
       - name: Package compiled java code in its distributable format (e.g JAR)
         id: packaging
@@ -180,12 +207,12 @@ jobs:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-      - name: Refresh entire workspace directory cache
-        uses: actions/upload-artifact@v3
-        with:
-          name: maven-workspace
-          path: .
-          retention-days: 1
+      #- name: Refresh entire workspace directory cache
+      #  uses: actions/upload-artifact@v3
+      #  with:
+      #    name: maven-workspace
+      #    path: .
+      #    retention-days: 1
 
   quality_verification:
     name: Quality verification
@@ -199,10 +226,29 @@ jobs:
     outputs:
       release_name: ${{ steps.verifying.outputs.RELEASE_NAME }}
     steps:
-      - name: Retrieve cached maven workspace
-        uses: actions/download-artifact@v3
+      #- name: Retrieve cached maven workspace
+      #  uses: actions/download-artifact@v3
+      #  with:
+      #    name: maven-workspace
+
+      - name: Checkout source codes from branch
+        id: checkout_step
+        uses: actions/checkout@v3
         with:
-          name: maven-workspace
+          repository: ${{ github.repository }}
+          token: ${{ github.token }}
+          ref: ${{ inputs.branch_name }}
+
+      - name: Set up java runtime (Temurin JDK)
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          # defined settings.xml values allowing use of CYBNITY Maven remote repository
+          server-id: space-cybnity-open-source
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
 
       - name: Verify packaged components
         id: verifying
