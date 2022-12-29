@@ -92,4 +92,5 @@ jobs:
     with:
       config-path: ${{ needs.build_and_verify_packages.steps.checkout_step.ref }}
       target_repository: RELEASE
+      package_release_name: 0.0.1-snapshot
     secrets: inherit

@@ -45,29 +45,36 @@ jobs:
     permissions:
       contents: read
     outputs:
-      version_name: ${{ steps.release_naming.outputs.VERSION_NAME }}
-      release_name: ${{ steps.revision_naming.outputs.RELEASE_NAME }}
+      release_name: ${{ env.release_name }}
     steps:
       - name: Check existing project defined version name
-        id: release_naming
         # Read the release name defined into the GitHub project
         run: |
           echo The current release tag is ${{ github.event.release.tag_name }}
-          echo "version_name=''" >> GITHUB_OUTPUT
+          echo "TAG_VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
 
       - name: Define reusable environment variables about current commit
         uses: FranzDiebold/github-env-vars-action@v2.7.0
 
       - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>)
-        id: revision_naming
-        if: ${{ steps.release_naming.outputs.version_name == '' }}
+        if: ${{ env.TAG_VERSION == '' }}
+        # todo: modify the static version_name with tag version name or default name
         run: |
             echo "Git commit revision $CI_SHA_SHORT abbreviation based on 7 characters (default) maximum (origin based: $CI_SHA)"
             echo "COMMIT_ID=$CI_SHA_SHORT" >> $GITHUB_ENV
             echo "FEATURE_NAME=$CI_ACTION_REF_NAME_SLUG" >> $GITHUB_ENV
-            echo "VERSION_NAME=0.0.1" >> $GITHUB_ENV
+            echo "VERSION_NAME=0.0.0" >> $GITHUB_ENV
+      - name: Set the release name of the project based on CYBNITY versioning strategy
+        if: ${{ env.TAG_VERSION == '' }}
+        run: |
             echo "Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
-            echo "release_name=0.0.1-$CI_ACTION_REF_NAME_SLUG.$CI_SHA_SHORT" >> $GITHUB_OUTPUT
+            echo "release_name=$VERSION_NAME-$CI_ACTION_REF_NAME_SLUG.$CI_SHA_SHORT" >> $GITHUB_ENV
+
+      - name: Set the release name of the project based on GitHub tag name
+        if: ${{ env.TAG_VERSION != '' }}
+        run : |
+            echo "Define the final version identifier from the GitHub project's current tag name"
+            echo "release_name=$TAG_VERSION" >> $GITHUB_ENV
 
   java_project_compilation:
     name: Validation & compiling
@@ -234,19 +241,17 @@ jobs:
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
   publish_version_to_remote_repository:
-    # publish only alpha release closed (with success by approved review) on RELEASE remote repository only
-    # publisg snapshot version of parent pom.xml (when approved review) on SNAPSHOT remote repository
-    name: Package version remote installation
+    name: Package version for remote installation
     if: ${{ success()
           && github.event.pull_request.merged == true
           && github.event.pull_request.reviewDecision == 'approved'
           }}
-    needs: [define_project_release_name]
+    needs: [quality_verification, packaging]
     runs-on: ubuntu-latest
     permissions:
       contents: read
     env:
-      RELEASE_NAME: ${{ needs.define_project_release_name.outputs.release_name }}
+      RELEASE_NAME: ${{ needs.quality_verification.outputs.release_name }}
     steps:
       - env:
           EVENT_CONTEXT: ${{ toJSON(github.event) }}
@@ -255,11 +260,39 @@ jobs:
           echo Check the alpha tag is attached (when it's a pull_request_target type with reviewer who assigned alpha tag)
 
           echo SEPARE THE 2 SCENARIO IN 2 INDEPENDANT SUB-JOBS
-          echo CASE REVIEWED WITHOUT TAG : When not alpha tagged, prepare only a snapshot version of the parent pom.xml for remote repository installation
           echo CASE QUALITY REVIEWED FEATURE AS ALPHA RELEASE : When alpha tagged, prepare a release package (alpha version as version name) ready for publishing to remote Repository
           echo Build with maven the java component packages according to the final version name
           echo CASE REVIEWED WITHOUT TAG : Deploy parent pom.xml on remote snapshot repository for version named (available for other developers)
           echo CASE QUALITY REVIEWED FEATURE AS ALPHA RELEASE : Deploy feature revision on remote release repository (reusable by other development, for e.g on development shared environment)
+
+  # CASE REVIEWED WITHOUT TAG : When not alpha tagged, prepare only a snapshot version for remote repository installation
+  #publish_version_to_snapshot_remote_repository:
+  #  name: Publish on snapshot remote repository
+    # Check the alpha tag is attached (when it's a pull_request_target type with reviewer who did not assigned alpha tag because decided not sufficient finished work on feature)
+  #  if: ${{ success()
+  #        && github.event.pull_request.merged == true
+  #        && github.event.pull_request.reviewDecision == 'approved'
+  #        }}
+  #  needs: [quality_verification, packaging]
+  #  uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
+  #  with:
+  #    config-path: ${{ needs.packaging.steps.checkout_step.ref }}
+  #    target_repository: RELEASE
+  #    package_release_name: 0.0.1-snapshot
+  #  secrets: inherit
+  #  env:
+  #    RELEASE_NAME: ${{ needs.quality_verification.outputs.release_name }}
+  #  steps:
+  #    - run: echo The Pull Request (PR) was approved and merged, but work is not finished and tagged as alpha eligible version
+
+  #    - name:
+        # Publisg approved snapshot version of parent pom.xml and sub-projects on SNAPSHOT remote repository
+  #      run:
+
+  #    - name:
+        # Publish alpha release closed (with success by approved review) on RELEASE remote repository only
+
+
 
   #pre-release:
   #  name: Tag latest pre-release
