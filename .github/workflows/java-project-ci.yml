@@ -238,36 +238,33 @@ jobs:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-  publish_version_to_remote_repository:
-    name: Temporary scenario
+  # CASE QUALITY REVIEWED AND TAGGED AS ALPHA RELEASE : When alpha tagged, prepare a release package (alpha version as version name), prepare a release for remote repository installation
+  publish_version_to_release_remote_repository:
+    name: Publish reviewed release version on remote repository
     if: ${{ success()
-          && github.event.pull_request.merged == true
-          && github.event.pull_request.reviewDecision == 'approved'
+          # && github.event.pull_request.merged == true
+          # && github.event.pull_request.reviewDecision == 'approved'
+          # && contains(github.event.release.tag_name, 'alpha')
           }}
     needs: [quality_verification, packaging]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    env:
-      RELEASE_NAME: ${{ needs.quality_verification.outputs.release_name }}
-    steps:
-      - env:
-          EVENT_CONTEXT: ${{ toJSON(github.event) }}
-        run: |
-          echo The PR was merged
-          echo Check the alpha tag is attached (when it's a pull_request_target type with reviewer who assigned alpha tag)
+    uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
+    with:
+      config-path: ${{ needs.packaging.steps.checkout_step.ref }}
+      # The Pull Request (PR) was approved and merged, and work is considered by reviewer as finished via tagging as alpha eligible version
+      # Publish approved alpha release closed of parent pom.xml and sub-projects (reusable by other development, or for processing by Automated Acceptance Test stage)
+      target_repository: RELEASE
+      package_release_name: ${{ needs.quality_verification.outputs.release_name }}
+    secrets: inherit
 
-          echo CASE QUALITY REVIEWED FEATURE AS ALPHA RELEASE : When alpha tagged, prepare a release package (alpha version as version name) ready for publishing to remote Repository
-          echo CASE QUALITY REVIEWED FEATURE AS ALPHA RELEASE : Deploy feature revision on remote release repository (reusable by other development, for e.g on development shared environment)
-
-  # CASE REVIEWED WITHOUT TAG : When not alpha tagged, prepare only a snapshot version for remote repository installation
+  # CASE QUALITY REVIEWED WITHOUT TAG : When not alpha tagged, prepare only a snapshot version for remote repository installation
   publish_version_to_snapshot_remote_repository:
     name: Publish reviewed snapshot version on remote repository
     # Check the alpha tag is attached (when it's a pull_request_target type with reviewer who did not assigned alpha tag because decided not sufficient finished work on feature)
-    if: ${{ success() }}
-            #    && github.event.pull_request.merged == true
-            #    && github.event.pull_request.reviewDecision == 'approved'
-            #    && github.event.release.tag_name != 'alpha'
+    if: ${{ success()
+            && github.event.pull_request.merged == true
+            && github.event.pull_request.reviewDecision == 'approved'
+            && (!contains(github.event.release.tag_name, 'alpha') || github.event.release.tag_name == '')
+            }}
     needs: [quality_verification, packaging]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
@@ -277,10 +274,6 @@ jobs:
       target_repository: SNAPSHOT
       package_release_name: ${{ needs.quality_verification.outputs.release_name }}
     secrets: inherit
-
-    # Publish alpha release closed (with success by approved review) on RELEASE remote repository only
-
-
 
   #pre-release:
   #  name: Tag latest pre-release
