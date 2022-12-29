@@ -19,7 +19,7 @@
 		<lint.activation>deprecation</lint.activation>
 		<junit.version>[4.13.1,)</junit.version>
 		<javafx.version>13</javafx.version>
-		
+
 		<!-- CYBNITY project default revision -->
 		<revision>0.0.1-SNAPSHOT</revision>
 	</properties>
@@ -301,7 +301,8 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
 				<configuration>
-					<flattenMode>oss</flattenMode>
+					<flattenMode>resolveCiFriendliesOnly</flattenMode>
+					<updatePomFile>true</updatePomFile>
 				</configuration>
         <executions>
           <execution>
@@ -309,6 +310,13 @@
             <phase>process-resources</phase>
             <goals>
               <goal>flatten</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>flatten.clean</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>clean</goal>
             </goals>
           </execution>
         </executions>
