@@ -1,8 +1,6 @@
 
-name: Java Project COMMIT STAGE
-
-run-name: Build & publish java packages
-
+name: Maven Repository Installation (commit stage)
+run-name: Java Project repository publishing
 on:
   workflow_call:
     inputs:
