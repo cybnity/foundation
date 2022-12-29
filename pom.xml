@@ -326,7 +326,6 @@
         </executions>
       </plugin>
 			<plugin>
-			<plugin>
 			  <artifactId>maven-install-plugin</artifactId>
 			  <configuration>
 					<!-- Generate checksum validated during deployment process -->
