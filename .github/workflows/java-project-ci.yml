@@ -117,7 +117,6 @@ jobs:
           mvn versions:set -DnewVersion=${{ env.RELEASE_NAME }} -B -DgenerateBackupPoms=true -DprocessAllModules=true
           echo "Execute the java project(s) build via Maven tool"
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile -Drevision=${{ env.RELEASE_NAME }}
-          
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
