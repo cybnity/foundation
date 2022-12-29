@@ -25,7 +25,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-
+    env:
+      ARTIFACT_VERSION: ${{ inputs.package_release_name }}
     steps:
     - name: Checkout source codes from branch to publish
       uses: actions/checkout@v3
@@ -45,16 +46,16 @@ jobs:
         server-password: MAVEN_PASSWORD
 
     - name: GitHub Environment Variables Action
-      if: ${{ inputs.package_release_name == '' }}
+      if: ${{ env.ARTIFACT_VERSION == '' }}
       uses: FranzDiebold/github-env-vars-action@v2.7.0
     - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>.<<commit time>>)
-      if: ${{ inputs.package_release_name == '' }}
+      if: ${{ env.ARTIFACT_VERSION == '' }}
       run: |
           echo "Git commit revision $CI_SHA_SHORT abbreviation based on 7 characters (default) maximum (origin based: $CI_SHA)"
           echo "commit_id=$CI_SHA_SHORT" >> $GITHUB_ENV
           echo "feature_name=$CI_ACTION_REF_NAME_SLUG" >> $GITHUB_ENV
     - name: Identify the origin release name of the projects (currently statically defined as 0.0.1 NEED TO BE EVOLUATED)
-      if: ${{ inputs.package_release_name == '' }}
+      if: ${{ env.ARTIFACT_VERSION == '' }}
       # Define a static version name because not received from input parameter
       run: |
           echo "version_name=0.0.1" >> $GITHUB_ENV
@@ -63,7 +64,7 @@ jobs:
 
     - name: Define the artifacts revision name of the projects to publish
       if: ${{ inputs.package_release_name != '' }}
-      run: echo "current_artifacts_revision_id=${{ inputs.package_release_name }}" >> $GITHUB_ENV
+      run: echo "current_artifacts_revision_id=${{ env.ARTIFACT_VERSION }}" >> $GITHUB_ENV
 
     - name: Snapshots remote repository is targeted to be updated
       if: ${{ contains(inputs.target_repository, 'SNAPSHOT') || inputs.target_repository == '' }}
@@ -73,13 +74,13 @@ jobs:
 
     - name: Prepare a Maven project customized ${{ env.current_artifacts_revision_id }} version to publish
       run: |
-          echo "Set the project artifacts version"
-          echo "mvn versions:set -DnewVersion=${{ env.current_artifacts_revision_id }} -B -DgenerateBackupPoms=true -DprocessAllModules=true"
+          echo "Set the project artifacts version in pom.xml files"
+          echo "mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.current_artifacts_revision_id }}"
           echo "Build the project technical documentation web site (generated via Maven) and the Java documentations (libraries javadoc, unit tests javadoc) with an aggregated vision and included into the project website"
-          echo "mvn site site:stage -Drevision=${{ env.current_artifacts_revision_id }} -B -DskipTests"
+          echo "mvn -Drevision=${{ env.current_artifacts_revision_id }} -B -DskipTests site site:stage"
 
     - name: Build and publish ${{ env.current_artifacts_revision_id }} version of java packages to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
-      run: mvn --batch-mode --update-snapshots --show-version --file pom.xml -Drevision=${{ env.current_artifacts_revision_id }} deploy
+      run: mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.current_artifacts_revision_id }} --file pom.xml deploy
       env:
           MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}

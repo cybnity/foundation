@@ -111,10 +111,10 @@ jobs:
 
       - name: Validate all necessary information and compile source code
         run: |
-          echo "Set the project artifacts version"
-          mvn versions:set -DnewVersion=${{ env.RELEASE_NAME }} -B -DgenerateBackupPoms=true -DprocessAllModules=true
+          echo "Set the project artifacts version in pom files"
+          mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.RELEASE_NAME }}
           echo "Execute the java project(s) build via Maven tool"
-          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile -Drevision=${{ env.RELEASE_NAME }}
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} --fail-fast --file pom.xml clean compile
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
@@ -151,7 +151,9 @@ jobs:
 
       - name: Execute tests of the compiled source code
         run: |
-          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test -Drevision=${{ env.RELEASE_NAME }} -Dmaven.test.skip=false
+          echo "Set the project artifacts version in pom files"
+          mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.RELEASE_NAME }}
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Dmaven.test.skip=false --fail-fast --file pom.xml test
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
@@ -189,7 +191,9 @@ jobs:
 
       - name: Package compiled java code in its distributable format (e.g JAR)
         run: |
-          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml package -Drevision=${{ env.RELEASE_NAME }}
+          echo "Set the project artifacts version in pom files"
+          mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.RELEASE_NAME }}
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} --fail-fast --file pom.xml package
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
@@ -226,8 +230,10 @@ jobs:
 
       - name: Verify packaged components
         run: |
+          echo "Set the project artifacts version in pom files"
+          mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.RELEASE_NAME }}
           echo "Run any checks to very the package is valid and meets quality criteria"
-          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify -Drevision=${{ env.RELEASE_NAME }} -DskipTests
+          mvn -Drevision=${{ env.RELEASE_NAME }} -DskipTests --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
@@ -269,10 +275,8 @@ jobs:
     with:
       config-path: ${{ needs.packaging.steps.checkout_step.ref }}
       target_repository: SNAPSHOT
-      package_release_name: ${{ needs.quality_verification.outputs.release_name }}-snapshot
+      package_release_name: ${{ needs.quality_verification.outputs.release_name }}
     secrets: inherit
-    #env:
-    #  RELEASE_NAME: ${{ needs.quality_verification.outputs.release_name }}
     # echo The Pull Request (PR) was approved and merged, but work is not finished and tagged as alpha eligible version
     # echo Publish approved snapshot version of parent pom.xml and sub-projects
     # Publish alpha release closed (with success by approved review) on RELEASE remote repository only
