@@ -169,6 +169,7 @@ jobs:
       release_name: ${{ env.RELEASE_NAME }}
     steps:
       - name: Checkout source codes from branch
+        id: checkout_step
         uses: actions/checkout@v3
         with:
           repository: ${{ github.repository }}
@@ -257,31 +258,29 @@ jobs:
           echo CASE QUALITY REVIEWED FEATURE AS ALPHA RELEASE : Deploy feature revision on remote release repository (reusable by other development, for e.g on development shared environment)
 
   # CASE REVIEWED WITHOUT TAG : When not alpha tagged, prepare only a snapshot version for remote repository installation
-  #publish_version_to_snapshot_remote_repository:
-  #  name: Publish on snapshot remote repository
+  publish_version_to_snapshot_remote_repository:
+    name: Publish on snapshot remote repository
     # Check the alpha tag is attached (when it's a pull_request_target type with reviewer who did not assigned alpha tag because decided not sufficient finished work on feature)
-  #  if: ${{ success()
-  #        && github.event.pull_request.merged == true
-  #        && github.event.pull_request.reviewDecision == 'approved'
-  #        }}
-  #  needs: [quality_verification, packaging]
-  #  uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
-  #  with:
-  #    config-path: ${{ needs.packaging.steps.checkout_step.ref }}
-  #    target_repository: RELEASE
-  #    package_release_name: 0.0.1-snapshot
-  #  secrets: inherit
-  #  env:
-  #    RELEASE_NAME: ${{ needs.quality_verification.outputs.release_name }}
-  #  steps:
-  #    - run: echo The Pull Request (PR) was approved and merged, but work is not finished and tagged as alpha eligible version
+    if: ${{ success()
+      #    && github.event.pull_request.merged == true
+      #    && github.event.pull_request.reviewDecision == 'approved'
+          }}
+    needs: [quality_verification, packaging]
+    uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
+    with:
+      config-path: ${{ needs.packaging.steps.checkout_step.ref }}
+      target_repository: SNAPSHOT
+      package_release_name: ${{ needs.quality_verification.outputs.release_name }}-snapshot
+    secrets: inherit
+    env:
+      RELEASE_NAME: ${{ needs.quality_verification.outputs.release_name }}
+    steps:
+      - run: echo The Pull Request (PR) was approved and merged, but work is not finished and tagged as alpha eligible version
 
-  #    - name:
+      - run: echo Publish approved snapshot version of parent pom.xml and sub-projects
         # Publisg approved snapshot version of parent pom.xml and sub-projects on SNAPSHOT remote repository
-  #      run:
 
-  #    - name:
-        # Publish alpha release closed (with success by approved review) on RELEASE remote repository only
+      - run: Publish alpha release closed (with success by approved review) on RELEASE remote repository only
 
 
 
