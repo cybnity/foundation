@@ -261,10 +261,9 @@ jobs:
   publish_version_to_snapshot_remote_repository:
     name: Publish on snapshot remote repository
     # Check the alpha tag is attached (when it's a pull_request_target type with reviewer who did not assigned alpha tag because decided not sufficient finished work on feature)
-    if: ${{ success()
-      #    && github.event.pull_request.merged == true
-      #    && github.event.pull_request.reviewDecision == 'approved'
-          }}
+    if: ${{ success() }}
+            #    && github.event.pull_request.merged == true
+            #    && github.event.pull_request.reviewDecision == 'approved'
     needs: [quality_verification, packaging]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
