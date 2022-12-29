@@ -273,13 +273,9 @@ jobs:
     secrets: inherit
     env:
       RELEASE_NAME: ${{ needs.quality_verification.outputs.release_name }}
-    steps:
-      - run: echo The Pull Request (PR) was approved and merged, but work is not finished and tagged as alpha eligible version
-
-      - run: echo Publish approved snapshot version of parent pom.xml and sub-projects
-        # Publisg approved snapshot version of parent pom.xml and sub-projects on SNAPSHOT remote repository
-
-      - run: Publish alpha release closed (with success by approved review) on RELEASE remote repository only
+    # echo The Pull Request (PR) was approved and merged, but work is not finished and tagged as alpha eligible version
+    # echo Publish approved snapshot version of parent pom.xml and sub-projects
+    # Publish alpha release closed (with success by approved review) on RELEASE remote repository only
 
 
 
