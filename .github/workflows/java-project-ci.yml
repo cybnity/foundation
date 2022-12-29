@@ -77,7 +77,7 @@ jobs:
         if: ${{ env.TAG_VERSION == '' }}
         run: |
             echo "Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
-            echo "release_name=$VERSION_NAME-$CI_ACTION_REF_NAME_SLUG.$CI_SHA_SHORT" >> $GITHUB_ENV
+            echo "release_name=$VERSION_NAME-$FEATURE_NAME.$COMMIT_ID" >> $GITHUB_ENV
 
   java_project_compilation:
     name: Validation & compiling
@@ -92,7 +92,6 @@ jobs:
       release_name: ${{ env.RELEASE_NAME }}
     steps:
       - name: Checkout source codes from branch
-        id: checkout_step
         uses: actions/checkout@v3
         with:
           repository: ${{ github.repository }}
@@ -111,7 +110,6 @@ jobs:
           server-password: MAVEN_PASSWORD
 
       - name: Validate all necessary information and compile source code
-        id: compilation
         run: |
           echo "Set the project artifacts version"
           mvn versions:set -DnewVersion=${{ env.RELEASE_NAME }} -B -DgenerateBackupPoms=true -DprocessAllModules=true
@@ -131,10 +129,9 @@ jobs:
     env:
       RELEASE_NAME: ${{ needs.java_project_compilation.outputs.release_name }}
     outputs:
-      release_name: ${{ steps.testing.outputs.RELEASE_NAME }}
+      release_name: ${{ env.RELEASE_NAME }}
     steps:
       - name: Checkout source codes from branch
-        id: checkout_step
         uses: actions/checkout@v3
         with:
           repository: ${{ github.repository }}
@@ -153,10 +150,8 @@ jobs:
           server-password: MAVEN_PASSWORD
 
       - name: Execute tests of the compiled source code
-        id: testing
         run: |
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test -Drevision=${{ env.RELEASE_NAME }} -Dmaven.test.skip=false
-          echo "release_name=$RELEASE_NAME" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
@@ -171,10 +166,9 @@ jobs:
     env:
       RELEASE_NAME: ${{ needs.unit_testing.outputs.release_name }}
     outputs:
-      release_name: ${{ steps.packaging.outputs.RELEASE_NAME }}
+      release_name: ${{ env.RELEASE_NAME }}
     steps:
       - name: Checkout source codes from branch
-        id: checkout_step
         uses: actions/checkout@v3
         with:
           repository: ${{ github.repository }}
@@ -193,10 +187,8 @@ jobs:
           server-password: MAVEN_PASSWORD
 
       - name: Package compiled java code in its distributable format (e.g JAR)
-        id: packaging
         run: |
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml package -Drevision=${{ env.RELEASE_NAME }}
-          echo "release_name=$RELEASE_NAME" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
@@ -211,10 +203,9 @@ jobs:
     env:
       RELEASE_NAME: ${{ needs.packaging.outputs.release_name }}
     outputs:
-      release_name: ${{ steps.verifying.outputs.RELEASE_NAME }}
+      release_name: ${{ env.RELEASE_NAME }}
     steps:
       - name: Checkout source codes from branch
-        id: checkout_step
         uses: actions/checkout@v3
         with:
           repository: ${{ github.repository }}
@@ -233,11 +224,9 @@ jobs:
           server-password: MAVEN_PASSWORD
 
       - name: Verify packaged components
-        id: verifying
         run: |
           echo "Run any checks to very the package is valid and meets quality criteria"
           mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify -Drevision=${{ env.RELEASE_NAME }} -DskipTests
-          echo "release_name=$RELEASE_NAME" >> $GITHUB_OUTPUT
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
