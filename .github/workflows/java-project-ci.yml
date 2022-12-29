@@ -241,11 +241,11 @@ jobs:
   # CASE QUALITY REVIEWED AND TAGGED AS ALPHA RELEASE : When alpha tagged, prepare a release package (alpha version as version name), prepare a release for remote repository installation
   publish_version_to_release_remote_repository:
     name: Publish reviewed release version on remote repository
-    if: ${{ success()
+    if: ${{ success() }}
           # && github.event.pull_request.merged == true
           # && github.event.pull_request.reviewDecision == 'approved'
           # && contains(github.event.release.tag_name, 'alpha')
-          }}
+
     needs: [quality_verification, packaging]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
