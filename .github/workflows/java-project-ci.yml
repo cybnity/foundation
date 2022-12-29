@@ -53,7 +53,15 @@ jobs:
           echo The current release tag is ${{ github.event.release.tag_name }}
           echo "TAG_VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
 
+      - name: Set the release name of the project based on GitHub tag name
+        if: ${{ env.TAG_VERSION != '' }}
+        run : |
+            echo "Define the final version identifier from the GitHub project's current tag name"
+            echo "release_name=$TAG_VERSION" >> $GITHUB_ENV
+
+      # Build specific release name because none tag is existing on GitHub project
       - name: Define reusable environment variables about current commit
+        if: ${{ env.TAG_VERSION == '' }}
         uses: FranzDiebold/github-env-vars-action@v2.7.0
 
       - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>)
@@ -64,17 +72,12 @@ jobs:
             echo "COMMIT_ID=$CI_SHA_SHORT" >> $GITHUB_ENV
             echo "FEATURE_NAME=$CI_ACTION_REF_NAME_SLUG" >> $GITHUB_ENV
             echo "VERSION_NAME=0.0.0" >> $GITHUB_ENV
+
       - name: Set the release name of the project based on CYBNITY versioning strategy
         if: ${{ env.TAG_VERSION == '' }}
         run: |
             echo "Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
             echo "release_name=$VERSION_NAME-$CI_ACTION_REF_NAME_SLUG.$CI_SHA_SHORT" >> $GITHUB_ENV
-
-      - name: Set the release name of the project based on GitHub tag name
-        if: ${{ env.TAG_VERSION != '' }}
-        run : |
-            echo "Define the final version identifier from the GitHub project's current tag name"
-            echo "release_name=$TAG_VERSION" >> $GITHUB_ENV
 
   java_project_compilation:
     name: Validation & compiling
@@ -127,7 +130,7 @@ jobs:
     permissions:
       contents: read
     env:
-      RELEASE_NAME: ${{ needs.java_project_compilation.outputs.release_name }}
+      RELEASE_NAME: ${{ needs.java_project_compilation.env.RELEASE_NAME }}
     outputs:
       release_name: ${{ steps.testing.outputs.RELEASE_NAME }}
     steps:
