@@ -275,18 +275,18 @@ jobs:
       # only when approved, merged and tagged as 'reviewed' (e.g by reviewer)
       # or only when a reviewed tag is pushed only on the branch (e.g after a review already executed after closed PR)
       # or only when a alpha tag is pushed only on the branch (e.g when feature developer or reviewer indicate that work is finished)
-    if: ${{ success()
-          && needs.define_project_release_name.outputs.is_snapshot
-          && github.event_name == 'push' && github.ref_type == 'tag' && contains(fromJson('["reviewed", "alpha"]'), github.ref_name)
-          }}
     #if: ${{ success()
     #      && needs.define_project_release_name.outputs.is_snapshot
-    #      && (
-    #       (github.event.pull_request.merged == true && github.event.pull_request.reviewDecision == 'approved' && github.ref_name == 'reviewed')
-    #       ||
-    #       ( github.event_name == 'push' && github.ref_type == 'tag' && contains(fromJson('["reviewed", "alpha"]'), github.ref_name) )
-    #      )
+    #      && github.event_name == 'push' && github.ref_type == 'tag' && ( contains(github.ref_name, 'reviewed') || contains(github.ref_name, 'alpha') )
     #      }}
+    if: ${{ success()
+          && needs.define_project_release_name.outputs.is_snapshot
+          && (
+           (github.event.pull_request.merged == true && github.event.pull_request.reviewDecision == 'approved' && github.ref_name == 'reviewed')
+           ||
+           ( github.event_name == 'push' && github.ref_type == 'tag' && ( contains(github.ref_name, 'reviewed') || contains(github.ref_name, 'alpha') )
+          )
+          }}
     needs: [define_project_release_name,packaging,quality_verification]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
