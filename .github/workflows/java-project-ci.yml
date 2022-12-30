@@ -250,7 +250,7 @@ jobs:
   # Publish release of parent pom.xml and sub-projects (reusable by other development, or for processing by Automated Acceptance Test stage) that potentially replace previous equals version named
   publish_version_to_release_remote_repository:
     name: Publish version on remote releases repository
-    if: ${{ success() && needs.define_project_release_name.outputs.is_snapshot == false }}
+    if: ${{ success() && !needs.define_project_release_name.outputs.is_snapshot }}
     needs: [define_project_release_name,packaging,quality_verification]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
@@ -266,7 +266,7 @@ jobs:
     # Don't publish snapshot version on other repository than the local developer workstation's maven repository
     # The Pull Request (PR) of development revision was approved and merged, but maybe work is not finished
     if: ${{ success()
-          && needs.define_project_release_name.outputs.is_snapshot == true
+          && needs.define_project_release_name.outputs.is_snapshot
           }}
           #&& github.event.pull_request.merged == true
           #&& github.event.pull_request.reviewDecision == 'approved'
