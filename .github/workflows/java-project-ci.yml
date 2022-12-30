@@ -277,9 +277,7 @@ jobs:
       # or only when a alpha tag is pushed only on the branch (e.g when feature developer or reviewer indicate that work is finished)
     if: ${{ success()
           && needs.define_project_release_name.outputs.is_snapshot
-          && (
-           github.event_name == 'push' && github.ref_type == 'tag' && contains(fromJson('["reviewed", "alpha"]'), github.ref_name)
-          )
+          && github.event_name == 'push' && github.ref_type == 'tag' && contains(fromJson('["reviewed", "alpha"]'), github.ref_name)
           }}
     #if: ${{ success()
     #      && needs.define_project_release_name.outputs.is_snapshot
