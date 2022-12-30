@@ -36,6 +36,11 @@ on:
       - 'feature*'
       - 'hotfix*'
       - 'fix*'
+    # execute only when reviewed files or java sub-projects
+    paths:
+    - 'pom.xml'
+    - 'implementations-line/**'
+    - 'systems-line/**'
 
 # The commit stage workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -46,38 +51,42 @@ jobs:
       contents: read
     outputs:
       release_name: ${{ env.release_name }}
+      is_snapshot: ${{ env.is_snapshot }}
     steps:
       - name: Check existing project defined version name
+        if: ${{ github.event.release.tag_name != '' }}
         # Read the release name defined into the GitHub project
         run: |
           echo The current release tag is ${{ github.event.release.tag_name }}
           echo "TAG_VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+          echo "is_snapshot=${{ contains(github.event.release.tag_name, 'snapshot') }}" >> $GITHUB_ENV
 
       - name: Set the release name of the project based on GitHub tag name
         if: ${{ env.TAG_VERSION != '' }}
         run : |
             echo "Define the final version identifier from the GitHub project's current tag name"
             echo "release_name=$TAG_VERSION" >> $GITHUB_ENV
+            echo "Development version type is detected from the GitHub tag name as ${{ env.is_snapshot }}"
 
       # Build specific release name because none tag is existing on GitHub project
       - name: Define reusable environment variables about current commit
         if: ${{ env.TAG_VERSION == '' }}
         uses: FranzDiebold/github-env-vars-action@v2.7.0
 
-      - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>)
+      - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>) regarding development release
         if: ${{ env.TAG_VERSION == '' }}
-        # todo: modify the static version_name with tag version name or default name
         run: |
             echo "Git commit revision $CI_SHA_SHORT abbreviation based on 7 characters (default) maximum (origin based: $CI_SHA)"
             echo "COMMIT_ID=$CI_SHA_SHORT" >> $GITHUB_ENV
             echo "FEATURE_NAME=$CI_ACTION_REF_NAME_SLUG" >> $GITHUB_ENV
-            echo "VERSION_NAME=0.0.0" >> $GITHUB_ENV
+            echo "is_snapshot=true" >> $GITHUB_ENV
+            echo "Development version type is defined as snapshot based on $CI_SHA_SHORT commit revision number"
 
       - name: Set the release name of the project based on CYBNITY versioning strategy
         if: ${{ env.TAG_VERSION == '' }}
         run: |
             echo "Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
-            echo "release_name=$VERSION_NAME-$FEATURE_NAME.$COMMIT_ID" >> $GITHUB_ENV
+            echo "release_name=$FEATURE_NAME.$COMMIT_ID" >> $GITHUB_ENV
 
   java_project_compilation:
     name: Validation & compiling
@@ -238,39 +247,34 @@ jobs:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-  # CASE QUALITY REVIEWED AND TAGGED AS ALPHA RELEASE : When alpha tagged, prepare a release package (alpha version as version name), prepare a release for remote repository installation
+  # Prepare a release for remote repository installation (published in place of old equals release name in remote repository, reviewed or not)
+  # Publish release of parent pom.xml and sub-projects (reusable by other development, or for processing by Automated Acceptance Test stage) that potentially replace previous equals version named
   publish_version_to_release_remote_repository:
     name: Publish reviewed release version on remote repository
-    if: ${{ success()
-            && github.event.pull_request.merged == true
-            && github.event.pull_request.reviewDecision == 'approved'
-            && contains(github.event.release.tag_name, 'alpha')
-            }}
-    needs: [quality_verification, packaging]
+    if: ${{ success() && define_project_release_name.outputs.is_snapshot == false }}
+    needs: [define_project_release_name,quality_verification, packaging]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
       config-path: ${{ needs.packaging.steps.checkout_step.ref }}
-      # The Pull Request (PR) was approved and merged, and work is considered by reviewer as finished via tagging as alpha eligible version
-      # Publish approved alpha release closed of parent pom.xml and sub-projects (reusable by other development, or for processing by Automated Acceptance Test stage)
       target_repository: RELEASE
       package_release_name: ${{ needs.quality_verification.outputs.release_name }}
     secrets: inherit
 
-  # CASE QUALITY REVIEWED WITHOUT TAG : When not alpha tagged, prepare only a snapshot version for remote repository installation
+  # Prepare only a snapshot version for remote repository installation
   publish_version_to_snapshot_remote_repository:
     name: Publish reviewed snapshot version on remote repository
-    # Check the alpha tag is attached (when it's a pull_request_target type with reviewer who did not assigned alpha tag because decided not sufficient finished work on feature)
+    # Publish snapshot version (parent pom.xml and sub-projects available for other features' developers) on remote repository only when approved and merged (e.g by reviewer)
+    # Don't publish snapshot version on other repository than the local developer workstation's maven repository
+    # The Pull Request (PR) of development revision was approved and merged, but maybe work is not finished
     if: ${{ success()
-            && github.event.pull_request.merged == true
-            && github.event.pull_request.reviewDecision == 'approved'
-            && (!contains(github.event.release.tag_name, 'alpha') || github.event.release.tag_name == '')
-            }}
-    needs: [quality_verification, packaging]
+          && define_project_release_name.outputs.is_snapshot == true
+          && github.event.pull_request.merged == true
+          && github.event.pull_request.reviewDecision == 'approved'
+          }}
+    needs: [define_project_release_name,quality_verification, packaging]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
       config-path: ${{ needs.packaging.steps.checkout_step.ref }}
-      # The Pull Request (PR) was approved and merged, but work is not finished and tagged as alpha eligible version
-      # Publish approved snapshot version of parent pom.xml and sub-projects (available for other developers)
       target_repository: SNAPSHOT
       package_release_name: ${{ needs.quality_verification.outputs.release_name }}
     secrets: inherit
