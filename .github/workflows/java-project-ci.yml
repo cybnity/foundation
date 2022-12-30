@@ -14,6 +14,11 @@ on:
       - 'implementations-line/**'
       - 'systems-line/**'
       - '.github/workflows/java-project-ci.yml'
+    # execute when a alpha tag is added on the feature branch as "finished work" (e.g by developer)
+    tags:
+      - [0-9]+.[0-9]+.[0-9]+-*
+      - 'release'
+      - 'reviewed'
 
   pull_request:
     # execution when pull request is requested by a developer (e.g to reviewer) on his development branch or another branch
@@ -267,9 +272,9 @@ jobs:
     # The Pull Request (PR) of development revision was approved and merged, but maybe work is not finished
     if: ${{ success()
           && needs.define_project_release_name.outputs.is_snapshot
+          && github.event.pull_request.merged == true
+          && github.event.pull_request.reviewDecision == 'approved'
           }}
-          #&& github.event.pull_request.merged == true
-          #&& github.event.pull_request.reviewDecision == 'approved'
     needs: [define_project_release_name,packaging,quality_verification]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
@@ -277,6 +282,17 @@ jobs:
       target_repository: SNAPSHOT
       package_release_name: ${{ needs.quality_verification.outputs.release_name }}
     secrets: inherit
+
+  check_tag:
+    name: Tagged branch
+    #if: success() && github.event.push.tag_name == 'release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Read tags
+        run: |
+            echo "tag received is name=${{ github.event.push.tag_name }} , ref=${{ github.event.push.ref }}, baseref= ${{ github.event.push.base_ref }} "
 
   #pre-release:
   #  name: Tag latest pre-release
