@@ -123,7 +123,7 @@ jobs:
           echo "Set the project artifacts version in pom files"
           mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.RELEASE_NAME }}
           echo "Execute the java project(s) build via Maven tool"
-          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} --fail-fast --file pom.xml clean compile
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} --fail-fast --file pom.xml clean compile -Dmaven.test.skip=true
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
@@ -158,10 +158,11 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
 
-      - name: Execute tests of the compiled source code
+      - name: Execute unit tests validating the java compiled source code
         run: |
           echo "Set the project artifacts version in pom files"
           mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.RELEASE_NAME }}
+          echo "Compile unit tests and java project(s), and execute tests via Maven tool"
           mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Dmaven.test.skip=false --fail-fast --file pom.xml test
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
@@ -202,7 +203,7 @@ jobs:
         run: |
           echo "Set the project artifacts version in pom files"
           mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.RELEASE_NAME }}
-          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} --fail-fast --file pom.xml package
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} --fail-fast --file pom.xml package -Dmaven.test.skip=true
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
@@ -241,8 +242,8 @@ jobs:
         run: |
           echo "Set the project artifacts version in pom files"
           mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.RELEASE_NAME }}
-          echo "Run any checks to very the package is valid and meets quality criteria"
-          mvn -Drevision=${{ env.RELEASE_NAME }} -DskipTests --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify
+          echo "Run any checks to very the package is valid and meets quality criteria (including test resources) without unit test execution"
+          mvn -Drevision=${{ env.RELEASE_NAME }} --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify -DskipTests
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
@@ -250,7 +251,7 @@ jobs:
   # Prepare a release for remote repository installation (published in place of old equals release name in remote repository, reviewed or not)
   # Publish release of parent pom.xml and sub-projects (reusable by other development, or for processing by Automated Acceptance Test stage) that potentially replace previous equals version named
   publish_version_to_release_remote_repository:
-    name: Publish reviewed release version on remote repository
+    name: Publish version on remote releases repository
     if: ${{ success() && needs.define_project_release_name.outputs.is_snapshot == false }}
     needs: [define_project_release_name,quality_verification, packaging]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
@@ -262,15 +263,16 @@ jobs:
 
   # Prepare only a snapshot version for remote repository installation
   publish_version_to_snapshot_remote_repository:
-    name: Publish reviewed snapshot version on remote repository
+    name: Publish dev version on remote repository
     # Publish snapshot version (parent pom.xml and sub-projects available for other features' developers) on remote repository only when approved and merged (e.g by reviewer)
     # Don't publish snapshot version on other repository than the local developer workstation's maven repository
     # The Pull Request (PR) of development revision was approved and merged, but maybe work is not finished
     if: ${{ success()
           && needs.define_project_release_name.outputs.is_snapshot == true
-          && github.event.pull_request.merged == true
-          && github.event.pull_request.reviewDecision == 'approved'
+
           }}
+          #&& github.event.pull_request.merged == true
+          #&& github.event.pull_request.reviewDecision == 'approved'
     needs: [define_project_release_name,quality_verification, packaging]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
