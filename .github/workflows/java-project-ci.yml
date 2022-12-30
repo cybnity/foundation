@@ -279,7 +279,8 @@ jobs:
           && needs.define_project_release_name.outputs.is_snapshot
           && (
            (github.event.pull_request.merged == true && github.event.pull_request.reviewDecision == 'approved' && github.ref_name == 'reviewed')
-           || (github.event_name == 'push' && github.ref_type == 'tag' && contains(fromJson('["reviewed", "alpha"]'), github.ref_name)) )
+           ||
+           (github.event_name == 'push' && github.ref_type == 'tag' && contains(fromJson('["reviewed", "alpha"]'), github.ref_name) )
           )
           }}
     needs: [define_project_release_name,packaging,quality_verification]
