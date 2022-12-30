@@ -249,7 +249,7 @@ jobs:
   # Prepare a release for remote repository installation (published in place of old equals release name in remote repository, reviewed or not)
   # Publish release of parent pom.xml and sub-projects (reusable by other development, or for processing by Automated Acceptance Test stage) that potentially replace previous equals version named
   publish_version_to_release_remote_repository:
-    name: Publish version on remote releases repository
+    name: Publish release on remote releases repository
     if: ${{ success() && !needs.define_project_release_name.outputs.is_snapshot }}
     needs: [define_project_release_name,packaging,quality_verification]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
