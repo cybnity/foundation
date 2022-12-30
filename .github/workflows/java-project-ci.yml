@@ -292,7 +292,7 @@ jobs:
     steps:
       - name: Read tags
         run: |
-            echo "tag received is name=${{ github.event.push.tag_name }} , ref=${{ github.event.push.ref }}, baseref= ${{ github.event.push.base_ref }} "
+            echo "tag received is name=${{ github.event_name }} , ref=${{ github.ref }}, refname=${{ github.ref_name }}, baseref= ${{ github.base_ref }}, reftype=${{ github.ref_type }} "
 
   #pre-release:
   #  name: Tag latest pre-release
