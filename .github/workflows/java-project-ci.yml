@@ -16,9 +16,9 @@ on:
       - '.github/workflows/java-project-ci.yml'
     # execute when a alpha tag is added on the feature branch as "finished work" (e.g by developer)
     tags:
-      - '[0-9]+.[0-9]+.[0-9]+-alpha'
-      - 'reviewed'
-      - 'alpha'
+      - '[0-9]+.[0-9]+.[0-9]+-*'
+      - '*-reviewed'
+      - '*-alpha'
 
   pull_request:
     # execution when pull request is requested by a developer (e.g to reviewer) on his development branch or another branch
@@ -275,10 +275,6 @@ jobs:
       # only when approved, merged and tagged as 'reviewed' (e.g by reviewer)
       # or only when a reviewed tag is pushed only on the branch (e.g after a review already executed after closed PR)
       # or only when a alpha tag is pushed only on the branch (e.g when feature developer or reviewer indicate that work is finished)
-    #if: ${{ success()
-    #      && needs.define_project_release_name.outputs.is_snapshot
-    #      && github.event_name == 'push' && github.ref_type == 'tag' && ( contains(github.ref_name, 'reviewed') || contains(github.ref_name, 'alpha') )
-    #      }}
     if: ${{ success()
           && needs.define_project_release_name.outputs.is_snapshot
           && (
@@ -294,17 +290,6 @@ jobs:
       target_repository: SNAPSHOT
       package_release_name: ${{ needs.quality_verification.outputs.release_name }}
     secrets: inherit
-
-  check_tag:
-    name: Tagged branch
-    #if: success() && github.event.push.tag_name == 'release'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Read tags
-        run: |
-            echo "tag received is name=${{ github.event_name }} , ref=${{ github.ref }}, refname=${{ github.ref_name }}, baseref= ${{ github.base_ref }}, reftype=${{ github.ref_type }} "
 
   #pre-release:
   #  name: Tag latest pre-release
