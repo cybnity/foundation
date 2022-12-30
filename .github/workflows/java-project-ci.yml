@@ -284,7 +284,7 @@ jobs:
           && (
            (github.event.pull_request.merged == true && github.event.pull_request.reviewDecision == 'approved' && github.ref_name == 'reviewed')
            ||
-           ( github.event_name == 'push' && github.ref_type == 'tag' && ( contains(github.ref_name, 'reviewed') || contains(github.ref_name, 'alpha') )
+           ( github.event_name == 'push' && github.ref_type == 'tag' && ( contains(github.ref_name, 'reviewed') || contains(github.ref_name, 'alpha') ))
           )
           }}
     needs: [define_project_release_name,packaging,quality_verification]
