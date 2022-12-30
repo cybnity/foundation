@@ -82,11 +82,9 @@ jobs:
             echo "is_snapshot=true" >> $GITHUB_ENV
             echo "Development version type is defined as snapshot based on $CI_SHA_SHORT commit revision number"
 
-      - name: Set the release name of the project based on CYBNITY versioning strategy
+      - name: Set the final release name of the project based on CYBNITY versioning strategy
         if: ${{ env.TAG_VERSION == '' }}
-        run: |
-            echo "Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
-            echo "release_name=$FEATURE_NAME.$COMMIT_ID" >> $GITHUB_ENV
+        run: echo "release_name=$FEATURE_NAME.$COMMIT_ID" >> $GITHUB_ENV
 
   java_project_compilation:
     name: Validation & compiling
@@ -253,7 +251,7 @@ jobs:
   publish_version_to_release_remote_repository:
     name: Publish version on remote releases repository
     if: ${{ success() && needs.define_project_release_name.outputs.is_snapshot == false }}
-    needs: [define_project_release_name,quality_verification, packaging]
+    needs: [define_project_release_name,packaging,quality_verification]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
       config-path: ${{ needs.packaging.steps.checkout_step.ref }}
@@ -269,11 +267,10 @@ jobs:
     # The Pull Request (PR) of development revision was approved and merged, but maybe work is not finished
     if: ${{ success()
           && needs.define_project_release_name.outputs.is_snapshot == true
-
           }}
           #&& github.event.pull_request.merged == true
           #&& github.event.pull_request.reviewDecision == 'approved'
-    needs: [define_project_release_name,quality_verification, packaging]
+    needs: [define_project_release_name,packaging,quality_verification]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
       config-path: ${{ needs.packaging.steps.checkout_step.ref }}
