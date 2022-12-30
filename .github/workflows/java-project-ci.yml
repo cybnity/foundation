@@ -16,7 +16,7 @@ on:
       - '.github/workflows/java-project-ci.yml'
     # execute when a alpha tag is added on the feature branch as "finished work" (e.g by developer)
     tags:
-      - [0-9]+.[0-9]+.[0-9]+-*
+      - '[0-9]+.[0-9]+.[0-9]+-*'
       - 'release'
       - 'reviewed'
 
