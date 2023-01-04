@@ -37,9 +37,9 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
 
-      - name: Compile binaries and resources targeted by technical quality stage
+      - name: Compile binaries and resources targeted by the technical quality stage
         run: |
-          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.ARTIFACT_VERSION }} --file pom.xml -DcreateChecksum=true deploy -Dmaven.test.skip=true
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.ARTIFACT_VERSION }} --fail-fast --file pom.xml -DcreateChecksum=true clean install -Dmaven.test.skip=true
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
