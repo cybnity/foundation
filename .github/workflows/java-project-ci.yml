@@ -65,7 +65,7 @@ jobs:
         run: |
           echo The current release tag is ${{ github.event.release.tag_name }}
           echo "TAG_VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
-          echo "is_snapshot=${{ contains(github.event.release.tag_name, 'snapshot') }}" >> $GITHUB_ENV
+          echo "is_snapshot=${{ contains(github.event.release.tag_name, 'snapshot') || contains(github.event.release.tag_name, 'reviewed') }}" >> $GITHUB_ENV
 
       - name: Set the release name of the project based on GitHub tag name
         if: ${{ env.TAG_VERSION != '' }}
@@ -88,9 +88,17 @@ jobs:
             echo "is_snapshot=true" >> $GITHUB_ENV
             echo "Development version type is defined as snapshot based on $CI_SHA_SHORT commit revision number"
 
-      - name: Set the final snapshot name of the project based on CYBNITY versioning strategy
-        if: ${{ env.TAG_VERSION == '' }}
+      - name: Set a snapshot feature name based on unique commit id
+        # Build final name about featureX name, but avoiding COMMIT_ID and SNAPSHOT suffix
+        if: ${{ env.TAG_VERSION == '' && ( !contains(env.FEATURE_NAME, 'alpha') && !contains(env.FEATURE_NAME, 'reviewed') ) }}
+        # Build unique name including commit_id suffix based
         run: echo "release_name=$FEATURE_NAME.$COMMIT_ID-SNAPSHOT" >> $GITHUB_ENV
+
+      - name: Set a snapshot reviewed version name of the project based on CYBNITY versioning strategy
+        # Build final name about any tag named branch (maybe don't include feature name including -reviewed or -alpha)
+        if: ${{ env.TAG_VERSION == '' && env.release_name == '' }}
+        # Build name based on a potential included tag (e.g 0.0.7-reviewed, 0.0.7-alpha, 0.0.7) without commit_id suffix
+        run: echo "release_name=$FEATURE_NAME-SNAPSHOT" >> $GITHUB_ENV
 
   java_project_compilation:
     name: Validation & compiling
