@@ -1,7 +1,6 @@
-# Main COMMIT STAGE workflow regarding the java project managed via Maven tool
-
-name: Java project CI (commit stage)
-
+# Main COMMIT STAGE workflow regarding the java projects managed via Maven tool
+name: Java Project CI (commit stage)
+run-name: Java codes build & quality verification
 on:
   push:
     # execution when development java source codes commit is pushed by a developer of a feature, hotfix, or fix branch
@@ -14,17 +13,115 @@ on:
       - 'pom.xml'
       - 'implementations-line/**'
       - 'systems-line/**'
+      - '.github/workflows/java-project-ci.yml'
+      - '.github/workflows/publish-java-packages-version-to-repository.yml'
+      - '.github/workflows/check-java-project-technical-quality.yml'
+    # execute when a alpha tag is added on the feature branch as "finished work" (e.g by developer)
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+-*'
+      - '*-reviewed'
+      - 'reviewed*'
+      - '*-alpha'
+
+  pull_request:
+    # execution when pull request is requested by a developer (e.g to reviewer) on his development branch or another branch
+    types: [opened, reopened, review_requested]
+    branches:
+      - 'feature*'
+      - 'hotfix*'
+      - 'fix*'
+    # execute only when reviewed files or java sub-projects
+    paths:
+    - 'pom.xml'
+    - 'implementations-line/**'
+    - 'systems-line/**'
+
+  pull_request_target:
+    # when a pull request merges, the pull request is automatically closed (so check the merged state)
+    types: [closed]
+    # execution when feature's artifacts (e.g implementation doc, java source code) were reviewed
+    branches:
+      - 'feature*'
+      - 'hotfix*'
+      - 'fix*'
+    # execute only when reviewed files or java sub-projects
+    paths:
+    - 'pom.xml'
+    - 'implementations-line/**'
+    - 'systems-line/**'
 
 # The commit stage workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  prepare_build_context:
-    name: Java context preparation
+  define_project_release_name:
+    name: Release name preparation
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    steps:    
+    outputs:
+      release_name: ${{ env.release_name }}
+      is_snapshot: ${{ env.is_snapshot }}
+    steps:
+      - name: Check existing project defined version name
+        if: ${{ github.event.release.tag_name != '' }}
+        # Read the release name defined into the GitHub project
+        run: |
+          echo The current release tag is ${{ github.event.release.tag_name }}
+          echo "TAG_VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+          echo "is_snapshot=${{ contains(github.event.release.tag_name, 'snapshot') || contains(github.event.release.tag_name, 'reviewed') }}" >> $GITHUB_ENV
+
+      - name: Set the release name of the project based on GitHub tag name
+        if: ${{ env.TAG_VERSION != '' }}
+        run : |
+            echo "Define the final version identifier from the GitHub project's current tag name"
+            echo "release_name=$TAG_VERSION" >> $GITHUB_ENV
+            echo "Development version type is detected from the GitHub tag name as ${{ env.is_snapshot }}"
+
+      # Build specific release name because none tag is existing on GitHub project
       - name: Define reusable environment variables about current commit
+        if: ${{ env.TAG_VERSION == '' }}
         uses: FranzDiebold/github-env-vars-action@v2.7.0
+
+      - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>) regarding development release
+        if: ${{ env.TAG_VERSION == '' }}
+        run: |
+            echo "Git commit revision $CI_SHA_SHORT abbreviation based on 7 characters (default) maximum (origin based: $CI_SHA)"
+            echo "COMMIT_ID=$CI_SHA_SHORT" >> $GITHUB_ENV
+            echo "FEATURE_NAME=$CI_ACTION_REF_NAME_SLUG" >> $GITHUB_ENV
+            echo "is_snapshot=true" >> $GITHUB_ENV
+            echo "Development version type is defined as snapshot based on $CI_SHA_SHORT commit revision number"
+
+      - name: Set a snapshot feature name based on unique commit id
+        # Build final name about featureX name, but avoiding COMMIT_ID and SNAPSHOT suffix
+        if: ${{ env.TAG_VERSION == '' && ( !contains(env.FEATURE_NAME, 'alpha') && !contains(env.FEATURE_NAME, 'reviewed') ) }}
+        # Build unique name including commit_id suffix based
+        # Example of output name: feature-133.9efbb506-SNAPSHOT
+        run: echo "release_name=$FEATURE_NAME.$COMMIT_ID-SNAPSHOT" >> $GITHUB_ENV
+
+      - name: Set a snapshot reviewed version name of the project based on CYBNITY versioning strategy
+        # Build final name about any tag named branch (maybe don't include feature name including -reviewed or -alpha)
+        if: ${{ env.TAG_VERSION == '' && env.release_name == '' }}
+        # Build name based on a potential included tag (e.g 0.0.7-reviewed, 0.0.7-alpha, 0.0.7) without commit_id suffix
+        # Example of output name 0.0.7-reviewed-SNAPSHOT, feature133-alpha-SNAPSHOT
+        run: echo "release_name=$FEATURE_NAME-SNAPSHOT" >> $GITHUB_ENV
+
+  java_project_compilation:
+    name: Validation & compiling
+    if: success() && github.event_name == 'push'
+    needs: [define_project_release_name]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      RELEASE_NAME: ${{ needs.define_project_release_name.outputs.release_name }}
+    outputs:
+      release_name: ${{ env.RELEASE_NAME }}
+    steps:
+      - name: Checkout source codes from branch
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository }}
+          token: ${{ github.token }}
+          ref: ${{ inputs.branch_name }}
 
       - name: Set up java runtime (Temurin JDK)
         uses: actions/setup-java@v3
@@ -36,35 +133,68 @@ jobs:
           server-id: space-cybnity-open-source
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
-          
-  define_project_release_name:
-    name: Project release name preparation
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Check existing project defined version name
-        id: release_naming
-        # Read the release name defined into the GitHub project
-        run: echo "RELEASE_NAME=''" >> $GITHUB_ENV
 
-      - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>)
-        if: ${{ steps.release_naming.outputs.RELEASE_NAME == '' }}
+      - name: Validate all necessary information and compile source code
         run: |
-            echo "Git commit revision $CI_SHA_SHORT abbreviation based on 7 characters (default) maximum (origin based: $CI_SHA)"
-            echo "COMMIT_ID=$CI_SHA_SHORT" >> $GITHUB_ENV
-            echo "FEATURE_NAME=$CI_ACTION_REF_NAME_SLUG" >> $GITHUB_ENV
-            echo "VERSION_NAME=0.0.1" >> $GITHUB_ENV
-            echo "Define the final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
-            echo "RELEASE_NAME=${{ env.VERSION_NAME }}-${{ env.FEATURE_NAME }}.${{ env.COMMIT_ID }}" >> $GITHUB_ENV
+          echo "Set the project artifacts version in pom files"
+          mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.RELEASE_NAME }}
+          echo "Execute the java project(s) build via Maven tool"
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} --fail-fast --file pom.xml clean compile -Dmaven.test.skip=true
+        env:
+            MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
+            MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-  java_project_compiling:
-    name: Java validation & compiling
-    if: ${{ github.event.push && success() }}
-    needs: [prepare_build_context, define_project_release_name]
+  unit_testing:
+    name: Unit testing of compiled code
+    needs: [java_project_compilation]
+    if: success() && github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      RELEASE_NAME: ${{ needs.java_project_compilation.outputs.release_name }}
+    outputs:
+      release_name: ${{ env.RELEASE_NAME }}
+    steps:
+      - name: Checkout source codes from branch
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository }}
+          token: ${{ github.token }}
+          ref: ${{ inputs.branch_name }}
+
+      - name: Set up java runtime (Temurin JDK)
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          # defined settings.xml values allowing use of CYBNITY Maven remote repository
+          server-id: space-cybnity-open-source
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+
+      - name: Execute unit tests validating the java compiled source code
+        run: |
+          echo "Set the project artifacts version in pom files"
+          mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.RELEASE_NAME }}
+          echo "Compile unit tests and java project(s), and execute tests via Maven tool"
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Dmaven.test.skip=false --fail-fast --file pom.xml test
+        env:
+            MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
+            MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+
+  packaging:
+    name: Binary packaging
+    if: success() && github.event_name == 'push'
+    needs: [unit_testing]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      RELEASE_NAME: ${{ needs.unit_testing.outputs.release_name }}
+    outputs:
+      release_name: ${{ env.RELEASE_NAME }}
     steps:
       - name: Checkout source codes from branch
         id: checkout_step
@@ -74,53 +204,137 @@ jobs:
           token: ${{ github.token }}
           ref: ${{ inputs.branch_name }}
 
-      - name:  Validate all necessary information is available and compile the source code
-        # set the MAVEN_RESULT environment variable to the value of the mvn command output text
-        run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml clean compile
-        env:
-            MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
-            MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+      - name: Set up java runtime (Temurin JDK)
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          # defined settings.xml values allowing use of CYBNITY Maven remote repository
+          server-id: space-cybnity-open-source
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
 
-  java_unit_testing:
-    name: Compiled source code unit testing
-    needs: [java_project_compiling]
-    if: ${{ github.event.push && success() }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Test the compiled source code
-        run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml test
-        env:
-            MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
-            MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
-
-  java_binary_packaging:
-    name: Compiled java code packaging
-    if: ${{ github.event.push && success() }}
-    needs: [java_unit_testing]
-    runs-on: ubuntu-latest
-    steps:
       - name: Package compiled java code in its distributable format (e.g JAR)
-        run: mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml package
+        run: |
+          echo "Set the project artifacts version in pom files"
+          mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.RELEASE_NAME }}
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} --fail-fast --file pom.xml package -Dmaven.test.skip=true
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
-      
+
   quality_verification:
     name: Quality verification
-    if: ${{ github.event.push && success() }}
-    needs: [java_binary_packaging]
+    if: success() && github.event_name == 'push'
+    needs: [packaging]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      RELEASE_NAME: ${{ needs.packaging.outputs.release_name }}
+    outputs:
+      release_name: ${{ env.RELEASE_NAME }}
     steps:
-      - name: Ensure quality criteria are met
+      - name: Checkout source codes from branch
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository }}
+          token: ${{ github.token }}
+          ref: ${{ inputs.branch_name }}
+
+      - name: Set up java runtime (Temurin JDK)
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          # defined settings.xml values allowing use of CYBNITY Maven remote repository
+          server-id: space-cybnity-open-source
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+
+      - name: Verify packaged components
         run: |
-          echo "Run any checks to very the package is valid and meets quality criteria"
-          mvn --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify
+          echo "Set the project artifacts version in pom files"
+          mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.RELEASE_NAME }}
+          echo "Run any checks to very the package is valid and meets quality criteria (including test resources) without unit test execution"
+          mvn -Drevision=${{ env.RELEASE_NAME }} --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify -DskipTests
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
+  # Verify the technical quality of the version
+  check_technical_quality:
+    name: Check components technical quality
+    if: success() && github.event_name == 'push'
+    needs: [packaging, quality_verification]
+    uses: ./.github/workflows/check-java-project-technical-quality.yml
+    with:
+      config-path: ${{ needs.packaging.steps.checkout_step.ref }}
+      package_release_name: ${{ needs.packaging.outputs.release_name }}
+    secrets: inherit
 
+  # Prepare a release for remote repository installation (published in place of old equals release name in remote repository, reviewed or not)
+  # Publish release of parent pom.xml and sub-projects (reusable by other development, or for processing by Automated Acceptance Test stage) that potentially replace previous equals version named
+  publish_version_to_release_remote_repository:
+    name: Publish release on remote releases repository
+    if: ${{ success() && !needs.define_project_release_name.outputs.is_snapshot }}
+    needs: [define_project_release_name,packaging,quality_verification]
+    uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
+    with:
+      config-path: ${{ needs.packaging.steps.checkout_step.ref }}
+      target_repository: RELEASE
+      package_release_name: ${{ needs.quality_verification.outputs.release_name }}
+    secrets: inherit
 
+  # Prepare only a snapshot version for remote repository installation
+  publish_version_to_snapshot_remote_repository:
+    name: Publish dev version on remote repository
+    # By default, don't publish snapshot version on other repository than the local developer workstation's maven repository
+    # The Pull Request (PR) of development revision was approved and merged, but maybe work is not finished
 
+    # Publish snapshot version (parent pom.xml and sub-projects available for other features' developers) on remote repository
+      # it's a development version publishable as 'snapshot'
+      # only when approved, merged and tagged as 'reviewed' (e.g by reviewer)
+      # or only when a reviewed tag is pushed only on the branch (e.g after a review already executed after closed PR)
+      # or only when a alpha tag is pushed only on the branch (e.g when feature developer or reviewer indicate that work is finished)
+    if: ${{ success()
+          && needs.define_project_release_name.outputs.is_snapshot
+          && (
+           (github.event.pull_request.merged == true && github.event.pull_request.reviewDecision == 'approved')
+           ||
+           ( github.event_name == 'push' && github.ref_type == 'tag' && ( contains(github.ref_name, 'reviewed') || contains(github.ref_name, 'alpha') ))
+          )
+          }}
+    needs: [define_project_release_name,packaging,quality_verification]
+    uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
+    with:
+      config-path: ${{ needs.packaging.steps.checkout_step.ref }}
+      target_repository: SNAPSHOT
+      package_release_name: ${{ needs.quality_verification.outputs.release_name }}
+    secrets: inherit
 
-
+  #pre-release:
+  #  name: Tag latest pre-release
+  #  if: github.event_name == 'push'
+  #  needs: [quality_verification, publish_version_to_remote_repository]
+  #  runs-on: ubuntu-latest
+  #  permissions:
+  #    contents: write
+  #  steps:
+  #    - name: Generate a pre-release "latest" tag when changes land on branch
+        # Generate a changelog from all the commits between this, and the previous latest tag.
+        # Generate a new release associated with the latest tag (removing any previous associated releases).
+        # Update this new release with the specified title (e.g. Development Build).
+        # Upload LICENSE.txt and any jar files as release assets.
+        # Mark this release as a pre-release
+  #      uses: "marvinpinto/action-automatic-releases@v1.2.1"
+  #      with:
+  #        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+  #        automatic_release_tag: "latest"
+  #        prerelease: true
+  #        title: "Development CI"
+  #        files: |
+  #          LICENSE
+  #          **/*.jar
