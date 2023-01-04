@@ -279,7 +279,7 @@ jobs:
     if: ${{ success()
           && needs.define_project_release_name.outputs.is_snapshot
           && (
-           (github.event.pull_request.merged == true && github.event.pull_request.reviewDecision == 'approved' && contains(github.ref_name, 'reviewed'))
+           (github.event.pull_request.merged == true && github.event.pull_request.reviewDecision == 'approved')
            ||
            ( github.event_name == 'push' && github.ref_type == 'tag' && ( contains(github.ref_name, 'reviewed') || contains(github.ref_name, 'alpha') ))
           )
