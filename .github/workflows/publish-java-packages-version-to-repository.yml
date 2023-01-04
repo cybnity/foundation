@@ -1,6 +1,5 @@
-
 name: Maven Repository Installation (commit stage)
-run-name: Java Project repository publishing
+run-name: Java packages version repository publishing
 on:
   workflow_call:
     inputs:
@@ -13,7 +12,7 @@ on:
         default: 'SNAPSHOT'
         type: string
       package_release_name:
-        description: 'Name of the version of artifact to publish to the Maven repository'
+        description: 'Name of the artifacts version to publish to a Maven repository'
         required: true
         type: string
 
@@ -26,61 +25,61 @@ jobs:
     env:
       ARTIFACT_VERSION: ${{ inputs.package_release_name }}
     steps:
-    - name: Checkout source codes from branch to publish
-      uses: actions/checkout@v3
-      with:
-        repository: ${{ github.repository }}
-        token: ${{ github.token }}
-        ref: ${{ inputs.config-path }}
+      - name: Checkout source codes from branch to publish
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository }}
+          token: ${{ github.token }}
+          ref: ${{ inputs.config-path }}
 
-    - name: Set up Java for publishing to CYBNITY Maven Repository
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: maven
-        server-id: space-cybnity-open-source
-        server-username: MAVEN_USERNAME
-        server-password: MAVEN_PASSWORD
+      - name: Set up Java for publishing to CYBNITY Maven Repository
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          server-id: space-cybnity-open-source
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
 
-    - name: GitHub Environment Variables Action
-      if: ${{ env.ARTIFACT_VERSION == '' }}
-      uses: FranzDiebold/github-env-vars-action@v2.7.0
-    - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>.<<commit time>>)
-      if: ${{ env.ARTIFACT_VERSION == '' }}
-      run: |
-          echo "Git commit revision $CI_SHA_SHORT abbreviation based on 7 characters (default) maximum (origin based: $CI_SHA)"
-          echo "commit_id=$CI_SHA_SHORT" >> $GITHUB_ENV
-          echo "feature_name=$CI_ACTION_REF_NAME_SLUG" >> $GITHUB_ENV
-    - name: Identify the origin release name of the projects
-      if: ${{ env.ARTIFACT_VERSION == '' }}
-      # Define a static version name because not received from input parameter
-      run: |
-          echo "Define a final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
-          echo "current_artifacts_revision_id=${{ env.feature_name }}.${{ env.commit_id }}" >> $GITHUB_ENV
-          echo "Development version type is defined as snapshot based on $CI_SHA_SHORT commit revision number"
+      - name: GitHub Environment Variables Action
+        if: ${{ env.ARTIFACT_VERSION == '' }}
+        uses: FranzDiebold/github-env-vars-action@v2.7.0
+      - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>.<<commit time>>)
+        if: ${{ env.ARTIFACT_VERSION == '' }}
+        run: |
+            echo "Git commit revision $CI_SHA_SHORT abbreviation based on 7 characters (default) maximum (origin based: $CI_SHA)"
+            echo "commit_id=$CI_SHA_SHORT" >> $GITHUB_ENV
+            echo "feature_name=$CI_ACTION_REF_NAME_SLUG" >> $GITHUB_ENV
+      - name: Identify the origin release name of the projects
+        if: ${{ env.ARTIFACT_VERSION == '' }}
+        # Define a static version name because not received from input parameter
+        run: |
+            echo "Define a final version identifier aligned with versioning strategy (<<version name>>-<<feature name>>.<<commit_id>>)"
+            echo "current_artifacts_revision_id=${{ env.feature_name }}.${{ env.commit_id }}" >> $GITHUB_ENV
+            echo "Development version type is defined as snapshot based on $CI_SHA_SHORT commit revision number"
 
-    - name: Define the artifacts revision name of the projects to publish
-      if: ${{ inputs.package_release_name != '' }}
-      run: echo "current_artifacts_revision_id=${{ env.ARTIFACT_VERSION }}" >> $GITHUB_ENV
+      - name: Define the artifacts revision name of the projects to publish
+        if: ${{ inputs.package_release_name != '' }}
+        run: echo "current_artifacts_revision_id=${{ env.ARTIFACT_VERSION }}" >> $GITHUB_ENV
 
-    - name: Snapshots remote repository is targeted to be updated
-      if: ${{ contains(inputs.target_repository, 'SNAPSHOT') || inputs.target_repository == '' }}
-      run: |
-          echo "current_artifacts_revision_id=${{ env.current_artifacts_revision_id }}" >> $GITHUB_ENV
-          echo "Snapshot packages will be published"
+      - name: Snapshots remote repository is targeted to be updated
+        if: ${{ contains(inputs.target_repository, 'SNAPSHOT') || inputs.target_repository == '' }}
+        run: |
+            echo "current_artifacts_revision_id=${{ env.current_artifacts_revision_id }}" >> $GITHUB_ENV
+            echo "Snapshot packages will be published"
 
-    - name: Prepare a Maven project customized ${{ env.current_artifacts_revision_id }} version to publish
-      run: |
-          echo "Set the project artifacts version in pom.xml files"
-          echo "mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.current_artifacts_revision_id }}"
+      - name: Prepare a Maven project customized ${{ env.current_artifacts_revision_id }} version to publish
+        run: |
+            echo "Set the project artifacts version in pom.xml files"
+            echo "mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.current_artifacts_revision_id }}"
 
-    - name: Build and publish ${{ env.current_artifacts_revision_id }} version of java packages to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
-      run: mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.current_artifacts_revision_id }} --file pom.xml -DcreateChecksum=true deploy -Dmaven.test.skip=true
-      env:
-          MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+      - name: Build and publish ${{ env.current_artifacts_revision_id }} version of java packages to remote CYBNITY repository via Maven (phases validate, compile, test, package, verify, install, deploy)
+        run: mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.current_artifacts_revision_id }} --file pom.xml -DcreateChecksum=true deploy -Dmaven.test.skip=true
+        env:
+            MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
+            MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
-    # Optional: Uploads the full dependency graph to GitHub (output variable) to improve the quality of Dependabot alerts this repository can receive
-    #- name: Update dependency graph
-    #  uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
+      # Optional: Uploads the full dependency graph to GitHub (output variable) to improve the quality of Dependabot alerts this repository can receive
+      #- name: Update dependency graph
+      #  uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
