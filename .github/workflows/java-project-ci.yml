@@ -87,9 +87,9 @@ jobs:
             echo "is_snapshot=true" >> $GITHUB_ENV
             echo "Development version type is defined as snapshot based on $CI_SHA_SHORT commit revision number"
 
-      - name: Set the final release name of the project based on CYBNITY versioning strategy
+      - name: Set the final snapshot name of the project based on CYBNITY versioning strategy
         if: ${{ env.TAG_VERSION == '' }}
-        run: echo "release_name=$FEATURE_NAME.$COMMIT_ID" >> $GITHUB_ENV
+        run: echo "release_name=$FEATURE_NAME.$COMMIT_ID-SNAPSHOT" >> $GITHUB_ENV
 
   java_project_compilation:
     name: Validation & compiling
