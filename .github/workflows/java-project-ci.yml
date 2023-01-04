@@ -306,9 +306,9 @@ jobs:
 
   # Verify the technical quality of the version
   check_technical_quality:
-    name: Check the components technical quality
+    name: Check components technical quality
     if: success() && github.event_name == 'push'
-    needs: [define_project_release_name,packaging,quality_verification]
+    needs: [packaging,quality_verification]
     uses: ./.github/workflows/check-java-project-technical-quality.yml
     with:
       config-path: ${{ needs.packaging.steps.checkout_step.ref }}
