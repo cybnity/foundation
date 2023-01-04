@@ -264,6 +264,17 @@ jobs:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
+  # Verify the technical quality of the version
+  check_technical_quality:
+    name: Check components technical quality
+    if: success() && github.event_name == 'push'
+    needs: [packaging, quality_verification]
+    uses: ./.github/workflows/check-java-project-technical-quality.yml
+    with:
+      config-path: ${{ needs.packaging.steps.checkout_step.ref }}
+      package_release_name: ${{ needs.packaging.outputs.release_name }}
+    secrets: inherit
+
   # Prepare a release for remote repository installation (published in place of old equals release name in remote repository, reviewed or not)
   # Publish release of parent pom.xml and sub-projects (reusable by other development, or for processing by Automated Acceptance Test stage) that potentially replace previous equals version named
   publish_version_to_release_remote_repository:
@@ -301,17 +312,6 @@ jobs:
     with:
       config-path: ${{ needs.packaging.steps.checkout_step.ref }}
       target_repository: SNAPSHOT
-      package_release_name: ${{ needs.quality_verification.outputs.release_name }}
-    secrets: inherit
-
-  # Verify the technical quality of the version
-  check_technical_quality:
-    name: Check components technical quality
-    if: success() && github.event_name == 'push'
-    needs: [packaging,quality_verification]
-    uses: ./.github/workflows/check-java-project-technical-quality.yml
-    with:
-      config-path: ${{ needs.packaging.steps.checkout_step.ref }}
       package_release_name: ${{ needs.quality_verification.outputs.release_name }}
     secrets: inherit
 
