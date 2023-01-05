@@ -8,18 +8,6 @@ on:
     paths:
       - '.github/workflows/software-project-aat.yml'
 
-  pull_request:
-    # execution when pull request is requested by a developer (e.g to reviewer) on his development branch or another branch
-    types: [opened, reopened, review_requested]
-    # execution when reviewed/approved components source codes is eligible to beta (e.g of a feature, hotfix, or fix version finalized)
-    branches:
-      - 'staging*'
-    # execute only when reviewed files (e.g CI/CD workflows) or java sub-projects
-    paths:
-      - '**'
-      - '!.git/**'
-      - '.github/workflows/**'
-
   pull_request_target:
     # when a pull request merges, the pull request is automatically closed (so check the merged state)
     types: [closed]
@@ -33,6 +21,8 @@ on:
 # The commit stage workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   define_project_release_name:
+    # Execute only when the PR was merged (so was approved to be includede into the staging branch)
+    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.reviewDecision == 'approved' }}
     name: Release name preparation
     runs-on: ubuntu-latest
     permissions:
