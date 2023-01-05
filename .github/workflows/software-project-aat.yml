@@ -7,6 +7,8 @@ on:
       - 'staging*'
     paths:
       - '.github/workflows/software-project-aat.yml'
+      - '.github/workflows/check-project-technical-quality.yml'
+      - '.github/workflows/check-project-integration-quality.yml'
 
   pull_request_target:
     # when a pull request merges, the pull request is automatically closed (so check the merged state)
