@@ -9,13 +9,12 @@ on:
       - 'hotfix*'
       - 'fix*'
     # execute only when changes detected on files or java sub-projects contents
+    # becarefull, path filters are not evaluated on tags
     paths:
       - 'pom.xml'
       - 'implementations-line/**'
       - 'systems-line/**'
-      - '.github/workflows/java-project-ci.yml'
-      - '.github/workflows/publish-java-packages-version-to-repository.yml'
-      - '.github/workflows/check-java-project-technical-quality.yml'
+      - '.github/workflows/**'
     # execute when a alpha tag is added on the feature branch as "finished work" (e.g by developer)
     tags:
       - '[0-9]+.[0-9]+.[0-9]+-*'
@@ -46,9 +45,9 @@ on:
       - 'fix*'
     # execute only when reviewed files or java sub-projects
     paths:
-    - 'pom.xml'
-    - 'implementations-line/**'
-    - 'systems-line/**'
+      - 'pom.xml'
+      - 'implementations-line/**'
+      - 'systems-line/**'
 
 # The commit stage workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -269,7 +268,7 @@ jobs:
     name: Technical quality check
     if: success() && github.event_name == 'push'
     needs: [packaging, quality_verification]
-    uses: ./.github/workflows/check-java-project-technical-quality.yml
+    uses: ./.github/workflows/check-project-technical-quality.yml
     with:
       config-path: ${{ needs.packaging.steps.checkout_step.ref }}
       package_release_name: ${{ needs.packaging.outputs.release_name }}
@@ -280,7 +279,7 @@ jobs:
   publish_version_to_release_remote_repository:
     name: Release publishing (remote repo)
     if: ${{ success() && !needs.define_project_release_name.outputs.is_snapshot }}
-    needs: [define_project_release_name,packaging,quality_verification]
+    needs: [define_project_release_name, packaging, quality_verification]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
       config-path: ${{ needs.packaging.steps.checkout_step.ref }}
@@ -307,7 +306,7 @@ jobs:
            ( github.event_name == 'push' && github.ref_type == 'tag' && ( contains(github.ref_name, 'reviewed') || contains(github.ref_name, 'alpha') ))
           )
           }}
-    needs: [define_project_release_name,packaging,quality_verification]
+    needs: [define_project_release_name, packaging, quality_verification]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
       config-path: ${{ needs.packaging.steps.checkout_step.ref }}

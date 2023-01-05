@@ -1,4 +1,4 @@
-name: Maven Repository Installation (COMMIT STAGE)
+name: Artifacts Repository Refresh
 run-name: COMMIT STAGE - Java packages version repository publishing
 on:
   workflow_call:
