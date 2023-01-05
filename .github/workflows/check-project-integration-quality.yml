@@ -135,6 +135,6 @@ jobs:
     steps:
       - name: Prepare a conformity report
         run: echo "Generate a report regarding the observed conformity check results"
-        
-      - name: Promote the conformity report of software (version: ${{ env.ARTIFACT_VERSION }})
+
+      - name: Promote the conformity report of software (${{ env.ARTIFACT_VERSION }})
         run: echo "Share and promote the acceptance campaign report"
