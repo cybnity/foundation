@@ -14,7 +14,10 @@ on:
       - 'pom.xml'
       - 'implementations-line/**'
       - 'systems-line/**'
-      - '.github/workflows/**'
+      - '.github/workflows/java-project-ci.yml'
+      - '.github/workflows/check-project-integration-quality.yml'
+      - '.github/workflows/check-project-technical-quality.yml'
+      - '.github/workflows/publish-java-packages-version-to-repository.yml'
     # execute when a alpha tag is added on the feature branch as "finished work" (e.g by developer)
     tags:
       - '[0-9]+.[0-9]+.[0-9]+-*'
