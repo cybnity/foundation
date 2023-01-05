@@ -281,7 +281,7 @@ jobs:
   publish_version_to_release_remote_repository:
     name: Release publishing (remote repo)
     if: ${{ success() && !needs.define_project_release_name.outputs.is_snapshot }}
-    needs: [define_project_release_name,packaging,quality_verification]
+    needs: [define_project_release_name, packaging, quality_verification]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
       config-path: ${{ needs.packaging.steps.checkout_step.ref }}
@@ -308,7 +308,7 @@ jobs:
            ( github.event_name == 'push' && github.ref_type == 'tag' && ( contains(github.ref_name, 'reviewed') || contains(github.ref_name, 'alpha') ))
           )
           }}
-    needs: [define_project_release_name,packaging,quality_verification]
+    needs: [define_project_release_name, packaging, quality_verification]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
       config-path: ${{ needs.packaging.steps.checkout_step.ref }}
