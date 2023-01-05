@@ -270,7 +270,7 @@ jobs:
     name: Technical quality check
     if: success() && github.event_name == 'push'
     needs: [packaging, quality_verification]
-    uses: ./.github/workflows/check-java-project-technical-quality.yml
+    uses: ./.github/workflows/check-project-technical-quality.yml
     with:
       config-path: ${{ needs.packaging.steps.checkout_step.ref }}
       package_release_name: ${{ needs.packaging.outputs.release_name }}
