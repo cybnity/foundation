@@ -1,5 +1,5 @@
 # Main AUTOMATED ACCEPTANCE TEST STAGE workflow regarding the java projects
-name: Project Technical Quality Acceptance (AAT STAGE)
+name: Project Quality Acceptance (AAT STAGE)
 run-name: AAT STAGE - Components technical quality acceptance
 on:
   push:
