@@ -22,7 +22,7 @@ on:
 jobs:
   define_project_release_name:
     # Execute only when the PR was merged (so was approved to be includede into the staging branch)
-    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.reviewDecision == 'approved' }}
+    if: ${{ github.event.pull_request.merged == true }}
     name: Release name preparation
     runs-on: ubuntu-latest
     permissions:
