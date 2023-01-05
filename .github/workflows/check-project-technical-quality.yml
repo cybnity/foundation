@@ -1,0 +1,90 @@
+name: Project Technical Quality Check (AAT STAGE)
+run-name: TECHNICAL QUALITY STAGE - Software components static quality check
+on:
+  workflow_call:
+    inputs:
+      config-path:
+        required: true
+        type: string
+      package_release_name:
+        description: 'Name of the software version to check in terms of quality'
+        required: true
+        type: string
+
+jobs:
+  build_packages:
+    name: Build of software components to analyze
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      ARTIFACT_VERSION: ${{ inputs.package_release_name }}
+    steps:
+      - name: Checkout source codes from branch to verify
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository }}
+          token: ${{ github.token }}
+          ref: ${{ inputs.config-path }}
+
+      - name: Set up Java for conformity checks
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          server-id: space-cybnity-open-source
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+
+      - name: Compile and package binaries and resources targeted by the technical quality stage
+        run: |
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.ARTIFACT_VERSION }} --fail-fast --file pom.xml -DcreateChecksum=true package -Dmaven.test.skip=true
+        env:
+            MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
+            MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+
+  check_architecture_conformity_checkin:
+    name: Architecture conformity check-in
+    needs: [build_packages]
+    if: success()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      ARTIFACT_VERSION: ${{ inputs.package_release_name }}
+    steps:
+      - name: Analyze java source codes about architecture requirements of ${{ env.ARTIFACT_VERSION }}
+        run: echo "Execute static analysis of source codes (development quality rules via SonarQube, PMD, Findbugs, Checkstyle...)"
+
+      - name: Analyze docker templating codes about architecture requirements of ${{ env.ARTIFACT_VERSION }}
+        run: echo "Execute static analysis of docker image templating codes (development, packaging, configuration quality rules)"
+
+  security_conformity_checkin:
+    name: Security conformity check-in
+    needs: [check_architecture_conformity_checkin]
+    if: success()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      ARTIFACT_VERSION: ${{ inputs.package_release_name }}
+    steps:
+      - name: Analyze source codes about security requirements of ${{ env.ARTIFACT_VERSION }}
+        run: echo "Execute static and/or dynamic analysis of source codes (security requirement rules)"
+
+  quality_assurance_reporting:
+    name: Quality assurance reporting
+    needs: [security_conformity_checkin]
+    if: success()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      ARTIFACT_VERSION: ${{ inputs.package_release_name }}
+    steps:
+      - name: Generate the quality reporting artifacts of ${{ env.ARTIFACT_VERSION }}
+        run: echo "Build quality reports regarding java project components and systems"
+
+      - name: Publish the quality reporting to stakeholders
+        run: echo "Publish and promote the quality checks results and conformity reports"
