@@ -1,5 +1,5 @@
-name: Java Packages Technical Quality Check (aat stage)
-run-name: Java components technical quality check
+name: Java Packages Technical Quality Check (AAT STAGE)
+run-name: TECHNICAL QUALITY STAGE - Java components static quality check
 on:
   workflow_call:
     inputs:
