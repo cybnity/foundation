@@ -1,5 +1,5 @@
-name: Java Packages Technical Quality Check (AAT STAGE)
-run-name: TECHNICAL QUALITY STAGE - Java components static quality check
+name: Project Technical Quality Check (AAT STAGE)
+run-name: TECHNICAL QUALITY STAGE - Software components static quality check
 on:
   workflow_call:
     inputs:
@@ -7,13 +7,13 @@ on:
         required: true
         type: string
       package_release_name:
-        description: 'Name of the package version to check in terms of quality'
+        description: 'Name of the software version to check in terms of quality'
         required: true
         type: string
 
 jobs:
   build_packages:
-    name: Build of components to analyze
+    name: Build of software components to analyze
     runs-on: ubuntu-latest
     permissions:
       contents: read

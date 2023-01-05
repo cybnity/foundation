@@ -9,6 +9,7 @@ on:
       - 'hotfix*'
       - 'fix*'
     # execute only when changes detected on files or java sub-projects contents
+    # becarefull, path filters are not evaluated on tags
     paths:
       - 'pom.xml'
       - 'implementations-line/**'
@@ -46,9 +47,9 @@ on:
       - 'fix*'
     # execute only when reviewed files or java sub-projects
     paths:
-    - 'pom.xml'
-    - 'implementations-line/**'
-    - 'systems-line/**'
+      - 'pom.xml'
+      - 'implementations-line/**'
+      - 'systems-line/**'
 
 # The commit stage workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:

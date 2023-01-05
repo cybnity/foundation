@@ -1,0 +1,140 @@
+name: Project Integration Quality Check (AAT STAGE)
+run-name: INTEGRATION QUALITY STAGE - Software components integration quality testing
+on:
+  workflow_call:
+    inputs:
+      config-path:
+        required: true
+        type: string
+      package_release_name:
+        description: 'Name of the software version to check in terms of quality'
+        required: true
+        type: string
+
+jobs:
+  build_packages:
+    name: Build of software components to test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      ARTIFACT_VERSION: ${{ inputs.package_release_name }}
+    steps:
+      - name: Checkout source codes from branch to verify
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository }}
+          token: ${{ github.token }}
+          ref: ${{ inputs.config-path }}
+
+      - name: Set up Java for conformity checks
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          server-id: space-cybnity-open-source
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+
+      - name: Compile and package binaries and resources targeted by the technical quality stage
+        run: |
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.ARTIFACT_VERSION }} --fail-fast --file pom.xml -DcreateChecksum=true package -Dmaven.test.skip=true
+        env:
+            MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
+            MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+
+  ci_environment_configuration:
+    name: QA environment configuration
+    needs: [build_packages]
+    if: success()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      ARTIFACT_VERSION: ${{ inputs.package_release_name }}
+    steps:
+      - name: Set the configuration of the QA environment need to test the software (${{ env.ARTIFACT_VERSION }})
+        run: echo "Configure the QA environment's resources and settings"
+
+  systems_preparation_to_quality_stage:
+    name: Systems preparation to QA stage
+    needs: [ci_environment_configuration]
+    if: success()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      ARTIFACT_VERSION: ${{ inputs.package_release_name }}
+    steps:
+      - name: Test Docker image release tagging
+        run: echo "Test release image tagging"
+      - name: Test Docker image release version
+        run: echo "Test release image version pushed to container registry"
+
+  systems_deployment:
+    name: Systems deployment
+    needs: [systems_preparation_to_quality_stage]
+    if: success()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      ARTIFACT_VERSION: ${{ inputs.package_release_name }}
+    steps:
+      - name: Install and deploy the software systems (${{ env.ARTIFACT_VERSION }}) on the QA environment
+        run: echo "Install systems on environment to be ready for integration test campaign execution"
+
+  systems_integration_testing:
+    name: Systems integration testing
+    needs: [systems_deployment]
+    if: success()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      ARTIFACT_VERSION: ${{ inputs.package_release_name }}
+    outputs:
+      integration_tests_signoff_gate: ${{ env.INTEGRATION_QUALITY_SIGNOFF }}
+    steps:
+      - name: Execution of integration test plan of software systems
+        run: |
+          echo "Execute the integration test campaign to validate the technical behavior"
+          echo "Identify the status of integration quality"
+          echo "Define the sign-off state regarding test campaign results observed as a success"
+          echo "INTEGRATION_QUALITY_SIGNOFF=approved" >> $GITHUB_ENV
+
+      - name: Identify the status of integration quality
+        if: ${{ failure() }}
+        run: |
+          echo "Define the sign-off state regarding test campaign results observed as a failure"
+          echo "INTEGRATION_QUALITY_SIGNOFF=rejected" >> $GITHUB_ENV
+
+  smoke_testing:
+    name: Smoke testing
+    needs: [systems_integration_testing]
+    if: ${{ success() && needs.systems_integration_testing.outputs.integration_tests_signoff_gate == 'approved' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      ARTIFACT_VERSION: ${{ inputs.package_release_name }}
+    steps:
+      - name: Execution of the smoke testing plan
+        run: echo "Execute the critical functions regarding unstable initial build"
+
+  conformity_reporting:
+    name: Conformity reporting
+    needs: [systems_preparation_to_quality_stage, systems_deployment, systems_integration_testing, smoke_testing]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      ARTIFACT_VERSION: ${{ inputs.package_release_name }}
+    steps:
+      - name: Prepare a conformity report
+        run: echo "Generate a report regarding the observed conformity check results"
+        
+      - name: Promote the conformity report of software (version: ${{ env.ARTIFACT_VERSION }})
+        run: echo "Share and promote the acceptance campaign report"

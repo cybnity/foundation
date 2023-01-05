@@ -1,0 +1,101 @@
+# Main AUTOMATED ACCEPTANCE TEST STAGE workflow regarding the java projects
+name: Project Technical Quality Acceptance (AAT STAGE)
+run-name: AAT STAGE - Components technical quality acceptance
+on:
+  pull_request:
+    # execution when pull request is requested by a developer (e.g to reviewer) on his development branch or another branch
+    types: [opened, reopened, review_requested]
+    # execution when reviewed/approved components source codes is eligible to beta (e.g of a feature, hotfix, or fix version finalized)
+    branches:
+      - 'staging*'
+    # execute only when reviewed files (e.g CI/CD workflows) or java sub-projects
+    paths:
+      - '**'
+      - '!.git/**'
+      - '.github/workflows/**'
+
+  pull_request_target:
+    # when a pull request merges, the pull request is automatically closed (so check the merged state)
+    types: [closed]
+    branches:
+      - 'staging*'
+    paths:
+      - '**'
+      - '!.git/**'
+      - '.github/workflows/**'
+
+# The commit stage workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  define_project_release_name:
+    name: Release name preparation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      release_name: ${{ env.release_name }}
+      is_snapshot: ${{ env.is_snapshot }}
+    steps:
+      - name: Check existing project defined version name
+        if: ${{ github.event.release.tag_name != '' }}
+        # Read the release name defined into the GitHub project
+        run: |
+          echo The current release tag is ${{ github.event.release.tag_name }}
+          echo "TAG_VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+          echo "is_snapshot=${{ contains(github.event.release.tag_name, 'snapshot') || contains(github.event.release.tag_name, 'reviewed') }}" >> $GITHUB_ENV
+
+      - name: Set the release name of the project based on GitHub tag name
+        if: ${{ env.TAG_VERSION != '' }}
+        run : |
+            echo "Define the final version identifier from the GitHub project's current tag name"
+            echo "release_name=$TAG_VERSION" >> $GITHUB_ENV
+            echo "Development version type is detected from the GitHub tag name as ${{ env.is_snapshot }}"
+
+      # Build specific release name because none tag is existing on GitHub project
+      - name: Define reusable environment variables about current commit
+        if: ${{ env.TAG_VERSION == '' }}
+        uses: FranzDiebold/github-env-vars-action@v2.7.0
+
+      - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>) regarding development release
+        if: ${{ env.TAG_VERSION == '' }}
+        run: |
+            echo "Git commit revision $CI_SHA_SHORT abbreviation based on 7 characters (default) maximum (origin based: $CI_SHA)"
+            echo "COMMIT_ID=$CI_SHA_SHORT" >> $GITHUB_ENV
+            echo "FEATURE_NAME=$CI_ACTION_REF_NAME_SLUG" >> $GITHUB_ENV
+            echo "is_snapshot=true" >> $GITHUB_ENV
+            echo "Development version type is defined as snapshot based on $CI_SHA_SHORT commit revision number"
+
+      - name: Set a snapshot feature name based on unique commit id
+        # Build final name about featureX name, but avoiding COMMIT_ID and SNAPSHOT suffix
+        if: ${{ env.TAG_VERSION == '' && ( !contains(env.FEATURE_NAME, 'alpha') && !contains(env.FEATURE_NAME, 'reviewed') ) }}
+        # Build unique name including commit_id suffix based
+        # Example of output name: feature-133.9efbb506-SNAPSHOT
+        run: echo "release_name=$FEATURE_NAME.$COMMIT_ID-SNAPSHOT" >> $GITHUB_ENV
+
+      - name: Set a snapshot reviewed version name of the project based on CYBNITY versioning strategy
+        # Build final name about any tag named branch (maybe don't include feature name including -reviewed or -alpha)
+        if: ${{ env.TAG_VERSION == '' && env.release_name == '' }}
+        # Build name based on a potential included tag (e.g 0.0.7-reviewed, 0.0.7-alpha, 0.0.7) without commit_id suffix
+        # Example of output name 0.0.7-reviewed-SNAPSHOT, feature133-alpha-SNAPSHOT
+        run: echo "release_name=$FEATURE_NAME-SNAPSHOT" >> $GITHUB_ENV
+
+  # Verify the technical and static quality of the version source codes (e.g java components, docker image templates...)
+  check_technical_quality:
+    name: Technical quality check
+    if: success()
+    needs: [define_project_release_name]
+    uses: ./.github/workflows/check-project-technical-quality.yml
+    with:
+      config-path: ${{ inputs.branch_name }}
+      package_release_name: ${{ needs.define_project_release_name.outputs.release_name }}
+    secrets: inherit
+
+  # Verify the integration quality of the version
+  check_integration_quality:
+    name: Integration quality check
+    if: success()
+    needs: [define_project_release_name]
+    uses: ./.github/workflows/check-project-integration-quality.yml
+    with:
+      config-path: ${{ inputs.branch_name }}
+      package_release_name: ${{ needs.define_project_release_name.outputs.release_name }}
+    secrets: inherit
