@@ -2,6 +2,12 @@
 name: Project Technical Quality Acceptance (AAT STAGE)
 run-name: AAT STAGE - Components technical quality acceptance
 on:
+  push:
+    branches:
+      - 'feature*'
+    paths:
+      - '.github/workflows/software-project-aat.yml'
+    
   pull_request:
     # execution when pull request is requested by a developer (e.g to reviewer) on his development branch or another branch
     types: [opened, reopened, review_requested]
