@@ -43,6 +43,7 @@ Each application domain aggregates several deployable **Process Modules** distri
 
 # FEATURE COMPONENTS
 The features implementation modules providing services which can be embedded by an application domain and/or can be exposed as reusable/common/shared function at one or several layers of the CYBNITY software.
+
 The implementation source codes mainly are **Java libraries** which can be reused.
 
 For example, a common feature library can be embedded into an application domain or can be independently deployed as a micro-service serving several application domain (e.g as a cluster of a specific technical feature instances).
