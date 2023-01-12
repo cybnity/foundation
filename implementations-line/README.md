@@ -8,6 +8,8 @@ Feature implementations versions are designed and delivered as official Foundati
 ### Sources Structure
 Implementation components are built via Maven tool using a [standard Maven project structure](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html).
 
+The implementation projects are supported by an [Official TechStack version](https://github.com/cybnity/foundation-techstack/blob/feature-157/demonstrators-line/demonstrator-v0/v0-technologies-stack.md) defining the authorized technologies used by any the software sub-project.
+
 # COCKPIT-FOUNDATION COMPONENTS
 The source code managed in this area of Foundation project are about the capabilities provided to the users (e.g web ui services provided to user's web browser) via the user interface layer.
 The implementation source codes realizes interactive functions provided by **UI Modules** (e.g ReactJS frontend components, Vert.x frontend or backend components) to deliver a User eXperience (UX) to the final users of CYBNITY solutions.
