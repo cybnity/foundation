@@ -14,7 +14,9 @@ Based on several standard methods (e.g Lean UX for requirements validation, MVP 
 # STAKEHOLDER ENGAGEMENT
 
 ## ENGAGEMENT PLAN
-- Q1 2023: CYBNITY Open Source Architecture Implementation Prototype (MVF V0)
+- Q1 2023:
+  - Validation of UX/UI Cockpit Demonstrator by CISO, RSSI community
+  - CYBNITY Open Source Architecture Implementation Prototype (MVF V0)
 - Q2 2023: CYBNITY Open Source Intrinsec Security Features Prototype (MVF V0.5)
 - Q4 2023: CYBNITY Open Source Applications Basic Features Prototype (MVF V1)
 
