@@ -48,8 +48,12 @@ The branching strategy including the practices and usage rules that should be fo
 
 ![image](Release-branching-strategy.svg)
 
-[![Java Project Quality Check](https://github.com/cybnity/foundation/actions/workflows/java-project-quality-check.yml/badge.svg)](https://github.com/cybnity/foundation/actions/workflows/java-project-quality-check.yml)
-[![Java Project COMMIT STAGE](https://github.com/cybnity/foundation/actions/workflows/publish-java-packages-version-to-repository.yml/badge.svg)](https://github.com/cybnity/foundation/actions/workflows/publish-java-packages-version-to-repository.yml)
+### Continuous Integration Chain
+- Commit Stage Automation
+[![Java Project CI (COMMIT STAGE)](https://github.com/cybnity/foundation/actions/workflows/java-project-ci.yml/badge.svg)](https://github.com/cybnity/foundation/actions/workflows/java-project-ci.yml)
+
+- Automated Acceptance Test Stage Automation
+[![Project Quality Acceptance (AAT STAGE)](https://github.com/cybnity/foundation/actions/workflows/software-project-aat.yml/badge.svg)](https://github.com/cybnity/foundation/actions/workflows/software-project-aat.yml)
 
 ### Applications Operating
 
