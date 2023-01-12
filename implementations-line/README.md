@@ -82,8 +82,9 @@ Several categories of infrastructure technologies are managed in terms of implem
 
 Any implementation component can be categorized as a **Technical Service** (implementation code executing a behavior, or implementation of a system client as adapter implementation module) or as a **Integration API** (when exposing a CYBNITY API exposed to other systems as an input/output point via a standardized protocol).
 
+## Share Infrastructure Services
+For example, the infrastructure implementation modules allow to manage the dependency with common systems reused (e.g based on open source and/or proprietary partners software instances) into a CYBNITY solution architecture deployment.
+![image](mpp-infrastructure-systems-stack.png)
+
 Example of common event-based principles using a common infrastructure library regarding generic event:
 ![image](mvf-event-based-architecture.png)
-
-# SYSTEMS
-System implementation source codes allowing to build the deployable software components (e.g as virtualized systems) are managed in this repository.
