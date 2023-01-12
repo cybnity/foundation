@@ -9,7 +9,29 @@
 	<groupId>org.cybnity.feature.domain</groupId>
 	<artifactId>agreement-commitment</artifactId>
 	<version>${revision}</version>
-	<packaging>pom</packaging>
-	<name>Agreement Commitment feature component</name>
+	<packaging>jar</packaging>
+	<name>  - Agreement Commitment (RTS CU)</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-junit5</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 </project>
