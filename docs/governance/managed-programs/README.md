@@ -14,7 +14,7 @@ Based on several standard methods (e.g Lean UX for requirements validation, MVP 
 # STAKEHOLDER ENGAGEMENT
 
 ## ENGAGEMENT PLAN
-The implementation projects and milestones are accessible in [project space](https://github.com/orgs/cybnity/projects/1/views/1)
+The implementation projects and milestones are accessible in [projects space](https://github.com/orgs/cybnity/projects/1/views/1).
 - Q1 2023:
   - Validation of UX/UI Cockpit Demonstrator by CISO, RSSI community
   - CYBNITY Open Source Architecture Implementation Prototype (MVF V0)
