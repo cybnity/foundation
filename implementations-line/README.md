@@ -57,13 +57,13 @@ Several categories of features are implemented through Java libraries regarding:
 - transport: features relative to communication layer between systems and/or application components (e.g firewalling, network monitoring)
 - workflow-process: features providing generic workflow and processes management implementation models
 
-## Domain Layer
+### Domain Layer
 Each application domain can more or less separate its features in micro-services as **Feature Modules** to manage the processing parallelization.
 ![image](mpp-domain-technology-stack.png)
 
 ![image](mpp-domain-systems-stack.png)
 
-## Runtime Model of Feature Components
+### Runtime Model of Feature Components
 The scalability required by a specific feature component is supported by the implementation of a runtime model that include the deployment of a set of micro-service instances regarding it.
 ![image](scalable-runtime-model.png)
 
@@ -82,9 +82,10 @@ Several categories of infrastructure technologies are managed in terms of implem
 
 Any implementation component can be categorized as a **Technical Service** (implementation code executing a behavior, or implementation of a system client as adapter implementation module) or as a **Integration API** (when exposing a CYBNITY API exposed to other systems as an input/output point via a standardized protocol).
 
-## Share Infrastructure Services
+### Shared Infrastructure Services
 For example, the infrastructure implementation modules allow to manage the dependency with common systems reused (e.g based on open source and/or proprietary partners software instances) into a CYBNITY solution architecture deployment.
 ![image](mpp-infrastructure-systems-stack.png)
 
-Example of common event-based principles using a common infrastructure library regarding generic event:
+### Common Transversal Components
+Example of common event-based principles using a common infrastructure library regarding generic event.
 ![image](mvf-event-based-architecture.png)
