@@ -62,6 +62,10 @@ Each application domain can more or less separate its features in micro-services
 
 ![image](mpp-domain-systems-stack.png)
 
+## Runtime Model of Feature Components
+The scalability required by a specific feature component is supported by the implementation of a runtime model that include the deployment of a set of micro-service instances regarding it.
+![image](scalable-runtime-model.png)
+
 # INFRASTRUCTURE COMPONENTS
 The source code managed in this area are about the infrastructure components supporting the features and applications modules.
 For example, the implementation source code of an adapter client to a monitoring server (e.g proprietary solution integrated with CYBNITY over a connection adapter and/or via a protocol compatibility implementation) is provided as an infrastructure module.
