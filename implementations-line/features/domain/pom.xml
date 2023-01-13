@@ -13,6 +13,7 @@
 	<name>Security domain features libraries</name>
 	<modules>
 		<module>agreement-commitment</module>
+		<!--
 		<module>alert</module>
 		<module>anomalie-event</module>
 		<module>asset</module>
@@ -51,6 +52,6 @@
 		<module>sla-threshold</module>
 		<module>threat</module>
 		<module>training</module>
-		<module>vulnerability</module>
+		<module>vulnerability</module>-->
 	</modules>
 </project>

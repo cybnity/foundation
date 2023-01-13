@@ -1,15 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>systems</artifactId>
-		<groupId>org.cybnity.infrastructure.integration</groupId>
+		<groupId>org.cybnity.infrastructure.integration.uis</groupId>
+		<artifactId>adapters</artifactId>
 		<version>${revision}</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<groupId>org.cybnity.infrastructure.integration.system</groupId>
-	<artifactId>domains-interactions-broker</artifactId>
-	<version>${revision}</version>
-	<packaging>pom</packaging>
-	<name>  - DOMAINS INTERACTIONS BROKERS</name>
 
+	<groupId>org.cybnity.infrastructure.integration.uis.adapters</groupId>
+	<artifactId>api</artifactId>
+	<packaging>jar</packaging>
+	<name>- UIS adapter api</name>
 </project>

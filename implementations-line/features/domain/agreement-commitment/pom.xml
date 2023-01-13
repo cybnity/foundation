@@ -12,6 +12,16 @@
 	<packaging>jar</packaging>
 	<name>  - Agreement Commitment (RTS CU)</name>
 
+	<properties>
+		<maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
+		<maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+		<exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
+		<vertx.version>4.3.2</vertx.version>
+		<junit-jupiter.version>5.7.0</junit-jupiter.version>
+		<main.verticle>org.cybnity.feature.agreement_commitment.domain.system.AgreementAndCommitmentComputationUnit</main.verticle>
+		<launcher.class>io.vertx.core.Launcher</launcher.class>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>io.vertx</groupId>
@@ -34,4 +44,42 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<manifestEntries>
+										<Main-Class>${launcher.class}</Main-Class>
+										<Main-Verticle>${main.verticle}</Main-Verticle>
+									</manifestEntries>
+								</transformer>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+							</transformers>
+							<outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar</outputFile>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>${launcher.class}</mainClass>
+					<arguments>
+						<argument>run</argument>
+						<argument>${main.verticle}</argument>
+					</arguments>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
