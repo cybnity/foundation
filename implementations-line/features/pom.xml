@@ -15,10 +15,11 @@
 	<modules>
 		<module>workflow-process</module>
 		<module>domain</module>
+		<!--
 		<module>technical</module>
 		<module>transport</module>
 		<module>operating-system</module>
 		<module>physical</module>
-		<module>integrated-partners</module>
+		<module>integrated-partners</module>-->
 	</modules>
 </project>
