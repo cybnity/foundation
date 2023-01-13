@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.cybnity</groupId>
 		<artifactId>techstack</artifactId>
-		<version>0.2.0</version>
+		<version>0.4.0</version>
 	</parent>
 
 	<groupId>org.cybnity</groupId>
@@ -82,7 +82,8 @@
 
 	<!-- Foundation project specific additional dependency versions -->
 	<dependencyManagement>
-		<dependencies></dependencies>
+		<dependencies>
+		</dependencies>
 	</dependencyManagement>
 
 	<!-- Foundation sub-projects transversal dependencies -->
@@ -119,34 +120,4 @@
 		</developer>
 	</developers>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>resolve-dependency</id>
-						<phase>validate</phase>
-						<configuration>
-							<silent>false</silent>
-						</configuration>
-						<goals>
-							<!-- Try to resolve all test scope -->
-							<goal>resolve</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>analyze-dependencies</id>
-						<phase>validate</phase>
-						<goals>
-							<!-- Determine missing or unused dependencies -->
-							<goal>analyze-dep-mgt</goal>
-							<goal>analyze-duplicate</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>
