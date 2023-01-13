@@ -280,7 +280,7 @@ jobs:
   # Publish release of parent pom.xml and sub-projects (reusable by other development, or for processing by Automated Acceptance Test stage) that potentially replace previous equals version named
   publish_version_to_release_remote_repository:
     name: Release publishing
-    if: ${{ success() && !needs.define_project_release_name.outputs.is_snapshot }}
+    if: ${{ success() && needs.define_project_release_name.outputs.is_snapshot == 'false' }}
     needs: [define_project_release_name, packaging, quality_verification]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
@@ -301,7 +301,7 @@ jobs:
       # or only when a reviewed tag is pushed only on the branch (e.g after a review already executed after closed PR)
       # or only when a alpha tag is pushed only on the branch (e.g when feature developer or reviewer indicate that work is finished)
     if: ${{ success()
-          && needs.define_project_release_name.outputs.is_snapshot
+          && needs.define_project_release_name.outputs.is_snapshot == 'true'
           && (
            (github.event.pull_request.merged == true && github.event.pull_request.reviewDecision == 'approved')
            ||
