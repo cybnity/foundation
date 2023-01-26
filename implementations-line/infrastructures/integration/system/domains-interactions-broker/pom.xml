@@ -10,6 +10,6 @@
 	<artifactId>domains-interactions-broker</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>  - DOMAINS INTERACTIONS BROKERS</name>
+	<name>-- DOMAINS INTERACTIONS BROKERS</name>
 
 </project>

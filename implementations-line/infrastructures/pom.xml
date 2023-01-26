@@ -11,7 +11,7 @@
 	<artifactId>infrastructures-impl</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>CYBNITY infrastructures</name>
+	<name>CYBNITY INFRASTRUCTURES</name>
 
 	<modules>
 		<module>common</module>

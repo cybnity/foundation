@@ -10,7 +10,7 @@
 	<artifactId>systems</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Integration systems infrastructure</name>
+	<name>- Integration systems infrastructure</name>
 	<modules>
 		<module>users-interactions-broker</module>
 		<module>domains-interactions-broker</module>

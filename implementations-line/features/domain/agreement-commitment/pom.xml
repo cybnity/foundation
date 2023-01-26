@@ -10,7 +10,7 @@
 	<artifactId>agreement-commitment</artifactId>
 	<version>${revision}</version>
 	<packaging>jar</packaging>
-	<name>  - Agreement Commitment (RTS CU)</name>
+	<name>- Agreement Commitment (RTS CU)</name>
 
 	<properties>
 		<maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
