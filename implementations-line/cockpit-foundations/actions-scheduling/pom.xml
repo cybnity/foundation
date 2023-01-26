@@ -11,10 +11,22 @@
 	<version>${revision}</version>
 	<packaging>pom</packaging>
 	<name>Mission actions and commitments scheduling capability</name>
+
 	<modules>
 		<!-- Domain application components projects (e.g dedicated process module, internal feature module) -->
 		<module>acsc-features</module>
 		<!-- Domain systems assembly projects -->
 		<module>acsc-ui-modules</module>
 	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.cybnity.cockpit-foundation.acsc-features</groupId>
+				<artifactId>acsc-features-api</artifactId>
+				<scope>compile</scope>
+				<version>${revision}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>

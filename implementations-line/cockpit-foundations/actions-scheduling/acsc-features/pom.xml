@@ -10,5 +10,8 @@
 	<artifactId>acsc-features</artifactId>
 	<packaging>pom</packaging>
 	<name>- ACSC features</name>
-
+	<modules>
+		<module>acsc-features-api</module>
+		<module>acsc-features-impl</module>
+	</modules>
 </project>

@@ -11,4 +11,19 @@
 	<packaging>pom</packaging>
 	<name>- ACSC UI modules</name>
 
+	<modules>
+		<!-- Reactive backend server of the capability domain -->
+		<module>acsc-backend</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.cybnity.cockpit-foundation.acsc-features</groupId>
+				<artifactId>acsc-features-impl</artifactId>
+				<scope>compile</scope>
+				<version>${revision}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>
