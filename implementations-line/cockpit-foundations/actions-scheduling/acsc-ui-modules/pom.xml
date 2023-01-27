@@ -11,11 +11,6 @@
 	<packaging>pom</packaging>
 	<name>- ACSC UI modules</name>
 
-	<modules>
-		<!-- Reactive backend server of the capability domain -->
-		<module>acsc-backend</module>
-	</modules>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

@@ -1,4 +1,4 @@
-package org.cybnity.application.acsc.ui.system.backend.routing;
+package org.cybnity.application.ui.system.backend.routing;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -21,7 +21,7 @@ import io.vertx.ext.web.impl.RouterImpl;
 
 /**
  * Router implementation which define the list of routes supported by a UI
- * domain regarding its capabilities.
+ * capabilities supported by the messaging gateway module.
  */
 public class UIDomainCapabilitiesRouterImpl extends RouterImpl {
 

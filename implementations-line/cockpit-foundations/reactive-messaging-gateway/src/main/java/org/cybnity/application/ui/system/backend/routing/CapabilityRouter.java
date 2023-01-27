@@ -1,4 +1,4 @@
-package org.cybnity.application.acsc.ui.system.backend.routing;
+package org.cybnity.application.ui.system.backend.routing;
 
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;

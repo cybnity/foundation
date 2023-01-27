@@ -1,6 +1,6 @@
-package org.cybnity.application.acsc.ui.system.backend;
+package org.cybnity.application.ui.system.backend;
 
-import org.cybnity.application.acsc.ui.system.backend.routing.CapabilityRouter;
+import org.cybnity.application.ui.system.backend.routing.CapabilityRouter;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -34,10 +34,10 @@ public class SockJSReactiveBackendServer extends AbstractVerticle {
 				.listen(8080)
 				// Print the port
 				.onSuccess(server -> {
-					System.out.println("ACSC sockJS backend server started (port: " + server.actualPort() + ")");
+					System.out.println("SockJS backend server started (port: " + server.actualPort() + ")");
 					startPromise.complete();
 				}).onFailure(error -> {
-					System.out.println("ACSC sockJS backend server start failure: " + error.getCause());
+					System.out.println("SockJS backend server start failure: " + error.getCause());
 					startPromise.fail(error.getCause());
 				});
 	}

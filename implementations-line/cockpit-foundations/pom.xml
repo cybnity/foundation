@@ -34,5 +34,6 @@
 		<module>commandment</module>
 		<module>threats-risks-prevention-treatment</module>
 		<module>vulnerabilities-prevention-treatment</module>
+		<module>reactive-messaging-gateway</module>
 	</modules>
 </project>

@@ -1,4 +1,4 @@
-package org.cybnity.application.acsc.ui.system.backend.routing;
+package org.cybnity.application.ui.system.backend.routing;
 
 import io.vertx.core.MultiMap;
 import io.vertx.core.Vertx;
@@ -10,7 +10,7 @@ import io.vertx.ext.web.impl.RouterImpl;
 
 /**
  * Router implementation which define the list of routes supported by a UI
- * capability scope.
+ * capability perimeters accessible via the messaging gateway (backend endpoint).
  */
 public class UICapabilitiesHTTPRouterImpl extends RouterImpl {
 

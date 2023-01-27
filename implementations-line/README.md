@@ -12,7 +12,35 @@ The implementation projects are supported by an [Official TechStack version](htt
 
 # COCKPIT-FOUNDATION COMPONENTS
 The source code managed in this area of Foundation project are about the capabilities provided to the users (e.g web ui services provided to user's web browser) via the user interface layer.
-The implementation source codes realizes interactive functions provided by **UI Modules** (e.g ReactJS frontend components, Vert.x frontend or backend components) to deliver a User eXperience (UX) to the final users of CYBNITY solutions.
+
+The implementation source codes realizes interactive functions provided by **UI Modules** (UI layer providing functional or technical capabilities) to deliver User eXperiences (UX) to the solution final users of CYBNITY solutions.
+
+- Actions & Scheduling UI module
+- Assets & Perimeters Protection UI module
+- Automation UI module
+- Awareness & Training UI module
+- Behaviours/Situations Anticipation & Control UI module
+- Commandment UI module
+- Coordinations UI module
+- Defensive Maneuvers UI module
+- Defensive Responses & Controls UI module
+- Goals & Evidences UI module
+- ISMS & Strategy UI module
+- Missions & Programming UI module
+- Operational Excellence UI module
+- Operational Recovery UI module
+- Operations Cartography UI module
+- SKPI & Dashboard UI module
+- Stakeholders & Responsibilities UI module
+- Standards & Compliances UI module
+- Threat/Risks Prevention & Treatment UI module
+- Vulnerabilities Prevention & Treatment UI module
+
+Some shared deployable modules (e. endpoints) are also implemented at the UI layer level:
+- [Web Reactive Frontend server](cockpit-foundations/web-reactive-frontend) (ReactJS / Node.js web app)
+- [Reactive Messaging Gateway](cockpit-foundations/reactive-messaging-gateway) (Vert.x Reactive Backend server)
+- Domains Gateway server
+
 ![image](mpp-ui-technology-stack.png)
 
 ![image](mpp-ui-systems-stack.png)
@@ -78,9 +106,12 @@ Several categories of infrastructure technologies are managed in terms of implem
 - common: shared and transversal structures of infrastructure data (e.g generic event)
 - continuity: clients of integration with Business Continuity systems
 - integration: clients with brokers of messages (e.g Redis cluster, Kafka broker) allowing to discuss with other CYBNITY or third-parties systems
+  - Users Interactions Space server
 - monitoring: clients to systems of monitoring (e.g alerting, data visualization, event logging)
 - registry: clients to registration systems (e.g contents indexing system)
 - security: clients to systems providing security services (e.g Single-Sign-On server, IAM server)
+  - Access Control & SSO server
+  - Identities & Access Management server
 
 Any implementation component can be categorized as a **Technical Service** (implementation code executing a behavior, or implementation of a system client as adapter implementation module) or as a **Integration API** (when exposing a CYBNITY API exposed to other systems as an input/output point via a standardized protocol).
 
