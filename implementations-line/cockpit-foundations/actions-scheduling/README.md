@@ -50,7 +50,7 @@ Prerequisites: install Node (see [Nodejs](https://nodejs.org/en/) documentation)
   // upgrade to the latest version (install globally)
   sudo npm i -g npm-check-updates
 
-  // detect which pacakges have newer versions
+  // detect which packages have newer versions
   sudo ncu -g
 
   // remove the lock on packages and install the latest versions
