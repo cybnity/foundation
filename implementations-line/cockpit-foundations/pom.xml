@@ -11,7 +11,7 @@
 	<artifactId>cockpit-foundations-impl</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>CYBNITY cockpits ui core foundations</name>
+	<name>CYBNITY COCKPITS FOUNDATIONS</name>
 	<modules>
 		<module>assets-perimeters-protection</module>
 		<module>automation</module>
@@ -34,5 +34,6 @@
 		<module>commandment</module>
 		<module>threats-risks-prevention-treatment</module>
 		<module>vulnerabilities-prevention-treatment</module>
+		<module>reactive-messaging-gateway</module>
 	</modules>
 </project>

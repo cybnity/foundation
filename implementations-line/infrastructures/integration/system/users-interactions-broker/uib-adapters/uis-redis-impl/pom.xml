@@ -10,16 +10,12 @@
 	<groupId>org.cybnity.infrastructure.integration.uis.adapters</groupId>
 	<artifactId>redis-impl</artifactId>
 	<packaging>jar</packaging>
-	<name>- UIS Redis adapter impl</name>
+	<name>---- UIS Redis adapter impl</name>
 	<dependencies>
 		<dependency>
 			<groupId>org.cybnity.infrastructure.integration.uis.adapters</groupId>
 			<artifactId>api</artifactId>
 			<version>${revision}</version>
-		</dependency>
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.lettuce</groupId>

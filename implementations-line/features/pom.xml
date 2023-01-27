@@ -10,7 +10,7 @@
 	<artifactId>features-impl</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>CYBNITY features</name>
+	<name>CYBNITY FEATURES</name>
 
 	<modules>
 		<module>workflow-process</module>

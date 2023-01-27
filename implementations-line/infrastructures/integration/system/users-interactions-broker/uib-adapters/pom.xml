@@ -10,7 +10,7 @@
 	<groupId>org.cybnity.infrastructure.integration.uis</groupId>
 	<artifactId>adapters</artifactId>
 	<packaging>pom</packaging>
-	<name>- Users Interactions Space adapters</name>
+	<name>--- Users Interactions Space adapters</name>
 	<modules>
 		<module>uis-api</module>
 		<module>uis-redis-impl</module>

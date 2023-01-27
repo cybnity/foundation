@@ -11,7 +11,7 @@
 	<artifactId>components</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>CYBNITY implementation components</name>
+	<name>CYBNITY SOFTWARE COMPONENTS</name>
 
 	<modules>
 		<!-- Implementation modules -->

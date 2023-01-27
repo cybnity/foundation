@@ -10,5 +10,5 @@
 	<groupId>org.cybnity.infrastructure.integration.uis.adapters</groupId>
 	<artifactId>api</artifactId>
 	<packaging>jar</packaging>
-	<name>- UIS adapter api</name>
+	<name>---- UIS adapter api</name>
 </project>

@@ -10,7 +10,7 @@
 	<artifactId>users-interactions-broker</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>  - USERS INTERACTIONS BROKERS</name>
+	<name>-- USERS INTERACTIONS BROKERS</name>
 	<modules>
 		<module>uib-adapters</module>
 	</modules>
