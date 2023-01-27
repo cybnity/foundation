@@ -1,0 +1,10 @@
+{
+  "realm": "cybnity",
+  "auth-server-url": "http://localhost:8082/",
+  "ssl-required": "external",
+  "resource": "cybnity-acsc-frontend-ui-react",
+  "public-client": true,
+  "verify-token-audience": true,
+  "use-resource-role-mappings": true,
+  "confidential-port": 0
+}
