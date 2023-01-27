@@ -1,6 +1,5 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# PURPOSE
+Tools and commands allowing to manage the Node.js web application supported by ReactJS technology as web frontend module.
 
 ## Available Scripts
 

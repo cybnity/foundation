@@ -59,6 +59,7 @@ Prerequisites: install Node (see [Nodejs](https://nodejs.org/en/) documentation)
   // check outdated modules (show latest versions compared to versions specified in package.json)
   sudo npm outdated
   ```
+
 #### Tutorial & technologies documentations
 - Vert.x/ReactJS: documentation about integration between Vert.x and ReactJS is available on [Eclipse Vert.x How-To](https://how-to.vertx.io/single-page-react-vertx-howto/).
 - React-Bootstrap library: documentation is available on [React Bootstrap](https://react-bootstrap.github.io/getting-started/introduction/) github web site.
@@ -77,6 +78,8 @@ Prerequisites: install Node (see [Nodejs](https://nodejs.org/en/) documentation)
 ## REACTIVE WEB FRONTEND UI SERVER
 
 ### Start of deployable elements
+- Infrastructure servers: the start of infrastructures services (e.g Redis server, Single-Sign-On server) are __required before to execute the start of UI layer's systems__.
+- Frontend web app: read instructions allowing to manage the execution of the Node.js frontend into the sub-project [README.md file](acsc-ui-modules/acsc-frontend/README.md).
 
 # INTEGRATION TEST PROTOCOL
 ## TEST OF BACKEND (static contents)
