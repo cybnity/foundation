@@ -39,7 +39,6 @@ The implementation source codes realizes interactive functions provided by **UI 
 Some shared deployable modules (e. endpoints) are also implemented at the UI layer level:
 - [Web Reactive Frontend server](cockpit-foundations/web-reactive-frontend) (ReactJS / Node.js web app)
 - [Reactive Messaging Gateway](cockpit-foundations/reactive-messaging-gateway) (Vert.x Reactive Backend server)
-- Domains Gateway server
 
 ![image](mpp-ui-technology-stack.png)
 
@@ -66,7 +65,9 @@ Each application module dedicated repository manages its source codes structure 
 - [Trial & Training Management module](https://github.com/cybnity/domain-trial-training-mgt)
 - [Vulnerability Management module](https://github.com/cybnity/domain-vulnerability-mgt)
 
-Each application domain aggregates several deployable **Process Modules** distributed into the Application layer as one or several deployable implementation components.
+Each application domain distributed into the Application Layer aggregates deployable implementation components:
+- One **Domain Gateway Module** (messaging gateway as endpoint of the bounded context)
+- Several deployable **Process Modules**
 ![image](mpp-app-technology-stack.png)
 
 ![image](mpp-app-systems-stack.png)
@@ -88,7 +89,7 @@ Several categories of features are implemented through Java libraries regarding:
 - workflow-process: features providing generic workflow and processes management implementation models
 
 ### Domain Layer
-Each application domain can more or less separate its features in micro-services as **Feature Modules** to manage the processing parallelization.
+Each application domain can more or less separate its features in micro-services as deployable **Feature Modules** to manage the processing parallelization via Real-Time Stream Computation Units.
 ![image](mpp-domain-technology-stack.png)
 
 ![image](mpp-domain-systems-stack.png)
