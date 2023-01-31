@@ -66,7 +66,7 @@ Each application module dedicated repository manages its source codes structure 
 - [Vulnerability Management module](https://github.com/cybnity/domain-vulnerability-mgt)
 
 Each application domain distributed into the Application Layer aggregates deployable implementation components:
-- One **<<Domain Name>> Gateway Module** (messaging gateway as endpoint of the bounded context)
+- One ** <<Domain Name>> Gateway Module** (messaging gateway as endpoint of the bounded context)
 - Several deployable **Process Modules**
 ![image](mpp-app-technology-stack.png)
 
