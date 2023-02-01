@@ -12,4 +12,7 @@
 	<packaging>pom</packaging>
 	<name>-- DOMAINS INTERACTIONS BROKERS</name>
 
+	<modules>
+		<module>dib-adapters</module>
+	</modules>
 </project>

@@ -15,26 +15,27 @@ The source code managed in this area of Foundation project are about the capabil
 
 The implementation source codes realizes interactive functions provided by **UI Modules** (UI layer providing functional or technical capabilities) to deliver User eXperiences (UX) to the solution final users of CYBNITY solutions.
 
-- Actions & Scheduling UI module
-- Assets & Perimeters Protection UI module
-- Automation UI module
-- Awareness & Training UI module
-- Behaviours/Situations Anticipation & Control UI module
-- Commandment UI module
-- Coordinations UI module
-- Defensive Maneuvers UI module
-- Defensive Responses & Controls UI module
-- Goals & Evidences UI module
-- ISMS & Strategy UI module
-- Missions & Programming UI module
-- Operational Excellence UI module
-- Operational Recovery UI module
-- Operations Cartography UI module
-- SKPI & Dashboard UI module
-- Stakeholders & Responsibilities UI module
-- Standards & Compliances UI module
-- Threat/Risks Prevention & Treatment UI module
-- Vulnerabilities Prevention & Treatment UI module
+- [Actions & Scheduling UI module](cockpit-foundations/actions-scheduling)
+- [Assets & Perimeters Protection UI module](cockpit-foundations/assets-perimeters-protection)
+- [Automation UI module](cockpit-foundations/automation)
+- [Awareness & Training UI module](cockpit-foundations/awareness-training)
+- [Behaviours/Situations Anticipation & Control UI module](cockpit-foundations/behaviours-situations-anticipation-control)
+- [Commandment UI module](cockpit-foundations/commandment)
+- [Coordinations UI module](cockpit-foundations/coordination)
+- [Dashboard & Threshold](cockpit-foundations/dashboard-threshold)
+- [Defensive Maneuvers UI module](cockpit-foundations/defensive-maneuvers)
+- [Defensive Responses & Controls UI module](cockpit-foundations/defensive-responses-controls)
+- [Goals & Evidences UI module](cockpit-foundations/goals-evidences)
+- [ISMS & Strategy UI module](cockpit-foundations/isms-strategy)
+- [Missions & Programming UI module](cockpit-foundations/missions-programming)
+- [Operational Excellence UI module](cockpit-foundations/operational-excellence)
+- [Operational Recovery UI module](cockpit-foundations/operational-recovery)
+- [Operations Cartography UI module](cockpit-foundations/operations-cartography)
+- [SKPI & Dashboard UI module](cockpit-foundations/skpi)
+- [Stakeholders & Responsibilities UI module](cockpit-foundations/stakeholders-responsibilities)
+- [Standards & Compliances UI module](cockpit-foundations/standards-compliances)
+- [Threat/Risks Prevention & Treatment UI module](cockpit-foundations/threats-risks-prevention-treatment)
+- [Vulnerabilities Prevention & Treatment UI module](cockpit-foundations/vulnerabilities-prevention-treatment)
 
 Some shared deployable modules (e. endpoints) are also implemented at the UI layer level:
 - [Web Reactive Frontend server](cockpit-foundations/web-reactive-frontend) (ReactJS / Node.js web app)
@@ -80,13 +81,13 @@ The implementation source codes mainly are **Java libraries** which can be reuse
 For example, a common feature library can be embedded into an application domain or can be independently deployed as a micro-service serving several application domain (e.g as a cluster of a specific technical feature instances).
 
 Several categories of features are implemented through Java libraries regarding:
-- domain: libraries of cyber-serenity features helping final user to manage its ISMS via processes, workflow, combined set of application feature integrated into the UI capability components
-- integrated-partners: features provided by CYBNITY compatible partners' components (e.g accessory) and adapted via compatibility connectors
-- operating-system: technical features provided by operating systems (e.g hypervisor, virtualization component)
-- physical: features provided by physical devices integrated
-- technical: features providing technical services (e.g strongbox, traceability, versioning, encryption) and implementing reusable functions by any CYBNITY component
-- transport: features relative to communication layer between systems and/or application components (e.g firewalling, network monitoring)
-- workflow-process: features providing generic workflow and processes management implementation models
+- [domain](features/domain): libraries of cyber-serenity features helping final user to manage its ISMS via processes, workflow, combined set of application feature integrated into the UI capability components
+- [integrated-partners](features/integrated-partners): features provided by CYBNITY compatible partners' components (e.g accessory) and adapted via compatibility connectors
+- [operating-system](features/operating-system): technical features provided by operating systems (e.g hypervisor, virtualization component)
+- [physical](features/physical): features provided by physical devices integrated
+- [technical](features/technical): features providing technical services (e.g strongbox, traceability, versioning, encryption) and implementing reusable functions by any CYBNITY component
+- [transport](features/transport): features relative to communication layer between systems and/or application components (e.g firewalling, network monitoring)
+- [workflow-process](features/workflow-process): features providing generic workflow and processes management implementation models
 
 ### Domain Layer
 Each application domain can more or less separate its features in micro-services as deployable **Feature Modules** to manage the processing parallelization via Real-Time Stream Computation Units.
@@ -104,15 +105,17 @@ For example, the implementation source code of an adapter client to a monitoring
 Mainly, the **Infrastructure Modules** are provided as **Java libraries** of adaptation client implementations modules.
 
 Several categories of infrastructure technologies are managed in terms of implementation codes:
-- common: shared and transversal structures of infrastructure data (e.g generic event)
-- continuity: clients of integration with Business Continuity systems
-- integration: clients with brokers of messages (e.g Redis cluster, Kafka broker) allowing to discuss with other CYBNITY or third-parties systems
-  - Users Interactions Space server
-- monitoring: clients to systems of monitoring (e.g alerting, data visualization, event logging)
-- registry: clients to registration systems (e.g contents indexing system)
-- security: clients to systems providing security services (e.g Single-Sign-On server, IAM server)
-  - Access Control & SSO server
-  - Identities & Access Management server
+- [common](infrastructures/common): shared and transversal structures of infrastructure data (e.g generic event)
+- [continuity](infrastructures/continuity): clients of integration with Business Continuity systems
+- [integration](infrastructures/integration): clients of integration with brokers of messages (e.g Redis cluster, Kafka cluster) allowing to discuss with other CYBNITY or third-parties systems
+  - [Users Interactions Space adapter](infrastructures/integration/system/users-interactions-broker/uib-adapters) to brokers cluster
+  - [Domains Interactions Space adapter](infrastructures/integration/system/domains-interactions-broker/dib-adapters) to brokers cluster
+- [monitoring](infrastructures/monitoring): clients to systems of monitoring (e.g alerting, data visualization, event logging)
+- [registry](infrastructures/registry): clients to registration systems (e.g contents indexing system)
+- [security](infrastructures/security): clients to systems providing security services (e.g Single-Sign-On server, IAM server)
+  - [Access Control & SSO server](infrastructures/security/system/access-control-sso)
+  - [Identities & Access Management server](infrastructures/security/system/identities-access-management)
+  - [Secrets Management server](infrastructures/security/system/secrets-management)
 
 Any implementation component can be categorized as a **Technical Service** (implementation code executing a behavior, or implementation of a system client as adapter implementation module) or as a **Integration API** (when exposing a CYBNITY API exposed to other systems as an input/output point via a standardized protocol).
 

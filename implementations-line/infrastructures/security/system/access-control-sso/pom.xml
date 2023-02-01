@@ -10,6 +10,6 @@
 	<artifactId>access-control-sso</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Access control and Single-Sign-On infrastructure implementation module</name>
+	<name>Accesses control and Single-Sign-On infrastructure impl module</name>
 
 </project>
