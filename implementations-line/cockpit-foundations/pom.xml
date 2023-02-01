@@ -13,6 +13,9 @@
 	<packaging>pom</packaging>
 	<name>CYBNITY COCKPITS FOUNDATIONS</name>
 	<modules>
+		<module>capability-common</module>
+		<module>actions-scheduling</module>
+		<!--
 		<module>assets-perimeters-protection</module>
 		<module>automation</module>
 		<module>awareness-training</module>
@@ -24,7 +27,6 @@
 		<module>defensive-responses-controls</module>
 		<module>goals-evidences</module>
 		<module>isms-strategy</module>
-		<module>actions-scheduling</module>
 		<module>operational-excellence</module>
 		<module>operational-recovery</module>
 		<module>missions-programming</module>
@@ -33,7 +35,7 @@
 		<module>standards-compliances</module>
 		<module>commandment</module>
 		<module>threats-risks-prevention-treatment</module>
-		<module>vulnerabilities-prevention-treatment</module>
+		<module>vulnerabilities-prevention-treatment</module>-->
 		<module>reactive-messaging-gateway</module>
 	</modules>
 </project>

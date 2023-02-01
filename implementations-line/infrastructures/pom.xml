@@ -16,9 +16,10 @@
 	<modules>
 		<module>common</module>
 		<module>integration</module>
+		<!--
 		<module>registry</module>
 		<module>continuity</module>
 		<module>security</module>
-		<module>monitoring</module>
+		<module>monitoring</module>-->
 	</modules>
 </project>

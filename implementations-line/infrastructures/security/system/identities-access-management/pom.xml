@@ -10,6 +10,6 @@
 	<artifactId>identity-access-management</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Identity and access management infrastructure implementation module</name>
+	<name>Identities and access management infrastructure impl module</name>
 
 </project>

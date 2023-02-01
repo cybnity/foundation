@@ -5,6 +5,7 @@ The source artifacts are managed into this directory and maintained via the [Ecl
 Each Papyrus model file (.di) include internal structure hosting specific diagrams relative to its scope of documentation.
 
 # FUNCTIONAL VIEW (Use Cases)
+## Purpose
 - Show the functionality of the system(s) as perceived by the external actors;
 - Exposes the requirements of the system.
 
@@ -13,12 +14,13 @@ Source file named "Use case view":
 - Static aspects (structural diagrams): use cases;
 - Dynamic aspects (behavioral diagrams): interactions, statecharts, activities.
 - Model sub-packages:
-  - Each context of the software (e.g Domain context) is described in a separate sub-package. 
-  
+  - Each context of the software (e.g Domain context) is described in a separate sub-package.
+
 ## Usage
 Formalizes software functional and/or technical analysis according to the functional and technical requirements.
 
 # DESIGN VIEW (Logical Components)
+## Purpose
 - Sub-capture how the functionality is designed inside the domain contexts;
 - Logical view of systems and sub-systems.
 
@@ -62,6 +64,7 @@ Source file named "Design view":
 Formalizes the specification of the software and sub-components produced during the solution analysis and technical design activities.
 
 # PROCESS VIEW (Executions)
+## Purpose
 - Show the concurrency of the system(s);
 - Encompasses the threads and processes that form the system's concurrency and synchronization mechanisms.
 
@@ -76,6 +79,7 @@ Source file named "Process view":
 Describes execution models and synchronization rules, identified during the technical design phase and implementation rules definition.
 
 # IMPLEMENTATION VIEW (Technical Components and Structures)
+## Purpose
 - Show the organization of the core components and files (e.g source code, setting files);
 - Packaging models and dependencies distribution;
 - Addresses the configuration management of the system's releases.
@@ -88,11 +92,12 @@ Source file named "Implementation view":
   - [Implementation guidelines and principles](implementation/README.md)
   - Configuration-management
   - System-assembly
-	
+
 ## Usage
 Formalizes the maintenance documentation aligned with source codes developed, including specificities regarding technologies (e.g language requirements) and frameworks (e.g implementation templates, protocols) used for implementation of the software.
 
 # DEPLOYMENT VIEW (Systems & Applications)
+## Purpose
 - Show the deployment of the systems in terms of physical architecture;
 - Encompasses the node that form the system's hardware topology (e.g type of infrastructure components, network, virtual environments) on which the system executes (e.g resources requirements, runtime platform);
 - Addresses the distribution (e.g flow opening), delivery (e.g procedures to respect), and installation (e.g resource prerequisites) of the parts that make up the physical system.

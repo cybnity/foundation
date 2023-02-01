@@ -7,7 +7,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
 
-public class SockJSReactiveBackendServer extends AbstractVerticle {
+public class SockJSReactiveBackendServer extends SockJSServer {
 
 	/**
 	 * Default start method regarding the server.

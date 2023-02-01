@@ -10,5 +10,5 @@
 	<artifactId>event</artifactId>
 	<version>${revision}</version>
 	<packaging>jar</packaging>
-	<name>Infrastructure common events library</name>
+	<name>- Infrastructure events component</name>
 </project>

@@ -2,17 +2,18 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.cybnity.infrastructure.integration.system</groupId>
-		<artifactId>users-interactions-broker</artifactId>
+		<artifactId>domains-interactions-broker</artifactId>
 		<version>${revision}</version>
 		<relativePath>..</relativePath>
 	</parent>
 
-	<groupId>org.cybnity.infrastructure.integration.uis</groupId>
+	<groupId>org.cybnity.infrastructure.integration.dis</groupId>
 	<artifactId>adapters</artifactId>
 	<packaging>pom</packaging>
-	<name>--- Users Interactions Space adapters</name>
+	<name>--- Domains Interactions Space adapters</name>
+	<!--
 	<modules>
-		<module>uis-adapter-api</module>
-		<module>uis-adapter-redis-impl</module>
-	</modules>
+		<module>uis-api</module>
+		<module>uis-redis-impl</module>
+	</modules>-->
 </project>

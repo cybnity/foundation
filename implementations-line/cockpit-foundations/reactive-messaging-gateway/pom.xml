@@ -58,6 +58,11 @@
 			<artifactId>vertx-config</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.cybnity.infrastructure.integration.uis.adapters</groupId>
+			<artifactId>redis-impl</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.cybnity.cockpit-foundation.acsc-features</groupId>
 			<artifactId>acsc-features-impl</artifactId>
 			<scope>compile</scope>

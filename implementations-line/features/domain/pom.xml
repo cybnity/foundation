@@ -12,6 +12,7 @@
 	<packaging>pom</packaging>
 	<name>Security domain features libraries</name>
 	<modules>
+		<module>feature-common</module>
 		<module>agreement-commitment</module>
 		<!--
 		<module>alert</module>

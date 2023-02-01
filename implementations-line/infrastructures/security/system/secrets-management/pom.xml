@@ -10,6 +10,6 @@
 	<artifactId>secret-management</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Secret management infrastructure implementation module</name>
+	<name>Secrets management infrastructure impl module</name>
 
 </project>
