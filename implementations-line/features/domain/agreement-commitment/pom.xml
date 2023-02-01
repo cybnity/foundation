@@ -19,6 +19,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.cybnity.feature.domain</groupId>
+			<artifactId>common</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-web</artifactId>
 		</dependency>

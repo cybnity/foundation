@@ -13,6 +13,7 @@
 	<packaging>pom</packaging>
 	<name>CYBNITY COCKPITS FOUNDATIONS</name>
 	<modules>
+		<module>capability-common</module>
 		<module>assets-perimeters-protection</module>
 		<module>automation</module>
 		<module>awareness-training</module>

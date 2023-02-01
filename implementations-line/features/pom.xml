@@ -13,7 +13,8 @@
 	<name>CYBNITY FEATURES</name>
 
 	<modules>
-		<module>workflow-process</module>
+		<!--
+		<module>workflow-process</module>-->
 		<module>domain</module>
 		<!--
 		<module>technical</module>
