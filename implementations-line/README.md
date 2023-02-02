@@ -82,7 +82,7 @@ For example, a common feature library can be embedded into an application domain
 
 Several categories of features are implemented through Java libraries regarding:
 - [domain](features/domain): libraries of cyber-serenity features helping final user to manage its ISMS via processes, workflow, combined set of application feature integrated into the UI capability components
-  - [feature-common](features/domain/feature-common): library of common and generic utility components (e.g technological classes reusable by any feature implementation project) that does not contain any business/domain functions
+  - [feature-framework](features/domain/feature-framework): library of common and generic utility components (e.g technological classes reusable by any feature implementation project) that does not contain any business/domain functions
 - [integrated-partners](features/integrated-partners): features provided by CYBNITY compatible partners' components (e.g accessory) and adapted via compatibility connectors
 - [operating-system](features/operating-system): technical features provided by operating systems (e.g hypervisor, virtualization component)
 - [physical](features/physical): features provided by physical devices integrated

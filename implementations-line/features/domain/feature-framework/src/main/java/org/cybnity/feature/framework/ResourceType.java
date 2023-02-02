@@ -1,4 +1,4 @@
-package org.cybnity.feature.common;
+package org.cybnity.feature.framework;
 
 import java.util.Collection;
 
@@ -10,7 +10,7 @@ public interface ResourceType {
 
 	/**
 	 * Get the logical name regarding the nature of the resource.
-	 * 
+	 *
 	 * @return A label.
 	 */
 	public String name();
@@ -18,7 +18,7 @@ public interface ResourceType {
 	/**
 	 * Set of control capabilities allowing to make interactions (e.g read of
 	 * information, change of resource values) with this resource type.
-	 * 
+	 *
 	 * @return A list of controllers allowing to manipulate this resource. Null by
 	 *         default.
 	 */

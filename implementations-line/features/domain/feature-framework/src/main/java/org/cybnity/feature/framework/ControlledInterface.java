@@ -1,4 +1,4 @@
-package org.cybnity.feature.common;
+package org.cybnity.feature.framework;
 
 /**
  * Capability allowed to make interaction with one or several resource types

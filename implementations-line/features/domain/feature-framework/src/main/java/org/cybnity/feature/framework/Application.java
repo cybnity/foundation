@@ -1,4 +1,4 @@
-package org.cybnity.feature.common;
+package org.cybnity.feature.framework;
 
 /**
  * CYBNITY applicative resource equals to a bounded context accessible via a

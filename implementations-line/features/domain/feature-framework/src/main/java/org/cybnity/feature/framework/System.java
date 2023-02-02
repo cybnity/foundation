@@ -1,4 +1,4 @@
-package org.cybnity.feature.common;
+package org.cybnity.feature.framework;
 
 /**
  * CYBNITY deployable packaged components (e.g packaged application components

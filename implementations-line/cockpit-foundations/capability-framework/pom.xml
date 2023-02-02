@@ -7,9 +7,9 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>org.cybnity.cockpit-foundation</groupId>
-	<artifactId>capability-common</artifactId>
+	<artifactId>capability-framework</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Capability common utility components</name>
+	<name>Capability framework components</name>
 
 </project>

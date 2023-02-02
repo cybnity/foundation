@@ -1,4 +1,4 @@
-package org.cybnity.feature.common;
+package org.cybnity.feature.framework;
 
 /**
  * CYBNITY domain function resource equals to a security capability provided by

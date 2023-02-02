@@ -1,4 +1,4 @@
-package org.cybnity.feature.common;
+package org.cybnity.feature.framework;
 
 /**
  * Generic kind of security data information (e.g an asset description, a
