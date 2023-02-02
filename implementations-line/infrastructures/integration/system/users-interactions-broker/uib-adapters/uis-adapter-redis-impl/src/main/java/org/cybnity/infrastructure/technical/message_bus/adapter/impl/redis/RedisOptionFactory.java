@@ -1,4 +1,4 @@
-package org.cybnity.infrastructure.technical.message_bus.system.impl.redis;
+package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
 import io.vertx.redis.client.RedisOptions;
 

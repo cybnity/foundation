@@ -38,4 +38,22 @@
 		<module>vulnerabilities-prevention-treatment</module>-->
 		<module>reactive-messaging-gateway</module>
 	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.cybnity.framework</groupId>
+				<artifactId>support</artifactId>
+				<scope>compile</scope>
+				<version>${revision}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.cybnity.framework</groupId>
+			<artifactId>support</artifactId>
+		</dependency>
+	</dependencies>
 </project>

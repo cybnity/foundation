@@ -14,6 +14,8 @@
 	<name>CYBNITY SOFTWARE COMPONENTS</name>
 
 	<modules>
+		<!-- common libraries -->
+		<module>support-framework</module>
 		<!-- Implementation modules -->
 		<module>infrastructures</module>
 		<module>features</module>

@@ -24,5 +24,16 @@ The assembly of specific modules can be customized for delivery of a business so
 The CYBNITY open source is organized via a structure of Maven project's sub-modules regarding all the source codes developed by the team.
 ![image](Implementation_projects_structure.PNG)
 
+### Development Tutorials and Conventions
+Several coding documentations are available into the [how-to sub-directory](how-to) for assistance to developers.
+
+The CYBNITY coding norms are considered like mandatory to apply and can be controlled via quality check process (e.g by Continuous Integration chain, source code reviews) and are origins for reject of source codes changes considered like violation of the documentation norm.
+
+The CYBNITY conventions are more permissive because are considered as optional, without mandatory quality check (based on the developer motivation and skills), but can be transformed in norm after a period of application.
+#### Conventions
+- [Coding conventions](how-to/coding-conventions.md)
+#### Norms
+- Branch tagging norm
+
 #
 [Back To Parent](../)
