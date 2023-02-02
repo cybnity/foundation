@@ -13,7 +13,7 @@
 	<name>Security systems infrastructure</name>
 	<modules>
 		<module>identities-access-management</module>
-		<module>secret-management</module>
+		<module>secrets-management</module>
 		<module>access-control-sso</module>
 	</modules>
 </project>

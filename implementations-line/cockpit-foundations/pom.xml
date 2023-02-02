@@ -11,8 +11,11 @@
 	<artifactId>cockpit-foundations-impl</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>CYBNITY cockpits core foundations</name>
+	<name>CYBNITY COCKPITS FOUNDATIONS</name>
 	<modules>
+		<module>capability-framework</module>
+		<module>actions-scheduling</module>
+		<!--
 		<module>assets-perimeters-protection</module>
 		<module>automation</module>
 		<module>awareness-training</module>
@@ -24,7 +27,6 @@
 		<module>defensive-responses-controls</module>
 		<module>goals-evidences</module>
 		<module>isms-strategy</module>
-		<module>actions-scheduling</module>
 		<module>operational-excellence</module>
 		<module>operational-recovery</module>
 		<module>missions-programming</module>
@@ -33,6 +35,25 @@
 		<module>standards-compliances</module>
 		<module>commandment</module>
 		<module>threats-risks-prevention-treatment</module>
-		<module>vulnerabilities-prevention-treatment</module>
+		<module>vulnerabilities-prevention-treatment</module>-->
+		<module>reactive-messaging-gateway</module>
 	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.cybnity.framework</groupId>
+				<artifactId>support</artifactId>
+				<scope>compile</scope>
+				<version>${revision}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.cybnity.framework</groupId>
+			<artifactId>support</artifactId>
+		</dependency>
+	</dependencies>
 </project>

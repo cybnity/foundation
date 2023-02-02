@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.cybnity.infrastructure.integration.system</groupId>
+		<artifactId>domains-interactions-broker</artifactId>
+		<version>${revision}</version>
+		<relativePath>..</relativePath>
+	</parent>
+
+	<groupId>org.cybnity.infrastructure.integration.dis</groupId>
+	<artifactId>adapters</artifactId>
+	<packaging>pom</packaging>
+	<name>--- Domains Interactions Space adapters</name>
+	<!--
+	<modules>
+		<module>uis-api</module>
+		<module>uis-redis-impl</module>
+	</modules>-->
+</project>

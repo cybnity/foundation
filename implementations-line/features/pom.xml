@@ -10,15 +10,35 @@
 	<artifactId>features-impl</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>CYBNITY features</name>
+	<name>CYBNITY FEATURES</name>
 
 	<modules>
-		<module>workflow-process</module>
+		<!--
+		<module>workflow-process</module>-->
 		<module>domain</module>
+		<!--
 		<module>technical</module>
 		<module>transport</module>
 		<module>operating-system</module>
 		<module>physical</module>
-		<module>integrated-partners</module>
+		<module>integrated-partners</module>-->
 	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.cybnity.framework</groupId>
+				<artifactId>support</artifactId>
+				<scope>compile</scope>
+				<version>${revision}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.cybnity.framework</groupId>
+			<artifactId>support</artifactId>
+		</dependency>
+	</dependencies>
 </project>

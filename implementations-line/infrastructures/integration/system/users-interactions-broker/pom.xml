@@ -10,6 +10,8 @@
 	<artifactId>users-interactions-broker</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Users interactions infrastructure implementation module</name>
-
+	<name>-- USERS INTERACTIONS BROKERS</name>
+	<modules>
+		<module>uib-adapters</module>
+	</modules>
 </project>

@@ -10,6 +10,9 @@
 	<artifactId>domains-interactions-broker</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Domain interactions infrastructure implementation module</name>
+	<name>-- DOMAINS INTERACTIONS BROKERS</name>
 
+	<modules>
+		<module>dib-adapters</module>
+	</modules>
 </project>

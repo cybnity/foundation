@@ -11,14 +11,33 @@
 	<artifactId>infrastructures-impl</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>CYBNITY infrastructures</name>
+	<name>CYBNITY INFRASTRUCTURES</name>
 
 	<modules>
 		<module>common</module>
 		<module>integration</module>
+		<!--
 		<module>registry</module>
 		<module>continuity</module>
 		<module>security</module>
-		<module>monitoring</module>
+		<module>monitoring</module>-->
 	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.cybnity.framework</groupId>
+				<artifactId>support</artifactId>
+				<scope>compile</scope>
+				<version>${revision}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.cybnity.framework</groupId>
+			<artifactId>support</artifactId>
+		</dependency>
+	</dependencies>
 </project>

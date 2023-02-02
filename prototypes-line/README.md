@@ -14,6 +14,7 @@ Prototypes source codes allow the build and delivery of specification and/or dem
 Prototypes are built via Maven tool using a [standard Maven project structure](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html).
 
 # MANAGED PROTOTYPES
-| PROTOTYPE NAME | TYPE | RELATED TO | PROJECT DIRECTORY | COMMENTS |
+| PROTOTYPE NAME | TYPE | RELATED TO | PROJECT | COMMENTS |
 | :--- | :--: | :--- | :--- | :--- |
 | UI Cockpit Principles | `CONCEPT` | | |Ergonomic validation and usage testing via first UX/UI demonstrator allowing to valid hypothesis of initial CYBNITY UI structure|
+| OS MVF V0 - Framework | `MVF` | Software architecture requirements | Foundation V0.1.0 |Basic features implementation of architecture requirements supported by any CYBNITY open source software|
