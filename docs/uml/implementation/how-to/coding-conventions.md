@@ -1,9 +1,6 @@
 ## PURPOSE
-Presentation of several coding conventions followed by the developers implementing the CYBNITY projects.
-
-# CONVENTIONS
+Presentation of several coding conventions followed by the developers implementing the CYBNITY projects:
 - [Source codes documentation](#source-codes-documentation)
-
 
 ## SOURCE CODES DOCUMENTATION
 <details><summary>REQUIREMENTS LINKING</summary>
