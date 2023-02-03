@@ -1,0 +1,16 @@
+{
+	"source": {
+		"include": ["src"], 											// Check web app sources folder
+		"includePattern": ".+\\.js(doc|x)?$", 		// Only process file ending in .js, .jsdoc or .jsx
+		"excludePattern": "(node_modules/|docs)"	// Ignore during parsing
+	},
+	"plugins": ["plugins/markdown"],
+	"templates": {
+		"cleverLinks": true,
+		"monospaceLinks": true
+	},
+	"opts": {
+		"recurse": true,													// Same as using -r or --recurse
+		"destination": "./documentation/"					// Where the docs should be generated
+	}
+}

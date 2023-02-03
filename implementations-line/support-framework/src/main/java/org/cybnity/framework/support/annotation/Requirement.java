@@ -19,21 +19,21 @@ import java.lang.annotation.Target;
  * Annotation targeting a CYBNITY requirement that is supported by a source code
  * element.
  */
-public @interface CYBNITYRequirement {
+public @interface Requirement {
 
 	/**
 	 * An unique identifier of the CYBNITY requirement.
-	 * 
+	 *
 	 * @return Identifier label without the category acronym. For example, a label
-	 *         equals to 8310_AC2 identifier regarding a link to a countermeasure
-	 *         specification identified by REQ_SEC_8310_AC2 Security Requirement
+	 *         equals to REQ_SEC_8310_AC2 identifier regarding a link to a countermeasure
+	 *         specification identified as Security Requirement
 	 *         Identifier (SRID) in policy specification document.
 	 */
 	String reqId();
 
 	/**
 	 * The type of requirement that is supported.
-	 * 
+	 *
 	 * @return The category of the requirement supported.
 	 */
 	RequirementCategory reqType();
