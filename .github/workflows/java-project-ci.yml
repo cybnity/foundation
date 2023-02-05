@@ -325,14 +325,14 @@ jobs:
 
     if: ${{ success()
           && needs.define_project_release_name.outputs.is_snapshot == 'true'
-          && github.event_name == 'push'
+          && (github.event_name == 'push' && needs.define_project_release_name.outputs.latest_release_name != '')
           }}
     needs: [define_project_release_name, packaging, quality_verification]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
       config-path: ${{ needs.packaging.steps.checkout_step.ref }}
       target_repository: SNAPSHOT
-      package_release_name: ${{ need.define_project_release_name.outputs.latest_release_name }}
+      package_release_name: ${{ needs.define_project_release_name.outputs.latest_release_name }}
     secrets: inherit
 
   #pre-release:
