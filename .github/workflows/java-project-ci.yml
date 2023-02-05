@@ -97,6 +97,7 @@ jobs:
         if: ${{ env.TAG_VERSION == '' && ( !contains(env.FEATURE_NAME, 'alpha') && !contains(env.FEATURE_NAME, 'reviewed') ) }}
         # Build unique name including commit_id suffix based
         # Example of output name: feature-133.9efbb506-SNAPSHOT
+        # Example of latest version name: feature-133-SNAPSHOT
         run: |
             echo "release_name=$FEATURE_NAME.$COMMIT_ID-SNAPSHOT" >> $GITHUB_ENV
             echo "latest_release_name=$FEATURE_NAME-SNAPSHOT" >> $GITHUB_ENV
