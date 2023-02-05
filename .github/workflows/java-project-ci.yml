@@ -90,15 +90,16 @@ jobs:
             echo "COMMIT_ID=$CI_SHA_SHORT" >> $GITHUB_ENV
             echo "FEATURE_NAME=$CI_ACTION_REF_NAME_SLUG" >> $GITHUB_ENV
             echo "is_snapshot=true" >> $GITHUB_ENV
-            echo "latest_release_name=$CI_ACTION_REF_NAME_SLUG-SNAPSHOT" >> $GITHUB_ENV
             echo "Development version type is defined as snapshot based on $CI_SHA_SHORT commit revision number"
 
-      - name: Set a snapshot feature name based on unique commit id
+      - name: Define a snapshot feature name (based on unique commit id) and latest version name
         # Build final name about featureX name, but avoiding COMMIT_ID and SNAPSHOT suffix
         if: ${{ env.TAG_VERSION == '' && ( !contains(env.FEATURE_NAME, 'alpha') && !contains(env.FEATURE_NAME, 'reviewed') ) }}
         # Build unique name including commit_id suffix based
         # Example of output name: feature-133.9efbb506-SNAPSHOT
-        run: echo "release_name=$FEATURE_NAME.$COMMIT_ID-SNAPSHOT" >> $GITHUB_ENV
+        run: |
+            echo "release_name=$FEATURE_NAME.$COMMIT_ID-SNAPSHOT" >> $GITHUB_ENV
+            echo "latest_release_name=$FEATURE_NAME-SNAPSHOT" >> $GITHUB_ENV
 
       - name: Set a snapshot reviewed version name of the project based on CYBNITY versioning strategy
         # Build final name about any tag named branch (maybe don't include feature name including -reviewed or -alpha)
@@ -325,7 +326,7 @@ jobs:
 
     if: ${{ success()
           && needs.define_project_release_name.outputs.is_snapshot == 'true'
-          && (github.event_name == 'push' && needs.define_project_release_name.outputs.latest_release_name != '')
+          && (github.event_name == 'push' && needs.define_project_release_name.outputs.latest_release_name != '' && contains(github.ref_name, 'feature'))
           }}
     needs: [define_project_release_name, packaging, quality_verification]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
