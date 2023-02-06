@@ -95,7 +95,7 @@ jobs:
   check_integration_quality:
     name: Integration quality check
     if: success()
-    needs: [define_project_release_name]
+    needs: [define_project_release_name, publish_latest_integrated_version_to_snapshot_remote_repository]
     uses: ./.github/workflows/check-project-integration-quality.yml
     with:
       config-path: ${{ inputs.branch_name }}
