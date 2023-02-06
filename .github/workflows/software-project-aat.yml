@@ -23,8 +23,6 @@ on:
 # The commit stage workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   define_project_release_name:
-    # Execute only when the PR was merged (so was approved to be includede into the staging branch)
-    if: ${{ github.event.pull_request.merged == true }}
     name: Release name preparation
     runs-on: ubuntu-latest
     permissions:
@@ -33,7 +31,7 @@ jobs:
       release_name: ${{ env.release_name }}
       is_snapshot: ${{ env.is_snapshot }}
     steps:
-      - name: Check existing project defined version name
+      - name: Check existing tagged version name
         if: ${{ github.event.release.tag_name != '' }}
         # Read the release name defined into the GitHub project
         run: |
@@ -49,7 +47,7 @@ jobs:
             echo "Development version type is detected from the GitHub tag name as ${{ env.is_snapshot }}"
 
       # Build specific release name because none tag is existing on GitHub project
-      - name: Define reusable environment variables about current commit
+      - name: Identify reusable environment variables about current commit
         if: ${{ env.TAG_VERSION == '' }}
         uses: FranzDiebold/github-env-vars-action@v2.7.0
 
@@ -61,19 +59,13 @@ jobs:
             echo "COMMIT_ID=$CI_SHA_SHORT" >> $GITHUB_ENV
             echo "release_name=$CI_ACTION_REF_NAME_SLUG-latest" >> $GITHUB_ENV
             echo "is_snapshot=true" >> $GITHUB_ENV
-            echo "Integrated development version type is defined as a staging snapshot version"
+            echo "Integrated development version type is defined as a staging snapshot version ($CI_ACTION_REF_NAME_SLUG-latest)"
 
   # Verify the technical and static quality of the version source codes (e.g java components, docker image templates...)
   check_technical_quality:
-    name: Technical quality check
+    name: Technical quality check ()
     if: success()
     needs: [define_project_release_name]
-    env:
-        RELEASE_NAME: ${{ needs.define_project_release_name.outputs.release_name }}
-        IS_SNAPSHOT: ${{ needs.define_project_release_name.outputs.is_snapshot }}
-    outputs:
-      release_name: ${{ env.RELEASE_NAME }}
-      is_snapshot: ${{ env.IS_SNAPSHOT }}
     uses: ./.github/workflows/check-project-technical-quality.yml
     with:
       config-path: ${{ inputs.branch_name }}
@@ -82,25 +74,25 @@ jobs:
 
   # Prepare only a snapshot latest version for remote repository installation
   publish_latest_integrated_version_to_snapshot_remote_repository:
-    name: Latest integrated version publishing
+    name: Latest version publishing
     # Publish not tagged snapshot version but as a common name equals to latest version of staging branch available for other domain application projects managed in other repositories
     if: ${{ success()
           && github.event_name == 'push'
-          && needs.check_technical_quality.outputs.is_snapshot == 'true'
-          && needs.check_technical_quality.outputs.release_name != ''
+          && needs.define_project_release_name.outputs.is_snapshot == 'true'
+          && needs.define_project_release_name.outputs.release_name != ''
           }}
-    needs: [check_technical_quality]
+    needs: [define_project_release_name, check_technical_quality]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
       config-path: ${{ inputs.branch_name }}
       target_repository: SNAPSHOT
-      package_release_name: ${{ needs.check_technical_quality.outputs.release_name }}
+      package_release_name: ${{ needs.define_project_release_name.outputs.release_name }}
     secrets: inherit
 
-  # Verify the integration quality of the version
+  # Verify the integration quality of the version only on merged PR
   check_integration_quality:
     name: Integration quality check
-    if: success()
+    if: success() && github.event.pull_request.merged == true
     needs: [define_project_release_name, publish_latest_integrated_version_to_snapshot_remote_repository]
     uses: ./.github/workflows/check-project-integration-quality.yml
     with:
