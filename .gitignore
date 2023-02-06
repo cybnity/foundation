@@ -14,5 +14,7 @@ buildNumber.properties
 #.project
 #.classpath
 #.settings/
+/**/.flattened-pom.xml
 .flattened-pom.xml
-implementations-line/cockpit-foundations/actions-scheduling/acsc-ui-modules/acsc-frontend/package-lock.json
+/**/package-lock.jon
+#implementations-line/cockpit-foundations/actions-scheduling/acsc-ui-modules/acsc-frontend/package-lock.json
