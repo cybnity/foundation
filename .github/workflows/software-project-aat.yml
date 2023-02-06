@@ -68,6 +68,12 @@ jobs:
     name: Technical quality check
     if: success()
     needs: [define_project_release_name]
+    env:
+        RELEASE_NAME: ${{ needs.define_project_release_name.outputs.release_name }}
+        IS_SNAPSHOT: ${{ needs.define_project_release_name.outputs.is_snapshot }}
+    outputs:
+      release_name: ${{ env.RELEASE_NAME }}
+      is_snapshot: ${{ env.IS_SNAPSHOT }}
     uses: ./.github/workflows/check-project-technical-quality.yml
     with:
       config-path: ${{ inputs.branch_name }}
@@ -79,23 +85,23 @@ jobs:
     name: Latest integrated version publishing
     # Publish not tagged snapshot version but as a common name equals to latest version of staging branch available for other domain application projects managed in other repositories
     if: ${{ success()
-          && needs.define_project_release_name.outputs.is_snapshot == 'true'
           && github.event_name == 'push'
-          && needs.define_project_release_name.outputs.release_name != ''
+          && needs.check_technical_quality.outputs.is_snapshot == 'true'
+          && needs.check_technical_quality.outputs.release_name != ''
           }}
-    needs: [define_project_release_name, check_technical_quality]
+    needs: [check_technical_quality]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
       config-path: ${{ inputs.branch_name }}
       target_repository: SNAPSHOT
-      package_release_name: ${{ needs.define_project_release_name.outputs.release_name }}
+      package_release_name: ${{ needs.check_technical_quality.outputs.release_name }}
     secrets: inherit
 
   # Verify the integration quality of the version
   check_integration_quality:
     name: Integration quality check
     if: success()
-    needs: [define_project_release_name]
+    needs: [define_project_release_name, publish_latest_integrated_version_to_snapshot_remote_repository]
     uses: ./.github/workflows/check-project-integration-quality.yml
     with:
       config-path: ${{ inputs.branch_name }}
