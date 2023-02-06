@@ -59,11 +59,11 @@ jobs:
             echo "COMMIT_ID=$CI_SHA_SHORT" >> $GITHUB_ENV
             echo "release_name=$CI_ACTION_REF_NAME_SLUG-latest" >> $GITHUB_ENV
             echo "is_snapshot=true" >> $GITHUB_ENV
-            echo "Integrated development version type is defined as a staging snapshot version"
+            echo "Integrated development version type is defined as a staging snapshot version ($CI_ACTION_REF_NAME_SLUG-latest)"
 
   # Verify the technical and static quality of the version source codes (e.g java components, docker image templates...)
   check_technical_quality:
-    name: Technical quality check
+    name: Technical quality check ()
     if: success()
     needs: [define_project_release_name]
     uses: ./.github/workflows/check-project-technical-quality.yml
@@ -74,7 +74,7 @@ jobs:
 
   # Prepare only a snapshot latest version for remote repository installation
   publish_latest_integrated_version_to_snapshot_remote_repository:
-    name: Latest integrated version publishing
+    name: Latest version publishing
     # Publish not tagged snapshot version but as a common name equals to latest version of staging branch available for other domain application projects managed in other repositories
     if: ${{ success()
           && github.event_name == 'push'
