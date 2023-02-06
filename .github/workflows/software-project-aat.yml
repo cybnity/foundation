@@ -57,13 +57,13 @@ jobs:
         run: |
             echo "Git commit revision $CI_SHA_SHORT abbreviation based on 7 characters (default) maximum (origin based: $CI_SHA)"
             echo "COMMIT_ID=$CI_SHA_SHORT" >> $GITHUB_ENV
-            echo "release_name=$CI_ACTION_REF_NAME_SLUG-latest" >> $GITHUB_ENV
+            echo "release_name=$CI_ACTION_REF_NAME_SLUG-latest-SNAPSHOT" >> $GITHUB_ENV
             echo "is_snapshot=true" >> $GITHUB_ENV
-            echo "Integrated development version type is defined as a staging snapshot version ($CI_ACTION_REF_NAME_SLUG-latest)"
+            echo "Integrated development version type is defined as a staging snapshot version ($CI_ACTION_REF_NAME_SLUG-latest-SNAPSHOT)"
 
   # Verify the technical and static quality of the version source codes (e.g java components, docker image templates...)
   check_technical_quality:
-    name: Technical quality check ()
+    name: Technical quality check
     if: success()
     needs: [define_project_release_name]
     uses: ./.github/workflows/check-project-technical-quality.yml
