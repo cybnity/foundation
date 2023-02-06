@@ -323,7 +323,7 @@ jobs:
   # Prepare only a snapshot latest version for remote repository installation
   publish_latest_version_to_snapshot_remote_repository:
     name: Latest version publishing
-    # Publish not tagged snapshot version but as a common name equals to latest version of feature branch available for other domain application projects managed in other repositories
+    # Publish not tagged snapshot version but as a common name equals to latest version of feature branche available for other domain application projects managed in other repositories
     if: ${{ success()
           && needs.define_project_release_name.outputs.is_snapshot == 'true'
           && (github.event_name == 'push' && needs.define_project_release_name.outputs.latest_release_name != '' && contains(github.ref_name, 'feature'))
