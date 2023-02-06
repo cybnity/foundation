@@ -1,6 +1,12 @@
 ## PURPOSE
 Presentation of several utilities, guides and documentations helping the software developers to manage, use, develop and/or ensure a developer role on the CYBNITY program.
-- [Source codes documentation](#source-codes-documentation)
+- [Public documentation](#cybnity-public-documentation)
+- [Minimum prototyping platform](#minimum-prototyping-platform)
+- [Development environment](#development-environment)
+- [Open source projects platform](#cybnity-open-source-projects-platform)
+- [Integrated development environment](#integrated-development-environment)
+- [System images registry](#system-images-registry)
+- [Continuous integration/delivery infrastructure][#continuous-integration--delivery-infrastructure]
 
 ## CYBNITY PUBLIC DOCUMENTATION
 <details><summary>SOFTWARE PROGRAM DOCUMENTATIONS</summary>
