@@ -6,7 +6,7 @@ Presentation of several utilities, guides and documentations helping the softwar
 - [Open source projects platform](#cybnity-open-source-projects-platform)
 - [Integrated development environment](#integrated-development-environment)
 - [System images registry](#system-images-registry)
-- [Continuous integration/delivery infrastructure][#continuous-integration--delivery-infrastructure]
+- [Continuous integration/delivery infrastructure](#continuous-integration--delivery-infrastructure)
 
 ## CYBNITY PUBLIC DOCUMENTATION
 <details><summary>SOFTWARE PROGRAM DOCUMENTATIONS</summary>
