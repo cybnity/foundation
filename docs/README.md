@@ -35,7 +35,7 @@ The build and delivery of the CYBNITY systems' features is performed through sev
 
 ![image](CYBNITY-workspaces-OS.png)
 
-# Support and How-To
+### Support and How-To
 - [Developers How-To](how-to/developer-how-to.md): guides about tools, tasks organization and other assistance documentations helping a developper to contribute.
 
 ## SYSTEMS & INFRASTRUCTURES DELIVERY
