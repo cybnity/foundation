@@ -80,15 +80,15 @@ jobs:
     # Publish not tagged snapshot version but as a common name equals to latest version of staging branch available for other domain application projects managed in other repositories
     if: ${{ success()
           && github.event_name == 'push'
-          && define_project_release_name.outputs.is_snapshot == 'true'
-          && define_project_release_name.outputs.release_name != ''
+          && needs.define_project_release_name.outputs.is_snapshot == 'true'
+          && needs.define_project_release_name.outputs.release_name != ''
           }}
-    needs: [check_technical_quality]
+    needs: [define_project_release_name, check_technical_quality]
     uses: ./.github/workflows/publish-java-packages-version-to-repository.yml
     with:
       config-path: ${{ inputs.branch_name }}
       target_repository: SNAPSHOT
-      package_release_name: ${{ define_project_release_name.outputs.release_name }}
+      package_release_name: ${{ needs.define_project_release_name.outputs.release_name }}
     secrets: inherit
 
   # Verify the integration quality of the version
