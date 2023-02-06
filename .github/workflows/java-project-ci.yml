@@ -294,8 +294,8 @@ jobs:
     secrets: inherit
 
   # Prepare only a snapshot version for remote repository installation
-  publish_version_to_snapshot_remote_repository:
-    name: Snapshot version publishing
+  publish_tagged_version_to_snapshot_remote_repository:
+    name: Tagged snapshot version publishing
     # By default, don't publish snapshot version on other repository than the local developer workstation's maven repository
     # The Pull Request (PR) of development revision was approved and merged, but maybe work is not finished
 
@@ -323,8 +323,7 @@ jobs:
   # Prepare only a snapshot latest version for remote repository installation
   publish_latest_version_to_snapshot_remote_repository:
     name: Latest version publishing
-    # Publish not tagged snapshot version but as a common name equals to latest version of feature branche available for other domain application projects managed in other repositories
-
+    # Publish not tagged snapshot version but as a common name equals to latest version of feature branch available for other domain application projects managed in other repositories
     if: ${{ success()
           && needs.define_project_release_name.outputs.is_snapshot == 'true'
           && (github.event_name == 'push' && needs.define_project_release_name.outputs.latest_release_name != '' && contains(github.ref_name, 'feature'))
