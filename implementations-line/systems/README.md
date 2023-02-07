@@ -12,7 +12,7 @@ To avoid risks (e.g large modules are slow, insecure, difficult to understand/te
 Several assembly projects are managed regarding the packaging of modular and deployable systems relative to independent and autonomous containerized systems of security features, and/or integrated applicative modules (e.g aggregation of CYBNITY domain's features).
 
 ### DEPLOYMENT VIEW
-See the [deployment view documentation](../../docs/uml/README.md#deployment-view-systems--applications) for more detail on the design requirements that describe the environments, infrastructures and operating conditions required to install, activate and operate the systems safely.
+See the [deployment view documentation](/docs/uml/README.md#deployment-view-systems--applications) for more detail on the design requirements that describe the environments, infrastructures and operating conditions required to install, activate and operate the systems safely.
 
 # INFRASTRUCTURE PROJECTS
 The infrastructure projects governs the provisioning management at the Kubernetes level as an Infrastructure-As-Code implementation.
