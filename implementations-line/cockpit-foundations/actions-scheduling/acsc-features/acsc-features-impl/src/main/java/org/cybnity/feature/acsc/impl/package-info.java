@@ -1,8 +1,8 @@
 /**
  * Package of feature implementation provided by the capability domain.
  */
-@CYBNITYRequirement(reqType = RequirementCategory.Maintainability, reqId = "10")
+@Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_ARC_10")
 package org.cybnity.feature.acsc.impl;
 
-import org.cybnity.framework.support.annotation.CYBNITYRequirement;
+import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;

@@ -1,8 +1,8 @@
 /**
  * Package of adapter specification of services provided by the message bus.
  */
-@CYBNITYRequirement(reqType = RequirementCategory.Maintainability, reqId = "10")
+@Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_ARC_10")
 package org.cybnity.infrastructure.technical.message_bus.adapter.api;
 
-import org.cybnity.framework.support.annotation.CYBNITYRequirement;
+import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
