@@ -24,7 +24,7 @@ The internal components of an application are called *microservices* which imple
 ## INFRASTRUCTURE SYSTEMS
 Several main systems are implemented to be deployed as Internet platform and/or to be executed into a mobile infrastructure (e.g specific components on laptop required by mobile rapid response force members during a move into an incident zone).
 
-The base directory that support the infrastructure-as-code (IaC) implementations is hosted into the [systems folder](../../../../implementations-line/systems/README.md).
+The base directory that support the infrastructure-as-code (IaC) implementations is hosted into the [systems folder](/implementations-line/systems/README.md).
 
 A global systems registry allows the discovery of systems to link the context with dynamics approach (at runtime).
 
