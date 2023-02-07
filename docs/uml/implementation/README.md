@@ -25,7 +25,7 @@ The Java components projects are organized via a structure of Maven project's su
 ![image](Implementation_projects_structure.PNG)
 
 ### Infrastructure Modules Projects Structures
-The Terraformed module regarding the CYBNITY deployable and executable infrastructure components are organized via a [structure of Terraform projects](../../implementations-line/systems/README.md).
+The Terraformed module regarding the CYBNITY deployable and executable infrastructure components are organized via a [structure of Terraform projects](/implementations-line/systems/README.md).
 
 ### Development Tutorials and Conventions
 Several coding documentations are available into the [how-to sub-directory](how-to) for assistance to developers.
