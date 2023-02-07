@@ -1,0 +1,21 @@
+# Build and run the Java container with docker-compose
+version: '3.5'
+services:
+  javaruntime:
+    build: .
+    image: cybnity/jre-container
+    container_name: java-TEE
+    #
+    #volumes:
+    #  - type: volume
+    #    source: m2repo
+    #    target: /root/.m2
+    networks:
+      - internet_public_area
+    # Don't allow command entry
+    stdin_open: false
+    # Activate image console
+    tty: true
+networks:
+  internet_public_area:
+    name: cybnity-public-area
