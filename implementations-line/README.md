@@ -134,7 +134,7 @@ For example, the infrastructure implementation modules allow to manage the depen
 Example of common event-based principles using a common infrastructure library regarding generic event.
 ![image](mvf-event-based-architecture.png)
 
-# DEPLOYABLE & RUNNABLE SYSTEMS
+# DEPLOYABLE & RUNNABLE MODULES
 Several types of applicative or infrastructure modules are developed and containerized as executable systems which can be deployed and operated on standalone (e.g OS on laptop, virtualized hardware) or on cloudified hardware platforms (e.g Kubernetes, OVH Cloud hosting, public cloud).
 
 See for more detail in [systems architecture documentation](../docs/architecture/README.md) about the implementation modules and packaged systems constituting the CYBNITY software suite.

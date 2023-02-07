@@ -20,7 +20,6 @@
 	<!-- Project lines -->
 	<modules>
 		<module>implementations-line</module>
-		<module>systems-line</module>
 	</modules>
 
 	<organization>
