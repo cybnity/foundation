@@ -16,8 +16,6 @@ The packaging strategy applied on the project provides all the systems ready for
 ## SYSTEMS SOURCE CODES' PROJECTS
 The management of several types of modular systems is approached with an integrated vision that mix the best pratices proposed by each used tool, into a global common and compatible architecture of the source codes projects.
 
-The base directory that support the systems implementations is hosted into the [systems folder](../../implementations-line/systems/README.md)
-
 ## APPLICATIVE SYSTEMS
 Each domain service is supported by an independent component which can be deployed in standalone life cycle and which manage the dependencies with other components like specified by the contexts integration model.
 
@@ -25,6 +23,8 @@ The internal components of an application are called *microservices* which imple
 
 ## INFRASTRUCTURE SYSTEMS
 Several main systems are implemented to be deployed as Internet platform and/or to be executed into a mobile infrastructure (e.g specific components on laptop required by mobile rapid response force members during a move into an incident zone).
+
+The base directory that support the infrastructure-as-code (IaC) implementations is hosted into the [systems folder](../../implementations-line/systems/README.md).
 
 A global systems registry allows the discovery of systems to link the context with dynamics approach (at runtime).
 

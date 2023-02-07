@@ -1,5 +1,5 @@
 ## PURPOSE
-Presentation of the projects dedicated to build and deliver CYBNITY system module versions.
+Presentation of the projects dedicated to manage the provisioning and orchestration of delivered CYBNITY infrastructure module versions.
 
 The management of several types of modules is approached with an integrated vision that mix the best pratices proposed by each used tool, into a global common and compatible architecture of the source codes projects.
 
@@ -9,14 +9,16 @@ To avoid risks (e.g large modules are slow, insecure, difficult to understand/te
 - Testable modules
 - Releasable modules
 
-Several assembly projects are managed regarding the packaging of modular and deployable systems relative to independent and autonomous containerized systems of security features, and/or integrated security applicative modules (e.g aggregation of security features).
+Several assembly projects are managed regarding the packaging of modular and deployable systems relative to independent and autonomous containerized systems of security features, and/or integrated applicative modules (e.g aggregation of CYBNITY domain's features).
 
 ### DEPLOYMENT VIEW
 See the [deployment view documentation](../../docs/uml/README.md#deployment-view-systems--applications) for more detail on the design requirements that describe the environments, infrastructures and operating conditions required to install, activate and operate the systems safely.
 
 # INFRASTRUCTURE PROJECTS
+The infrastructure projects governs the provisioning management at the Kubernetes level as an Infrastructure-As-Code implementation.
+
 ## APPLICATION MODULES PROJECTS
-Perimeter: packaged applicative or infrastructure modular systems as Services that can be executed (e.g capability to be deployed into an environment).
+Perimeter: packaged applicative or infrastructure modular systems as Services (Kubernetes service) that can be executed (e.g capability to be deployed into an environment).
 
 Project type: Terraform implementation structure.
 
@@ -54,21 +56,59 @@ The integrated terraformed modules are managed via the standard project structur
 modules
 ├── live-env
 │   ├── cluster
-│   │   └── <<clusterized module name>>-<<function>>
-│   │       ├── one-instance
-│   │       ├── auto-scaling
-│   │       ├── with-load-balancer
-│   │       ├── custom-tags
+│   │   ├── <<clusterized module name>>-<<function>>
+│   │   │   ├── main.tf
+│   │   │   ├── outputs.tf
+│   │   │   └── variables.tf
+│   │   └── <<clusterized module name>>
 │   │       ├── main.tf
 │   │       ├── outputs.tf
 │   │       └── variables.tf
 │   ├── networking
 │   │   └── <<network module name>>
-│   │       └── main.tf
+│   │       ├── main.tf
+│   │       ├── outputs.tf
+│   │       └── variables.tf
 │   └── services
-│       └── <<CYBNITY application module name>>
-│           └── main.tf
+│       └── <<CYBNITY application module/service name>>
+│           ├── main.tf
+│           ├── outputs.tf
+│           └── variables.tf
 ├── qa-env
+├── dev-env
+└── local-env
+```
+
+Corresponding test and examples structures are implemented and should be equals to the implemented modules allowing to make multiple tests for each module, witch each example showing different configurations and permutations of how that module can be used.
+
+```
+test
+├── qa-env
+│   ├── cluster
+│   ├── networking
+│   └── services
+├── dev-env
+└── local-env
+
+examples
+├── qa-env
+│   ├── cluster
+│   │   └── <<clusterized module name>>-<<function>>
+│   │       ├── one-instance
+│   │       │   ├── main.tf
+│   │       │   ├── outputs.tf
+│   │       │   └── variables.tf
+│   │       ├── auto-scaling
+│   │       │   ├── main.tf
+│   │       │   ├── outputs.tf
+│   │       │   └── variables.tf
+│   │       ├── with-load-balancer
+│   │       │   ├── main.tf
+│   │       │   ├── outputs.tf
+│   │       │   └── variables.tf
+│   │       └── custom-tags
+│   ├── networking
+│   └── services
 ├── dev-env
 └── local-env
 ```
