@@ -6,7 +6,12 @@ Feature specifications API versions (e.g interface versions) are delivered accor
 Feature implementations versions are designed and delivered as official Foundation Core implementation software.
 
 ### Sources Structure
-Implementation components are built via Maven tool using a [standard Maven project structure](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html).
+Implementation components projects are structured and built according to standards:
+- Maven: Java components using a [standard Maven project structure](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html)
+- NPM: JavaScript components
+- Docker: system containers and images templates
+- Helm: parameters and Kubernetes resources configuration using a [standard Helm structure](https://v2.helm.sh/docs/developing_charts/)
+- Terraform: Kubernetes clusters and networking configuration
 
 The implementation projects are supported by an [Official TechStack version](https://github.com/cybnity/foundation-techstack/blob/feature-157/demonstrators-line/demonstrator-v0/v0-technologies-stack.md) defining the authorized technologies used by any the software sub-project.
 
@@ -103,6 +108,7 @@ The scalability required by a specific feature component is supported by the imp
 # INFRASTRUCTURE COMPONENTS
 The source code managed in this area are about the infrastructure components supporting the features and applications modules.
 For example, the implementation source code of an adapter client to a monitoring server (e.g proprietary solution integrated with CYBNITY over a connection adapter and/or via a protocol compatibility implementation) is provided as an infrastructure module.
+
 Mainly, the **Infrastructure Modules** are provided as **Java libraries** of adaptation client implementations modules.
 
 Several categories of infrastructure technologies are managed in terms of implementation codes:
@@ -127,3 +133,8 @@ For example, the infrastructure implementation modules allow to manage the depen
 ### Common Transversal Components
 Example of common event-based principles using a common infrastructure library regarding generic event.
 ![image](mvf-event-based-architecture.png)
+
+# DEPLOYABLE & RUNNABLE SYSTEMS
+Several types of applicative or infrastructure modules are developed and containerized as executable systems which can be deployed and operated on standalone (e.g OS on laptop, virtualized hardware) or on cloudified hardware platforms (e.g Kubernetes, OVH Cloud hosting, public cloud).
+
+See for more detail in [systems architecture documentation](../docs/architecture/README.md) about the implementation modules and packaged systems constituting the CYBNITY software suite.
