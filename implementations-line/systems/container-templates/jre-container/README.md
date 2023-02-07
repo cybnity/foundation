@@ -7,6 +7,8 @@ A docker orchestrator should be started previously to execute any docker command
 ``` shell
 # Start minikube
 minikube start --driver=hyperkit --container-runtime=docker
+# Export docker host and Docker daemon into the shell context variables
+minikube docker-env
 # Set docker env
 eval $(minikube docker-env)
 ```
