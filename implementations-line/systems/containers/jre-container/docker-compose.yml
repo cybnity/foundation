@@ -1,0 +1,13 @@
+# Build and run the Java container with docker-compose
+version: '3.5'
+services:
+  javatte:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    image: cybnity/jre-container:latest
+    container_name: java-TEE
+    # Don't allow command entry
+    stdin_open: false
+    # Activate image console
+    tty: true

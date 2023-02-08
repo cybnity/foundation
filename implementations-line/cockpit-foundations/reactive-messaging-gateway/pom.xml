@@ -106,6 +106,48 @@
 					</arguments>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.41.0</version>
+				<configuration>
+					<images>
+						<!-- Create an in-memory Dockerfile, copies over the assembled files and calls the Docker daemon via its remote API -->
+						<image>
+							<!-- Unique docker repository name including registry and tag parts -->
+							<name>cybnity/%a:%l</name>
+							<alias>reactive-messaging-gateway</alias>
+							<build>
+								<from>cybnity/jre-container:latest</from>
+								<maintainer>CYBNITY Core Team</maintainer>
+								<tags>
+									<tag>latest</tag>
+									<tag>${project.version}</tag>
+								</tags>
+								<entryPoint>
+									<!-- exec form for ENTRYPOINT -->
+									<exec>
+									<arg>java</arg>
+									<arg>-jar</arg>
+									<arg>/opt/demo/server.jar</arg>
+									</exec>
+								</entryPoint>
+							</build>
+						</image>
+					</images>
+					<outputDirectory>target/docker</outputDirectory>
+					<sourceDirectory>src/main/docker</sourceDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>docker-build</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>

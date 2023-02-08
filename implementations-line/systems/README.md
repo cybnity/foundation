@@ -14,6 +14,11 @@ Several assembly projects are managed regarding the packaging of modular and dep
 ### DEPLOYMENT VIEW
 See the [deployment view documentation](/docs/uml/README.md#deployment-view-systems--applications) for more detail on the design requirements that describe the environments, infrastructures and operating conditions required to install, activate and operate the systems safely.
 
+# SYSTEM PROJECTS
+## REUZABLE DOCKER TECHNOLOGY IMAGES PROJECTS
+Some applicative systems are containerized as Docker images. To do this, a Dockerfile is managed in each application project (e.g a domain backend server sub-project) that is based onto a reusable Docker template maintained in the `containers` folder.
+- [jre-container](containers/jre-container): build project of a Java Runtime Environment image defining a Trusted Execution Environment (TTE) reusable by Java custom applications dockerized module.
+
 # INFRASTRUCTURE PROJECTS
 The infrastructure projects governs the provisioning management at the Kubernetes level as an Infrastructure-As-Code implementation.
 

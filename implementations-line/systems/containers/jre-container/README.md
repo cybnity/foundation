@@ -20,6 +20,9 @@ Build a Docker image of Linux/Java runtime environment container from shell comm
 Build dockerfile (without docker-compose help) from directory from shell command line:
 `docker build -t cybnity/jre-container .`
 
+## DOCKER IMAGE REPOSITORY
+List images built into the repository
+
 ## CHECK IMAGE
 Scan image vulnerabilities from shell command line:
 `docker scan cybnity/jre-container`
