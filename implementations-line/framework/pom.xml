@@ -6,10 +6,14 @@
 		<version>${revision}</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<groupId>org.cybnity.framework</groupId>
-	<artifactId>support</artifactId>
+	<groupId>org.cybnity.components.framework</groupId>
+	<artifactId>impl</artifactId>
 	<version>${revision}</version>
-	<packaging>jar</packaging>
-	<name>Support framework library</name>
+	<packaging>pom</packaging>
+	<name>FRAMEWORK COMPONENTS</name>
 
+	<modules>
+		<module>support</module>
+		<module>java-tee-container</module>
+	</modules>
 </project>

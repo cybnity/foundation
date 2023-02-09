@@ -14,12 +14,131 @@
 	<name>CYBNITY SOFTWARE COMPONENTS</name>
 
 	<modules>
-		<!-- common libraries -->
-		<module>support-framework</module>
+		<!-- Framework modules (e.g container, common libraries) -->
+		<module>framework</module>
 		<!-- Implementation modules -->
 		<module>infrastructures</module>
 		<module>features</module>
 		<module>cockpit-foundations</module>
 	</modules>
 
+	<profiles>
+		<profile>
+			<!-- Build regarding a development version on developer station -->
+			<id>localhost</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!-- Default activate or deactivate the management of docker image -->
+				<docker.skip.build>true</docker.skip.build>
+				<docker.skip.push>true</docker.skip.push>
+				<docker.skip.tag>true</docker.skip.tag>
+				<docker.verbose>true</docker.verbose>
+			</properties>
+		</profile>
+
+		<profile>
+			<!-- Build regarding a development version on shared development platform -->
+			<id>dev-deploy-environment</id>
+			<activation>
+				<property>
+					<!-- Activation based on -D system property (e.g command line with -Denvironment=dev-deploy) -->
+					<name>environment</name>
+					<value>dev-deploy</value>
+				</property>
+			</activation>
+			<properties>
+				<!-- Default activate or deactivate the management of docker image -->
+				<docker.skip.build>false</docker.skip.build>
+				<docker.skip.push>false</docker.skip.push>
+				<docker.skip.tag>false</docker.skip.tag>
+				<docker.verbose>true</docker.verbose>
+			</properties>
+		</profile>
+
+		<profile>
+			<!-- Build regarding a qualification version on test environment -->
+			<id>qa-environment</id>
+			<activation>
+				<property>
+					<!-- Activation based on -D system property (e.g command line with -Denvironment=qa) -->
+					<name>environment</name>
+					<value>qa</value>
+				</property>
+			</activation>
+			<properties>
+				<!-- Default activate or deactivate the management of docker image -->
+				<docker.skip.build>false</docker.skip.build>
+				<docker.skip.push>false</docker.skip.push>
+				<docker.skip.tag>false</docker.skip.tag>
+				<docker.verbose>false</docker.verbose>
+			</properties>
+		</profile>
+
+		<profile>
+			<!-- Build regarding a technical quality stage -->
+			<id>technical-quality-stage</id>
+			<activation>
+				<property>
+					<!-- Activation based on -D system property (e.g command line with -Dstage=technical-quality) -->
+					<name>stage</name>
+					<value>technical-quality</value>
+				</property>
+			</activation>
+			<properties>
+				<!-- Default activate or deactivate the management of docker image -->
+				<docker.skip.build>true</docker.skip.build>
+				<docker.skip.push>true</docker.skip.push>
+				<docker.skip.tag>true</docker.skip.tag>
+				<docker.verbose>false</docker.verbose>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>resolve-dependency</id>
+								<phase>validate</phase>
+								<configuration>
+									<silent>false</silent>
+								</configuration>
+								<goals>
+									<!-- Try to resolve all test scope -->
+									<goal>resolve</goal>
+									<!-- Try to resolve plugins and optionnaly their dependencies -->
+									<goal>resolve-plugins</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>analyze-dependencies</id>
+								<phase>validate</phase>
+								<goals>
+									<!-- Determine missing or unused dependencies -->
+									<goal>analyze-dep-mgt</goal>
+									<goal>analyze-duplicate</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>report-tree</id>
+								<phase>validate</phase>
+								<configuration>
+										<outputFile>mpp-official-version-pom-tree.txt</outputFile>
+										<outputType>text</outputType>
+										<appendOutput>false</appendOutput>
+								</configuration>
+								<goals>
+									<!-- Show the dependency hierarchy of the project and dependencies versions managed by the parent pom.xml -->
+									<goal>tree</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
 </project>

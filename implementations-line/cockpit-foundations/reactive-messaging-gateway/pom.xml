@@ -17,9 +17,12 @@
 
 		<!-- Default activate or deactivate the build of docker image -->
 		<docker.skip.build>false</docker.skip.build>
-		<docker.skip.push>true</docker.skip.push>
-		<docker.skip.tag>true</docker.skip.tag>
+		<docker.skip.tag>false</docker.skip.tag>
 		<docker.verbose>true</docker.verbose>
+		<docker.filter>reactive-messaging-gateway</docker.filter>
+		<docker.imagePullPolicy>IfNotPresent</docker.imagePullPolicy>
+		<docker.useColor>true</docker.useColor>
+		<docker.registry>cybnity.registry.jetbrains.space</docker.registry>
 	</properties>
 
 	<dependencies>
@@ -123,11 +126,11 @@
 						<!-- Create an in-memory Dockerfile, copies over the assembled files and calls the Docker daemon via its remote API -->
 						<image>
 							<!-- Unique docker repository name including registry and tag parts -->
-							<name>cybnity/%a:%l</name>
+							<name>cybnity/%a</name>
 							<alias>reactive-messaging-gateway</alias>
 							<build>
 								<!-- The CYBNITY JRE container standard base image (Trusted Execution Environment) extended -->
-								<from>cybnity/jre-container:latest</from>
+								<from>cybnity/jre-tee:latest</from>
 								<maintainer>CYBNITY Core Team</maintainer>
 								<cleanup>try</cleanup>
 								<tags>
@@ -145,7 +148,7 @@
 								</labels>
 								<entryPoint>
 									<!-- Set the jar file to start from the TEE base image's $JAVA_APP_DIR_PATH environment variable defined as safe applications directory -->
-									<!-- Becarefull, variable can only be used in shell Form, but are not supported in command invoked via exec form (entrypoin) -->
+									<!-- Becarefull, variable can only be used in shell Form, but are not supported in command invoked via exec form (entrypoint) -->
 									<shell>java -jar $JAVA_APP_DIR_PATH/$STARTED_JAR_FILE</shell>
 								</entryPoint>
 								<assembly>
@@ -166,6 +169,8 @@
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>build</goal>
+							<!-- Upload images to the registry -->
+							<goal>push</goal>
 						</goals>
 					</execution>
 				</executions>

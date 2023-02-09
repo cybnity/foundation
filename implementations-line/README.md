@@ -9,7 +9,7 @@ Feature implementations versions are designed and delivered as official Foundati
 Implementation components projects are structured and built according to standards:
 - Maven: Java components using a [standard Maven project structure](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html)
 - NPM: JavaScript components
-- Docker: system containers and images templates
+- Docker: system containers and images templates are managed by each project (e.g via auto-generated Dockerfile by Maven process)
 - Helm: parameters and Kubernetes resources configuration using a [standard Helm structure](https://v2.helm.sh/docs/developing_charts/)
 - Terraform: Kubernetes clusters and networking configuration
 
