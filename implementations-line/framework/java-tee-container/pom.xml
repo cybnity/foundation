@@ -86,8 +86,8 @@
 						<phase>package</phase>
 						<goals>
 							<goal>build</goal>
-							<!-- Upload images to the registry -->
-							<goal>push</goal>
+							<!-- Upload images to the registry
+							<goal>push</goal>-->
 						</goals>
 					</execution>
 				</executions>

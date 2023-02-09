@@ -10,7 +10,7 @@
 	<artifactId>impl</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>FRAMEWORK COMPONENTS</name>
+	<name>Framework components</name>
 
 	<modules>
 		<module>support</module>
