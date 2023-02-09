@@ -13,13 +13,15 @@ ENV STARTED_JAR_FILE = "MISSING_DEFINED.jar"
 # Default image's Java home directory is
 #ENV JAVA_HOME=/opt/java/openjdk
 
-# Create applications directory
-RUN mkdir /opt/app
+# Create application deployment directory
+RUN mkdir /opt/cybnity
 
-# Define an environment variate where application components should be stored
-ENV JAVA_APP_DIR_PATH="/opt/app"
+# Define an environment variate where application components should be stored (already accessible by classpath)
+ENV JAVA_APP_DIR_PATH="/opt/cybnity"
 
 # Securize the directories (read-only) hosting the immutable components libraries
+
+# Define the default directory (WORKDIR instruction) when starting the container
 
 # Start by default the Java application into the JRE instance
 CMD ["java", "-jar", "$JAVA_APP_DIR_PATH/$STARTED_JAR_FILE"}]

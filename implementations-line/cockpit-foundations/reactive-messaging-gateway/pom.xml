@@ -14,6 +14,12 @@
 	<properties>
 		<main.verticle>org.cybnity.application.ui.system.backend.SockJSReactiveBackendServer</main.verticle>
 		<launcher.class>io.vertx.core.Launcher</launcher.class>
+
+		<!-- Default activate or deactivate the build of docker image -->
+		<docker.skip.build>false</docker.skip.build>
+		<docker.skip.push>true</docker.skip.push>
+		<docker.skip.tag>true</docker.skip.tag>
+		<docker.verbose>true</docker.verbose>
 	</properties>
 
 	<dependencies>
@@ -88,8 +94,11 @@
 										<Main-Verticle>${main.verticle}</Main-Verticle>
 									</manifestEntries>
 								</transformer>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer" />
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
 							</transformers>
+							<createDependencyReducePom>false</createDependencyReducePom>
 							<outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar</outputFile>
 						</configuration>
 					</execution>
@@ -109,7 +118,6 @@
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.41.0</version>
 				<configuration>
 					<images>
 						<!-- Create an in-memory Dockerfile, copies over the assembled files and calls the Docker daemon via its remote API -->
@@ -118,20 +126,34 @@
 							<name>cybnity/%a:%l</name>
 							<alias>reactive-messaging-gateway</alias>
 							<build>
+								<!-- The CYBNITY JRE container standard base image (Trusted Execution Environment) extended -->
 								<from>cybnity/jre-container:latest</from>
 								<maintainer>CYBNITY Core Team</maintainer>
+								<cleanup>try</cleanup>
 								<tags>
-									<tag>latest</tag>
+									<!-- Additional tags which an image is to be tagged after the build -->
 									<tag>${project.version}</tag>
+									<tag>latest</tag>
 								</tags>
+								<env>
+									<!-- Update the default TARTED_JAR_FILE environment variable about Java application jar file name, defined as main jar to start by the container -->
+									<STARTED_JAR_FILE>${project.artifactId}-${project.version}-fat.jar</STARTED_JAR_FILE>
+								</env>
+								<labels>
+									<version>${project.version}</version>
+									<artifactId>${project.artifactId}</artifactId>
+								</labels>
 								<entryPoint>
-									<!-- exec form for ENTRYPOINT -->
-									<exec>
-									<arg>java</arg>
-									<arg>-jar</arg>
-									<arg>/opt/demo/server.jar</arg>
-									</exec>
+									<!-- Set the jar file to start from the TEE base image's $JAVA_APP_DIR_PATH environment variable defined as safe applications directory -->
+									<!-- Becarefull, variable can only be used in shell Form, but are not supported in command invoked via exec form (entrypoin) -->
+									<shell>java -jar $JAVA_APP_DIR_PATH/$STARTED_JAR_FILE</shell>
 								</entryPoint>
+								<assembly>
+									<!-- Attach project’s artifact (its dependencies are embedded into the shaded jar) -->
+									<descriptor>shaded-artifact-docker-assembly.xml</descriptor>
+									<targetDir>/opt/cybnity</targetDir>
+									<mode>dir</mode>
+								</assembly>
 							</build>
 						</image>
 					</images>
@@ -141,7 +163,7 @@
 				<executions>
 					<execution>
 						<id>docker-build</id>
-						<phase>package</phase>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>build</goal>
 						</goals>
