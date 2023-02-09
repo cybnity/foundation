@@ -19,8 +19,6 @@
 		<docker.verbose>true</docker.verbose>
 		<docker.imagePullPolicy>IfNotPresent</docker.imagePullPolicy>
 		<docker.useColor>true</docker.useColor>
-		<docker.push.registry>cybnity.registry.jetbrains.space</docker.push.registry>
-		<docker.push.retries>3</docker.push.retries>
 	</properties>
 
 	<build>
@@ -35,6 +33,7 @@
 							<!-- Unique docker repository name including registry and tag parts -->
 							<name>cybnity/%a</name>
 							<alias>jre-tee</alias>
+							<registry>cybnity.registry.jetbrains.space</registry>
 							<build>
 								<!-- The JRE base image extended (based on https://hub.docker.com/_/eclipse-temurin description) including pre-installed Temurin JVM -->
 								<!-- Example of other images based on Temurin JVM (eclipse-temurin:11-alpine, eclipse-temurin:11.0.15_10-jre-alpine -->
@@ -79,6 +78,7 @@
 					</images>
 					<outputDirectory>target/docker</outputDirectory>
 					<sourceDirectory>src/main/docker</sourceDirectory>
+					<pushRegistry></pushRegistry>
 				</configuration>
 				<executions>
 					<execution>
@@ -86,8 +86,8 @@
 						<phase>package</phase>
 						<goals>
 							<goal>build</goal>
-							<!-- Upload images to the registry
-							<goal>push</goal>-->
+							<!-- Upload images to the registry -->
+							<goal>push</goal>
 						</goals>
 					</execution>
 				</executions>
