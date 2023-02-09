@@ -17,10 +17,8 @@
 		<docker.skip.build>false</docker.skip.build>
 		<docker.skip.tag>false</docker.skip.tag>
 		<docker.verbose>true</docker.verbose>
-		<docker.filter>jre-tee</docker.filter>
 		<docker.imagePullPolicy>IfNotPresent</docker.imagePullPolicy>
 		<docker.useColor>true</docker.useColor>
-		<docker.registry>cybnity.registry.jetbrains.space</docker.registry>
 		<docker.push.registry>cybnity.registry.jetbrains.space</docker.push.registry>
 		<docker.push.retries>3</docker.push.retries>
 	</properties>
