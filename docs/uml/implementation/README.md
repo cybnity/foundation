@@ -29,10 +29,12 @@ The standalone execution of .jar application is possible on standard Java Runtim
 ### Application Modules Projects
 The packaged applicative components (.jar) are assembled into autonomous Docker images, ready for execution into virtualized environments.
 
-The Mavenized and Dockerized applications as CYBNITY deployable and executable systems are organized via a [structure of containerized java application](/implementations-line/systems/README.md#standard-structure-of-a-containerized-java-application).
+The containerized applicative modules (as CYBNITY deployable and executable systems) are organized via a [structure of containerized java application](/implementations-line/systems/README.md#standard-structure-of-a-containerized-java-application).
 
 ### Infrastructure Modules Projects
-The Terraformed modules regarding the CYBNITY deployable and executable infrastructure components are organized via a [structure of modules project](/implementations-line/systems/README.md#standard-structure-of-modules-project).
+Some additional infrastructure systems (e.g complementary applications integrated with CYBNITY application modules) are packaged to be deployable into a safe infrastructure (e.g cloudified platform).
+
+Infrastructure modules are Terraformed (regarding the CYBNITY deployable and executable infrastructure components) and organized via a [structure of modules project](/implementations-line/systems/README.md#standard-structure-of-modules-project).
 
 # CODING GUIDELINES
 Several coding documentations are available into the [how-to sub-directory](how-to) for assistance to developers.
