@@ -20,12 +20,15 @@ The assembly of specific modules can be customized for delivery of a business so
 
 ## GUIDELINES
 
-### Java Packages Projects Structures
-The Java components projects are organized via a structure of Maven project's sub-modules regarding all the source codes developed by the team.
-
-The Mavenized and Dockerized applications as CYBNITY deployable and executable systems are organized via a [structure of containerized java application](/implementations-line/systems/README.md#standard-structure-of-a-containerized-java-application).
+### Packaged Systems Projects Structures
+The Java components projects are organized via a structure of Maven project's sub-modules regarding all the source codes developed.
 
 ![image](Implementation_projects_structure.PNG)
+
+### Application Modules Projects Structures
+The Java components are packaged (.jar artifacts) and are assembled into autonomous Docker images, ready for execution into virtualized environments.
+
+The Mavenized and Dockerized applications as CYBNITY deployable and executable systems are organized via a [structure of containerized java application](/implementations-line/systems/README.md#standard-structure-of-a-containerized-java-application).
 
 ### Infrastructure Modules Projects Structures
 The Terraformed modules regarding the CYBNITY deployable and executable infrastructure components are organized via a [structure of modules project](/implementations-line/systems/README.md#standard-structure-of-modules-project).
