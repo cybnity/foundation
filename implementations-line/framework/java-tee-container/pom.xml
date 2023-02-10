@@ -32,8 +32,8 @@
 						<!-- Create an in-memory Dockerfile reusable as JRE Trusted Environment Execution container image -->
 						<image>
 							<!-- Unique docker repository name including registry and tag parts -->
-							<name>%a</name>
-							<alias>cybnity/jre-tee</alias>
+							<name>cybnity/%a</name>
+							<alias>jre-tee</alias>
 							<!--
 							<registry>cybnity/jre-tee</registry>-->
 							<build>

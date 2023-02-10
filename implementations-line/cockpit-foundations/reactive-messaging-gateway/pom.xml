@@ -125,8 +125,8 @@
 						<!-- Create an in-memory Dockerfile, copies over the assembled files and calls the Docker daemon via its remote API -->
 						<image>
 							<!-- Unique docker repository name including registry and tag parts -->
-							<name>%a</name>
-							<alias>cybnity/reactive-messaging-gateway</alias>
+							<name>cybnity/%a</name>
+							<alias>reactive-messaging-gateway</alias>
 							<build>
 								<!-- The CYBNITY JRE container standard base image (Trusted Execution Environment) extended -->
 								<from>cybnity/jre-tee:latest</from>
