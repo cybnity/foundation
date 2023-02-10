@@ -43,7 +43,7 @@ jobs:
 
       - name: Compile and package binaries and resources targeted by the technical quality stage
         run: |
-          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.ARTIFACT_VERSION }} -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} -Ddocker.cleanup=none --fail-fast --file pom.xml -DcreateChecksum=true package -Dmaven.test.skip=true
+          mvn --batch-mode --update-snapshots --show-version -Dstage=integration-quality -Drevision=${{ env.ARTIFACT_VERSION }} -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} -Ddocker.cleanup=none --fail-fast --file pom.xml -DcreateChecksum=true package -Dmaven.test.skip=true
 
   ci_environment_configuration:
     name: QA environment configuration

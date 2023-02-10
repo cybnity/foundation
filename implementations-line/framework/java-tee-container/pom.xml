@@ -12,16 +12,6 @@
 	<packaging>pom</packaging>
 	<name>- JRE Trusted Execution Environment (Docker template)</name>
 
-	<properties>
-		<!-- Default activate or deactivate the build of docker image -->
-		<docker.skip.build>false</docker.skip.build>
-		<docker.skip.tag>false</docker.skip.tag>
-		<docker.skip.push>true</docker.skip.push>
-		<docker.verbose>true</docker.verbose>
-		<docker.imagePullPolicy>IfNotPresent</docker.imagePullPolicy>
-		<docker.useColor>true</docker.useColor>
-	</properties>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -46,7 +36,7 @@
 								<cleanup>try</cleanup>
 								<tags>
 									<!-- Additional tags which an image is to be tagged after the build -->
-									<tag>${project.version}</tag>
+									<tag>${revision}</tag>
 									<tag>%l</tag>
 									<tag>latest</tag>
 								</tags>
