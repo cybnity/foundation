@@ -16,7 +16,7 @@ The packaging strategy applied on the project provides all the systems ready for
 ## SYSTEMS SOURCE CODES' PROJECTS
 The management of several types of modular systems is approached with an integrated vision that mix the best pratices proposed by each used tool, into a global common and compatible architecture of the source codes projects.
 
-The base directory that support the systems and infrastructure-as-code (IaC) modules implementations is hosted into the [systems folder](/implementations-line/systems/README.md).
+The base directory that support the systems and infrastructure-as-code (IaC) modules implementations is presented into the [systems folder](/implementations-line/systems/README.md).
 
 ## APPLICATIVE SYSTEMS
 Each domain service is supported by an independent component which can be deployed in standalone life cycle and which manage the dependencies with other components like specified by the contexts integration model.
