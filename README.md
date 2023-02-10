@@ -68,12 +68,17 @@ The idea creation process implemented by the project (for definition of more rel
 </details>
 
 ### Support & Docs
-- [Technical documentations](docs/README.md) for solution designers, developers, maintainers, testers;
-- [Software development requirements](https://www.notion.so/cybnity/20cfa36c18e6458d93026ab77b87671a?v=324438a3426c48a3897e04525908de22);
 - Functional & technical requirements of CYBNITY solutions
+  - [Software development requirements](https://www.notion.so/cybnity/20cfa36c18e6458d93026ab77b87671a?v=324438a3426c48a3897e04525908de22)
   - [Architecture requirements](https://www.notion.so/cybnity/cc16991ccd3f4325a910f44512c6d401?v=3d7746e5e44a4d2cb0466c15a3320ad2)
   - Security requirements
     - [Application Privacy & Security Controls](https://www.notion.so/cybnity/378565fa385044238dab86d93f4e64c8?v=630d445f1c3c41c59dc51956cc43acb4)
+- Software design documentations
+  - [Development documentations](docs/README.md) for solution designers, developers, maintainers, testers
+  - Testable prototypes documentation
+  - [Implementation components and models documentation](implementations-line/README.md)
+  - Deployable and modular systems documentation
+  - Operable production systems documentation
 
 # OTHER RESOURCES
 ## COMMUNICATION CHANNELS

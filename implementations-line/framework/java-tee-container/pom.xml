@@ -1,0 +1,97 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>impl</artifactId>
+		<groupId>org.cybnity.components.framework</groupId>
+		<version>${revision}</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<groupId>org.cybnity.framework.container</groupId>
+	<artifactId>jre-tee</artifactId>
+	<version>${revision}</version>
+	<packaging>pom</packaging>
+	<name>- JRE Trusted Execution Environment (Docker template)</name>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<configuration>
+					<images>
+						<!-- Create an in-memory Dockerfile reusable as JRE Trusted Environment Execution container image -->
+						<image>
+							<!-- Unique docker repository name including registry and tag parts -->
+							<name>cybnity/%a</name>
+							<alias>jre-tee</alias>
+							<!--
+							<registry>cybnity/jre-tee</registry>-->
+							<build>
+								<!-- The JRE base image extended (based on https://hub.docker.com/_/eclipse-temurin description) including pre-installed Temurin JVM -->
+								<!-- Example of other images based on Temurin JVM (eclipse-temurin:11-alpine, eclipse-temurin:11.0.15_10-jre-alpine -->
+								<!--- registry.hub.docker.com/library/ -->
+								<from>eclipse-temurin:11-jre-alpine</from>
+								<maintainer>CYBNITY Core Team</maintainer>
+								<registry>registry.hub.docker.com/eclipse-temurin</registry>
+								<cleanup>try</cleanup>
+								<tags>
+									<!-- Additional tags which an image is to be tagged after the build -->
+									<tag>${revision}</tag>
+									<tag>%l</tag>
+									<tag>latest</tag>
+								</tags>
+								<env>
+									<!-- Variables usable during the build and during the runtime phase of this container. SHOULD BE REDEFINED BY INHERENT IMAGES WHICH IMPLEMENT A JAVA APPLICATION CONTAINERIZED -->
+									<STARTED_JAR_FILE>missing_application.jar</STARTED_JAR_FILE>
+									<!-- Default image's Java home directory is JAVA_HOME=/opt/java/openjdk -->
+									<JAVA_HOME>/opt/java/openjdk</JAVA_HOME>
+									<!-- Define an environment variate where application components should be stored (already accessible by classpath) -->
+									<JAVA_APP_DIR_PATH>/opt/cybnity</JAVA_APP_DIR_PATH>
+								</env>
+								<!-- Define the default directory (WORKDIR instruction) when starting the container
+								<workdir></workdir> -->
+								<runCmds>
+									<!-- Create application deployment directory -->
+									<run>mkdir /opt/cybnity</run>
+									<!-- TODO: Securize the directories (read-only) hosting the immutable components libraries -->
+								</runCmds>
+								<labels>
+									<version>${project.version}</version>
+									<artifactId>${project.artifactId}</artifactId>
+								</labels>
+								<entryPoint>
+									<!-- Set the jar file to start from the TEE base image's $JAVA_APP_DIR_PATH environment variable defined as safe applications directory -->
+									<!-- Default start command of the Java application redefined into a child image template -->
+									<exec>
+										<arg>java</arg>
+										<arg>-jar</arg>
+										<arg>$JAVA_APP_DIR_PATH/$STARTED_JAR_FILE</arg>
+									</exec>
+								</entryPoint>
+							</build>
+						</image>
+					</images>
+					<outputDirectory>target/docker</outputDirectory>
+					<sourceDirectory>src/main/docker</sourceDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>docker-build</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+					<execution>
+						<!-- Upload images to the registry -->
+						<id>docker-push</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
