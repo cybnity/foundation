@@ -16,7 +16,7 @@
 		<!-- Default activate or deactivate the build of docker image -->
 		<docker.skip.build>false</docker.skip.build>
 		<docker.skip.tag>false</docker.skip.tag>
-		<docker.skip.push>false</docker.skip.push>
+		<docker.skip.push>true</docker.skip.push>
 		<docker.verbose>true</docker.verbose>
 		<docker.imagePullPolicy>IfNotPresent</docker.imagePullPolicy>
 		<docker.useColor>true</docker.useColor>
@@ -47,6 +47,7 @@
 								<tags>
 									<!-- Additional tags which an image is to be tagged after the build -->
 									<tag>${project.version}</tag>
+									<tag>%l</tag>
 									<tag>latest</tag>
 								</tags>
 								<env>
