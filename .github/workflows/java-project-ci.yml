@@ -156,7 +156,7 @@ jobs:
           echo "Compile unit tests and java project(s), and execute tests via Maven tool"
           mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Dmaven.test.skip=false --fail-fast --file pom.xml test
 
-      - name: Package compiled java code in its distributable format (e.g JAR)
+      - name: Package compiled java code in its distributable format (e.g JAR, Docker image)
         run: |
           mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} --fail-fast --file pom.xml package -Dmaven.test.skip=true
 
