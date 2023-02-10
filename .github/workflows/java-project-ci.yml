@@ -159,7 +159,7 @@ jobs:
 
       - name: Package compiled java code in its distributable format (e.g JAR)
         run: |
-          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} -Ddocker.registry=${{ env.DOCKER_REPOSITORY_NAME }} --fail-fast --file pom.xml package -Dmaven.test.skip=true
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} --fail-fast --file pom.xml package -Dmaven.test.skip=true
 
       - name: Verify packaged components
         run: |
