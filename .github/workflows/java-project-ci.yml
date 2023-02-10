@@ -118,9 +118,9 @@ jobs:
       contents: read
     env:
       RELEASE_NAME: ${{ needs.define_project_release_name.outputs.release_name }}
-      DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-      DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
-      DOCKER_REPOSITORY_NAME: ${{ secrets.DOCKER_REPOSITORY_NAME }}
+      DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_ACCESS_ACCOUNT }}
+      DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_ACCESS_TOKEN }}
+      DOCKER_REPOSITORY_NAME: ${{ secrets.DOCKER_REGISTRY }}
       MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
       MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
     outputs:
