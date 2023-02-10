@@ -37,7 +37,7 @@
 								<!-- The JRE base image extended (based on https://hub.docker.com/_/eclipse-temurin description) including pre-installed Temurin JVM -->
 								<!-- Example of other images based on Temurin JVM (eclipse-temurin:11-alpine, eclipse-temurin:11.0.15_10-jre-alpine -->
 								<!--- registry.hub.docker.com/library/ -->
-								<from>eclipse-temurin:11-jre-alpine</from>
+								<from>/eclipse-temurin:11-jre-alpine</from>
 								<maintainer>CYBNITY Core Team</maintainer>
 								<cleanup>try</cleanup>
 								<tags>

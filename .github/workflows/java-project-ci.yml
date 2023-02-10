@@ -121,6 +121,8 @@ jobs:
       DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
       DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
       DOCKER_REPOSITORY_NAME: ${{ secrets.DOCKER_REPOSITORY_NAME }}
+      MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
+      MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
     outputs:
       release_name: ${{ env.RELEASE_NAME }}
     steps:
@@ -149,32 +151,20 @@ jobs:
           mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.RELEASE_NAME }}
           echo "Execute the java project(s) build via Maven tool"
           mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} --fail-fast --file pom.xml clean compile -Dmaven.test.skip=true
-        env:
-            MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
-            MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
       - name: Execute unit tests validating the java compiled source code
         run: |
           echo "Compile unit tests and java project(s), and execute tests via Maven tool"
           mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Dmaven.test.skip=false --fail-fast --file pom.xml test
-        env:
-            MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
-            MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
       - name: Package compiled java code in its distributable format (e.g JAR)
         run: |
           mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} -Ddocker.registry=${{ env.DOCKER_REPOSITORY_NAME }} --fail-fast --file pom.xml package -Dmaven.test.skip=true
-        env:
-            MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
-            MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
       - name: Verify packaged components
         run: |
           echo "Run any checks to very the package is valid and meets quality criteria (including test resources) without unit test execution"
           mvn -Drevision=${{ env.RELEASE_NAME }} --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify -DskipTests
-        env:
-            MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
-            MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
 
   # Verify the technical quality of the version
   check_technical_quality:
