@@ -19,20 +19,22 @@ The assembly of specific modules can be customized for delivery of a business so
 
 # ASSEMBLY GUIDELINES
 
-## PACKAGED SYSTEMS PROJECTS
-The Java components projects are organized via a structure of Maven project's sub-modules regarding all the source codes developed.
+### Packaged Components Projects
+The Java components projects are organized via a structure of Maven project's sub-modules regarding all the source codes developed, and are packaged as applicative components (.jar artifacts).
+
+The standalone execution of .jar application is possible on standard Java Runtime Environment (e.g into a JVM installed on a developer's workstation, or since Java IDE tool).
 
 ![image](Implementation_projects_structure.PNG)
 
 ### Application Modules Projects
-The Java components are packaged (.jar artifacts) and are assembled into autonomous Docker images, ready for execution into virtualized environments.
+The packaged applicative components (.jar) are assembled into autonomous Docker images, ready for execution into virtualized environments.
 
 The Mavenized and Dockerized applications as CYBNITY deployable and executable systems are organized via a [structure of containerized java application](/implementations-line/systems/README.md#standard-structure-of-a-containerized-java-application).
 
 ### Infrastructure Modules Projects
 The Terraformed modules regarding the CYBNITY deployable and executable infrastructure components are organized via a [structure of modules project](/implementations-line/systems/README.md#standard-structure-of-modules-project).
 
-# DEVELOPMENT GUIDELINES
+# CODING GUIDELINES
 Several coding documentations are available into the [how-to sub-directory](how-to) for assistance to developers.
 
 The CYBNITY coding norms are considered like mandatory to apply and can be controlled via quality check process (e.g by Continuous Integration chain, source code reviews) and are origins for reject of source codes changes considered like violation of the documentation norm.
