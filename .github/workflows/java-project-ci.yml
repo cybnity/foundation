@@ -158,12 +158,12 @@ jobs:
 
       - name: Package compiled java code in its distributable format (e.g JAR, Docker image)
         run: |
-          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} --fail-fast --file pom.xml package -Dmaven.test.skip=true
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} -Ddocker.cleanup=none --fail-fast --file pom.xml package -Dmaven.test.skip=true
 
       - name: Verify packaged components
         run: |
           echo "Run any checks to verify the package is valid and meets quality criteria (including test resources) without unit test execution"
-          mvn -Drevision=${{ env.RELEASE_NAME }} --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify -DskipTests
+          mvn -Drevision=${{ env.RELEASE_NAME }} --batch-mode --update-snapshots --show-version -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} -Ddocker.cleanup=none --fail-fast --file pom.xml verify -DskipTests
 
   # Verify the technical quality of the version
   check_technical_quality:
