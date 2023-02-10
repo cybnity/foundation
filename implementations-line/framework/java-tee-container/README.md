@@ -56,7 +56,7 @@ or
 
 ## PUBLISH TO DOCKER REPOSITORY
 Create tag for built java container distribution specific to CYBNITY registry managed by docker.io from shell command line:
-`docker tag jre-tee cybnity/jre-tee:latest`
+`docker tag cybnity/jre-tee cybnity/jre-tee:latest`
 
 Push docker image to online CYBNITY private Docker repository from shell command line:
 `docker push cybnity/jre-tee:latest`
