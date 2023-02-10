@@ -126,7 +126,6 @@
 							<!-- Unique docker repository name including registry and tag parts -->
 							<name>cybnity/%a</name>
 							<alias>reactive-messaging-gateway</alias>
-							<registry>cybnity.registry.jetbrains.space</registry>
 							<build>
 								<!-- The CYBNITY JRE container standard base image (Trusted Execution Environment) extended -->
 								<from>cybnity/jre-tee:latest</from>

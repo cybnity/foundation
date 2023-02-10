@@ -224,12 +224,13 @@ jobs:
         run: |
           echo "Set the project artifacts version in pom files"
           mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.RELEASE_NAME }}
-          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} --fail-fast --file pom.xml package -Dmaven.test.skip=true
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} -Ddocker.registry=${{ env.DOCKER_REPOSITORY_NAME }} --fail-fast --file pom.xml package -Dmaven.test.skip=true
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
-            DOCKER_REGISTRY_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
-            DOCKER_REGISTRY_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+            DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+            DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
+            DOCKER_REPOSITORY_NAME: $ {{ secrets.DOCKER_REGISTRY_NAME }}
 
   quality_verification:
     name: Quality verification
