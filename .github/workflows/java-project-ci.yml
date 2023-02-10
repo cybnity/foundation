@@ -198,6 +198,9 @@ jobs:
       contents: read
     env:
       RELEASE_NAME: ${{ needs.unit_testing.outputs.release_name }}
+      DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+      DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
+      DOCKER_REPOSITORY_NAME: $ {{ secrets.DOCKER_REGISTRY_NAME }}
     outputs:
       release_name: ${{ env.RELEASE_NAME }}
     steps:
@@ -228,9 +231,6 @@ jobs:
         env:
             MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
             MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
-            DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-            DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
-            DOCKER_REPOSITORY_NAME: $ {{ secrets.DOCKER_REGISTRY_NAME }}
 
   quality_verification:
     name: Quality verification

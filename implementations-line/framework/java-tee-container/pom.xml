@@ -78,7 +78,6 @@
 					</images>
 					<outputDirectory>target/docker</outputDirectory>
 					<sourceDirectory>src/main/docker</sourceDirectory>
-					<pushRegistry></pushRegistry>
 				</configuration>
 				<executions>
 					<execution>
