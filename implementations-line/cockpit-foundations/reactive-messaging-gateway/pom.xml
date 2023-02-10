@@ -132,6 +132,7 @@
 								<!-- The CYBNITY JRE container standard base image (Trusted Execution Environment) extended -->
 								<from>cybnity/jre-tee:latest</from>
 								<maintainer>CYBNITY Core Team</maintainer>
+								<registry>registry.hub.docker.com/cybnity</registry>
 								<cleanup>try</cleanup>
 								<tags>
 									<!-- Additional tags which an image is to be tagged after the build -->
