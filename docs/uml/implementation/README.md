@@ -30,10 +30,10 @@ The Java components are packaged (.jar artifacts) and are assembled into autonom
 
 The Mavenized and Dockerized applications as CYBNITY deployable and executable systems are organized via a [structure of containerized java application](/implementations-line/systems/README.md#standard-structure-of-a-containerized-java-application).
 
-### Infrastructure Modules Projects Structures
+#### Infrastructure Modules Projects Structures
 The Terraformed modules regarding the CYBNITY deployable and executable infrastructure components are organized via a [structure of modules project](/implementations-line/systems/README.md#standard-structure-of-modules-project).
 
-### Development Tutorials and Conventions
+#### Development Tutorials and Conventions
 Several coding documentations are available into the [how-to sub-directory](how-to) for assistance to developers.
 
 The CYBNITY coding norms are considered like mandatory to apply and can be controlled via quality check process (e.g by Continuous Integration chain, source code reviews) and are origins for reject of source codes changes considered like violation of the documentation norm.
