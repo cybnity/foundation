@@ -166,7 +166,7 @@
 					<execution>
 						<!-- Upload images to the registry -->
 						<id>docker-push</id>
-						<phase>install</phase>
+						<phase>deploy</phase>
 						<goals>
 							<goal>push</goal>
 						</goals>
