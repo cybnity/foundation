@@ -110,7 +110,7 @@ jobs:
         run: echo "release_name=$FEATURE_NAME-SNAPSHOT" >> $GITHUB_ENV
 
   binary_build:
-    name: Java binary build
+    name: Java components build & test
     if: success() && github.event_name == 'push'
     needs: [define_project_release_name]
     runs-on: ubuntu-latest
@@ -120,7 +120,6 @@ jobs:
       RELEASE_NAME: ${{ needs.define_project_release_name.outputs.release_name }}
       DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_ACCESS_ACCOUNT }}
       DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_ACCESS_TOKEN }}
-      DOCKER_REPOSITORY_NAME: ${{ secrets.DOCKER_REGISTRY }}
       MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
       MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
     outputs:
@@ -163,7 +162,7 @@ jobs:
 
       - name: Verify packaged components
         run: |
-          echo "Run any checks to very the package is valid and meets quality criteria (including test resources) without unit test execution"
+          echo "Run any checks to verify the package is valid and meets quality criteria (including test resources) without unit test execution"
           mvn -Drevision=${{ env.RELEASE_NAME }} --batch-mode --update-snapshots --show-version --fail-fast --file pom.xml verify -DskipTests
 
   # Verify the technical quality of the version

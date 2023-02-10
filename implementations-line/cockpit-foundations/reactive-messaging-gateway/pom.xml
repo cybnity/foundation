@@ -18,6 +18,7 @@
 		<!-- Default activate or deactivate the build of docker image -->
 		<docker.skip.build>false</docker.skip.build>
 		<docker.skip.tag>false</docker.skip.tag>
+		<docker.skip.push>false</docker.skip.push>
 		<docker.verbose>true</docker.verbose>
 		<docker.imagePullPolicy>IfNotPresent</docker.imagePullPolicy>
 		<docker.useColor>true</docker.useColor>
@@ -124,8 +125,9 @@
 						<!-- Create an in-memory Dockerfile, copies over the assembled files and calls the Docker daemon via its remote API -->
 						<image>
 							<!-- Unique docker repository name including registry and tag parts -->
-							<name>cybnity/%a</name>
+							<name>%a</name>
 							<alias>reactive-messaging-gateway</alias>
+							<registry>cybnity</registry>
 							<build>
 								<!-- The CYBNITY JRE container standard base image (Trusted Execution Environment) extended -->
 								<from>cybnity/jre-tee:latest</from>
@@ -167,8 +169,14 @@
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>build</goal>
-							<!-- Upload images to the registry
-							<goal>push</goal> -->
+						</goals>
+					</execution>
+					<execution>
+						<!-- Upload images to the registry -->
+						<id>docker-push</id>
+						<phase>install</phase>
+						<goals>
+							<goal>push</goal>
 						</goals>
 					</execution>
 				</executions>
