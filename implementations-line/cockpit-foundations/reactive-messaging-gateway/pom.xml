@@ -121,14 +121,12 @@
 							<alias>reactive-messaging-gateway</alias>
 							<build>
 								<!-- The CYBNITY JRE container standard base image (Trusted Execution Environment) extended -->
-								<from>cybnity/jre-tee:latest</from>
+								<from>cybnity/jre-tee</from>
 								<maintainer>CYBNITY Core Team</maintainer>
 								<cleanup>try</cleanup>
 								<tags>
 									<!-- Additional tags which an image is to be tagged after the build -->
-									<tag>${revision}</tag>
-									<tag>%l</tag>
-									<tag>latest</tag>
+									<tag>${revision}${docker.images.tag.suffix}</tag>
 								</tags>
 								<env>
 									<!-- Update the default TARTED_JAR_FILE environment variable about Java application jar file name, defined as main jar to start by the container -->
