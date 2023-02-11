@@ -22,9 +22,15 @@
 		<module>cockpit-foundations</module>
 	</modules>
 
+	<!-- Common properties to all the sub-projects -->
+	<properties>
+		<!-- Standard Trusted Execution Environment (TEE) of java runtime container template -->
+		<docker.java.tee.image.name>cybnity/jre-tee</docker.java.tee.image.name>
+	</properties>
+
 	<profiles>
 		<profile>
-			<!-- Build regarding a development version on developer station -->
+			<!-- Developer workstation environment -->
 			<id>localhost</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -37,11 +43,12 @@
 				<docker.verbose>true</docker.verbose>
 				<docker.imagePullPolicy>IfNotPresent</docker.imagePullPolicy>
 				<docker.useColor>true</docker.useColor>
+				<docker.images.tag.suffix>-alpha</docker.images.tag.suffix>
 			</properties>
 		</profile>
 
 		<profile>
-			<!-- Build regarding a development version on shared development platform -->
+			<!-- Shared development platform between developers -->
 			<id>dev-deploy-environment</id>
 			<activation>
 				<property>
@@ -58,11 +65,12 @@
 				<docker.verbose>true</docker.verbose>
 				<docker.imagePullPolicy>IfNotPresent</docker.imagePullPolicy>
 				<docker.useColor>true</docker.useColor>
+				<docker.images.tag.suffix>-alpha</docker.images.tag.suffix>
 			</properties>
 		</profile>
 
 		<profile>
-			<!-- Build regarding a qualification version on test environment -->
+			<!-- Test environment -->
 			<id>qa-environment</id>
 			<activation>
 				<property>
@@ -71,19 +79,32 @@
 					<value>qa</value>
 				</property>
 			</activation>
+		</profile>
+
+		<profile>
+			<!-- Build phase regarding a software version development -->
+			<id>commit-stage</id>
+			<activation>
+				<property>
+					<!-- Activation based on -D system property (e.g command line with -Dstage=commit) -->
+					<name>stage</name>
+					<value>commit</value>
+				</property>
+			</activation>
 			<properties>
 				<!-- Default activate or deactivate the build of docker image -->
-				<docker.skip.build>true</docker.skip.build>
-				<docker.skip.tag>true</docker.skip.tag>
+				<docker.skip.build>false</docker.skip.build>
+				<docker.skip.tag>false</docker.skip.tag>
 				<docker.skip.push>true</docker.skip.push>
-				<docker.verbose>false</docker.verbose>
+				<docker.verbose>true</docker.verbose>
 				<docker.imagePullPolicy>IfNotPresent</docker.imagePullPolicy>
 				<docker.useColor>true</docker.useColor>
+				<docker.images.tag.suffix>-alpha</docker.images.tag.suffix>
 			</properties>
 		</profile>
 
 		<profile>
-			<!-- Build regarding a technical quality stage -->
+			<!-- Phase of technical quality validation of a software version -->
 			<id>technical-quality-stage</id>
 			<activation>
 				<property>
@@ -96,10 +117,12 @@
 				<!-- Default activate or deactivate the build of docker image -->
 				<docker.skip.build>false</docker.skip.build>
 				<docker.skip.tag>false</docker.skip.tag>
+				<!-- Push alpha release into Docker registry -->
 				<docker.skip.push>false</docker.skip.push>
 				<docker.verbose>true</docker.verbose>
 				<docker.imagePullPolicy>IfNotPresent</docker.imagePullPolicy>
 				<docker.useColor>true</docker.useColor>
+				<docker.images.tag.suffix>-alpha</docker.images.tag.suffix>
 			</properties>
 			<build>
 				<plugins>
@@ -149,7 +172,7 @@
 		</profile>
 
 		<profile>
-			<!-- Build regarding a qualification version on AAT environment -->
+			<!-- Phase of integration quality validation of a software version (e.g on an test environment) -->
 			<id>integration-quality-stage</id>
 			<activation>
 				<property>
@@ -162,12 +185,25 @@
 				<!-- Default activate or deactivate the build of docker image -->
 				<docker.skip.build>false</docker.skip.build>
 				<docker.skip.tag>false</docker.skip.tag>
-				<docker.skip.push>true</docker.skip.push>
+				<!-- Push beta release into Docker registry -->
+				<docker.skip.push>false</docker.skip.push>
 				<docker.verbose>false</docker.verbose>
 				<docker.imagePullPolicy>IfNotPresent</docker.imagePullPolicy>
 				<docker.useColor>true</docker.useColor>
+				<docker.images.tag.suffix>-beta</docker.images.tag.suffix>
 			</properties>
 		</profile>
 
+		<profile>
+			<!-- Step of software behavior validation by testers community (e.g regarding a software beta release) -->
+			<id>user-acceptance-test-stage</id>
+			<activation>
+				<property>
+					<!-- Activation based on -D system property (e.g command line with -Dstage=user-acceptance-test) -->
+					<name>stage</name>
+					<value>user-acceptance-test</value>
+				</property>
+			</activation>
+		</profile>
 	</profiles>
 </project>
