@@ -74,104 +74,14 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-shade-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<transformers>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<manifestEntries>
-										<Main-Class>${launcher.class}</Main-Class>
-										<Main-Verticle>${main.verticle}</Main-Verticle>
-									</manifestEntries>
-								</transformer>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer" />
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-							</transformers>
-							<createDependencyReducePom>false</createDependencyReducePom>
-							<outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar</outputFile>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<configuration>
-					<mainClass>${launcher.class}</mainClass>
-					<arguments>
-						<argument>run</argument>
-						<argument>${main.verticle}</argument>
-					</arguments>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
-				<configuration>
-					<images>
-						<!-- Create an in-memory Dockerfile, copies over the assembled files and calls the Docker daemon via its remote API -->
-						<image>
-							<!-- Unique docker repository name including registry and tag parts -->
-							<name>cybnity/%a</name>
-							<alias>reactive-messaging-gateway</alias>
-							<build>
-								<!-- The CYBNITY JRE container standard base image (Trusted Execution Environment) extended -->
-								<from>cybnity/jre-tee:latest</from>
-								<maintainer>CYBNITY Core Team</maintainer>
-								<cleanup>try</cleanup>
-								<tags>
-									<!-- Additional tags which an image is to be tagged after the build -->
-									<tag>${revision}</tag>
-									<tag>%l</tag>
-									<tag>latest</tag>
-								</tags>
-								<env>
-									<!-- Update the default TARTED_JAR_FILE environment variable about Java application jar file name, defined as main jar to start by the container -->
-									<STARTED_JAR_FILE>${project.artifactId}-${project.version}-fat.jar</STARTED_JAR_FILE>
-								</env>
-								<labels>
-									<version>${project.version}</version>
-									<artifactId>${project.artifactId}</artifactId>
-								</labels>
-								<entryPoint>
-									<!-- Set the jar file to start from the TEE base image's $JAVA_APP_DIR_PATH environment variable defined as safe applications directory -->
-									<!-- Becarefull, variable can only be used in shell Form, but are not supported in command invoked via exec form (entrypoint) -->
-									<shell>java -jar $JAVA_APP_DIR_PATH/$STARTED_JAR_FILE</shell>
-								</entryPoint>
-								<assembly>
-									<!-- Attach project’s artifact (its dependencies are embedded into the shaded jar) -->
-									<descriptor>shaded-artifact-docker-assembly.xml</descriptor>
-									<targetDir>/opt/cybnity</targetDir>
-									<mode>dir</mode>
-								</assembly>
-							</build>
-						</image>
-					</images>
-					<outputDirectory>target/docker</outputDirectory>
-					<sourceDirectory>src/main/docker</sourceDirectory>
-				</configuration>
-				<executions>
-					<execution>
-						<id>docker-build</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>build</goal>
-						</goals>
-					</execution>
-					<execution>
-						<!-- Upload images to the registry -->
-						<id>docker-push</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>push</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

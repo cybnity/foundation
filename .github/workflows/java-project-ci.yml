@@ -149,21 +149,21 @@ jobs:
           echo "Set the project artifacts version in pom files"
           mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.RELEASE_NAME }}
           echo "Execute the java project(s) build via Maven tool"
-          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} --fail-fast --file pom.xml clean compile -Dmaven.test.skip=true
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} --fail-fast --file pom.xml -Dstage=commit clean compile -Dmaven.test.skip=true
 
       - name: Execute unit tests validating the java compiled source code
         run: |
           echo "Compile unit tests and java project(s), and execute tests via Maven tool"
-          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Dmaven.test.skip=false --fail-fast --file pom.xml test
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Dmaven.test.skip=false --fail-fast --file pom.xml -Dstage=commit test
 
       - name: Package compiled java code in its distributable format (e.g JAR, Docker image)
         run: |
-          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} -Ddocker.cleanup=none --fail-fast --file pom.xml package -Dmaven.test.skip=true
+          mvn --batch-mode --update-snapshots --show-version -Drevision=${{ env.RELEASE_NAME }} -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} -Ddocker.cleanup=none --fail-fast --file pom.xml -Dstage=commit package -Dmaven.test.skip=true
 
       - name: Verify packaged components
         run: |
           echo "Run any checks to verify the package is valid and meets quality criteria (including test resources) without unit test execution"
-          mvn -Drevision=${{ env.RELEASE_NAME }} --batch-mode --update-snapshots --show-version -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} -Ddocker.cleanup=none --fail-fast --file pom.xml verify -DskipTests
+          mvn -Drevision=${{ env.RELEASE_NAME }} --batch-mode --update-snapshots --show-version -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} -Ddocker.cleanup=none --fail-fast --file pom.xml -Dstage=commit verify -DskipTests
 
   # Verify the technical quality of the version
   check_technical_quality:
