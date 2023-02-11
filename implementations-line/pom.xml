@@ -22,6 +22,12 @@
 		<module>cockpit-foundations</module>
 	</modules>
 
+	<!-- Common properties to all the sub-projects -->
+	<properties>
+		<!-- Standard Trusted Execution Environment (TEE) of java runtime container template -->
+		<docker.java.tee.image.name>cybnity/jre-tee</docker.java.tee.image.name>
+	</properties>
+
 	<profiles>
 		<profile>
 			<!-- Developer workstation environment -->
