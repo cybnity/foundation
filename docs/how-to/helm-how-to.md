@@ -10,7 +10,7 @@ Several Helm command lines are available to be executed from the `charts directo
 Install a defined chart into the Kubernetes cluster:
 
 ```shell
-helm install ui-apis-gateway ./ui-apis-gateway
+helm install reactive-backend-server-chart ./reactive-messaging-gateway/ --values ./reactive-messaging-gateway/values.yaml
 ```
 
 </p>
@@ -20,7 +20,7 @@ helm install ui-apis-gateway ./ui-apis-gateway
 Upgrade a release to a specified or current version of a chart or configuration into the Kubernetes cluster:
 
 ```shell
-helm upgrade ui-apis-gateway ./ui-apis-gateway
+helm upgrade reactive-backend-server-chart ./reactive-messaging-gateway
 ```
 
 </p>
@@ -40,7 +40,7 @@ helm ls -all
 Specific version to roll back to or leave argument black, in which cas it rolls back to the previous version.
 
 ```shell
-helm rollback ui-apis-gateway 1
+helm rollback reactive-backend-server-chart 1
 ```
 
 </p>
@@ -51,7 +51,7 @@ helm rollback ui-apis-gateway 1
 Uninstall a release completely from the Kubernetes cluster:
 
 ```shell
-helm uninstall ui-apis-gateway
+helm uninstall reactive-backend-server-chart
 ```
 
 </p>
@@ -65,7 +65,7 @@ Helm is usable to package, publish, and fetch Kubernetes applicatiosn as chart a
 Create a versioned archive file of charts to be able to distribute them:
 
 ```shell
-helm package ./ui-apis-gateway
+helm package ./reactive-messaging-gateway
 ```
 
 An option also exist to sign the chart archive if need.

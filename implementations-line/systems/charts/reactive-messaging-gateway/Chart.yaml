@@ -1,6 +1,7 @@
 apiVersion: v2
 name: reactive-messaging-gateway
-description: A Helm chart for Kubernetes
+description: Backend server Helm chart for Kubernetes
+# @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_1")
 
 # A chart can be either an 'application' or a 'library' chart.
 #
