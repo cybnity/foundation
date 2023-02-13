@@ -3,6 +3,7 @@ Developer help regarding the management of the Docker image template regarding a
 The Dockerfile of the project is automated via Maven plugin that generate in-memory file (based on docker plugin configuration implemented into the pom.xml file).
 
 # DOCKER USAGE
+## START OF MINIKUBE (KUBERNETES PLATFORM FOR WORKSTATION)
 A docker orchestrator should be started previously to execute any docker command line.
 
 ``` shell

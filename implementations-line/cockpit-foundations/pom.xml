@@ -140,6 +140,27 @@
 										<targetDir>/opt/cybnity</targetDir>
 										<mode>dir</mode>
 									</assembly>
+									<healthCheck>
+										<!-- Default configuration of image health check -->
+										<!-- Check every 5 minutes -->
+										<interval>5m</interval>
+										<!-- Fail if no response after 3 seconds -->
+										<timeout>3s</timeout>
+										<!-- Allow 30 minutes for the container to start before being flagged as unhealthy -->
+										<startPeriod>20s</startPeriod>
+										<!-- Fail 3 times until the container is considerd unhealthy -->
+										<retries>3</retries>
+										<!-- Command to execute in shell form (TODO: change for read of real JVM state information about current operational status) -->
+										<cmd>curl --fail http://localhost:${docker.images.healtcheck.port}/static/health.html || exit 1</cmd>
+									</healthCheck>
+									<ports>
+										<!-- Expose the Health Check http port allowing control of image operational status when is running -->
+										<port>${docker.images.healtcheck.port}</port>
+									</ports>
+									<runCmds>
+										<!-- Add curl tool required by the health check directive for image liveness check -->
+										<run>apk --update --no-cache add curl</run>
+									</runCmds>
 								</build>
 							</image>
 						</images>

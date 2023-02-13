@@ -35,7 +35,6 @@ helm ls -all
 
 </p>
 </details>
-</details>
 <details><summary>Rollback a release to previous versions</summary>
 <p>
 Specific version to roll back to or leave argument black, in which cas it rolls back to the previous version.

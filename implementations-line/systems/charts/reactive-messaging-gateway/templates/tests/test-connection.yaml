@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "reactive-messaging-gateway.fullname" . }}-test-connection"
+  labels:
+    {{- include "reactive-messaging-gateway.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "reactive-messaging-gateway.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
