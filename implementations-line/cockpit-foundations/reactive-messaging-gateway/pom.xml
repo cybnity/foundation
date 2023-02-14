@@ -82,6 +82,44 @@
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
+				<configuration>
+					<images>
+						<!-- Create an in-memory Dockerfile, copies over the assembled files and calls the Docker daemon via its remote API -->
+						<image>
+							<!-- Unique docker repository name including registry and tag parts -->
+							<name>cybnity/%a</name>
+							<alias>%a</alias>
+							<build>
+								<env>
+									<!-- Update the default TARTED_JAR_FILE environment variable about Java application jar file name, defined as main jar to start by the container -->
+									<STARTED_JAR_FILE>${project.artifactId}-${project.version}-fat.jar</STARTED_JAR_FILE>
+								</env>
+								<entryPoint>
+									<!-- Set the jar file to start from the TEE base image's $JAVA_APP_DIR_PATH environment variable defined as safe applications directory -->
+									<!-- Becarefull, variable can only be used in shell Form, but are not supported in command invoked via exec form (entrypoint) -->
+									<shell>java -jar $JAVA_APP_DIR_PATH/$STARTED_JAR_FILE</shell>
+								</entryPoint>
+							</build>
+						</image>
+					</images>
+				</configuration>
+				<executions>
+					<execution>
+						<id>docker-build</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+					<execution>
+						<!-- Upload images to the registry -->
+						<id>docker-push</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

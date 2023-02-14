@@ -97,8 +97,8 @@ The CYBNITY open source features are developed on this repository and into sever
 Several development tools are used to manage the source codes, the software build industrialization, the configuration of the component, and/or the deployment into environments (e.g dev, test, integration) which are aligned with the recommendations of the official Techstack like:
 - Maven (java software components build)
 - Docker (containerization of java executable component; see [Docker How-To doc](docker-how-to.md))
-- Helm (docker image templates provisioning management, see [Helm How-To doc](helm-how-to.md))
-- Node.js & NPM (front end coding)
+- Helm (docker image templates provisioning management; see [Helm How-To doc](helm-how-to.md))
+- Node.js & NPM (front end coding; see [Nodejs How-To doc](nodejs-how-to.md))
 - GitHub desktop client (source code versioning)
 - GitHub Actions (CI/CD pipelines)
 - Concordion (test)

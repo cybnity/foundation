@@ -37,6 +37,7 @@
 		<module>threats-risks-prevention-treatment</module>
 		<module>vulnerabilities-prevention-treatment</module>-->
 		<module>reactive-messaging-gateway</module>
+		<module>web-reactive-frontend</module>
 	</modules>
 
 	<dependencyManagement>
@@ -117,24 +118,16 @@
 									<!-- The CYBNITY JRE container standard base image (Trusted Execution Environment) extended -->
 									<from>${docker.java.tee.image.name}</from>
 									<maintainer>CYBNITY Core Team</maintainer>
-									<cleanup>try</cleanup>
+									<cleanup>remove</cleanup>
+									<noCache />
 									<tags>
 										<!-- Additional tags which an image is to be tagged after the build -->
 										<tag>${revision}${docker.images.tag.suffix}</tag>
 									</tags>
-									<env>
-										<!-- Update the default TARTED_JAR_FILE environment variable about Java application jar file name, defined as main jar to start by the container -->
-										<STARTED_JAR_FILE>${project.artifactId}-${project.version}-fat.jar</STARTED_JAR_FILE>
-									</env>
 									<labels>
 										<version>${project.version}</version>
 										<artifactId>${project.artifactId}</artifactId>
 									</labels>
-									<entryPoint>
-										<!-- Set the jar file to start from the TEE base image's $JAVA_APP_DIR_PATH environment variable defined as safe applications directory -->
-										<!-- Becarefull, variable can only be used in shell Form, but are not supported in command invoked via exec form (entrypoint) -->
-										<shell>java -jar $JAVA_APP_DIR_PATH/$STARTED_JAR_FILE</shell>
-									</entryPoint>
 									<assembly>
 										<!-- Attach project’s artifact (its dependencies are embedded into the shaded jar) -->
 										<descriptor>shaded-artifact-docker-assembly.xml</descriptor>
@@ -168,23 +161,6 @@
 						<outputDirectory>target/docker</outputDirectory>
 						<sourceDirectory>src/main/docker</sourceDirectory>
 					</configuration>
-					<executions>
-						<execution>
-							<id>docker-build</id>
-							<phase>pre-integration-test</phase>
-							<goals>
-								<goal>build</goal>
-							</goals>
-						</execution>
-						<execution>
-							<!-- Upload images to the registry -->
-							<id>docker-push</id>
-							<phase>deploy</phase>
-							<goals>
-								<goal>push</goal>
-							</goals>
-						</execution>
-					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>
