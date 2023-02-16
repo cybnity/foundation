@@ -5,12 +5,22 @@ Presentation of the assistance documentation regarding the usage of Helm tool (e
 Several Helm command lines are available to be executed from the `charts directory`. The Kubernetes instance should be started and active (e.g Minikube started).
 
 ## Charts Management
+<details><summary>Pull a chart</summary>
+<p>
+Download a chart from a repository in local directory:
+
+```shell
+helm pull "bitnami/xxx" --untar
+```
+
+</p>
+</details>
 <details><summary>Install a chart</summary>
 <p>
 Install a defined chart into the Kubernetes cluster:
 
 ```shell
-helm install reactive-backend-server-chart ./reactive-messaging-gateway/ --values ./reactive-messaging-gateway/values.yaml
+helm install reactive-backend-server-chart ./access-control-domain-gateway/ --values ./access-control-domain-gateway/values.yaml
 ```
 
 </p>
@@ -20,7 +30,7 @@ helm install reactive-backend-server-chart ./reactive-messaging-gateway/ --value
 Upgrade a release to a specified or current version of a chart or configuration into the Kubernetes cluster:
 
 ```shell
-helm upgrade reactive-backend-server-chart ./reactive-messaging-gateway
+helm upgrade reactive-backend-server-chart ./access-control-domain-gateway
 ```
 
 </p>
@@ -65,7 +75,7 @@ Helm is usable to package, publish, and fetch Kubernetes applicatiosn as chart a
 Create a versioned archive file of charts to be able to distribute them:
 
 ```shell
-helm package ./reactive-messaging-gateway
+helm package ./access-control-domain-gateway
 ```
 
 An option also exist to sign the chart archive if need.
