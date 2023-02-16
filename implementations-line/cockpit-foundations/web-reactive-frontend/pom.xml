@@ -11,29 +11,33 @@
 	<packaging>pom</packaging>
 	<name>Web reactive server (Web Frontend)</name>
 
+	<properties>
+		<!-- Web server port of React front end web application -->
+		<docker.images.healtcheck.port>80</docker.images.healtcheck.port>
+	</properties>
+
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<!-- Base configuration of Docker NodeJS image generator -->
-					<!-- @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_1") -->
-					<groupId>io.fabric8</groupId>
-					<artifactId>docker-maven-plugin</artifactId>
+		<plugins>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
 					<configuration>
 						<images>
+							<!-- Base configuration of Docker NodeJS image generator -->
+							<!-- @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_1") -->
 							<!-- Create an in-memory Dockerfile, copies over the assembled files and calls the Docker daemon via its remote API -->
 							<image>
 								<!-- Unique docker repository name including registry and tag parts -->
 								<name>cybnity/%a</name>
 								<alias>%a</alias>
 								<build>
-									<!-- The CYBNITY JRE container standard base image (Trusted Execution Environment) extended -->
+									<!-- The CYBNITY NodeJS container image name -->
 									<from>${docker.nodejs.image.name}</from>
 									<maintainer>CYBNITY Core Team</maintainer>
 									<cleanup>remove</cleanup>
 									<noCache />
 									<!-- Create app directory -->
-									<workdir>/opt/cybnity</workdir>
+									<workdir>/app</workdir>
 									<tags>
 										<!-- Additional tags which an image is to be tagged after the build -->
 										<tag>${revision}${docker.images.tag.suffix}</tag>
@@ -56,50 +60,47 @@
 										<startPeriod>20s</startPeriod>
 										<!-- Fail 3 times until the container is considerd unhealthy -->
 										<retries>3</retries>
-										<!-- Command to execute in shell form (TODO: change for read of real JVM state information about current operational status)-->
-										<cmd>curl --fail http://localhost:${docker.images.healtcheck.port}/health.html || exit 1</cmd>
+										<!-- Command to execute in shell form -->
+										<cmd>curl --fail http://localhost:${docker.images.healtcheck.port}/healthcheck || exit 1</cmd>
 									</healthCheck>
 									<ports>
 										<!-- Expose the Health Check http port allowing control of image operational status when is running -->
 										<port>${docker.images.healtcheck.port}</port>
-										<!-- Expose the http serve port -->
-										<port>3000</port>
 									</ports>
 									<assembly>
 										<!-- Attach project’s artifacts (bundle app source codes) -->
 										<descriptor>docker-assembly.xml</descriptor>
-										<targetDir>/opt/cybnity</targetDir>
+										<targetDir>/app</targetDir>
 										<mode>dir</mode>
 									</assembly>
 									<runCmds>
 										<!-- Create app source directory
 										<run>mkdir -p /opt/cybnity</run> -->
 
+										<!-- Install a multiple process supervisor usable by nodejs
+										<run>apt-get update</run>
+										<run>apt-get install -y supervisor</run>
+										<run>mkdir -p /var/lo/supervisor</run>-->
+
 										<!-- Install node modules and dependencies -->
 										<run>npm install</run>
+										<!--<run>npm install - -production</run>-->
 
-										<!-- Create a build directory with a production build of the app -->
-										<run>npm run build</run>
+										<!-- Mark Javscript files that are executable
+										<run>chmod +x *.js</run>-->
+										<run>chmod +x *.sh</run>
 
-										<!-- Install server static server -->
-										<run>npm install -g serve</run>
+										<!-- Create a build directory with a production build of the app
+										<run>npm run build</run> -->
 
 									</runCmds>
 									<entryPoint>
-										<shell>server -s build -l 3000</shell>
+										<shell>./start-all.sh</shell>
 									</entryPoint>
 								</build>
 							</image>
 						</images>
 					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-
-		<plugins>
-			<plugin>
-				<groupId>io.fabric8</groupId>
-				<artifactId>docker-maven-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>docker-build</id>

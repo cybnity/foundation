@@ -17,6 +17,7 @@ var busOptions = {
    vertxbus_randomization_factor: 0.5 // Randomization factor between 0 and 1
 };
 
+// Connect Backend SockJS api via event bus
 var eb = new EventBus('http://localhost:8080/eventbus/secure/', busOptions);
 
 // Set up event bus handlers...

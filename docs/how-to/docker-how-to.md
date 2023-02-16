@@ -63,8 +63,15 @@ Push docker image to online CYBNITY private Docker repository from shell command
 `docker push cybnity/jre-tee:latest`
 
 ## RUN IMAGE IN MINIKUBE
+
+- Deploy a container as a Kubernetes Pod
+
 ``` shell
-kubectl run cybnity/jre-tee --image=cybnity/jre-tee --image-pull-policy=Never
-# Check that it's running
+kubectl run cybnity-frontend --image=cybnity/web-reactive-frontend --image-pull-policy=Never
+```
+
+- Check that pod and embedded container is running
+
+``` shell
 kubectl get pods
 ```

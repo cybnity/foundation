@@ -10,6 +10,10 @@
         <!-- Bundle app source -->
         <include>src/**</include>
         <include>public/**</include>
+        <!-- Get launch scripts -->
+        <include>*.sh</include>
+        <!-- Get http backend contents and scripts -->
+        <include>server/**</include>
       </includes>
 
       <!-- Define UNIX permissions of the files included (e.g read-only) based on an octal value (format: (User)(Group)(Other) where each component is a sum of Read=4, Write=2, and Execute=1). See https://www.softwaretestinghelp.com/unix-permissions/ for more detail -->
