@@ -34,7 +34,7 @@
 									<!-- The CYBNITY NodeJS container image name -->
 									<from>${docker.nodejs.image.name}</from>
 									<maintainer>CYBNITY Core Team</maintainer>
-									<cleanup>remove</cleanup>
+									<cleanup>try</cleanup>
 									<noCache />
 									<!-- Create app directory -->
 									<workdir>/app</workdir>
