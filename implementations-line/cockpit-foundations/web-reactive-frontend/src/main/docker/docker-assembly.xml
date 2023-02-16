@@ -1,0 +1,27 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.1 https://maven.apache.org/xsd/assembly-2.1.1.xsd">
+  <fileSets>
+    <fileSet>
+      <directory>${project.basedir}</directory>
+      <outputDirectory>.</outputDirectory>
+      <includes>
+        <!-- Install app dependencies. A wildcard is used to ensure both package.json AND package-lock.json are copied -->
+        <include>package.json</include>
+        <!-- Bundle app source -->
+        <include>src/**</include>
+        <include>public/**</include>
+        <!-- Get launch scripts -->
+        <include>*.sh</include>
+        <!-- Get http backend contents and scripts -->
+        <include>server/**</include>
+      </includes>
+
+      <!-- Define UNIX permissions of the files included (e.g read-only) based on an octal value (format: (User)(Group)(Other) where each component is a sum of Read=4, Write=2, and Execute=1). See https://www.softwaretestinghelp.com/unix-permissions/ for more detail -->
+
+      <excludes>
+        <exclude>src/main*/**</exclude>
+      </excludes>
+      <fileMode/>
+    </fileSet>
+  </fileSets>
+</assembly>

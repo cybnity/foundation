@@ -75,7 +75,7 @@ Demonstrator are developed by CYBNITY UX/UI team's members in several technologi
 Execution platforms are used like tool for industrialization of the system layer allowing to build executable software in Cloud environment and/or into specific targeted infrastructure during the technical development phase.
 
 The tools used for IaC system are respecting the official Techstack (e.g Docker, Terraform, Helm, Kubernetes, Minikube) to develop the systems layer (see [implementations-line](../../implementations-line)) and are implemented to support several types of runtime approach:
-- Execution on a standalone developer's workstation (Minikube)
+- Execution on a standalone developer's workstation (Minikube; see Minikube sections of [Docker How-To doc](docker-how-to.md))
 - Execution on a cloud server instance (e.g OVH public cloud instance)
 
 </p>
@@ -96,7 +96,9 @@ The CYBNITY open source features are developed on this repository and into sever
 
 Several development tools are used to manage the source codes, the software build industrialization, the configuration of the component, and/or the deployment into environments (e.g dev, test, integration) which are aligned with the recommendations of the official Techstack like:
 - Maven (java software components build)
-- Node.js & NPM (front end coding)
+- Docker (containerization of java executable component; see [Docker How-To doc](docker-how-to.md))
+- Helm (docker image templates provisioning management; see [Helm How-To doc](helm-how-to.md))
+- Node.js & NPM (front end coding; see [Nodejs How-To doc](nodejs-how-to.md))
 - GitHub desktop client (source code versioning)
 - GitHub Actions (CI/CD pipelines)
 - Concordion (test)

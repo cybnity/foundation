@@ -15,5 +15,6 @@
 	<modules>
 		<module>support</module>
 		<module>java-tee-container</module>
+		<module>services-registry-container</module>
 	</modules>
 </project>
