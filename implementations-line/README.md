@@ -13,10 +13,10 @@ Implementation components projects are structured and built according to standar
 - Helm: parameters and Kubernetes resources configuration using a [standard Helm structure](https://v2.helm.sh/docs/developing_charts/)
 - Terraform: Kubernetes clusters and networking configuration
 
-The implementation projects are supported by an [Official TechStack version](https://github.com/cybnity/foundation-techstack/blob/feature-157/demonstrators-line/demonstrator-v0/v0-technologies-stack.md) defining the authorized technologies used by any the software sub-project.
+The implementation projects are supported by an Official TechStack version defining the authorized technologies used by any the software sub-project.
 
 # COCKPIT-FOUNDATION COMPONENTS
-The source code managed in this area of Foundation project are about the capabilities provided to the users (e.g web ui services provided to user's web browser) via the user interface layer.
+The source codes managed in this area of Foundation project are about the capabilities provided to the users (e.g web ui services provided to user's web browser) via the user interface layer.
 
 The implementation source codes realizes interactive functions provided by **UI Modules** (UI layer providing functional or technical capabilities) to deliver User eXperiences (UX) to the solution final users of CYBNITY solutions.
 

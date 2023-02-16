@@ -26,6 +26,9 @@
 	<properties>
 		<!-- Standard Trusted Execution Environment (TEE) of java runtime container template -->
 		<docker.java.tee.image.name>cybnity/jre-tee</docker.java.tee.image.name>
+		<!-- NodeJS container template (Bullseye or buster based on Debian)-->
+		<!-- See https://snyk.io/blog/choosing-the-best-node-js-docker-image/ for choice of containerized NodeJS versions -->
+		<docker.nodejs.image.name>node:16.17.0-bullseye</docker.nodejs.image.name>
 	</properties>
 
 	<profiles>
@@ -44,6 +47,7 @@
 				<docker.imagePullPolicy>IfNotPresent</docker.imagePullPolicy>
 				<docker.useColor>true</docker.useColor>
 				<docker.images.tag.suffix>-alpha</docker.images.tag.suffix>
+				<docker.images.healtcheck.port>8080</docker.images.healtcheck.port>
 			</properties>
 		</profile>
 
@@ -66,6 +70,7 @@
 				<docker.imagePullPolicy>IfNotPresent</docker.imagePullPolicy>
 				<docker.useColor>true</docker.useColor>
 				<docker.images.tag.suffix>-alpha</docker.images.tag.suffix>
+				<docker.images.healtcheck.port>8080</docker.images.healtcheck.port>
 			</properties>
 		</profile>
 
@@ -79,6 +84,9 @@
 					<value>qa</value>
 				</property>
 			</activation>
+			<properties>
+				<docker.images.healtcheck.port>8080</docker.images.healtcheck.port>
+			</properties>
 		</profile>
 
 		<profile>
