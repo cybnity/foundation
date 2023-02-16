@@ -28,6 +28,8 @@ Perimeter: the deployable application components (e.g Java autonomous applicatio
 Project type: Maven or Node.js implementation structures; dockerization auto-generated (e.g Dockerfile generation, image template tagging, push to Docker repository) via Maven plugin.
 
 Description: each java application project contains a configuration of its containerization (e.g docker plugin activation into its `pom.xml` file, and a `src\main\docker\xxx-assembly.xml` defining specific jar and files assembled into the application system generated as Docker image). Each application system generated is an extended JRE-TEE docker image, ready for start as an autonomous system. Help documentation about the used maven plugin is available [here](https://dmp.fabric8.io/#introduction).
+- [reactive-messaging-gateway](charts/reactive-messaging-gateway): provisioning project of [containerized web backend server](../cockpit-foundations/reactive-messaging-gateway).
+- [web-reactive-frontend](charts/web-reactive-frontend): provisioning project of [containerized web frontend server](../cockpit-foundations/web-reactive-frontend).
 
 ## REUSABLE PROVISIONING SYSTEM PROJECTS
 Perimeter: some infrastructure third-party software (e.g Zookeeper application) are available on the market as template of provisioning helping to quickly customize the runtime (provisioning of pre-configured Docker image) into a Kubernetes platform. Some infrastructure components are reused by CYBNITY as infrastructure systems with customization of the prepared templates of their images helmization.

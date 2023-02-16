@@ -1,6 +1,6 @@
 apiVersion: v2
-name: ui-apis-gateway
-description: API proxy server Helm chart for Kubernetes
+name: web-reactive-frontend
+description: User interfaces server Helm chart for Kubernetes
 # @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_1")
 
 # A chart can be either an 'application' or a 'library' chart.

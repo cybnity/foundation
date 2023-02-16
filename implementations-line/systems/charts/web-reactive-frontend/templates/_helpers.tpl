@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "ui-apis-gateway.name" -}}
+{{- define "web-reactive-frontend.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "ui-apis-gateway.fullname" -}}
+{{- define "web-reactive-frontend.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -27,16 +27,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "ui-apis-gateway.chart" -}}
+{{- define "web-reactive-frontend.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "ui-apis-gateway.labels" -}}
-helm.sh/chart: {{ include "ui-apis-gateway.chart" . }}
-{{ include "ui-apis-gateway.selectorLabels" . }}
+{{- define "web-reactive-frontend.labels" -}}
+helm.sh/chart: {{ include "web-reactive-frontend.chart" . }}
+{{ include "web-reactive-frontend.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,17 +46,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "ui-apis-gateway.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "ui-apis-gateway.name" . }}
+{{- define "web-reactive-frontend.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "web-reactive-frontend.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "ui-apis-gateway.serviceAccountName" -}}
+{{- define "web-reactive-frontend.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "ui-apis-gateway.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "web-reactive-frontend.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

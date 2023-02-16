@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ui-apis-gateway.fullname" . }}
+  name: {{ include "web-reactive-frontend.fullname" . }}
   labels:
-    {{- include "ui-apis-gateway.labels" . | nindent 4 }}
+    {{- include "web-reactive-frontend.labels" . | nindent 4 }}
 spec:
 {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
 {{- end }}
   selector:
     matchLabels:
-      {{- include "ui-apis-gateway.selectorLabels" . | nindent 6 }}
+      {{- include "web-reactive-frontend.selectorLabels" . | nindent 6 }}
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "ui-apis-gateway.selectorLabels" . | nindent 8 }}
+        {{- include "web-reactive-frontend.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "ui-apis-gateway.serviceAccountName" . }}
+      serviceAccountName: {{ include "web-reactive-frontend.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -34,17 +34,21 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 80
+            # See help about liveness and readiness probes at https://developers.redhat.com/blog/2020/11/10/you-probably-need-liveness-and-readiness-probes
+            - name: health-status
+              containerPort: {{ .Values.deployment.imageHealthCheckPort }}
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+              path: {{ .Values.deployment.imageHttpHealthLivenessProbe }}
+              port: health-status
+            initialDelaySeconds: {{ .Values.deployment.imageHealthCheckInitialDelaySeconds }}
+            periodSeconds: {{ .Values.deployment.imageHealthCheckPeriodSeconds }}
+        # TODO: EVALUATE OPPORTUNITY TO ADD READINESS PROBE  a way to ask your container if it is ready to receive traffic
+          #readinessProbe:
+          #  httpGet:
+          #    path: {{ .Values.deployment.imageHttpHealthReadinessProbe }}
+          #    port: health-status
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

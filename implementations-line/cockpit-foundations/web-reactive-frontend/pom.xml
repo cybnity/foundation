@@ -74,9 +74,6 @@
 										<mode>dir</mode>
 									</assembly>
 									<runCmds>
-										<!-- Create app source directory
-										<run>mkdir -p /opt/cybnity</run> -->
-
 										<!-- Install a multiple process supervisor usable by nodejs
 										<run>apt-get update</run>
 										<run>apt-get install -y supervisor</run>
@@ -86,13 +83,11 @@
 										<run>npm install</run>
 										<!--<run>npm install - -production</run>-->
 
-										<!-- Mark Javscript files that are executable
-										<run>chmod +x *.js</run>-->
-										<run>chmod +x *.sh</run>
-
 										<!-- Create a build directory with a production build of the app
 										<run>npm run build</run> -->
 
+										<!-- Mark files that are executable -->
+										<run>chmod +x *.sh</run>
 									</runCmds>
 									<entryPoint>
 										<shell>./start-all.sh</shell>
