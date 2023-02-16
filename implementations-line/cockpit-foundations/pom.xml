@@ -117,7 +117,7 @@
 									<!-- The CYBNITY JRE container standard base image (Trusted Execution Environment) extended -->
 									<from>${docker.java.tee.image.name}</from>
 									<maintainer>CYBNITY Core Team</maintainer>
-									<cleanup>remove</cleanup>
+									<cleanup>try</cleanup>
 									<noCache />
 									<tags>
 										<!-- Additional tags which an image is to be tagged after the build -->
