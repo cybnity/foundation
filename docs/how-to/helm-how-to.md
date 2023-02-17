@@ -68,7 +68,7 @@ helm uninstall reactive-backend-server-chart
 </details>
 
 ## Charts Distribution
-Helm is usable to package, publish, and fetch Kubernetes applicatiosn as chart archives.
+Helm is usable to package, publish, and fetch Kubernetes applications as Chart archives.
 
 <details><summary>Package chart</summary>
 <p>

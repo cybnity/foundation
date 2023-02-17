@@ -35,6 +35,10 @@ The build and delivery of the CYBNITY systems' features is performed through sev
 
 ![image](CYBNITY-workspaces-OS.png)
 
+## SOFTWARE ARTIFACTS FACTORY
+
+![image](CYBNITY-software-artifacts-factory.png)
+
 ### Support and How-To
 - [Developers How-To](how-to/developer-how-to.md): guides about tools, tasks organization and other assistance documentations helping a developper to contribute.
 
