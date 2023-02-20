@@ -9,6 +9,7 @@ Several sub-project are managed to support frameworked concepts.
 All concepts allowing implementation of an immutable architecture's requirements.
 
 |Class Type|Motivation|
+| :-- | :-- |
 |Entity|Represent the creation of a historical fact equals to a immutable historical fact, containing only identifying information(s)|
 |HistoricalFact|Immutable fact created in a system, identified uniquely|
 |Identifier|Identifying information (e.g natural key, GUID, or some combination of those and other location-independent identifiers|
