@@ -1,6 +1,7 @@
 package org.cybnity.framework.immutable;
 
 import java.util.Collection;
+import java.util.LinkedHashSet;
 
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
@@ -38,6 +39,54 @@ public abstract class Entity implements HistoricalFact {
      */
     private Collection<Identifier> identifiedBy;
 
+    /**
+     * Default constructor.
+     * 
+     * @param id Unique and mandatory identifier of this entity.
+     * @throws IllegalArgumentException When id parameter is null and does not
+     *                                  include name and value.
+     */
+    public Entity(Identifier id) throws IllegalArgumentException {
+	if (id == null)
+	    throw new IllegalArgumentException("Id parameter is required!");
+	// Check conformity of identifier
+	if (id.identifierName() == null || id.identifierName().equals("") || id.value() == null) {
+	    throw new IllegalArgumentException("Identifier parameter's name and value are required!");
+	}
+	try {
+	    identifiedBy = new LinkedHashSet<Identifier>(1);
+	    identifiedBy.add(id.immutable());
+	} catch (CloneNotSupportedException ce) {
+	    throw new IllegalArgumentException(ce);
+	}
+    }
+
+    /**
+     * Default constructor.
+     * 
+     * @param identifiers Set of mandatory identifiers of this entity.
+     * @throws IllegalArgumentException When identifiers parameter is null or each
+     *                                  item does not include name and value.
+     */
+    public Entity(Collection<Identifier> identifiers) throws IllegalArgumentException {
+	if (identifiers == null || identifiers.isEmpty())
+	    throw new IllegalArgumentException("Identifiers parameter is required!");
+	identifiedBy = new LinkedHashSet<Identifier>(identifiers.size());
+	// Save immutable identifiers
+	try {
+	    for (Identifier id : identifiers) {
+		// Check conformity of identifier
+		if (id.identifierName() == null || id.identifierName().equals("") || id.value() == null) {
+		    throw new IllegalArgumentException("Identifier parameter's name and value is required!");
+		}
+		// save reference copy
+		identifiedBy.add(id.immutable());
+	    }
+	} catch (CloneNotSupportedException cn) {
+	    throw new IllegalArgumentException(cn);
+	}
+    }
+
     @Override
     public Collection<Identifier> identifiers() {
 	return identifiedBy;
@@ -46,11 +95,10 @@ public abstract class Entity implements HistoricalFact {
     /**
      * Redefine the comparison of this fact with another based on the identifier.
      * 
-     * @fact To compare.
+     * @param fact To compare.
      * @return True if this fact is based on the same identifier(s) as the fact
      *         argument; false otherwise.
      */
-    @SuppressWarnings("unlikely-arg-type")
     @Override
     public boolean equals(Object fact) {
 	if (fact != null && HistoricalFact.class.isAssignableFrom(fact.getClass())) {
@@ -61,4 +109,5 @@ public abstract class Entity implements HistoricalFact {
 	}
 	return false;
     }
+
 }

@@ -28,4 +28,12 @@ public interface Identifier {
      *         regarding a number.
      */
     public Class<?> value();
+    
+    /**
+     * Get an immutable copy of this identifier.
+     * 
+     * @return A cloned version of this instance.
+     * @throws CloneNotSupportedException When impossible cloned instance.
+     */
+    public Identifier immutable() throws CloneNotSupportedException;
 }

@@ -30,4 +30,11 @@ public interface HistoricalFact {
      */
     public Identifier identified();
 
+    /**
+     * Get an immutable copy of this identifier.
+     * 
+     * @return A cloned version of this instance.
+     * @throws CloneNotSupportedException When impossible cloned instance.
+     */
+    public HistoricalFact immutable() throws CloneNotSupportedException;
 }

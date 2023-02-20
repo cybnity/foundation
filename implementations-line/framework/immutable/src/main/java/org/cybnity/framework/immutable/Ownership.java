@@ -28,7 +28,7 @@ public interface Ownership {
     /**
      * Query for child facts given a parent.
      * 
-     * @parent Predecessor of children to find.
+     * @param parent Predecessor of children to find.
      * @return List of child facts (all successors that have an equals parent
      *         identifier), or null.
      */
