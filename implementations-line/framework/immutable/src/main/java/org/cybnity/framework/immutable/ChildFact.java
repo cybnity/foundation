@@ -19,7 +19,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public abstract class ChildFact extends Entity {
+public abstract class ChildFact implements HistoricalFact {
 
     /**
      * Predecessor fact of this child entity's identifier. The identity of a root
@@ -30,11 +30,4 @@ public abstract class ChildFact extends Entity {
      */
     public abstract HistoricalFact parent();
 
-    /**
-     * Field identifier of the child (historical fact) that follow the predecessor
-     * fact.
-     * 
-     * @return Successor's identifier in parent-child relationship with the parent.
-     */
-    public abstract Identifier type();
 }
