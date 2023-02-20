@@ -6,7 +6,7 @@ The version of each diagram shown in this area is the latest produced via the so
 Several sub-project are managed to support frameworked concepts.
 
 ## IMMUTABLE
-All concepts allowing implementation of an immutable architecture's requirements.
+All concepts allowing implementation of an immutable architecture's requirements are supported by the `org.cybnity.framework.immutable` java library [project](/implementations-line/framework/immutable).
 
 |Class Type|Motivation|
 | :-- | :-- |
