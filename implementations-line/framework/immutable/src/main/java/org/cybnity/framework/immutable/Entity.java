@@ -1,6 +1,10 @@
 package org.cybnity.framework.immutable;
 
+import java.security.InvalidParameterException;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 
 import org.cybnity.framework.support.annotation.Requirement;
@@ -36,8 +40,16 @@ public abstract class Entity implements HistoricalFact {
      * includes the identity of its parent, it shall follows the Ownership pattern.
      * While the entity's fact cannot be deleted, the Delete pattern simulates the
      * removal of this entity.
+     * 
+     * This collection implementation contains non-duplicable elements at every
+     * given time.
      */
-    private Collection<Identifier> identifiedBy;
+    protected ArrayList<Identifier> identifiedBy;
+
+    /**
+     * When this fact was created or observed regarding the historized topic.
+     */
+    protected final OffsetDateTime createdAt;
 
     /**
      * Default constructor.
@@ -48,48 +60,65 @@ public abstract class Entity implements HistoricalFact {
      */
     public Entity(Identifier id) throws IllegalArgumentException {
 	if (id == null)
-	    throw new IllegalArgumentException("Id parameter is required!");
+	    throw new IllegalArgumentException(new InvalidParameterException("Id parameter is required!"));
 	// Check conformity of identifier
-	if (id.identifierName() == null || id.identifierName().equals("") || id.value() == null) {
-	    throw new IllegalArgumentException("Identifier parameter's name and value are required!");
+	if (id.name() == null || id.name().equals("") || id.value() == null) {
+	    throw new IllegalArgumentException(
+		    new InvalidParameterException("Identifier parameter's name and value are required!"));
 	}
 	try {
-	    identifiedBy = new LinkedHashSet<Identifier>(1);
-	    identifiedBy.add(id.immutable());
+	    identifiedBy = new ArrayList<Identifier>(1);
+	    identifiedBy.add((Identifier) id.immutable());
 	} catch (CloneNotSupportedException ce) {
 	    throw new IllegalArgumentException(ce);
 	}
+	// Create immutable time of this fact creation
+	this.createdAt = OffsetDateTime.now();
     }
 
     /**
      * Default constructor.
      * 
-     * @param identifiers Set of mandatory identifiers of this entity.
+     * @param identifiers Set of mandatory identifiers of this entity, that contains
+     *                    non-duplicable elements.
      * @throws IllegalArgumentException When identifiers parameter is null or each
      *                                  item does not include name and value.
      */
-    public Entity(Collection<Identifier> identifiers) throws IllegalArgumentException {
+    public Entity(LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
 	if (identifiers == null || identifiers.isEmpty())
-	    throw new IllegalArgumentException("Identifiers parameter is required!");
-	identifiedBy = new LinkedHashSet<Identifier>(identifiers.size());
+	    throw new IllegalArgumentException(new InvalidParameterException("Identifiers parameter is required!"));
+	identifiedBy = new ArrayList<Identifier>(identifiers.size());
 	// Save immutable identifiers
 	try {
 	    for (Identifier id : identifiers) {
 		// Check conformity of identifier
-		if (id.identifierName() == null || id.identifierName().equals("") || id.value() == null) {
-		    throw new IllegalArgumentException("Identifier parameter's name and value is required!");
+		if (id.name() == null || id.name().equals("") || id.value() == null) {
+		    throw new IllegalArgumentException(
+			    new InvalidParameterException("Identifier parameter's name and value is required!"));
 		}
 		// save reference copy
-		identifiedBy.add(id.immutable());
+		identifiedBy.add((Identifier) id.immutable());
 	    }
 	} catch (CloneNotSupportedException cn) {
 	    throw new IllegalArgumentException(cn);
 	}
+	// Create immutable time of this fact creation
+	this.createdAt = OffsetDateTime.now();
     }
 
     @Override
     public Collection<Identifier> identifiers() {
-	return identifiedBy;
+	// Return immutable version
+	return Collections.unmodifiableCollection(identifiedBy);
+    }
+
+    /**
+     * Default implementation of fact date when it was created.
+     */
+    @Override
+    public OffsetDateTime occurredAt() {
+	// Return immutable value of the fact time
+	return this.createdAt;
     }
 
     /**
@@ -102,10 +131,9 @@ public abstract class Entity implements HistoricalFact {
     @Override
     public boolean equals(Object fact) {
 	if (fact != null && HistoricalFact.class.isAssignableFrom(fact.getClass())) {
-	    HistoricalFact compared = (HistoricalFact) fact;
 	    // Compare equality based on each instance's identifier (unique or based on
 	    // identifying informations combination)
-	    return this.identifiedBy.equals(compared.identified());
+	    return Evaluations.isIdentifiedEquals(this, (HistoricalFact) fact);
 	}
 	return false;
     }

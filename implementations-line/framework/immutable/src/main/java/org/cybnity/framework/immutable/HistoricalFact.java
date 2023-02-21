@@ -1,5 +1,6 @@
 package org.cybnity.framework.immutable;
 
+import java.time.OffsetDateTime;
 import java.util.Collection;
 
 import org.cybnity.framework.support.annotation.Requirement;
@@ -12,7 +13,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public interface HistoricalFact {
+public interface HistoricalFact extends Unmodifiable {
 
     /**
      * A fact shall use location-independent identity. It cannot use
@@ -31,10 +32,9 @@ public interface HistoricalFact {
     public Identifier identified();
 
     /**
-     * Get an immutable copy of this identifier.
+     * A time when the fact was created or observed.
      * 
-     * @return A cloned version of this instance.
-     * @throws CloneNotSupportedException When impossible cloned instance.
+     * @return An immutable time.
      */
-    public HistoricalFact immutable() throws CloneNotSupportedException;
+    public OffsetDateTime occurredAt();
 }

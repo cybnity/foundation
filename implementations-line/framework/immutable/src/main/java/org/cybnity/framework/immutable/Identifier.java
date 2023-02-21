@@ -11,14 +11,14 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public interface Identifier {
+public interface Identifier extends Unmodifiable {
 
     /**
      * A name that identify this identity instance.
      * 
      * @return A name. For example equals to "sku" regarding a stock keeping unit.
      */
-    public String identifierName();
+    public String name();
 
     /**
      * The class type of this identity .
@@ -27,13 +27,6 @@ public interface Identifier {
      *         a value chain that represent the identity; or java.lang.Long
      *         regarding a number.
      */
-    public Class<?> value();
-    
-    /**
-     * Get an immutable copy of this identifier.
-     * 
-     * @return A cloned version of this instance.
-     * @throws CloneNotSupportedException When impossible cloned instance.
-     */
-    public Identifier immutable() throws CloneNotSupportedException;
+    public Object value();
+
 }
