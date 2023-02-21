@@ -26,12 +26,12 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public abstract class ChildFact implements HistoricalFact {
+public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
 
     /**
-     * Predecessor of this child fact.
+     * Predecessor (as Owner of this child) of this child fact.
      */
-    protected final HistoricalFact parent;
+    protected final Entity parent;
 
     /**
      * Required identification elements (e.g that can be combined to define a
@@ -46,9 +46,10 @@ public abstract class ChildFact implements HistoricalFact {
     protected ArrayList<Identifier> identifiedBy;
 
     /**
-     * When this fact was created or observed regarding the historized topic.
+     * When this fact was created or observed regarding the historized topic. This
+     * creation date distingues among children within the same Owner.
      */
-    protected final OffsetDateTime createdAt;
+    protected OffsetDateTime createdAt;
 
     /**
      * Default constructor.
@@ -58,7 +59,7 @@ public abstract class ChildFact implements HistoricalFact {
      * @throws IllegalArgumentException When predecessor mandatory parameter is not
      *                                  defined or without defined identifier.
      */
-    public ChildFact(HistoricalFact predecessor, Identifier id) throws IllegalArgumentException {
+    public ChildFact(Entity predecessor, Identifier id) throws IllegalArgumentException {
 	if (predecessor == null)
 	    throw new IllegalArgumentException(new InvalidParameterException("parent parameter is required!"));
 	// Check conformity of optional child identifier
@@ -73,7 +74,7 @@ public abstract class ChildFact implements HistoricalFact {
 	    if (predecessor.identified() == null || predecessorIdentifiers == null || predecessorIdentifiers.isEmpty())
 		throw new IllegalArgumentException("The parent identifier(s) shall be existent!");
 	    // Reference immutable copy of predecessor
-	    this.parent = (HistoricalFact) predecessor.immutable();
+	    this.parent = (Entity) predecessor.immutable();
 	} catch (CloneNotSupportedException cn) {
 	    throw new IllegalArgumentException(cn);
 	}
@@ -92,11 +93,11 @@ public abstract class ChildFact implements HistoricalFact {
 	try {
 	    identifiedBy = new ArrayList<Identifier>(1);
 	    identifiedBy.add((Identifier) parentDependentId.immutable());
+	    // Create immutable time of this fact creation
+	    this.createdAt = OffsetDateTime.now();
 	} catch (CloneNotSupportedException ce) {
 	    throw new IllegalArgumentException(ce);
 	}
-	// Create immutable time of this fact creation
-	this.createdAt = OffsetDateTime.now();
     }
 
     /**
@@ -108,8 +109,7 @@ public abstract class ChildFact implements HistoricalFact {
      * @throws IllegalArgumentException When identifiers parameter is null or each
      *                                  item does not include name and value.
      */
-    public ChildFact(HistoricalFact predecessor, LinkedHashSet<Identifier> identifiers)
-	    throws IllegalArgumentException {
+    public ChildFact(Entity predecessor, LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
 	if (predecessor == null)
 	    throw new IllegalArgumentException(new InvalidParameterException("parent parameter is required!"));
 	try {
@@ -120,7 +120,7 @@ public abstract class ChildFact implements HistoricalFact {
 		throw new IllegalArgumentException(
 			new InvalidParameterException("The parent identifier(s) shall be existent!"));
 	    // Reference immutable copy of predecessor
-	    this.parent = (HistoricalFact) predecessor.immutable();
+	    this.parent = (Entity) predecessor.immutable();
 	} catch (CloneNotSupportedException cn) {
 	    throw new IllegalArgumentException(cn);
 	}
@@ -154,14 +154,19 @@ public abstract class ChildFact implements HistoricalFact {
 	try {
 	    identifiedBy = new ArrayList<Identifier>(1);
 	    identifiedBy.add((Identifier) parentDependentId.immutable());
+	    // Create immutable time of this fact creation
+	    this.createdAt = OffsetDateTime.now();
 	} catch (CloneNotSupportedException ce) {
 	    throw new IllegalArgumentException(ce);
 	}
-	// Create immutable time of this fact creation
-	this.createdAt = OffsetDateTime.now();
     }
 
-    @Override
+    /**
+     * A fact shall use location-independent identity. It cannot use
+     * auto-incremented IDs, URLS, or any other location-dependent identifier.
+     * 
+     * @return One or multiple identification informations.
+     */
     public Collection<Identifier> identifiers() {
 	// Return immutable version
 	return Collections.unmodifiableCollection(identifiedBy);
@@ -185,10 +190,10 @@ public abstract class ChildFact implements HistoricalFact {
      */
     @Override
     public boolean equals(Object fact) {
-	if (fact != null && HistoricalFact.class.isAssignableFrom(fact.getClass())) {
+	if (fact != null && IdentifiableFact.class.isAssignableFrom(fact.getClass())) {
 	    // Compare equality based on each instance's identifier (unique or based on
 	    // identifying informations combination)
-	    return Evaluations.isIdentifiedEquals(this, (HistoricalFact) fact);
+	    return Evaluations.isIdentifiedEquals(this, (IdentifiableFact) fact);
 	}
 	return false;
     }
@@ -198,6 +203,13 @@ public abstract class ChildFact implements HistoricalFact {
      * predecessor identifier (e.g reuse identifying information of parent's
      * identifiers).
      * 
+     * The identity of the parent (Owner) is part of the identity of this child
+     * (because prerequisites are immutable, child cannot be moved to another
+     * parent).
+     * 
+     * The identity of a root Owner tends to become part of the identities of most
+     * other entities.
+     * 
      * @param predecessor     Mandatory parent of this child instance.
      * @param childOriginalId Optional base identifier of this child instance, which
      *                        can be combined by the final id generation process.
@@ -206,13 +218,20 @@ public abstract class ChildFact implements HistoricalFact {
      * @throws IllegalArgumentException When mandatory parameter is null or missing
      *                                  identifying information.
      */
-    protected abstract Identifier generateIdentifierPredecessorBased(HistoricalFact predecessor,
-	    Identifier childOriginalId) throws IllegalArgumentException;
+    protected abstract Identifier generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId)
+	    throws IllegalArgumentException;
 
     /**
      * Generate a combined identifier regarding this child that is based on the
      * predecessor identifiers (e.g reuse identifying information of parent's
      * identifiers).
+     * 
+     * The identity of the parent (Owner) is part of the identity of this child
+     * (because prerequisites are immutable, child cannot be moved to another
+     * parent).
+     * 
+     * The identity of a root Owner tends to become part of the identities of most
+     * other entities.
      * 
      * @param predecessor      Mandatory parent of this child instance.
      * @param childOriginalIds Optional base identifiers of this child instance,
@@ -223,7 +242,7 @@ public abstract class ChildFact implements HistoricalFact {
      * @throws IllegalArgumentException When mandatory parameter is null or missing
      *                                  identifying information.
      */
-    protected abstract Identifier generateIdentifierPredecessorBased(HistoricalFact predecessor,
+    protected abstract Identifier generateIdentifierPredecessorBased(Entity predecessor,
 	    Collection<Identifier> childOriginalIds) throws IllegalArgumentException;
 
     /**
@@ -235,9 +254,9 @@ public abstract class ChildFact implements HistoricalFact {
      * @throws CloneNotSupportedException When impossible cloned instance of
      *                                    predecessor.
      */
-    public HistoricalFact parent() throws CloneNotSupportedException {
+    public Entity parent() throws CloneNotSupportedException {
 	// Return unmodifiable instance of predecessor
-	return (HistoricalFact) this.parent.immutable();
+	return (Entity) this.parent.immutable();
     }
 
 }

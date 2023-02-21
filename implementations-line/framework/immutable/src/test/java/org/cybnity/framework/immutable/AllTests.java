@@ -12,6 +12,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({ EntityUseCaseTest.class, ChildFactUseCaseTest.class })
+@SuiteClasses({ EntityUseCaseTest.class, ChildFactUseCaseTest.class, MembershipUseCaseTest.class,
+	MutablePropertyUseCaseTest.class })
 public class AllTests {
 }

@@ -32,7 +32,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public abstract class Entity implements HistoricalFact {
+public abstract class Entity implements HistoricalFact, IdentifiableFact {
 
     /**
      * Required identification elements (e.g that can be combined to define a
@@ -49,7 +49,7 @@ public abstract class Entity implements HistoricalFact {
     /**
      * When this fact was created or observed regarding the historized topic.
      */
-    protected final OffsetDateTime createdAt;
+    protected OffsetDateTime createdAt;
 
     /**
      * Default constructor.
@@ -69,11 +69,11 @@ public abstract class Entity implements HistoricalFact {
 	try {
 	    identifiedBy = new ArrayList<Identifier>(1);
 	    identifiedBy.add((Identifier) id.immutable());
+	    // Create immutable time of this fact creation
+	    this.createdAt = OffsetDateTime.now();
 	} catch (CloneNotSupportedException ce) {
 	    throw new IllegalArgumentException(ce);
 	}
-	// Create immutable time of this fact creation
-	this.createdAt = OffsetDateTime.now();
     }
 
     /**
@@ -99,14 +99,19 @@ public abstract class Entity implements HistoricalFact {
 		// save reference copy
 		identifiedBy.add((Identifier) id.immutable());
 	    }
+	    // Create immutable time of this fact creation
+	    this.createdAt = OffsetDateTime.now();
 	} catch (CloneNotSupportedException cn) {
 	    throw new IllegalArgumentException(cn);
 	}
-	// Create immutable time of this fact creation
-	this.createdAt = OffsetDateTime.now();
     }
 
-    @Override
+    /**
+     * A fact shall use location-independent identity. It cannot use
+     * auto-incremented IDs, URLS, or any other location-dependent identifier.
+     * 
+     * @return One or multiple identification informations.
+     */
     public Collection<Identifier> identifiers() {
 	// Return immutable version
 	return Collections.unmodifiableCollection(identifiedBy);
@@ -130,10 +135,10 @@ public abstract class Entity implements HistoricalFact {
      */
     @Override
     public boolean equals(Object fact) {
-	if (fact != null && HistoricalFact.class.isAssignableFrom(fact.getClass())) {
+	if (fact != null && IdentifiableFact.class.isAssignableFrom(fact.getClass())) {
 	    // Compare equality based on each instance's identifier (unique or based on
 	    // identifying informations combination)
-	    return Evaluations.isIdentifiedEquals(this, (HistoricalFact) fact);
+	    return Evaluations.isIdentifiedEquals(this, (IdentifiableFact) fact);
 	}
 	return false;
     }

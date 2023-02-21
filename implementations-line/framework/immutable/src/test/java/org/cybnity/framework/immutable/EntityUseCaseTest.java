@@ -39,7 +39,7 @@ public class EntityUseCaseTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void givenCreatedEntity_whenIdentifiersAccess_thenImmutableIdentifiersProvided() {
-	HistoricalFact e = new EntityImpl(new IdentifierImpl("uid", "alk8756"));
+	Entity e = new EntityImpl(new IdentifierImpl("uid", "alk8756"));
 	Collection<Identifier> identifiers = e.identifiers();
 	assertFalse("Shall contains one element!", identifiers.isEmpty());
 	// Check that collection is not modifiable

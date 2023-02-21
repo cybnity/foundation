@@ -16,7 +16,7 @@ public class Evaluations {
      * @return True if this fact is based on the same identifier(s) as the fact
      *         argument; false otherwise.
      */
-    static public boolean isIdentifiedEquals(HistoricalFact fact, HistoricalFact otherFact) {
+    static public boolean isIdentifiedEquals(IdentifiableFact fact, IdentifiableFact otherFact) {
 	if (fact != null && otherFact != null) {
 	    // Compare equality based on each instance's identifier (unique or based on
 	    // identifying informations combination)

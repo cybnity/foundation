@@ -32,6 +32,6 @@ public interface Ownership {
      * @return List of child facts (all successors that have an equals parent
      *         identifier), or null.
      */
-    public Collection<HistoricalFact> childrenOfParent(HistoricalFact parent);
+    public Collection<ChildFact> childrenOfParent(HistoricalFact parent);
 
 }

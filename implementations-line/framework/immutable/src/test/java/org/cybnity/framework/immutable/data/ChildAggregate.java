@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 
 import org.cybnity.framework.immutable.ChildFact;
-import org.cybnity.framework.immutable.HistoricalFact;
+import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 
 /**
@@ -15,12 +15,11 @@ import org.cybnity.framework.immutable.Identifier;
  */
 public class ChildAggregate extends ChildFact {
 
-    public ChildAggregate(HistoricalFact predecessor, Identifier id) throws IllegalArgumentException {
+    public ChildAggregate(Entity predecessor, Identifier id) throws IllegalArgumentException {
 	super(predecessor, id);
     }
 
-    public ChildAggregate(HistoricalFact predecessor, LinkedHashSet<Identifier> identifiers)
-	    throws IllegalArgumentException {
+    public ChildAggregate(Entity predecessor, LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
 	super(predecessor, identifiers);
     }
 
@@ -45,7 +44,7 @@ public class ChildAggregate extends ChildFact {
      * rule coded by the application layer
      */
     @Override
-    protected Identifier generateIdentifierPredecessorBased(HistoricalFact predecessor, Identifier childOriginalId)
+    protected Identifier generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId)
 	    throws IllegalArgumentException {
 	if (predecessor == null)
 	    throw new IllegalArgumentException(
@@ -78,8 +77,8 @@ public class ChildAggregate extends ChildFact {
      * application layer
      */
     @Override
-    protected Identifier generateIdentifierPredecessorBased(HistoricalFact predecessor,
-	    Collection<Identifier> childOriginalIds) throws IllegalArgumentException {
+    protected Identifier generateIdentifierPredecessorBased(Entity predecessor, Collection<Identifier> childOriginalIds)
+	    throws IllegalArgumentException {
 	return null;
     }
 
