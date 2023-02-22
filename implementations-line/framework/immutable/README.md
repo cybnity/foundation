@@ -42,6 +42,7 @@ classDiagram
     Membership *-- "1 member" Member
     HistoricalFact <|-- Member
     MutableProperty *-- "1 -historyStatus" HistoryState
+    MutableProperty --o "0..* #prior" MutableProperty
 
     class HistoricalFact {
         <<interface>>
