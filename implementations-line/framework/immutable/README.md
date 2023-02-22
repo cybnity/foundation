@@ -131,7 +131,6 @@ classDiagram
 
 ## Example of objects instantiations
 Presentation of a sample of instances which can be linked together according to their roles into a facts graph.
-
 ```mermaid
 %%{
   init: {
@@ -162,8 +161,10 @@ flowchart BT
     systemlog1deletion(("#60;#60;DeletionFact#62;#62;<br/>Monday System Info Log Deletion")) --> systemlog1
     style systemlog1deletion stroke-dasharray: 5 5
     systemlog1restoration(("#60;#60;Restoration#62;#62;<br/>Monday System Info Log Restoration")) --> systemlog1deletion
-    runtimeconfig(("#60;#60;MutableProperty#62;#62;<br/>Current Runtime Configuration")) --> application
-    runtimeconfig2(("#60;#60;MutableProperty#62;#62;<br/>Runtime Configuration Changed")) --> application
+    runtimeconfig(("#60;#60;MutableProperty#62;#62;<br/>Runtime Configuration V1")) --> application
+    runtimeconfig2(("#60;#60;MutableProperty#62;#62;<br/>Runtime Configuration V2")) --> application
     runtimeconfig2 --> runtimeconfig
+    runtimeconfig3(("#60;#60;MutableProperty#62;#62;<br/>Current Runtime Configuration V3")) --> application
+    runtimeconfig3 --> runtimeconfig2
 
 ```
