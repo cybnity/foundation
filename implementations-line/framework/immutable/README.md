@@ -153,16 +153,16 @@ Presentation of a sample of instances which can be linked together according to 
 flowchart BT
     software(("#60;#60;Group#62;#62;<br/>Executable Software"))
     electronicdevice(("#60;#60;Group#62;#62;<br/>Manufactured Electronic Device"))
-    system(("#60;#60;Membership#62;#62;<br/>Packaged Digital Product")) --> software
+    system(("#60;#60;Membership#62;#62;<br/>Assembled Digital Product")) --> software
     system --> electronicdevice
     os(("#60;#60;ChildFact#62;#62;<br/>Operating System Started")) --> system
-    application(("#60;#60;ChildFact#62;#62;<br/>Applicative Digital Twin Started")) --> system
+    application(("#60;#60;Entity#62;#62;<br/>Applicative Digital Twin Started")) --> system
     systemlog1(("#60;#60;ChildFact#62;#62;<br/>Monday System Info Log")) --> os
     systemlog2(("#60;#60;ChildFact#62;#62;<br/>Tuesday System Info Log")) --> os
     systemlog1deletion(("#60;#60;DeletionFact#62;#62;<br/>Monday System Info Log Deletion")) --> systemlog1
     style systemlog1deletion stroke-dasharray: 5 5
     systemlog1restoration(("#60;#60;Restoration#62;#62;<br/>Monday System Info Log Restoration")) --> systemlog1deletion
-
+    runtimeconfig(("#60;#60;MutableProperty#62;#62;<br/>Runtime Configuration")) --> application
 
 
 ```
