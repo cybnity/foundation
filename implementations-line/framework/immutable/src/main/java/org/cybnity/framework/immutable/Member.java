@@ -22,6 +22,6 @@ public interface Member extends HistoricalFact {
      * @return Unique based identifier, or derived identifier based on the multiple
      *         identification informations combined from {@link#identifiers()}.
      */
-    public abstract Identifier identified();
+    public Identifier identified();
 
 }

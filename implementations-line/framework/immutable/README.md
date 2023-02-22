@@ -34,8 +34,11 @@ classDiagram
     HistoricalFact <|.. ChildFact
     HistoricalFact <|-- DeletionFact
     HistoricalFact <|.. EntityReference
-    EntityReference *-- "1 -historyStatus" HistoryState
+    EntityReference *-- "1" HistoryState : -historyStatus
     HistoricalFact <|-- Group
+    HistoricalFact <|-- Member
+    HistoricalFact <|.. Membership
+
     class HistoricalFact {
         <<interface>>
         +occuredAt() Temporal
@@ -82,6 +85,14 @@ classDiagram
     class Group {
         <<interface>>
         +identified() Identifier
+    }
+    class Member {
+        <<interface>>
+        +identified() Identifier
+    }
+    class Membership {
+        <<abstract>>
+        #createdAt : Temporal
     }
 ```
 
