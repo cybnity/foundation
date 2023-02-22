@@ -26,8 +26,8 @@ Several structural patterns are supporting the immutability and are reusable (e.
 
 ```mermaid
 classDiagram
-    IdentifiableFact <|.. Entity
     Unmodifiable <|-- Identifier
+    IdentifiableFact <|.. Entity
     HistoricalFact <|.. Entity
     IdentifiableFact <|.. ChildFact
     Unmodifiable <|-- HistoricalFact
