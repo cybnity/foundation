@@ -34,6 +34,8 @@ classDiagram
     HistoricalFact <|-- DeletionFact
     HistoricalFact <|.. EntityReference
     EntityReference *-- "1 -historyStatus" HistoryState
+    HistoricalFact <|-- Group
+    Unmodifiable <|-- Identifier
     class HistoricalFact {
         <<interface>>
         +occuredAt() Temporal
@@ -76,6 +78,10 @@ classDiagram
         #referenced : Entity
         #prior : Set<EntityReference>
         #changedAt : Temporal
+    }
+    class Group {
+        <<interface>>
+        +identified() Identifier
     }
 ```
 
