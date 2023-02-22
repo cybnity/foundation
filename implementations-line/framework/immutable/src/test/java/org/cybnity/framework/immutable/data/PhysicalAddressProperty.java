@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.cybnity.framework.immutable.Entity;
+import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.MutableProperty;
 
 /**

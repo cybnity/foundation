@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.cybnity.framework.immutable.MutableProperty.HistoryState;
 import org.cybnity.framework.immutable.data.IdentifierImpl;
 import org.cybnity.framework.immutable.data.Organization;
 import org.cybnity.framework.immutable.data.PhysicalAddressProperty;

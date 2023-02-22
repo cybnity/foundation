@@ -73,16 +73,6 @@ public abstract class MutableProperty implements HistoricalFact {
     protected HashSet<MutableProperty> prior;
 
     /**
-     * Define the possible state of decision taken by a user regarding a previous
-     * property value concurrently changed and that a user defined which version
-     * shall be historized as official new current version, as archived version
-     * because used during a merge between several anterior changes request.
-     */
-    public enum HistoryState {
-	Archived, Merged, Committed;
-    }
-
-    /**
      * When this fact was created or observed regarding the historized topic.
      */
     protected OffsetDateTime changedAt;
@@ -90,8 +80,8 @@ public abstract class MutableProperty implements HistoricalFact {
     /**
      * Identify this property value had been confirmed (e.g during a merging
      * conflict resolultion act decided by a user) as official current version.
-     * HistoryDecision.Committed by default for any new instance of new instantiated
-     * property.
+     * {@link org.cybnity.framework.immutable.HistoryState.Committed} by default for
+     * any new instance of new instantiated property.
      */
     private HistoryState historyStatus = HistoryState.Committed;
 
@@ -105,17 +95,20 @@ public abstract class MutableProperty implements HistoricalFact {
      *                             the property. Support included keys with null
      *                             value.
      * @param status               Optional state of this property version. If null,
-     *                             HistoryState.Committed is defined as default
-     *                             state.
+     *                             {@link org.cybnity.framework.immutable.HistoryState.Committed}
+     *                             is defined as default state.
      * @throws IllegalArgumentException When mandatory parameter is missing, or when
-     *                                  cant' be cloned regarding its immutable
-     *                                  version.
+     *                                  cant' be cloned regarding immutable entity
+     *                                  parameter.
      */
     public MutableProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status)
 	    throws IllegalArgumentException {
 	if (propertyOwner == null)
 	    throw new IllegalArgumentException(
 		    new InvalidParameterException("PropertyOwner mandatory parameter is missing!"));
+	if (propertyCurrentValue == null || propertyCurrentValue.isEmpty())
+	    throw new IllegalArgumentException(
+		    new InvalidParameterException("PropertyCurrentValue mandatory parameter is missing!"));
 	try {
 	    this.entity = (Entity) propertyOwner.immutable();
 	    // Set of prior versions is empty by default
@@ -141,23 +134,24 @@ public abstract class MutableProperty implements HistoricalFact {
      *                             the property. Support included keys with null
      *                             value.
      * @param status               Optional state of this property version. If null,
-     *                             HistoryState.Committed is defined as default
-     *                             state.
+     *                             {@link org.cybnity.framework.immutable.HistoryState.Committed}
+     *                             is defined as default state.
      * @param predecessors         Optional original instances (previous versions)
      *                             that were to consider in the history chain,
      *                             regarding this property and that were identified
      *                             as property's original states which had been
      *                             changed. It's possible that new instance (e.g in
-     *                             HistoryState.Merged status) is based on several
-     *                             merged versions of previous property's states
-     *                             (e.g in case of concurrenlty changed version with
-     *                             need of conflict resolution). Ignored if null.
+     *                             {@link org.cybnity.framework.immutable.HistoryState.Merged}
+     *                             status) is based on several merged versions of
+     *                             previous property's states (e.g in case of
+     *                             concurrenlty changed version with need of
+     *                             conflict resolution). Ignored if null.
      * @throws IllegalArgumentException When mandatory parameter is missing; when
-     *                                  cant' be cloned regarding its immutable
-     *                                  version.
+     *                                  cant' be cloned regarding immutable entity
+     *                                  parameter.
      */
     public MutableProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
-	    MutableProperty... predecessors) throws IllegalArgumentException, InvalidParameterException {
+	    MutableProperty... predecessors) throws IllegalArgumentException {
 	// Initialize instance as default without previous versions of property's values
 	this(propertyOwner, propertyCurrentValue, status);
 	if (predecessors != null) {
@@ -177,7 +171,9 @@ public abstract class MutableProperty implements HistoricalFact {
      * predecessor values requiring merging of new status to fix the new value of
      * this one) regarding its anterior versions.
      * 
-     * @return Official version of this property. HistoryState.Committed by default.
+     * @return Official version of this property.
+     *         {@link org.cybnity.framework.immutable.HistoryState.Committed} by
+     *         default.
      */
     public HistoryState historyStatus() {
 	return historyStatus;

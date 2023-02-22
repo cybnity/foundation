@@ -7,11 +7,12 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * The membership is a more flexible grouping relationship than the ownership.
- * The relationship between the member and the group is represented as a fact
- * having both the member and group as predecessors. It has an additional
- * identifier (e.g timestamp) that allows a member to be removed and re-added to
- * a group over time.
+ * The membership is a more flexible grouping relationship than the ownership. A
+ * many-to-many relationship typically denotes Membership. The relationship
+ * between the member and the group is represented as a fact having both the
+ * member and group as predecessors. It has an additional identifier (e.g
+ * timestamp) that allows a member to be removed and re-added to a group over
+ * time.
  * 
  * This fact is a successor of both a group and a member. The group and member
  * are not causally related.

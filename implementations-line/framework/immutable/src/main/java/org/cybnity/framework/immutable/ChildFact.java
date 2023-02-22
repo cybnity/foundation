@@ -22,6 +22,9 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * of the Entity pattern, where the entity's identifiers include the identity of
  * an owner.
  * 
+ * A one-to-many relationship that has a cascade delete constraint represents
+ * Ownership.
+ * 
  * @author olivier
  *
  */
