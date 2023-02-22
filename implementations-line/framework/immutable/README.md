@@ -27,6 +27,7 @@ Several structural patterns are supporting the immutability and are reusable (e.
 ```mermaid
 classDiagram
     IdentifiableFact <|.. Entity
+    Unmodifiable <|-- Identifier
     HistoricalFact <|.. Entity
     IdentifiableFact <|.. ChildFact
     Unmodifiable <|-- HistoricalFact
@@ -35,7 +36,6 @@ classDiagram
     HistoricalFact <|.. EntityReference
     EntityReference *-- "1 -historyStatus" HistoryState
     HistoricalFact <|-- Group
-    Unmodifiable <|-- Identifier
     class HistoricalFact {
         <<interface>>
         +occuredAt() Temporal
