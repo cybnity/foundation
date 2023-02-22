@@ -162,7 +162,8 @@ flowchart BT
     systemlog1deletion(("#60;#60;DeletionFact#62;#62;<br/>Monday System Info Log Deletion")) --> systemlog1
     style systemlog1deletion stroke-dasharray: 5 5
     systemlog1restoration(("#60;#60;Restoration#62;#62;<br/>Monday System Info Log Restoration")) --> systemlog1deletion
-    runtimeconfig(("#60;#60;MutableProperty#62;#62;<br/>Runtime Configuration")) --> application
-
+    runtimeconfig(("#60;#60;MutableProperty#62;#62;<br/>Current Runtime Configuration")) --> application
+    runtimeconfig2(("#60;#60;MutableProperty#62;#62;<br/>Runtime Configuration Changed")) --> application
+    runtimeconfig2 --> runtimeconfig
 
 ```
