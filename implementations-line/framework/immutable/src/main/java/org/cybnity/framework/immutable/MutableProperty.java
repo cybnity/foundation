@@ -3,7 +3,7 @@ package org.cybnity.framework.immutable;
 import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.HashSet;
 
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
@@ -68,13 +68,32 @@ public abstract class MutableProperty implements HistoricalFact {
      * Facts are only generated as a result of a user's decision. When the user
      * changes a property from a concurrent state, the system includes all of the
      * leaves of the tree in the newt fact's prior set (value attribute).
+     * 
      */
-    protected LinkedList<MutableProperty> prior;
+    protected HashSet<MutableProperty> prior;
+
+    /**
+     * Define the possible state of decision taken by a user regarding a previous
+     * property value concurrently changed and that a user defined which version
+     * shall be historized as official new current version, as archived version
+     * because used during a merge between several anterior changes request.
+     */
+    public enum HistoryState {
+	Archived, Merged, Committed;
+    }
 
     /**
      * When this fact was created or observed regarding the historized topic.
      */
     protected OffsetDateTime changedAt;
+
+    /**
+     * Identify this property value had been confirmed (e.g during a merging
+     * conflict resolultion act decided by a user) as official current version.
+     * HistoryDecision.Committed by default for any new instance of new instantiated
+     * property.
+     */
+    private HistoryState historyStatus = HistoryState.Committed;
 
     /**
      * Default constructor with automatic initialization of an empty value set
@@ -85,11 +104,14 @@ public abstract class MutableProperty implements HistoricalFact {
      * @param propertyCurrentValue Mandatory current version of value(s) regarding
      *                             the property. Support included keys with null
      *                             value.
+     * @param status               Optional state of this property version. If null,
+     *                             HistoryState.Committed is defined as default
+     *                             state.
      * @throws IllegalArgumentException When mandatory parameter is missing, or when
      *                                  cant' be cloned regarding its immutable
      *                                  version.
      */
-    public MutableProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue)
+    public MutableProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status)
 	    throws IllegalArgumentException {
 	if (propertyOwner == null)
 	    throw new IllegalArgumentException(
@@ -97,9 +119,11 @@ public abstract class MutableProperty implements HistoricalFact {
 	try {
 	    this.entity = (Entity) propertyOwner.immutable();
 	    // Set of prior versions is empty by default
-	    this.prior = new LinkedList<>();
+	    this.prior = new HashSet<>();
 	    // Set the current states of changed values regarding this property version
 	    this.value = propertyCurrentValue;
+	    if (status != null)
+		this.historyStatus = status;
 	    // Create immutable time of this property changed version
 	    this.changedAt = OffsetDateTime.now();
 	} catch (CloneNotSupportedException ce) {
@@ -116,21 +140,61 @@ public abstract class MutableProperty implements HistoricalFact {
      * @param propertyCurrentValue Mandatory current version of value(s) regarding
      *                             the property. Support included keys with null
      *                             value.
-     * @param prior                Optional history of the previous versions of the
-     *                             values (history chain) regarding this property.
-     *                             Ignored if null.
-     * @throws IllegalArgumentException When mandatory parameter is missing, or when
+     * @param status               Optional state of this property version. If null,
+     *                             HistoryState.Committed is defined as default
+     *                             state.
+     * @param predecessors         Optional original instances (previous versions)
+     *                             that were to consider in the history chain,
+     *                             regarding this property and that were identified
+     *                             as property's original states which had been
+     *                             changed. It's possible that new instance (e.g in
+     *                             HistoryState.Merged status) is based on several
+     *                             merged versions of previous property's states
+     *                             (e.g in case of concurrenlty changed version with
+     *                             need of conflict resolution). Ignored if null.
+     * @throws IllegalArgumentException When mandatory parameter is missing; when
      *                                  cant' be cloned regarding its immutable
      *                                  version.
      */
-    public MutableProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue,
-	    LinkedList<? extends MutableProperty> prior) throws IllegalArgumentException {
+    public MutableProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
+	    MutableProperty... predecessors) throws IllegalArgumentException, InvalidParameterException {
 	// Initialize instance as default without previous versions of property's values
-	this(propertyOwner, propertyCurrentValue);
-	if (prior != null && !prior.isEmpty()) {
-	    // Set the defined history
-	    this.prior.addAll(prior);
+	this(propertyOwner, propertyCurrentValue, status);
+	if (predecessors != null) {
+	    // Manage the possible parallel concurrently previous state (e.g regarding
+	    // original previous values of this property that were evaluated to dedice this
+	    // new value)
+	    for (MutableProperty p : predecessors) {
+		if (p != null) {
+		    this.prior.add(p);
+		}
+	    }
 	}
+    }
+
+    /**
+     * This property version state (e.g in a situation of concurrent change of
+     * predecessor values requiring merging of new status to fix the new value of
+     * this one) regarding its anterior versions.
+     * 
+     * @return Official version of this property. HistoryState.Committed by default.
+     */
+    public HistoryState historyStatus() {
+	return historyStatus;
+    }
+
+    /**
+     * Set the state of this property value as an official version of the history
+     * chain, or shall only be saved in history as a concurrent version which had
+     * been archived following a merging or reject decision (e.g by a user in front
+     * of several potential changes requested concurrently of the prior version).
+     * 
+     * @param state Status of this version as current version property in front of
+     *              potential other parallel/concurrent versions regarding a same
+     *              priors.
+     */
+    public void setHistoryStatus(HistoryState state) {
+	this.historyStatus = state;
     }
 
 }

@@ -2,7 +2,8 @@ package org.cybnity.framework.immutable.data;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.MutableProperty;
@@ -32,15 +33,15 @@ public class PhysicalAddressProperty extends MutableProperty {
 	Street, City, Country, State;
     }
 
-    public PhysicalAddressProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue)
-	    throws IllegalArgumentException {
-	super(propertyOwner, propertyCurrentValue);
+    public PhysicalAddressProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue,
+	    HistoryState status) throws IllegalArgumentException {
+	super(propertyOwner, propertyCurrentValue, status);
 	this.versionedAt = OffsetDateTime.now();
     }
 
     public PhysicalAddressProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue,
-	    LinkedList<PhysicalAddressProperty> prior) throws IllegalArgumentException {
-	super(propertyOwner, propertyCurrentValue, prior);
+	    HistoryState status, PhysicalAddressProperty... prior) throws IllegalArgumentException {
+	super(propertyOwner, propertyCurrentValue, status, prior);
     }
 
     @Override
@@ -50,7 +51,6 @@ public class PhysicalAddressProperty extends MutableProperty {
 
     @Override
     public Object immutable() throws CloneNotSupportedException {
-	// TODO Auto-generated method stub
 	return null;
     }
 
@@ -64,14 +64,14 @@ public class PhysicalAddressProperty extends MutableProperty {
     }
 
     /**
-     * Get the history chain of versions including changed values about this
-     * property.
+     * Get the history chain of previous versions of this property including
+     * previous changed values states.
      * 
      * @return A changes history. Empty list by default.
      */
-    public LinkedList<PhysicalAddressProperty> changesHistory() {
+    public Set<PhysicalAddressProperty> changesHistory() {
 	// Read previous changes history (not including the current version)
-	LinkedList<PhysicalAddressProperty> history = new LinkedList<>();
+	HashSet<PhysicalAddressProperty> history = new HashSet<>();
 	for (MutableProperty previousChangedProperty : this.prior) {
 	    history.add((PhysicalAddressProperty) previousChangedProperty);
 	}

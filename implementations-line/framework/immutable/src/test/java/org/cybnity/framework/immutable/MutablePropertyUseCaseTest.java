@@ -1,14 +1,16 @@
 package org.cybnity.framework.immutable;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
+import org.cybnity.framework.immutable.MutableProperty.HistoryState;
 import org.cybnity.framework.immutable.data.IdentifierImpl;
 import org.cybnity.framework.immutable.data.Organization;
 import org.cybnity.framework.immutable.data.PhysicalAddressProperty;
@@ -52,14 +54,16 @@ public class MutablePropertyUseCaseTest {
     @Test(expected = IllegalArgumentException.class)
     public void givenUnknownPropertyOwner_whenMutablePropertyConstructor_thenIllegalArgumentExceptionThrown() {
 	// Try instantiation with violation of mandatory owner parameter
-	new PhysicalAddressProperty(/* undefined owner */ null, address);
+	new PhysicalAddressProperty(/* undefined owner */ null, address,
+		/* default status applied by constructor */ null);
     }
 
     @Test
     public void givenValidMutablePropertyInitialValue_whenMutablePropertyConstructor_thenMutabilityChainInitialized()
 	    throws Exception {
 	// Create required valid property initial value
-	PhysicalAddressProperty changeableAddress = new PhysicalAddressProperty(org, address);
+	PhysicalAddressProperty changeableAddress = new PhysicalAddressProperty(org, address,
+		/* default status applied by constructor */ null);
 
 	// Verify current values version is saved
 	HashMap<String, Object> currentVersion = changeableAddress.currentValue();
@@ -76,39 +80,86 @@ public class MutablePropertyUseCaseTest {
 	assertNotNull("Should had been saved as reference owner!", changeableAddress.owner());
 
 	// Check that base history is empty as prior history
-	List<PhysicalAddressProperty> history = changeableAddress.changesHistory();
+	Set<PhysicalAddressProperty> history = changeableAddress.changesHistory();
 	assertTrue("Should be empty of any changed value!", history.isEmpty());
 
     }
 
     @Test
-    public void givenValidMutableProperty_whenVersionChanged_thenPreviousChangesHistorized() {
+    public void givenValidMutableProperty_whenVersionsChanged_thenPriorVersionsHistorySaved() {
 	// Create required valid property initial value
-	PhysicalAddressProperty changeableAddress = new PhysicalAddressProperty(org, address);
-	LinkedList<PhysicalAddressProperty> history = changeableAddress.changesHistory(); // current version not
-											  // included
-	// Add current version to history
-	history.add(changeableAddress);
+	String city1 = (String) address.get(PhysicalAddressProperty.PropertyAttributeKey.City.name());
+	PhysicalAddressProperty changeableAddress = new PhysicalAddressProperty(org, address,
+		/* default status applied by constructor */ null);
+	Set<PhysicalAddressProperty> history = changeableAddress.changesHistory(); // current version not
+										   // included because none previous
+										   // version
+	// Check empty history and default history status
+	assertTrue("None anterior history shall exist!", history.isEmpty());
+	// Check default history status applied by constructor
+	assertEquals("Invalid default status applied by constructor!", HistoryState.Committed,
+		changeableAddress.historyStatus());
 
 	// Create a new version of changed values (e.g organization moved physical
-	// address)
+	// address) that simulate change of address decided by user of physical address
 	HashMap<String, Object> newLocation = new HashMap<>();
-	newLocation.put(PhysicalAddressProperty.PropertyAttributeKey.City.name(), "Paris");
+	String city2 = "Paris";
+	newLocation.put(PhysicalAddressProperty.PropertyAttributeKey.City.name(), city2);
 	newLocation.put(PhysicalAddressProperty.PropertyAttributeKey.Country.name(), "France");
 
 	PhysicalAddressProperty lastAddress = new PhysicalAddressProperty(org, newLocation,
-		/* continue changes history since previous states chain */ history);
-	newLocation = new HashMap<>();
-	newLocation.put(PhysicalAddressProperty.PropertyAttributeKey.City.name(), "Pekin");
-	newLocation.put(PhysicalAddressProperty.PropertyAttributeKey.Country.name(), "China");
-	history = lastAddress.changesHistory(); // current version not included
-	// Add current version to history
-	history.add(lastAddress);
+		/* Decision status simulating user decision */ HistoryState.Merged,
+		/* continue changes history after one predecessor */ changeableAddress);
+	history = lastAddress.changesHistory(); // current version including one historized prior state (e.g Paris
+						// location)
+	// Check history including previous address backuped
+	assertEquals("Only one prior address shall had been historized!", 1, history.size());
+	// Check assigned history status of the updated property
+	assertEquals("Invalid assigned status by constructor!", HistoryState.Merged, lastAddress.historyStatus());
+	// Check historized predecessor contents
+	for (PhysicalAddressProperty priorAddress : history) {
+	    HashMap<String, Object> priorValue = priorAddress.value;
+	    for (Entry<String, Object> originalAddress : address.entrySet()) {
+		String propertyAttributeName = originalAddress.getKey();
+		String propertyAttributeValue = (String) originalAddress.getValue();
+		// Find original address in historized instances
+		assertTrue("First address element of organization should exist in history!",
+			priorValue.containsKey(propertyAttributeName));
+		assertTrue("First address element's value of organization should exist in history!",
+			priorValue.containsValue(propertyAttributeValue));
+	    }
+	}
 
-	// Check if previous versions are historized since the start of the changes
-	// chain (prior)
-	LinkedList<PhysicalAddressProperty> allChangesStory = lastAddress.changesHistory();
-	assertEquals("Only 3 times organization changed of address!", 3, allChangesStory.size());
+	// Create a new version of changed address
+	HashMap<String, Object> nextLocation = new HashMap<>();
+	String city3 = "Pekin";
+	nextLocation.put(PhysicalAddressProperty.PropertyAttributeKey.City.name(), city3);
+	nextLocation.put(PhysicalAddressProperty.PropertyAttributeKey.Country.name(), "China");
+	PhysicalAddressProperty lastCurrentAddress = new PhysicalAddressProperty(org, nextLocation,
+		/* Decision status simulating user decision */ HistoryState.Merged,
+		/* continue changes history after one predecessor */ lastAddress);
+	history = lastCurrentAddress.changesHistory(); // current version including one historized previous addresses
+	assertEquals("Only one prior address shall had been historized!", 1, history.size());// as history chain without
+											     // multiple concurrent
+											     // origins of changed
+											     // property
+	// Check history chain including previous addresses backuped contents
+	for (PhysicalAddressProperty aPriorAddress : history) {
+	    HashMap<String, Object> priorValue = aPriorAddress.value;
+	    // Check if it's the last historized address (inverse path in history)
+	    assertEquals("Previous prior is not the good!", city2,
+		    priorValue.get(PhysicalAddressProperty.PropertyAttributeKey.City.name()));
+	    // Verify that previous historized property value also contain a chained history
+	    // of old addresses
+	    Set<PhysicalAddressProperty> anteriors = aPriorAddress.changesHistory();
+	    assertFalse("More old address should had been historized!", anteriors.isEmpty());
+	    for (PhysicalAddressProperty anAnteriors : anteriors) {
+		HashMap<String, Object> anteriorValue = anAnteriors.value;
+		// Check if it's the anterior address
+		assertEquals("Anterio prior is not the good!", city1,
+			anteriorValue.get(PhysicalAddressProperty.PropertyAttributeKey.City.name()));
+	    }
+	}
     }
 
 }
