@@ -139,7 +139,7 @@ Presentation of a sample of instances which can be linked together according to 
     'themeVariables': {
         'background': '#ffffff',
         'fontFamily': 'arial',
-        'fontSize': '18px',
+        'fontSize': '14px',
         'primaryColor': '#fff',
         'primaryBorderColor': '#0e2a43',
         'secondaryBorderColor': '#0e2a43',
@@ -151,8 +151,8 @@ Presentation of a sample of instances which can be linked together according to 
   }
 }%%
 flowchart BT
-    board((ChildFact Manufactured Electronic Mainboard)) --> asset((Entity Device Asset))
-    soft((ChildFact Installed Software)) --> asset
+    board((<<ChildFact>> Manufactured Electronic Mainboard)) --> asset((<<Entity>> Device Asset))
+    soft((<<ChildFact>> Installed Software)) --> asset
 
 
 
