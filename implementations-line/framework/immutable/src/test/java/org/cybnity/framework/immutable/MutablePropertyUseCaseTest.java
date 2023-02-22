@@ -96,7 +96,7 @@ public class MutablePropertyUseCaseTest {
 	// Check empty history and default history status
 	assertTrue("None anterior history shall exist!", history.isEmpty());
 	// Check default history status applied by constructor
-	assertEquals("Invalid default status applied by constructor!", HistoryState.Committed,
+	assertEquals("Invalid default status applied by constructor!", HistoryState.COMMITTED,
 		changeableAddress.historyStatus());
 
 	// Create a new version of changed values (e.g organization moved physical
@@ -107,14 +107,14 @@ public class MutablePropertyUseCaseTest {
 	newLocation.put(PhysicalAddressProperty.PropertyAttributeKey.Country.name(), "France");
 
 	PhysicalAddressProperty lastAddress = new PhysicalAddressProperty(org, newLocation,
-		/* Decision status simulating user decision */ HistoryState.Merged,
+		/* Decision status simulating user decision */ HistoryState.MERGED,
 		/* continue changes history after one predecessor */ changeableAddress);
 	history = lastAddress.changesHistory(); // current version including one historized prior state (e.g Paris
 						// location)
 	// Check history including previous address backuped
 	assertEquals("Only one prior address shall had been historized!", 1, history.size());
 	// Check assigned history status of the updated property
-	assertEquals("Invalid assigned status by constructor!", HistoryState.Merged, lastAddress.historyStatus());
+	assertEquals("Invalid assigned status by constructor!", HistoryState.MERGED, lastAddress.historyStatus());
 	// Check historized predecessor contents
 	for (PhysicalAddressProperty priorAddress : history) {
 	    HashMap<String, Object> priorValue = priorAddress.value;
@@ -135,7 +135,7 @@ public class MutablePropertyUseCaseTest {
 	nextLocation.put(PhysicalAddressProperty.PropertyAttributeKey.City.name(), city3);
 	nextLocation.put(PhysicalAddressProperty.PropertyAttributeKey.Country.name(), "China");
 	PhysicalAddressProperty lastCurrentAddress = new PhysicalAddressProperty(org, nextLocation,
-		/* Decision status simulating user decision */ HistoryState.Merged,
+		/* Decision status simulating user decision */ HistoryState.MERGED,
 		/* continue changes history after one predecessor */ lastAddress);
 	history = lastCurrentAddress.changesHistory(); // current version including one historized previous addresses
 	assertEquals("Only one prior address shall had been historized!", 1, history.size());// as history chain without

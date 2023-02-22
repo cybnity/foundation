@@ -83,7 +83,7 @@ public abstract class MutableProperty implements HistoricalFact {
      * {@link org.cybnity.framework.immutable.HistoryState.Committed} by default for
      * any new instance of new instantiated property.
      */
-    private HistoryState historyStatus = HistoryState.Committed;
+    private HistoryState historyStatus = HistoryState.COMMITTED;
 
     /**
      * Default constructor with automatic initialization of an empty value set

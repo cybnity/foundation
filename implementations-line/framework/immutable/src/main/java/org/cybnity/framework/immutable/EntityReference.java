@@ -68,7 +68,7 @@ public abstract class EntityReference implements HistoricalFact {
      * {@link org.cybnity.framework.immutable.HistoryState.Committed} by default for
      * any new instance of new instantiated property.
      */
-    private HistoryState historyStatus = HistoryState.Committed;
+    private HistoryState historyStatus = HistoryState.COMMITTED;
 
     /**
      * When this relation fact was created or observed.

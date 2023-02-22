@@ -32,6 +32,8 @@ classDiagram
     Unmodifiable <|-- HistoricalFact
     HistoricalFact <|.. ChildFact
     HistoricalFact <|-- DeletionFact
+    HistoricalFact <|.. EntityReference
+    HistoryState "1" --* "-historyStatus" EntityReference
     class HistoricalFact {
         <<interface>>
         +occuredAt() Temporal
@@ -63,6 +65,17 @@ classDiagram
         <<interface>>
         +name() String
         +value() Object
+    }
+    class HistoryState {
+        <<enumeration>>
+        ARCHIVED, MERGED, COMMITTED
+    }
+    class EntityReference {
+        <<abstract>>
+        #entity : Entity
+        #referenced : Entity
+        #prior : Set<EntityReference>
+        #changedAt : Temporal
     }
 ```
 
