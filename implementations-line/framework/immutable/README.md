@@ -25,6 +25,7 @@ Several structural patterns are supporting the immutability and are reusable (e.
 ## Structure Models
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'background': '#ffffff', 'fontSize': '18px', 'primaryColor': '#fff', 'tertiaryBorderColor': '#3a5572', 'edgeLabelBackground':'#0e2a43', 'lineColor': '#3a5572', 'tertiaryColor': '#fff'}}}%%
 classDiagram
     Unmodifiable <|-- Identifier
     IdentifiableFact <|.. ChildFact
@@ -46,79 +47,72 @@ classDiagram
     DeletionFact --|> HistoricalFact
     RestorationFact --|> HistoricalFact
 
-    class HistoricalFact:::cssClass {
+    class HistoricalFact:::standard {
         <<interface>>
         +occuredAt() Temporal
     }
-    class IdentifiableFact:::cssClass {
+    class IdentifiableFact:::standard {
         <<interface>>
         +identified() Identifier
     }
-    class Entity:::cssClass {
+    class Entity:::standard {
         <<abstract>>
         #identifierBy : List~Identifier~
         #createdAt : Temporal
     }
-    class ChildFact:::cssClass {
+    class ChildFact:::standard {
         <<abstract>>
         #parent : Entity
         #identifierBy : List~Identifier~
         #createdAt : Temporal
     }
-    class DeletionFact:::cssClass {
+    class DeletionFact:::standard {
         <<interface>>
         +deleted() Entity
     }
-    class Unmodifiable:::cssClass {
+    class Unmodifiable:::standard {
         <<interface>>
         +immutable() Object
     }
-    class Identifier:::cssClass {
+    class Identifier:::standard {
         <<interface>>
         +name() String
         +value() Object
     }
-    class HistoryState:::cssClass {
+    class HistoryState:::standard {
         <<enumeration>>
         ARCHIVED, MERGED, COMMITTED
     }
-    class EntityReference:::cssClass {
+    class EntityReference:::standard {
         <<abstract>>
         #entity : Entity
         #referenced : Entity
         #prior : Set~EntityReference~
         #changedAt : Temporal
     }
-    class Group:::cssClass {
+    class Group:::standard {
         <<interface>>
         +identified() Identifier
     }
-    class Member:::cssClass {
+    class Member:::standard {
         <<interface>>
         +identified() Identifier
     }
-    class Membership:::cssClass {
+    class Membership:::standard {
         <<abstract>>
         #createdAt : Temporal
     }
-    class MutableProperty:::cssClass {
+    class MutableProperty:::standard {
         <<abstract>>
         #changedAt : Temporal
         #value : HashMap~String, Object~
     }
-    class RestorationFact:::cssClass {
+    class RestorationFact:::standard {
         <<interface>>
         +deletion() DeletionFact
     }
 
-    <style>
-        .cssClass > rect {
-            fill: #fff;
-            stroke: #0e2a43;
-            stroke-width: 1px;
-            color: #0e2a43;
-        }
-    </style>
+    classDef standard fill:#fff,stroke:#0e2a43,stroke-width:1px,color:#0e2a43
 
 ```
 
