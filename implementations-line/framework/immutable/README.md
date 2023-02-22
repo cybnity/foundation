@@ -30,31 +30,36 @@ classDiagram
     IdentifiableFact <|.. Entity
     HistoricalFact <|.. ChildFact
     IdentifiableFact <|.. ChildFact
+    HistoricalFact <|-- DeletionFact
     class Identifier {
-        <<Interface>>
+        <<interface>>
         +name() : String
         +value() : Object
     }
     class Unmodifiable {
-        <<Interface>>
+        <<interface>>
         +immutable() : Object
     }
     class HistoricalFact {
-        <<Interface>>
+        <<interface>>
     }
     class IdentifiableFact {
-        <<Interface>>
+        <<interface>>
     }
     class Entity {
-        <<Abstract>>
+        <<abstract>>
         #identifierBy : List~Identifier~
         #createdAt : Temporal
     }
     class ChildFact {
-        <<Abstract>>
+        <<abstract>>
         #parent : Entity
         #identifierBy : List~Identifier~
         #createdAt : Temporal
+    }
+    class DeletionFact {
+        <<interface>>
+        +deleted() : Entity
     }
 ```
 
