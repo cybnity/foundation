@@ -39,13 +39,13 @@ classDiagram
     class IdentifiableFact {
         <<interface>>
     }
+    Entity ..|> HistoricalFact
+    Entity ..|> IdentifiableFact
     class Entity {
         <<fact>>
         #List~Identifier~ : identifierBy
         #Temporal : createdAt
     }
-    Entity ..|> HistoricalFact
-    Entity ..|> IdentifiableFact
 ```
 
 ## Example of objects instantiations
