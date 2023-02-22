@@ -25,7 +25,20 @@ Several structural patterns are supporting the immutability and are reusable (e.
 ## Structure Models
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'background': '#ffffff', 'fontSize': '18px', 'primaryColor': '#fff', 'tertiaryBorderColor': '#3a5572', 'edgeLabelBackground':'#0e2a43', 'lineColor': '#3a5572', 'tertiaryColor': '#fff'}}}%%
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'tertiaryBorderColor': '#3a5572',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#3a5572',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
 classDiagram
     Unmodifiable <|-- Identifier
     IdentifiableFact <|.. ChildFact
@@ -47,79 +60,77 @@ classDiagram
     DeletionFact --|> HistoricalFact
     RestorationFact --|> HistoricalFact
 
-    class HistoricalFact:::standard {
+    class HistoricalFact {
         <<interface>>
         +occuredAt() Temporal
     }
-    class IdentifiableFact:::standard {
+    class IdentifiableFact {
         <<interface>>
         +identified() Identifier
     }
-    class Entity:::standard {
+    class Entity {
         <<abstract>>
         #identifierBy : List~Identifier~
         #createdAt : Temporal
     }
-    class ChildFact:::standard {
+    class ChildFact {
         <<abstract>>
         #parent : Entity
         #identifierBy : List~Identifier~
         #createdAt : Temporal
     }
-    class DeletionFact:::standard {
+    class DeletionFact {
         <<interface>>
         +deleted() Entity
     }
-    class Unmodifiable:::standard {
+    class Unmodifiable {
         <<interface>>
         +immutable() Object
     }
-    class Identifier:::standard {
+    class Identifier {
         <<interface>>
         +name() String
         +value() Object
     }
-    class HistoryState:::standard {
+    class HistoryState {
         <<enumeration>>
         ARCHIVED, MERGED, COMMITTED
     }
-    class EntityReference:::standard {
+    class EntityReference {
         <<abstract>>
         #entity : Entity
         #referenced : Entity
         #prior : Set~EntityReference~
         #changedAt : Temporal
     }
-    class Group:::standard {
+    class Group {
         <<interface>>
         +identified() Identifier
     }
-    class Member:::standard {
+    class Member {
         <<interface>>
         +identified() Identifier
     }
-    class Membership:::standard {
+    class Membership {
         <<abstract>>
         #createdAt : Temporal
     }
-    class MutableProperty:::standard {
+    class MutableProperty {
         <<abstract>>
         #changedAt : Temporal
         #value : HashMap~String, Object~
     }
-    class RestorationFact:::standard {
+    class RestorationFact {
         <<interface>>
         +deletion() DeletionFact
     }
-
-    classDef standard fill:#fff,stroke:#0e2a43,stroke-width:1px,color:#0e2a43
-
 ```
 
 ## Example of objects instantiations
 Presentation of a sample of instances which can be linked together according to their roles into a facts graph.
 
 
+    classDef standard fill:#fff, stroke:#0e2a43, stroke-width:1px, color:#0e2a43
     classDef bddtest fill:#3a5572,stroke:#3a5572,color:#fff
 	classDef impact fill:#fff,stroke:#e5302a,stroke-width:1px,color:#e5302a
 	classDef goal fill:#0e2a43,stroke:#0e2a43,color:#fff
