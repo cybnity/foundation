@@ -107,7 +107,7 @@ classDiagram
         #value : HashMap~String, Object~
     }
     class RestorationFact {
-        <<interface>
+        <<interface>>
         +deletion() DeletionFact
     }
 ```
