@@ -36,8 +36,8 @@ classDiagram
     HistoricalFact <|.. EntityReference
     EntityReference *-- "1" HistoryState : -historyStatus
     HistoricalFact <|-- Group
-    HistoricalFact <|-- Member
     HistoricalFact <|.. Membership
+    HistoricalFact <|-- Member
 
     class HistoricalFact {
         <<interface>>
