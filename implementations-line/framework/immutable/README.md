@@ -33,6 +33,8 @@ classDiagram
     HistoricalFact <|.. ChildFact
     Entity "1 -entity" --o MutableProperty
     HistoricalFact <|.. MutableProperty
+    HistoricalFact <|.. EntityReference
+    EntityReference *-- "1 -historyStatus" HistoryState
     HistoricalFact <|-- Group
     HistoricalFact <|.. Membership
     Membership *-- "1 -group" Group
@@ -42,8 +44,6 @@ classDiagram
     MutableProperty o-- "0..* #prior" MutableProperty
     HistoricalFact <|.. Entity
     HistoricalFact <|-- DeletionFact
-    HistoricalFact <|.. EntityReference
-    EntityReference *-- "1 -historyStatus" HistoryState
 
     class HistoricalFact {
         <<interface>>
