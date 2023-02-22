@@ -40,6 +40,7 @@ classDiagram
     Membership *-- "1 -group" Group
     Membership *-- "1 member" Member
     HistoricalFact <|-- Member
+    MutableProperty *-- "1 -historyStatus" HistoryState
 
     class HistoricalFact {
         <<interface>>
@@ -81,7 +82,7 @@ classDiagram
         <<abstract>>
         #entity : Entity
         #referenced : Entity
-        #prior : Set<EntityReference>
+        #prior : Set~EntityReference~
         #changedAt : Temporal
     }
     class Group {
@@ -95,6 +96,10 @@ classDiagram
     class Membership {
         <<abstract>>
         #createdAt : Temporal
+    }
+    class MutableProperty {
+        <<abstract>>
+        #changedAt : Temporal
     }
 ```
 
