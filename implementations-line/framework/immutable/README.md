@@ -159,9 +159,9 @@ flowchart BT
     application(("#60;#60;ChildFact#62;#62;<br/>Applicative Digital Twin Started")) --> system
     systemlog1(("#60;#60;ChildFact#62;#62;<br/>Monday System Info Log")) --> os
     systemlog2(("#60;#60;ChildFact#62;#62;<br/>Tuesday System Info Log")) --> os
-    systemlog1deletion(("#60;#60;ChildFact#62;#62;<br/>Monday System Info Log Deletion")) --> systemlog1
-    systemlog3(("#60;#60;ChildFact#62;#62;<br/>Wednesday System Info Log")) --> os
-    style systemlog3 stroke-dasharray: 5 5
+    systemlog1deletion(("#60;#60;DeletionFact#62;#62;<br/>Monday System Info Log Deletion")) --> systemlog1
+    style systemlog1deletion stroke-dasharray: 5 5
+    systemlog1restoration(("#60;#60;Restoration#62;#62;<br/>Monday System Info Log Restoration")) --> systemlog1deletion
 
 
 
