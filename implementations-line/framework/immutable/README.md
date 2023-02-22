@@ -151,8 +151,8 @@ Presentation of a sample of instances which can be linked together according to 
   }
 }%%
 flowchart BT
-    board(("<<ChildFact>> Manufactured Electronic Mainboard")) --> asset(("<<Entity>> Device Asset"))
-    soft(("<<ChildFact>> Installed Software")) --> asset
+    board(("#60;#60;ChildFact#62;#62; Manufactured Electronic Mainboard")) --> asset(("#60;#60;Entity#62;#62; Device Asset"))
+    soft(("#60;#60;ChildFact#62;#62; Installed Software")) --> asset
 
 
 
