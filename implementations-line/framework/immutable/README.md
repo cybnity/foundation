@@ -120,11 +120,12 @@ classDiagram
         }
     </style>
 
-    classDef bddtest fill:#3a5572,stroke:#3a5572,color:#fff
-	classDef impact fill:#fff,stroke:#e5302a,stroke-width:1px,color:#e5302a
-	classDef goal fill:#0e2a43,stroke:#0e2a43,color:#fff
-
 ```
 
 ## Example of objects instantiations
 Presentation of a sample of instances which can be linked together according to their roles into a facts graph.
+
+
+    classDef bddtest fill:#3a5572,stroke:#3a5572,color:#fff
+	classDef impact fill:#fff,stroke:#e5302a,stroke-width:1px,color:#e5302a
+	classDef goal fill:#0e2a43,stroke:#0e2a43,color:#fff
