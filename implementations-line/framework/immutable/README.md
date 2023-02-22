@@ -132,8 +132,27 @@ classDiagram
 ## Example of objects instantiations
 Presentation of a sample of instances which can be linked together according to their roles into a facts graph.
 
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+flowchart TB
+    asset((<<Entity fact>> Device Asset id=123)) <-- board((<<ChildFact>> Electronic Mainboard id=abc))
+    asset <-- board((<<ChildFact>> Installed Software id=1Jhf))
 
-    classDef standard fill:#fff, stroke:#0e2a43, stroke-width:1px, color:#0e2a43
-    classDef bddtest fill:#3a5572,stroke:#3a5572,color:#fff
-	classDef impact fill:#fff,stroke:#e5302a,stroke-width:1px,color:#e5302a
-	classDef goal fill:#0e2a43,stroke:#0e2a43,color:#fff
+
+```
