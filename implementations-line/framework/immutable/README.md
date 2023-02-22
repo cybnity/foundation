@@ -166,9 +166,9 @@ flowchart BT
     runtimeconfig2 --> runtimeconfig
     runtimeconfig3(("#60;#60;MutableProperty#62;#62;<br/>Current Runtime Configuration V3")) --> application
     runtimeconfig3 --> runtimeconfig2
-    purchasedDeviceRegistration(("#60;#60;ChildFact#62;#62;<br/>Product Ownership Registred")) --> system
-    deviceOwnerAccount(("#60;#60;Entity#62;#62;<br/>Device Owner Account")) --> purchasedDeviceRegistration
-    operatingSession(("#60;#60;EntityReference#62;#62;<br/>Activated Operating Session")) --> deviceOwnerAccount
+    purchasedDeviceRegistration(("#60;#60;ChildFact#62;#62;<br/>Product Ownership Registered")) --> system
+    deviceOwnerAccount(("#60;#60;Entity#62;#62;<br/>Created Device Owner Account")) --> purchasedDeviceRegistration
+    operatingSession(("#60;#60;EntityReference#62;#62;<br/>Activated Applicative Session")) --> deviceOwnerAccount
     operatingSession --> application
 
 ```
