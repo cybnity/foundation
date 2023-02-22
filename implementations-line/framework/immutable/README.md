@@ -28,7 +28,6 @@ Several structural patterns are supporting the immutability and are reusable (e.
 classDiagram
     Unmodifiable <|-- Identifier
     IdentifiableFact <|.. ChildFact
-    HistoricalFact <|.. Entity
     IdentifiableFact <|.. Entity
     Unmodifiable <|-- HistoricalFact
     HistoricalFact <|.. ChildFact
@@ -43,6 +42,7 @@ classDiagram
     HistoricalFact <|-- Member
     MutableProperty *-- "1 -historyStatus" HistoryState
     MutableProperty o-- "0..* #prior" MutableProperty
+    HistoricalFact <|.. Entity
 
     class HistoricalFact {
         <<interface>>
