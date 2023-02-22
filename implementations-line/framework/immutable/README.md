@@ -170,5 +170,8 @@ flowchart BT
     deviceOwnerAccount(("#60;#60;Entity#62;#62;<br/>Created Device Owner Account")) --> purchasedDeviceRegistration
     operatingSession(("#60;#60;EntityReference#62;#62;<br/>Activated Applicative Session")) --> deviceOwnerAccount
     operatingSession --> application
+    interruptedSession(("#60;#60;EntityReference#62;#62;<br/>Interrupted Applicative Session")) --> deviceOwnerAccount
+    interruptedSession --> application
+    interruptedSession --> operatingSession
 
 ```
