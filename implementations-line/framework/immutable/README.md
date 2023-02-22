@@ -26,25 +26,25 @@ Several structural patterns are supporting the immutability and are reusable (e.
 
 ```mermaid
 classDiagram
-    Unmodifiable <|-- Identifier
-    IdentifiableFact <|.. ChildFact
-    IdentifiableFact <|.. Entity
-    Unmodifiable <|-- HistoricalFact
+    Unmodifiable:::classes <|-- Identifier:::classes
+    IdentifiableFact:::classes <|.. ChildFact:::classes
+    IdentifiableFact <|.. Entity:::classes
+    Unmodifiable <|-- HistoricalFact:::classes
     HistoricalFact <|.. ChildFact
-    Entity "1 -entity" --o MutableProperty
+    Entity "1 -entity" --o MutableProperty:::classes
     HistoricalFact <|.. MutableProperty
-    HistoricalFact <|.. EntityReference
-    EntityReference *-- "1 -historyStatus" HistoryState
+    HistoricalFact <|.. EntityReference:::classes
+    EntityReference *-- "1 -historyStatus" HistoryState:::classes
     MutableProperty *-- "1 -historyStatus" HistoryState
-    HistoricalFact <|-- Group
-    HistoricalFact <|.. Membership
+    HistoricalFact <|-- Group:::classes
+    HistoricalFact <|.. Membership:::classes
     Membership *-- "1 -group" Group
-    Membership *-- "1 member" Member
+    Membership *-- "1 member" Member:::classes
     HistoricalFact <|-- Member
     MutableProperty o-- "0..* #prior" MutableProperty
     HistoricalFact <|.. Entity
-    DeletionFact --|> HistoricalFact
-    RestorationFact --|> HistoricalFact
+    DeletionFact:::classes --|> HistoricalFact
+    RestorationFact:::classes --|> HistoricalFact
 
     class HistoricalFact {
         <<interface>>
@@ -110,6 +110,12 @@ classDiagram
         <<interface>>
         +deletion() DeletionFact
     }
+
+    classDef bddtest fill:#3a5572,stroke:#3a5572,color:#fff
+	classDef impact fill:#fff,stroke:#e5302a,stroke-width:1px,color:#e5302a
+	classDef classes fill:#fff,stroke:#0e2a43,stroke-width:1px,color:#0e2a43
+	classDef goal fill:#0e2a43,stroke:#0e2a43,color:#fff
+
 ```
 
 ## Example of objects instantiations
