@@ -153,9 +153,9 @@ Presentation of a sample of instances which can be linked together according to 
 flowchart BT
     software(("#60;#60;Group#62;#62;<br/>Executable Software"))
     electronicdevice(("#60;#60;Group#62;#62;<br/>Manufactured Electronic Device"))
-
-    system(("#60;#60;Membership#62;#62;<br/>Digital System Asset")) --> software
+    system(("#60;#60;Membership#62;#62;<br/>Packaged Digital Product")) --> software
     system --> electronicdevice
+    application(("#60;#60;Entity#62;#62;<br/>Applicative Digital Twin Started")) --> system
 
 
 
