@@ -35,6 +35,7 @@ classDiagram
     HistoricalFact <|-- DeletionFact
     HistoricalFact <|.. EntityReference
     EntityReference *-- "1 -historyStatus" HistoryState
+    HistoricalFact <|.. MutableProperty
     HistoricalFact <|-- Group
     HistoricalFact <|.. Membership
     Membership *-- "1 -group" Group
