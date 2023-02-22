@@ -32,7 +32,6 @@ classDiagram
     Unmodifiable <|-- HistoricalFact
     HistoricalFact <|.. ChildFact
     Entity "1 -entity" --o MutableProperty
-    HistoricalFact <|.. EntityReference
     EntityReference *-- "1 -historyStatus" HistoryState
     HistoricalFact <|.. MutableProperty
     HistoricalFact <|-- Group
@@ -40,6 +39,7 @@ classDiagram
     Membership *-- "1 -group" Group
     Membership *-- "1 member" Member
     HistoricalFact <|-- Member
+    HistoricalFact <|.. EntityReference
     MutableProperty *-- "1 -historyStatus" HistoryState
     MutableProperty o-- "0..* #prior" MutableProperty
     HistoricalFact <|.. Entity
