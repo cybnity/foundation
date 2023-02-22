@@ -30,8 +30,10 @@ Several structural patterns are supporting the immutability and are reusable (e.
     'theme': 'base',
     'themeVariables': {
         'background': '#ffffff',
+        'fontFamily': 'arial',
         'fontSize': '18px',
         'primaryColor': '#fff',
+        'secondaryColor': '#0e2a43',
         'tertiaryBorderColor': '#0e2a43',
         'edgeLabelBackground':'#0e2a43',
         'lineColor': '#0e2a43',
