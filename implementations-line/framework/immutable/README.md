@@ -32,9 +32,9 @@ Several structural patterns are supporting the immutability and are reusable (e.
         'background': '#ffffff',
         'fontSize': '18px',
         'primaryColor': '#fff',
-        'tertiaryBorderColor': '#3a5572',
+        'tertiaryBorderColor': '#0e2a43',
         'edgeLabelBackground':'#0e2a43',
-        'lineColor': '#3a5572',
+        'lineColor': '#0e2a43',
         'tertiaryColor': '#fff'
     }
   }
