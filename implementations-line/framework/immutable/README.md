@@ -34,11 +34,11 @@ classDiagram
     HistoricalFact <|.. ChildFact
     HistoricalFact <|-- DeletionFact
     HistoricalFact <|.. EntityReference
-    EntityReference *-- "1" HistoryState : -historyStatus
+    EntityReference *-- "1 -historyStatus" HistoryState
     HistoricalFact <|-- Group
     HistoricalFact <|.. Membership
     HistoricalFact <|-- Member
-    Membership *-- "1" Group : -group
+    Membership *-- "1 -group" Group
 
     class HistoricalFact {
         <<interface>>
