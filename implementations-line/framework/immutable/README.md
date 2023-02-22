@@ -160,7 +160,8 @@ flowchart BT
     systemlog1(("#60;#60;ChildFact#62;#62;<br/>Monday System Info Log")) --> os
     systemlog2(("#60;#60;ChildFact#62;#62;<br/>Tuesday System Info Log")) --> os
     systemlog1deletion(("#60;#60;ChildFact#62;#62;<br/>Monday System Info Log Deletion")) --> systemlog1
-
+    systemlog3(("#60;#60;ChildFact#62;#62;<br/>Wednesday System Info Log")) --> os
+    style systemlog3 stroke-dasharray: 5 5
 
 
 
