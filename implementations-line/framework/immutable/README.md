@@ -44,6 +44,7 @@ classDiagram
     MutableProperty o-- "0..* #prior" MutableProperty
     HistoricalFact <|.. Entity
     HistoricalFact <|-- DeletionFact
+    HistoricalFact <|-- RestorationFact
 
     class HistoricalFact {
         <<interface>>
@@ -104,6 +105,10 @@ classDiagram
         <<abstract>>
         #changedAt : Temporal
         #value : HashMap~String, Object~
+    }
+    class RestorationFact {
+        <<interface>
+        +deletion() DeletionFact
     }
 ```
 
