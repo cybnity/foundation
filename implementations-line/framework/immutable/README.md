@@ -35,12 +35,12 @@ classDiagram
     HistoricalFact <|.. MutableProperty
     HistoricalFact <|.. EntityReference
     EntityReference *-- "1 -historyStatus" HistoryState
+    MutableProperty *-- "1 -historyStatus" HistoryState
     HistoricalFact <|-- Group
     HistoricalFact <|.. Membership
     Membership *-- "1 -group" Group
     Membership *-- "1 member" Member
     HistoricalFact <|-- Member
-    MutableProperty *-- "1 -historyStatus" HistoryState
     MutableProperty o-- "0..* #prior" MutableProperty
     HistoricalFact <|.. Entity
     HistoricalFact <|-- DeletionFact
