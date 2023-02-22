@@ -26,6 +26,8 @@ Several structural patterns are supporting the immutability and are reusable (e.
 
 ```mermaid
 classDiagram
+    HistoricalFact <|.. Entity
+    IdentifiableFact <|.. Entity
     class Identifier {
         <<interface>>
     }
@@ -39,8 +41,6 @@ classDiagram
     class IdentifiableFact {
         <<interface>>
     }
-    Entity ..|> HistoricalFact
-    Entity ..|> IdentifiableFact
     class Entity {
         <<fact>>
         #List~Identifier~ : identifierBy
