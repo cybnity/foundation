@@ -27,9 +27,9 @@ Several structural patterns are supporting the immutability and are reusable (e.
 ```mermaid
 classDiagram
     Unmodifiable <|-- Identifier
-    IdentifiableFact <|.. Entity
     HistoricalFact <|.. Entity
     IdentifiableFact <|.. ChildFact
+    IdentifiableFact <|.. Entity
     Unmodifiable <|-- HistoricalFact
     HistoricalFact <|.. ChildFact
     HistoricalFact <|-- DeletionFact
@@ -42,7 +42,7 @@ classDiagram
     Membership *-- "1 member" Member
     HistoricalFact <|-- Member
     MutableProperty *-- "1 -historyStatus" HistoryState
-    MutableProperty --o "0..* #prior" MutableProperty
+    MutableProperty o-- "0..* #prior" MutableProperty
 
     class HistoricalFact {
         <<interface>>
@@ -102,6 +102,7 @@ classDiagram
     class MutableProperty {
         <<abstract>>
         #changedAt : Temporal
+        #value : HashMap~String, Object~
     }
 ```
 
