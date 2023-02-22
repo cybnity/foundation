@@ -50,16 +50,16 @@ classDiagram
     }
     class DeletionFact {
         <<interface>>
-        +deleted() : Entity
+        +deleted() Entity
     }
     class Identifier {
         <<interface>>
-        +name() : String
-        +value() : Object
+        +name() String
+        +value() Object
     }
     class Unmodifiable {
         <<interface>>
-        +immutable() : Object
+        +immutable() Object
     }
 ```
 
