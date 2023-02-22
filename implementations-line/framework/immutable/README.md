@@ -33,7 +33,7 @@ classDiagram
     HistoricalFact <|.. ChildFact
     HistoricalFact <|-- DeletionFact
     HistoricalFact <|.. EntityReference
-    HistoryState "1 -historyStatus"--* EntityReference
+    EntityReference *-- "1 -historyStatus" HistoryState
     class HistoricalFact {
         <<interface>>
         +occuredAt() Temporal
