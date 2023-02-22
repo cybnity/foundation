@@ -151,7 +151,11 @@ Presentation of a sample of instances which can be linked together according to 
   }
 }%%
 flowchart BT
-    system(("#60;#60;ChildFact#62;#62;<br/>Started Digital System Asset")) --> software(("#60;#60;ChildFact#62;#62;<br/>Installed Software")) --> board(("#60;#60;Entity#62;#62;<br/>Manufactured Electronic Mainboard"))
+    software(("#60;#60;Group#62;#62;<br/>Executable Software"))
+    electronicdevice(("#60;#60;Group#62;#62;<br/>Manufactured Electronic Device"))
+
+    system(("#60;#60;Membership#62;#62;<br/>Digital System Asset")) --> software
+    system --> electronicdevice
 
 
 
