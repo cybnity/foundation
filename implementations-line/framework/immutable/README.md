@@ -129,8 +129,8 @@ classDiagram
     }
 ```
 
-## Example of objects instantiations
-Presentation of a sample of instances which can be linked together according to their roles into a facts graph.
+## Example of model instantiations
+Presentation of an example of instances representing facts history (as events graph) using a object model reusing the structural patterns.
 ```mermaid
 %%{
   init: {
@@ -166,5 +166,8 @@ flowchart BT
     runtimeconfig2 --> runtimeconfig
     runtimeconfig3(("#60;#60;MutableProperty#62;#62;<br/>Current Runtime Configuration V3")) --> application
     runtimeconfig3 --> runtimeconfig2
+    deviceOwnerAccount(("#60;#60;Entity#62;#62;<br/>Device Owner Account")) --> system
+    operatingSession(("#60;#60;EntityReference#62;#62;<br/>Activated Operating Session")) --> deviceOwnerAccount
+    operatingSession --> application
 
 ```
