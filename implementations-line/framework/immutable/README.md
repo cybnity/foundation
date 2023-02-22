@@ -155,7 +155,8 @@ flowchart BT
     electronicdevice(("#60;#60;Group#62;#62;<br/>Manufactured Electronic Device"))
     system(("#60;#60;Membership#62;#62;<br/>Packaged Digital Product")) --> software
     system --> electronicdevice
-    application(("#60;#60;Entity#62;#62;<br/>Applicative Digital Twin Started")) --> system
+    os(("#60;#60;ChildFact#62;#62;<br/>Operating System Started")) --> system
+    application(("#60;#60;ChildFact#62;#62;<br/>Applicative Digital Twin Started")) --> system
 
 
 
