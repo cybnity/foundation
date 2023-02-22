@@ -157,6 +157,9 @@ flowchart BT
     system --> electronicdevice
     os(("#60;#60;ChildFact#62;#62;<br/>Operating System Started")) --> system
     application(("#60;#60;ChildFact#62;#62;<br/>Applicative Digital Twin Started")) --> system
+    systemlog1(("#60;#60;ChildFact#62;#62;<br/>Monday System Info Log")) --> os
+    systemlog2(("#60;#60;ChildFact#62;#62;<br/>Tuesday System Info Log")) --> os
+    systemlog1deletion(("#60;#60;ChildFact#62;#62;<br/>Monday System Info Log Deletion")) --> systemlog1
 
 
 
