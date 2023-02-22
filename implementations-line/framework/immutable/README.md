@@ -43,8 +43,8 @@ classDiagram
     HistoricalFact <|-- Member
     MutableProperty o-- "0..* #prior" MutableProperty
     HistoricalFact <|.. Entity
-    HistoricalFact <|-- DeletionFact
-    HistoricalFact <|-- RestorationFact
+    DeletionFact --|> HistoricalFact
+    RestorationFact --|> HistoricalFact
 
     class HistoricalFact {
         <<interface>>
