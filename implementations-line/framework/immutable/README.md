@@ -28,18 +28,9 @@ Several structural patterns are supporting the immutability and are reusable (e.
 classDiagram
     HistoricalFact <|.. Entity
     IdentifiableFact <|.. Entity
-    HistoricalFact <|.. ChildFact
     IdentifiableFact <|.. ChildFact
+    HistoricalFact <|.. ChildFact
     HistoricalFact <|-- DeletionFact
-    class Identifier {
-        <<interface>>
-        +name() : String
-        +value() : Object
-    }
-    class Unmodifiable {
-        <<interface>>
-        +immutable() : Object
-    }
     class HistoricalFact {
         <<interface>>
     }
@@ -60,6 +51,15 @@ classDiagram
     class DeletionFact {
         <<interface>>
         +deleted() : Entity
+    }
+    class Identifier {
+        <<interface>>
+        +name() : String
+        +value() : Object
+    }
+    class Unmodifiable {
+        <<interface>>
+        +immutable() : Object
     }
 ```
 
