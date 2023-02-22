@@ -38,6 +38,7 @@ classDiagram
     HistoricalFact <|-- Group
     HistoricalFact <|.. Membership
     HistoricalFact <|-- Member
+    Membership *-- "1" Group : -group
 
     class HistoricalFact {
         <<interface>>
