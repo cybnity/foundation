@@ -46,73 +46,73 @@ classDiagram
     DeletionFact --|> HistoricalFact
     RestorationFact --|> HistoricalFact
 
-    class HistoricalFact:::classes {
+    class HistoricalFact:::cssClass {
         <<interface>>
         +occuredAt() Temporal
     }
-    class IdentifiableFact:::classes {
+    class IdentifiableFact:::cssClass {
         <<interface>>
         +identified() Identifier
     }
-    class Entity:::classes {
+    class Entity:::cssClass {
         <<abstract>>
         #identifierBy : List~Identifier~
         #createdAt : Temporal
     }
-    class ChildFact:::classes {
+    class ChildFact:::cssClass {
         <<abstract>>
         #parent : Entity
         #identifierBy : List~Identifier~
         #createdAt : Temporal
     }
-    class DeletionFact:::classes {
+    class DeletionFact:::cssClass {
         <<interface>>
         +deleted() Entity
     }
-    class Unmodifiable:::classes {
+    class Unmodifiable:::cssClass {
         <<interface>>
         +immutable() Object
     }
-    class Identifier:::classes {
+    class Identifier:::cssClass {
         <<interface>>
         +name() String
         +value() Object
     }
-    class HistoryState:::classes {
+    class HistoryState:::cssClass {
         <<enumeration>>
         ARCHIVED, MERGED, COMMITTED
     }
-    class EntityReference:::classes {
+    class EntityReference:::cssClass {
         <<abstract>>
         #entity : Entity
         #referenced : Entity
         #prior : Set~EntityReference~
         #changedAt : Temporal
     }
-    class Group:::classes {
+    class Group:::cssClass {
         <<interface>>
         +identified() Identifier
     }
-    class Member:::classes {
+    class Member:::cssClass {
         <<interface>>
         +identified() Identifier
     }
-    class Membership:::classes {
+    class Membership:::cssClass {
         <<abstract>>
         #createdAt : Temporal
     }
-    class MutableProperty:::classes {
+    class MutableProperty:::cssClass {
         <<abstract>>
         #changedAt : Temporal
         #value : HashMap~String, Object~
     }
-    class RestorationFact:::classes {
+    class RestorationFact:::cssClass {
         <<interface>>
         +deletion() DeletionFact
     }
 
     <style>
-        .classes > rect {
+        .cssClass > rect {
             fill: #fff;
             stroke: #0e2a43;
             stroke-width: 1px;
