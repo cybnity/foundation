@@ -43,6 +43,7 @@ classDiagram
     MutableProperty *-- "1 -historyStatus" HistoryState
     MutableProperty o-- "0..* #prior" MutableProperty
     HistoricalFact <|.. Entity
+    Entity "1 -entity" --o MutableProperty
 
     class HistoricalFact {
         <<interface>>
