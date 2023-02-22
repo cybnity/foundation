@@ -26,94 +26,102 @@ Several structural patterns are supporting the immutability and are reusable (e.
 
 ```mermaid
 classDiagram
-    Unmodifiable:::classes <|-- Identifier:::classes
-    IdentifiableFact:::classes <|.. ChildFact:::classes
-    IdentifiableFact <|.. Entity:::classes
-    Unmodifiable <|-- HistoricalFact:::classes
+    Unmodifiable <|-- Identifier
+    IdentifiableFact <|.. ChildFact
+    IdentifiableFact <|.. Entity
+    Unmodifiable <|-- HistoricalFact
     HistoricalFact <|.. ChildFact
-    Entity "1 -entity" --o MutableProperty:::classes
+    Entity "1 -entity" --o MutableProperty
     HistoricalFact <|.. MutableProperty
-    HistoricalFact <|.. EntityReference:::classes
-    EntityReference *-- "1 -historyStatus" HistoryState:::classes
+    HistoricalFact <|.. EntityReference
+    EntityReference *-- "1 -historyStatus" HistoryState
     MutableProperty *-- "1 -historyStatus" HistoryState
-    HistoricalFact <|-- Group:::classes
-    HistoricalFact <|.. Membership:::classes
+    HistoricalFact <|-- Group
+    HistoricalFact <|.. Membership
     Membership *-- "1 -group" Group
-    Membership *-- "1 member" Member:::classes
+    Membership *-- "1 member" Member
     HistoricalFact <|-- Member
     MutableProperty o-- "0..* #prior" MutableProperty
     HistoricalFact <|.. Entity
-    DeletionFact:::classes --|> HistoricalFact
-    RestorationFact:::classes --|> HistoricalFact
+    DeletionFact --|> HistoricalFact
+    RestorationFact --|> HistoricalFact
 
-    class HistoricalFact {
+    class HistoricalFact:::classes {
         <<interface>>
         +occuredAt() Temporal
     }
-    class IdentifiableFact {
+    class IdentifiableFact:::classes {
         <<interface>>
         +identified() Identifier
     }
-    class Entity {
+    class Entity:::classes {
         <<abstract>>
         #identifierBy : List~Identifier~
         #createdAt : Temporal
     }
-    class ChildFact {
+    class ChildFact:::classes {
         <<abstract>>
         #parent : Entity
         #identifierBy : List~Identifier~
         #createdAt : Temporal
     }
-    class DeletionFact {
+    class DeletionFact:::classes {
         <<interface>>
         +deleted() Entity
     }
-    class Unmodifiable {
+    class Unmodifiable:::classes {
         <<interface>>
         +immutable() Object
     }
-    class Identifier {
+    class Identifier:::classes {
         <<interface>>
         +name() String
         +value() Object
     }
-    class HistoryState {
+    class HistoryState:::classes {
         <<enumeration>>
         ARCHIVED, MERGED, COMMITTED
     }
-    class EntityReference {
+    class EntityReference:::classes {
         <<abstract>>
         #entity : Entity
         #referenced : Entity
         #prior : Set~EntityReference~
         #changedAt : Temporal
     }
-    class Group {
+    class Group:::classes {
         <<interface>>
         +identified() Identifier
     }
-    class Member {
+    class Member:::classes {
         <<interface>>
         +identified() Identifier
     }
-    class Membership {
+    class Membership:::classes {
         <<abstract>>
         #createdAt : Temporal
     }
-    class MutableProperty {
+    class MutableProperty:::classes {
         <<abstract>>
         #changedAt : Temporal
         #value : HashMap~String, Object~
     }
-    class RestorationFact {
+    class RestorationFact:::classes {
         <<interface>>
         +deletion() DeletionFact
     }
 
+    <style>
+        .classes > rect {
+            fill: #fff;
+            stroke: #0e2a43;
+            stroke-width: 1px;
+            color: #0e2a43;
+        }
+    </style>
+
     classDef bddtest fill:#3a5572,stroke:#3a5572,color:#fff
 	classDef impact fill:#fff,stroke:#e5302a,stroke-width:1px,color:#e5302a
-	classDef classes fill:#fff,stroke:#0e2a43,stroke-width:1px,color:#0e2a43
 	classDef goal fill:#0e2a43,stroke:#0e2a43,color:#fff
 
 ```
