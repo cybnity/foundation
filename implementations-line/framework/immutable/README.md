@@ -33,7 +33,7 @@ Several structural patterns are supporting the immutability and are reusable (e.
         'fontFamily': 'arial',
         'fontSize': '18px',
         'primaryColor': '#fff',
-        'secondaryColor': '#0e2a43',
+        'primaryBorderColor': '#0e2a43',
         'secondaryBorderColor': '#0e2a43',
         'tertiaryBorderColor': '#0e2a43',
         'edgeLabelBackground':'#0e2a43',
