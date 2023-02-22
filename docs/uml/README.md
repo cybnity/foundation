@@ -40,7 +40,7 @@ Source file named "Design view":
       - application layer
       - domain layer
       - infrastructure layer
-    - [common](design)
+    - [framework](design/framework)
     - [access-control](design/access-control)
     - [api](design/api)
     - [api-management](design/api-management)
