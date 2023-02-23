@@ -15,6 +15,7 @@
 	<modules>
 		<module>support</module>
 		<module>immutable</module>
+		<module>domain</module>
 		<module>java-tee-container</module>
 		<module>services-registry-container</module>
 	</modules>

@@ -1,14 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>common</artifactId>
-		<groupId>org.cybnity.infrastructure</groupId>
+		<artifactId>impl</artifactId>
+		<groupId>org.cybnity.components.framework</groupId>
 		<version>${revision}</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<groupId>org.cybnity.infrastructure.common</groupId>
-	<artifactId>event</artifactId>
+	<groupId>org.cybnity.framework</groupId>
+	<artifactId>domain</artifactId>
 	<version>${revision}</version>
 	<packaging>jar</packaging>
-	<name>- Infrastructure events component</name>
+	<name>- Domain framework library</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.cybnity.framework</groupId>
+			<artifactId>support</artifactId>
+			<version>${revision}</version>
+		</dependency>
+	</dependencies>
 </project>
