@@ -11,11 +11,15 @@
 	<version>${revision}</version>
 	<packaging>jar</packaging>
 	<name>- Domain framework library</name>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.cybnity.framework</groupId>
 			<artifactId>support</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cybnity.framework</groupId>
+			<artifactId>immutable</artifactId>
 			<version>${revision}</version>
 		</dependency>
 	</dependencies>

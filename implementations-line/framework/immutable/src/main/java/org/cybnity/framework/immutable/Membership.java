@@ -91,4 +91,12 @@ public abstract class Membership implements HistoricalFact {
 	return (Group) this.group.immutable();
     }
 
+    /**
+     * Default implementation of fact date when it was created.
+     */
+    @Override
+    public OffsetDateTime occurredAt() {
+	// Return immutable value of the fact time
+	return OffsetDateTime.parse(this.createdAt.toString());
+    }
 }

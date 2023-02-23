@@ -36,10 +36,11 @@ public abstract class Entity implements HistoricalFact, IdentifiableFact {
 
     /**
      * Required identification elements (e.g that can be combined to define a
-     * natural identity of this historical fact). Related patterns: when an entity
-     * includes the identity of its parent, it shall follows the Ownership pattern.
-     * While the entity's fact cannot be deleted, the Delete pattern simulates the
-     * removal of this entity.
+     * natural identity of this historical fact).
+     * 
+     * Related patterns: when an entity includes the identity of its parent, it
+     * shall follows the Ownership pattern. While the entity's fact cannot be
+     * deleted, the Delete pattern simulates the removal of this entity.
      * 
      * This collection implementation contains non-duplicable elements at every
      * given time.
@@ -123,7 +124,7 @@ public abstract class Entity implements HistoricalFact, IdentifiableFact {
     @Override
     public OffsetDateTime occurredAt() {
 	// Return immutable value of the fact time
-	return this.createdAt;
+	return OffsetDateTime.parse(this.createdAt.toString());
     }
 
     /**

@@ -193,4 +193,12 @@ public abstract class MutableProperty implements HistoricalFact {
 	this.historyStatus = state;
     }
 
+    /**
+     * Default implementation of fact date when it was created.
+     */
+    @Override
+    public OffsetDateTime occurredAt() {
+	// Return immutable value of the fact time
+	return OffsetDateTime.parse(this.changedAt.toString());
+    }
 }

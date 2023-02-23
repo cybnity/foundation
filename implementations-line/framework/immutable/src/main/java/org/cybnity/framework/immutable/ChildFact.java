@@ -181,7 +181,7 @@ public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
     @Override
     public OffsetDateTime occurredAt() {
 	// Return immutable value of the fact time
-	return this.createdAt;
+	return OffsetDateTime.parse(this.createdAt.toString());
     }
 
     /**
