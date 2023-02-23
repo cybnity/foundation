@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.cybnity</groupId>
 		<artifactId>techstack</artifactId>
-		<version>0.10.0</version>
+		<version>0.13.0</version>
 	</parent>
 
 	<groupId>org.cybnity</groupId>
@@ -37,36 +37,36 @@
 	      	</snapshotRepository> -->
 		<!-- CYBNITY Open Source releases distribution -->
 		<repository>
-        		<id>space-cybnity-open-source</id>
+			<id>space-cybnity-open-source</id>
 			<name>CYBNITY OS Releases</name>
 			<uniqueVersion>false</uniqueVersion>
-        		<url>https://maven.pkg.jetbrains.space/cybnity/p/cybnity-os/cybnity-open-source</url>
+				<url>https://maven.pkg.jetbrains.space/cybnity/p/cybnity-os/cybnity-open-source</url>
 			<layout>default</layout>
-    		</repository>
+		</repository>
 	</distributionManagement>
 
 	<repositories>
-    		<repository>
-        		<id>space-cybnity-open-source</id>
-        		<url>https://maven.pkg.jetbrains.space/cybnity/p/cybnity-os/cybnity-open-source</url>
-			<snapshots>
-			    <enabled>false</enabled>
-			</snapshots>
-			<releases>
-			    <enabled>true</enabled>
-			</releases>
-    		</repository>
 		<repository>
-	      		<id>github</id>
-	      		<name>GitHub Packages</name>
-	      		<url>https://maven.pkg.github.com/cybnity/foundation</url>
+			<id>space-cybnity-open-source</id>
+			<url>https://maven.pkg.jetbrains.space/cybnity/p/cybnity-os/cybnity-open-source</url>
 			<snapshots>
-			    <enabled>true</enabled>
+				<enabled>false</enabled>
 			</snapshots>
 			<releases>
-			    <enabled>true</enabled>
+				<enabled>true</enabled>
 			</releases>
-	      	</repository>
+		</repository>
+		<repository>
+			<id>github</id>
+			<name>GitHub Packages</name>
+			<url>https://maven.pkg.github.com/cybnity/foundation</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
 	</repositories>
 
 	<pluginRepositories>
@@ -119,4 +119,8 @@
 		</developer>
 	</developers>
 
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/cybnity/foundation/issues/</url>
+	</issueManagement>
 </project>
