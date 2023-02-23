@@ -22,7 +22,7 @@ Several structural patterns are supporting the immutability and are reusable (e.
 |Ownership|Special case of the Entity pattern, where the entity's identifiers include the identity of an owner|
 |RestorationFact|Restoration fact references a prior deletion. Dxtension of the Delete pattern|
 
-## Structure Models
+## STRUCTURE MODELS
 
 ```mermaid
 %%{
@@ -129,7 +129,7 @@ classDiagram
     }
 ```
 
-## Example of model instantiations
+## EXAMPLE OF INSTANTIATIONS
 Presentation of an example of instances representing facts history (as events graph) using a object model reusing the structural patterns.
 ```mermaid
 %%{
@@ -175,3 +175,8 @@ flowchart BT
     interruptedSession --> operatingSession
 
 ```
+
+# RELEASES HISTORY
+## V0 - FRAMEWORK
+### Changes
+The full list of [changes](v0-changes.md).
