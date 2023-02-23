@@ -6,7 +6,7 @@ Several structural patterns are supporting the domain (e.g event sourcing) and a
 
 |Class Type|Motivation|
 | :-- | :-- |
-| | |
+|DomainEvent|Determine something that has happened in the system (e.g typically as a result of a command, or a change observed regarding a bounded context)|
 
 ## STRUCTURE MODELS
 
@@ -29,7 +29,18 @@ Several structural patterns are supporting the domain (e.g event sourcing) and a
   }
 }%%
 classDiagram
+    HistoricalFact <:-- DomainEvent
+    IdentificableFact <:-- DomainEvent
     class DomainEvent {
+        <<abstract>>
+        -occuredOn : OffsetDateTime
+        +DomainEvent()
+        +DomainEvent(Entity uid)
+    }
+    class HistoricalFact {
+        <<interface>>
+    }
+    class IdentifiableFact {
         <<interface>>
     }
 
