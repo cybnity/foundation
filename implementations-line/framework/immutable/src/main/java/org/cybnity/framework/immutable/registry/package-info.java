@@ -1,0 +1,1 @@
+package org.cybnity.framework.immutable.registry;
