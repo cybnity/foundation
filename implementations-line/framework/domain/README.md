@@ -30,7 +30,7 @@ Several structural patterns are supporting the domain (e.g event sourcing) and a
 }%%
 classDiagram
     HistoricalFact <|.. DomainEvent
-    IdentificableFact <|.. DomainEvent
+    IdentifiableFact <|.. DomainEvent
     class DomainEvent {
         <<abstract>>
         -occuredOn : OffsetDateTime
