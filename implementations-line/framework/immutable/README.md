@@ -177,6 +177,5 @@ flowchart BT
 ```
 
 # RELEASES HISTORY
-## V0 - FRAMEWORK
-### Changes
+### V0 - FRAMEWORK
 The full list of [changes](v0-changes.md).
