@@ -193,6 +193,8 @@ public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
      */
     @Override
     public boolean equals(Object fact) {
+	if (fact == this)
+	    return true;
 	if (fact != null && IdentifiableFact.class.isAssignableFrom(fact.getClass())) {
 	    // Compare equality based on each instance's identifier (unique or based on
 	    // identifying informations combination)

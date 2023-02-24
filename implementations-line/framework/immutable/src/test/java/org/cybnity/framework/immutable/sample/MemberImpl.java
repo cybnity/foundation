@@ -1,4 +1,4 @@
-package org.cybnity.framework.immutable.data;
+package org.cybnity.framework.immutable.sample;
 
 import java.time.OffsetDateTime;
 

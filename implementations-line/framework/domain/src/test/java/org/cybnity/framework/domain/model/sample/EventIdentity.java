@@ -1,4 +1,4 @@
-package org.cybnity.framework.immutable.data;
+package org.cybnity.framework.domain.model.sample;
 
 import java.util.LinkedHashSet;
 
@@ -6,18 +6,18 @@ import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 
 /**
- * Sample of simple Entity.
+ * Sample of simple indentifying information.
  * 
  * @author olivier
  *
  */
-public class EntityImpl extends Entity {
+public class EventIdentity extends Entity {
 
-    public EntityImpl(Identifier id) throws IllegalArgumentException {
+    public EventIdentity(Identifier id) throws IllegalArgumentException {
 	super(id);
     }
 
-    public EntityImpl(LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
+    public EventIdentity(LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
 	super(identifiers);
     }
 
@@ -28,13 +28,13 @@ public class EntityImpl extends Entity {
 	    combinedId.append(id.value());
 	}
 	// Return combined identifier
-	return new IdentifierImpl("UUID", combinedId.toString());
+	return new SimpleUIDIdentifier("UUID", combinedId.toString());
     }
 
     @Override
     public Object immutable() throws CloneNotSupportedException {
 	LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
-	return new EntityImpl(ids);
+	return new EventIdentity(ids);
     }
 
 }

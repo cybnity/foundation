@@ -1,23 +1,24 @@
-package org.cybnity.framework.immutable.data;
+package org.cybnity.framework.immutable.sample;
 
 import java.time.OffsetDateTime;
 
-import org.cybnity.framework.immutable.Group;
 import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.Member;
 
 /**
- * Example of logical group regarding an organization.
+ * Example of member type regarding an organization.
  * 
  * @author olivier
  *
  */
-public class Department implements Group {
-    private String label;
+public class Employee implements Member {
+
+    private String name;
     private Identifier id;
     private OffsetDateTime at;
 
-    public Department(String label, Identifier id) {
-	this.label = label;
+    public Employee(String name, Identifier id) {
+	this.name = name;
 	this.id = id;
 	this.at = OffsetDateTime.now();
     }
@@ -34,6 +35,7 @@ public class Department implements Group {
 
     @Override
     public Object immutable() throws CloneNotSupportedException {
-	return new Department(this.label, this.id).at = this.at;
+	return new Employee(this.name, this.id).at = this.at;
     }
+
 }

@@ -1,46 +1,40 @@
-package org.cybnity.framework.domain.model;
+package org.cybnity.framework.domain;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 
-import org.cybnity.framework.domain.Versionable;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Evaluations;
-import org.cybnity.framework.immutable.HistoricalFact;
 import org.cybnity.framework.immutable.IdentifiableFact;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Determine something that has happened in the system (e.g typically as a
- * result of a command, or a change observed regarding a bounded context). The
- * facts transmitted, treated and recorded as events can be tracked. The
- * interactions between the components of a domain and users are allowed via
- * immutable events.
+ * Imperative element that is a request for the system to perform a task of
+ * action. Both the sender and the receiver of a comman should be in the same
+ * bounded context.
  * 
- * By convention, a domain event is named according to <<EventType>><<Fact
- * State>> (e.g OrderConfirmed).
+ * A command is identifiable.
  * 
- * An event can be used to read one or several informations of a system, to
- * change a status of a domain model or to be informed of a changed status
- * detected from an element of a bounded context (e.g data object property).
- * 
- * Related patterns: Segregration principle between events that are responsible
- * of write actions (e.g CommandEvent) and others that are responsible of read
- * requests (e.g Query) via Command and Query Responsibility Segregation (CQRS)
- * pattern.
+ * Each command is typically sent to a specific recipient (generally an
+ * aggregate instance) that is handled to perform the requested action.
  * 
  * @author olivier
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public abstract class DomainEvent implements HistoricalFact, IdentifiableFact, Versionable, Serializable {
+public abstract class Command implements IdentifiableFact, Versionable, Serializable {
 
     /**
      * Version of this class type.
      */
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Identifying information of this event.
+     */
+    protected Entity identifiedBy;
 
     /**
      * As event name reflect the past nature of the occurence, an event is not
@@ -51,14 +45,9 @@ public abstract class DomainEvent implements HistoricalFact, IdentifiableFact, V
     protected OffsetDateTime occuredOn;
 
     /**
-     * Unique identifying information of this event.
-     */
-    protected Entity identifiedBy;
-
-    /**
      * Default constructor of unidentifiable event.
      */
-    public DomainEvent() {
+    public Command() {
 	// Create immutable time of this event creation
 	this.occuredOn = OffsetDateTime.now();
     }
@@ -66,9 +55,9 @@ public abstract class DomainEvent implements HistoricalFact, IdentifiableFact, V
     /**
      * Default constructor of an identifiable event.
      * 
-     * @param identifiedBy Optional unique identity of this event.
+     * @param identifiedBy Optional unique identifier of this event.
      */
-    public DomainEvent(Entity identifiedBy) {
+    public Command(Entity identifiedBy) {
 	this();
 	this.identifiedBy = identifiedBy;
     }
@@ -114,8 +103,7 @@ public abstract class DomainEvent implements HistoricalFact, IdentifiableFact, V
     /**
      * Default implementation of even time when it was created.
      */
-    @Override
-    public OffsetDateTime occurredAt() {
+    public OffsetDateTime occurredOn() {
 	// Return copy of the fact time
 	return OffsetDateTime.parse(this.occuredOn.toString());
     }

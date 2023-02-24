@@ -1,4 +1,4 @@
-package org.cybnity.framework.immutable.data;
+package org.cybnity.framework.immutable.sample;
 
 import org.cybnity.framework.immutable.Identifier;
 
@@ -20,7 +20,7 @@ public class IdentifierImpl implements Identifier {
 
     @Override
     public Object immutable() throws CloneNotSupportedException {
-	return new IdentifierImpl(new String(name), new String(value));
+	return new IdentifierImpl(name.toString(), value.toString());
     }
 
     @Override
@@ -42,6 +42,8 @@ public class IdentifierImpl implements Identifier {
      */
     @Override
     public boolean equals(Object obj) {
+	if (obj == this)
+	    return true;
 	if (obj != null && Identifier.class.isAssignableFrom(obj.getClass())) {
 	    Identifier compared = (Identifier) obj;
 	    // Compare equality based on each instance's identifier (unique or based on
