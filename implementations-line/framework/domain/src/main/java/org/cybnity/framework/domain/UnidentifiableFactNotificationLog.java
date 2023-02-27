@@ -8,7 +8,6 @@ import java.util.List;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.HistoricalFact;
 import org.cybnity.framework.immutable.Identifier;
-import org.cybnity.framework.immutable.sample.IdentifierImpl;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -95,7 +94,7 @@ public class UnidentifiableFactNotificationLog extends Entity {
 	}
 	// Return combined identifier normally only based on unique value found in
 	// identifiers list
-	return new IdentifierImpl(IDENTIFIER_NAME, combinedId.toString());
+	return new EventIdentifierStringBased(IDENTIFIER_NAME, combinedId.toString());
     }
 
 }
