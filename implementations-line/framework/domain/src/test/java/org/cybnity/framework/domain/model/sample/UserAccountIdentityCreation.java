@@ -1,26 +1,28 @@
-package org.cybnity.framework.immutable.sample;
+package org.cybnity.framework.domain.model.sample;
 
 import java.io.Serializable;
 import java.util.LinkedHashSet;
 
+import org.cybnity.framework.domain.EventIdentifierStringBased;
+import org.cybnity.framework.domain.SampleDataEnum;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 
 /**
- * Sample of simple Entity.
+ * Simple identifying information regarding a user account creation.
  * 
  * @author olivier
  *
  */
-public class EntityImpl extends Entity {
+public class UserAccountIdentityCreation extends Entity {
 
     private static final long serialVersionUID = 1L;
 
-    public EntityImpl(Identifier id) throws IllegalArgumentException {
+    public UserAccountIdentityCreation(Identifier id) throws IllegalArgumentException {
 	super(id);
     }
 
-    public EntityImpl(LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
+    public UserAccountIdentityCreation(LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
 	super(identifiers);
     }
 
@@ -31,13 +33,13 @@ public class EntityImpl extends Entity {
 	    combinedId.append(id.value());
 	}
 	// Return combined identifier
-	return new IdentifierImpl("UUID", combinedId.toString());
+	return new EventIdentifierStringBased(SampleDataEnum.IDENTIFIER_NAME_TECH.name(), combinedId.toString());
     }
 
     @Override
     public Serializable immutable() throws CloneNotSupportedException {
 	LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
-	return new EntityImpl(ids);
+	return new UserAccountIdentityCreation(ids);
     }
 
 }

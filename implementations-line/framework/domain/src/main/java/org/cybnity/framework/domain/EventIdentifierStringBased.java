@@ -1,26 +1,29 @@
-package org.cybnity.framework.domain.model.sample;
+package org.cybnity.framework.domain;
+
+import java.io.Serializable;
 
 import org.cybnity.framework.immutable.Identifier;
 
 /**
- * Sample of identifier implementation type only based on a single text chain.
+ * Identifying information type that is based on a single text chain.
  * 
  * @author olivier
  *
  */
-public class SimpleUIDIdentifier implements Identifier {
+public class EventIdentifierStringBased implements Identifier {
 
+    private static final long serialVersionUID = 1L;
     private String value;
     private String name;
 
-    public SimpleUIDIdentifier(String name, String value) {
+    public EventIdentifierStringBased(String name, String value) {
 	this.name = name;
 	this.value = value;
     }
 
     @Override
-    public Object immutable() throws CloneNotSupportedException {
-	return new SimpleUIDIdentifier(name.toString(), value.toString());
+    public Serializable immutable() throws CloneNotSupportedException {
+	return new EventIdentifierStringBased(name.toString(), value.toString());
     }
 
     @Override
@@ -29,7 +32,7 @@ public class SimpleUIDIdentifier implements Identifier {
     }
 
     @Override
-    public Object value() {
+    public Serializable value() {
 	return this.value;
     }
 

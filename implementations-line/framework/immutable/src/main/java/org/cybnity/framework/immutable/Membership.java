@@ -34,6 +34,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public abstract class Membership implements HistoricalFact {
 
+    private static final long serialVersionUID = 1L;
     /**
      * When the relation was created.
      */

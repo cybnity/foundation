@@ -1,5 +1,7 @@
 package org.cybnity.framework.immutable;
 
+import java.io.Serializable;
+
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -18,5 +20,5 @@ public interface Unmodifiable {
      * @return An unmodifiable version of this instance.
      * @throws CloneNotSupportedException When impossible cloned instance.
      */
-    public Object immutable() throws CloneNotSupportedException;
+    public Serializable immutable() throws CloneNotSupportedException;
 }

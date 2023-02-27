@@ -1,5 +1,6 @@
 package org.cybnity.framework.immutable.sample;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
@@ -14,6 +15,8 @@ import org.cybnity.framework.immutable.Identifier;
  *
  */
 public class ChildAggregate extends ChildFact {
+
+    private static final long serialVersionUID = 1L;
 
     public ChildAggregate(Entity predecessor, Identifier id) throws IllegalArgumentException {
 	super(predecessor, id);
@@ -34,7 +37,7 @@ public class ChildAggregate extends ChildFact {
     }
 
     @Override
-    public Object immutable() throws CloneNotSupportedException {
+    public Serializable immutable() throws CloneNotSupportedException {
 	LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
 	return new ChildAggregate(this.parent(), ids);
     }

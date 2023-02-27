@@ -1,12 +1,12 @@
-package org.cybnity.framework.domain.model.application;
+package org.cybnity.framework.domain.application;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.cybnity.framework.domain.model.application.sample.EventStoreImpl;
-import org.cybnity.framework.domain.model.application.sample.EventStored;
-import org.cybnity.framework.domain.model.sample.EventIdentity;
-import org.cybnity.framework.domain.model.sample.SimpleUIDIdentifier;
+import org.cybnity.framework.domain.EventIdentifierStringBased;
+import org.cybnity.framework.domain.application.sample.EventStoreImpl;
+import org.cybnity.framework.domain.application.sample.EventStored;
 import org.cybnity.framework.domain.model.sample.UserAccountCreationCommitted;
+import org.cybnity.framework.domain.model.sample.UserAccountIdentityCreation;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.junit.After;
@@ -36,8 +36,8 @@ public class EventStoreUseCaseTest {
     @Test
     public void givenIdentifiedEvent_whenAppended_thenPersistedEntry() {
 	// Create an identifiable event
-	Identifier id = new SimpleUIDIdentifier("uid", "KJGF8765");
-	Entity identity = new EventIdentity(id);
+	Identifier id = new EventIdentifierStringBased("uid", "KJGF8765");
+	Entity identity = new UserAccountIdentityCreation(id);
 	UserAccountCreationCommitted event = new UserAccountCreationCommitted(identity);
 	// Add into a store
 	store.append(event);

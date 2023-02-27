@@ -1,5 +1,7 @@
 package org.cybnity.framework.immutable;
 
+import java.io.Serializable;
+
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -14,7 +16,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public interface Identifier extends Unmodifiable {
+public interface Identifier extends Unmodifiable, Serializable {
 
     /**
      * A name that identify this identity instance.
@@ -30,6 +32,6 @@ public interface Identifier extends Unmodifiable {
      *         a value chain that represent the identity; or java.lang.Long
      *         regarding a number.
      */
-    public Object value();
+    public Serializable value();
 
 }

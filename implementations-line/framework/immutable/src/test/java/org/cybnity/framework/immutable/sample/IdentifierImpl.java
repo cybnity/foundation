@@ -1,5 +1,7 @@
 package org.cybnity.framework.immutable.sample;
 
+import java.io.Serializable;
+
 import org.cybnity.framework.immutable.Identifier;
 
 /**
@@ -10,6 +12,7 @@ import org.cybnity.framework.immutable.Identifier;
  */
 public class IdentifierImpl implements Identifier {
 
+    private static final long serialVersionUID = 1L;
     private String value;
     private String name;
 
@@ -19,7 +22,7 @@ public class IdentifierImpl implements Identifier {
     }
 
     @Override
-    public Object immutable() throws CloneNotSupportedException {
+    public Serializable immutable() throws CloneNotSupportedException {
 	return new IdentifierImpl(name.toString(), value.toString());
     }
 
@@ -29,7 +32,7 @@ public class IdentifierImpl implements Identifier {
     }
 
     @Override
-    public Object value() {
+    public Serializable value() {
 	return this.value;
     }
 

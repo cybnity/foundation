@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import org.cybnity.framework.domain.model.sample.EventIdentity;
-import org.cybnity.framework.domain.model.sample.SimpleUIDIdentifier;
+import org.cybnity.framework.domain.EventIdentifierStringBased;
 import org.cybnity.framework.domain.model.sample.UserAccountCreationCommitted;
+import org.cybnity.framework.domain.model.sample.UserAccountIdentityCreation;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.junit.Test;
@@ -31,8 +31,8 @@ public class DomainEventUseCaseTest {
     @Test
     public void givenIdentifiedEvent_whenConstructor_thenIdentifierAttached() {
 	// Create an identifiable event
-	Identifier id = new SimpleUIDIdentifier("uid", "KJGF8765");
-	Entity identity = new EventIdentity(id);
+	Identifier id = new EventIdentifierStringBased("uid", "KJGF8765");
+	Entity identity = new UserAccountIdentityCreation(id);
 	UserAccountCreationCommitted event = new UserAccountCreationCommitted(identity);
 	// Verify that identity is maintained
 	assertNotNull(event.identified());

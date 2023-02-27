@@ -1,5 +1,6 @@
 package org.cybnity.framework.immutable.sample;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,6 +24,7 @@ import org.cybnity.framework.immutable.MutableProperty;
  */
 public class PhysicalAddressProperty extends MutableProperty {
 
+    private static final long serialVersionUID = 1L;
     private OffsetDateTime versionedAt;
 
     /**
@@ -51,7 +53,7 @@ public class PhysicalAddressProperty extends MutableProperty {
     }
 
     @Override
-    public Object immutable() throws CloneNotSupportedException {
+    public Serializable immutable() throws CloneNotSupportedException {
 	return null;
     }
 

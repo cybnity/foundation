@@ -1,5 +1,6 @@
 package org.cybnity.framework.immutable.sample;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 import org.cybnity.framework.immutable.Identifier;
@@ -13,6 +14,7 @@ import org.cybnity.framework.immutable.Member;
  */
 public class Employee implements Member {
 
+    private static final long serialVersionUID = 1L;
     private String name;
     private Identifier id;
     private OffsetDateTime at;
@@ -34,7 +36,7 @@ public class Employee implements Member {
     }
 
     @Override
-    public Object immutable() throws CloneNotSupportedException {
+    public Serializable immutable() throws CloneNotSupportedException {
 	return new Employee(this.name, this.id).at = this.at;
     }
 

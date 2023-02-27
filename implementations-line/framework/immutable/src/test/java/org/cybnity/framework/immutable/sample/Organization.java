@@ -1,5 +1,6 @@
 package org.cybnity.framework.immutable.sample;
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 
 import org.cybnity.framework.immutable.Identifier;
@@ -13,6 +14,7 @@ import org.cybnity.framework.immutable.Identifier;
  */
 public class Organization extends EntityImpl {
 
+    private static final long serialVersionUID = 1L;
     private final String unmodifiableOrganizationName;
 
     public Organization(Identifier id, String organizationName) throws IllegalArgumentException {
@@ -36,7 +38,7 @@ public class Organization extends EntityImpl {
     }
 
     @Override
-    public Object immutable() throws CloneNotSupportedException {
+    public Serializable immutable() throws CloneNotSupportedException {
 	LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
 	Organization copy = new Organization(ids, this.name());
 	copy.createdAt = this.createdAt;

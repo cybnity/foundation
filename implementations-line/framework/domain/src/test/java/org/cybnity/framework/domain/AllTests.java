@@ -1,7 +1,7 @@
 package org.cybnity.framework.domain;
 
+import org.cybnity.framework.domain.application.EventStoreUseCaseTest;
 import org.cybnity.framework.domain.model.DomainEventUseCaseTest;
-import org.cybnity.framework.domain.model.application.EventStoreUseCaseTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -14,6 +14,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({ DomainEventUseCaseTest.class, EventStoreUseCaseTest.class })
+@SuiteClasses({ DomainEventUseCaseTest.class, NotificationLogUseCaseTest.class,
+	UnidentifiableFactNotificationLogUseCaseTest.class, EventStoreUseCaseTest.class })
 public class AllTests {
 }

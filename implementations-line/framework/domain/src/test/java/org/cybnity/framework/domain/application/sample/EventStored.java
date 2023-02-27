@@ -1,4 +1,4 @@
-package org.cybnity.framework.domain.model.application.sample;
+package org.cybnity.framework.domain.application.sample;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
@@ -61,8 +61,8 @@ public class EventStored extends DomainEvent {
     }
 
     @Override
-    public Object immutable() throws CloneNotSupportedException {
-	return this.clone();
+    public Serializable immutable() throws CloneNotSupportedException {
+	return (EventStored) this.clone();
     }
 
     @Override

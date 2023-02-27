@@ -34,6 +34,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public abstract class Entity implements HistoricalFact, IdentifiableFact {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Required identification elements (e.g that can be combined to define a
      * natural identity of this historical fact).
@@ -59,7 +61,7 @@ public abstract class Entity implements HistoricalFact, IdentifiableFact {
      * @throws IllegalArgumentException When id parameter is null and does not
      *                                  include name and value.
      */
-    public Entity(Identifier id) throws IllegalArgumentException {
+    protected Entity(Identifier id) throws IllegalArgumentException {
 	if (id == null)
 	    throw new IllegalArgumentException(new InvalidParameterException("Id parameter is required!"));
 	// Check conformity of identifier
@@ -85,7 +87,7 @@ public abstract class Entity implements HistoricalFact, IdentifiableFact {
      * @throws IllegalArgumentException When identifiers parameter is null or each
      *                                  item does not include name and value.
      */
-    public Entity(LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
+    protected Entity(LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
 	if (identifiers == null || identifiers.isEmpty())
 	    throw new IllegalArgumentException(new InvalidParameterException("Identifiers parameter is required!"));
 	identifiedBy = new ArrayList<Identifier>(identifiers.size());

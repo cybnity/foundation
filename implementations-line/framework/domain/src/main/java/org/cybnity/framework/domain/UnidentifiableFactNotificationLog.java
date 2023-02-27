@@ -1,0 +1,101 @@
+package org.cybnity.framework.domain;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.cybnity.framework.immutable.Entity;
+import org.cybnity.framework.immutable.HistoricalFact;
+import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.sample.IdentifierImpl;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
+
+/**
+ * Log event regarding a system event (e.g system or context fact which is
+ * subject to log traceability but that is not previously uniquely identified).
+ * For example, the origin of this logged event can be suspect or can come from
+ * unknown source (e.g threat agent, system in failure...) requiring attention.
+ * 
+ * @author olivier
+ *
+ */
+@Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
+public class UnidentifiableFactNotificationLog extends Entity {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * Name of this type of identifier.
+     */
+    public static String IDENTIFIER_NAME = "log_uid";
+
+    /**
+     * Set of original facts that were origins of this log.
+     */
+    private List<HistoricalFact> originFacts;
+
+    /**
+     * Default constructor of log regarding a fact that was observed (e.g a stored
+     * event).
+     * 
+     * @param logEventId  Unique and optional identifier of this log event.
+     * @param loggedFacts Optional facts observed that are original sources of this
+     *                    log.
+     * @throws IllegalArgumentException When predecessor mandatory parameter is not
+     *                                  defined or without defined identifier. When
+     *                                  logEventId is using an identifier name that
+     *                                  is not equals to
+     *                                  NotificationLog.IDENTIFIER_NAME.
+     */
+    public UnidentifiableFactNotificationLog(Identifier logEventId, HistoricalFact... loggedFacts)
+	    throws IllegalArgumentException {
+	super(logEventId);
+	if (!IDENTIFIER_NAME.equals(logEventId.name()))
+	    throw new IllegalArgumentException(
+		    "The identifier name of the logEventId parameter is not valid! Should be equals to NotificationLog.IDENTIFIER_NAME value");
+	if (loggedFacts != null && loggedFacts.length > 0)
+	    // save optional known origin facts
+	    originFacts = Arrays.asList(loggedFacts);
+    }
+
+    /**
+     * Get the list of origin facts that were loggued by this notification.
+     * 
+     * @return A set of facts immutable versions or empty list.
+     * @throw CloneNotSupportedException When an immutable version of an origin fact
+     *        can't be returned.
+     */
+    public List<HistoricalFact> originFacts() throws CloneNotSupportedException {
+	List<HistoricalFact> origins = new ArrayList<>();
+	if (this.originFacts != null) {
+	    // Get an immutable version of facts
+	    for (HistoricalFact historicalFact : this.originFacts) {
+		if (historicalFact != null)
+		    origins.add((HistoricalFact) historicalFact.immutable());
+	    }
+	}
+	return origins;
+    }
+
+    @Override
+    public Serializable immutable() throws CloneNotSupportedException {
+	// Get a copy of facts
+	List<HistoricalFact> facts = originFacts();
+	return new UnidentifiableFactNotificationLog(this.identified(),
+		facts.toArray(new HistoricalFact[facts.size()]));
+    }
+
+    @Override
+    public Identifier identified() {
+	StringBuffer combinedId = new StringBuffer();
+	for (Identifier id : this.identifiers()) {
+	    combinedId.append(id.value());
+	}
+	// Return combined identifier normally only based on unique value found in
+	// identifiers list
+	return new IdentifierImpl(IDENTIFIER_NAME, combinedId.toString());
+    }
+
+}

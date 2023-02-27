@@ -1,6 +1,5 @@
 package org.cybnity.framework.domain.model;
 
-import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 import org.cybnity.framework.domain.Versionable;
@@ -35,7 +34,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public abstract class DomainEvent implements HistoricalFact, IdentifiableFact, Versionable, Serializable {
+public abstract class DomainEvent implements HistoricalFact, IdentifiableFact, Versionable {
 
     /**
      * Version of this class type.

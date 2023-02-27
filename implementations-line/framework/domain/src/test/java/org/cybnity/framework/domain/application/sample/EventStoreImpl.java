@@ -1,4 +1,4 @@
-package org.cybnity.framework.domain.model.application.sample;
+package org.cybnity.framework.domain.application.sample;
 
 import java.security.InvalidParameterException;
 import java.util.Iterator;

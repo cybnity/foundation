@@ -31,6 +31,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Predecessor (as Owner of this child) of this child fact.
      */
@@ -62,7 +64,7 @@ public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
      * @throws IllegalArgumentException When predecessor mandatory parameter is not
      *                                  defined or without defined identifier.
      */
-    public ChildFact(Entity predecessor, Identifier id) throws IllegalArgumentException {
+    protected ChildFact(Entity predecessor, Identifier id) throws IllegalArgumentException {
 	if (predecessor == null)
 	    throw new IllegalArgumentException(new InvalidParameterException("parent parameter is required!"));
 	// Check conformity of optional child identifier
@@ -112,7 +114,7 @@ public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
      * @throws IllegalArgumentException When identifiers parameter is null or each
      *                                  item does not include name and value.
      */
-    public ChildFact(Entity predecessor, LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
+    protected ChildFact(Entity predecessor, LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
 	if (predecessor == null)
 	    throw new IllegalArgumentException(new InvalidParameterException("parent parameter is required!"));
 	try {

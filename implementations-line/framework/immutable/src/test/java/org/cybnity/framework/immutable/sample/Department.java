@@ -1,5 +1,6 @@
 package org.cybnity.framework.immutable.sample;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 import org.cybnity.framework.immutable.Group;
@@ -12,6 +13,7 @@ import org.cybnity.framework.immutable.Identifier;
  *
  */
 public class Department implements Group {
+    private static final long serialVersionUID = 1L;
     private String label;
     private Identifier id;
     private OffsetDateTime at;
@@ -33,7 +35,7 @@ public class Department implements Group {
     }
 
     @Override
-    public Object immutable() throws CloneNotSupportedException {
+    public Serializable immutable() throws CloneNotSupportedException {
 	return new Department(this.label, this.id).at = this.at;
     }
 }
