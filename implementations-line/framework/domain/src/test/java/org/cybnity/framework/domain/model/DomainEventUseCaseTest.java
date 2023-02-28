@@ -20,7 +20,7 @@ import org.junit.Test;
 public class DomainEventUseCaseTest {
 
     @Test
-    public void givenUnknownIdentifier_whenConstructor_thenOccuranceDatedAndVersionDefined() {
+    public void givenUnknownIdentifier_whenConstructor_thenOccuranceDatedAndVersionDefined() throws Exception {
 	UserAccountCreationCommitted event = new UserAccountCreationCommitted();
 	// Verify default contents initialized
 	assertNotNull(event.occurredAt()); // When event occured
@@ -29,7 +29,7 @@ public class DomainEventUseCaseTest {
     }
 
     @Test
-    public void givenIdentifiedEvent_whenConstructor_thenIdentifierAttached() {
+    public void givenIdentifiedEvent_whenConstructor_thenIdentifierAttached() throws Exception {
 	// Create an identifiable event
 	Identifier id = new EventIdentifierStringBased("uid", "KJGF8765");
 	Entity identity = new UserAccountIdentityCreation(id);

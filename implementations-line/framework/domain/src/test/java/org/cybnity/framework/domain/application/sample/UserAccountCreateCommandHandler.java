@@ -90,7 +90,7 @@ public class UserAccountCreateCommandHandler implements CommandHandler {
 		// Invalid command rejected by the aggregate
 		throw new InvalidParameterException(iae.getMessage());
 	    } catch (ImmutabilityException cnse) {
-		// Cloning exception regarding persisted account entity
+		// Exception regarding persisted account entity
 		// Log the implementation problem and notify the error occured during the
 		// command processing for information of command sender
 	    }

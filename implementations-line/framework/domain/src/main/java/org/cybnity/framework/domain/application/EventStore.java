@@ -4,6 +4,7 @@ import java.security.InvalidParameterException;
 
 import org.cybnity.framework.domain.Subscribable;
 import org.cybnity.framework.domain.model.DomainEvent;
+import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -57,7 +58,9 @@ public abstract class EventStore implements Subscribable {
      * @throws InvalidParameterException When event to store is not compatible to be
      *                                   stored (e.g missing mandatory content into
      *                                   the event to store).
+     * @throws ImmutabilityException     When problem of immutable version of stored
+     *                                   event is occurred.
      */
-    public abstract void append(DomainEvent event) throws InvalidParameterException;
+    public abstract void append(DomainEvent event) throws InvalidParameterException, ImmutabilityException;
 
 }

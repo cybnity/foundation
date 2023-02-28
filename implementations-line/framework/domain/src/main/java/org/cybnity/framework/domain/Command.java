@@ -96,9 +96,14 @@ public abstract class Command implements IdentifiableFact, Versionable, Serializ
 	if (event == this)
 	    return true;
 	if (event != null && IdentifiableFact.class.isAssignableFrom(event.getClass())) {
-	    // Compare equality based on each instance's identifier (unique or based on
-	    // identifying informations combination)
-	    return Evaluations.isIdentifiedEquals(this, (IdentifiableFact) event);
+	    try {
+		// Compare equality based on each instance's identifier (unique or based on
+		// identifying informations combination)
+		return Evaluations.isIdentifiedEquals(this, (IdentifiableFact) event);
+	    } catch (ImmutabilityException ie) {
+		// Impossible creatiopn of immutable version of identifier
+		// Log problem
+	    }
 	}
 	return false;
     }

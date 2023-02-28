@@ -8,33 +8,33 @@ import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
 
 /**
- * Example of event regarding an account creation created.
+ * Example of event regarding a store event finalized with success.
  * 
  * @author olivier
  *
  */
-public class UserAccountCreationCommitted extends DomainEvent {
+public class EventStoreRecordCommitted extends DomainEvent {
 
     private static final long serialVersionUID = 876288332792604981L;
-    public EntityReference creationCommandRef;
-    public EntityReference createdAccountRef;
+    public EntityReference originCommandRef;
+    public EntityReference storedEvent;
 
-    public UserAccountCreationCommitted() {
+    public EventStoreRecordCommitted() {
 	super();
     }
 
-    public UserAccountCreationCommitted(Entity identity) {
+    public EventStoreRecordCommitted(Entity identity) {
 	super(identity);
     }
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	UserAccountCreationCommitted instance = new UserAccountCreationCommitted(this.getIdentifiedBy());
+	EventStoreRecordCommitted instance = new EventStoreRecordCommitted(this.getIdentifiedBy());
 	instance.occuredOn = this.occurredAt();
-	if (this.creationCommandRef != null)
-	    instance.createdAccountRef = (EntityReference) this.creationCommandRef.immutable();
-	if (this.createdAccountRef != null)
-	    instance.createdAccountRef = (EntityReference) this.createdAccountRef.immutable();
+	if (this.originCommandRef != null)
+	    instance.originCommandRef = (EntityReference) this.originCommandRef.immutable();
+	if (this.storedEvent != null)
+	    instance.storedEvent = (EntityReference) this.storedEvent.immutable();
 	return instance;
     }
 

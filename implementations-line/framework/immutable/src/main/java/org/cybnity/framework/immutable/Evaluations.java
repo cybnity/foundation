@@ -16,8 +16,11 @@ public class Evaluations {
      * @param otherFact To compare.
      * @return True if this fact is based on the same identifier(s) as the fact
      *         argument; false otherwise (e.g when one fact is not identifiable).
+     * @throws ImmutabilityException If impossible creation of immutable version of
+     *                               identifier.
      */
-    static public boolean isIdentifiedEquals(IdentifiableFact fact, IdentifiableFact otherFact) {
+    static public boolean isIdentifiedEquals(IdentifiableFact fact, IdentifiableFact otherFact)
+	    throws ImmutabilityException {
 	if (fact != null && otherFact != null) {
 	    // Check if reference are equals
 	    if (fact == otherFact)

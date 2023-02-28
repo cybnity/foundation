@@ -29,7 +29,7 @@ public class UserAccountApplicativeRoleAssigned extends DomainEvent {
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	UserAccountApplicativeRoleAssigned instance = new UserAccountApplicativeRoleAssigned(this.identifiedBy);
+	UserAccountApplicativeRoleAssigned instance = new UserAccountApplicativeRoleAssigned(this.getIdentifiedBy());
 	instance.occuredOn = this.occurredAt();
 	if (this.changeCommandRef != null)
 	    instance.changeCommandRef = (EntityReference) this.changeCommandRef.immutable();

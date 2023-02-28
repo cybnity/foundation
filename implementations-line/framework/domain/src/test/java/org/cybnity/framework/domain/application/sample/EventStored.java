@@ -27,7 +27,8 @@ public class EventStored extends DomainEvent {
     private String typeName;
     private String versionStoredAt;
 
-    public EventStored(DomainEvent event) throws IllegalArgumentException {
+    public EventStored(DomainEvent event) throws IllegalArgumentException, ImmutabilityException {
+	super();
 	if (event == null) {
 	    throw new IllegalArgumentException("Event parameter is required!");
 	}
@@ -40,6 +41,7 @@ public class EventStored extends DomainEvent {
 	this.occuredOn = event.occurredAt().toString();
 	this.typeName = event.getClass().getName();
 	this.versionStoredAt = OffsetDateTime.now().toString();
+	this.identifiedBy = event.getIdentifiedBy();
     }
 
     public Serializable getEventBody() {

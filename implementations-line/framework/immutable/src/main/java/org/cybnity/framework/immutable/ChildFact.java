@@ -198,9 +198,14 @@ public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
 	if (fact == this)
 	    return true;
 	if (fact != null && IdentifiableFact.class.isAssignableFrom(fact.getClass())) {
-	    // Compare equality based on each instance's identifier (unique or based on
-	    // identifying informations combination)
-	    return Evaluations.isIdentifiedEquals(this, (IdentifiableFact) fact);
+	    try {
+		// Compare equality based on each instance's identifier (unique or based on
+		// identifying informations combination)
+		return Evaluations.isIdentifiedEquals(this, (IdentifiableFact) fact);
+	    } catch (ImmutabilityException ie) {
+		// Impossible identifier immmutable instance creation
+		// Log problem of implementation
+	    }
 	}
 	return false;
     }

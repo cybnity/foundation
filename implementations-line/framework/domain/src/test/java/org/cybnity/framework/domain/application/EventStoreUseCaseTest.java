@@ -34,7 +34,7 @@ public class EventStoreUseCaseTest {
     }
 
     @Test
-    public void givenIdentifiedEvent_whenAppended_thenPersistedEntry() {
+    public void givenIdentifiedEvent_whenAppended_thenPersistedEntry() throws Exception {
 	// Create an identifiable event
 	Identifier id = new EventIdentifierStringBased("uid", "KJGF8765");
 	Entity identity = new UserAccountIdentityCreation(id);

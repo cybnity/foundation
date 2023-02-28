@@ -141,9 +141,14 @@ public abstract class Entity implements HistoricalFact, IdentifiableFact, Refere
 	if (fact == this)
 	    return true;
 	if (fact != null && IdentifiableFact.class.isAssignableFrom(fact.getClass())) {
-	    // Compare equality based on each instance's identifier (unique or based on
-	    // identifying informations combination)
-	    return Evaluations.isIdentifiedEquals(this, (IdentifiableFact) fact);
+	    try {
+		// Compare equality based on each instance's identifier (unique or based on
+		// identifying informations combination)
+		return Evaluations.isIdentifiedEquals(this, (IdentifiableFact) fact);
+	    } catch (ImmutabilityException ie) {
+		// Impossible creation of immutable identifier
+		// log problem of implementation
+	    }
 	}
 	return false;
     }

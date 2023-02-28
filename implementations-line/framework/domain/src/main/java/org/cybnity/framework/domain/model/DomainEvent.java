@@ -80,12 +80,13 @@ public abstract class DomainEvent implements HistoricalFact, IdentifiableFact, V
      * identifiable event.
      * 
      * @return Immutable instance of unique identifier of this event, or null.
+     * @throws ImmutabilityException If impossible identifier duplication.
      */
     @Override
-    public Identifier identified() {
-	if (this.identifiedBy != null) {
+    public Identifier identified() throws ImmutabilityException {
+	if (this.getIdentifiedBy() != null) {
 	    try {
-		return (Identifier) this.identifiedBy.identified().immutable();
+		return (Identifier) this.getIdentifiedBy().identified().immutable();
 	    } catch (ImmutabilityException ce) {
 		// TODO: add runtime log to the LogRegistry if defined
 	    }
@@ -106,9 +107,14 @@ public abstract class DomainEvent implements HistoricalFact, IdentifiableFact, V
 	if (event == this)
 	    return true;
 	if (event != null && IdentifiableFact.class.isAssignableFrom(event.getClass())) {
-	    // Compare equality based on each instance's identifier (unique or based on
-	    // identifying informations combination)
-	    return Evaluations.isIdentifiedEquals(this, (IdentifiableFact) event);
+	    try {
+		// Compare equality based on each instance's identifier (unique or based on
+		// identifying informations combination)
+		return Evaluations.isIdentifiedEquals(this, (IdentifiableFact) event);
+	    } catch (ImmutabilityException ie) {
+		// Impossible creation of immutable version of identifier
+		// Log problem of implementation
+	    }
 	}
 	return false;
     }
@@ -125,13 +131,25 @@ public abstract class DomainEvent implements HistoricalFact, IdentifiableFact, V
     @Override
     public EntityReference reference() throws ImmutabilityException {
 	try {
-	    if (this.identifiedBy != null) {
-		return new EntityReference((Entity) this.identifiedBy.immutable(),
+	    if (this.getIdentifiedBy() != null) {
+		return new EntityReference((Entity) this.getIdentifiedBy().immutable(),
 			/* Unknown external relation with the caller of this method */ null, null);
 	    }
 	    return null;
 	} catch (Exception e) {
 	    throw new ImmutabilityException(e);
 	}
+    }
+
+    /**
+     * Get a immutable copy of the original entity of this event.
+     * 
+     * @return Identity of this event, or null.
+     */
+    public Entity getIdentifiedBy() throws ImmutabilityException {
+	if (this.identifiedBy != null) {
+	    return (Entity) identifiedBy.immutable();
+	}
+	return null;
     }
 }

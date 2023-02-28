@@ -4,13 +4,19 @@ import java.security.InvalidParameterException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.cybnity.framework.domain.EventIdentifierStringBased;
 import org.cybnity.framework.domain.application.EventStore;
+import org.cybnity.framework.domain.model.CommonChildFactImpl;
 import org.cybnity.framework.domain.model.DomainEvent;
 import org.cybnity.framework.domain.model.DomainEventPublisher;
 import org.cybnity.framework.domain.model.DomainEventSubscriber;
+import org.cybnity.framework.domain.model.sample.EventStoreRecordCommitted;
+import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.ImmutabilityException;
 
 /**
  * Example of simple in-memory store of events.
@@ -47,7 +53,7 @@ public class EventStoreImpl extends EventStore {
     }
 
     @Override
-    public void append(DomainEvent event) throws InvalidParameterException {
+    public void append(DomainEvent event) throws InvalidParameterException, ImmutabilityException {
 	// Serialize the event to store into the storage system (generally according to
 	// a serializer supported by the persistence system as JSON, table structure's
 	// fiedl...)
@@ -61,8 +67,16 @@ public class EventStoreImpl extends EventStore {
 	// Save in registry
 	registries.put(event.getClass().getName(), eventTypeDataset);
 
+	// Build event child based on the created account (parent of immutable story)
+	CommonChildFactImpl persistedEvent = new CommonChildFactImpl(storedEvent.getIdentifiedBy(),
+		new EventIdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(),
+			/* identifier as performed transaction number */ UUID.randomUUID().toString()));
+	EventStoreRecordCommitted committed = new EventStoreRecordCommitted(persistedEvent.parent());
+	committed.originCommandRef = event.reference();
+	committed.storedEvent = storedEvent.reference();
+
 	// Notify listeners of this store
-	this.promotionManager.publish(event);
+	this.promotionManager.publish(committed);
     }
 
     /**
