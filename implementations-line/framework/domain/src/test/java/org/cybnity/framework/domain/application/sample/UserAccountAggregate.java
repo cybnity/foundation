@@ -8,12 +8,12 @@ import java.util.UUID;
 
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.EventIdentifierStringBased;
-import org.cybnity.framework.domain.SampleDataEnum;
 import org.cybnity.framework.domain.model.Aggregate;
 import org.cybnity.framework.domain.model.CommonChildFactImpl;
 import org.cybnity.framework.domain.model.DomainEventPublisher;
 import org.cybnity.framework.domain.model.sample.ApplicativeRole;
 import org.cybnity.framework.domain.model.sample.UserAccountApplicativeRoleAssigned;
+import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.Identifier;
@@ -51,10 +51,10 @@ public class UserAccountAggregate extends Entity implements Aggregate {
      */
     public UserAccountAggregate(Identifier id, EntityReference userIdentity) throws IllegalArgumentException {
 	super(id);
-	if (!SampleDataEnum.IDENTIFIER_NAME_TECH.name().equals(id.name()))
+	if (!BaseConstants.IDENTIFIER_ID.name().equals(id.name()))
 	    throw new IllegalArgumentException(
 		    "id parameter is not valid because identifier name shall be equals to only supported value ("
-			    + SampleDataEnum.IDENTIFIER_NAME_TECH.name() + ")!");
+			    + BaseConstants.IDENTIFIER_ID.name() + ")!");
 	if (userIdentity == null)
 	    throw new IllegalArgumentException("userIdentity parameter is required!");
 	// Save unmodifiable user identity which is owner of this account
@@ -94,7 +94,7 @@ public class UserAccountAggregate extends Entity implements Aggregate {
 		    // assignment of new application roles)
 		    // Build event child based on the updated account (parent of immutable story)
 		    CommonChildFactImpl modifiedAccountAssignment = new CommonChildFactImpl(this,
-			    new EventIdentifierStringBased(SampleDataEnum.IDENTIFIER_NAME_TECH.name(),
+			    new EventIdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(),
 				    /* identifier as performed transaction number */ UUID.randomUUID().toString()));
 
 		    // Prepare notification of the read model about changed user account's roles
@@ -128,7 +128,7 @@ public class UserAccountAggregate extends Entity implements Aggregate {
 	    combinedId.append(id.value());
 	}
 	// Return combined identifier
-	return new EventIdentifierStringBased(SampleDataEnum.IDENTIFIER_NAME_TECH.name(), combinedId.toString());
+	return new EventIdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), combinedId.toString());
     }
 
     @Override

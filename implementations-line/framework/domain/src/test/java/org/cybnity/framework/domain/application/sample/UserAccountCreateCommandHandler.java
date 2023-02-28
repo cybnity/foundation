@@ -8,11 +8,11 @@ import java.util.UUID;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.CommandHandler;
 import org.cybnity.framework.domain.EventIdentifierStringBased;
-import org.cybnity.framework.domain.SampleDataEnum;
 import org.cybnity.framework.domain.model.CommonChildFactImpl;
 import org.cybnity.framework.domain.model.DomainEventPublisher;
 import org.cybnity.framework.domain.model.DomainEventSubscriber;
 import org.cybnity.framework.domain.model.sample.UserAccountCreationCommitted;
+import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.ImmutabilityException;
 
 /**
@@ -65,8 +65,9 @@ public class UserAccountCreateCommandHandler implements CommandHandler {
 		this.readModelPublisher.subscribe(listenedWriteModel);
 
 		// Execute the command regarding creation of a new aggregate (user account)
-		UserAccountAggregate account = new UserAccountAggregate(new EventIdentifierStringBased(
-			SampleDataEnum.IDENTIFIER_NAME_TECH.name(), toProcess.accountUID), toProcess.userIdentity);
+		UserAccountAggregate account = new UserAccountAggregate(
+			new EventIdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), toProcess.accountUID),
+			toProcess.userIdentity);
 
 		// Normally save into a persistence system (e.g Datastore of user accounts)
 		// -------------> SAVE CONFIRMED AS CONSISTENT UNIT OF USERACCOUNTAGGREGATE
@@ -74,7 +75,7 @@ public class UserAccountCreateCommandHandler implements CommandHandler {
 
 		// Build event child based on the created account (parent of immutable story)
 		CommonChildFactImpl persistedAccount = new CommonChildFactImpl(account,
-			new EventIdentifierStringBased(SampleDataEnum.IDENTIFIER_NAME_TECH.name(),
+			new EventIdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(),
 				/* identifier as performed transaction number */ UUID.randomUUID().toString()));
 
 		// Prepare notification of the read model about new committed account

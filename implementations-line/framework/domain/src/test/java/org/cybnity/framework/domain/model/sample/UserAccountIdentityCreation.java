@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.LinkedHashSet;
 
 import org.cybnity.framework.domain.EventIdentifierStringBased;
-import org.cybnity.framework.domain.SampleDataEnum;
+import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -34,7 +34,7 @@ public class UserAccountIdentityCreation extends Entity {
 	    combinedId.append(id.value());
 	}
 	// Return combined identifier
-	return new EventIdentifierStringBased(SampleDataEnum.IDENTIFIER_NAME_TECH.name(), combinedId.toString());
+	return new EventIdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), combinedId.toString());
     }
 
     @Override

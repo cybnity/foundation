@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.cybnity.framework.domain.model.sample.UserAccountIdentityCreation;
+import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.junit.After;
@@ -31,7 +32,7 @@ public class NotificationLogUseCaseTest {
     public void initLogOrigin() {
 	originalLogId = new EventIdentifierStringBased(NotificationLog.IDENTIFIER_NAME, "KJHG986754");
 	userAccountCreationFact = new UserAccountIdentityCreation(
-		new EventIdentifierStringBased(SampleDataEnum.IDENTIFIER_NAME_TECH.name(), "98765DFGHJKJHG"));
+		new EventIdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), "98765DFGHJKJHG"));
     }
 
     @After
