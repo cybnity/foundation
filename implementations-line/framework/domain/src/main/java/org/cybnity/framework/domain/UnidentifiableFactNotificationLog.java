@@ -8,6 +8,7 @@ import java.util.List;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.HistoricalFact;
 import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -63,10 +64,10 @@ public class UnidentifiableFactNotificationLog extends Entity {
      * Get the list of origin facts that were loggued by this notification.
      * 
      * @return A set of facts immutable versions or empty list.
-     * @throw CloneNotSupportedException When an immutable version of an origin fact
+     * @throw ImmutabilityException When an immutable version of an origin fact
      *        can't be returned.
      */
-    public List<HistoricalFact> originFacts() throws CloneNotSupportedException {
+    public List<HistoricalFact> originFacts() throws ImmutabilityException {
 	List<HistoricalFact> origins = new ArrayList<>();
 	if (this.originFacts != null) {
 	    // Get an immutable version of facts
@@ -79,7 +80,7 @@ public class UnidentifiableFactNotificationLog extends Entity {
     }
 
     @Override
-    public Serializable immutable() throws CloneNotSupportedException {
+    public Serializable immutable() throws ImmutabilityException {
 	// Get a copy of facts
 	List<HistoricalFact> facts = originFacts();
 	return new UnidentifiableFactNotificationLog(this.identified(),

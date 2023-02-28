@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.HistoryState;
+import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.MutableProperty;
 
 /**
@@ -45,6 +46,7 @@ public class PhysicalAddressProperty extends MutableProperty {
     public PhysicalAddressProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue,
 	    HistoryState status, PhysicalAddressProperty... prior) throws IllegalArgumentException {
 	super(propertyOwner, propertyCurrentValue, status, prior);
+	this.versionedAt = OffsetDateTime.now();
     }
 
     @Override
@@ -53,7 +55,7 @@ public class PhysicalAddressProperty extends MutableProperty {
     }
 
     @Override
-    public Serializable immutable() throws CloneNotSupportedException {
+    public Serializable immutable() throws ImmutabilityException {
 	return null;
     }
 
@@ -85,10 +87,10 @@ public class PhysicalAddressProperty extends MutableProperty {
      * Who is the owner of this property
      * 
      * @return The owner
-     * @throws CloneNotSupportedException If impossible creation of immutable
-     *                                    version of instance
+     * @throws ImmutabilityException If impossible creation of immutable version of
+     *                               instance
      */
-    public Entity owner() throws CloneNotSupportedException {
+    public Entity owner() throws ImmutabilityException {
 	return (Entity) this.entity.immutable();
     }
 

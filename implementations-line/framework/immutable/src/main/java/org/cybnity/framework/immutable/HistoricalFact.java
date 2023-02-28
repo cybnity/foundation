@@ -22,4 +22,5 @@ public interface HistoricalFact extends Unmodifiable, Serializable {
      * @return An immutable time.
      */
     public OffsetDateTime occurredAt();
+
 }

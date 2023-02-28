@@ -75,7 +75,8 @@ public abstract class MutableProperty implements HistoricalFact {
     protected HashSet<MutableProperty> prior;
 
     /**
-     * When this fact was created or observed regarding the historized topic.
+     * When this fact version was created or observed regarding the historized
+     * topic.
      */
     protected OffsetDateTime changedAt;
 
@@ -121,7 +122,7 @@ public abstract class MutableProperty implements HistoricalFact {
 		this.historyStatus = status;
 	    // Create immutable time of this property changed version
 	    this.changedAt = OffsetDateTime.now();
-	} catch (CloneNotSupportedException ce) {
+	} catch (ImmutabilityException ce) {
 	    throw new IllegalArgumentException(ce);
 	}
     }
@@ -201,6 +202,6 @@ public abstract class MutableProperty implements HistoricalFact {
     @Override
     public OffsetDateTime occurredAt() {
 	// Return immutable value of the fact time
-	return OffsetDateTime.parse(this.changedAt.toString());
+	return this.changedAt;
     }
 }

@@ -32,7 +32,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public abstract class Entity implements HistoricalFact, IdentifiableFact {
+public abstract class Entity implements HistoricalFact, IdentifiableFact, Referenceable {
 
     private static final long serialVersionUID = 1L;
 
@@ -74,7 +74,7 @@ public abstract class Entity implements HistoricalFact, IdentifiableFact {
 	    identifiedBy.add((Identifier) id.immutable());
 	    // Create immutable time of this fact creation
 	    this.createdAt = OffsetDateTime.now();
-	} catch (CloneNotSupportedException ce) {
+	} catch (ImmutabilityException ce) {
 	    throw new IllegalArgumentException(ce);
 	}
     }
@@ -104,7 +104,7 @@ public abstract class Entity implements HistoricalFact, IdentifiableFact {
 	    }
 	    // Create immutable time of this fact creation
 	    this.createdAt = OffsetDateTime.now();
-	} catch (CloneNotSupportedException cn) {
+	} catch (ImmutabilityException cn) {
 	    throw new IllegalArgumentException(cn);
 	}
     }
@@ -126,7 +126,7 @@ public abstract class Entity implements HistoricalFact, IdentifiableFact {
     @Override
     public OffsetDateTime occurredAt() {
 	// Return immutable value of the fact time
-	return OffsetDateTime.parse(this.createdAt.toString());
+	return this.createdAt;
     }
 
     /**
@@ -148,4 +148,13 @@ public abstract class Entity implements HistoricalFact, IdentifiableFact {
 	return false;
     }
 
+    @Override
+    public EntityReference reference() throws ImmutabilityException {
+	try {
+	    return new EntityReference((Entity) this.immutable(),
+		    /* Unknown external relation with the caller of this method */ null, null);
+	} catch (Exception e) {
+	    throw new ImmutabilityException(e);
+	}
+    }
 }

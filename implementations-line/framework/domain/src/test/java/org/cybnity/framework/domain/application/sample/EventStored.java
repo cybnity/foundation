@@ -5,6 +5,7 @@ import java.time.OffsetDateTime;
 
 import org.cybnity.framework.domain.model.DomainEvent;
 import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.ImmutabilityException;
 
 /**
  * Example of destructured event manageable by a store (e.g as history of facts
@@ -14,6 +15,7 @@ import org.cybnity.framework.immutable.Identifier;
  *
  */
 public class EventStored extends DomainEvent {
+
     /**
      * Version of this class type.
      */
@@ -61,8 +63,12 @@ public class EventStored extends DomainEvent {
     }
 
     @Override
-    public Serializable immutable() throws CloneNotSupportedException {
-	return (EventStored) this.clone();
+    public Serializable immutable() throws ImmutabilityException {
+	try {
+	    return (EventStored) this.clone();
+	} catch (Exception e) {
+	    throw new ImmutabilityException(e);
+	}
     }
 
     @Override

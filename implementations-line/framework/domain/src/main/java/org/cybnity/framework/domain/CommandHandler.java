@@ -34,7 +34,7 @@ public interface CommandHandler {
      * Manage the realization of a command.
      * 
      * @param command Mandatory command that must be treated.
-     * @throws IllegalArgumentException  When command parameter is null
+     * @throws IllegalArgumentException  When command parameter is null.
      * @throws InvalidParameterException When a command processing can't be
      *                                   performed for cause of command invalidity
      *                                   (e.g missing required contents).

@@ -26,4 +26,5 @@ public abstract class DomainEventSubscriber<T> {
      * @return A type of event (e.g DomainEvent.class).
      */
     public abstract Class<?> subscribeToEventType();
+
 }

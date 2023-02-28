@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.Member;
 
 /**
@@ -36,7 +37,7 @@ public class Employee implements Member {
     }
 
     @Override
-    public Serializable immutable() throws CloneNotSupportedException {
+    public Serializable immutable() throws ImmutabilityException {
 	return new Employee(this.name, this.id).at = this.at;
     }
 

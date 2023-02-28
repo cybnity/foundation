@@ -3,6 +3,9 @@ package org.cybnity.framework.domain;
 import java.io.Serializable;
 
 import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Identifying information type that is based on a single text chain.
@@ -10,6 +13,7 @@ import org.cybnity.framework.immutable.Identifier;
  * @author olivier
  *
  */
+@Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
 public class EventIdentifierStringBased implements Identifier {
 
     private static final long serialVersionUID = 1L;
@@ -22,7 +26,7 @@ public class EventIdentifierStringBased implements Identifier {
     }
 
     @Override
-    public Serializable immutable() throws CloneNotSupportedException {
+    public Serializable immutable() throws ImmutabilityException {
 	return new EventIdentifierStringBased(name.toString(), value.toString());
     }
 

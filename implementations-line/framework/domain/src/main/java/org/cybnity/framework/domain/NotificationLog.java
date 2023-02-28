@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.cybnity.framework.immutable.ChildFact;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -46,7 +47,7 @@ public class NotificationLog extends ChildFact {
     }
 
     @Override
-    public Serializable immutable() throws CloneNotSupportedException {
+    public Serializable immutable() throws ImmutabilityException {
 	return new NotificationLog(this.parent(), this.identified());
     }
 

@@ -7,6 +7,7 @@ import org.cybnity.framework.domain.EventIdentifierStringBased;
 import org.cybnity.framework.domain.SampleDataEnum;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.ImmutabilityException;
 
 /**
  * Simple identifying information regarding a user account creation.
@@ -37,7 +38,7 @@ public class UserAccountIdentityCreation extends Entity {
     }
 
     @Override
-    public Serializable immutable() throws CloneNotSupportedException {
+    public Serializable immutable() throws ImmutabilityException {
 	LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
 	return new UserAccountIdentityCreation(ids);
     }

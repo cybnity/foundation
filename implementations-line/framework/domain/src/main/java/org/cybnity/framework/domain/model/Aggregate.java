@@ -1,5 +1,6 @@
-package org.cybnity.framework.domain;
+package org.cybnity.framework.domain.model;
 
+import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.immutable.IdentifiableFact;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
@@ -27,4 +28,15 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
 public interface Aggregate extends IdentifiableFact {
 
+    /**
+     * Manage the execution of a command regarding the boundary managed by this
+     * aggregate. For example, execute a change (processing) of a property regarding
+     * this aggregate and publish notification (e.g to several domain event
+     * publishers) about changed information.
+     * 
+     * @param change Mandatory action to process.
+     * @throws IllegalArgumentException When parameter is not defined or is invalid
+     *                                  (e.g conformity problem).
+     */
+    public void execute(Command change) throws IllegalArgumentException;
 }

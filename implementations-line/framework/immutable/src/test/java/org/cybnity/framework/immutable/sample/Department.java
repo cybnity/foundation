@@ -5,6 +5,7 @@ import java.time.OffsetDateTime;
 
 import org.cybnity.framework.immutable.Group;
 import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.ImmutabilityException;
 
 /**
  * Example of logical group regarding an organization.
@@ -35,7 +36,7 @@ public class Department implements Group {
     }
 
     @Override
-    public Serializable immutable() throws CloneNotSupportedException {
+    public Serializable immutable() throws ImmutabilityException {
 	return new Department(this.label, this.id).at = this.at;
     }
 }

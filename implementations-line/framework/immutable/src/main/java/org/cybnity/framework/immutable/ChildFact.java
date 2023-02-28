@@ -80,7 +80,7 @@ public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
 		throw new IllegalArgumentException("The parent identifier(s) shall be existent!");
 	    // Reference immutable copy of predecessor
 	    this.parent = (Entity) predecessor.immutable();
-	} catch (CloneNotSupportedException cn) {
+	} catch (ImmutabilityException cn) {
 	    throw new IllegalArgumentException(cn);
 	}
 
@@ -100,7 +100,7 @@ public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
 	    identifiedBy.add((Identifier) parentDependentId.immutable());
 	    // Create immutable time of this fact creation
 	    this.createdAt = OffsetDateTime.now();
-	} catch (CloneNotSupportedException ce) {
+	} catch (ImmutabilityException ce) {
 	    throw new IllegalArgumentException(ce);
 	}
     }
@@ -126,7 +126,7 @@ public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
 			new InvalidParameterException("The parent identifier(s) shall be existent!"));
 	    // Reference immutable copy of predecessor
 	    this.parent = (Entity) predecessor.immutable();
-	} catch (CloneNotSupportedException cn) {
+	} catch (ImmutabilityException cn) {
 	    throw new IllegalArgumentException(cn);
 	}
 	Collection<Identifier> origins = null;
@@ -143,7 +143,7 @@ public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
 		    // get a reference copy
 		    origins.add((Identifier) id.immutable());
 		}
-	    } catch (CloneNotSupportedException cn) {
+	    } catch (ImmutabilityException cn) {
 		throw new IllegalArgumentException(cn);
 	    }
 	}
@@ -161,7 +161,7 @@ public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
 	    identifiedBy.add((Identifier) parentDependentId.immutable());
 	    // Create immutable time of this fact creation
 	    this.createdAt = OffsetDateTime.now();
-	} catch (CloneNotSupportedException ce) {
+	} catch (ImmutabilityException ce) {
 	    throw new IllegalArgumentException(ce);
 	}
     }
@@ -182,8 +182,8 @@ public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
      */
     @Override
     public OffsetDateTime occurredAt() {
-	// Return immutable value of the fact time
-	return OffsetDateTime.parse(this.createdAt.toString());
+	// Return the immutable value of the fact time
+	return this.createdAt;
     }
 
     /**
@@ -258,10 +258,9 @@ public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
      * their creation.
      * 
      * @return A predecessor of the child.
-     * @throws CloneNotSupportedException When impossible cloned instance of
-     *                                    predecessor.
+     * @throws ImmutabilityException When impossible cloned instance of predecessor.
      */
-    public Entity parent() throws CloneNotSupportedException {
+    public Entity parent() throws ImmutabilityException {
 	// Return unmodifiable instance of predecessor
 	return (Entity) this.parent.immutable();
     }

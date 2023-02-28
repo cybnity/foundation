@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.ImmutabilityException;
 
 /**
  * Sample of simple Entity.
@@ -35,7 +36,7 @@ public class EntityImpl extends Entity {
     }
 
     @Override
-    public Serializable immutable() throws CloneNotSupportedException {
+    public Serializable immutable() throws ImmutabilityException {
 	LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
 	return new EntityImpl(ids);
     }

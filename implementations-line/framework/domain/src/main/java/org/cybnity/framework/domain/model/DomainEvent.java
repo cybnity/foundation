@@ -4,10 +4,13 @@ import java.time.OffsetDateTime;
 
 import org.cybnity.framework.domain.Versionable;
 import org.cybnity.framework.immutable.Entity;
+import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.Evaluations;
 import org.cybnity.framework.immutable.HistoricalFact;
 import org.cybnity.framework.immutable.IdentifiableFact;
 import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.Referenceable;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -34,7 +37,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public abstract class DomainEvent implements HistoricalFact, IdentifiableFact, Versionable {
+public abstract class DomainEvent implements HistoricalFact, IdentifiableFact, Versionable, Referenceable {
 
     /**
      * Version of this class type.
@@ -83,7 +86,7 @@ public abstract class DomainEvent implements HistoricalFact, IdentifiableFact, V
 	if (this.identifiedBy != null) {
 	    try {
 		return (Identifier) this.identifiedBy.identified().immutable();
-	    } catch (CloneNotSupportedException ce) {
+	    } catch (ImmutabilityException ce) {
 		// TODO: add runtime log to the LogRegistry if defined
 	    }
 	}
@@ -119,4 +122,16 @@ public abstract class DomainEvent implements HistoricalFact, IdentifiableFact, V
 	return OffsetDateTime.parse(this.occuredOn.toString());
     }
 
+    @Override
+    public EntityReference reference() throws ImmutabilityException {
+	try {
+	    if (this.identifiedBy != null) {
+		return new EntityReference((Entity) this.identifiedBy.immutable(),
+			/* Unknown external relation with the caller of this method */ null, null);
+	    }
+	    return null;
+	} catch (Exception e) {
+	    throw new ImmutabilityException(e);
+	}
+    }
 }

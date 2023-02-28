@@ -26,16 +26,18 @@ public interface NotificationService {
     public NotificationLog currentNotificationLog();
 
     /**
-     * Find a notification lof from an identifier.
+     * Find a notification log from an identifier.
      * 
      * @param aNotificationlogId Identifier to search.
+     * @param eventStore         Log sourcing store.
      * @return A found log. Or null if not found.
      * @throws IllegalArgumentException When mandatory log parameter is not defined.
      */
-    public NotificationLog notificationLog(Identifier aNotificationlogId) throws IllegalArgumentException;
+    public NotificationLog findNotificationLog(Identifier aNotificationlogId, EventStore eventStore)
+	    throws IllegalArgumentException;
 
     /**
-     * Publish individual Notification instances over a messaging mechanism.
+     * Publish unpublished notification event instances over a messaging mechanism.
      */
     public void publishNotifications();
 

@@ -9,7 +9,7 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Instead of each aggregates sending messages directly to other agrgegates, the
+ * Instead of each aggregates sending messages directly to other aggregates, the
  * messages are mediated by the process manager. Behavior design pattern, a
  * process manager is a mediation component that distribute the messages (e.g
  * CommandEvent to several aggregates instances). Used when a bounded context
@@ -24,7 +24,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public abstract class ProcessManager {
+public abstract class ProcessManager implements CommandHandler {
 
     /**
      * Managed handlers which are specific to the aggregate type, and that can be
@@ -109,8 +109,8 @@ public abstract class ProcessManager {
     }
 
     /**
-     * Get a set of command handlers that are managed and supporting the
-     * interactions to treat.
+     * Initialize a set of command handlers that are managed and that support the
+     * processed to treat.
      * 
      * This method is used during the construction of this instance, that check
      * conformity of each handler instance delivered by this method (e.g key and

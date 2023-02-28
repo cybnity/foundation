@@ -1,29 +1,35 @@
-package org.cybnity.framework.immutable.sample;
+package org.cybnity.framework.domain.model;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
+import org.cybnity.framework.domain.EventIdentifierStringBased;
+import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.ChildFact;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Sample of child entity following (as aggregate) a parent other entity.
+ * Generic child fact implementation class.
  * 
  * @author olivier
  *
  */
-public class ChildAggregate extends ChildFact {
+@Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
+public class CommonChildFactImpl extends ChildFact {
 
     private static final long serialVersionUID = 1L;
 
-    public ChildAggregate(Entity predecessor, Identifier id) throws IllegalArgumentException {
+    public CommonChildFactImpl(Entity predecessor, Identifier id) throws IllegalArgumentException {
 	super(predecessor, id);
     }
 
-    public ChildAggregate(Entity predecessor, LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
+    public CommonChildFactImpl(Entity predecessor, LinkedHashSet<Identifier> identifiers)
+	    throws IllegalArgumentException {
 	super(predecessor, identifiers);
     }
 
@@ -34,13 +40,13 @@ public class ChildAggregate extends ChildFact {
 	    combinedId.append(id.value());
 	}
 	// Return combined identifier
-	return new IdentifierImpl("UUID", combinedId.toString());
+	return new EventIdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), combinedId.toString());
     }
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
 	LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
-	return new ChildAggregate(this.parent(), ids);
+	return new CommonChildFactImpl(this.parent(), ids);
     }
 
     /**
@@ -67,18 +73,17 @@ public class ChildAggregate extends ChildFact {
 	if (childOriginalId != null)
 	    childIdName = childOriginalId.name(); // Same name of identifier for the child as its parent
 	if (childIdName == null || childIdName.equals("")) {
-	    // Define a specific new convention name
-	    childIdName = "id";
+	    // Define a specific new convention name enhancing the different naming
+	    childIdName = BaseConstants.IDENTIFIER_ID.name();
 	}
 
 	// Create new identifier from origin concatened with parent identifying
 	// information
-	return new IdentifierImpl(childIdName, value.toString());
+	return new EventIdentifierStringBased(childIdName, value.toString());
     }
 
     /**
-     * Not implemented because relevant to each combination rules coded by
-     * application layer
+     * Not implemented
      */
     @Override
     protected Identifier generateIdentifierPredecessorBased(Entity predecessor, Collection<Identifier> childOriginalIds)

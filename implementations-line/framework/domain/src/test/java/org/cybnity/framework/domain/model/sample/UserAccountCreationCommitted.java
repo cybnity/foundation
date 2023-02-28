@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import org.cybnity.framework.domain.model.DomainEvent;
 import org.cybnity.framework.immutable.Entity;
+import org.cybnity.framework.immutable.EntityReference;
+import org.cybnity.framework.immutable.ImmutabilityException;
 
 /**
  * Example of event regarding an account creation created.
@@ -14,6 +16,8 @@ import org.cybnity.framework.immutable.Entity;
 public class UserAccountCreationCommitted extends DomainEvent {
 
     private static final long serialVersionUID = 876288332792604981L;
+    public EntityReference creationCommandRef;
+    public EntityReference createdAccountRef;
 
     public UserAccountCreationCommitted() {
 	super();
@@ -24,9 +28,13 @@ public class UserAccountCreationCommitted extends DomainEvent {
     }
 
     @Override
-    public Serializable immutable() throws CloneNotSupportedException {
+    public Serializable immutable() throws ImmutabilityException {
 	UserAccountCreationCommitted instance = new UserAccountCreationCommitted(this.identifiedBy);
 	instance.occuredOn = this.occurredAt();
+	if (this.creationCommandRef != null)
+	    instance.createdAccountRef = (EntityReference) this.creationCommandRef.immutable();
+	if (this.createdAccountRef != null)
+	    instance.createdAccountRef = (EntityReference) this.createdAccountRef.immutable();
 	return instance;
     }
 
@@ -34,4 +42,5 @@ public class UserAccountCreationCommitted extends DomainEvent {
     public Long versionUID() {
 	return Long.valueOf(serialVersionUID);
     }
+
 }

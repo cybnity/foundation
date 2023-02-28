@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 import org.cybnity.framework.immutable.Group;
+import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.Member;
 import org.cybnity.framework.immutable.Membership;
 
@@ -28,7 +29,7 @@ public class MemberImpl extends Membership {
     }
 
     @Override
-    public Serializable immutable() throws CloneNotSupportedException {
+    public Serializable immutable() throws ImmutabilityException {
 	return new MemberImpl(this.member(), this.group()).createdAt = this.createdAt;
     }
 }

@@ -65,7 +65,7 @@ public abstract class Membership implements HistoricalFact {
 	    this.member = (Member) member.immutable();
 	    // Create immutable time of this fact creation
 	    this.createdAt = OffsetDateTime.now();
-	} catch (CloneNotSupportedException ce) {
+	} catch (ImmutabilityException ce) {
 	    throw new IllegalArgumentException(ce);
 	}
     }
@@ -74,10 +74,10 @@ public abstract class Membership implements HistoricalFact {
      * Get the member of this relation.
      * 
      * @return An immutable version of the group's member.
-     * @throws CloneNotSupportedException If impossible creation of immutable copy
-     *                                    of the returned instance.
+     * @throws ImmutabilityException If impossible creation of immutable copy of the
+     *                               returned instance.
      */
-    public Member member() throws CloneNotSupportedException {
+    public Member member() throws ImmutabilityException {
 	return (Member) this.member.immutable();
     }
 
@@ -85,10 +85,10 @@ public abstract class Membership implements HistoricalFact {
      * Get the group categorizing this relation.
      * 
      * @return An immutable version of the group.
-     * @throws CloneNotSupportedException If impossible creation of immutable copy
-     *                                    of the returned instance.
+     * @throws ImmutabilityException If impossible creation of immutable copy of the
+     *                               returned instance.
      */
-    public Group group() throws CloneNotSupportedException {
+    public Group group() throws ImmutabilityException {
 	return (Group) this.group.immutable();
     }
 
@@ -98,6 +98,6 @@ public abstract class Membership implements HistoricalFact {
     @Override
     public OffsetDateTime occurredAt() {
 	// Return immutable value of the fact time
-	return OffsetDateTime.parse(this.createdAt.toString());
+	return this.createdAt;
     }
 }
