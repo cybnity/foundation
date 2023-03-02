@@ -12,7 +12,7 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Represent a component which manage handlers regarding a specific aggregate
+ * Represent a component which manage handlers regarding a specific Aggregate
  * type.
  * 
  * @author olivier

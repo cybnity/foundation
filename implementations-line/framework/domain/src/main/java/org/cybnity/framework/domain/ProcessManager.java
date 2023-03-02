@@ -14,7 +14,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * messages are mediated by the process manager. Behavior design pattern, a
  * process manager is a mediation component that distribute the messages (e.g
  * CommandEvent to several aggregates instances). Used when a bounded context
- * uses a large number of events and commands that would be difficul to manage
+ * uses a large number of events and commands that would be difficult to manage
  * as a collection point-to-point interactions between aggregates; or when
  * message routing in a bounded context need to be easily modifiable.
  * 

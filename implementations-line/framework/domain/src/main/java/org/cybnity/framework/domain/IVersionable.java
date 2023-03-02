@@ -4,7 +4,6 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * 
  * Several versions of a same event type (e.g gain/lose of a property in its
  * latest version, internal property changes regarding property type of values
  * range) can be supported by a system. An event requiring a operating of its

@@ -1,7 +1,7 @@
 package org.cybnity.framework.domain;
 
 /**
- * Validation class implement Specification pattern or the Strategy pattern. If
+ * Validation class implementing Specification pattern or the Strategy pattern. If
  * it detects and invalid state, it informs the observes or otherwise makes a
  * record of the results that can be reviewed later.
  * 

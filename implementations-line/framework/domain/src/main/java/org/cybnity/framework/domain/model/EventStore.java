@@ -29,7 +29,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * The store is able to handle multiple versions of an event type and
  * aggregates.
  * 
- * When an event is stored (via append method), the store shall publishe event
+ * When an event is stored (via append method), the store shall publish event
  * after it have been saved (e.g allowing to read model store to automatically
  * refresh dependent contents).
  * 

@@ -6,6 +6,8 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
+ * Stream store (with an append-only approach) which maintain history of a type
+ * of event (e.g Aggregate versions).
  * 
  * @author olivier
  *

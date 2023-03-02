@@ -7,7 +7,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 /**
  * Represent a defined perimeter (e.g a core business domain, a subdomain of a
  * core domain or an area including some parts of several subdomains merged into
- * a mixed perimeter.
+ * a mixed perimeter).
  * 
  * Include resources provided into this perimeter.
  * 

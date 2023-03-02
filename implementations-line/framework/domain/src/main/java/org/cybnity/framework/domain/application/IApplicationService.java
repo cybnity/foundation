@@ -5,7 +5,7 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Applicative behaviors contract regarding a service layer.
+ * Applicative behaviors contract regarding an application layer.
  * 
  * @author olivier
  *

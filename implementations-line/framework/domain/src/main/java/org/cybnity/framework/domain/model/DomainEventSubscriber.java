@@ -4,7 +4,7 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Represent a interest contract regarding interest to be notified when one or
+ * Represent a interest contract as interested to be notified when one or
  * several types of facts are changed or notified.
  * 
  * For example; a persistence service can monitor the changes (e.g commitment

@@ -13,7 +13,7 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Log event regarding a system event (e.g system or context fact which is
+ * Log event regarding a fact not previously identified (e.g system or context fact which is
  * subject to log traceability but that is not previously uniquely identified).
  * For example, the origin of this logged event can be suspect or can come from
  * unknown source (e.g threat agent, system in failure...) requiring attention.
