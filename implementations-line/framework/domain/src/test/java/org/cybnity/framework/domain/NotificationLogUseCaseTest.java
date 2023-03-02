@@ -3,7 +3,7 @@ package org.cybnity.framework.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.cybnity.framework.domain.model.sample.UserAccountIdentityCreation;
+import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
@@ -30,9 +30,9 @@ public class NotificationLogUseCaseTest {
 
     @Before
     public void initLogOrigin() {
-	originalLogId = new EventIdentifierStringBased(NotificationLog.IDENTIFIER_NAME, "KJHG986754");
+	originalLogId = new IdentifierStringBased(NotificationLog.IDENTIFIER_NAME, "KJHG986754");
 	userAccountCreationFact = new UserAccountIdentityCreation(
-		new EventIdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), "98765DFGHJKJHG"));
+		new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), "98765DFGHJKJHG"));
     }
 
     @After
@@ -70,7 +70,7 @@ public class NotificationLogUseCaseTest {
     @Test(expected = IllegalArgumentException.class)
     public void givenInvalidIdentifierName_whenConstructor_thenIllegalArgumentException() {
 	// Create instance of log identifier based on invalid identifier name
-	originalLogId = new EventIdentifierStringBased("any_other_uuid_name", "KJHG986754");
+	originalLogId = new IdentifierStringBased("any_other_uuid_name", "KJHG986754");
 	new NotificationLog(userAccountCreationFact, originalLogId);
     }
 

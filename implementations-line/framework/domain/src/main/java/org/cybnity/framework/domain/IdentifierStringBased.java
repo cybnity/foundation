@@ -14,20 +14,20 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public class EventIdentifierStringBased implements Identifier {
+public class IdentifierStringBased implements Identifier {
 
     private static final long serialVersionUID = 1L;
     private String value;
     private String name;
 
-    public EventIdentifierStringBased(String name, String value) {
+    public IdentifierStringBased(String name, String value) {
 	this.name = name;
 	this.value = value;
     }
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	return new EventIdentifierStringBased(name.toString(), value.toString());
+	return new IdentifierStringBased(name.toString(), value.toString());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.cybnity.framework.domain.model;
 
+import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.immutable.IdentifiableFact;
 import org.cybnity.framework.support.annotation.Requirement;
@@ -35,8 +36,10 @@ public interface Aggregate extends IdentifiableFact {
      * publishers) about changed information.
      * 
      * @param change Mandatory action to process.
+     * @param ctx    Context providing resources which could be required for command
+     *               treatment by this Aggregate.
      * @throws IllegalArgumentException When parameter is not defined or is invalid
      *                                  (e.g conformity problem).
      */
-    public void execute(Command change) throws IllegalArgumentException;
+    public void execute(Command change, IContext ctx) throws IllegalArgumentException;
 }

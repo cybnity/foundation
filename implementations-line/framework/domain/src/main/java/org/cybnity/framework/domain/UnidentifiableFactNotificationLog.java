@@ -95,7 +95,7 @@ public class UnidentifiableFactNotificationLog extends Entity {
 	}
 	// Return combined identifier normally only based on unique value found in
 	// identifiers list
-	return new EventIdentifierStringBased(IDENTIFIER_NAME, combinedId.toString());
+	return new IdentifierStringBased(IDENTIFIER_NAME, combinedId.toString());
     }
 
 }

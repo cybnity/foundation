@@ -1,4 +1,4 @@
-package org.cybnity.framework.domain.application.sample;
+package org.cybnity.framework.domain.model.sample.readmodel;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;

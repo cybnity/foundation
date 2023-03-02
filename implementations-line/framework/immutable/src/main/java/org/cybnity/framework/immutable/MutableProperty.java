@@ -1,6 +1,5 @@
 package org.cybnity.framework.immutable;
 
-import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -107,11 +106,9 @@ public abstract class MutableProperty implements HistoricalFact {
     public MutableProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status)
 	    throws IllegalArgumentException {
 	if (propertyOwner == null)
-	    throw new IllegalArgumentException(
-		    new InvalidParameterException("PropertyOwner mandatory parameter is missing!"));
+	    throw new IllegalArgumentException("PropertyOwner mandatory parameter is missing!");
 	if (propertyCurrentValue == null || propertyCurrentValue.isEmpty())
-	    throw new IllegalArgumentException(
-		    new InvalidParameterException("PropertyCurrentValue mandatory parameter is missing!"));
+	    throw new IllegalArgumentException("PropertyCurrentValue mandatory parameter is missing!");
 	try {
 	    this.entity = (Entity) propertyOwner.immutable();
 	    // Set of prior versions is empty by default

@@ -5,7 +5,7 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Subscription contract allowing to receive notification about event changes.
+ * Subscription contract allowing to receive notification about fact events.
  * 
  * @author olivier
  *
@@ -20,4 +20,10 @@ public interface Subscribable {
      */
     public <T> void subscribe(DomainEventSubscriber<T> aSubscriber);
 
+    /**
+     * Remove a subscriber of the register if existing.
+     * 
+     * @param aSubscriber The mandatory subscriber to remove from register.
+     */
+    public <T> void remove(DomainEventSubscriber<T> aSubscriber);
 }

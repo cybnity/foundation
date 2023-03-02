@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
-import org.cybnity.framework.domain.EventIdentifierStringBased;
+import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.ChildFact;
 import org.cybnity.framework.immutable.Entity;
@@ -40,7 +40,7 @@ public class CommonChildFactImpl extends ChildFact {
 	    combinedId.append(id.value());
 	}
 	// Return combined identifier
-	return new EventIdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), combinedId.toString());
+	return new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), combinedId.toString());
     }
 
     @Override
@@ -79,7 +79,7 @@ public class CommonChildFactImpl extends ChildFact {
 
 	// Create new identifier from origin concatened with parent identifying
 	// information
-	return new EventIdentifierStringBased(childIdName, value.toString());
+	return new IdentifierStringBased(childIdName, value.toString());
     }
 
     /**

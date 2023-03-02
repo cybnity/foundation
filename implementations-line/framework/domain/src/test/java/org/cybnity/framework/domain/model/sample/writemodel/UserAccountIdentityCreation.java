@@ -1,9 +1,9 @@
-package org.cybnity.framework.domain.model.sample;
+package org.cybnity.framework.domain.model.sample.writemodel;
 
 import java.io.Serializable;
 import java.util.LinkedHashSet;
 
-import org.cybnity.framework.domain.EventIdentifierStringBased;
+import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
@@ -34,7 +34,7 @@ public class UserAccountIdentityCreation extends Entity {
 	    combinedId.append(id.value());
 	}
 	// Return combined identifier
-	return new EventIdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), combinedId.toString());
+	return new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), combinedId.toString());
     }
 
     @Override

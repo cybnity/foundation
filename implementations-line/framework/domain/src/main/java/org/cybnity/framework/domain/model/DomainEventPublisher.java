@@ -8,8 +8,9 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Represent a publishing service from a domain model. Simple service for
- * Aggregates that need to notify subscribers to Events.
+ * Represent a publishing service from a domain model. Repository service for
+ * Aggregates that need to notify any subscribers about change events. It's an
+ * utility class managing subscribers registrations lifecycle.
  * 
  * @author olivier
  *
@@ -47,16 +48,37 @@ public class DomainEventPublisher implements Subscribable {
      */
     @Override
     public <T> void subscribe(DomainEventSubscriber<T> aSubscriber) {
-	if (publishing.get()) {
-	    return;
+	if (aSubscriber != null) {
+	    if (publishing.get()) {
+		return;
+	    }
+	    @SuppressWarnings("unchecked")
+	    List<DomainEventSubscriber<T>> registeredSubscribers = subscribers.get();
+	    if (registeredSubscribers == null) {
+		registeredSubscribers = new ArrayList<DomainEventSubscriber<T>>();
+		subscribers.set(registeredSubscribers);
+	    }
+	    registeredSubscribers.add(aSubscriber);
 	}
-	@SuppressWarnings("unchecked")
-	List<DomainEventSubscriber<T>> registeredSubscribers = subscribers.get();
-	if (registeredSubscribers == null) {
-	    registeredSubscribers = new ArrayList<DomainEventSubscriber<T>>();
-	    subscribers.set(registeredSubscribers);
+    }
+
+    /**
+     * Remove a subscriber of the register if existing.
+     * 
+     * @param aSubscriber The mandatory subscriber to remove from register.
+     */
+    @Override
+    public <T> void remove(DomainEventSubscriber<T> aSubscriber) {
+	if (aSubscriber != null) {
+	    if (publishing.get()) {
+		return;
+	    }
+	    @SuppressWarnings("unchecked")
+	    List<DomainEventSubscriber<T>> registeredSubscribers = subscribers.get();
+	    if (registeredSubscribers != null) {
+		registeredSubscribers.remove(aSubscriber);
+	    }
 	}
-	registeredSubscribers.add(aSubscriber);
     }
 
     /**

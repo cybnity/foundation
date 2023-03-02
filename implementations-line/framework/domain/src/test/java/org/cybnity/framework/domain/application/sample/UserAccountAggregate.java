@@ -1,18 +1,21 @@
 package org.cybnity.framework.domain.application.sample;
 
 import java.io.Serializable;
-import java.security.InvalidParameterException;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.domain.EventIdentifierStringBased;
+import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.model.Aggregate;
 import org.cybnity.framework.domain.model.CommonChildFactImpl;
 import org.cybnity.framework.domain.model.DomainEventPublisher;
 import org.cybnity.framework.domain.model.sample.ApplicativeRole;
 import org.cybnity.framework.domain.model.sample.UserAccountApplicativeRoleAssigned;
+import org.cybnity.framework.domain.model.sample.readmodel.ApplicativeRoleDTO;
+import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStore;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
@@ -74,27 +77,36 @@ public class UserAccountAggregate extends Entity implements Aggregate {
     }
 
     @Override
-    public void execute(Command change) throws IllegalArgumentException {
+    public void execute(Command change, IContext ctx) throws IllegalArgumentException {
+	if (ctx == null)
+	    throw new IllegalArgumentException("Context parameter is required!");
 	if (change instanceof AssignRoleToUserAccountCommand) {
 	    AssignRoleToUserAccountCommand toProcess = (AssignRoleToUserAccountCommand) change;
-	    ApplicativeRole toAssign = toProcess.assignedRole;
-	    if (toAssign != null) {
+	    ApplicativeRoleDTO toAssign = toProcess.assignedRole;
+	    String userAccountId = toProcess.userAccountIdentifier;
+	    // Security check regarding a modification requested for this user account
+	    // entity
+	    if (toAssign != null && userAccountId != null && userAccountId.equals((String) this.identified().value())) {
 		try {
 		    // Identify the property to change in the domain object (e.g user permission
 		    // regarding a role supported by this account)
 
 		    // Update the roles assignment according to the requested change
+		    addAssignedRole(toAssign.getName());
 
 		    // Save the changed state (e.g historization of the entity immutable object's
 		    // version) in a data persistence when existing
+		    UserAccountStore accountStore = (UserAccountStore) ctx.get(UserAccountStore.class.getName());
+		    accountStore.append(this, toProcess);
+
 		    // -------------> SAVE CONFIRMED AS CONSISTENT UNIT OF USERACCOUNTAGGREGATE
-		    // VERSION
+		    // VERSION BY UserAccountChanged event automatically send by the store
 
 		    // Creation an event confirming the changed status of the domain object (e.g
 		    // assignment of new application roles)
 		    // Build event child based on the updated account (parent of immutable story)
 		    CommonChildFactImpl modifiedAccountAssignment = new CommonChildFactImpl(this,
-			    new EventIdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(),
+			    new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(),
 				    /* identifier as performed transaction number */ UUID.randomUUID().toString()));
 
 		    // Prepare notification of the read model about changed user account's roles
@@ -114,7 +126,7 @@ public class UserAccountAggregate extends Entity implements Aggregate {
 		}
 	    } else {
 		throw new IllegalArgumentException(
-			new InvalidParameterException("assignedRole shall be defined into the command to process!"));
+			"assignedRole shall be defined into the command to process for the good user account entity!");
 	    }
 	}
 	throw new IllegalArgumentException(
@@ -128,7 +140,7 @@ public class UserAccountAggregate extends Entity implements Aggregate {
 	    combinedId.append(id.value());
 	}
 	// Return combined identifier
-	return new EventIdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), combinedId.toString());
+	return new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), combinedId.toString());
     }
 
     @Override
@@ -140,13 +152,59 @@ public class UserAccountAggregate extends Entity implements Aggregate {
     /**
      * Add an applicative role allowed to this account.
      * 
-     * @param assignedRoles A role to assign at this account. Ignored if null.
+     * @param roleName A role name to assign at this account. Ignored if null.
+     * @throws ImmutabilityException When problem of role instantiation.
      */
-    private void addAssignedRole(ApplicativeRole assignedRole) {
-	if (assignedRole == null) {
-	    // Archive the previous role version regarding existing history when exist
-
-	    // Or add a new role assigned to this account
+    private void addAssignedRole(String roleName) throws ImmutabilityException {
+	if (roleName != null && !roleName.equals("")) {
+	    if (this.assignedRoles == null) {
+		this.assignedRoles = new HashSet<>();
+	    }
+	    // Find existing role with the same name in the Set
+	    ApplicativeRole existingRoleToUpdate = null;
+	    for (ApplicativeRole aRole : this.assignedRoles) {
+		if (aRole.getName().equalsIgnoreCase(roleName)) {
+		    existingRoleToUpdate = aRole;
+		    // Existant role that should be enhanced with a new version (e.g permissions
+		    // allowed)
+		    break;
+		}
+	    }
+	    if (existingRoleToUpdate != null) {
+		// Archive the previous role version regarding existing history when exist
+		Set<ApplicativeRole> changesHistory = existingRoleToUpdate.changesHistory();
+		// Add last version of current role into history
+		changesHistory.add(existingRoleToUpdate);
+		// Create a new version of role as current version (which perhaps content
+		// updated permissions etc...)
+		ApplicativeRole newCurrentRoleVersion = new ApplicativeRole(this.user, roleName);
+		// Set the old history (including the previous last version of role)
+		newCurrentRoleVersion.updateChangesHistory(changesHistory);
+		// Replace the new current role version in the roles attribute
+		this.assignedRoles.remove(existingRoleToUpdate);
+		this.assignedRoles.add(newCurrentRoleVersion);
+	    } else {
+		// Or add a new role assigned to this account
+		this.assignedRoles.add(new ApplicativeRole(this.user, roleName));
+	    }
 	}
+    }
+
+    /**
+     * Get the roles allowed to this account.
+     * 
+     * @return A set of immutable roles or empty set.
+     * @throws ImmutabilityException When problem of immutable instances occurred.
+     */
+    public Set<ApplicativeRole> assignedRoles() throws ImmutabilityException {
+	if (this.assignedRoles == null) {
+	    // Return empty set
+	    return new HashSet<>();
+	}
+	Set<ApplicativeRole> immutableSet = new HashSet<>(this.assignedRoles.size());
+	for (ApplicativeRole role : this.assignedRoles) {
+	    immutableSet.add((ApplicativeRole) role.immutable());
+	}
+	return immutableSet;
     }
 }

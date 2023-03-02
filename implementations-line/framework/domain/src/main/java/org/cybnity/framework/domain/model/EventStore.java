@@ -1,9 +1,6 @@
-package org.cybnity.framework.domain.application;
-
-import java.security.InvalidParameterException;
+package org.cybnity.framework.domain.model;
 
 import org.cybnity.framework.domain.Subscribable;
-import org.cybnity.framework.domain.model.DomainEvent;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
@@ -30,7 +27,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * Events in chronological order. Production of snapshots of any number of store
  * events (e.g group of 100) can optimize instance reconstitution.
  * 
- * The store is ablbe to handle multiple versions of an event type and
+ * The store is able to handle multiple versions of an event type and
  * aggregates.
  * 
  * When an event is stored (via append method), the store shall publishe event
@@ -55,12 +52,12 @@ public abstract class EventStore implements Subscribable {
      * Add an event into the store.
      * 
      * @param event Mandatory event to store.
-     * @throws InvalidParameterException When event to store is not compatible to be
-     *                                   stored (e.g missing mandatory content into
-     *                                   the event to store).
-     * @throws ImmutabilityException     When problem of immutable version of stored
-     *                                   event is occurred.
+     * @throws IllegalArgumentException When event to store is not compatible to be
+     *                                  stored (e.g missing mandatory content into
+     *                                  the event to store).
+     * @throws ImmutabilityException    When problem of immutable version of stored
+     *                                  event is occurred.
      */
-    public abstract void append(DomainEvent event) throws InvalidParameterException, ImmutabilityException;
+    public abstract void append(DomainEvent event) throws IllegalArgumentException, ImmutabilityException;
 
 }

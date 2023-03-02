@@ -1,12 +1,11 @@
 package org.cybnity.framework.domain.model.sample;
 
-import java.security.InvalidParameterException;
-
 import javax.management.modelmbean.InvalidTargetObjectTypeException;
 
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.ProcessManager;
 import org.cybnity.framework.domain.application.ApplicationService;
+import org.cybnity.framework.domain.application.sample.UserAccountManagementDomainContext;
 import org.cybnity.framework.domain.application.sample.UserAccountManagementProcessesImpl;
 
 /**
@@ -21,6 +20,8 @@ public class AccountsManagementServicesImpl extends ApplicationService {
 
     private ProcessManager boundaryAPI;
 
+    private UserAccountManagementDomainContext context;
+
     /**
      * Default constructor using a delegation for processes management regarding the
      * domain boundary.
@@ -32,14 +33,18 @@ public class AccountsManagementServicesImpl extends ApplicationService {
      *                                          defined) or some eligible handler
      *                                          instances are not valid.
      */
-    public AccountsManagementServicesImpl() throws InvalidTargetObjectTypeException {
-	boundaryAPI = new UserAccountManagementProcessesImpl();
+    public AccountsManagementServicesImpl(UserAccountManagementDomainContext ctx)
+	    throws InvalidTargetObjectTypeException, IllegalArgumentException {
+	if (ctx == null)
+	    throw new IllegalArgumentException("Context parameter is required!");
+	this.context = ctx;
+	boundaryAPI = new UserAccountManagementProcessesImpl(this.context);
     }
 
     @Override
-    public void handle(Command command) throws IllegalArgumentException, InvalidParameterException {
+    public void handle(Command command) throws IllegalArgumentException {
 	// Delegate the command realization to the handling service
-	boundaryAPI.handle(command);
+	boundaryAPI.handle(command, context);
     }
 
 }

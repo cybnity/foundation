@@ -4,8 +4,12 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Represent a interest contract regarding a component which is interested to be
- * notified when a type of event is changed and notified.
+ * Represent a interest contract regarding interest to be notified when one or
+ * several types of facts are changed or notified.
+ * 
+ * For example; a persistence service can monitor the changes (e.g commitment
+ * events) observed on aggregates and automatically store them into an event
+ * stores as EventsPersistenceSubscriber.
  * 
  * @author olivier
  *

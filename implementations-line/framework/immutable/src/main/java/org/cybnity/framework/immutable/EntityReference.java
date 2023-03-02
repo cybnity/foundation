@@ -1,7 +1,6 @@
 package org.cybnity.framework.immutable;
 
 import java.io.Serializable;
-import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 
@@ -94,8 +93,7 @@ public class EntityReference implements HistoricalFact {
     public EntityReference(Entity referenceOwner, Entity inRelationWith, HistoryState status)
 	    throws IllegalArgumentException {
 	if (referenceOwner == null)
-	    throw new IllegalArgumentException(
-		    new InvalidParameterException("referenceOwner mandatory parameter is missing!"));
+	    throw new IllegalArgumentException("referenceOwner mandatory parameter is missing!");
 	try {
 	    this.entity = (Entity) referenceOwner.immutable();
 	    this.setReferencedRelation(inRelationWith);

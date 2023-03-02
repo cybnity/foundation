@@ -1,6 +1,5 @@
 package org.cybnity.framework.immutable;
 
-import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -66,11 +65,10 @@ public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
      */
     protected ChildFact(Entity predecessor, Identifier id) throws IllegalArgumentException {
 	if (predecessor == null)
-	    throw new IllegalArgumentException(new InvalidParameterException("parent parameter is required!"));
+	    throw new IllegalArgumentException("parent parameter is required!");
 	// Check conformity of optional child identifier
 	if (id != null && (id.name() == null || id.name().equals("") || id.value() == null)) {
-	    throw new IllegalArgumentException(
-		    new InvalidParameterException("Identifier parameter's name and value is required!"));
+	    throw new IllegalArgumentException("Identifier parameter's name and value is required!");
 	}
 	try {
 	    // Check mandatory existent identifier of parent (child identifier based on its
@@ -87,13 +85,11 @@ public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
 	// Get predecessor dependent identifier assignable to this child
 	Identifier parentDependentId = generateIdentifierPredecessorBased(predecessor, id);
 	if (parentDependentId == null)
-	    throw new IllegalArgumentException(
-		    new InvalidParameterException("Impossible identifier generation based on parent identifiers!"));
+	    throw new IllegalArgumentException("Impossible identifier generation based on parent identifiers!");
 	// Check conformity of generated identifier
 	if (parentDependentId.name() == null || parentDependentId.name().equals("")
 		|| parentDependentId.value() == null) {
-	    throw new IllegalArgumentException(
-		    new InvalidParameterException("Child identifier based on parent shall include name and value!"));
+	    throw new IllegalArgumentException("Child identifier based on parent shall include name and value!");
 	}
 	try {
 	    identifiedBy = new ArrayList<Identifier>(1);
@@ -116,14 +112,13 @@ public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
      */
     protected ChildFact(Entity predecessor, LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
 	if (predecessor == null)
-	    throw new IllegalArgumentException(new InvalidParameterException("parent parameter is required!"));
+	    throw new IllegalArgumentException("parent parameter is required!");
 	try {
 	    // Check mandatory existent identifier of parent (child identifier based on its
 	    // contribution)
 	    Collection<Identifier> predecessorIdentifiers = predecessor.identifiers();
 	    if (predecessor.identified() == null || predecessorIdentifiers == null || predecessorIdentifiers.isEmpty())
-		throw new IllegalArgumentException(
-			new InvalidParameterException("The parent identifier(s) shall be existent!"));
+		throw new IllegalArgumentException("The parent identifier(s) shall be existent!");
 	    // Reference immutable copy of predecessor
 	    this.parent = (Entity) predecessor.immutable();
 	} catch (ImmutabilityException cn) {
@@ -137,8 +132,8 @@ public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
 		for (Identifier id : identifiers) {
 		    // Check conformity of identifier
 		    if (id.name() == null || id.name().equals("") || id.value() == null) {
-			throw new IllegalArgumentException(new InvalidParameterException(
-				"Any child base identifier parameter's name and value is required!"));
+			throw new IllegalArgumentException(
+				"Any child base identifier parameter's name and value is required!");
 		    }
 		    // get a reference copy
 		    origins.add((Identifier) id.immutable());

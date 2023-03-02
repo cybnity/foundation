@@ -1,7 +1,7 @@
 package org.cybnity.framework.domain.application.sample;
 
 import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.domain.model.sample.ApplicativeRole;
+import org.cybnity.framework.domain.model.sample.readmodel.ApplicativeRoleDTO;
 import org.cybnity.framework.immutable.Entity;
 
 /**
@@ -14,7 +14,8 @@ import org.cybnity.framework.immutable.Entity;
 public class AssignRoleToUserAccountCommand extends Command {
 
     private static final long serialVersionUID = 1L;
-    public ApplicativeRole assignedRole;
+    public ApplicativeRoleDTO assignedRole;
+    public String userAccountIdentifier;
 
     public AssignRoleToUserAccountCommand() {
 	super();

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.management.modelmbean.InvalidTargetObjectTypeException;
 
+import org.cybnity.framework.IContext;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -35,9 +36,14 @@ public abstract class ProcessManager implements CommandHandler {
      */
     private HashMap<String, CommandHandler> mediated;
 
+    protected IContext context;
+
     /**
      * Default constructor of this mediation pattern component.
      * 
+     * @param ctx Optional context which can be required by the managedHandlers()
+     *            method (child implementation) executed during the construction of
+     *            this instance.
      * @throws InvalidTargetObjectTypeException When none managed handlers are
      *                                          identified (non sens of
      *                                          instantiation regarding this
@@ -45,7 +51,8 @@ public abstract class ProcessManager implements CommandHandler {
      *                                          defined) or some eligible handler
      *                                          instances are not valid.
      */
-    public ProcessManager() throws InvalidTargetObjectTypeException {
+    public ProcessManager(IContext ctx) throws InvalidTargetObjectTypeException {
+	this.context = ctx;
 	mediated = new HashMap<>();
 	initializeHandlers();
     }

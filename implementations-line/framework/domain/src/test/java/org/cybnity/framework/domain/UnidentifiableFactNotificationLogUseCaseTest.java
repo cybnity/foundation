@@ -8,7 +8,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.cybnity.framework.domain.model.DomainEvent;
-import org.cybnity.framework.domain.model.sample.UserAccountCreationCommitted;
+import org.cybnity.framework.domain.model.sample.writemodel.UserAccountChanged;
 import org.cybnity.framework.immutable.HistoricalFact;
 import org.cybnity.framework.immutable.Identifier;
 import org.junit.After;
@@ -36,8 +36,8 @@ public class UnidentifiableFactNotificationLogUseCaseTest {
 
     @Before
     public void initLogOrigin() {
-	originalLogId = new EventIdentifierStringBased(NotificationLog.IDENTIFIER_NAME, "KJHG986754");
-	unidentifiableObservedFact = new UserAccountCreationCommitted(/** none identity */
+	originalLogId = new IdentifierStringBased(NotificationLog.IDENTIFIER_NAME, "KJHG986754");
+	unidentifiableObservedFact = new UserAccountChanged(/** none identity */
 		null);
     }
 

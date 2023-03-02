@@ -1,6 +1,5 @@
 package org.cybnity.framework.immutable;
 
-import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,11 +62,10 @@ public abstract class Entity implements HistoricalFact, IdentifiableFact, Refere
      */
     protected Entity(Identifier id) throws IllegalArgumentException {
 	if (id == null)
-	    throw new IllegalArgumentException(new InvalidParameterException("Id parameter is required!"));
+	    throw new IllegalArgumentException("Id parameter is required!");
 	// Check conformity of identifier
 	if (id.name() == null || id.name().equals("") || id.value() == null) {
-	    throw new IllegalArgumentException(
-		    new InvalidParameterException("Identifier parameter's name and value are required!"));
+	    throw new IllegalArgumentException("Identifier parameter's name and value are required!");
 	}
 	try {
 	    identifiedBy = new ArrayList<Identifier>(1);
@@ -89,15 +87,14 @@ public abstract class Entity implements HistoricalFact, IdentifiableFact, Refere
      */
     protected Entity(LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
 	if (identifiers == null || identifiers.isEmpty())
-	    throw new IllegalArgumentException(new InvalidParameterException("Identifiers parameter is required!"));
+	    throw new IllegalArgumentException("Identifiers parameter is required!");
 	identifiedBy = new ArrayList<Identifier>(identifiers.size());
 	// Save immutable identifiers
 	try {
 	    for (Identifier id : identifiers) {
 		// Check conformity of identifier
 		if (id.name() == null || id.name().equals("") || id.value() == null) {
-		    throw new IllegalArgumentException(
-			    new InvalidParameterException("Identifier parameter's name and value is required!"));
+		    throw new IllegalArgumentException("Identifier parameter's name and value is required!");
 		}
 		// save reference copy
 		identifiedBy.add((Identifier) id.immutable());

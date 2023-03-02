@@ -1,6 +1,5 @@
 package org.cybnity.framework.immutable;
 
-import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
 
 import org.cybnity.framework.support.annotation.Requirement;
@@ -52,14 +51,14 @@ public abstract class Membership implements HistoricalFact {
      */
     public Membership(Member member, Group group) throws IllegalArgumentException {
 	if (member == null)
-	    throw new IllegalArgumentException(new InvalidParameterException("Member parameter is required!"));
+	    throw new IllegalArgumentException("Member parameter is required!");
 	if (group == null)
-	    throw new IllegalArgumentException(new InvalidParameterException("Group parameter is required!"));
+	    throw new IllegalArgumentException("Group parameter is required!");
 	// Check conformity of identifiers
 	if (member.identified() == null)
-	    throw new IllegalArgumentException(new InvalidParameterException("Member's identifier is missing!"));
+	    throw new IllegalArgumentException("Member's identifier is missing!");
 	if (group.identified() == null)
-	    throw new IllegalArgumentException(new InvalidParameterException("Group's identifier is missing!"));
+	    throw new IllegalArgumentException("Group's identifier is missing!");
 	try {
 	    this.group = (Group) group.immutable();
 	    this.member = (Member) member.immutable();

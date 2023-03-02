@@ -59,7 +59,7 @@ public class NotificationLog extends ChildFact {
 	}
 	// Return combined identifier normally only based on unique value found in
 	// identifiers list
-	return new EventIdentifierStringBased(IDENTIFIER_NAME, combinedId.toString());
+	return new IdentifierStringBased(IDENTIFIER_NAME, combinedId.toString());
     }
 
     /**

@@ -1,4 +1,4 @@
-package org.cybnity.framework.domain.model.sample;
+package org.cybnity.framework.domain.model.sample.readmodel;
 
 import java.io.Serializable;
 
@@ -8,33 +8,33 @@ import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
 
 /**
- * Example of event regarding an account creation created.
+ * Example of event regarding an account creation executed.
  * 
  * @author olivier
  *
  */
-public class UserAccountCreationCommitted extends DomainEvent {
+public class UserAccountDTOChanged extends DomainEvent {
 
     private static final long serialVersionUID = 876288332792604981L;
     public EntityReference creationCommandRef;
-    public EntityReference createdAccountRef;
+    public EntityReference createdAccountDTORef;
 
-    public UserAccountCreationCommitted() {
+    public UserAccountDTOChanged() {
 	super();
     }
 
-    public UserAccountCreationCommitted(Entity identity) {
+    public UserAccountDTOChanged(Entity identity) {
 	super(identity);
     }
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	UserAccountCreationCommitted instance = new UserAccountCreationCommitted(this.getIdentifiedBy());
+	UserAccountDTOChanged instance = new UserAccountDTOChanged(this.getIdentifiedBy());
 	instance.occuredOn = this.occurredAt();
 	if (this.creationCommandRef != null)
-	    instance.createdAccountRef = (EntityReference) this.creationCommandRef.immutable();
-	if (this.createdAccountRef != null)
-	    instance.createdAccountRef = (EntityReference) this.createdAccountRef.immutable();
+	    instance.createdAccountDTORef = (EntityReference) this.creationCommandRef.immutable();
+	if (this.createdAccountDTORef != null)
+	    instance.createdAccountDTORef = (EntityReference) this.createdAccountDTORef.immutable();
 	return instance;
     }
 

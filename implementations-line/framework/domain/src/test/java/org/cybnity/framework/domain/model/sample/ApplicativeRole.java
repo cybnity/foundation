@@ -38,7 +38,7 @@ public class ApplicativeRole extends MutableProperty {
      * Default constructor.
      * 
      * @param roleOwner Mandatory owner of this role (e.g user account entity),
-     *                  including the entity information (e.g referenced is equals.
+     *                  including the entity information.
      * @param name      Mandatory label naming this role.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      * @throws ImmutabilityException    When impossible creation of immutable
@@ -113,6 +113,24 @@ public class ApplicativeRole extends MutableProperty {
 	    history.add((ApplicativeRole) previousChangedProperty);
 	}
 	return history;
+    }
+
+    /**
+     * Update the history of this role.
+     * 
+     * @param roles To set as new version of this role history. Ignore if null or
+     *              empty.
+     */
+    public void updateChangesHistory(Set<ApplicativeRole> roles) {
+	if (roles != null && !roles.isEmpty()) {
+	    // Update the story
+	    HashSet<MutableProperty> history = new HashSet<>();
+	    for (ApplicativeRole aRole : roles) {
+		history.add(aRole);
+	    }
+	    // Replace current history
+	    this.prior = history;
+	}
     }
 
     /**

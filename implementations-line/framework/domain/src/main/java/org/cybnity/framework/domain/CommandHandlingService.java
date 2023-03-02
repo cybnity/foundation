@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.management.modelmbean.InvalidTargetObjectTypeException;
 
+import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.model.Aggregate;
 import org.cybnity.framework.domain.model.DomainEventPublisher;
 import org.cybnity.framework.support.annotation.Requirement;
@@ -43,6 +44,10 @@ public abstract class CommandHandlingService extends ProcessManager {
      *                               be notified about change events (e.g resulting
      *                               of commands executed by this service on
      *                               aggregates).
+     * @param ctx                    Optional context which can be required by the
+     *                               managedHandlers() method (child implementation)
+     *                               executed during the construction of this
+     *                               instance.
      * @throws IllegalArgumentException         WHen mandatory parameter is missing.
      * @throws InvalidTargetObjectTypeException When none managed handlers are
      *                                          identified (non sens of
@@ -51,9 +56,9 @@ public abstract class CommandHandlingService extends ProcessManager {
      *                                          defined) or some eligible handler
      *                                          instances are not valid.
      */
-    public CommandHandlingService(Aggregate type, Set<DomainEventPublisher> notifiableAboutChanges)
+    public CommandHandlingService(Aggregate type, Set<DomainEventPublisher> notifiableAboutChanges, IContext ctx)
 	    throws IllegalArgumentException, InvalidTargetObjectTypeException {
-	super();
+	super(ctx);
 	if (type == null)
 	    throw new IllegalArgumentException("Supported aggregate type parameter is required!");
 	recipientOfCommands = type;

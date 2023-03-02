@@ -1,7 +1,5 @@
 package org.cybnity.framework.domain;
 
-import java.security.InvalidParameterException;
-
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -29,10 +27,10 @@ public interface WriteModel {
      * Process the realization of a command.
      * 
      * @param command Mandatory command that must be treated by the model.
-     * @throws IllegalArgumentException  When command parameter is null.
-     * @throws InvalidParameterException When a command processing can't be
-     *                                   performed for cause of command invalidity
-     *                                   (e.g missing required contents).
+     * @throws IllegalArgumentException When command parameter is null or when a
+     *                                  command processing can't be performed for
+     *                                  cause of command invalidity (e.g missing
+     *                                  required contents).
      */
-    public void handle(Command command) throws IllegalArgumentException, InvalidParameterException;
+    public void handle(Command command) throws IllegalArgumentException;
 }

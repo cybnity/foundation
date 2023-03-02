@@ -1,19 +1,19 @@
-package org.cybnity.framework.domain.application.sample;
+package org.cybnity.framework.domain.model.sample.writemodel;
 
-import java.security.InvalidParameterException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.cybnity.framework.domain.EventIdentifierStringBased;
-import org.cybnity.framework.domain.application.EventStore;
+import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.model.CommonChildFactImpl;
 import org.cybnity.framework.domain.model.DomainEvent;
 import org.cybnity.framework.domain.model.DomainEventPublisher;
 import org.cybnity.framework.domain.model.DomainEventSubscriber;
+import org.cybnity.framework.domain.model.EventStore;
 import org.cybnity.framework.domain.model.sample.EventStoreRecordCommitted;
+import org.cybnity.framework.domain.model.sample.readmodel.EventStored;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -24,7 +24,7 @@ import org.cybnity.framework.immutable.ImmutabilityException;
  * @author olivier
  *
  */
-public class EventStoreImpl extends EventStore {
+public class LogsEventStoreImpl extends EventStore {
 
     /**
      * Registries per type of stored event (key=class type, value=history of events)
@@ -36,10 +36,10 @@ public class EventStoreImpl extends EventStore {
      */
     private DomainEventPublisher promotionManager;
 
-    private EventStoreImpl() {
+    private LogsEventStoreImpl() {
 	super();
 	// Initialize a delegate for promotion of events changes (e.g to read model's
-	// stores)
+	// repository)
 	this.promotionManager = DomainEventPublisher.instance();
     }
 
@@ -49,11 +49,11 @@ public class EventStoreImpl extends EventStore {
      * @return An instance ensuring the persistence of events.
      */
     public static EventStore instance() {
-	return new EventStoreImpl();
+	return new LogsEventStoreImpl();
     }
 
     @Override
-    public void append(DomainEvent event) throws InvalidParameterException, ImmutabilityException {
+    public void append(DomainEvent event) throws IllegalArgumentException, ImmutabilityException {
 	// Serialize the event to store into the storage system (generally according to
 	// a serializer supported by the persistence system as JSON, table structure's
 	// fiedl...)
@@ -69,7 +69,7 @@ public class EventStoreImpl extends EventStore {
 
 	// Build event child based on the created account (parent of immutable story)
 	CommonChildFactImpl persistedEvent = new CommonChildFactImpl(storedEvent.getIdentifiedBy(),
-		new EventIdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(),
+		new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(),
 			/* identifier as performed transaction number */ UUID.randomUUID().toString()));
 	EventStoreRecordCommitted committed = new EventStoreRecordCommitted(persistedEvent.parent());
 	committed.originCommandRef = event.reference();
@@ -105,7 +105,14 @@ public class EventStoreImpl extends EventStore {
 
     @Override
     public <T> void subscribe(DomainEventSubscriber<T> aSubscriber) {
-	// Add listener interested by stored events
-	this.promotionManager.subscribe(aSubscriber);
+	if (aSubscriber != null)
+	    // Add listener interested by stored events
+	    this.promotionManager.subscribe(aSubscriber);
+    }
+
+    @Override
+    public <T> void remove(DomainEventSubscriber<T> aSubscriber) {
+	if (aSubscriber != null)
+	    this.promotionManager.remove(aSubscriber);
     }
 }

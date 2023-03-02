@@ -1,8 +1,8 @@
 package org.cybnity.framework.domain;
 
-import java.security.InvalidParameterException;
 import java.util.Set;
 
+import org.cybnity.framework.IContext;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -34,12 +34,14 @@ public interface CommandHandler {
      * Manage the realization of a command.
      * 
      * @param command Mandatory command that must be treated.
-     * @throws IllegalArgumentException  When command parameter is null.
-     * @throws InvalidParameterException When a command processing can't be
-     *                                   performed for cause of command invalidity
-     *                                   (e.g missing required contents).
+     * @param ctx     Context providing resources which could be required for
+     *                command treatment by this Aggregate.
+     * @throws IllegalArgumentException When command parameter is null or when a
+     *                                  command processing can't be performed for
+     *                                  cause of command invalidity (e.g missing
+     *                                  required contents).
      */
-    public void handle(Command command) throws IllegalArgumentException, InvalidParameterException;
+    public void handle(Command command, IContext ctx) throws IllegalArgumentException;
 
     /**
      * Get the version number regarding the types of Command which are supported by

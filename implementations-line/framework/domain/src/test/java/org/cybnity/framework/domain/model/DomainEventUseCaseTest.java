@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import org.cybnity.framework.domain.EventIdentifierStringBased;
-import org.cybnity.framework.domain.model.sample.UserAccountCreationCommitted;
-import org.cybnity.framework.domain.model.sample.UserAccountIdentityCreation;
+import org.cybnity.framework.domain.IdentifierStringBased;
+import org.cybnity.framework.domain.model.sample.writemodel.UserAccountChanged;
+import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.junit.Test;
@@ -21,7 +21,7 @@ public class DomainEventUseCaseTest {
 
     @Test
     public void givenUnknownIdentifier_whenConstructor_thenOccuranceDatedAndVersionDefined() throws Exception {
-	UserAccountCreationCommitted event = new UserAccountCreationCommitted();
+	UserAccountChanged event = new UserAccountChanged();
 	// Verify default contents initialized
 	assertNotNull(event.occurredAt()); // When event occured
 	assertNotNull(event.versionUID()); // Which version of event type
@@ -31,9 +31,9 @@ public class DomainEventUseCaseTest {
     @Test
     public void givenIdentifiedEvent_whenConstructor_thenIdentifierAttached() throws Exception {
 	// Create an identifiable event
-	Identifier id = new EventIdentifierStringBased("uid", "KJGF8765");
+	Identifier id = new IdentifierStringBased("uid", "KJGF8765");
 	Entity identity = new UserAccountIdentityCreation(id);
-	UserAccountCreationCommitted event = new UserAccountCreationCommitted(identity);
+	UserAccountChanged event = new UserAccountChanged(identity);
 	// Verify that identity is maintained
 	assertNotNull(event.identified());
 	// Check immutable copy is available and valid

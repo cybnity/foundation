@@ -1,15 +1,14 @@
 package org.cybnity.framework.domain.application.sample;
 
-import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Set;
 
 import javax.management.modelmbean.InvalidTargetObjectTypeException;
 
+import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.CommandHandler;
 import org.cybnity.framework.domain.ProcessManager;
-import org.cybnity.framework.domain.model.DomainEventPublisher;
 
 /**
  * Example of handlers service manager regarding a domain boundary.
@@ -19,8 +18,11 @@ import org.cybnity.framework.domain.model.DomainEventPublisher;
  */
 public class UserAccountManagementProcessesImpl extends ProcessManager {
 
-    public UserAccountManagementProcessesImpl() throws InvalidTargetObjectTypeException {
-	super();
+    public UserAccountManagementProcessesImpl(UserAccountManagementDomainContext ctx)
+	    throws InvalidTargetObjectTypeException, IllegalArgumentException {
+	super(ctx);
+	if (ctx == null)
+	    throw new IllegalArgumentException("Context parameter is required!");
     }
 
     @Override
@@ -28,27 +30,27 @@ public class UserAccountManagementProcessesImpl extends ProcessManager {
 	// Define basic example of commands handlers which execute commands on the
 	// aggregates and notify a comain publisher
 	HashMap<String, CommandHandler> exposedAPI = new HashMap<>();
-	DomainEventPublisher writeModelPublisher = DomainEventPublisher.instance();
 
+	// Create handlers attached to the Domain context of this process manager
 	exposedAPI.put(UserAccountCreateCommand.class.getName(),
-		new UserAccountCreateCommandHandler(writeModelPublisher));
+		new UserAccountCreateCommandHandler((UserAccountManagementDomainContext) super.context));
 	exposedAPI.put(AssignRoleToUserAccountCommand.class.getName(),
-		new ApplicativeRoleAllocationCommandHandler(writeModelPublisher));
+		new ApplicativeRoleAllocationCommandHandler((UserAccountManagementDomainContext) super.context));
 	return exposedAPI;
     }
 
     @Override
-    public void handle(Command command) throws IllegalArgumentException, InvalidParameterException {
+    public void handle(Command command, IContext ctx) throws IllegalArgumentException {
 	if (command == null)
 	    throw new IllegalArgumentException("Command parameter to process is required");
 	// Find the handler delegated to suppor the type of command
 	CommandHandler processhandler = this.delegation().get(command.getClass().getName());
 	if (processhandler != null) {
 	    // Execute command on delegated handler
-	    processhandler.handle(command);
+	    processhandler.handle(command, ctx);
 	    return;
 	}
-	throw new InvalidParameterException(
+	throw new IllegalArgumentException(
 		"The requested command is not supported by any process of this process manager!");
 
     }
