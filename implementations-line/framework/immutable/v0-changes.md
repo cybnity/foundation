@@ -14,6 +14,7 @@ Release Name: V0 - FRAMEWORK
 |61|REQ_MAIN_1|Deployable module per application (bounded context)|
 |153||Easy link of any requirement (e.g architecture, security, functional) via annotations|
 |149|REQ_MAIN_5|Immutable architecture structural design patterns|
+|158|REQ_SCA_4|Support of CQRS pattern and event sourcing concerns combined|
 
 # KNOWN ISSUES
 None. Do not hesitate to report any problem.

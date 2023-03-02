@@ -37,8 +37,8 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.cybnity.infrastructure.common</groupId>
-			<artifactId>event</artifactId>
+			<groupId>org.cybnity.framework</groupId>
+			<artifactId>domain</artifactId>
 			<version>${revision}</version>
 		</dependency>
 		<dependency>

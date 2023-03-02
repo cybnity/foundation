@@ -1,6 +1,6 @@
 package org.cybnity.framework.immutable;
 
-import java.security.InvalidParameterException;
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 
@@ -11,8 +11,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * Represent a mutable relationship between entities.
  * 
  * An entity reference is a property that points to another entity (e.g in
- * Domain-Driven deisng, the referenced entity is typically an aggregate root,
- * possibly in a different bounded context.
+ * Domain-Driven design, the referenced entity is typically an aggregate root,
+ * possibly in a different bounded context).
  * 
  * A less constrained one-to-many relationship (e.g without cascaded delete
  * constraint as represented by
@@ -29,7 +29,9 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public abstract class EntityReference implements HistoricalFact {
+public class EntityReference implements IHistoricalFact {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * The owner of this reference, as primary entity.
@@ -39,7 +41,7 @@ public abstract class EntityReference implements HistoricalFact {
     /**
      * Optional referenced other entity that is often nullable.
      */
-    protected Entity referenced;
+    private Entity referencedRelation;
 
     /**
      * Where the changed versions of this entity reference (include other reference
@@ -91,18 +93,17 @@ public abstract class EntityReference implements HistoricalFact {
     public EntityReference(Entity referenceOwner, Entity inRelationWith, HistoryState status)
 	    throws IllegalArgumentException {
 	if (referenceOwner == null)
-	    throw new IllegalArgumentException(
-		    new InvalidParameterException("referenceOwner mandatory parameter is missing!"));
+	    throw new IllegalArgumentException("referenceOwner mandatory parameter is missing!");
 	try {
 	    this.entity = (Entity) referenceOwner.immutable();
-	    this.referenced = inRelationWith;
+	    this.setReferencedRelation(inRelationWith);
 	    // Set of prior versions is empty by default
 	    this.prior = new HashSet<>();
 	    if (status != null)
 		this.historyStatus = status;
 	    // Create immutable time of this property changed version
 	    this.changedAt = OffsetDateTime.now();
-	} catch (CloneNotSupportedException ce) {
+	} catch (ImmutabilityException ce) {
 	    throw new IllegalArgumentException(ce);
 	}
     }
@@ -171,5 +172,63 @@ public abstract class EntityReference implements HistoricalFact {
      */
     public void setHistoryStatus(HistoryState state) {
 	this.historyStatus = state;
+    }
+
+    /**
+     * Get the owner of this entity reference.
+     * 
+     * @return This reference owner (immutable version).
+     * @throws ImmutabilityException When impossible instantiation of immutable
+     *                               version of instance returned.
+     */
+    public Entity getEntity() throws ImmutabilityException {
+	return (Entity) entity.immutable();
+    }
+
+    /**
+     * Get optional known relation with this entity owner.
+     * 
+     * @return A referenced relation (e.g initiator of the entity) immutable version
+     *         or null.
+     * @throws ImmutabilityException When impossible creation of immutable copy of
+     *                               the current relation.
+     */
+    public Entity getReferencedRelation() throws ImmutabilityException {
+	Entity otherRelated = null;
+	if (referencedRelation != null) {
+	    otherRelated = (Entity) this.referencedRelation.immutable();
+	}
+	return otherRelated;
+    }
+
+    /**
+     * Define an optional related entity that is in relation with this entity
+     * reference.
+     * 
+     * @param referencedRelation A related other entity.
+     */
+    protected void setReferencedRelation(Entity referencedRelation) {
+	this.referencedRelation = referencedRelation;
+    }
+
+    /**
+     * Get an immutable version of this entity reference. The returned version does
+     * not include all the predecessors versions history.
+     */
+    @Override
+    public Serializable immutable() throws ImmutabilityException {
+	EntityReference copy = new EntityReference((Entity) this.entity.immutable(),
+		(this.referencedRelation != null ? (Entity) this.referencedRelation.immutable() : null),
+		this.historyStatus());
+	copy.changedAt = this.occurredAt();
+	return copy;
+    }
+
+    /**
+     * Get the date regarding the last change observed on this reference.
+     */
+    @Override
+    public OffsetDateTime occurredAt() {
+	return this.changedAt;
     }
 }

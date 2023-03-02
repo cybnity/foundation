@@ -1,6 +1,5 @@
 package org.cybnity.framework.immutable;
 
-import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,7 +34,9 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public abstract class MutableProperty implements HistoricalFact {
+public abstract class MutableProperty implements IHistoricalFact {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * The owner of this mutable porperty.
@@ -73,7 +74,8 @@ public abstract class MutableProperty implements HistoricalFact {
     protected HashSet<MutableProperty> prior;
 
     /**
-     * When this fact was created or observed regarding the historized topic.
+     * When this fact version was created or observed regarding the historized
+     * topic.
      */
     protected OffsetDateTime changedAt;
 
@@ -104,11 +106,9 @@ public abstract class MutableProperty implements HistoricalFact {
     public MutableProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status)
 	    throws IllegalArgumentException {
 	if (propertyOwner == null)
-	    throw new IllegalArgumentException(
-		    new InvalidParameterException("PropertyOwner mandatory parameter is missing!"));
+	    throw new IllegalArgumentException("PropertyOwner mandatory parameter is missing!");
 	if (propertyCurrentValue == null || propertyCurrentValue.isEmpty())
-	    throw new IllegalArgumentException(
-		    new InvalidParameterException("PropertyCurrentValue mandatory parameter is missing!"));
+	    throw new IllegalArgumentException("PropertyCurrentValue mandatory parameter is missing!");
 	try {
 	    this.entity = (Entity) propertyOwner.immutable();
 	    // Set of prior versions is empty by default
@@ -119,7 +119,7 @@ public abstract class MutableProperty implements HistoricalFact {
 		this.historyStatus = status;
 	    // Create immutable time of this property changed version
 	    this.changedAt = OffsetDateTime.now();
-	} catch (CloneNotSupportedException ce) {
+	} catch (ImmutabilityException ce) {
 	    throw new IllegalArgumentException(ce);
 	}
     }
@@ -193,4 +193,12 @@ public abstract class MutableProperty implements HistoricalFact {
 	this.historyStatus = state;
     }
 
+    /**
+     * Default implementation of fact date when it was created.
+     */
+    @Override
+    public OffsetDateTime occurredAt() {
+	// Return immutable value of the fact time
+	return this.changedAt;
+    }
 }
