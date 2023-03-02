@@ -81,6 +81,8 @@ classDiagram
         #parent : Entity
         #identifierBy : List~Identifier~
         #createdAt : Temporal
+        #generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId) Identifier
+        #generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds) Identifier
     }
     class IDeletionFact {
         <<interface>>
@@ -102,8 +104,8 @@ classDiagram
     class EntityReference {
         <<abstract>>
         #entity : Entity
-        #referenced : Entity
-        #prior : Set~EntityReference~
+        #referencedRelation : Entity
+        #prior : HashSet~EntityReference~
         #changedAt : Temporal
     }
     class IGroup {
