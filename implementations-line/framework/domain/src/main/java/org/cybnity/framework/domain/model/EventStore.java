@@ -1,7 +1,6 @@
 package org.cybnity.framework.domain.model;
 
-import org.cybnity.framework.domain.Subscribable;
-import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.domain.ISubscribable;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -38,7 +37,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public abstract class EventStore implements Subscribable {
+public abstract class EventStore implements ISubscribable, IEventStore {
 
     /**
      * Default constructor managing the store configuration during its
@@ -47,17 +46,5 @@ public abstract class EventStore implements Subscribable {
      */
     protected EventStore() {
     }
-
-    /**
-     * Add an event into the store.
-     * 
-     * @param event Mandatory event to store.
-     * @throws IllegalArgumentException When event to store is not compatible to be
-     *                                  stored (e.g missing mandatory content into
-     *                                  the event to store).
-     * @throws ImmutabilityException    When problem of immutable version of stored
-     *                                  event is occurred.
-     */
-    public abstract void append(DomainEvent event) throws IllegalArgumentException, ImmutabilityException;
 
 }

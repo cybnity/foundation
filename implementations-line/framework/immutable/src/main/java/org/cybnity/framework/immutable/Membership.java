@@ -17,7 +17,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * are not causally related.
  * 
  * When a member shal leave an assigned group as Membership fact, a <<Membership
- * Name>>Deletion fact ({@link org.cybnity.framework.immutable.DeletionFact}) is
+ * Name>>Deletion fact ({@link org.cybnity.framework.immutable.IDeletionFact}) is
  * created with membership fact as predecessor.
  * 
  * Related patterns: if the model requires that the entity be a member of only
@@ -31,15 +31,15 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public abstract class Membership implements HistoricalFact {
+public abstract class Membership implements IHistoricalFact {
 
     private static final long serialVersionUID = 1L;
     /**
      * When the relation was created.
      */
     protected OffsetDateTime createdAt;
-    private final Member member;
-    private final Group group;
+    private final IMember member;
+    private final IGroup group;
 
     /**
      * Default constructor.
@@ -49,7 +49,7 @@ public abstract class Membership implements HistoricalFact {
      * @throws IllegalArgumentException When a mandatory parameter is null, not
      *                                  immutable or does not include identifier.
      */
-    public Membership(Member member, Group group) throws IllegalArgumentException {
+    public Membership(IMember member, IGroup group) throws IllegalArgumentException {
 	if (member == null)
 	    throw new IllegalArgumentException("Member parameter is required!");
 	if (group == null)
@@ -60,8 +60,8 @@ public abstract class Membership implements HistoricalFact {
 	if (group.identified() == null)
 	    throw new IllegalArgumentException("Group's identifier is missing!");
 	try {
-	    this.group = (Group) group.immutable();
-	    this.member = (Member) member.immutable();
+	    this.group = (IGroup) group.immutable();
+	    this.member = (IMember) member.immutable();
 	    // Create immutable time of this fact creation
 	    this.createdAt = OffsetDateTime.now();
 	} catch (ImmutabilityException ce) {
@@ -76,8 +76,8 @@ public abstract class Membership implements HistoricalFact {
      * @throws ImmutabilityException If impossible creation of immutable copy of the
      *                               returned instance.
      */
-    public Member member() throws ImmutabilityException {
-	return (Member) this.member.immutable();
+    public IMember member() throws ImmutabilityException {
+	return (IMember) this.member.immutable();
     }
 
     /**
@@ -87,8 +87,8 @@ public abstract class Membership implements HistoricalFact {
      * @throws ImmutabilityException If impossible creation of immutable copy of the
      *                               returned instance.
      */
-    public Group group() throws ImmutabilityException {
-	return (Group) this.group.immutable();
+    public IGroup group() throws ImmutabilityException {
+	return (IGroup) this.group.immutable();
     }
 
     /**

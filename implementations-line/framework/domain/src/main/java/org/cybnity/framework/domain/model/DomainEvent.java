@@ -2,15 +2,15 @@ package org.cybnity.framework.domain.model;
 
 import java.time.OffsetDateTime;
 
-import org.cybnity.framework.domain.Versionable;
+import org.cybnity.framework.domain.IVersionable;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.Evaluations;
-import org.cybnity.framework.immutable.HistoricalFact;
+import org.cybnity.framework.immutable.IHistoricalFact;
 import org.cybnity.framework.immutable.IdentifiableFact;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
-import org.cybnity.framework.immutable.Referenceable;
+import org.cybnity.framework.immutable.IReferenceable;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -37,7 +37,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public abstract class DomainEvent implements HistoricalFact, IdentifiableFact, Versionable, Referenceable {
+public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, IVersionable, IReferenceable {
 
     /**
      * Version of this class type.

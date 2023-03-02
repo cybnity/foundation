@@ -7,7 +7,7 @@ import javax.management.modelmbean.InvalidTargetObjectTypeException;
 
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.domain.CommandHandler;
+import org.cybnity.framework.domain.ICommandHandler;
 import org.cybnity.framework.domain.ProcessManager;
 
 /**
@@ -26,10 +26,10 @@ public class UserAccountManagementProcessesImpl extends ProcessManager {
     }
 
     @Override
-    protected HashMap<String, CommandHandler> managedHandlers() {
+    protected HashMap<String, ICommandHandler> managedHandlers() {
 	// Define basic example of commands handlers which execute commands on the
 	// aggregates and notify a comain publisher
-	HashMap<String, CommandHandler> exposedAPI = new HashMap<>();
+	HashMap<String, ICommandHandler> exposedAPI = new HashMap<>();
 
 	// Create handlers attached to the Domain context of this process manager
 	exposedAPI.put(UserAccountCreateCommand.class.getName(),
@@ -44,7 +44,7 @@ public class UserAccountManagementProcessesImpl extends ProcessManager {
 	if (command == null)
 	    throw new IllegalArgumentException("Command parameter to process is required");
 	// Find the handler delegated to suppor the type of command
-	CommandHandler processhandler = this.delegation().get(command.getClass().getName());
+	ICommandHandler processhandler = this.delegation().get(command.getClass().getName());
 	if (processhandler != null) {
 	    // Execute command on delegated handler
 	    processhandler.handle(command, ctx);

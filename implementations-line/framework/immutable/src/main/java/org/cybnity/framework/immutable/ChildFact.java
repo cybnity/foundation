@@ -28,7 +28,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public abstract class ChildFact implements HistoricalFact, IdentifiableFact {
+public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
 
     private static final long serialVersionUID = 1L;
 

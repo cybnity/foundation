@@ -3,7 +3,7 @@ package org.cybnity.framework.domain.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cybnity.framework.domain.Subscribable;
+import org.cybnity.framework.domain.ISubscribable;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -16,7 +16,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public class DomainEventPublisher implements Subscribable {
+public class DomainEventPublisher implements ISubscribable {
 
     @SuppressWarnings("rawtypes")
     private static final ThreadLocal<List> subscribers = new ThreadLocal<List>();

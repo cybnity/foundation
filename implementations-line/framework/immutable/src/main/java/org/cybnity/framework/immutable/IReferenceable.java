@@ -9,7 +9,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * @author olivier
  *
  */
-public interface Referenceable {
+public interface IReferenceable {
 
     /**
      * Get a reference regarding this subject.

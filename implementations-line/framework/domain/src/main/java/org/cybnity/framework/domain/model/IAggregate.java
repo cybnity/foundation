@@ -9,7 +9,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 /**
  * In a Domain-Driven Design (DDD), an aggregate defines a consistency boundary.
  * Typically is defined by classes in a
- * {@link org.cybnity.framework.domain.WriteModel}. Aggregates are recipients of
+ * {@link org.cybnity.framework.domain.IWriteModel}. Aggregates are recipients of
  * multiple properties (e.g {@link org.cybnity.framework.domain.Command}, or
  * {@link org.cybnity.framework.domain.ValueObject}) and can be units of
  * persistence. For example, after an aggregate instance has processed a command
@@ -27,7 +27,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public interface Aggregate extends IdentifiableFact {
+public interface IAggregate extends IdentifiableFact {
 
     /**
      * Manage the execution of a command regarding the boundary managed by this

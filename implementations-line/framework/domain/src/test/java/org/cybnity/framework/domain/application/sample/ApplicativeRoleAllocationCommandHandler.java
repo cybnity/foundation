@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.domain.CommandHandler;
+import org.cybnity.framework.domain.ICommandHandler;
 import org.cybnity.framework.domain.model.sample.readmodel.ApplicativeRoleDTO;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStore;
 
@@ -16,7 +16,7 @@ import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStore;
  * @author olivier
  *
  */
-public class ApplicativeRoleAllocationCommandHandler implements CommandHandler {
+public class ApplicativeRoleAllocationCommandHandler implements ICommandHandler {
 
     private Class<?> supportedCommand = AssignRoleToUserAccountCommand.class;
     private UserAccountManagementDomainContext context;

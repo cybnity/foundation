@@ -1,16 +1,16 @@
-package org.cybnity.framework.domain;
+package org.cybnity.framework.domain.application;
 
+import org.cybnity.framework.domain.IWriteModel;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Represent a point of interactions with users of an application. Include
- * presentation of data and actionners to user for make change on them.
+ * Applicative behaviors contract regarding a service layer.
  * 
  * @author olivier
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public interface ServiceInterface {
+public interface IApplicationService extends IWriteModel {
 
 }

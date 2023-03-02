@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.management.modelmbean.InvalidTargetObjectTypeException;
 
 import org.cybnity.framework.IContext;
-import org.cybnity.framework.domain.model.Aggregate;
+import org.cybnity.framework.domain.model.IAggregate;
 import org.cybnity.framework.domain.model.DomainEventPublisher;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
@@ -24,7 +24,7 @@ public abstract class CommandHandlingService extends ProcessManager {
     /**
      * Subject that support the commands handled by the handlers manager.
      */
-    private Aggregate recipientOfCommands;
+    private IAggregate recipientOfCommands;
 
     /**
      * Domain publishers which could be notified by changed aggregate via command
@@ -56,7 +56,7 @@ public abstract class CommandHandlingService extends ProcessManager {
      *                                          defined) or some eligible handler
      *                                          instances are not valid.
      */
-    public CommandHandlingService(Aggregate type, Set<DomainEventPublisher> notifiableAboutChanges, IContext ctx)
+    public CommandHandlingService(IAggregate type, Set<DomainEventPublisher> notifiableAboutChanges, IContext ctx)
 	    throws IllegalArgumentException, InvalidTargetObjectTypeException {
 	super(ctx);
 	if (type == null)
@@ -73,7 +73,7 @@ public abstract class CommandHandlingService extends ProcessManager {
      * 
      * @return An aggregate instance.
      */
-    protected Aggregate recipientOfCommands() {
+    protected IAggregate recipientOfCommands() {
 	return this.recipientOfCommands;
     }
 

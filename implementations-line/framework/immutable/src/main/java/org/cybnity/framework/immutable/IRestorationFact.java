@@ -23,13 +23,13 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public interface RestorationFact extends HistoricalFact {
+public interface IRestorationFact extends IHistoricalFact {
 
     /**
      * Predecessor deletion fact.
      * 
      * @return Predecessor deletion fact that could be restored.
      */
-    public DeletionFact deletion();
+    public IDeletionFact deletion();
 
 }

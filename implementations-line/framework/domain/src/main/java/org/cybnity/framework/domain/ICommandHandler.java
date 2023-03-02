@@ -28,7 +28,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public interface CommandHandler {
+public interface ICommandHandler {
 
     /**
      * Manage the realization of a command.

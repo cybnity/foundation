@@ -34,7 +34,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public abstract class MutableProperty implements HistoricalFact {
+public abstract class MutableProperty implements IHistoricalFact {
 
     private static final long serialVersionUID = 1L;
 

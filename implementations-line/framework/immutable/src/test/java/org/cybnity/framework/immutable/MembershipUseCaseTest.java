@@ -19,8 +19,8 @@ import org.junit.Test;
  */
 public class MembershipUseCaseTest {
 
-    private Group group;
-    private Member member;
+    private IGroup group;
+    private IMember member;
 
     @Before
     public void initRelationOrigins() throws Exception {

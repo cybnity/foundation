@@ -24,7 +24,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public interface DeletionFact extends HistoricalFact {
+public interface IDeletionFact extends IHistoricalFact {
 
     /**
      * Predecessor fact that was deleted through this deletion act.

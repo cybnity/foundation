@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.cybnity.framework.domain.model.DomainEvent;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountChanged;
-import org.cybnity.framework.immutable.HistoricalFact;
+import org.cybnity.framework.immutable.IHistoricalFact;
 import org.cybnity.framework.immutable.Identifier;
 import org.junit.After;
 import org.junit.Before;
@@ -82,14 +82,14 @@ public class UnidentifiableFactNotificationLogUseCaseTest {
 	UnidentifiableFactNotificationLog eventLog = new UnidentifiableFactNotificationLog(originalLogId,
 		unidentifiableObservedFact);
 	// Read origin facts
-	List<HistoricalFact> parents = eventLog.originFacts();
+	List<IHistoricalFact> parents = eventLog.originFacts();
 	assertFalse("Origin facts should be defined!", parents == null || parents.isEmpty());
 	assertEquals("Invalid quantity of original facts saved!", 1, parents.size());
-	for (HistoricalFact origin : parents) {
+	for (IHistoricalFact origin : parents) {
 	    // Check that unidentifiable fact is equals based on his time occured and nature
 	    assertEquals(unidentifiableObservedFact.getClass().getName(),
-		    ((HistoricalFact) origin.immutable()).getClass().getName());
-	    assertEquals(unidentifiableObservedFact.occurredAt(), ((HistoricalFact) origin.immutable()).occurredAt());
+		    ((IHistoricalFact) origin.immutable()).getClass().getName());
+	    assertEquals(unidentifiableObservedFact.occurredAt(), ((IHistoricalFact) origin.immutable()).occurredAt());
 	}
     }
 

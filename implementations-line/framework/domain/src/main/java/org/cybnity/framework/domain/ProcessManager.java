@@ -25,7 +25,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public abstract class ProcessManager implements CommandHandler {
+public abstract class ProcessManager implements ICommandHandler {
 
     /**
      * Managed handlers which are specific to the aggregate type, and that can be
@@ -34,7 +34,7 @@ public abstract class ProcessManager implements CommandHandler {
      * aggregate, and the value if the mandatory handler instance which is
      * responsible of the treatment for this type of command.
      */
-    private HashMap<String, CommandHandler> mediated;
+    private HashMap<String, ICommandHandler> mediated;
 
     protected IContext context;
 
@@ -74,21 +74,21 @@ public abstract class ProcessManager implements CommandHandler {
      */
     protected void initializeHandlers() throws InvalidTargetObjectTypeException {
 	// Get managed handlers
-	HashMap<String, CommandHandler> handlers = managedHandlers();
+	HashMap<String, ICommandHandler> handlers = managedHandlers();
 	if (handlers == null || handlers.isEmpty())
 	    throw new InvalidTargetObjectTypeException(
 		    "Minimum of one managed handlers shall exist as delegated to the treatment of one command type!");
 	// Use temporary checker of eligible future handlers
-	HashMap<String, CommandHandler> eligibleDelegation = new HashMap<>(handlers.size());
+	HashMap<String, ICommandHandler> eligibleDelegation = new HashMap<>(handlers.size());
 
 	// Verify handler and command validity
 	// and initialize managed handler instances
-	for (Map.Entry<String, CommandHandler> set : handlers.entrySet()) {
+	for (Map.Entry<String, ICommandHandler> set : handlers.entrySet()) {
 	    String commandName = set.getKey();
 	    if (commandName == null || commandName.equals(""))
 		throw new InvalidTargetObjectTypeException(
 			"Each managed handler shall reference a command name supported!");
-	    CommandHandler delegated = set.getValue();
+	    ICommandHandler delegated = set.getValue();
 	    if (delegated == null)
 		throw new InvalidTargetObjectTypeException(
 			"Each handled command shall be supported by a delegated handler type!");
@@ -111,7 +111,7 @@ public abstract class ProcessManager implements CommandHandler {
      * 
      * @return A list of handling instances.
      */
-    protected HashMap<String, CommandHandler> delegation() {
+    protected HashMap<String, ICommandHandler> delegation() {
 	return this.mediated;
     }
 
@@ -127,5 +127,5 @@ public abstract class ProcessManager implements CommandHandler {
      *         of Command supported (e.g <<CommandType>>.getClass().getName() or
      *         <<CommandType>>.getClass().getSimpleName()), by the Handler value.
      */
-    protected abstract HashMap<String, CommandHandler> managedHandlers();
+    protected abstract HashMap<String, ICommandHandler> managedHandlers();
 }

@@ -15,7 +15,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public interface Versionable {
+public interface IVersionable {
 
     /**
      * Get the manageable version of this type of event allowing multiple versions

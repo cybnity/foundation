@@ -1,9 +1,9 @@
-package org.cybnity.framework.domain.model;
+package org.cybnity.framework.domain;
 
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public interface DomainModel {
+public interface IQueryResponse {
 
 }

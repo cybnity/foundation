@@ -3,9 +3,9 @@ package org.cybnity.framework.immutable.sample;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 
-import org.cybnity.framework.immutable.Group;
+import org.cybnity.framework.immutable.IGroup;
 import org.cybnity.framework.immutable.ImmutabilityException;
-import org.cybnity.framework.immutable.Member;
+import org.cybnity.framework.immutable.IMember;
 import org.cybnity.framework.immutable.Membership;
 
 /**
@@ -19,7 +19,7 @@ public class MemberImpl extends Membership {
 
     private static final long serialVersionUID = 1L;
 
-    public MemberImpl(Member member, Group group) throws IllegalArgumentException {
+    public MemberImpl(IMember member, IGroup group) throws IllegalArgumentException {
 	super(member, group);
     }
 

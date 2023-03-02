@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import java.util.UUID;
 
 import org.cybnity.framework.domain.IdentifierStringBased;
-import org.cybnity.framework.domain.model.sample.readmodel.EventStored;
 import org.cybnity.framework.domain.model.sample.writemodel.LogsEventStoreImpl;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountChanged;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
@@ -51,7 +50,7 @@ public class EventStoreUseCaseTest {
 	// Add into a store
 	persistenceOrientedStore.append(event);
 	// Search persisted event log
-	EventStored saved = persistenceOrientedStore.findEventFrom(id);
+	DomainEvent saved = persistenceOrientedStore.findEventFrom(id);
 	assertNotNull(saved);
     }
 

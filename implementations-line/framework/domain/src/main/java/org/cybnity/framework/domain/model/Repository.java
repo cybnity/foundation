@@ -1,6 +1,6 @@
 package org.cybnity.framework.domain.model;
 
-import org.cybnity.framework.domain.Subscribable;
+import org.cybnity.framework.domain.ISubscribable;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -38,7 +38,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public abstract class Repository implements Subscribable {
+public abstract class Repository implements ISubscribable {
 
     /**
      * Default constructor managing the store configuration during its

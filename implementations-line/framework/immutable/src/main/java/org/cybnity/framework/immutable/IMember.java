@@ -14,7 +14,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public interface Member extends HistoricalFact {
+public interface IMember extends IHistoricalFact {
 
     /**
      * Location-independent unique identifier of this fact.

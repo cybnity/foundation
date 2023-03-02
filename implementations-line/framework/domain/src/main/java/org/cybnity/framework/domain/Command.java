@@ -9,7 +9,7 @@ import org.cybnity.framework.immutable.Evaluations;
 import org.cybnity.framework.immutable.IdentifiableFact;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
-import org.cybnity.framework.immutable.Referenceable;
+import org.cybnity.framework.immutable.IReferenceable;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -27,7 +27,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public abstract class Command implements IdentifiableFact, Versionable, Serializable, Referenceable {
+public abstract class Command implements IdentifiableFact, IVersionable, Serializable, IReferenceable {
 
     /**
      * Version of this class type.

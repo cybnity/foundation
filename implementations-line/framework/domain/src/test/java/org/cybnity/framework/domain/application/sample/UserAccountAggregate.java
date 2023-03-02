@@ -9,7 +9,7 @@ import java.util.UUID;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.IdentifierStringBased;
-import org.cybnity.framework.domain.model.Aggregate;
+import org.cybnity.framework.domain.model.IAggregate;
 import org.cybnity.framework.domain.model.CommonChildFactImpl;
 import org.cybnity.framework.domain.model.DomainEventPublisher;
 import org.cybnity.framework.domain.model.sample.ApplicativeRole;
@@ -28,7 +28,7 @@ import org.cybnity.framework.immutable.ImmutabilityException;
  * @author olivier
  *
  */
-public class UserAccountAggregate extends Entity implements Aggregate {
+public class UserAccountAggregate extends Entity implements IAggregate {
 
     private EntityReference user;
 

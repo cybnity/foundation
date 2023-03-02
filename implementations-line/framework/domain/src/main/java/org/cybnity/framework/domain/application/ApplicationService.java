@@ -1,6 +1,5 @@
 package org.cybnity.framework.domain.application;
 
-import org.cybnity.framework.domain.WriteModel;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -11,6 +10,6 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public abstract class ApplicationService implements WriteModel {
+public abstract class ApplicationService implements IApplicationService {
 
 }

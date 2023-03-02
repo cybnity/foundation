@@ -12,6 +12,7 @@ import org.cybnity.framework.domain.model.DomainEvent;
 import org.cybnity.framework.domain.model.DomainEventPublisher;
 import org.cybnity.framework.domain.model.DomainEventSubscriber;
 import org.cybnity.framework.domain.model.EventStore;
+import org.cybnity.framework.domain.model.EventStream;
 import org.cybnity.framework.domain.model.sample.EventStoreRecordCommitted;
 import org.cybnity.framework.domain.model.sample.readmodel.EventStored;
 import org.cybnity.framework.immutable.BaseConstants;
@@ -79,13 +80,8 @@ public class LogsEventStoreImpl extends EventStore {
 	this.promotionManager.publish(committed);
     }
 
-    /**
-     * Search in store an event logged.
-     * 
-     * @param uid Mandatory identifier of the event to find.
-     * @return Found event log, or null.
-     */
-    public EventStored findEventFrom(Identifier uid) {
+    @Override
+    public DomainEvent findEventFrom(Identifier uid) {
 	if (uid != null && uid.value() != null) {
 	    for (Map.Entry<String, LinkedList<EventStored>> storeColumn : this.registries.entrySet()) {
 		LinkedList<EventStored> storedEventColumn = storeColumn.getValue();
@@ -114,5 +110,15 @@ public class LogsEventStoreImpl extends EventStore {
     public <T> void remove(DomainEventSubscriber<T> aSubscriber) {
 	if (aSubscriber != null)
 	    this.promotionManager.remove(aSubscriber);
+    }
+
+    @Override
+    public EventStream loadEventStream(Identifier id) throws IllegalArgumentException {
+	return null;
+    }
+
+    @Override
+    public EventStream loadEventStream(Identifier id, int skipEvents, int maxCount) throws IllegalArgumentException {
+	return null;
     }
 }

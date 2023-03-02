@@ -23,7 +23,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public interface Ownership {
+public interface IOwnership {
 
     /**
      * Query for child facts given a parent.
@@ -32,6 +32,6 @@ public interface Ownership {
      * @return List of child facts (all successors that have an equals parent
      *         identifier), or null.
      */
-    public Collection<ChildFact> childrenOfParent(HistoricalFact parent);
+    public Collection<ChildFact> childrenOfParent(IHistoricalFact parent);
 
 }

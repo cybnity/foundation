@@ -5,7 +5,7 @@ import java.time.OffsetDateTime;
 
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
-import org.cybnity.framework.immutable.Member;
+import org.cybnity.framework.immutable.IMember;
 
 /**
  * Example of member type regarding an organization.
@@ -13,7 +13,7 @@ import org.cybnity.framework.immutable.Member;
  * @author olivier
  *
  */
-public class Employee implements Member {
+public class Employee implements IMember {
 
     private static final long serialVersionUID = 1L;
     private String name;

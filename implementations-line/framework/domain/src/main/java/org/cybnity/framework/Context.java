@@ -87,7 +87,7 @@ public class Context implements IContext {
 		}
 	    }
 	}
-	return getSafeReference(found);
+	return found;
     }
 
     @Override
@@ -101,29 +101,7 @@ public class Context implements IContext {
 		foundRef = item.getSourcedInstance();
 	    }
 	}
-	return getSafeReference(foundRef);
-    }
-
-    /**
-     * Get a securized reference to the instance, which can be out of control of
-     * this context (e.g directly changed to null for garbage collection) by a
-     * component using this context.
-     * 
-     * The goal is to avoid modification of the references managed by this context
-     * into the bundle of resources that should be removed only by direct call to
-     * the removeResource(String name) method.
-     * 
-     * @param instance Mandatory instance reference that need to be securized.
-     * @return An additional reference pointing the original reference. In case of
-     *         null assigned to this reference by external system, thi context have
-     *         always the safe original reference pointed from the bundle.
-     */
-    private Object getSafeReference(Object instance) {
-	// Create and return another pointer which can be externally destroyed by the
-	// garbage collector without impact on the current reference used in the
-	// resources bundle
-	Object externalRef = instance;
-	return externalRef;
+	return foundRef;
     }
 
     /**

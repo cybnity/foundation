@@ -1,7 +1,7 @@
 package org.cybnity.framework.domain.model.sample.writemodel;
 
 import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.domain.Subscribable;
+import org.cybnity.framework.domain.ISubscribable;
 import org.cybnity.framework.domain.application.sample.UserAccountAggregate;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.support.annotation.Requirement;
@@ -14,7 +14,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public interface UserAccountStore extends Subscribable {
+public interface UserAccountStore extends ISubscribable {
 
     /**
      * Add object into the store.

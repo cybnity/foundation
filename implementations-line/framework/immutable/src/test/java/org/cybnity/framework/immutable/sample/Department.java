@@ -3,7 +3,7 @@ package org.cybnity.framework.immutable.sample;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 
-import org.cybnity.framework.immutable.Group;
+import org.cybnity.framework.immutable.IGroup;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
 
@@ -13,7 +13,7 @@ import org.cybnity.framework.immutable.ImmutabilityException;
  * @author olivier
  *
  */
-public class Department implements Group {
+public class Department implements IGroup {
     private static final long serialVersionUID = 1L;
     private String label;
     private Identifier id;
