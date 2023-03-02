@@ -1,6 +1,5 @@
 package org.cybnity.framework.immutable;
 
-import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
 
 import org.cybnity.framework.support.annotation.Requirement;
@@ -18,7 +17,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * are not causally related.
  * 
  * When a member shal leave an assigned group as Membership fact, a <<Membership
- * Name>>Deletion fact ({@link org.cybnity.framework.immutable.DeletionFact}) is
+ * Name>>Deletion fact ({@link org.cybnity.framework.immutable.IDeletionFact}) is
  * created with membership fact as predecessor.
  * 
  * Related patterns: if the model requires that the entity be a member of only
@@ -32,14 +31,15 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public abstract class Membership implements HistoricalFact {
+public abstract class Membership implements IHistoricalFact {
 
+    private static final long serialVersionUID = 1L;
     /**
      * When the relation was created.
      */
     protected OffsetDateTime createdAt;
-    private final Member member;
-    private final Group group;
+    private final IMember member;
+    private final IGroup group;
 
     /**
      * Default constructor.
@@ -49,22 +49,22 @@ public abstract class Membership implements HistoricalFact {
      * @throws IllegalArgumentException When a mandatory parameter is null, not
      *                                  immutable or does not include identifier.
      */
-    public Membership(Member member, Group group) throws IllegalArgumentException {
+    public Membership(IMember member, IGroup group) throws IllegalArgumentException {
 	if (member == null)
-	    throw new IllegalArgumentException(new InvalidParameterException("Member parameter is required!"));
+	    throw new IllegalArgumentException("Member parameter is required!");
 	if (group == null)
-	    throw new IllegalArgumentException(new InvalidParameterException("Group parameter is required!"));
+	    throw new IllegalArgumentException("Group parameter is required!");
 	// Check conformity of identifiers
 	if (member.identified() == null)
-	    throw new IllegalArgumentException(new InvalidParameterException("Member's identifier is missing!"));
+	    throw new IllegalArgumentException("Member's identifier is missing!");
 	if (group.identified() == null)
-	    throw new IllegalArgumentException(new InvalidParameterException("Group's identifier is missing!"));
+	    throw new IllegalArgumentException("Group's identifier is missing!");
 	try {
-	    this.group = (Group) group.immutable();
-	    this.member = (Member) member.immutable();
+	    this.group = (IGroup) group.immutable();
+	    this.member = (IMember) member.immutable();
 	    // Create immutable time of this fact creation
 	    this.createdAt = OffsetDateTime.now();
-	} catch (CloneNotSupportedException ce) {
+	} catch (ImmutabilityException ce) {
 	    throw new IllegalArgumentException(ce);
 	}
     }
@@ -73,22 +73,30 @@ public abstract class Membership implements HistoricalFact {
      * Get the member of this relation.
      * 
      * @return An immutable version of the group's member.
-     * @throws CloneNotSupportedException If impossible creation of immutable copy
-     *                                    of the returned instance.
+     * @throws ImmutabilityException If impossible creation of immutable copy of the
+     *                               returned instance.
      */
-    public Member member() throws CloneNotSupportedException {
-	return (Member) this.member.immutable();
+    public IMember member() throws ImmutabilityException {
+	return (IMember) this.member.immutable();
     }
 
     /**
      * Get the group categorizing this relation.
      * 
      * @return An immutable version of the group.
-     * @throws CloneNotSupportedException If impossible creation of immutable copy
-     *                                    of the returned instance.
+     * @throws ImmutabilityException If impossible creation of immutable copy of the
+     *                               returned instance.
      */
-    public Group group() throws CloneNotSupportedException {
-	return (Group) this.group.immutable();
+    public IGroup group() throws ImmutabilityException {
+	return (IGroup) this.group.immutable();
     }
 
+    /**
+     * Default implementation of fact date when it was created.
+     */
+    @Override
+    public OffsetDateTime occurredAt() {
+	// Return immutable value of the fact time
+	return this.createdAt;
+    }
 }

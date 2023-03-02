@@ -10,9 +10,9 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.cybnity.framework.immutable.data.IdentifierImpl;
-import org.cybnity.framework.immutable.data.Organization;
-import org.cybnity.framework.immutable.data.PhysicalAddressProperty;
+import org.cybnity.framework.immutable.sample.IdentifierImpl;
+import org.cybnity.framework.immutable.sample.Organization;
+import org.cybnity.framework.immutable.sample.PhysicalAddressProperty;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

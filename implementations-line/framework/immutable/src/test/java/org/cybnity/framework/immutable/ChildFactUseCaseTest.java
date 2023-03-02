@@ -6,9 +6,9 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.cybnity.framework.immutable.data.ChildAggregate;
-import org.cybnity.framework.immutable.data.EntityImpl;
-import org.cybnity.framework.immutable.data.IdentifierImpl;
+import org.cybnity.framework.immutable.sample.ChildAggregate;
+import org.cybnity.framework.immutable.sample.EntityImpl;
+import org.cybnity.framework.immutable.sample.IdentifierImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,6 +1,5 @@
 package org.cybnity.framework.immutable;
 
-import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,14 +31,17 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
-public abstract class Entity implements HistoricalFact, IdentifiableFact {
+public abstract class Entity implements IHistoricalFact, IdentifiableFact, IReferenceable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Required identification elements (e.g that can be combined to define a
-     * natural identity of this historical fact). Related patterns: when an entity
-     * includes the identity of its parent, it shall follows the Ownership pattern.
-     * While the entity's fact cannot be deleted, the Delete pattern simulates the
-     * removal of this entity.
+     * natural identity of this historical fact).
+     * 
+     * Related patterns: when an entity includes the identity of its parent, it
+     * shall follows the Ownership pattern. While the entity's fact cannot be
+     * deleted, the Delete pattern simulates the removal of this entity.
      * 
      * This collection implementation contains non-duplicable elements at every
      * given time.
@@ -58,20 +60,19 @@ public abstract class Entity implements HistoricalFact, IdentifiableFact {
      * @throws IllegalArgumentException When id parameter is null and does not
      *                                  include name and value.
      */
-    public Entity(Identifier id) throws IllegalArgumentException {
+    protected Entity(Identifier id) throws IllegalArgumentException {
 	if (id == null)
-	    throw new IllegalArgumentException(new InvalidParameterException("Id parameter is required!"));
+	    throw new IllegalArgumentException("Id parameter is required!");
 	// Check conformity of identifier
 	if (id.name() == null || id.name().equals("") || id.value() == null) {
-	    throw new IllegalArgumentException(
-		    new InvalidParameterException("Identifier parameter's name and value are required!"));
+	    throw new IllegalArgumentException("Identifier parameter's name and value are required!");
 	}
 	try {
 	    identifiedBy = new ArrayList<Identifier>(1);
 	    identifiedBy.add((Identifier) id.immutable());
 	    // Create immutable time of this fact creation
 	    this.createdAt = OffsetDateTime.now();
-	} catch (CloneNotSupportedException ce) {
+	} catch (ImmutabilityException ce) {
 	    throw new IllegalArgumentException(ce);
 	}
     }
@@ -84,24 +85,23 @@ public abstract class Entity implements HistoricalFact, IdentifiableFact {
      * @throws IllegalArgumentException When identifiers parameter is null or each
      *                                  item does not include name and value.
      */
-    public Entity(LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
+    protected Entity(LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
 	if (identifiers == null || identifiers.isEmpty())
-	    throw new IllegalArgumentException(new InvalidParameterException("Identifiers parameter is required!"));
+	    throw new IllegalArgumentException("Identifiers parameter is required!");
 	identifiedBy = new ArrayList<Identifier>(identifiers.size());
 	// Save immutable identifiers
 	try {
 	    for (Identifier id : identifiers) {
 		// Check conformity of identifier
 		if (id.name() == null || id.name().equals("") || id.value() == null) {
-		    throw new IllegalArgumentException(
-			    new InvalidParameterException("Identifier parameter's name and value is required!"));
+		    throw new IllegalArgumentException("Identifier parameter's name and value is required!");
 		}
 		// save reference copy
 		identifiedBy.add((Identifier) id.immutable());
 	    }
 	    // Create immutable time of this fact creation
 	    this.createdAt = OffsetDateTime.now();
-	} catch (CloneNotSupportedException cn) {
+	} catch (ImmutabilityException cn) {
 	    throw new IllegalArgumentException(cn);
 	}
     }
@@ -135,12 +135,28 @@ public abstract class Entity implements HistoricalFact, IdentifiableFact {
      */
     @Override
     public boolean equals(Object fact) {
+	if (fact == this)
+	    return true;
 	if (fact != null && IdentifiableFact.class.isAssignableFrom(fact.getClass())) {
-	    // Compare equality based on each instance's identifier (unique or based on
-	    // identifying informations combination)
-	    return Evaluations.isIdentifiedEquals(this, (IdentifiableFact) fact);
+	    try {
+		// Compare equality based on each instance's identifier (unique or based on
+		// identifying informations combination)
+		return Evaluations.isIdentifiedEquals(this, (IdentifiableFact) fact);
+	    } catch (ImmutabilityException ie) {
+		// Impossible creation of immutable identifier
+		// log problem of implementation
+	    }
 	}
 	return false;
     }
 
+    @Override
+    public EntityReference reference() throws ImmutabilityException {
+	try {
+	    return new EntityReference((Entity) this.immutable(),
+		    /* Unknown external relation with the caller of this method */ null, null);
+	} catch (Exception e) {
+	    throw new ImmutabilityException(e);
+	}
+    }
 }

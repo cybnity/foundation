@@ -7,8 +7,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.Collection;
 
-import org.cybnity.framework.immutable.data.EntityImpl;
-import org.cybnity.framework.immutable.data.IdentifierImpl;
+import org.cybnity.framework.immutable.sample.EntityImpl;
+import org.cybnity.framework.immutable.sample.IdentifierImpl;
 import org.junit.Test;
 
 /**

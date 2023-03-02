@@ -2,10 +2,10 @@ package org.cybnity.framework.immutable;
 
 import java.util.UUID;
 
-import org.cybnity.framework.immutable.data.Department;
-import org.cybnity.framework.immutable.data.Employee;
-import org.cybnity.framework.immutable.data.IdentifierImpl;
-import org.cybnity.framework.immutable.data.MemberImpl;
+import org.cybnity.framework.immutable.sample.Department;
+import org.cybnity.framework.immutable.sample.Employee;
+import org.cybnity.framework.immutable.sample.IdentifierImpl;
+import org.cybnity.framework.immutable.sample.MemberImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,8 +19,8 @@ import org.junit.Test;
  */
 public class MembershipUseCaseTest {
 
-    private Group group;
-    private Member member;
+    private IGroup group;
+    private IMember member;
 
     @Before
     public void initRelationOrigins() throws Exception {
