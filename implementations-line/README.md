@@ -112,7 +112,7 @@ For example, the implementation source code of an adapter client to a monitoring
 Mainly, the **Infrastructure Modules** are provided as **Java libraries** of adaptation client implementations modules.
 
 Several categories of infrastructure technologies are managed in terms of implementation codes:
-- [framework](framework): shared and transversal structures of infrastructure data (e.g generic event)
+- [framework](framework): shared and transversal frameworks (e.g immutability, event basics) of implementation and specification utilities
 - [continuity](infrastructures/continuity): clients of integration with Business Continuity systems
 - [integration](infrastructures/integration): clients of integration with brokers of messages (e.g Redis cluster, Kafka cluster) allowing to discuss with other CYBNITY or third-parties systems
   - [Users Interactions Space adapter](infrastructures/integration/system/users-interactions-broker/uib-adapters) to brokers cluster
