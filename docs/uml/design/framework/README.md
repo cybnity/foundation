@@ -6,7 +6,8 @@ The version of each diagram shown in this area is the latest produced via the so
 Several sub-projects are managed to support frameworked concepts:
 
 - [Support java library project](/implementations-line/framework/support): transversal components (e.g generic events, documentation annotations) supported by the `org.cybnity.framework.support` package
-- [Immutable java library project](/implementations-line/framework/immutable): all concepts allowing implementation of immutability requirements supported by the `org.cybnity.framework.immutable` package
+- [Immutable java library project](/implementations-line/framework/immutable): all specification and implementation components allowing development of immutability requirements supported by the `org.cybnity.framework.immutable` package
+- [Domain-Driven java library project](/implementations-line/framework/domain): all specification and implementation components allowing development of Domain-Driven Design (DDD) requirements supported by the `org.cybnity.framework.domain` package
 
 # COMMON
 ### Identifiable
