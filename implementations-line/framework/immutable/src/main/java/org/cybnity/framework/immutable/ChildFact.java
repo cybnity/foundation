@@ -63,7 +63,9 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
      * @throws IllegalArgumentException When predecessor mandatory parameter is not
      *                                  defined or without defined identifier.
      */
-    protected ChildFact(Entity predecessor, Identifier id) throws IllegalArgumentException {
+    protected ChildFact(
+	    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3") Entity predecessor,
+	    Identifier id) throws IllegalArgumentException {
 	if (predecessor == null)
 	    throw new IllegalArgumentException("parent parameter is required!");
 	// Check conformity of optional child identifier
@@ -110,7 +112,9 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
      * @throws IllegalArgumentException When identifiers parameter is null or each
      *                                  item does not include name and value.
      */
-    protected ChildFact(Entity predecessor, LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
+    protected ChildFact(
+	    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3") Entity predecessor,
+	    LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
 	if (predecessor == null)
 	    throw new IllegalArgumentException("parent parameter is required!");
 	try {
@@ -260,6 +264,7 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
      * @return A predecessor of the child.
      * @throws ImmutabilityException When impossible cloned instance of predecessor.
      */
+    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3")
     public Entity parent() throws ImmutabilityException {
 	// Return unmodifiable instance of predecessor
 	return (Entity) this.parent.immutable();

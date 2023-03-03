@@ -24,7 +24,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * @author olivier
  *
  */
-@Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
+@Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_7")
 public abstract class ProcessManager implements ICommandHandler {
 
     /**

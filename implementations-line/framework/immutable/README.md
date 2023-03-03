@@ -20,7 +20,8 @@ Several structural patterns are supporting the immutability and are reusable (e.
 |Membership|More flexible grouping relationship than the ownership. A many-to-many relationship typically denotes Membership|
 |MutableProperty|Represents values that change on a property (simple or complex)|
 |IOwnership|Special case of the Entity pattern, where the entity's identifiers include the identity of an owner|
-|IRestorationFact|Restoration fact references a prior deletion. Dxtension of the Delete pattern|
+|IRestorationFact|Restoration fact references a prior deletion. Extension of the Delete pattern|
+|NaturalKeyIdentifierGenerator|Utility class helping to generate identifier value based on natural key (location-independent identity pattern)|
 
 ## STRUCTURE MODELS
 

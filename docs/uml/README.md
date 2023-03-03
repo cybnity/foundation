@@ -6,35 +6,35 @@ Each Papyrus model file (.di) include internal structure hosting specific diagra
 
 # FUNCTIONAL VIEW (Use Cases)
 ## Purpose
-- Show the functionality of the system(s) as perceived by the external actors;
-- Exposes the requirements of the system.
+- Show the functionality of the system(s) as perceived by the external actors
+- Exposes the requirements of the system
 
 ## Artifacts
 Source file named "Use case view":
-- Static aspects (structural diagrams): use cases;
-- Dynamic aspects (behavioral diagrams): interactions, statecharts, activities.
+- Static aspects (structural diagrams): use cases
+- Dynamic aspects (behavioral diagrams): interactions, statecharts, activities
 - Model sub-packages:
-  - Each context of the software (e.g Domain context) is described in a separate sub-package.
+  - Each context of the software (e.g Domain context) is described in a separate sub-package
 
 ## Usage
 Formalizes software functional and/or technical analysis according to the functional and technical requirements.
 
 # DESIGN VIEW (Logical Components)
 ## Purpose
-- Sub-capture how the functionality is designed inside the domain contexts;
-- Logical view of systems and sub-systems.
+- Sub-capture how the functionality is designed inside the domain contexts
+- Logical view of systems and sub-systems
 
 ## Artifacts
 Source file named "Design view":
-- Static aspects (structural diagrams): classes, objects;
-- Dynamic aspects (behavioral diagrams): interactions, statecharts, activities, sequences.
+- Static aspects (structural diagrams): classes, objects
+- Dynamic aspects (behavioral diagrams): interactions, statecharts, activities, sequences
 - Model sub-packages:
   - [Cockpits Foundations](design/cockpit-foundations)
-    - Captures how the capabilities provided by the Cockpits User Interfaces (UI) are designed inside the UI layer).
+    - Captures how the capabilities provided by the Cockpits User Interfaces (UI) are designed inside the UI layer)
   - Feature Modules
-    - Show how the internal functionalities (e.g logical features) are designed inside each domain context, in terms of the static structure and dynamic behavior;
-    - Captures the vocabulary of the problem(s) space(s) and solution space per domain context;
-    - Captures the sub-interface's capabilities per domain context (e.g context specification), sub-layers (e.g Domain-Driven-Development oriented) and realization of context described in specification use-case-view.
+    - Show how the internal functionalities (e.g logical features) are designed inside each domain context, in terms of the static structure and dynamic behavior
+    - Captures the vocabulary of the problem(s) space(s) and solution space per domain context
+    - Captures the sub-interface's capabilities per domain context (e.g context specification), sub-layers (e.g Domain-Driven-Development oriented) and realization of context described in specification use-case-view
     - Each module include a sub-package per layer of design (Domain-Drive-Development)
       - ui layer
       - application layer
