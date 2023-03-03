@@ -62,6 +62,7 @@ public class EntityReference implements IHistoricalFact {
      * leaves of the tree in the newt fact's prior set (value attribute).
      * 
      */
+    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3")
     protected HashSet<EntityReference> prior;
 
     /**
@@ -132,7 +133,8 @@ public class EntityReference implements IHistoricalFact {
      *                                  parameter(s).
      */
     public EntityReference(Entity referenceOwner, Entity inRelationWith, HistoryState status,
-	    EntityReference... predecessors) throws IllegalArgumentException {
+	    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3") EntityReference... predecessors)
+	    throws IllegalArgumentException {
 	// Initialize instance as default without previous versions of property's values
 	this(referenceOwner, inRelationWith, status);
 	if (predecessors != null) {

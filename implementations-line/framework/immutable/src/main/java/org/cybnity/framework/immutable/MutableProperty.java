@@ -71,6 +71,7 @@ public abstract class MutableProperty implements IHistoricalFact {
      * leaves of the tree in the newt fact's prior set (value attribute).
      * 
      */
+    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3")
     protected HashSet<MutableProperty> prior;
 
     /**
@@ -151,7 +152,9 @@ public abstract class MutableProperty implements IHistoricalFact {
      *                                  parameter.
      */
     public MutableProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
-	    MutableProperty... predecessors) throws IllegalArgumentException {
+
+	    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3") MutableProperty... predecessors)
+	    throws IllegalArgumentException {
 	// Initialize instance as default without previous versions of property's values
 	this(propertyOwner, propertyCurrentValue, status);
 	if (predecessors != null) {
