@@ -18,8 +18,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 public abstract class LocationIndependentIdentityNaturalKeyBuilder {
 
     /**
-     * Apply the transformation rule for uniformization of the characters of the
-     * natural key with lower casing of all the characters of the natural key.
+     * Apply the transformation rule for uniformity of the characters of the natural
+     * key with lower casing of all the characters of the natural key.
      */
     public abstract void convertAllLettersToLowerCase();
 
@@ -34,4 +34,10 @@ public abstract class LocationIndependentIdentityNaturalKeyBuilder {
      * key.
      */
     public abstract void removeAnySpace();
+
+    /**
+     * Apply transformation rule for add of random additional characters allowing to
+     * complete the natural key transformed value with randomized characters.
+     */
+    public abstract void generateMinimumCharactersQuantity();
 }
