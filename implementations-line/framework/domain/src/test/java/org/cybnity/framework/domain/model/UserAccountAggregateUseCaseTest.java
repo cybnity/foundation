@@ -108,11 +108,12 @@ public class UserAccountAggregateUseCaseTest {
 	Set<ApplicativeRole> currentRoles = currentAccount.assignedRoles();
 	assertTrue("Shall not include any default role!", currentRoles.isEmpty());
 
-	// Simulate assignment of new role
+	// Simulate assignment of new role with reuse of natural key based for
+	// identifier generation
+	String roleName = "ISO";
 	AssignRoleToUserAccountCommand roleAssignmentCommand = new AssignRoleToUserAccountCommand(
 		new DenormalizedEntityImpl(
 			new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), UUID.randomUUID().toString())));
-	String roleName = "ISO";
 	// Which role shall be assigned
 	roleAssignmentCommand.assignedRole = new ApplicativeRoleDTO(roleName);
 	assertEquals("Default state shall be Committed!", HistoryState.COMMITTED,

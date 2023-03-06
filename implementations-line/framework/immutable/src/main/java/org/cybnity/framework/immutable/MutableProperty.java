@@ -39,7 +39,7 @@ public abstract class MutableProperty implements IHistoricalFact {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The owner of this mutable porperty.
+     * The owner of this mutable property.
      */
     protected Entity entity;
 
