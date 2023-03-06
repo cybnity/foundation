@@ -29,6 +29,10 @@ Build dockerfile (without docker-compose help) from directory from shell command
 ## DOCKER IMAGE REPOSITORY
 List images built into the repository
 
+## DOCKER REPOSITORY CLEANING
+When a out of space is arriving that avoid to build new image template, clean the workstation system with command line:
+`docker system prune -a`
+
 ## CHECK IMAGE
 Scan image vulnerabilities from shell command line:
 `docker scan cybnity/jre-tee`

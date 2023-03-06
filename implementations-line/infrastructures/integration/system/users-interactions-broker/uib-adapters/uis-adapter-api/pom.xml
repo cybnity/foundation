@@ -11,4 +11,12 @@
 	<artifactId>api</artifactId>
 	<packaging>jar</packaging>
 	<name>---- UIS adapter api</name>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.cybnity.framework</groupId>
+			<artifactId>immutable</artifactId>
+			<version>${revision}</version>
+		</dependency>
+	</dependencies>
 </project>

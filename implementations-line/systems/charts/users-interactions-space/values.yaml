@@ -18,7 +18,7 @@ global:
   imagePullSecrets: []
   storageClass: ""
   redis:
-    password: ""
+    password: "PRg53nV82DQy"
 
 ## @section Common parameters
 ##
