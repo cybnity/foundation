@@ -14,5 +14,5 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public enum HistoryState {
-    ARCHIVED, MERGED, COMMITTED;
+    ARCHIVED, MERGED, COMMITTED, CANCELLED;
 }

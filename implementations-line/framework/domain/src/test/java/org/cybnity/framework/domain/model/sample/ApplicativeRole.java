@@ -3,7 +3,7 @@ package org.cybnity.framework.domain.model.sample;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.cybnity.framework.immutable.Entity;
@@ -83,7 +83,9 @@ public class ApplicativeRole extends MutableProperty {
 		(EntityReference) this.currentValue().get(PropertyAttributeKey.OwnerRef.name()),
 		(String) this.currentValue().get(PropertyAttributeKey.RoleName.name()));
 	// Complete with additional attributes of this complex property
-	copy.changedAt = occurredAt();
+	copy.changedAt = this.occurredAt();
+	copy.historyStatus = this.historyStatus();
+	copy.updateChangesHistory(this.changesHistory());
 	return copy;
     }
 
@@ -108,7 +110,7 @@ public class ApplicativeRole extends MutableProperty {
      */
     public Set<ApplicativeRole> changesHistory() {
 	// Read previous changes history (not including the current version)
-	HashSet<ApplicativeRole> history = new HashSet<>();
+	LinkedHashSet<ApplicativeRole> history = new LinkedHashSet<>();
 	for (MutableProperty previousChangedProperty : this.prior) {
 	    history.add((ApplicativeRole) previousChangedProperty);
 	}
@@ -123,8 +125,8 @@ public class ApplicativeRole extends MutableProperty {
      */
     public void updateChangesHistory(Set<ApplicativeRole> roles) {
 	if (roles != null && !roles.isEmpty()) {
-	    // Update the story
-	    HashSet<MutableProperty> history = new HashSet<>();
+	    // Update the story at end of previous versions
+	    LinkedHashSet<MutableProperty> history = new LinkedHashSet<>();
 	    for (ApplicativeRole aRole : roles) {
 		history.add(aRole);
 	    }
@@ -162,4 +164,47 @@ public class ApplicativeRole extends MutableProperty {
 	return (String) this.currentValue().get(PropertyAttributeKey.RoleName.name());
     }
 
+    /**
+     * Get the entity reference which is owner of this role.
+     * 
+     * @return An owner reference.
+     */
+    public EntityReference ownerReference() {
+	return (EntityReference) this.currentValue().get(PropertyAttributeKey.OwnerRef.name());
+    }
+
+    /**
+     * Get the time when this role was versioned.
+     * 
+     * @return A date of this role creation.
+     */
+    public OffsetDateTime versionedAt() {
+	return (OffsetDateTime) this.currentValue().get(PropertyAttributeKey.VersionedAt.name());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (obj == this)
+	    return true;
+	boolean isEquals = false;
+	if (obj instanceof ApplicativeRole) {
+	    try {
+		ApplicativeRole compared = (ApplicativeRole) obj;
+		// Check if same role name
+		if (compared.getName().equals(this.getName())) {
+		    // Check if same status
+		    if (compared.historyStatus() == this.historyStatus()) {
+			// Check if same role versioned
+			if (compared.versionedAt().equals(this.versionedAt)) {
+			    isEquals = true;
+			}
+		    }
+		}
+	    } catch (Exception e) {
+		// any missing information generating null pointer exception or problem of
+		// information read
+	    }
+	}
+	return isEquals;
+    }
 }

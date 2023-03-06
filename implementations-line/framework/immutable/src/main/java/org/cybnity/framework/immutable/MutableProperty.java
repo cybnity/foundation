@@ -2,7 +2,7 @@ package org.cybnity.framework.immutable;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
@@ -72,7 +72,7 @@ public abstract class MutableProperty implements IHistoricalFact {
      * 
      */
     @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3")
-    protected HashSet<MutableProperty> prior;
+    protected LinkedHashSet<MutableProperty> prior;
 
     /**
      * When this fact version was created or observed regarding the historized
@@ -86,7 +86,7 @@ public abstract class MutableProperty implements IHistoricalFact {
      * {@link org.cybnity.framework.immutable.HistoryState.Committed} by default for
      * any new instance of new instantiated property.
      */
-    private HistoryState historyStatus = HistoryState.COMMITTED;
+    protected HistoryState historyStatus = HistoryState.COMMITTED;
 
     /**
      * Default constructor with automatic initialization of an empty value set
@@ -113,7 +113,7 @@ public abstract class MutableProperty implements IHistoricalFact {
 	try {
 	    this.entity = (Entity) propertyOwner.immutable();
 	    // Set of prior versions is empty by default
-	    this.prior = new HashSet<>();
+	    this.prior = new LinkedHashSet<>();
 	    // Set the current states of changed values regarding this property version
 	    this.value = propertyCurrentValue;
 	    if (status != null)
@@ -152,7 +152,6 @@ public abstract class MutableProperty implements IHistoricalFact {
      *                                  parameter.
      */
     public MutableProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
-
 	    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3") MutableProperty... predecessors)
 	    throws IllegalArgumentException {
 	// Initialize instance as default without previous versions of property's values

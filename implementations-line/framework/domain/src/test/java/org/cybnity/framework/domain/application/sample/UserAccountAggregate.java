@@ -1,7 +1,6 @@
 package org.cybnity.framework.domain.application.sample;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -9,9 +8,9 @@ import java.util.UUID;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.IdentifierStringBased;
-import org.cybnity.framework.domain.model.IAggregate;
 import org.cybnity.framework.domain.model.CommonChildFactImpl;
 import org.cybnity.framework.domain.model.DomainEventPublisher;
+import org.cybnity.framework.domain.model.IAggregate;
 import org.cybnity.framework.domain.model.sample.ApplicativeRole;
 import org.cybnity.framework.domain.model.sample.UserAccountApplicativeRoleAssigned;
 import org.cybnity.framework.domain.model.sample.readmodel.ApplicativeRoleDTO;
@@ -19,6 +18,7 @@ import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStore;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
+import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
 
@@ -40,7 +40,7 @@ public class UserAccountAggregate extends Entity implements IAggregate {
     /**
      * Set of roles allowed to this user account.
      */
-    private Set<ApplicativeRole> assignedRoles;
+    private LinkedHashSet<ApplicativeRole> assignedRoles;
 
     /**
      * Default constructor of an account.
@@ -92,7 +92,7 @@ public class UserAccountAggregate extends Entity implements IAggregate {
 		    // regarding a role supported by this account)
 
 		    // Update the roles assignment according to the requested change
-		    addAssignedRole(toAssign.getName());
+		    addAssignedRole(toAssign.getName(), toAssign.status);
 
 		    // Save the changed state (e.g historization of the entity immutable object's
 		    // version) in a data persistence when existing
@@ -153,14 +153,17 @@ public class UserAccountAggregate extends Entity implements IAggregate {
      * Add an applicative role allowed to this account.
      * 
      * @param roleName A role name to assign at this account. Ignored if null.
+     * @param state    Role status to consider.
      * @throws ImmutabilityException When problem of role instantiation.
      */
-    private void addAssignedRole(String roleName) throws ImmutabilityException {
+    private void addAssignedRole(String roleName, HistoryState state) throws ImmutabilityException {
 	if (roleName != null && !roleName.equals("")) {
 	    if (this.assignedRoles == null) {
-		this.assignedRoles = new HashSet<>();
+		this.assignedRoles = new LinkedHashSet<>();
 	    }
-	    // Find existing role with the same name in the Set
+	    // Find existing role with the same name in the Set, in a same status of
+	    // assignment (perhaps previous same role was committed, but after was removed,
+	    // and need to be re-assigned)
 	    ApplicativeRole existingRoleToUpdate = null;
 	    for (ApplicativeRole aRole : this.assignedRoles) {
 		if (aRole.getName().equalsIgnoreCase(roleName)) {
@@ -172,14 +175,15 @@ public class UserAccountAggregate extends Entity implements IAggregate {
 	    }
 	    if (existingRoleToUpdate != null) {
 		// Archive the previous role version regarding existing history when exist
-		Set<ApplicativeRole> changesHistory = existingRoleToUpdate.changesHistory();
+		Set<ApplicativeRole> changedPredecessors = existingRoleToUpdate.changesHistory();
 		// Add last version of current role into history
-		changesHistory.add(existingRoleToUpdate);
+		changedPredecessors.add(existingRoleToUpdate);
 		// Create a new version of role as current version (which perhaps content
 		// updated permissions etc...)
 		ApplicativeRole newCurrentRoleVersion = new ApplicativeRole(this.user, roleName);
+		newCurrentRoleVersion.setHistoryStatus(state);
 		// Set the old history (including the previous last version of role)
-		newCurrentRoleVersion.updateChangesHistory(changesHistory);
+		newCurrentRoleVersion.updateChangesHistory(changedPredecessors);
 		// Replace the new current role version in the roles attribute
 		this.assignedRoles.remove(existingRoleToUpdate);
 		this.assignedRoles.add(newCurrentRoleVersion);
@@ -199,9 +203,9 @@ public class UserAccountAggregate extends Entity implements IAggregate {
     public Set<ApplicativeRole> assignedRoles() throws ImmutabilityException {
 	if (this.assignedRoles == null) {
 	    // Return empty set
-	    return new HashSet<>();
+	    return new LinkedHashSet<>();
 	}
-	Set<ApplicativeRole> immutableSet = new HashSet<>(this.assignedRoles.size());
+	Set<ApplicativeRole> immutableSet = new LinkedHashSet<>(this.assignedRoles.size());
 	for (ApplicativeRole role : this.assignedRoles) {
 	    immutableSet.add((ApplicativeRole) role.immutable());
 	}
