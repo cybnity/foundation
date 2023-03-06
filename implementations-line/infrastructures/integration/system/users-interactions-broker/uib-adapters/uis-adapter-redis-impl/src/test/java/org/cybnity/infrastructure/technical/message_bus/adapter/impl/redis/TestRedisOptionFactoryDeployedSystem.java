@@ -19,7 +19,7 @@ import io.vertx.redis.client.RedisOptions;
  * @author olivier
  *
  */
-public class RedisOptionFactoryCaseTest {
+public class TestRedisOptionFactoryDeployedSystem {
 
     private String connectionUserAccount, connectionPassword, serverHost, serverPort, databaseNumber,
 	    defaultAuthPassword;

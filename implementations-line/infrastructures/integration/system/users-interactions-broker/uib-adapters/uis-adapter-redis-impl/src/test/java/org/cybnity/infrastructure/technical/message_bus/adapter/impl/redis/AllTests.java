@@ -12,6 +12,6 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({ RedisOptionFactoryCaseTest.class })
+@SuiteClasses({ TestRedisOptionFactoryDeployedSystem.class })
 public class AllTests {
 }
