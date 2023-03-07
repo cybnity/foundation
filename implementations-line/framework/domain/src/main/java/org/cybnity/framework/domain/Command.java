@@ -6,10 +6,10 @@ import java.time.OffsetDateTime;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.Evaluations;
+import org.cybnity.framework.immutable.IReferenceable;
 import org.cybnity.framework.immutable.IdentifiableFact;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
-import org.cybnity.framework.immutable.IReferenceable;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -81,6 +81,49 @@ public abstract class Command implements IdentifiableFact, IVersionable, Seriali
 	    }
 	}
 	return null;
+    }
+
+    /**
+     * This method has the same contract as valueEquality() method in that all
+     * values that are functionally equal also produce equal hash code value. This
+     * method is called by default hashCode() method of this ValueObject instance
+     * and shall provide the list of values contributing to define the unicity of
+     * this instance (e.g also used for valueEquality() comparison).
+     * 
+     * @return The unique functional values used to idenfity uniquely this instance.
+     *         Or empty array.
+     */
+    @Override
+    public String[] valueHashCodeContributors() {
+	try {
+	    return new String[] { /** Based only on identifier value **/
+		    (String) this.identified().value() };
+	} catch (Exception ie) {
+	    // In case of null pointer exception regarding unknown identifier command
+	    return new String[] {};
+	}
+    }
+
+    /**
+     * Redefined hash code calculation method which include the functional contents
+     * hash code values into the returned number.
+     */
+    @Override
+    public int hashCode() {
+	// Read the contribution values of functional equality regarding this instance
+	String[] functionalValues = valueHashCodeContributors();
+	int hashCodeValue = +(169065 * 179);
+	if (functionalValues != null && functionalValues.length > 0) {
+	    for (String s : functionalValues) {
+		if (s != null) {
+		    hashCodeValue = +s.hashCode();
+		}
+	    }
+	} else {
+	    // Keep standard hashcode value calculation default implementation
+	    hashCodeValue = super.hashCode();
+	}
+	return hashCodeValue;
     }
 
     /**
