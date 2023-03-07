@@ -18,7 +18,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({ DomainEventUseCaseTest.class, NotificationLogUseCaseTest.class,
+@SuiteClasses({ ValueObjectUseCaseTest.class, DomainEventUseCaseTest.class, NotificationLogUseCaseTest.class,
 	UnidentifiableFactNotificationLogUseCaseTest.class, EventStoreUseCaseTest.class, ContextUseCaseTest.class,
 	UserAccountAggregateUseCaseTest.class, UserAccountAggregateStoreUseCaseTest.class,
 	UserAccountCQRSCollaborationUseCaseTest.class, StringBasedNaturalKeyBuilderUseCaseTest.class })

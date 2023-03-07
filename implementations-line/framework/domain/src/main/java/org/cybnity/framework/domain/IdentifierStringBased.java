@@ -41,6 +41,33 @@ public class IdentifierStringBased implements Identifier {
     }
 
     /**
+     * Redefined hash code calculation method which include the functional contents
+     * hash code values into the returned number.
+     */
+    @Override
+    public int hashCode() {
+	// Read the contribution values of functional equality regarding this instance
+	String[] functionalValues = valueHashCodeContributors();
+	int hashCodeValue = +(169065 * 179);
+	if (functionalValues != null && functionalValues.length > 0) {
+	    for (String s : functionalValues) {
+		if (s != null) {
+		    hashCodeValue = +s.hashCode();
+		}
+	    }
+	} else {
+	    // Keep standard hashcode value calculation default implementation
+	    hashCodeValue = super.hashCode();
+	}
+	return hashCodeValue;
+    }
+
+    @Override
+    public String[] valueHashCodeContributors() {
+	return new String[] { this.value };
+    }
+
+    /**
      * Redefine the comparison of this fact with another based on the identifier.
      * 
      * @param fact To compare.
