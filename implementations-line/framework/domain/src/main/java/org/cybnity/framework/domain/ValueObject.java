@@ -6,8 +6,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 /**
  * Measures, quantifies or describes a thing in a domain that can be maintained
  * as immutable. Represents a conceptual whole by composing related attributes
- * as an integral unit.. It is completely replaceable when the measurement or
- * description changes, that can be compared with others using Value equality.
+ * as an integral unit. It is completely replaceable when the measurement or
+ * description changes, that can be compared with others using Value equality or hashcode value.
  * 
  * @author olivier
  *
