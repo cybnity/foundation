@@ -1,5 +1,6 @@
 package org.cybnity.framework.immutable.utility;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.cybnity.framework.immutable.sample.ChildAggregate;
@@ -27,5 +28,12 @@ public class VersionConcreteStrategyUseCaseTest {
 	String versionHash = new VersionConcreteStrategy().composeCanonicalVersionHash(ChildAggregate.class);
 	assertNotNull(versionHash); // In case of NoSuchAlgorithmException resulting of missing MessageDigest
 				    // algorithm
+    }
+
+    @Test
+    public void giveClassType_whenMultipleVersionGenerating_thenUniqueSameVersionHash() throws Exception {
+	String versionHash = new VersionConcreteStrategy().composeCanonicalVersionHash(ChildAggregate.class);
+	String versionHash2 = new VersionConcreteStrategy().composeCanonicalVersionHash(ChildAggregate.class);
+	assertEquals("Shall not be different!", versionHash, versionHash2);
     }
 }

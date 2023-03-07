@@ -2,7 +2,7 @@ package org.cybnity.framework.domain.model.sample;
 
 import java.io.Serializable;
 
-import org.cybnity.framework.domain.model.DomainEvent;
+import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;

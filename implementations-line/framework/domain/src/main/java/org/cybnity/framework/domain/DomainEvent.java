@@ -1,4 +1,4 @@
-package org.cybnity.framework.domain.model;
+package org.cybnity.framework.domain;
 
 import java.time.OffsetDateTime;
 
@@ -76,6 +76,18 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
     }
 
     /**
+     * Get a immutable copy of the original entity of this event.
+     * 
+     * @return Identity of this event, or null.
+     */
+    public Entity getIdentifiedBy() throws ImmutabilityException {
+	if (this.identifiedBy != null) {
+	    return (Entity) identifiedBy.immutable();
+	}
+	return null;
+    }
+
+    /**
      * Get the identification element regarding this event, when it's an
      * identifiable event.
      * 
@@ -84,13 +96,9 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
      */
     @Override
     public Identifier identified() throws ImmutabilityException {
-	if (this.getIdentifiedBy() != null) {
-	    try {
-		return (Identifier) this.getIdentifiedBy().identified().immutable();
-	    } catch (ImmutabilityException ce) {
-		// TODO: add runtime log to the LogRegistry if defined
-	    }
-	}
+	Entity entity = getIdentifiedBy();
+	if (entity != null)
+	    return entity.identified();
 	return null;
     }
 
@@ -183,15 +191,4 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
 	}
     }
 
-    /**
-     * Get a immutable copy of the original entity of this event.
-     * 
-     * @return Identity of this event, or null.
-     */
-    public Entity getIdentifiedBy() throws ImmutabilityException {
-	if (this.identifiedBy != null) {
-	    return (Entity) identifiedBy.immutable();
-	}
-	return null;
-    }
 }

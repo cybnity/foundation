@@ -6,15 +6,15 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.model.CommonChildFactImpl;
-import org.cybnity.framework.domain.model.DomainEvent;
 import org.cybnity.framework.domain.model.DomainEventPublisher;
 import org.cybnity.framework.domain.model.DomainEventSubscriber;
+import org.cybnity.framework.domain.model.EventRecord;
 import org.cybnity.framework.domain.model.EventStore;
 import org.cybnity.framework.domain.model.EventStream;
 import org.cybnity.framework.domain.model.sample.EventStoreRecordCommitted;
-import org.cybnity.framework.domain.model.sample.readmodel.EventStored;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -25,19 +25,19 @@ import org.cybnity.framework.immutable.ImmutabilityException;
  * @author olivier
  *
  */
-public class LogsEventStoreImpl extends EventStore {
+public class DomainEventsStoreImpl extends EventStore {
 
     /**
      * Registries per type of stored event (key=class type, value=history of events)
      */
-    private ConcurrentHashMap<String, LinkedList<EventStored>> registries = new ConcurrentHashMap<String, LinkedList<EventStored>>();
+    private ConcurrentHashMap<String, LinkedList<EventRecord>> registries = new ConcurrentHashMap<String, LinkedList<EventRecord>>();
 
     /**
      * Delegated capability regarding promotion of stored events changes.
      */
     private DomainEventPublisher promotionManager;
 
-    private LogsEventStoreImpl() {
+    private DomainEventsStoreImpl() {
 	super();
 	// Initialize a delegate for promotion of events changes (e.g to read model's
 	// repository)
@@ -50,7 +50,7 @@ public class LogsEventStoreImpl extends EventStore {
      * @return An instance ensuring the persistence of events.
      */
     public static EventStore instance() {
-	return new LogsEventStoreImpl();
+	return new DomainEventsStoreImpl();
     }
 
     @Override
@@ -58,23 +58,24 @@ public class LogsEventStoreImpl extends EventStore {
 	// Serialize the event to store into the storage system (generally according to
 	// a serializer supported by the persistence system as JSON, table structure's
 	// fiedl...)
-	EventStored storedEvent = new EventStored(event);
+	EventRecord storedEvent = new EventRecord(event);
 	// Find existing history regarding the event type, or initialize empty dataset
 	// for the type
-	LinkedList<EventStored> eventTypeDataset = this.registries.getOrDefault(storedEvent.getTypeName(),
-		new LinkedList<EventStored>());
+	LinkedList<EventRecord> eventTypeDataset = this.registries
+		.getOrDefault(storedEvent.factTypeVersion().factType().name(), new LinkedList<EventRecord>());
 	// Add the event to the end of history column regarding all the same event types
 	eventTypeDataset.add(storedEvent);
-	// Save in registry
+	// Save in registry regarding fact type version
+
 	registries.put(event.getClass().getName(), eventTypeDataset);
 
 	// Build event child based on the created account (parent of immutable story)
-	CommonChildFactImpl persistedEvent = new CommonChildFactImpl(storedEvent.getIdentifiedBy(),
+	CommonChildFactImpl persistedEvent = new CommonChildFactImpl(event.getIdentifiedBy(),
 		new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(),
 			/* identifier as performed transaction number */ UUID.randomUUID().toString()));
 	EventStoreRecordCommitted committed = new EventStoreRecordCommitted(persistedEvent.parent());
 	committed.originCommandRef = event.reference();
-	committed.storedEvent = storedEvent.reference();
+	committed.storedEvent = event.reference();
 
 	// Notify listeners of this store
 	this.promotionManager.publish(committed);
@@ -83,15 +84,15 @@ public class LogsEventStoreImpl extends EventStore {
     @Override
     public DomainEvent findEventFrom(Identifier uid) {
 	if (uid != null && uid.value() != null) {
-	    for (Map.Entry<String, LinkedList<EventStored>> storeColumn : this.registries.entrySet()) {
-		LinkedList<EventStored> storedEventColumn = storeColumn.getValue();
+	    for (Map.Entry<String, LinkedList<EventRecord>> storeColumn : this.registries.entrySet()) {
+		LinkedList<EventRecord> storedEventColumn = storeColumn.getValue();
 		// Search last event historized with this identifier
-		Iterator<EventStored> it = storedEventColumn.descendingIterator();
+		Iterator<EventRecord> it = storedEventColumn.descendingIterator();
 		while (it.hasNext()) {
-		    EventStored historizedEvent = it.next();
+		    EventRecord historizedEvent = it.next();
 		    // Compare if equals identifier
-		    if (historizedEvent.getEventId() == uid.value().hashCode()) {
-			return historizedEvent;
+		    if (historizedEvent.factId() == uid.value().hashCode()) {
+			return (DomainEvent) historizedEvent.body();
 		    }
 		}
 	    }

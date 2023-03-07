@@ -1,8 +1,7 @@
-package org.cybnity.framework.domain.model;
+package org.cybnity.framework.immutable;
 
 import java.util.UUID;
 
-import org.cybnity.framework.immutable.LocationIndependentIdentityNaturalKeyBuilder;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 

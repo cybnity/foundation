@@ -3,6 +3,7 @@ package org.cybnity.framework.domain.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.ISubscribable;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;

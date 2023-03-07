@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.cybnity.framework.domain.model.DomainEvent;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountChanged;
 import org.cybnity.framework.immutable.IHistoricalFact;
 import org.cybnity.framework.immutable.Identifier;
