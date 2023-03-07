@@ -10,6 +10,7 @@ import org.cybnity.framework.immutable.ChildFact;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -31,6 +32,15 @@ public class CommonChildFactImpl extends ChildFact {
     public CommonChildFactImpl(Entity predecessor, LinkedHashSet<Identifier> identifiers)
 	    throws IllegalArgumentException {
 	super(predecessor, identifiers);
+    }
+
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
+    @Override
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 
     @Override

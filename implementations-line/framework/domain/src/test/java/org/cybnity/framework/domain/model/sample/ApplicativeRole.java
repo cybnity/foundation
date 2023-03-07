@@ -11,6 +11,7 @@ import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.MutableProperty;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Sample regarding an applicative role managed by a domain (e.g that could be
@@ -133,6 +134,15 @@ public class ApplicativeRole extends MutableProperty {
 	    // Replace current history
 	    this.prior = history;
 	}
+    }
+
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
+    @Override
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 
     /**

@@ -9,14 +9,16 @@ import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.IHistoricalFact;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Log event regarding a fact not previously identified (e.g system or context fact which is
- * subject to log traceability but that is not previously uniquely identified).
- * For example, the origin of this logged event can be suspect or can come from
- * unknown source (e.g threat agent, system in failure...) requiring attention.
+ * Log event regarding a fact not previously identified (e.g system or context
+ * fact which is subject to log traceability but that is not previously uniquely
+ * identified). For example, the origin of this logged event can be suspect or
+ * can come from unknown source (e.g threat agent, system in failure...)
+ * requiring attention.
  * 
  * @author olivier
  *
@@ -77,6 +79,15 @@ public class UnidentifiableFactNotificationLog extends Entity {
 	    }
 	}
 	return origins;
+    }
+
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
+    @Override
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 
     @Override

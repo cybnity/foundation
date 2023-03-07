@@ -21,6 +21,7 @@ import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Sample of business domain aggregate relative to a user account.
@@ -210,5 +211,14 @@ public class UserAccountAggregate extends Entity implements IAggregate {
 	    immutableSet.add((ApplicativeRole) role.immutable());
 	}
 	return immutableSet;
+    }
+
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
+    @Override
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 }

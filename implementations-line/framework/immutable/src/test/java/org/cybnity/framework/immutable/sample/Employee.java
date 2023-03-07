@@ -3,9 +3,10 @@ package org.cybnity.framework.immutable.sample;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 
+import org.cybnity.framework.immutable.IMember;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
-import org.cybnity.framework.immutable.IMember;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Example of member type regarding an organization.
@@ -41,4 +42,12 @@ public class Employee implements IMember {
 	return new Employee(this.name, this.id).at = this.at;
     }
 
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
+    @Override
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+    }
 }

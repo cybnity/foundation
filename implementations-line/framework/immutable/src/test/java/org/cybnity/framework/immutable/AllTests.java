@@ -1,5 +1,6 @@
 package org.cybnity.framework.immutable;
 
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategyUseCaseTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -13,6 +14,6 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({ EntityUseCaseTest.class, ChildFactUseCaseTest.class, MembershipUseCaseTest.class,
-	MutablePropertyUseCaseTest.class })
+	MutablePropertyUseCaseTest.class, VersionConcreteStrategyUseCaseTest.class })
 public class AllTests {
 }

@@ -56,7 +56,7 @@ public class UserAccountManagementProcessesImpl extends ProcessManager {
     }
 
     @Override
-    public Set<Long> handledCommandTypeVersions() {
+    public Set<String> handledCommandTypeVersions() {
 	// Any versions of command can be processed by this process manager
 	return null;
     }

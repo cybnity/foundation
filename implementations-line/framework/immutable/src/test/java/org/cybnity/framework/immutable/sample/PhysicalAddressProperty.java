@@ -10,6 +10,7 @@ import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.MutableProperty;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Example of specific property regarding an organization, that can be changed
@@ -94,4 +95,12 @@ public class PhysicalAddressProperty extends MutableProperty {
 	return (Entity) this.entity.immutable();
     }
 
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
+    @Override
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+    }
 }

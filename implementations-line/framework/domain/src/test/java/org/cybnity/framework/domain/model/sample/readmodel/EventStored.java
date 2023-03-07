@@ -6,6 +6,7 @@ import java.time.OffsetDateTime;
 import org.cybnity.framework.domain.model.DomainEvent;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Example of destructured event manageable by a store (e.g as history of facts
@@ -73,9 +74,12 @@ public class EventStored extends DomainEvent {
 	}
     }
 
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
     @Override
-    public Long versionUID() {
-	return Long.valueOf(serialVersionUID);
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
-
 }

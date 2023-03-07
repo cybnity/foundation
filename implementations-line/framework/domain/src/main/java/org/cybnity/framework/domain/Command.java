@@ -7,6 +7,7 @@ import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.Evaluations;
 import org.cybnity.framework.immutable.IReferenceable;
+import org.cybnity.framework.immutable.IVersionable;
 import org.cybnity.framework.immutable.IdentifiableFact;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
