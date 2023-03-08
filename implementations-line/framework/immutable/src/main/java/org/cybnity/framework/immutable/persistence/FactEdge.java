@@ -1,6 +1,9 @@
 package org.cybnity.framework.immutable.persistence;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.cybnity.framework.immutable.IVersionable;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -24,7 +27,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Robusteness, reqId = "REQ_ROB_3")
-public class FactEdge implements Unmodifiable, IVersionable, Serializable {
+public class FactEdge implements Unmodifiable, IVersionable, IUniqueness, Serializable {
     /**
      * Version of this class type.
      */
@@ -69,6 +72,20 @@ public class FactEdge implements Unmodifiable, IVersionable, Serializable {
 	this.successorId = successorFactIdentifier;
 	this.predecessorId = predecessorFactIdentifier;
 	this.factsRelationType = factsRelationType;
+    }
+
+    @Override
+    public Set<Field> basedOn() {
+	Set<Field> uniqueness = new HashSet<>();
+	try {
+	    uniqueness.add(this.getClass().getDeclaredField("successorId"));
+	    uniqueness.add(this.getClass().getDeclaredField("predecessorId"));
+	    uniqueness.add(this.getClass().getDeclaredField("factsRelationType"));
+	} catch (NoSuchFieldException e) {
+	    // Problem of implementation that shall never be thrown
+	    // TODO: add log for developer error notification
+	}
+	return uniqueness;
     }
 
     /**

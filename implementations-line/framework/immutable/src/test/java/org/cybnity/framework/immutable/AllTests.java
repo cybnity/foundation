@@ -1,5 +1,6 @@
 package org.cybnity.framework.immutable;
 
+import org.cybnity.framework.immutable.persistence.FactEdgeUseCaseTest;
 import org.cybnity.framework.immutable.persistence.FactRecordUseCaseTest;
 import org.cybnity.framework.immutable.persistence.FactTypeUseCaseTest;
 import org.cybnity.framework.immutable.persistence.RelationRoleUseCaseTest;
@@ -18,6 +19,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({ EntityUseCaseTest.class, ChildFactUseCaseTest.class, MembershipUseCaseTest.class,
 	MutablePropertyUseCaseTest.class, VersionConcreteStrategyUseCaseTest.class, FactTypeUseCaseTest.class,
-	FactRecordUseCaseTest.class, RelationRoleUseCaseTest.class })
+	FactRecordUseCaseTest.class, RelationRoleUseCaseTest.class, FactEdgeUseCaseTest.class })
 public class AllTests {
 }
