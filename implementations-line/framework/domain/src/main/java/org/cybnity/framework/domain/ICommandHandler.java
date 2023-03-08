@@ -51,5 +51,5 @@ public interface ICommandHandler {
      *         specific versions of a same type of command). Null or empty set when
      *         any type of Command can be treated by this handler.
      */
-    public Set<Long> handledCommandTypeVersions();
+    public Set<String> handledCommandTypeVersions();
 }

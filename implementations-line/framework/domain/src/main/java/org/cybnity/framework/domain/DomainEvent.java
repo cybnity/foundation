@@ -1,16 +1,16 @@
-package org.cybnity.framework.domain.model;
+package org.cybnity.framework.domain;
 
 import java.time.OffsetDateTime;
 
-import org.cybnity.framework.domain.IVersionable;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.Evaluations;
 import org.cybnity.framework.immutable.IHistoricalFact;
+import org.cybnity.framework.immutable.IReferenceable;
+import org.cybnity.framework.immutable.IVersionable;
 import org.cybnity.framework.immutable.IdentifiableFact;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
-import org.cybnity.framework.immutable.IReferenceable;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -76,6 +76,18 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
     }
 
     /**
+     * Get a immutable copy of the original entity of this event.
+     * 
+     * @return Identity of this event, or null.
+     */
+    public Entity getIdentifiedBy() throws ImmutabilityException {
+	if (this.identifiedBy != null) {
+	    return (Entity) identifiedBy.immutable();
+	}
+	return null;
+    }
+
+    /**
      * Get the identification element regarding this event, when it's an
      * identifiable event.
      * 
@@ -84,14 +96,52 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
      */
     @Override
     public Identifier identified() throws ImmutabilityException {
-	if (this.getIdentifiedBy() != null) {
-	    try {
-		return (Identifier) this.getIdentifiedBy().identified().immutable();
-	    } catch (ImmutabilityException ce) {
-		// TODO: add runtime log to the LogRegistry if defined
-	    }
-	}
+	Entity entity = getIdentifiedBy();
+	if (entity != null)
+	    return entity.identified();
 	return null;
+    }
+
+    /**
+     * This method has the same contract as valueEquality() method in that all
+     * values that are functionally equal also produce equal hash code value. This
+     * method is called by default hashCode() method of this ValueObject instance
+     * and shall provide the list of values contributing to define the unicity of
+     * this instance (e.g also used for valueEquality() comparison).
+     * 
+     * @return The unique functional values used to idenfity uniquely this instance.
+     *         Or empty array.
+     */
+    @Override
+    public String[] valueHashCodeContributors() {
+	try {
+	    return new String[] { /** Based only on identifier value **/
+		    (String) this.identified().value() };
+	} catch (ImmutabilityException ie) {
+	    return new String[] {};
+	}
+    }
+
+    /**
+     * Redefined hash code calculation method which include the functional contents
+     * hash code values into the returned number.
+     */
+    @Override
+    public int hashCode() {
+	// Read the contribution values of functional equality regarding this instance
+	String[] functionalValues = valueHashCodeContributors();
+	int hashCodeValue = +(169065 * 179);
+	if (functionalValues != null && functionalValues.length > 0) {
+	    for (String s : functionalValues) {
+		if (s != null) {
+		    hashCodeValue = +s.hashCode();
+		}
+	    }
+	} else {
+	    // Keep standard hashcode value calculation default implementation
+	    hashCodeValue = super.hashCode();
+	}
+	return hashCodeValue;
     }
 
     /**
@@ -141,15 +191,4 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
 	}
     }
 
-    /**
-     * Get a immutable copy of the original entity of this event.
-     * 
-     * @return Identity of this event, or null.
-     */
-    public Entity getIdentifiedBy() throws ImmutabilityException {
-	if (this.identifiedBy != null) {
-	    return (Entity) identifiedBy.immutable();
-	}
-	return null;
-    }
 }

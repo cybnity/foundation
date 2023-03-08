@@ -37,7 +37,7 @@ public class NaturalKeyIdentifierGenerator {
      * process via builder.
      */
     public void build() {
-	// Execute the build process according to the step of canonicalization
+	// Execute the build process according to the steps of canonicalization
 	builder.convertAllLettersToLowerCase();
 	builder.dropPunctuationMarks();
 	builder.removeAnySpace();

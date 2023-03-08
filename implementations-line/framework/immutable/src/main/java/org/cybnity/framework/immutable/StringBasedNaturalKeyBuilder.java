@@ -1,8 +1,7 @@
-package org.cybnity.framework.domain.model;
+package org.cybnity.framework.immutable;
 
 import java.util.UUID;
 
-import org.cybnity.framework.immutable.LocationIndependentIdentityNaturalKeyBuilder;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -20,16 +19,12 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 public class StringBasedNaturalKeyBuilder extends LocationIndependentIdentityNaturalKeyBuilder {
 
     /**
-     * Natural attribute to transform as identifying information value.
-     */
-    private String naturalKey;
-
-    /**
      * Current version of natural key processed by the build rules.
      */
     private String transformationResult;
 
     private int minCharacters = 0;
+    
     /**
      * Status of transformation
      **/
@@ -54,7 +49,6 @@ public class StringBasedNaturalKeyBuilder extends LocationIndependentIdentityNat
     public StringBasedNaturalKeyBuilder(String aNaturalKey, int minLetterQty) throws IllegalArgumentException {
 	if (aNaturalKey == null || aNaturalKey.equals(""))
 	    throw new IllegalArgumentException("Natural key parameter is required!");
-	this.naturalKey = aNaturalKey;
 	this.transformationResult = aNaturalKey.toString();
 	this.minCharacters = minLetterQty;
     }

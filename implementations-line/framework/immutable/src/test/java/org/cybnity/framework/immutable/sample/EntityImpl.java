@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Sample of simple Entity.
@@ -41,4 +42,12 @@ public class EntityImpl extends Entity {
 	return new EntityImpl(ids);
     }
 
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
+    @Override
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+    }
 }

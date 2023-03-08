@@ -37,6 +37,11 @@ public class IdentifierImpl implements Identifier {
 	return this.value;
     }
 
+    @Override
+    public String[] valueHashCodeContributors() {
+	return new String[] { this.value, this.name };
+    }
+
     /**
      * Redefine the comparison of this fact with another based on the identifier.
      * 
@@ -52,7 +57,7 @@ public class IdentifierImpl implements Identifier {
 	    Identifier compared = (Identifier) obj;
 	    // Compare equality based on each instance's identifier (unique or based on
 	    // identifying informations combination)
-	    return this.value.equals(compared.value());
+	    return this.value.equals(compared.value()) && this.name.equals(compared.name());
 	}
 	return false;
     }

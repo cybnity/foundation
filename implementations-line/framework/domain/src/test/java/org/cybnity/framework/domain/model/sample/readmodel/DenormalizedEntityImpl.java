@@ -8,6 +8,7 @@ import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Sample of simple denormalized Entity implementation class relative to an
@@ -44,4 +45,12 @@ public class DenormalizedEntityImpl extends Entity {
 	return new DenormalizedEntityImpl(ids);
     }
 
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
+    @Override
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+    }
 }

@@ -64,12 +64,12 @@ public class UserAccountCreateCommandHandler implements ICommandHandler {
     }
 
     @Override
-    public Set<Long> handledCommandTypeVersions() {
-	Set<Long> set = new HashSet<Long>();
+    public Set<String> handledCommandTypeVersions() {
+	Set<String> set = new HashSet<String>();
 	try {
 	    UserAccountCreateCommand obj = (UserAccountCreateCommand) Class.forName(supportedCommand.getName())
 		    .getDeclaredConstructor().newInstance((Object[]) null);
-	    set.add(obj.versionUID());
+	    set.add(obj.versionHash());
 	} catch (Exception e) {
 	    // Log not found exception regarding the command type normally supported
 	    e.printStackTrace();

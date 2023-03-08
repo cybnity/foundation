@@ -2,10 +2,11 @@ package org.cybnity.framework.domain.model.sample.writemodel;
 
 import java.io.Serializable;
 
-import org.cybnity.framework.domain.model.DomainEvent;
+import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Example of event regarding an account change executed.
@@ -15,7 +16,12 @@ import org.cybnity.framework.immutable.ImmutabilityException;
  */
 public class UserAccountChanged extends DomainEvent {
 
-    private static final long serialVersionUID = 876288332792604981L;
+    /**
+     * Version of this class type.
+     */
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(UserAccountChanged.class).hashCode();
+
     public EntityReference creationCommandRef;
     public EntityReference createdAccountRef;
 
@@ -38,9 +44,12 @@ public class UserAccountChanged extends DomainEvent {
 	return instance;
     }
 
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
     @Override
-    public Long versionUID() {
-	return Long.valueOf(serialVersionUID);
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
-
 }

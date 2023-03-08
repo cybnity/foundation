@@ -4,8 +4,9 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.UUID;
 
+import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IdentifierStringBased;
-import org.cybnity.framework.domain.model.sample.writemodel.LogsEventStoreImpl;
+import org.cybnity.framework.domain.model.sample.writemodel.DomainEventsStoreImpl;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountChanged;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
 import org.cybnity.framework.immutable.BaseConstants;
@@ -23,11 +24,11 @@ import org.junit.Test;
  */
 public class EventStoreUseCaseTest {
 
-    private LogsEventStoreImpl persistenceOrientedStore;
+    private DomainEventsStoreImpl persistenceOrientedStore;
 
     @Before
     public void initStore() {
-	this.persistenceOrientedStore = (LogsEventStoreImpl) LogsEventStoreImpl.instance();
+	this.persistenceOrientedStore = (DomainEventsStoreImpl) DomainEventsStoreImpl.instance();
     }
 
     @After

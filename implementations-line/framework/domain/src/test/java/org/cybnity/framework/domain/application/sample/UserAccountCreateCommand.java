@@ -3,6 +3,7 @@ package org.cybnity.framework.domain.application.sample;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Example of command creating a new user account into a system.
@@ -24,9 +25,13 @@ public class UserAccountCreateCommand extends Command {
 	super(identifiedBy);
     }
 
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
     @Override
-    public Long versionUID() {
-	return Long.valueOf(serialVersionUID);
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 
 }

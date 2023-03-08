@@ -1,5 +1,6 @@
 package org.cybnity.framework.domain.model;
 
+import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.support.annotation.Requirement;

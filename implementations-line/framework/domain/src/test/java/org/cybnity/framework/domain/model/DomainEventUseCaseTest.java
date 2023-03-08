@@ -24,7 +24,7 @@ public class DomainEventUseCaseTest {
 	UserAccountChanged event = new UserAccountChanged();
 	// Verify default contents initialized
 	assertNotNull(event.occurredAt()); // When event occured
-	assertNotNull(event.versionUID()); // Which version of event type
+	assertNotNull(event.versionHash()); // Which version of event type
 	assertNull(event.identified()); // not identified event
     }
 
