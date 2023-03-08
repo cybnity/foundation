@@ -19,18 +19,20 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 public interface Identifier extends Unmodifiable, Serializable {
 
     /**
-     * A name that identify this identity instance.
+     * A name that identify this identity instance (e.g type of class implementing
+     * this identifier category).
      * 
-     * @return A name. For example equals to "sku" regarding a stock keeping unit.
+     * @return A nature of this identifier. For example, java.lang.String regarding
+     *         a value chain that represent the identity; or java.lang.Long
+     *         regarding a number. For example equals to "sku" regarding a stock
+     *         keeping unit.
      */
     public String name();
 
     /**
-     * The class type of this identity .
+     * The value regarding this identity.
      * 
-     * @return A nature of this identifier. For example, java.lang.String regarding
-     *         a value chain that represent the identity; or java.lang.Long
-     *         regarding a number.
+     * @return A identification value.
      */
     public Serializable value();
 

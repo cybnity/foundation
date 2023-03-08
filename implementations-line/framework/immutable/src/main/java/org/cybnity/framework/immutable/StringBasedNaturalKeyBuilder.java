@@ -24,6 +24,7 @@ public class StringBasedNaturalKeyBuilder extends LocationIndependentIdentityNat
     private String transformationResult;
 
     private int minCharacters = 0;
+    
     /**
      * Status of transformation
      **/

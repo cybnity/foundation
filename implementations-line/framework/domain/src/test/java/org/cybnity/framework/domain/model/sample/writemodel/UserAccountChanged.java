@@ -16,7 +16,12 @@ import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
  */
 public class UserAccountChanged extends DomainEvent {
 
-    private static final long serialVersionUID = 876288332792604981L;
+    /**
+     * Version of this class type.
+     */
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(UserAccountChanged.class).hashCode();
+
     public EntityReference creationCommandRef;
     public EntityReference createdAccountRef;
 

@@ -45,9 +45,11 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * transaction items or property versions would necessarily result in different
  * facts.
  * 
- * A transaction if processed atomically and processing begins with a query for
- * this transaction, not an item. Items will remain dorman until the subsequent
- * transaction arrives, at which time all items will take effect simultaneously.
+ * A transaction if processed atomically (according to ACID model with
+ * Atomicity, Consistency, Isolation and Durability) and processing begins with
+ * a query for this transaction, not an item. Items will remain dorman until the
+ * subsequent transaction arrives, at which time all items will take effect
+ * simultaneously.
  * 
  * All necessary information shall be in tha transitive closure of this
  * transaction. Starting at the transaction fact, follow all predecessors. From

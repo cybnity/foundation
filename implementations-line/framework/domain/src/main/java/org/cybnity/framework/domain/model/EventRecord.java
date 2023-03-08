@@ -30,11 +30,6 @@ public class EventRecord extends FactRecord {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Unique identifier of this record (equals to the original recorded event).
-     */
-    private int factId;
-
-    /**
      * Default constructor of a fact record based on a domain event.
      * 
      * @param event Mandatory event that is subject of recording.
@@ -51,18 +46,6 @@ public class EventRecord extends FactRecord {
 	if (id == null || id.value() == null) {
 	    throw new IllegalArgumentException("Only identifiable event is eligible to store. Identifier is required!");
 	}
-	this.factId = id.value().hashCode();
-    }
-
-    /**
-     * Get the unique identifier of this fact record, that is equals to the original
-     * event's identifier.
-     * 
-     * @return Original event identifier that is equals to this fact record
-     *         identifier.
-     */
-    public int factId() {
-	return factId;
     }
 
     @Override

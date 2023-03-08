@@ -91,7 +91,8 @@ public class DomainEventsStoreImpl extends EventStore {
 		while (it.hasNext()) {
 		    EventRecord historizedEvent = it.next();
 		    // Compare if equals identifier
-		    if (historizedEvent.factId() == uid.value().hashCode()) {
+		    if (historizedEvent.getFactId() != null
+			    && historizedEvent.getFactId().equals(uid.value().hashCode())) {
 			return (DomainEvent) historizedEvent.body();
 		    }
 		}

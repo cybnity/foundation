@@ -1,25 +1,41 @@
 package org.cybnity.framework.immutable.persistence;
 
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.cybnity.framework.immutable.IVersionable;
+import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.NaturalKeyIdentifierGenerator;
 import org.cybnity.framework.immutable.StringBasedNaturalKeyBuilder;
+import org.cybnity.framework.immutable.Unmodifiable;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Represent a category of fact (e.g based on fact class type). Allow to
- * identify a type of fact (e.g DomainEvent, Command) which is persisted as a
- * fact.
+ * Represent a category of fact (e.g based on class type). Allow to identify a
+ * type of fact (e.g DomainEvent, Command) which is persisted as a fact.
  * 
  * @author olivier
  *
  */
 @Requirement(reqType = RequirementCategory.Robusteness, reqId = "REQ_ROB_3")
-public class FactType {
+public class FactType implements Unmodifiable, IVersionable, Serializable, IUniqueness {
+
+    /**
+     * Version of this class type.
+     */
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(FactType.class).hashCode();
 
     /**
      * Label identifying an unique name regarding a category of fact (e.g name of
      * class regarding a concrete event like <<EventType>><<Fact State>> (e.g
      * OrderConfirmed).
+     * 
+     * Define the uniqueness of this class type instance.
      */
     private String name;
 
@@ -32,7 +48,7 @@ public class FactType {
      * Configuration about the minimum number of characters for identifier
      * generation process.
      */
-    static private int minLetterQty = 20;
+    static private int minLetterQty = 50;
 
     /**
      * Default constructor of a fact category.
@@ -79,6 +95,18 @@ public class FactType {
 	this(categoryName, null);
     }
 
+    @Override
+    public Set<Field> basedOn() {
+	Set<Field> uniqueness = new HashSet<>();
+	try {
+	    uniqueness.add(this.getClass().getDeclaredField("name"));
+	} catch (NoSuchFieldException e) {
+	    // Problem of implementation that shall never be thrown
+	    // TODO: add log for developer error notification
+	}
+	return uniqueness;
+    }
+
     /**
      * Get the name of this fact type.
      * 
@@ -95,6 +123,20 @@ public class FactType {
      */
     public String id() {
 	return this.id;
+    }
+
+    @Override
+    public Serializable immutable() throws ImmutabilityException {
+	return new FactType(this.name, this.id);
+    }
+
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
+    @Override
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 
 }
