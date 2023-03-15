@@ -21,4 +21,16 @@ public interface IdentifiableFact {
      *                               fact.
      */
     public Identifier identified() throws ImmutabilityException;
+
+    /**
+     * This method has the same contract as valueEquality() method in that all
+     * values that are functionally equal also produce equal hash code value. This
+     * method is called by default hashCode() method of this ValueObject instance
+     * and shall provide the list of values contributing to define the unicity of
+     * this instance (e.g also used for valueEquality() comparison).
+     * 
+     * @return The unique functional values used to idenfity uniquely this instance.
+     *         Or empty array.
+     */
+    public abstract String[] valueHashCodeContributors();
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -232,5 +233,14 @@ public class EntityReference implements IHistoricalFact {
     @Override
     public OffsetDateTime occurredAt() {
 	return this.changedAt;
+    }
+
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
+    @Override
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 }

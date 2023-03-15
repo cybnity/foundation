@@ -4,9 +4,10 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 import org.cybnity.framework.immutable.IGroup;
-import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.IMember;
+import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.Membership;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Example of member implementation class (e.g an assignment regarding a role
@@ -31,5 +32,14 @@ public class MemberImpl extends Membership {
     @Override
     public Serializable immutable() throws ImmutabilityException {
 	return new MemberImpl(this.member(), this.group()).createdAt = this.createdAt;
+    }
+
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
+    @Override
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 }

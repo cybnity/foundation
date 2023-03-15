@@ -7,6 +7,7 @@ import org.cybnity.framework.immutable.ChildFact;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -44,6 +45,15 @@ public class NotificationLog extends ChildFact {
 	if (!IDENTIFIER_NAME.equals(logEventId.name()))
 	    throw new IllegalArgumentException(
 		    "The identifier name of the logEventId parameter is not valid! Should be equals to NotificationLog.IDENTIFIER_NAME value");
+    }
+
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
+    @Override
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 
     @Override

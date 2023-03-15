@@ -1,6 +1,7 @@
-package org.cybnity.framework.domain.model;
+package org.cybnity.framework.immutable;
 
-import org.cybnity.framework.immutable.LocationIndependentIdentityNaturalKeyBuilder;
+import java.util.UUID;
+
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -18,42 +19,48 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 public class StringBasedNaturalKeyBuilder extends LocationIndependentIdentityNaturalKeyBuilder {
 
     /**
-     * Natural attribute to transform as identifying information value.
-     */
-    private String naturalKey;
-
-    /**
      * Current version of natural key processed by the build rules.
      */
     private String transformationResult;
 
+    private int minCharacters = 0;
+    
+    /**
+     * Status of transformation
+     **/
+    private boolean isPartialTransformationStarted = false;
+
     /**
      * Default constructor regarding a natural key value.
      * 
-     * @param aNaturalKey Mandatory text selected from domain as natural key of a
-     *                    subject. To identify the natural keys, examine the domain
-     *                    that is modeled in an application and select an attribute
-     *                    that uniquely identifies concepts in that domain. A
-     *                    defined attribute shall be immutable in real world to be
-     *                    considered as usable as a natural key within the model. A
-     *                    good natural key is the canonical name of that tag in a
-     *                    primary language (e.g English).
+     * @param aNaturalKey  Mandatory text selected from domain as natural key of a
+     *                     subject. To identify the natural keys, examine the domain
+     *                     that is modeled in an application and select an attribute
+     *                     that uniquely identifies concepts in that domain. A
+     *                     defined attribute shall be immutable in real world to be
+     *                     considered as usable as a natural key within the model. A
+     *                     good natural key is the canonical name of that tag in a
+     *                     primary language (e.g English).
+     * @param minLetterQty How many minimum characters shall be generated as
+     *                     transformation result.
      * @throws IllegalArgumentException When mandatory parameter is missing or
      *                                  empty.
      */
-    public StringBasedNaturalKeyBuilder(String aNaturalKey) throws IllegalArgumentException {
+    public StringBasedNaturalKeyBuilder(String aNaturalKey, int minLetterQty) throws IllegalArgumentException {
 	if (aNaturalKey == null || aNaturalKey.equals(""))
 	    throw new IllegalArgumentException("Natural key parameter is required!");
-	this.naturalKey = aNaturalKey;
+	this.transformationResult = aNaturalKey.toString();
+	this.minCharacters = minLetterQty;
     }
 
     /**
-     * Apply the transformation rule for uniformization of the characters of the
-     * natural key with lower casing of all the characters of the natural key.
+     * Apply the transformation rule for uniformity of the characters of the natural
+     * key with lower casing of all the characters of the natural key.
      */
     @Override
     public void convertAllLettersToLowerCase() {
-	this.transformationResult = this.naturalKey.toLowerCase();
+	this.transformationResult = this.transformationResult.toLowerCase();
+	this.isPartialTransformationStarted = true;
     }
 
     /**
@@ -76,6 +83,7 @@ public class StringBasedNaturalKeyBuilder extends LocationIndependentIdentityNat
 	    }
 	}
 	this.transformationResult = buffer.toString();
+	this.isPartialTransformationStarted = true;
     }
 
     /**
@@ -87,6 +95,23 @@ public class StringBasedNaturalKeyBuilder extends LocationIndependentIdentityNat
 	// According to Unicode standards there are various space characters having
 	// ASCII value more than 32(‘U+0020’). Ex: 8193(U+2001)
 	this.transformationResult = transformationResult.strip().trim().replaceAll("\\s", "");
+	this.isPartialTransformationStarted = true;
+    }
+
+    @Override
+    public void generateMinimumCharactersQuantity() {
+	// Verify if minimum quantity of characters is reached
+	if (this.transformationResult.length() < this.minCharacters) {
+	    StringBuffer buffer = new StringBuffer();
+	    buffer.append(this.transformationResult);
+	    while (buffer.length() < this.minCharacters) {
+		// Generate complementary random char and add to end of current transformed text
+		buffer.append(UUID.randomUUID().toString());
+	    }
+	    // Reduce final result to the minimum characters quantity required
+	    this.transformationResult = buffer.substring(0, this.minCharacters);
+	}
+	this.isPartialTransformationStarted = true;
     }
 
     /**
@@ -98,7 +123,7 @@ public class StringBasedNaturalKeyBuilder extends LocationIndependentIdentityNat
      *                   acquire the result.
      */
     public String getResult() throws Exception {
-	if (this.transformationResult == null)
+	if (!this.isPartialTransformationStarted)
 	    throw new Exception("The transformation process had not been executed!");
 	return this.transformationResult;
     }

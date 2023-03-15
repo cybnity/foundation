@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.cybnity.framework.immutable.StringBasedNaturalKeyBuilder;
 import org.junit.Test;
 
 /**
@@ -24,7 +25,7 @@ public class StringBasedNaturalKeyBuilderUseCaseTest {
     public void givenNaturalKeyWithUpperCharacters_whenTransform_thenLowerCaseApplied() throws Exception {
 	// Use a natural key including lower characters
 	StringBasedNaturalKeyBuilder builder = new StringBasedNaturalKeyBuilder(
-		"OIUYTRk jhgd'sf9èAZERTYUIOPMLKJHGFDSQWXCVBN8765à434/<:5LKKJHH");
+		"OIUYTRk jhgd'sf9èAZERTYUIOPMLKJHGFDSQWXCVBN8765à434/<:5LKKJHH", 50);
 	builder.convertAllLettersToLowerCase();
 	String result = builder.getResult();
 	// Check all upper characters were removed
@@ -50,9 +51,7 @@ public class StringBasedNaturalKeyBuilderUseCaseTest {
 	    b.append(Character.toString((char) asciiCode));
 	}
 	// Use a natural key including punctuation marks
-	StringBasedNaturalKeyBuilder builder = new StringBasedNaturalKeyBuilder(b.toString());
-	// Execute first step initializing the transformed first version
-	builder.convertAllLettersToLowerCase();
+	StringBasedNaturalKeyBuilder builder = new StringBasedNaturalKeyBuilder(b.toString(), 10);
 	builder.dropPunctuationMarks();
 	String result = builder.getResult();
 	// Check all special and punctuations characters were removed
@@ -74,11 +73,11 @@ public class StringBasedNaturalKeyBuilderUseCaseTest {
     public void givenNaturalKeyWithoutSpecialChar_whenTransform_thenOriginalMaintained() throws Exception {
 	// Set original without special character included
 	String originalKey = "klhgjdsiusdy8765434ih87654MLKJHGF";
-	StringBasedNaturalKeyBuilder builder = new StringBasedNaturalKeyBuilder(originalKey);
-	builder.convertAllLettersToLowerCase();
+	StringBasedNaturalKeyBuilder builder = new StringBasedNaturalKeyBuilder(originalKey, 50);
 	String originalLowerCase = originalKey.toLowerCase();
 	// Execute punctuation marks reduction
 	builder.dropPunctuationMarks();
+	builder.convertAllLettersToLowerCase();
 	String result = builder.getResult();
 	// Check that none lost char
 	assertEquals(originalLowerCase, result);
@@ -92,7 +91,7 @@ public class StringBasedNaturalKeyBuilderUseCaseTest {
     @Test
     public void givenNaturalKeyWithSpaceChar_whenTransform_thenRemoved() throws Exception {
 	// Define key included space and blank characters
-	StringBasedNaturalKeyBuilder builder = new StringBasedNaturalKeyBuilder(" ihygf h ' k ");
+	StringBasedNaturalKeyBuilder builder = new StringBasedNaturalKeyBuilder(" ihygf h ' k ", 10);
 	// Execute first step initializing the transformed first version
 	builder.convertAllLettersToLowerCase();
 	String result = builder.getResult();
@@ -103,6 +102,33 @@ public class StringBasedNaturalKeyBuilderUseCaseTest {
 	result = builder.getResult();
 	// Check any blank characters removed
 	assertFalse("Blank characters shall had been removed!", result.contains(" "));
+    }
+
+    /**
+     * Test the transformation rule adding randomized characters
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void givenNaturalKeyWithNotSufficientChar_whenTransform_thenAdditionalRandomChart() throws Exception {
+	// Define key with not sufficient char length
+	StringBasedNaturalKeyBuilder builder = new StringBasedNaturalKeyBuilder("aaaaa", 30);
+	// Execute rule about min characters complement
+	builder.generateMinimumCharactersQuantity();
+	String result = builder.getResult();
+	// Check minimum characters length are generated
+	assertTrue("Invalid quantity of char in transformed text!", result.length() == 30);
+    }
+
+    /**
+     * Test that transformation result read without transformed process is refused.
+     * 
+     * @throws Exception
+     */
+    @Test(expected = Exception.class)
+    public void givenNaturalKey_whenTransformNotExecuted_thenException() throws Exception {
+	StringBasedNaturalKeyBuilder builder = new StringBasedNaturalKeyBuilder("aaaaa", 30);
+	builder.getResult();
     }
 
 }

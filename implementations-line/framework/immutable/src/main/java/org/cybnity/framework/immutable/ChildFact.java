@@ -67,7 +67,7 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
 	    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3") Entity predecessor,
 	    Identifier id) throws IllegalArgumentException {
 	if (predecessor == null)
-	    throw new IllegalArgumentException("parent parameter is required!");
+	    throw new IllegalArgumentException("predecessor parameter is required!");
 	// Check conformity of optional child identifier
 	if (id != null && (id.name() == null || id.name().equals("") || id.value() == null)) {
 	    throw new IllegalArgumentException("Identifier parameter's name and value is required!");
@@ -77,7 +77,7 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
 	    // contribution)
 	    Collection<Identifier> predecessorIdentifiers = predecessor.identifiers();
 	    if (predecessor.identified() == null || predecessorIdentifiers == null || predecessorIdentifiers.isEmpty())
-		throw new IllegalArgumentException("The parent identifier(s) shall be existent!");
+		throw new IllegalArgumentException("The predecessor identifier(s) shall be existent!");
 	    // Reference immutable copy of predecessor
 	    this.parent = (Entity) predecessor.immutable();
 	} catch (ImmutabilityException cn) {
@@ -87,11 +87,11 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
 	// Get predecessor dependent identifier assignable to this child
 	Identifier parentDependentId = generateIdentifierPredecessorBased(predecessor, id);
 	if (parentDependentId == null)
-	    throw new IllegalArgumentException("Impossible identifier generation based on parent identifiers!");
+	    throw new IllegalArgumentException("Impossible identifier generation based on predecessor identifiers!");
 	// Check conformity of generated identifier
 	if (parentDependentId.name() == null || parentDependentId.name().equals("")
 		|| parentDependentId.value() == null) {
-	    throw new IllegalArgumentException("Child identifier based on parent shall include name and value!");
+	    throw new IllegalArgumentException("Child identifier based on predecessor shall include name and value!");
 	}
 	try {
 	    identifiedBy = new ArrayList<Identifier>(1);
@@ -186,6 +186,48 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
     }
 
     /**
+     * This method has the same contract as valueEquality() method in that all
+     * values that are functionally equal also produce equal hash code value. This
+     * method is called by default hashCode() method of this ValueObject instance
+     * and shall provide the list of values contributing to define the unicity of
+     * this instance (e.g also used for valueEquality() comparison).
+     * 
+     * @return The unique functional values used to idenfity uniquely this instance.
+     *         Or empty array.
+     */
+    @Override
+    public String[] valueHashCodeContributors() {
+	try {
+	    return new String[] { /** Based only on identifier value **/
+		    (String) this.identified().value() };
+	} catch (ImmutabilityException ie) {
+	    return new String[] {};
+	}
+    }
+
+    /**
+     * Redefined hash code calculation method which include the functional contents
+     * hash code values into the returned number.
+     */
+    @Override
+    public int hashCode() {
+	// Read the contribution values of functional equality regarding this instance
+	String[] functionalValues = valueHashCodeContributors();
+	int hashCodeValue = +(169065 * 179);
+	if (functionalValues != null && functionalValues.length > 0) {
+	    for (String s : functionalValues) {
+		if (s != null) {
+		    hashCodeValue = +s.hashCode();
+		}
+	    }
+	} else {
+	    // Keep standard hashcode value calculation default implementation
+	    hashCodeValue = super.hashCode();
+	}
+	return hashCodeValue;
+    }
+
+    /**
      * Redefine the comparison of this fact with another based on the identifier.
      * 
      * @param fact To compare.
@@ -258,10 +300,10 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
 
     /**
      * Predecessor fact of this child entity's identifier. The identity of a root
-     * owner tends to become part of the identities of most other entities durign
+     * owner tends to become part of the identities of most other entities during
      * their creation.
      * 
-     * @return A predecessor of the child.
+     * @return A predecessor of this child.
      * @throws ImmutabilityException When impossible cloned instance of predecessor.
      */
     @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3")

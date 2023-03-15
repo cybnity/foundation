@@ -18,7 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Unit test of Domain object (UserAccountAggregate by write model) behaviors
+ * Unit test of Domain object (UserAccountAggregate by write model) store behaviors
  * regarding its supported requirements.
  * 
  * @author olivier

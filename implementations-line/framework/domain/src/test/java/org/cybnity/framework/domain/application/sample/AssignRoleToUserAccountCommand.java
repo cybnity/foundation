@@ -3,6 +3,7 @@ package org.cybnity.framework.domain.application.sample;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.model.sample.readmodel.ApplicativeRoleDTO;
 import org.cybnity.framework.immutable.Entity;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Example of command adding a new applicative role to a user account into a
@@ -25,9 +26,13 @@ public class AssignRoleToUserAccountCommand extends Command {
 	super(identifiedBy);
     }
 
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
     @Override
-    public Long versionUID() {
-	return Long.valueOf(serialVersionUID);
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 
 }

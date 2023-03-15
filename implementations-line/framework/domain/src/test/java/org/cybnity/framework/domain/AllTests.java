@@ -4,6 +4,7 @@ import org.cybnity.framework.domain.model.DomainEventUseCaseTest;
 import org.cybnity.framework.domain.model.EventStoreUseCaseTest;
 import org.cybnity.framework.domain.model.StringBasedNaturalKeyBuilderUseCaseTest;
 import org.cybnity.framework.domain.model.UserAccountAggregateStoreUseCaseTest;
+import org.cybnity.framework.domain.model.UserAccountAggregateUseCaseTest;
 import org.cybnity.framework.domain.model.UserAccountCQRSCollaborationUseCaseTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -17,9 +18,9 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({ DomainEventUseCaseTest.class, NotificationLogUseCaseTest.class,
+@SuiteClasses({ ValueObjectUseCaseTest.class, DomainEventUseCaseTest.class, NotificationLogUseCaseTest.class,
 	UnidentifiableFactNotificationLogUseCaseTest.class, EventStoreUseCaseTest.class, ContextUseCaseTest.class,
-	UserAccountAggregateStoreUseCaseTest.class, UserAccountCQRSCollaborationUseCaseTest.class,
-	StringBasedNaturalKeyBuilderUseCaseTest.class })
+	UserAccountAggregateUseCaseTest.class, UserAccountAggregateStoreUseCaseTest.class,
+	UserAccountCQRSCollaborationUseCaseTest.class, StringBasedNaturalKeyBuilderUseCaseTest.class })
 public class AllTests {
 }

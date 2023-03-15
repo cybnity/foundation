@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.Unmodifiable;
 

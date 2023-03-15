@@ -26,7 +26,7 @@
 	<properties>
 		<!-- Standard Trusted Execution Environment (TEE) of java runtime container template -->
 		<docker.java.tee.image.name>cybnity/jre-tee</docker.java.tee.image.name>
-		<!-- NodeJS container template (Bullseye or buster based on Debian)-->
+		<!-- NodeJS container template (Bullseye or buster based on Debian) -->
 		<!-- See https://snyk.io/blog/choosing-the-best-node-js-docker-image/ for choice of containerized NodeJS versions -->
 		<docker.nodejs.image.name>node:16.17.0-bullseye</docker.nodejs.image.name>
 	</properties>

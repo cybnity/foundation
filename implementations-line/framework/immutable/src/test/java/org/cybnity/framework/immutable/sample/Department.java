@@ -6,6 +6,7 @@ import java.time.OffsetDateTime;
 import org.cybnity.framework.immutable.IGroup;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Example of logical group regarding an organization.
@@ -38,5 +39,14 @@ public class Department implements IGroup {
     @Override
     public Serializable immutable() throws ImmutabilityException {
 	return new Department(this.label, this.id).at = this.at;
+    }
+
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
+    @Override
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 }

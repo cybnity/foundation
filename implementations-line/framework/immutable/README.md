@@ -132,7 +132,7 @@ classDiagram
     }
 ```
 
-## EXAMPLE OF INSTANTIATIONS
+### Example of Instantiation
 Presentation of an example of instances representing facts history (as events graph) using a object model reusing the structural patterns.
 ```mermaid
 %%{
@@ -178,6 +178,9 @@ flowchart BT
     interruptedSession --> operatingSession
 
 ```
+
+### Persistence Package
+Include types of generic facts usable by logs store (e.g traceability implementation regarding facts occured on a write model or on a read model).
 
 # RELEASES HISTORY
 - [V0 - FRAMEWORK changes list](v0-changes.md)

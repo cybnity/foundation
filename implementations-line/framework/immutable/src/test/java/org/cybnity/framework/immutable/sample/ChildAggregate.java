@@ -8,6 +8,7 @@ import org.cybnity.framework.immutable.ChildFact;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Sample of child entity following (as aggregate) a parent other entity.
@@ -86,4 +87,12 @@ public class ChildAggregate extends ChildFact {
 	return null;
     }
 
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
+    @Override
+    public String versionHash() {
+	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+    }
 }
