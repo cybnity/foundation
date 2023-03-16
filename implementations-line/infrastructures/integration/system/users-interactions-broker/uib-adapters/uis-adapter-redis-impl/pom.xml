@@ -48,4 +48,16 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<!-- Add capability to open and redefined the accessibility to immutable map of system's environment variables for system-rules library (field java.util.Collections$UnmodifiableMap) -->
+					<argLine>--illegal-access=warn --add-opens java.base/java.util=ALL-UNNAMED</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

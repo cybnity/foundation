@@ -1,12 +1,14 @@
-package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
+package org.cybnity.infrastructure.technical.message_bus.adapter.impl;
 
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.RedisOptionFactoryDeployedSystemIntegration;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * Suite of all technical and behavior tests regarding the implementation
- * components capabilities.
+ * components capabilities requiring platform component (e.g Redis server
+ * running).
  * 
  * @author olivier
  *
