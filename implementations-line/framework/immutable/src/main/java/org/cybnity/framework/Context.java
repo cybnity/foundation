@@ -142,4 +142,12 @@ public class Context implements IContext {
 
     }
 
+    @Override
+    public String get(IReadableConfiguration config) throws IllegalArgumentException {
+	if (config == null)
+	    throw new IllegalArgumentException("The config parameter is required!");
+	// Read the current system environment variable
+	return System.getenv(config.getName());
+    }
+
 }

@@ -33,6 +33,26 @@ public interface IContext {
     public Object get(String resourceName);
 
     /**
+     * Read a configuration variable from this context. During the call of a
+     * configuration variable, the context search the configuration name from the
+     * current system environment variables (e.g valued, existent into the operating
+     * system...).
+     * 
+     * @param config Mandatory type of variable supported by this context.
+     * @return Value of the environment variable that is current available and
+     *         valued into the runtime context (e.g value found) as reusable by the
+     *         context. Null when the configuration variable to search into this
+     *         context is not available and defined (e.g missing definition into the
+     *         operating system) on the current runtime environment.
+     * @throws IllegalArgumentException When mandatory parameter is missing.
+     * @throws SecurityException        If a security manager exists and its
+     *                                  {@link SecurityManager#checkPermission
+     *                                  checkPermission} method doesn't allow access
+     *                                  to the environment variable.
+     */
+    public String get(IReadableConfiguration config) throws IllegalArgumentException, SecurityException;
+
+    /**
      * Add a resource instance into this context.
      * 
      * @param instance     Mandatory instance to record into this context.
@@ -44,8 +64,8 @@ public interface IContext {
      *                     found into this context with the same name. False else.
      * @return True when resource was stored in the context. False when storage is
      *         not possible (e.g another resource is already managed by this context
-     *         and the new resource can't replace it via this method (e.g
-     *         forceReplace parameter is defined as False).
+     *         and the new resource can't replace it via this method). For example,
+     *         forceReplace parameter is defined as False.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      */
     public boolean addResource(final Object instance, String resourceName, boolean forceReplace)

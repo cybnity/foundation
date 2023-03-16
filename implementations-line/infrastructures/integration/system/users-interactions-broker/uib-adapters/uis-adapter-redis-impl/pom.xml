@@ -6,7 +6,6 @@
 		<version>${revision}</version>
 		<relativePath>..</relativePath>
 	</parent>
-
 	<groupId>org.cybnity.infrastructure.integration.uis.adapters</groupId>
 	<artifactId>redis-impl</artifactId>
 	<packaging>jar</packaging>
@@ -32,6 +31,21 @@
 		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-redis-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.stefanbirkner</groupId>
+			<artifactId>system-rules</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
