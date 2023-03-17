@@ -1,6 +1,6 @@
 package org.cybnity.framework.domain.model;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.UUID;
 
@@ -13,13 +13,13 @@ import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStoreImpl
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
- * Unit test of Domain object (UserAccountAggregate by write model) store behaviors
- * regarding its supported requirements.
+ * Unit test of Domain object (UserAccountAggregate by write model) store
+ * behaviors regarding its supported requirements.
  * 
  * @author olivier
  *
@@ -34,25 +34,25 @@ public class UserAccountAggregateStoreUseCaseTest {
     private Entity accountOwner;
     private Identifier accountId;
 
-    @Before
+    @BeforeEach
     public void initDatastores() {
 	// Create a write model store (e.g storage system of domain event logs)
 	this.collectionOrientedStore = (UserAccountStoreImpl) UserAccountStoreImpl.instance();
     }
 
-    @Before
+    @BeforeEach
     public void initUserAccountSample() {
 	accountOwner = new DomainEntityImpl(
 		new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), UUID.randomUUID().toString()));
 	accountId = new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), UUID.randomUUID().toString());
     }
 
-    @After
+    @AfterEach
     public void cleanUserAccountSample() {
 	this.accountOwner = null;
     }
 
-    @After
+    @AfterEach
     public void cleanDatastores() {
 	this.collectionOrientedStore = null;
     }

@@ -38,14 +38,8 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.github.stefanbirkner</groupId>
-			<artifactId>system-rules</artifactId>
-			<scope>test</scope>
+			<groupId>uk.org.webcompere</groupId>
+			<artifactId>system-stubs-jupiter</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
@@ -53,10 +47,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<!-- Add capability to open and redefined the accessibility to immutable map of system's environment variables for system-rules library (field java.util.Collections$UnmodifiableMap) -->
-					<argLine>--illegal-access=warn --add-opens java.base/java.util=ALL-UNNAMED</argLine>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

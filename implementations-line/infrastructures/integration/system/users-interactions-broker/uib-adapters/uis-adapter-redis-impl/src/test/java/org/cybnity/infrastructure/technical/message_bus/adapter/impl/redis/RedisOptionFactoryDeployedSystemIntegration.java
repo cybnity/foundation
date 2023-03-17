@@ -1,19 +1,22 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.cybnity.framework.Context;
 import org.cybnity.framework.IContext;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.contrib.java.lang.system.EnvironmentVariables;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisStringCommands;
 import io.vertx.redis.client.RedisOptions;
+import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
+import uk.org.webcompere.systemstubs.jupiter.SystemStub;
+import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 /**
  * Unit test of RedisOptionsFactory behaviors regarding its supported
@@ -22,6 +25,8 @@ import io.vertx.redis.client.RedisOptions;
  * @author olivier
  *
  */
+@ExtendWith(SystemStubsExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class RedisOptionFactoryDeployedSystemIntegration {
 
     private String connectionUserAccount, connectionPassword, serverHost, serverPort, databaseNumber,
@@ -29,8 +34,8 @@ public class RedisOptionFactoryDeployedSystemIntegration {
 
     private IContext ctx;
 
-    @Rule
-    public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
+    @SystemStub
+    private EnvironmentVariables environmentVariables;
 
     public void initEnvVariables() {
 	// Define environment variables
@@ -46,7 +51,7 @@ public class RedisOptionFactoryDeployedSystemIntegration {
 	environmentVariables.set(WriteModelConfigurationVariable.REDIS_WRITEMODEL_SERVER_PORT.getName(), serverPort);
     }
 
-    @Before
+    @BeforeEach
     public void initRedisConnectionChainValues() {
 	defaultAuthPassword = "1gEGHneiLT"; // Redis Kubernetes configuration's REDISCLI_AUTH environment variable
 	serverHost = "localhost";
@@ -67,7 +72,7 @@ public class RedisOptionFactoryDeployedSystemIntegration {
 	initEnvVariables();
     }
 
-    @After
+    @AfterEach
     public void cleanValues() {
 	ctx = null;
 	connectionUserAccount = null;

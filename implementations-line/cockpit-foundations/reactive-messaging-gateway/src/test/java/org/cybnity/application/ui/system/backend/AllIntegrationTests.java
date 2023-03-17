@@ -1,6 +1,5 @@
-package org.cybnity.infrastructure.technical.message_bus.adapter.impl;
+package org.cybnity.application.ui.system.backend;
 
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.RedisOptionFactoryDeployedSystemIntegration;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 
@@ -12,7 +11,7 @@ import org.junit.platform.suite.api.Suite;
  * @author olivier
  *
  */
-@SelectClasses({ RedisOptionFactoryDeployedSystemIntegration.class })
 @Suite
+@SelectClasses({})
 public class AllIntegrationTests {
 }

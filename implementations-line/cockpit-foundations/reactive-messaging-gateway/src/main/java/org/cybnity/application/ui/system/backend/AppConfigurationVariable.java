@@ -16,7 +16,7 @@ public enum AppConfigurationVariable implements IReadableConfiguration {
     /**
      * HTTP port listened by the backend server as entry point.
      */
-    REACTIVE_BACKEND_HTTP_SERVER_PORT("REACTIVE_BACKEND_HTTP_SERVER_PORT")
+    REACTIVE_BACKEND_ENDPOINT_HTTP_SERVER_PORT("REACTIVE_BACKEND_ENDPOINT_HTTP_SERVER_PORT")
 
     ;
 

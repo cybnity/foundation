@@ -1,15 +1,15 @@
 package org.cybnity.framework.domain.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountChanged;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit test of DomainEvent behaviors regarding its supported requirements.
@@ -37,7 +37,7 @@ public class DomainEventUseCaseTest {
 	// Verify that identity is maintained
 	assertNotNull(event.identified());
 	// Check immutable copy is available and valid
-	assertEquals("Lost identity!", event.identified(), id);
+	assertEquals(event.identified(), id, "Lost identity!");
     }
 
 }

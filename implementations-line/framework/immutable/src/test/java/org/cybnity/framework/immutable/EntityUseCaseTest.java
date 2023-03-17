@@ -1,15 +1,16 @@
 package org.cybnity.framework.immutable;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collection;
 
 import org.cybnity.framework.immutable.sample.EntityImpl;
 import org.cybnity.framework.immutable.sample.IdentifierImpl;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit test of Entity behaviors regarding its immutability supported
@@ -20,30 +21,36 @@ import org.junit.Test;
  */
 public class EntityUseCaseTest {
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void givenUnknownIdentifier_whenConstructor_thenIllegalArgumentExceptionThrown() {
-	new EntityImpl((Identifier) null);
+	assertThrows(IllegalArgumentException.class, () -> {
+	    new EntityImpl((Identifier) null);
+	});
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void givenInvalidIdentifier_whenConstructor_thenIllegalArgumentExceptionThrown() {
-	IdentifierImpl id = new IdentifierImpl("uid", null);
-	new EntityImpl(id);
+	assertThrows(IllegalArgumentException.class, () -> {
+	    IdentifierImpl id = new IdentifierImpl("uid", null);
+	    new EntityImpl(id);
+	});
     }
 
     @Test
     public void givenValidIdentifyingInformation_whenConstruction_thenFactTimeHistorized() {
 	Entity e = new EntityImpl(new IdentifierImpl("uid", "alk8756"));
-	assertNotNull("Creation time shall be auto-generated", e.occurredAt());
+	assertNotNull(e.occurredAt(),"Creation time shall be auto-generated");
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void givenCreatedEntity_whenIdentifiersAccess_thenImmutableIdentifiersProvided() {
-	Entity e = new EntityImpl(new IdentifierImpl("uid", "alk8756"));
-	Collection<Identifier> identifiers = e.identifiers();
-	assertFalse("Shall contains one element!", identifiers.isEmpty());
-	// Check that collection is not modifiable
-	identifiers.add(new IdentifierImpl("uid", "98765HGFVH"));
+	assertThrows(UnsupportedOperationException.class, () -> {
+	    Entity e = new EntityImpl(new IdentifierImpl("uid", "alk8756"));
+	    Collection<Identifier> identifiers = e.identifiers();
+	    assertFalse(identifiers.isEmpty(), "Shall contains one element!");
+	    // Check that collection is not modifiable
+	    identifiers.add(new IdentifierImpl("uid", "98765HGFVH"));
+	});
     }
 
     @Test
@@ -57,8 +64,8 @@ public class EntityUseCaseTest {
 	assertEquals(new EntityImpl(i), e);
 
 	// Verify if not equals identifier is detected
-	assertNotEquals("Not equals identifier shall be detected!", new EntityImpl(new IdentifierImpl("uid", "LKJHGF")),
-		e);
+	assertNotEquals(new EntityImpl(new IdentifierImpl("uid", "LKJHGF")), e,
+		"Not equals identifier shall be detected!");
     }
 
 }

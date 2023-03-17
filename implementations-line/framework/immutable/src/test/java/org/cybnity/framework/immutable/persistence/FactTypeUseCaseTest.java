@@ -1,14 +1,15 @@
 package org.cybnity.framework.immutable.persistence;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.lang.reflect.Field;
 import java.util.Set;
 
 import org.cybnity.framework.immutable.sample.DepartmentChanged;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit test of FactType behaviors regarding its supported requirements.
@@ -21,23 +22,28 @@ public class FactTypeUseCaseTest {
     /**
      * Check that the construction of no named type is refused by constructors.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void givenUndefinedTypeName_whenConstructor_thenRejected() {
-	// Try to create an instance about null type name
-	new FactType(null);
+	assertThrows(IllegalArgumentException.class, () -> {
+	    // Try to create an instance about null type name
+	    new FactType(null);
+	});
     }
 
     /**
      * Check that the construction of no named type is refused by constructors.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void givenEmptyTypeName_whenConstructor_thenRejected() {
-	// Try to create an instance about empty type name
-	new FactType("");
+	assertThrows(IllegalArgumentException.class, () -> {
+	    // Try to create an instance about empty type name
+	    new FactType("");
+	});
     }
 
     /**
-     * Check that identifier auto-generation is applied when not declared identifier is used during the constructor use.
+     * Check that identifier auto-generation is applied when not declared identifier
+     * is used during the constructor use.
      */
     @Test
     public void givenUnidentifiedType_whenConstructor_thenIdAutoGeneration() {
@@ -60,10 +66,10 @@ public class FactTypeUseCaseTest {
 	Set<Field> uniquenessBasedOn = type.basedOn();
 	assertNotNull(uniquenessBasedOn);
 	// Verify uniqueness only based on one field
-	assertEquals("Only one field shall define the uniqueness of a FactType!", 1, uniquenessBasedOn.size());
+	assertEquals(1, uniquenessBasedOn.size(), "Only one field shall define the uniqueness of a FactType!");
 	// Check that only 'name' attribute value if the chain of uniqueness evaluation
 	Field nameField = uniquenessBasedOn.iterator().next();
-	assertEquals("Invalid constraint identified as UNIQUE field!", "name", nameField.getName());
+	assertEquals("name", nameField.getName(), "Invalid constraint identified as UNIQUE field!");
 
     }
 }

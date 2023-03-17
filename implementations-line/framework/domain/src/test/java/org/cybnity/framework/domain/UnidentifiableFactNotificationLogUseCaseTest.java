@@ -1,18 +1,18 @@
 package org.cybnity.framework.domain;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountChanged;
 import org.cybnity.framework.immutable.IHistoricalFact;
 import org.cybnity.framework.immutable.Identifier;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit test of UnidentifiableFactNotificationLog behaviors regarding its
@@ -33,14 +33,14 @@ public class UnidentifiableFactNotificationLogUseCaseTest {
      */
     private DomainEvent unidentifiableObservedFact;
 
-    @Before
+    @BeforeEach
     public void initLogOrigin() {
 	originalLogId = new IdentifierStringBased(NotificationLog.IDENTIFIER_NAME, "KJHG986754");
 	unidentifiableObservedFact = new UserAccountChanged(/** none identity */
 		null);
     }
 
-    @After
+    @AfterEach
     public void cleanLogOrigin() {
 	originalLogId = null;
 	unidentifiableObservedFact = null;
@@ -61,12 +61,13 @@ public class UnidentifiableFactNotificationLogUseCaseTest {
 	assertNotNull(identifiedBy);
 	// Verifi only one identifying information is saved regarding this log
 	assertEquals(
-		"Invalid quantity of identifying information generated for this log only based on unique technical id!",
-		1, eventLog.identifiers().size());
+
+		1, eventLog.identifiers().size(),
+		"Invalid quantity of identifying information generated for this log only based on unique technical id!");
 	// Verify immutable copy generated
 	UnidentifiableFactNotificationLog copy = (UnidentifiableFactNotificationLog) eventLog.immutable();
 	// Check equals log id copied
-	assertEquals("Invalid immutable version of log id!", originalLogId, copy.identified());
+	assertEquals(originalLogId, copy.identified(), "Invalid immutable version of log id!");
 	// Check that origin causes list of empty by default
 	assertTrue(eventLog.originFacts().isEmpty());
     }
@@ -82,8 +83,8 @@ public class UnidentifiableFactNotificationLogUseCaseTest {
 		unidentifiableObservedFact);
 	// Read origin facts
 	List<IHistoricalFact> parents = eventLog.originFacts();
-	assertFalse("Origin facts should be defined!", parents == null || parents.isEmpty());
-	assertEquals("Invalid quantity of original facts saved!", 1, parents.size());
+	assertFalse(parents == null || parents.isEmpty(), "Origin facts should be defined!");
+	assertEquals(1, parents.size(), "Invalid quantity of original facts saved!");
 	for (IHistoricalFact origin : parents) {
 	    // Check that unidentifiable fact is equals based on his time occured and nature
 	    assertEquals(unidentifiableObservedFact.getClass().getName(),

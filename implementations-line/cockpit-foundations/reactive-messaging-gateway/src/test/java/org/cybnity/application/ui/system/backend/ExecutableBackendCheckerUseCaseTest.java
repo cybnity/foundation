@@ -1,4 +1,4 @@
-package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
+package org.cybnity.application.ui.system.backend;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -21,28 +21,23 @@ import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 /**
  * Tests regarding the utility class that check the healthy and operational
- * state of an adapter runnable by a client-side.
+ * state of a backend runnable.
  * 
  * @author olivier
  *
  */
 @ExtendWith(SystemStubsExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class ExecutableAdapterCheckerUseCaseTest {
+public class ExecutableBackendCheckerUseCaseTest {
 
     @SystemStub
     private EnvironmentVariables environmentVariables;
 
-    public void initAdapterMinimumRequiredEnvVariables() {
+    public void initMinimumRequiredEnvVariables() {
 	// Define environment variables
 
-	// All environment variables required for write model access
-	for (WriteModelConfigurationVariable aReq : EnumSet.allOf(WriteModelConfigurationVariable.class)) {
-	    environmentVariables.set(aReq.getName(),
-		    /* Insert random value as variable value */ UUID.randomUUID().toString());
-	}
-	// All environment variables required for read model access
-	for (ReadModelConfigurationVariable aReq : EnumSet.allOf(ReadModelConfigurationVariable.class)) {
+	// All environment variables
+	for (AppConfigurationVariable aReq : EnumSet.allOf(AppConfigurationVariable.class)) {
 	    environmentVariables.set(aReq.getName(),
 		    /* Insert random value as variable value */ UUID.randomUUID().toString());
 	}
@@ -59,40 +54,38 @@ public class ExecutableAdapterCheckerUseCaseTest {
     public void givenNoneDefineEnvironmentVariable_whenCheckConfigurationVariables_thenMissingConfigurationException()
 	    throws Exception {
 	assertThrows(MissingConfigurationException.class, () -> {
-
 	    // None defined environment variable
 
 	    // Execute the checker process (that should not found any of minimum required
 	    // env variable because undefined in this runtime)
-	    ExecutableAdapterChecker checker = new ExecutableAdapterChecker();
+	    ExecutableBackendChecker checker = new ExecutableBackendChecker();
 	    checker.checkOperableState();
 	});
     }
 
     /**
-     * Test that an adapter checker which is executed on a client-side and that
-     * require some specific environment variables (e.g defined by the context where
-     * the adapter is executed) are found and validate the healthy and operable
-     * state.
+     * Test that a backend checker which is executed and that require some specific
+     * environment variables (e.g defined by the context) are found and validate the
+     * healthy and operable state.
      * 
      * @throws Exception
      */
     @Test
     public void givenValidSystemEnvironmentVariables_whenCheckConfigurationVariables_thenHealthyAndOperableStateConfirmed()
 	    throws Exception {
-	// Simulate existent environment variables on an client-side context where
-	// operability checker could be used by an adapter
-	initAdapterMinimumRequiredEnvVariables();
+	// Simulate existent environment variables on a context where
+	// operability checker could be used
+	initMinimumRequiredEnvVariables();
 
 	// Execute the checker process
-	ExecutableAdapterChecker checker = new ExecutableAdapterChecker();
+	ExecutableBackendChecker checker = new ExecutableBackendChecker();
 	checker.checkOperableState();
 	// Valid that healthy state is delivered because none exception thrown
 	assertTrue(checker.isOperableStateChecked());
     }
 
     /**
-     * Test that all minimum environment variables needs by an adapter are provided
+     * Test that all minimum environment variables needs by a backend are provided
      * by the checker as catalog of mandatory variables to verify.
      * 
      * @throws Exception
@@ -100,21 +93,16 @@ public class ExecutableAdapterCheckerUseCaseTest {
     @Test
     public void givenMinimumRequiredVariable_whenReadVariableToCheck_thenAllProvidedByChecker() throws Exception {
 	// Verify that all required variables have been found
-	Set<IReadableConfiguration> minimumEnvVariablesRequired = new ExecutableAdapterChecker()
+	Set<IReadableConfiguration> minimumEnvVariablesRequired = new ExecutableBackendChecker()
 		.requiredEnvironmentVariables();
 
-	// verify provided quantity of minimum environment variables supported by an
-	// adapter
+	// verify provided quantity of minimum environment variables supported by
+	// backend server
 	assertNotNull(minimumEnvVariablesRequired);
 	assertFalse(minimumEnvVariablesRequired.isEmpty());
 
 	// All environment variables required for write model access
-	for (WriteModelConfigurationVariable aReq : EnumSet.allOf(WriteModelConfigurationVariable.class)) {
-	    // Verify if treated by checker
-	    assertTrue(minimumEnvVariablesRequired.contains(aReq), "Variable not verified by the checker!");
-	}
-	// All environment variables required for read model access
-	for (ReadModelConfigurationVariable aReq : EnumSet.allOf(ReadModelConfigurationVariable.class)) {
+	for (AppConfigurationVariable aReq : EnumSet.allOf(AppConfigurationVariable.class)) {
 	    // Verify if treated by checker
 	    assertTrue(minimumEnvVariablesRequired.contains(aReq), "Variable not verified by the checker!");
 	}
