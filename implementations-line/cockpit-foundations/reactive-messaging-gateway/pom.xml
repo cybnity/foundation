@@ -10,25 +10,14 @@
 	<artifactId>reactive-messaging-gateway</artifactId>
 	<packaging>jar</packaging>
 	<name>Reactive messaging gateway (Web Backend)</name>
-
 	<properties>
 		<main.verticle>org.cybnity.application.ui.system.backend.SockJSReactiveBackendServer</main.verticle>
 		<launcher.class>io.vertx.core.Launcher</launcher.class>
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.vertx</groupId>
-			<artifactId>vertx-junit5</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>uk.org.webcompere</groupId>
-			<artifactId>system-stubs-jupiter</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.cybnity.framework</groupId>
@@ -62,8 +51,20 @@
 			<scope>compile</scope>
 			<version>${revision}</version>
 		</dependency>
+		<!-- Test utilities -->
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-junit5</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-unit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>uk.org.webcompere</groupId>
+			<artifactId>system-stubs-jupiter</artifactId>
+		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>

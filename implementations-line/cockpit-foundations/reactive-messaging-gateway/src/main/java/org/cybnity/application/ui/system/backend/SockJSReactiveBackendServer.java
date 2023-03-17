@@ -1,6 +1,7 @@
 package org.cybnity.application.ui.system.backend;
 
 import org.cybnity.application.ui.system.backend.routing.CapabilityRouter;
+import org.cybnity.framework.Context;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
 
@@ -13,10 +14,11 @@ public class SockJSReactiveBackendServer extends SockJSServer {
      * Utility class managing the verification of operable instance.
      */
     private ExecutableBackendChecker healthyChecker;
+
     /**
      * Current context of adapter runtime.
      */
-    private IContext context;
+    private final IContext context = new Context();
 
     /**
      * Default start method regarding the server.
@@ -42,8 +44,9 @@ public class SockJSReactiveBackendServer extends SockJSServer {
 	getVertx().createHttpServer()
 		// Handle every request using the router
 		.requestHandler(router)
-		// Start HTTP listening
-		.listen(8080)
+		// Start HTTP listening according to the application settings
+		.listen(Integer
+			.valueOf(context.get(AppConfigurationVariable.REACTIVE_BACKEND_ENDPOINT_HTTP_SERVER_PORT)))
 		// Print the port
 		.onSuccess(server -> {
 		    System.out.println("SockJS backend server started (port: " + server.actualPort() + ")");

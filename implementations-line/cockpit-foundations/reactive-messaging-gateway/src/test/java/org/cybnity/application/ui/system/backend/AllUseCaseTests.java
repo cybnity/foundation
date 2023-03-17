@@ -11,6 +11,6 @@ import org.junit.platform.suite.api.Suite;
  *
  */
 @Suite
-@SelectClasses({ ExecutableBackendCheckerUseCaseTest.class })
+@SelectClasses({ ExecutableBackendCheckerUseCaseTest.class, SockJSReactiveBackendServerTest.class })
 public class AllUseCaseTests {
 }
