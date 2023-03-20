@@ -10,6 +10,35 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
+# Application environment variable configuration regarding a dedicated image runtime
+env:
+  # Java application environment variables that are logically used by the applicative module
+  # via the AppConfigurationVariable enumerations
+  - name: "REACTIVE_BACKEND_ENDPOINT_HTTP_SERVER_PORT"
+    value: "8080"
+  # via the ReadModelConfigurationVariable enumerations
+  - name: "REDIS_READMODEL_SERVER_HOST"
+    value: "localhost"
+  - name: "REDIS_READMODEL_SERVER_PORT"
+    value: "6379"
+  - name: "REDIS_READMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD"
+    value: "1gEGHneiLT"
+  - name: "REDIS_READMODEL_DATABASE_NUMBER"
+    value: "2"
+  - name: "REDIS_READMODEL_CONNECTION_DEFAULT_USERACCOUNT"
+    value: "default"
+  # via the WriteModelConfigurationVariable enumerations
+  - name: "REDIS_WRITEMODEL_SERVER_HOST"
+    value: "localhost"
+  - name: "REDIS_WRITEMODEL_SERVER_PORT"
+    value: "6379"
+  - name: "REDIS_WRITEMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD"
+    value: "1gEGHneiLT"
+  - name: "REDIS_WRITEMODEL_DATABASE_NUMBER"
+    value: "1"
+  - name: "REDIS_WRITEMODEL_CONNECTION_DEFAULT_USERACCOUNT"
+    value: "default"
+
 imagePullSecrets: []
 # Overriding the Helm chart name ensures configuration files also change
 nameOverride: "reactive-backend-server"

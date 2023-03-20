@@ -1,9 +1,9 @@
 package org.cybnity.framework.domain;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.cybnity.framework.domain.model.sample.CompanyNameObject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit test of ValueObject behaviors regarding its supported requirements.
@@ -26,7 +26,7 @@ public class ValueObjectUseCaseTest {
 	// Check functionnaly equals based on the unique attribute value
 	assertEquals(companyLabel, companyLabelCopy);
 	// Check hascode unicity calculated from the same attribute value
-	assertEquals("Should be the same because from same attribute value!", companyLabel.hashCode(),
-		companyLabelCopy.hashCode());
+	assertEquals(companyLabel.hashCode(), companyLabelCopy.hashCode(),
+		"Should be the same because from same attribute value!");
     }
 }
