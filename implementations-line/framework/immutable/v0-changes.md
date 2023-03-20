@@ -17,6 +17,7 @@ Release Name: V0 - FRAMEWORK
 |149|REQ_MAIN_5|Immutable architecture structural design patterns|
 |158|REQ_SCA_4|Support of CQRS pattern and event sourcing concerns combined|
 |136|REQ_CONS_3|Support of immutable cardinality and ordered fact data (predecessors)|
+|159|REQ_SEC_8370_CM6|Basic configuration variables support; Context provider of environment variable (e.g component configuration); ExecutableComponentChecker allowing check of healthy and operable state of a started component|
 
 # KNOWN ISSUES
 None. Do not hesitate to report any problem.

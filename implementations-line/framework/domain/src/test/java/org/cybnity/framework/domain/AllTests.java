@@ -6,9 +6,8 @@ import org.cybnity.framework.domain.model.StringBasedNaturalKeyBuilderUseCaseTes
 import org.cybnity.framework.domain.model.UserAccountAggregateStoreUseCaseTest;
 import org.cybnity.framework.domain.model.UserAccountAggregateUseCaseTest;
 import org.cybnity.framework.domain.model.UserAccountCQRSCollaborationUseCaseTest;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.platform.suite.api.SelectClasses;
+import org.junit.platform.suite.api.Suite;
 
 /**
  * Suite of all technical and behavior tests regarding the domain components
@@ -17,8 +16,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author olivier
  *
  */
-@RunWith(Suite.class)
-@SuiteClasses({ ValueObjectUseCaseTest.class, DomainEventUseCaseTest.class, NotificationLogUseCaseTest.class,
+@Suite
+@SelectClasses({ ValueObjectUseCaseTest.class, DomainEventUseCaseTest.class, NotificationLogUseCaseTest.class,
 	UnidentifiableFactNotificationLogUseCaseTest.class, EventStoreUseCaseTest.class, ContextUseCaseTest.class,
 	UserAccountAggregateUseCaseTest.class, UserAccountAggregateStoreUseCaseTest.class,
 	UserAccountCQRSCollaborationUseCaseTest.class, StringBasedNaturalKeyBuilderUseCaseTest.class })

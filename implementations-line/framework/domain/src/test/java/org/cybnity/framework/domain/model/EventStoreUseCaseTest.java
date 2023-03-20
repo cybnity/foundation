@@ -1,6 +1,6 @@
 package org.cybnity.framework.domain.model;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.UUID;
 
@@ -12,9 +12,9 @@ import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityC
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit test of DomainEvent behaviors regarding its supported requirements.
@@ -26,12 +26,12 @@ public class EventStoreUseCaseTest {
 
     private DomainEventsStoreImpl persistenceOrientedStore;
 
-    @Before
+    @BeforeEach
     public void initStore() {
 	this.persistenceOrientedStore = (DomainEventsStoreImpl) DomainEventsStoreImpl.instance();
     }
 
-    @After
+    @AfterEach
     public void cleanStore() {
 	this.persistenceOrientedStore = null;
     }

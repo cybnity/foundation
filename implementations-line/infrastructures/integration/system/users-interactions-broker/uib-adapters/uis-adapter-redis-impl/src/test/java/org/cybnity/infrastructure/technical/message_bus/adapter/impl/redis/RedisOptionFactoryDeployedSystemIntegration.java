@@ -1,16 +1,22 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.cybnity.framework.Context;
 import org.cybnity.framework.IContext;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisStringCommands;
 import io.vertx.redis.client.RedisOptions;
+import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
+import uk.org.webcompere.systemstubs.jupiter.SystemStub;
+import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 /**
  * Unit test of RedisOptionsFactory behaviors regarding its supported
@@ -19,6 +25,8 @@ import io.vertx.redis.client.RedisOptions;
  * @author olivier
  *
  */
+@ExtendWith(SystemStubsExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class RedisOptionFactoryDeployedSystemIntegration {
 
     private String connectionUserAccount, connectionPassword, serverHost, serverPort, databaseNumber,
@@ -26,7 +34,24 @@ public class RedisOptionFactoryDeployedSystemIntegration {
 
     private IContext ctx;
 
-    @Before
+    @SystemStub
+    private EnvironmentVariables environmentVariables;
+
+    public void initEnvVariables() {
+	// Define environment variables
+	environmentVariables.set(
+		WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD.getName(),
+		connectionPassword);
+	environmentVariables.set(
+		WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_USERACCOUNT.getName(),
+		connectionUserAccount);
+	environmentVariables.set(WriteModelConfigurationVariable.REDIS_WRITEMODEL_DATABASE_NUMBER.getName(),
+		databaseNumber);
+	environmentVariables.set(WriteModelConfigurationVariable.REDIS_WRITEMODEL_SERVER_HOST.getName(), serverHost);
+	environmentVariables.set(WriteModelConfigurationVariable.REDIS_WRITEMODEL_SERVER_PORT.getName(), serverPort);
+    }
+
+    @BeforeEach
     public void initRedisConnectionChainValues() {
 	defaultAuthPassword = "1gEGHneiLT"; // Redis Kubernetes configuration's REDISCLI_AUTH environment variable
 	serverHost = "localhost";
@@ -34,6 +59,7 @@ public class RedisOptionFactoryDeployedSystemIntegration {
 	databaseNumber = "1";// Default first db number
 	connectionUserAccount = "default";
 	connectionPassword = defaultAuthPassword;
+
 	// Build reusable context
 	this.ctx = new Context();
 	ctx.addResource(defaultAuthPassword, "defaultAuthPassword", false);
@@ -42,18 +68,25 @@ public class RedisOptionFactoryDeployedSystemIntegration {
 	ctx.addResource(databaseNumber, "databaseNumber", false);
 	ctx.addResource(connectionUserAccount, "connectionUserAccount", false);
 	ctx.addResource(connectionPassword, "connectionPassword", false);
+	// Synchronize environment variables test values
+	initEnvVariables();
     }
 
-    @Test
-    public void givenManagedRedisClusterResources_whenCreateRedisOption_thenReadFromEnvironmentVariables()
-	    throws Exception {
-	// Define Redis connection and host variables
-	RedisOptions options = RedisOptionFactory.createUsersInteractionsSpaceOptions(connectionUserAccount,
-		connectionPassword, serverHost, serverPort, databaseNumber, connectionPassword);
+    @AfterEach
+    public void cleanValues() {
+	ctx = null;
+	connectionUserAccount = null;
+	connectionPassword = null;
+	serverHost = null;
+	serverPort = null;
+	databaseNumber = null;
+	defaultAuthPassword = null;
+    }
 
+    private void executeLettuceClientTest(RedisOptions opts) throws Exception {
 	// Test Lettuce client (see https://lettuce.io/core/release/reference/index.html
 	// for detail)
-	RedisClient client = RedisClient.create(options.getEndpoint());
+	RedisClient client = RedisClient.create(opts.getEndpoint());
 	StatefulRedisConnection<String, String> connection = client.connect();
 	RedisStringCommands<String, String> sync = connection.sync();
 
@@ -72,5 +105,36 @@ public class RedisOptionFactoryDeployedSystemIntegration {
 
 	connection.close();
 	client.shutdown();
+    }
+
+    /**
+     * Test of connection and usage of redis instance via client configured via
+     * basic values.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void givenManagedRedisClusterResources_whenCreateRedisOptionFromParameters_thenSuccessRedisUsage()
+	    throws Exception {
+	// Define Redis connection and connection values
+	RedisOptions options = RedisOptionFactory.createUsersInteractionsSpaceOptions(connectionUserAccount,
+		connectionPassword, serverHost, serverPort, databaseNumber, connectionPassword);
+	// Test connection and usage
+	executeLettuceClientTest(options);
+    }
+
+    /**
+     * Test of connection and usage of redis instance via client configured via
+     * environment variable read from a context.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void givenManagedRedisClusterResources_whenCreateRedisOptionFromEnvironmentVariables_thenSuccessRedisUsage()
+	    throws Exception {
+	// Define Redis connection and host variables
+	RedisOptions options = RedisOptionFactory.createUsersInteractionsWriteModelSpaceOptions(ctx);
+	// Test connection and usage
+	executeLettuceClientTest(options);
     }
 }

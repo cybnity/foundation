@@ -1,9 +1,8 @@
 package org.cybnity.framework.domain.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
 
@@ -25,9 +24,9 @@ import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStoreImpl
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit test of Domain object (UserAccountAggregate by write model) behaviors
@@ -52,7 +51,7 @@ public class UserAccountCQRSCollaborationUseCaseTest {
     private Entity accountOwner;
     private Identifier accountId;
 
-    @Before
+    @BeforeEach
     public void initCQRSModelsDatastores() {
 	// Create a write model store (e.g storage system of domain event logs)
 	this.writeModelStore = (UserAccountStoreImpl) UserAccountStoreImpl.instance();
@@ -68,19 +67,19 @@ public class UserAccountCQRSCollaborationUseCaseTest {
 	this.domainContext.addResource(readModelRepository, UserAccountRepository.class.getName(), true);
     }
 
-    @Before
+    @BeforeEach
     public void initUserAccountSample() {
 	accountOwner = new DomainEntityImpl(
 		new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), UUID.randomUUID().toString()));
 	accountId = new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), UUID.randomUUID().toString());
     }
 
-    @After
+    @AfterEach
     public void cleanUserAccountSample() {
 	this.accountOwner = null;
     }
 
-    @After
+    @AfterEach
     public void cleanCQRSModelsDatastores() {
 	this.readModelRepository = null;
 	this.writeModelStore = null;
@@ -147,8 +146,8 @@ public class UserAccountCQRSCollaborationUseCaseTest {
 	roleAssignmentCommand.userAccountIdentifier = (String) dtoVersion.getUserAccountEntityIdentifier().identified()
 		.value();
 	// Verify original account id is known
-	assertEquals("Problem of user account identifier value retrieved from DTO!", event.accountUID,
-		roleAssignmentCommand.userAccountIdentifier);
+	assertEquals(event.accountUID, roleAssignmentCommand.userAccountIdentifier,
+		"Problem of user account identifier value retrieved from DTO!");
 
 	// Execute a role assignment to the user account
 	processManager.handle(roleAssignmentCommand, domainContext);
@@ -165,7 +164,7 @@ public class UserAccountCQRSCollaborationUseCaseTest {
 	    }
 	}
 	// Check that role have been assigned
-	assertTrue("New role assignment have not been performed!", foundAssignedRole);
+	assertTrue(foundAssignedRole, "New role assignment have not been performed!");
     }
 
 }

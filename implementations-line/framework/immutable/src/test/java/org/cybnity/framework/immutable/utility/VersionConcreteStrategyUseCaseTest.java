@@ -1,11 +1,11 @@
 package org.cybnity.framework.immutable.utility;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.cybnity.framework.immutable.sample.ChildAggregate;
 import org.cybnity.framework.immutable.sample.Employee;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit test of VersionConcreteStrategy behaviors regarding its immutability
@@ -34,6 +34,6 @@ public class VersionConcreteStrategyUseCaseTest {
     public void giveClassType_whenMultipleVersionGenerating_thenUniqueSameVersionHash() throws Exception {
 	String versionHash = new VersionConcreteStrategy().composeCanonicalVersionHash(ChildAggregate.class);
 	String versionHash2 = new VersionConcreteStrategy().composeCanonicalVersionHash(ChildAggregate.class);
-	assertEquals("Shall not be different!", versionHash, versionHash2);
+	assertEquals(versionHash, versionHash2, "Shall not be different!");
     }
 }

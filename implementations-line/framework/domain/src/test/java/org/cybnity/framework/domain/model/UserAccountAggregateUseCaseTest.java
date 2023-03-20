@@ -1,8 +1,8 @@
 package org.cybnity.framework.domain.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Set;
 import java.util.UUID;
@@ -24,9 +24,9 @@ import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.Identifier;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit test of Domain object (UserAccountAggregate) behaviors regarding its
@@ -50,7 +50,7 @@ public class UserAccountAggregateUseCaseTest {
     private UserAccountRepository readModelRepository;
     private UserAccountManagementDomainContext domainContext;
 
-    @Before
+    @BeforeEach
     public void initContext() {
 	// Create a write model store (e.g storage system of domain event logs)
 	this.writeModelStore = (UserAccountStoreImpl) UserAccountStoreImpl.instance();
@@ -66,19 +66,19 @@ public class UserAccountAggregateUseCaseTest {
 	this.domainContext.addResource(readModelRepository, UserAccountRepository.class.getName(), true);
     }
 
-    @Before
+    @BeforeEach
     public void initUserAccountSample() {
 	accountOwner = new DomainEntityImpl(
 		new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), UUID.randomUUID().toString()));
 	accountId = new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), UUID.randomUUID().toString());
     }
 
-    @After
+    @AfterEach
     public void cleanUserAccountSample() {
 	this.accountOwner = null;
     }
 
-    @After
+    @AfterEach
     public void cleanContext() {
 	this.readModelRepository = null;
 	this.writeModelStore = null;
@@ -106,7 +106,7 @@ public class UserAccountAggregateUseCaseTest {
 	UserAccountAggregate currentAccount = writeModelStore.findFrom(event.accountUID);
 	// Check none default role assigned
 	Set<ApplicativeRole> currentRoles = currentAccount.assignedRoles();
-	assertTrue("Shall not include any default role!", currentRoles.isEmpty());
+	assertTrue(currentRoles.isEmpty(), "Shall not include any default role!");
 
 	// Simulate assignment of new role with reuse of natural key based for
 	// identifier generation
@@ -116,8 +116,8 @@ public class UserAccountAggregateUseCaseTest {
 			new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), UUID.randomUUID().toString())));
 	// Which role shall be assigned
 	roleAssignmentCommand.assignedRole = new ApplicativeRoleDTO(roleName);
-	assertEquals("Default state shall be Committed!", HistoryState.COMMITTED,
-		roleAssignmentCommand.assignedRole.status);
+	assertEquals(HistoryState.COMMITTED, roleAssignmentCommand.assignedRole.status,
+		"Default state shall be Committed!");
 	// What user account should be upgraded
 	roleAssignmentCommand.userAccountIdentifier = (String) account.identified().value();
 
@@ -126,7 +126,7 @@ public class UserAccountAggregateUseCaseTest {
 
 	// Reload the saved state of account from store
 	currentAccount = writeModelStore.findFrom(event.accountUID);
-	assertTrue("ISO role shall have been saved!", currentAccount.assignedRoles().size() == 1);
+	assertTrue(currentAccount.assignedRoles().size() == 1, "ISO role shall have been saved!");
 	// Verify that role have not predecessor version (it's the initial version)
 	for (ApplicativeRole assignedRole : currentAccount.assignedRoles()) {
 	    // Check that's the good role name
@@ -149,8 +149,8 @@ public class UserAccountAggregateUseCaseTest {
 	currentAccount.execute(roleAssignmentCommand, this.domainContext);
 	// Reload the saved state of account from store
 	currentAccount = writeModelStore.findFrom(event.accountUID);
-	assertTrue("Modified existent ISO role shall have been maintained!",
-		currentAccount.assignedRoles().size() == 1);
+	assertTrue(currentAccount.assignedRoles().size() == 1,
+		"Modified existent ISO role shall have been maintained!");
 
 	// Verify that role have one predecessor versione (it's the initial version
 	// before it's cancelled version)
@@ -158,15 +158,15 @@ public class UserAccountAggregateUseCaseTest {
 	    // Check that's the good role name that is maintained
 	    assertEquals(roleName, assignedRole.getName());
 	    // Check that current role is in the last status (cancelled)
-	    assertEquals("The current role should be in last status assigned (Cancelled)!", HistoryState.CANCELLED,
-		    assignedRole.historyStatus());
+	    assertEquals(HistoryState.CANCELLED, assignedRole.historyStatus(),
+		    "The current role should be in last status assigned (Cancelled)!");
 
 	    // Check that role have an history of several status (committed, cancelled)
 	    Set<ApplicativeRole> story = assignedRole.changesHistory();
-	    assertFalse("One previous version shall exist regarding the original status (committed)!", story.isEmpty());
+	    assertFalse(story.isEmpty(), "One previous version shall exist regarding the original status (committed)!");
 	    ApplicativeRole previousOriginalRoleVersion = story.iterator().next();
-	    assertEquals("Invalid status of the previous role originally created in Committed state!",
-		    HistoryState.COMMITTED, previousOriginalRoleVersion.historyStatus());
+	    assertEquals(HistoryState.COMMITTED, previousOriginalRoleVersion.historyStatus(),
+		    "Invalid status of the previous role originally created in Committed state!");
 
 	}
     }

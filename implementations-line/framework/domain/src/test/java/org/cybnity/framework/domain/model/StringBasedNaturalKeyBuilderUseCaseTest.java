@@ -1,11 +1,12 @@
 package org.cybnity.framework.domain.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.cybnity.framework.immutable.StringBasedNaturalKeyBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit test of StringBasedNaturalKeyBuild behaviors regarding its supported
@@ -32,7 +33,7 @@ public class StringBasedNaturalKeyBuilderUseCaseTest {
 	for (int i = 0; i < result.length(); i++) {
 	    char c = result.charAt(i);
 	    // Check ASCII value
-	    assertFalse("Invalid character existent in the transformed value!", (c >= 65 && c <= 90));
+	    assertFalse((c >= 65 && c <= 90), "Invalid character existent in the transformed value!");
 	}
     }
 
@@ -58,8 +59,8 @@ public class StringBasedNaturalKeyBuilderUseCaseTest {
 	for (int i = 0; i < result.length(); i++) {
 	    char c = result.charAt(i);
 	    // Check ASCII value
-	    assertFalse("Invalid character existent in the transformed value!",
-		    (c <= 47 || (c >= 58 && c <= 64) || (c >= 91 && c <= 96) || (c > 122)));
+	    assertFalse((c <= 47 || (c >= 58 && c <= 64) || (c >= 91 && c <= 96) || (c > 122)),
+		    "Invalid character existent in the transformed value!");
 	}
     }
 
@@ -96,12 +97,12 @@ public class StringBasedNaturalKeyBuilderUseCaseTest {
 	builder.convertAllLettersToLowerCase();
 	String result = builder.getResult();
 	// Check always existent spaces not removed by punctuation steo
-	assertTrue("Blank character shall alway exist!", result.contains(" "));
+	assertTrue(result.contains(" "), "Blank character shall alway exist!");
 	// Execute cleaning of spaces
 	builder.removeAnySpace();
 	result = builder.getResult();
 	// Check any blank characters removed
-	assertFalse("Blank characters shall had been removed!", result.contains(" "));
+	assertFalse(result.contains(" "), "Blank characters shall had been removed!");
     }
 
     /**
@@ -117,7 +118,7 @@ public class StringBasedNaturalKeyBuilderUseCaseTest {
 	builder.generateMinimumCharactersQuantity();
 	String result = builder.getResult();
 	// Check minimum characters length are generated
-	assertTrue("Invalid quantity of char in transformed text!", result.length() == 30);
+	assertTrue(result.length() == 30, "Invalid quantity of char in transformed text!");
     }
 
     /**
@@ -125,10 +126,12 @@ public class StringBasedNaturalKeyBuilderUseCaseTest {
      * 
      * @throws Exception
      */
-    @Test(expected = Exception.class)
+    @Test
     public void givenNaturalKey_whenTransformNotExecuted_thenException() throws Exception {
-	StringBasedNaturalKeyBuilder builder = new StringBasedNaturalKeyBuilder("aaaaa", 30);
-	builder.getResult();
+	assertThrows(Exception.class, () -> {
+	    StringBasedNaturalKeyBuilder builder = new StringBasedNaturalKeyBuilder("aaaaa", 30);
+	    builder.getResult();
+	});
     }
 
 }
