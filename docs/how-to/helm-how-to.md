@@ -20,7 +20,7 @@ helm pull "bitnami/xxx" --untar
 Install a defined chart into the Kubernetes cluster:
 
 ```shell
-helm install reactive-backend-server-chart ./access-control-domain-gateway/ --values ./access-control-domain-gateway/values.yaml
+helm install reactive-backend-server-chart ./reactive-messaging-gateway/ --values ./reactive-messaging-gateway/values.yaml
 ```
 
 </p>
@@ -30,7 +30,7 @@ helm install reactive-backend-server-chart ./access-control-domain-gateway/ --va
 Upgrade a release to a specified or current version of a chart or configuration into the Kubernetes cluster:
 
 ```shell
-helm upgrade reactive-backend-server-chart ./access-control-domain-gateway
+helm upgrade reactive-backend-server-chart ./reactive-messaging-gateway
 ```
 
 </p>
@@ -40,7 +40,7 @@ helm upgrade reactive-backend-server-chart ./access-control-domain-gateway
 Query the named releases of charts installed on the kubernetes instance:
 
 ```shell
-helm ls -all
+helm ls
 ```
 
 </p>
@@ -75,7 +75,7 @@ Helm is usable to package, publish, and fetch Kubernetes applications as Chart a
 Create a versioned archive file of charts to be able to distribute them:
 
 ```shell
-helm package ./access-control-domain-gateway
+helm package ./reactive-messaging-gateway
 ```
 
 An option also exist to sign the chart archive if need.

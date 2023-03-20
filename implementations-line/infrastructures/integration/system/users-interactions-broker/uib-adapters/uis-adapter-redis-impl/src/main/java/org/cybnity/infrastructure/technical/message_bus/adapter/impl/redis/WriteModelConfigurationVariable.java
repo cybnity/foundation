@@ -8,6 +8,11 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * Enumeration defining a set of variables regarding a WriteModel provided by
  * the Redis server.
  * 
+ * The configuration of each value regarding each environment variable enum, is
+ * managed into the Helm values.yaml file regarding the executable system which
+ * need to declare the environment variables as available for usage via this set
+ * of enum.
+ * 
  * @author olivier
  *
  */
