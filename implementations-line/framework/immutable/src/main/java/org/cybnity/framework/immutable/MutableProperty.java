@@ -115,27 +115,32 @@ public abstract class MutableProperty implements IHistoricalFact {
 
 			    // Check that all values of this property are existing and equals into the
 			    // compared property
+			    boolean notEqualsValueFound = false;
 			    for (Map.Entry<String, Object> entry : this.value.entrySet()) {
 				if (!compared.value.containsKey(entry.getKey())
-					|| !compared.value.containsKey(entry.getValue())) {
+					|| !compared.value.containsValue(entry.getValue())) {
 				    // Missing equals value and key is found
 				    // Stop search because not equals values into the compared instance with the
 				    // values hosted by this instance
+				    notEqualsValueFound = true;
 				    break;
 				}
 			    }
-
-			    // Check that all values of the compared instance are existing and equals into
-			    // this property
-			    for (Map.Entry<String, Object> entry : compared.value.entrySet()) {
-				if (!this.value.containsKey(entry.getKey())
-					|| !this.value.containsKey(entry.getValue())) {
-				    // Missing equals value and key is found
-				    // Stop search because not equals values into this instance with the
-				    // values hosted by the compared instance
-				    break;
+			    if (!notEqualsValueFound) {
+				// Check that all values of the compared instance are existing and equals into
+				// this property
+				for (Map.Entry<String, Object> entry : compared.value.entrySet()) {
+				    if (!this.value.containsKey(entry.getKey())
+					    || !this.value.containsValue(entry.getValue())) {
+					// Missing equals value and key is found
+					// Stop search because not equals values into this instance with the
+					// values hosted by the compared instance
+					notEqualsValueFound = true;
+					break;
+				    }
 				}
 			    }
+			    isEquals = !notEqualsValueFound;
 			}
 		    }
 		}
