@@ -14,14 +14,25 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public class IdentifierStringBased implements Identifier {
+public class IdentifierStringBased extends ValueObject<String> implements Identifier {
 
     private static final long serialVersionUID = 1L;
     private String value;
     private String name;
 
-    public IdentifierStringBased(String name, String value) {
+    /**
+     * Default constructor.
+     * 
+     * @param name  Mandatory name of the identifier (e.g uuid).
+     * @param value Mandatory value of the identifier.
+     * @throws IllegalArgumentException When any mandatory parameter is missing.
+     */
+    public IdentifierStringBased(String name, String value) throws IllegalArgumentException {
+	if (name == null || "".equals(name))
+	    throw new IllegalArgumentException("The name parameter is required!");
 	this.name = name;
+	if (value == null || "".equals(value))
+	    throw new IllegalArgumentException("The value parameter is required!");
 	this.value = value;
     }
 
@@ -85,5 +96,16 @@ public class IdentifierStringBased implements Identifier {
 	    return this.value.equals(compared.value());
 	}
 	return false;
+    }
+
+    @Override
+    protected boolean valueEquality(ValueObject<String> obj) {
+	boolean isEquals = false;
+	if (obj != null && obj instanceof IdentifierStringBased) {
+	    IdentifierStringBased compared = (IdentifierStringBased) obj;
+	    // Compare the functional name attribute and value
+	    isEquals = compared.name.equals(this.name) && compared.value.equals(this.value);
+	}
+	return isEquals;
     }
 }
