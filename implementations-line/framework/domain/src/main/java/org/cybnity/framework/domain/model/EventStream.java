@@ -9,6 +9,7 @@ import java.util.List;
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.Unmodifiable;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Represents a stream of domain events in order of occurence that guarantee the
@@ -32,7 +33,8 @@ public class EventStream implements Unmodifiable, Serializable {
     /**
      * Class specification version.
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(EventStream.class).hashCode();
 
     /**
      * Version of the event stream.

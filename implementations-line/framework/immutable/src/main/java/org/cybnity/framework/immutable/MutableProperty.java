@@ -4,6 +4,7 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -36,7 +37,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public abstract class MutableProperty implements IHistoricalFact {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(MutableProperty.class).hashCode();
 
     /**
      * The owner of this mutable property.

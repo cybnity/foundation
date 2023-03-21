@@ -1,5 +1,6 @@
 package org.cybnity.framework.immutable;
 
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -14,7 +15,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
 public class ImmutabilityException extends Exception {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(ImmutabilityException.class).hashCode();
 
     public ImmutabilityException() {
 	super();

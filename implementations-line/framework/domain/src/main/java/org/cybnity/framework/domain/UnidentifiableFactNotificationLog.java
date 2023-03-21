@@ -26,7 +26,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
 public class UnidentifiableFactNotificationLog extends Entity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(UnidentifiableFactNotificationLog.class).hashCode();
 
     /**
      * Name of this type of identifier.

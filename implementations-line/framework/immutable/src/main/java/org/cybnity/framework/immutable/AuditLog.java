@@ -2,6 +2,8 @@ package org.cybnity.framework.immutable;
 
 import java.io.Serializable;
 
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
 /**
  * Represent a record providing documentary evidence of specific events (see
  * NIST SP 800-152). A chronological record of system activities that include
@@ -12,7 +14,8 @@ import java.io.Serializable;
  */
 public class AuditLog implements Unmodifiable, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(AuditLog.class).hashCode();
 
     public AuditLog() {
     }

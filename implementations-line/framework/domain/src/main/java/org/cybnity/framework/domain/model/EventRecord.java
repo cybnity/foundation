@@ -27,7 +27,8 @@ public class EventRecord extends FactRecord {
     /**
      * Version of this class type.
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(EventRecord.class).hashCode();
 
     /**
      * Default constructor of a fact record based on a domain event.

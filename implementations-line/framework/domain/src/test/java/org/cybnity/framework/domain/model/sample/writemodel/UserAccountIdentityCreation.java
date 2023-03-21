@@ -18,7 +18,8 @@ import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
  */
 public class UserAccountIdentityCreation extends Entity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(UserAccountIdentityCreation.class).hashCode();
 
     public UserAccountIdentityCreation(Identifier id) throws IllegalArgumentException {
 	super(id);

@@ -21,13 +21,4 @@ public class CompanyNameObject extends ValueObject<String> {
 	return new String[] { this.name };
     }
 
-    @Override
-    protected boolean valueEquality(ValueObject<String> obj) {
-	boolean isEquals = false;
-	if (obj != null && obj instanceof CompanyNameObject) {
-	    isEquals = ((CompanyNameObject) obj).name.equals(this.name);
-	}
-	return isEquals;
-    }
-
 }

@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -30,7 +31,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(ChildFact.class).hashCode();
 
     /**
      * Predecessor (as Owner of this child) of this child fact.
@@ -186,11 +188,8 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
     }
 
     /**
-     * This method has the same contract as valueEquality() method in that all
-     * values that are functionally equal also produce equal hash code value. This
-     * method is called by default hashCode() method of this ValueObject instance
-     * and shall provide the list of values contributing to define the unicity of
-     * this instance (e.g also used for valueEquality() comparison).
+     * This method provide the list of values contributing to define the unicity of
+     * this instance (e.g also used for hashCode() comparison).
      * 
      * @return The unique functional values used to idenfity uniquely this instance.
      *         Or empty array.
@@ -198,8 +197,8 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
     @Override
     public String[] valueHashCodeContributors() {
 	try {
-	    return new String[] { /** Based only on identifier value **/
-		    (String) this.identified().value() };
+	    Identifier id = this.identified();
+	    return new String[] { id.value().toString(), id.name() };
 	} catch (ImmutabilityException ie) {
 	    return new String[] {};
 	}
@@ -217,7 +216,7 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
 	if (functionalValues != null && functionalValues.length > 0) {
 	    for (String s : functionalValues) {
 		if (s != null) {
-		    hashCodeValue = +s.hashCode();
+		    hashCodeValue += s.hashCode();
 		}
 	    }
 	} else {
