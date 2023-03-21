@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
+import org.cybnity.framework.immutable.Evaluations;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.MutableProperty;
@@ -170,9 +171,7 @@ public class ApplicativeRole extends MutableProperty {
 		    // Check if same status
 		    if (compared.historyStatus() == this.historyStatus()) {
 			// Check if same role versioned
-			if (compared.versionedAt().equals(this.versionedAt)) {
-			    isEquals = true;
-			}
+			isEquals = Evaluations.isEpochSecondEquals(compared.versionedAt, this.versionedAt);
 		    }
 		}
 	    } catch (Exception e) {

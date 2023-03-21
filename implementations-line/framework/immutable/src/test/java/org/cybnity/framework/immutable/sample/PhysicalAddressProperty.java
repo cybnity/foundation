@@ -68,17 +68,6 @@ public class PhysicalAddressProperty extends MutableProperty {
     }
 
     /**
-     * Who is the owner of this property
-     * 
-     * @return The owner
-     * @throws ImmutabilityException If impossible creation of immutable version of
-     *                               instance
-     */
-    public Entity owner() throws ImmutabilityException {
-	return (Entity) this.entity.immutable();
-    }
-
-    /**
      * Implement the generation of version hash regarding this class type according
      * to a concrete strategy utility service.
      */

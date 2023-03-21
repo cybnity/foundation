@@ -3,6 +3,7 @@ package org.cybnity.framework.immutable;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
@@ -92,6 +93,61 @@ public abstract class MutableProperty implements IHistoricalFact {
     protected HistoryState historyStatus = HistoryState.COMMITTED;
 
     /**
+     * Default equality of mutable property based on several compared values (class
+     * type, owner entity, current values defining this property, history status,
+     * changed date).
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (obj == this)
+	    return true;
+	boolean isEquals = false;
+	if (obj.getClass() == this.getClass()) {
+	    try {
+		MutableProperty compared = (MutableProperty) obj;
+		// Check if same property owner
+		if (compared.owner().equals(this.owner())) {
+		    // Check if same status value
+		    if (compared.historyStatus() == this.historyStatus()) {
+			// Check the values equality
+			if (compared.value != null && this.value != null) {
+			    // Comparable values are existing
+
+			    // Check that all values of this property are existing and equals into the
+			    // compared property
+			    for (Map.Entry<String, Object> entry : this.value.entrySet()) {
+				if (!compared.value.containsKey(entry.getKey())
+					|| !compared.value.containsKey(entry.getValue())) {
+				    // Missing equals value and key is found
+				    // Stop search because not equals values into the compared instance with the
+				    // values hosted by this instance
+				    break;
+				}
+			    }
+
+			    // Check that all values of the compared instance are existing and equals into
+			    // this property
+			    for (Map.Entry<String, Object> entry : compared.value.entrySet()) {
+				if (!this.value.containsKey(entry.getKey())
+					|| !this.value.containsKey(entry.getValue())) {
+				    // Missing equals value and key is found
+				    // Stop search because not equals values into this instance with the
+				    // values hosted by the compared instance
+				    break;
+				}
+			    }
+			}
+		    }
+		}
+	    } catch (Exception e) {
+		// any missing information generating null pointer exception or problem of
+		// information read
+	    }
+	}
+	return isEquals;
+    }
+
+    /**
      * Default constructor with automatic initialization of an empty value set
      * (prior chain).
      * 
@@ -172,6 +228,17 @@ public abstract class MutableProperty implements IHistoricalFact {
     }
 
     /**
+     * Who is the owner of this property
+     * 
+     * @return The owner
+     * @throws ImmutabilityException If impossible creation of immutable version of
+     *                               instance
+     */
+    public Entity owner() throws ImmutabilityException {
+	return (Entity) this.entity.immutable();
+    }
+
+    /**
      * This property version state (e.g in a situation of concurrent change of
      * predecessor values requiring merging of new status to fix the new value of
      * this one) regarding its anterior versions.
@@ -192,15 +259,16 @@ public abstract class MutableProperty implements IHistoricalFact {
      * 
      * @param state Status of this version as current version property in front of
      *              potential other parallel/concurrent versions regarding a same
-     *              priors.
+     *              priors. If null, ignored.
      */
     public void setHistoryStatus(HistoryState state) {
-	this.historyStatus = state;
+	if (state != null)
+	    this.historyStatus = state;
     }
 
     /**
-     * Add the history of this property including this current instance, into a new
-     * version of property to complet (e.g as a new version of this one).
+     * Add the history of this current instance, into a version of property to
+     * enhance (e.g as a new version of this one).
      * 
      * @param versionToEnhance Mandatory version to update. Ignored when null.
      * @param versionState     Optional history status to set on the the
