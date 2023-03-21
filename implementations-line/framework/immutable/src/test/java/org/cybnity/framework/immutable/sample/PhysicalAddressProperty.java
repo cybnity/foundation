@@ -3,8 +3,6 @@ package org.cybnity.framework.immutable.sample;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.HistoryState;
@@ -67,21 +65,6 @@ public class PhysicalAddressProperty extends MutableProperty {
      */
     public HashMap<String, Object> currentValue() {
 	return this.value;
-    }
-
-    /**
-     * Get the history chain of previous versions of this property including
-     * previous changed values states.
-     * 
-     * @return A changes history. Empty list by default.
-     */
-    public Set<PhysicalAddressProperty> changesHistory() {
-	// Read previous changes history (not including the current version)
-	HashSet<PhysicalAddressProperty> history = new HashSet<>();
-	for (MutableProperty previousChangedProperty : this.prior) {
-	    history.add((PhysicalAddressProperty) previousChangedProperty);
-	}
-	return history;
     }
 
     /**

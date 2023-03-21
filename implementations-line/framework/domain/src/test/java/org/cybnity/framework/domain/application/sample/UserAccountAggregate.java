@@ -175,16 +175,13 @@ public class UserAccountAggregate extends Entity implements IAggregate {
 		}
 	    }
 	    if (existingRoleToUpdate != null) {
-		// Archive the previous role version regarding existing history when exist
-		Set<ApplicativeRole> changedPredecessors = existingRoleToUpdate.changesHistory();
-		// Add last version of current role into history
-		changedPredecessors.add(existingRoleToUpdate);
 		// Create a new version of role as current version (which perhaps content
 		// updated permissions etc...)
 		ApplicativeRole newCurrentRoleVersion = new ApplicativeRole(this.user, roleName);
-		newCurrentRoleVersion.setHistoryStatus(state);
-		// Set the old history (including the previous last version of role)
-		newCurrentRoleVersion.updateChangesHistory(changedPredecessors);
+		// Calculate and enhance the new version with the previous version history of
+		// changes, that set the old history (including the previous last version of
+		// role)
+		existingRoleToUpdate.enhanceHistoryOf(newCurrentRoleVersion, state);
 		// Replace the new current role version in the roles attribute
 		this.assignedRoles.remove(existingRoleToUpdate);
 		this.assignedRoles.add(newCurrentRoleVersion);

@@ -3,8 +3,6 @@ package org.cybnity.framework.domain.model.sample;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
@@ -101,39 +99,6 @@ public class ApplicativeRole extends MutableProperty {
 	HashMap<String, Object> val = new HashMap<>();
 	val.put(key.name(), value);
 	return val;
-    }
-
-    /**
-     * Get the history chain of previous versions of this property including
-     * previous changed values states.
-     * 
-     * @return A changes history. Empty list by default.
-     */
-    public Set<ApplicativeRole> changesHistory() {
-	// Read previous changes history (not including the current version)
-	LinkedHashSet<ApplicativeRole> history = new LinkedHashSet<>();
-	for (MutableProperty previousChangedProperty : this.prior) {
-	    history.add((ApplicativeRole) previousChangedProperty);
-	}
-	return history;
-    }
-
-    /**
-     * Update the history of this role.
-     * 
-     * @param roles To set as new version of this role history. Ignore if null or
-     *              empty.
-     */
-    public void updateChangesHistory(Set<ApplicativeRole> roles) {
-	if (roles != null && !roles.isEmpty()) {
-	    // Update the story at end of previous versions
-	    LinkedHashSet<MutableProperty> history = new LinkedHashSet<>();
-	    for (ApplicativeRole aRole : roles) {
-		history.add(aRole);
-	    }
-	    // Replace current history
-	    this.prior = history;
-	}
     }
 
     /**

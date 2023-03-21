@@ -3,6 +3,7 @@ package org.cybnity.framework.immutable;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
@@ -195,6 +196,68 @@ public abstract class MutableProperty implements IHistoricalFact {
      */
     public void setHistoryStatus(HistoryState state) {
 	this.historyStatus = state;
+    }
+
+    /**
+     * Add the history of this property including this current instance, into a new
+     * version of property to complet (e.g as a new version of this one).
+     * 
+     * @param versionToEnhance Mandatory version to update. Ignored when null.
+     * @param versionState     Optional history status to set on the the
+     *                         versionToEnhance property.
+     * @return The versionToEnhance instance including the added history.
+     * @throws IllegalArgumentException When the property parameter to enhance is
+     *                                  not the same class type than this property.
+     */
+    public MutableProperty enhanceHistoryOf(MutableProperty versionToEnhance, HistoryState versionState)
+	    throws IllegalArgumentException {
+	if (versionToEnhance != null) {
+	    if (this.getClass() != versionToEnhance.getClass())
+		throw new IllegalArgumentException("Invalid type of version to enhance!");
+	    // Archive the previous versions regarding existing history when exist
+	    Set<MutableProperty> changedPredecessors = this.changesHistory();
+	    // Add current version into history
+	    changedPredecessors.add(this);
+	    if (versionState != null)
+		// Set the state to the current new version of this property
+		versionToEnhance.setHistoryStatus(versionState);
+	    // Set the old history (including the previous last version of this property)
+	    versionToEnhance.updateChangesHistory(changedPredecessors);
+	}
+	return versionToEnhance;
+    }
+
+    /**
+     * Get the history chain of previous versions of this property including
+     * previous changed values versions.
+     * 
+     * @return A changes history. Empty list by default.
+     */
+    public Set<MutableProperty> changesHistory() {
+	// Read previous changes history (not including the current version)
+	LinkedHashSet<MutableProperty> history = new LinkedHashSet<>();
+	for (MutableProperty previousChangedProperty : this.prior) {
+	    history.add(previousChangedProperty);
+	}
+	return history;
+    }
+
+    /**
+     * Update the history old versions of this property.
+     * 
+     * @param versions To set as new version of this property versions history.
+     *                 Ignore if null or empty.
+     */
+    public void updateChangesHistory(Set<MutableProperty> versions) {
+	if (versions != null && !versions.isEmpty()) {
+	    // Update the story at end of previous versions
+	    LinkedHashSet<MutableProperty> history = new LinkedHashSet<>();
+	    for (MutableProperty aVersion : versions) {
+		history.add(aVersion);
+	    }
+	    // Replace current history
+	    this.prior = history;
+	}
     }
 
     /**
