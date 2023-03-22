@@ -88,6 +88,7 @@ flowchart BT
 
 ```
 
+
 # DESIGN VIEW
 Several structural patterns are supporting the domain (e.g event sourcing) and are reusable (e.g by inheritance) for coding of application domains elements.
 
