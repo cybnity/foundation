@@ -10,6 +10,7 @@ Release Name: V0 - FRAMEWORK
 ## ADDS
 |Issue|Origin/Cause|Description|
 |:--|:--|:--|
+|58|REQ_SEC_3|Tenant support for users of same organization|
 |145|REQ_ROB_3|Application-agnostic fact reading for storage|
 |157|REQ_MAIN_10|Separate architecture concerns (specification vs implementation) over multiple libray projects|
 |61|REQ_MAIN_1|Deployable module per application (bounded context)|
