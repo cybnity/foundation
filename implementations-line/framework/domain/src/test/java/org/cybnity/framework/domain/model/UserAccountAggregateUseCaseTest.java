@@ -16,7 +16,6 @@ import org.cybnity.framework.domain.model.sample.ApplicativeRole;
 import org.cybnity.framework.domain.model.sample.readmodel.ApplicativeRoleDTO;
 import org.cybnity.framework.domain.model.sample.readmodel.DenormalizedEntityImpl;
 import org.cybnity.framework.domain.model.sample.readmodel.UserAccountRepository;
-import org.cybnity.framework.domain.model.sample.writemodel.DomainEntityImpl;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStore;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStoreImpl;

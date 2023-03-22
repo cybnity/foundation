@@ -64,13 +64,7 @@ public class NotificationLog extends ChildFact {
 
     @Override
     public Identifier identified() {
-	StringBuffer combinedId = new StringBuffer();
-	for (Identifier id : this.identifiers()) {
-	    combinedId.append(id.value());
-	}
-	// Return combined identifier normally only based on unique value found in
-	// identifiers list
-	return new IdentifierStringBased(IDENTIFIER_NAME, combinedId.toString());
+	return IdentifierStringBased.build(this.identifiers());
     }
 
     /**

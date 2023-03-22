@@ -202,4 +202,5 @@ public abstract class Entity implements IHistoricalFact, IdentifiableFact, IRefe
 	    throw new ImmutabilityException(e);
 	}
     }
+
 }
