@@ -2,6 +2,7 @@ package org.cybnity.framework.immutable;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -31,6 +32,7 @@ public class MutablePropertyUseCaseTest {
     private Identifier id;
     private String organizationName;
     private HashMap<String, Object> address;
+    private String city = "Los Angeles", state = "California", street = "-- Confidential :) --";
 
     @BeforeEach
     public void initOrganizationSample() throws Exception {
@@ -39,9 +41,9 @@ public class MutablePropertyUseCaseTest {
 	org = new Organization(id, organizationName);
 
 	address = new HashMap<>();
-	address.put(PhysicalAddressProperty.PropertyAttributeKey.City.name(), "Los Angeles");
-	address.put(PhysicalAddressProperty.PropertyAttributeKey.State.name(), "California");
-	address.put(PhysicalAddressProperty.PropertyAttributeKey.Street.name(), "-- Confidential :) --");
+	address.put(PhysicalAddressProperty.PropertyAttributeKey.City.name(), city);
+	address.put(PhysicalAddressProperty.PropertyAttributeKey.State.name(), state);
+	address.put(PhysicalAddressProperty.PropertyAttributeKey.Street.name(), street);
     }
 
     @AfterEach
@@ -164,4 +166,33 @@ public class MutablePropertyUseCaseTest {
 	}
     }
 
+    /**
+     * Verify the rules of equality applied on a mutable property.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void givenSameOwnerHistoryValueProperties_whenEqualsEvaluation_thenTrue() throws Exception {
+	// Create two instances including same types of contents
+	PhysicalAddressProperty address1 = new PhysicalAddressProperty(org, address,
+		/* default status applied by constructor */ null);
+	PhysicalAddressProperty address2 = new PhysicalAddressProperty(org, address,
+		/* default status applied by constructor */ null);
+	// Check that all equals contents are evaluated as identical
+	assertEquals(address1, address2, "Same contents shall had been detected!");
+	assertEquals(address2, address1, "Same contents shall had been detected!");
+
+	// Change one value of one of the property to compare (simulating a difference
+	// of property definition)
+	HashMap<String, Object> address3 = new HashMap<>();
+	address3.put(PhysicalAddressProperty.PropertyAttributeKey.City.name(), city + "other");
+	address3.put(PhysicalAddressProperty.PropertyAttributeKey.State.name(), state);
+	address3.put(PhysicalAddressProperty.PropertyAttributeKey.Street.name(), street);
+
+	// Check that difference is detected during equality evaluation regarding the
+	// values of the 2 internal values
+	assertNotEquals(address1, address3, "Difference in values shall had been detected!");
+	assertNotEquals(address3, address1, "Difference in values shall had been detected!");
+
+    }
 }

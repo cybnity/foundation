@@ -93,66 +93,6 @@ public abstract class MutableProperty implements IHistoricalFact {
     protected HistoryState historyStatus = HistoryState.COMMITTED;
 
     /**
-     * Default equality of mutable property based on several compared values (class
-     * type, owner entity, current values defining this property, history status,
-     * changed date).
-     */
-    @Override
-    public boolean equals(Object obj) {
-	if (obj == this)
-	    return true;
-	boolean isEquals = false;
-	if (obj.getClass() == this.getClass()) {
-	    try {
-		MutableProperty compared = (MutableProperty) obj;
-		// Check if same property owner
-		if (compared.owner().equals(this.owner())) {
-		    // Check if same status value
-		    if (compared.historyStatus() == this.historyStatus()) {
-			// Check the values equality
-			if (compared.value != null && this.value != null) {
-			    // Comparable values are existing
-
-			    // Check that all values of this property are existing and equals into the
-			    // compared property
-			    boolean notEqualsValueFound = false;
-			    for (Map.Entry<String, Object> entry : this.value.entrySet()) {
-				if (!compared.value.containsKey(entry.getKey())
-					|| !compared.value.containsValue(entry.getValue())) {
-				    // Missing equals value and key is found
-				    // Stop search because not equals values into the compared instance with the
-				    // values hosted by this instance
-				    notEqualsValueFound = true;
-				    break;
-				}
-			    }
-			    if (!notEqualsValueFound) {
-				// Check that all values of the compared instance are existing and equals into
-				// this property
-				for (Map.Entry<String, Object> entry : compared.value.entrySet()) {
-				    if (!this.value.containsKey(entry.getKey())
-					    || !this.value.containsValue(entry.getValue())) {
-					// Missing equals value and key is found
-					// Stop search because not equals values into this instance with the
-					// values hosted by the compared instance
-					notEqualsValueFound = true;
-					break;
-				    }
-				}
-			    }
-			    isEquals = !notEqualsValueFound;
-			}
-		    }
-		}
-	    } catch (Exception e) {
-		// any missing information generating null pointer exception or problem of
-		// information read
-	    }
-	}
-	return isEquals;
-    }
-
-    /**
      * Default constructor with automatic initialization of an empty value set
      * (prior chain).
      * 
@@ -230,6 +170,66 @@ public abstract class MutableProperty implements IHistoricalFact {
 		}
 	    }
 	}
+    }
+
+    /**
+     * Default equality of mutable property based on several compared values (class
+     * type, owner entity, current values defining this property, history status,
+     * changed date).
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (obj == this)
+	    return true;
+	boolean isEquals = false;
+	if (obj.getClass() == this.getClass()) {
+	    try {
+		MutableProperty compared = (MutableProperty) obj;
+		// Check if same property owner
+		if (compared.owner().equals(this.owner())) {
+		    // Check if same status value
+		    if (compared.historyStatus() == this.historyStatus()) {
+			// Check the values equality
+			if (compared.value != null && this.value != null) {
+			    // Comparable values are existing
+
+			    // Check that all values of this property are existing and equals into the
+			    // compared property
+			    boolean notEqualsValueFound = false;
+			    for (Map.Entry<String, Object> entry : this.value.entrySet()) {
+				if (!compared.value.containsKey(entry.getKey())
+					|| !compared.value.containsValue(entry.getValue())) {
+				    // Missing equals value and key is found
+				    // Stop search because not equals values into the compared instance with the
+				    // values hosted by this instance
+				    notEqualsValueFound = true;
+				    break;
+				}
+			    }
+			    if (!notEqualsValueFound) {
+				// Check that all values of the compared instance are existing and equals into
+				// this property
+				for (Map.Entry<String, Object> entry : compared.value.entrySet()) {
+				    if (!this.value.containsKey(entry.getKey())
+					    || !this.value.containsValue(entry.getValue())) {
+					// Missing equals value and key is found
+					// Stop search because not equals values into this instance with the
+					// values hosted by the compared instance
+					notEqualsValueFound = true;
+					break;
+				    }
+				}
+			    }
+			    isEquals = !notEqualsValueFound;
+			}
+		    }
+		}
+	    } catch (Exception e) {
+		// any missing information generating null pointer exception or problem of
+		// information read
+	    }
+	}
+	return isEquals;
     }
 
     /**
