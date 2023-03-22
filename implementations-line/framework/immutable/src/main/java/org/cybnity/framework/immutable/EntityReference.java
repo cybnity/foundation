@@ -244,4 +244,20 @@ public class EntityReference implements IHistoricalFact {
     public String versionHash() {
 	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
+
+    /**
+     * Redefine equality as based on this owner attribute equals() method that is
+     * original source entity of this reference.
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (obj == this)
+	    return true;
+	if (obj != null && obj.getClass().equals(getClass())) {
+	    EntityReference compared = (EntityReference) obj;
+	    return this.entity.equals(compared.entity);
+	}
+	return false;
+    }
+
 }

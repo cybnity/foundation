@@ -237,7 +237,7 @@ public abstract class MutableProperty implements IHistoricalFact {
      * 
      * @return The owner
      * @throws ImmutabilityException If impossible creation of immutable version of
-     *                               instance
+     *                               instance.
      */
     public Entity owner() throws ImmutabilityException {
 	return (Entity) this.entity.immutable();

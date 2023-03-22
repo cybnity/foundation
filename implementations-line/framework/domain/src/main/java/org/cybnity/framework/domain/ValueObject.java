@@ -10,6 +10,13 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * description changes, that can be compared with others using Value equality or
  * hashcode value.
  * 
+ * A Value Object doesn't have any identity, it is entirely identified by its
+ * value and is immutable.
+ * 
+ * A value object is a simple object whose equality isn't based on identity.
+ * Wraps one or more values or value objects that provides evidence of the
+ * correctness of these values.
+ * 
  * @author olivier
  *
  */
