@@ -34,6 +34,11 @@ public class SessionContext extends Context implements ISessionContext {
 	    this.addResource(tenant, ResourceName.TENANT.name(), true);
     }
 
+    /**
+     * Get optional tenant instance regarding the current context.
+     * 
+     * @return A tenant or null.
+     */
     @Override
     public Tenant tenant() {
 	return (Tenant) get(ResourceName.TENANT.name());
