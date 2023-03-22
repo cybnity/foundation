@@ -142,29 +142,12 @@ Several structural patterns are supporting the domain (e.g event sourcing) and a
   }
 }%%
 classDiagram
-    IdentifiableFact <|.. Command
-    IVersionable <|.. Command
-    IReferenceable <|.. Command
     ICommandHandler <|.. ProcessManager
     ProcessManager <|-- CommandHandlingService
     IContext <|-- IBoundedContext
     ChildFact <|-- NotificationLog
     Entity <|-- UnidentifiableFactNotificationLog
-    class IVersionable {
-        <<interface>>
-        +versionUID() Long
-    }
-    class IReferenceable {
-        <<interface>>
-    }
-    class IdentifiableFact {
-        <<interface>>
-    }
-    class Command {
-        <<abstract>>
-        -identifiedBy : Entity
-        -occuredOn : Temporal
-    }
+
     class CommandHandlingService {
         <<abstract>>
         -recipientOfCommands : IAggregate
@@ -220,6 +203,46 @@ classDiagram
         #valueEquality(ValueObject~T~ obj)*
     }
 
+```
+
+
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+    IdentifiableFact <|.. Command
+    IVersionable <|.. Command
+    IReferenceable <|.. Command
+    class IVersionable {
+        <<interface>>
+        +versionUID() Long
+    }
+    class IReferenceable {
+        <<interface>>
+    }
+    class IdentifiableFact {
+        <<interface>>
+    }
+    class Command {
+        <<abstract>>
+        -identifiedBy : Entity
+        -occuredOn : Temporal
+    }
 ```
 
 ### Sub-Packages
