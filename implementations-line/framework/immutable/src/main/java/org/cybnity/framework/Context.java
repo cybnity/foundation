@@ -108,7 +108,6 @@ public class Context implements IContext {
      * Represent a container of resource description (e.g additional metadata
      * allowed on the usage stats or attributes helping to categorization or search
      * of instance).
-     * 
      */
     protected class ResourceItem {
 

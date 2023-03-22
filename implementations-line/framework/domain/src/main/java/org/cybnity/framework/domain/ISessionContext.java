@@ -1,5 +1,7 @@
-package org.cybnity.framework;
+package org.cybnity.framework.domain;
 
+import org.cybnity.framework.IContext;
+import org.cybnity.framework.domain.model.Tenant;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -19,4 +21,10 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
 public interface ISessionContext extends IContext {
 
+    /**
+     * Get the tenant relative to this session.
+     * 
+     * @return A tenant or null.
+     */
+    public Tenant tenant();
 }
