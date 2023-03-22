@@ -66,12 +66,13 @@ public abstract class SocialEntity extends ChildFact {
     }
 
     /**
-     * Not implemented
+     * Define the generation rule of identifier based on original child identifiers
+     * name or BaseConstants.IDENTIFIER_ID.name().
      */
     @Override
     protected Identifier generateIdentifierPredecessorBased(Entity predecessor, Collection<Identifier> childOriginalIds)
 	    throws IllegalArgumentException {
-	throw new IllegalArgumentException("Not implemented!");
+	return Predecessors.generateIdentifierPredecessorBased(predecessor, childOriginalIds);
     }
 
     @Override

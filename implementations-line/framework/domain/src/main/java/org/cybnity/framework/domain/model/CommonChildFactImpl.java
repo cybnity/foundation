@@ -55,8 +55,8 @@ public class CommonChildFactImpl extends ChildFact {
     }
 
     /**
-     * Sample of implementation generally implemented by a dedicated combination
-     * rule coded by the application layer
+     * Define the generation rule of identifier based on original child id name or
+     * BaseConstants.IDENTIFIER_ID.name().
      */
     @Override
     protected Identifier generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId)
@@ -65,12 +65,13 @@ public class CommonChildFactImpl extends ChildFact {
     }
 
     /**
-     * Not implemented
+     * Define the generation rule of identifier based on original child identifiers
+     * name or BaseConstants.IDENTIFIER_ID.name().
      */
     @Override
     protected Identifier generateIdentifierPredecessorBased(Entity predecessor, Collection<Identifier> childOriginalIds)
 	    throws IllegalArgumentException {
-	return null;
+	return Predecessors.generateIdentifierPredecessorBased(predecessor, childOriginalIds);
     }
 
 }

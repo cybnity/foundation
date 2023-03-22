@@ -1,5 +1,7 @@
 package org.cybnity.framework.domain.model;
 
+import java.util.Collection;
+
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
@@ -15,7 +17,8 @@ import org.cybnity.framework.immutable.Identifier;
 public class Predecessors {
 
     /**
-     * Generate a combinated identifier based on a prior entities.
+     * Generate a combinated identifier based on an original entity identifier (if
+     * known) and predecessors identifiers.
      * 
      * @param predecessor     Mandatory base predecessor.
      * @param childOriginalId Optional identifier of a child that identifier need to
@@ -35,10 +38,16 @@ public class Predecessors {
 	    value.append("_");// add logical separator (e.g as convention of multiples identifiers
 			      // combination)
 	}
-	// Use predecessor identifying information(s)
-	for (Identifier parentId : predecessor.identifiers()) {
-	    value.append(parentId.value().toString());
-	}
+	// Use predecessor's identifying information(s) and add them to global original
+	// identifier
+	value.append(IdentifierStringBased.build(predecessor.identifiers()).value().toString());
+
+	/*
+	 * for (Identifier parentId : predecessor.identifiers()) {
+	 * value.append(parentId.value().toString()); }
+	 */
+
+	// Define name of identity key
 	String childIdName = null;
 	if (childOriginalId != null)
 	    childIdName = childOriginalId.name(); // Same name of identifier for the child as its parent
@@ -50,5 +59,21 @@ public class Predecessors {
 	// Create new identifier from origin concatened with parent identifying
 	// information
 	return new IdentifierStringBased(childIdName, value.toString());
+    }
+
+    /**
+     * Generate a combinated identifier based on a prior entities.
+     * 
+     * @param predecessor     Mandatory base predecessor.
+     * @param childOriginalId Optional identifier of a child that identifier need to
+     *                        be included into the generated combinated identifier.
+     * @return A combinated identifier based on the predecessors identifiers and
+     *         optional the child original identifier.
+     * @throws IllegalArgumentException When mandatory parameter is missing.
+     */
+    public static Identifier generateIdentifierPredecessorBased(Entity predecessor, Collection<Identifier> childOriginalIds)
+	    throws IllegalArgumentException {
+	return Predecessors.generateIdentifierPredecessorBased(predecessor,
+		IdentifierStringBased.build(predecessor.identifiers()));
     }
 }

@@ -109,7 +109,7 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
      * Default constructor.
      * 
      * @param predecessor Mandatory parent of this child entity.
-     * @param identifiers Set of optional base identifiers of this entity, that
+     * @param identifiers Optional set of base identifiers of this entity, that
      *                    contains non-duplicable elements.
      * @throws IllegalArgumentException When identifiers parameter is null or each
      *                                  item does not include name and value.
@@ -132,11 +132,12 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
 	}
 	Collection<Identifier> origins = null;
 	if (identifiers != null && !identifiers.isEmpty()) {
+	    // Control quality of identification contributors
 	    origins = new LinkedHashSet<Identifier>(identifiers.size());
-	    // Get immutable version of identifiers
+	    // Get immutable version of this child's identifiers
 	    try {
 		for (Identifier id : identifiers) {
-		    // Check conformity of identifier
+		    // Check conformity of each identifier
 		    if (id.name() == null || id.name().equals("") || id.value() == null) {
 			throw new IllegalArgumentException(
 				"Any child base identifier parameter's name and value is required!");
