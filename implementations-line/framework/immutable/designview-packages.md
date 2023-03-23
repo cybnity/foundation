@@ -34,9 +34,19 @@ classDiagram
     Ummodifiable <|.. FactEdge
     IVersionable <|.. FactEdge
     IUniqueness <|.. FactEdge
+    IHistoricalFact <|.. FactRecord
+    IUniqueness <|.. FactRecord
     Serializable <|.. FactEdge
     VersionConcreteStrategy <.. FactEdge : use
     RelationRole "1" --* FactEdge : factsRelationType
+    TypeVersion <-- FactRecord : factTypeVersion
+
+    class IHistoricalFact {
+        <<interface>>
+    }
+    class IUniqueness {
+        <<interface>>
+    }
     class RelationRole {
     }
     class FactEdge {
@@ -49,6 +59,23 @@ classDiagram
         +successorId() String
         +immutable() Serializable
         +versionHash() String
+    }
+    class FactRecord {
+        -body : Serializable
+        -factOccurredAt : OffsetDateTime
+        -recordedAt : OffsetDateTime
+        -bodyHash : int
+        -factId : Integer
+        +FactRecord(IHistoricalFact originFact)
+        +basedOn() Set~Field~
+        +getFactId() Integer
+        +bodyHash() int
+        +body() Serializable
+        +factTypeVersion() TypeVersion
+        +recordedAt() OffsetDateTime
+        +immutable() Serializable
+        +versionHash() String
+        +occurredAt() OffsetDateTime
     }
 
 ```
