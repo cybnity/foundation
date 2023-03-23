@@ -350,6 +350,7 @@ classDiagram
 ```
 
 ## PERSISTENCE SUB-PACKAGE
+Include types of generic facts usable by logs store (e.g traceability implementation regarding facts occured on a write model or on a read model).
 
 ```mermaid
 %%{

@@ -17,7 +17,7 @@ For more detail, the technical description regarding behavior and best usage is 
 |UnoperationalStateException| |
 
 ## STRUCTURE MODELS
-Presentation of the design view of the `org.cybnity.framework.framework` main project's artifacts package.
+Presentation of the design view of the `org.cybnity.framework` main project's artifacts package.
 
 ### Sub-Packages
 See complementary presentation of [detailed structure models implemented into the sub-packages](designview-packages.md).
