@@ -231,7 +231,7 @@ classDiagram
 classDiagram
     IHistoricalFact <|-- IMember
     IHistoricalFact <|-- IGroup
-    IMember "1" --o Membership : member
+    Membership o-- "1" IMember : member
     IGroup "1" --o Membership : group
 
     class IGroup {
