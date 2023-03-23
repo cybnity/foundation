@@ -76,8 +76,6 @@ classDiagram
   }
 }%%
 classDiagram
-    ChildFact <|-- CommonChildFactImpl
-    ChildFact <|-- SocialEntity
     Entity <|-- DomainEntityImpl
     FactRecord <|-- EventRecord
     MutableProperty <|-- ActivityState
@@ -94,9 +92,6 @@ classDiagram
         +identified() Identifier
         +immutable() Serializable
         +versionHash() String
-    }
-    class ChildFact {
-        <<abstract>>
     }
     class EventRecord {
         +immutable() Serializable
@@ -129,7 +124,15 @@ classDiagram
 classDiagram
     Context <|-- SessionContext
     ISessionContext <|.. SessionContext
+    ChildFact <|-- CommonChildFactImpl
+    ChildFact <|-- SocialEntity
+    ChildFact <|-- Tenant
 
+    class ChildFact {
+        <<abstract>>
+    }
+    class Tenant {
+    }
     class Predecessors {
         +generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId)$ Identifier
         +generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds)$ Identifier
