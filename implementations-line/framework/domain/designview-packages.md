@@ -33,7 +33,16 @@ classDiagram
     IdentifiableFact <|-- IAggregate
     MutableProperty <|-- ActivityState
     ChildFact <|-- CommonChildFactImpl
+    Entity <|-- DomainEntityImpl
 
+    class Entity {
+        <<abstract>>
+    }
+    class DomainEntityImpl {
+        +identified() Identifier
+        +immutable() Serializable
+        +versionHash() String
+    }
     class DomainEvent {
         <<abstract>>
         -occuredOn : OffsetDateTime
@@ -57,6 +66,29 @@ classDiagram
     class ChildFact {
         <<abstract>>
     }
+
+```
+
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+
 
 ```
 
