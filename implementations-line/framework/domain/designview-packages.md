@@ -121,7 +121,6 @@ classDiagram
 classDiagram
     ICommandHandler <|.. ProcessManager
     Identifier <|.. IdentifierStringBased
-    ValueObject~String~ <|-- IdentifierStringBased
 
     class ICommandHandler {
         <<interface>>
@@ -140,19 +139,6 @@ classDiagram
         #managedHandlers()$ HashMap
         #initializeHandlers()
         #delegation() HashMap
-    }
-    class Identifier {
-        <<interface>>
-    }
-    class IdentifierStringBased {
-        -value : String
-        -name : String
-        +build(Collection~Identifier~ basedOn)$ Identifier
-        +IdentifierStringBased(String name, String value)
-        +immutable() Serializable
-        +name() String
-        +value() Serializable
-        +valueHashCodeContributors() String[]
     }
     class ISubscribable {
         <<interface>>
@@ -188,6 +174,7 @@ classDiagram
 }%%
 classDiagram
     Entity <|-- UnidentifiableFactNotificationLog
+    ValueObject~String~ <|-- IdentifierStringBased
 
     class UnidentifiableFactNotificationLog {
         -originalFacts : List~IHistoricalFact~
@@ -205,6 +192,25 @@ classDiagram
         -notificationHandler : IValidationNotificationHandler
         +Validator(IValidationNotificationHandler notified)
         +validate()$
+    }
+    class Identifier {
+        <<interface>>
+    }
+    class IdentifierStringBased {
+        -value : String
+        -name : String
+        +build(Collection~Identifier~ basedOn)$ Identifier
+        +IdentifierStringBased(String name, String value)
+        +immutable() Serializable
+        +name() String
+        +value() Serializable
+        +valueHashCodeContributors() String[]
+    }
+    class ValueObject~T~ {
+        <<abstract>>
+        valueHashCodeContributors()$ String[]
+        +equals(Object obj) boolean
+        +hashCode() int
     }
 
 ```
