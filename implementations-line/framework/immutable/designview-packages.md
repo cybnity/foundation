@@ -18,6 +18,7 @@ The technical description regarding behavior and best usage is maintained into t
 |FactRecord| |
 |FactType| |
 |HistoryState| |
+|IDeletionFact| |
 |IFactRepository| |
 |IFactStore| |
 |IUniqueness| |
@@ -64,7 +65,12 @@ classDiagram
     EntityReference "0..n" --o EntityReference : prior
     Entity "1" --o EntityReference : entity
     Entity "0..1" <-- EntityReference : referenceRelation
+    IHistoricalFact <|-- IDeletionFact
 
+    class IDeletionFact {
+        <<interface>>
+        +deleted() Entity
+    }
     class Entity {
         #identifiedBy : ArrayList~Identifier~
         #createdAt : OffsetDateTime
