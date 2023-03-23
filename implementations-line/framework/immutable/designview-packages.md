@@ -146,6 +146,9 @@ classDiagram
     class IVersionable {
         <<interface>>
     }
+    class Serializable {
+        <<interface>>
+    }
     class IReferenceable {
         <<interface>>
     }
