@@ -19,6 +19,8 @@ The technical description regarding behavior and best usage is maintained into t
 |FactType| |
 |HistoryState| |
 |IDeletionFact| |
+|IdentifiableFact| |
+|Identifier| |
 |IFactRepository| |
 |IFactStore| |
 |IUniqueness| |
@@ -60,13 +62,16 @@ classDiagram
     IHistoricalFact <|.. EntityReference
     IHistoricalFact <|.. ChildFact
     IHistoricalFact <|.. Entity
-    Unmodifiable <|.. AuditLog
-    Serializable <|.. AuditLog
     EntityReference "0..n" --o EntityReference : prior
     Entity "1" --o EntityReference : entity
     Entity "0..1" <-- EntityReference : referenceRelation
     IHistoricalFact <|-- IDeletionFact
 
+    class IdentifiableFact {
+        <<interface>>
+        +identified() Identifier
+        valueHashCodeContributors() String[]
+    }
     class IDeletionFact {
         <<interface>>
         +deleted() Entity
@@ -82,10 +87,6 @@ classDiagram
         +valueHashCodeContributors() String[]
         +hashCode() int
         +reference() EntityReference
-    }
-    class AuditLog {
-        +AuditoLog()
-        +immutable() Serializable
     }
     class ChildFact {
         <<abstract>>
@@ -139,7 +140,20 @@ classDiagram
   }
 }%%
 classDiagram
-
+    Unmodifiable <|.. AuditLog
+    Serializable <|.. AuditLog
+    Unmodifiable <|-- Identifier
+    Serializable <|-- Identifier
+    class Identifier {
+        <<interface>>
+        +name() String
+        +value() Serializable
+        +valueHashCodeContributors() String[]
+    }
+    class AuditLog {
+        +AuditoLog()
+        +immutable() Serializable
+    }
     class Evaluations {
         +isIdentifiedEquals(IdentifiableFact fact, IdentifiableFact otherFact)$ boolean
         +isEpochSecondEquals(OffsetDateTime aDate, OffsetDateTime another)$ boolean
