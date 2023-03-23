@@ -4,9 +4,6 @@ Presentation of the structural components regarding architecture implementing do
 # DESIGN VIEW
 Several structural patterns are supporting the domain (e.g event sourcing) and are reusable (e.g by inheritance) for coding of application domains elements.
 
-### Sub-Packages
-See the presentation of [detailed structure models implemented into the sub-packages](designview-packages.md).
-
 ### Key Components
 
 |Class Type|Motivation|
@@ -39,7 +36,11 @@ See the presentation of [detailed structure models implemented into the sub-pack
 |Validator|Implementation class of Specification pattern or Strategy pattern that detect invalid state of subject and informs observers|
 |ValueObject|Describes a thing in a domain that can be maintained as immutable and integral unit|
 
-# STRUCTURE MODELS
+## STRUCTURE MODELS
+Presentation of the design view of the `org.cybnity.framework.domain` main project's artifacts package.
+### Sub-Packages
+See complementary presentation of [detailed structure models implemented into the sub-packages](designview-packages.md).
+
 
 ```mermaid
 %%{
@@ -60,114 +61,83 @@ See the presentation of [detailed structure models implemented into the sub-pack
   }
 }%%
 classDiagram
+    IHistoricalFact <|.. DomainEvent
+    IVersionable <|.. DomainEvent
+    IReferenceable <|.. DomainEvent
+    IdentifiableFact <|.. DomainEvent
     IdentifiableFact <|.. Command
     IVersionable <|.. Command
+    Serializable <|.. Command
     IReferenceable <|.. Command
+    Evaluations <.. Command : use
+    IContext <|-- ISessionContext
+    IContext <|-- IBoundedContext
 
-    class IVersionable {
-        <<interface>>
-        +versionUID() Long
+    class DomainEvent {
+        <<abstract>>
+        -occuredOn : OffsetDateTime
+        -identifiedBy : Entity
+        +DomainEvent()
+        +DomainEvent(Entity uid)
+        +getIdentifiedBy() Entity
+        +identified() Identifier
+        +valueHashCodeContributors() String[]
+        +hashCode() int
+        +equals(Object event) boolean
+        +occuredAt() OffsetDateTime
+        +reference() EntityReference
     }
-    class IReferenceable {
+    class IHistoricalFact {
         <<interface>>
     }
     class IdentifiableFact {
         <<interface>>
     }
-    class Command {
-        <<abstract>>
-        -identifiedBy : Entity
-        -occuredOn : Temporal
-    }
-
-```
-
-```mermaid
-%%{
-  init: {
-    'theme': 'base',
-    'themeVariables': {
-        'background': '#ffffff',
-        'fontFamily': 'arial',
-        'fontSize': '18px',
-        'primaryColor': '#fff',
-        'primaryBorderColor': '#0e2a43',
-        'secondaryBorderColor': '#0e2a43',
-        'tertiaryBorderColor': '#0e2a43',
-        'edgeLabelBackground':'#0e2a43',
-        'lineColor': '#0e2a43',
-        'tertiaryColor': '#fff'
-    }
-  }
-}%%
-classDiagram
-    IContext <|-- IBoundedContext
-    ChildFact <|-- NotificationLog
-    Entity <|-- UnidentifiableFactNotificationLog
-
-    class IBoundedContext {
+    class IVersionable {
         <<interface>>
     }
     class IContext {
         <<interface>>
-        +addResource(Object instance, String resourceName, boolean forceReplace) boolean
-        +remove(String resourceName) boolean
-        +get(String resourceName) Object
-        +get(Class~?~) Object
     }
-    class UnidentifiableFactNotificationLog {
-        -originFacts : List~IHistoricalFact~
-    }
-
-```
-
-```mermaid
-%%{
-  init: {
-    'theme': 'base',
-    'themeVariables': {
-        'background': '#ffffff',
-        'fontFamily': 'arial',
-        'fontSize': '18px',
-        'primaryColor': '#fff',
-        'primaryBorderColor': '#0e2a43',
-        'secondaryBorderColor': '#0e2a43',
-        'tertiaryBorderColor': '#0e2a43',
-        'edgeLabelBackground':'#0e2a43',
-        'lineColor': '#0e2a43',
-        'tertiaryColor': '#fff'
-    }
-  }
-}%%
-classDiagram
-    class ISubscribable {
+    class IBoundedContext {
         <<interface>>
-        +subscribe(DomainEventSubscriber~T~ subcriber)
-        +remove(DomainEventSubscriber~T~ subscriber)
     }
-    class IValidationNotificationHandler {
+    class Serializable {
         <<interface>>
-        +handleError(String message)
     }
-    class Validator {
+    class IReferenceable {
+        <<interface>>
+    }
+    class ISessionContext {
+        <<interface>>
+        +tenant() Tenant
+    }
+    class Command {
         <<abstract>>
-        -notificationHandler : IValidationNotificationHandler
-        +validate()*
+        #identifiedBy : Entity
+        #occuredOn : OffsetDateTime
+        +identified() Identifier
+        +valueHashCodeContributors() String[]
+        +hashCode() int
+        +equals(Object event) boolean
+        +occuredOn() OffsetDateTime
+        +reference() EntityReference
+    }
+    class IReadModel {
+        <<interface>>
     }
     class IWriteModel {
         <<interface>>
         +handle(Command command)
     }
-    class IReadModel {
+    class IQueryResponse {
         <<interface>>
     }
-    class ValueObject {
-        <<abstract>>
-        #valueEquality(ValueObject~T~ obj)*
+    class IService {
+        <<interface>>
     }
 
 ```
-
 ```mermaid
 %%{
   init: {
@@ -188,23 +158,97 @@ classDiagram
 }%%
 classDiagram
     ICommandHandler <|.. ProcessManager
-    ProcessManager <|-- CommandHandlingService
+    Identifier <|.. IdentifierStringBased
 
-    class CommandHandlingService {
-        <<abstract>>
-        -recipientOfCommands : IAggregate
-        -notifiablePublishers : Set~DomainEventPublisher~
-    }
     class ICommandHandler {
         <<interface>>
         +handle(Command command, IContext ctx)
-        +handleCommandTypeVersions() Set~Long~
+        +handledCommandTypeVersions() Set~String~
+    }
+    class DataTransferObject {
+        <<abstract>>
+        +equals(Object obj) boolean
     }
     class ProcessManager {
         <<abstract>>
-        -mediated : HashMap
+        -mediated : HasMap
         #context : IContext
-        #managedHandlers() HashMap
+        +ProcessManager(IContext ctx)
+        #managedHandlers()$ HashMap
+        #initializeHandlers()
+        #delegation() HashMap
+    }
+    class ISubscribable {
+        <<interface>>
+        +subscribe(DomainEventSubscriber~T~ aSubscriber) ~T~
+        +remove(DomainEventSubscriber~T~ aSubscriber) ~T~
+    }
+    class IValidationNotificationHandler {
+        <<interface>>
+        +handleError(String message)
+    }
+    class IViewModelGenerator {
+        <<interface>>
+    }
+
+```
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+    Entity <|-- UnidentifiableFactNotificationLog
+    ValueObject~T~ <|-- IdentifierStringBased
+
+    class UnidentifiableFactNotificationLog {
+        -originalFacts : List~IHistoricalFact~
+        +UnidentifiableFactNotificationLog(Identifier logEventId, IHistoricalFact... loggedFacts)
+        +originalFacts() List~IHistoricalFact~
+        +immutable() Serializable
+        +versionHash() String
+        +identified() Identifier
+    }
+    class Entity {
+        <<abstract>>
+    }
+    class Validator {
+        <<abstract>>
+        -notificationHandler : IValidationNotificationHandler
+        +Validator(IValidationNotificationHandler notified)
+        +validate()$
+    }
+    class Identifier {
+        <<interface>>
+    }
+    class IdentifierStringBased {
+        -value : String
+        -name : String
+        +IdentifierStringBased(String name, String value)
+        +build(Collection~Identifier~ basedOn)$ Identifier
+        +immutable() Serializable
+        +name() String
+        +value() Serializable
+        +valueHashCodeContributors() String[]
+    }
+    class ValueObject~T~ {
+        <<abstract>>
+        valueHashCodeContributors()$ String[]
+        +equals(Object obj) boolean
+        +hashCode() int
     }
 
 ```
