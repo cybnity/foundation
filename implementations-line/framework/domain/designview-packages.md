@@ -40,6 +40,13 @@ classDiagram
         -identifiedBy : Entity
         +DomainEvent()
         +DomainEvent(Entity uid)
+        +getIdentifiedBy() Entity
+        +identified() Identifier
+        +valueHashCodeContributors() String[]
+        +hashCode() int
+        +equals(Object event) boolean
+        +occuredAt() OffsetDateTime
+        +reference() EntityReference
     }
     class IHistoricalFact {
         <<interface>>

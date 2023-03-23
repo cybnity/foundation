@@ -57,7 +57,7 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
     /**
      * Unique identifying information of this event.
      */
-    protected Entity identifiedBy;
+    private Entity identifiedBy;
 
     /**
      * Default constructor of unidentifiable event.
