@@ -121,7 +121,7 @@ classDiagram
         <<abstract>>
         -mediated : HashMap
         #context : IContext
-        #managedHandlers() HashMap~String, ICommandHandler~
+        #managedHandlers() HashMap
     }
     class IBoundedContext {
         <<interface>>
@@ -164,34 +164,6 @@ classDiagram
 
 ```
 
-```mermaid
-%%{
-  init: {
-    'theme': 'base',
-    'themeVariables': {
-        'background': '#ffffff',
-        'fontFamily': 'arial',
-        'fontSize': '18px',
-        'primaryColor': '#fff',
-        'primaryBorderColor': '#0e2a43',
-        'secondaryBorderColor': '#0e2a43',
-        'tertiaryBorderColor': '#0e2a43',
-        'edgeLabelBackground':'#0e2a43',
-        'lineColor': '#0e2a43',
-        'tertiaryColor': '#fff'
-    }
-  }
-}%%
-classDiagram
-    class ProcessManager {
-        <<abstract>>
-
-
-
-    }
-
-
-```
 
 #
 [Back To Home](README.md)
