@@ -112,11 +112,13 @@ classDiagram
         -recipientOfCommands : IAggregate
         -notifiablePublishers : Set~DomainEventPublisher~
     }
+    class ICommandHandler {
+        <<interface>>
+        +handle(Command command, IContext ctx)
+        +handleCommandTypeVersions() Set~Long~
+    }
     class ProcessManager {
         <<abstract>>
-        -mediated : HashMap~String, ICommandHandler~
-        #context : IContext
-        #managedHandlers() HashMap~String, ICommandHandler~
     }
     class IBoundedContext {
         <<interface>>
@@ -178,16 +180,13 @@ classDiagram
   }
 }%%
 classDiagram
-    ICommandHandler <|.. ProcessManager
-    ProcessManager <|-- CommandHandlingService
-
-
-
-    class ICommandHandler {
-        <<interface>>
-        +handle(Command command, IContext ctx)
-        +handleCommandTypeVersions() Set~Long~
+    class ProcessManager {
+        <<abstract>>
+        -mediated : HashMap~String, ICommandHandler~
+        #context : IContext
+        #managedHandlers() HashMap~String, ICommandHandler~
     }
+
 
 ```
 
