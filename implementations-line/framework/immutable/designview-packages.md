@@ -9,6 +9,7 @@ The technical description regarding behavior and best usage is maintained into t
 |AuditLog| |
 |BaseConstants| |
 |ChildFact| |
+|Entity| |
 |ExecutableComponentChecker| |
 |FactEdge| |
 |FactsProvider| |
@@ -51,9 +52,24 @@ Main project's package regarding the immutability capabilities, this package inc
 classDiagram
     IHistoricalFact <|.. ChildFact
     IdentifiableFact <|.. ChildFact
+    IHistoricalFact <|.. Entity
+    IdentifiableFact <|.. Entity
+    IReferenceable <|.. Entity
     Unmodifiable <|.. AuditLog
     Serializable <|.. AuditLog
 
+    class Entity {
+        #identifiedBy : ArrayList~Identifier~
+        #createdAt : OffsetDateTime
+        +Entity(Identifier id)
+        +Entity(LinkedHashSet~Identifier~ identifiers)
+        +identifiers() Collection~Identifier~
+        +occurredAt() OffsetDateTime
+        +equals(Object fact) boolean
+        +valueHashCodeContributors() String[]
+        +hashCode() int
+        +reference() EntityReference
+    }
     class AuditLog {
         +AuditoLog()
         +immutable() Serializable
