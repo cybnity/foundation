@@ -57,7 +57,6 @@ See the presentation of [detailed structure models implemented into the sub-pack
     }
   }
 }%%
-
 classDiagram
     ICommandHandler <|.. ProcessManager
     ProcessManager <|-- CommandHandlingService
@@ -136,4 +135,5 @@ classDiagram
         -identifiedBy : Entity
         -occuredOn : Temporal
     }
+
 ```
