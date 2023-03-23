@@ -82,7 +82,6 @@ classDiagram
 
 ```
 
-
 ```mermaid
 %%{
   init: {
@@ -102,28 +101,10 @@ classDiagram
   }
 }%%
 classDiagram
-    ICommandHandler <|.. ProcessManager
-    ProcessManager <|-- CommandHandlingService
     IContext <|-- IBoundedContext
     ChildFact <|-- NotificationLog
     Entity <|-- UnidentifiableFactNotificationLog
 
-    class CommandHandlingService {
-        <<abstract>>
-        -recipientOfCommands : IAggregate
-        -notifiablePublishers : Set~DomainEventPublisher~
-    }
-    class ProcessManager {
-        <<abstract>>
-        -mediated : HashMap~String, ICommandHandler~
-        #context : IContext
-        #managedHandlers() HashMap~String, ICommandHandler~
-    }
-    class ICommandHandler {
-        <<interface>>
-        +handle(Command command, IContext ctx)
-        +handleCommandTypeVersions() Set~Long~
-    }
     class IBoundedContext {
         <<interface>>
     }
@@ -164,5 +145,47 @@ classDiagram
     }
 
 ```
+
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+    ICommandHandler <|.. ProcessManager
+    ProcessManager <|-- CommandHandlingService
+
+    class CommandHandlingService {
+        <<abstract>>
+        -recipientOfCommands : IAggregate
+        -notifiablePublishers : Set~DomainEventPublisher~
+    }
+    class ProcessManager {
+        <<abstract>>
+        -mediated : HashMap~String, ICommandHandler~
+        #context : IContext
+        #managedHandlers() HashMap~String, ICommandHandler~
+    }
+    class ICommandHandler {
+        <<interface>>
+        +handle(Command command, IContext ctx)
+        +handleCommandTypeVersions() Set~Long~
+    }
+
+```
+
 #
 [Back To Home](README.md)
