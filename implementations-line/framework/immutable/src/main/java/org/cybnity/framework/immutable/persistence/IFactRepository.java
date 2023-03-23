@@ -24,7 +24,7 @@ public interface IFactRepository<T> {
      * 
      * @return A technical identifier.
      */
-    public T nexIdentity();
+    public T nextIdentity();
 
     /**
      * Find a historical fact identified.
@@ -46,9 +46,9 @@ public interface IFactRepository<T> {
     /**
      * Delete a collection of facts from this repository.
      * 
-     * @param aFactCollection Facts list to remove.
+     * @param aFactsCollection Facts list to remove.
      */
-    public void removeAll(Collection<T> aFactCollection);
+    public void removeAll(Collection<T> aFactsCollection);
 
     /**
      * Save an instance of fact into this repository.
@@ -63,7 +63,7 @@ public interface IFactRepository<T> {
     /**
      * Save a collection of facts into this repository.
      * 
-     * @param aFactCollection Facts to save.
+     * @param aFactsCollection Facts to save.
      */
-    public void saveAll(Collection<T> aFactCollection);
+    public void saveAll(Collection<T> aFactsCollection);
 }

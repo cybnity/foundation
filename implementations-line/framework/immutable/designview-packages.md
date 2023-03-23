@@ -6,6 +6,13 @@ The technical description regarding behavior and best usage is maintained into t
 
 |Class Type|Motivation|
 | :-- | :-- |
+|FactEdge| |
+|FactRecord| |
+|FactType| |
+|IFactRepository| |
+|IFactStore| |
+|IUniqueness| |
+|QualitativeDataBuilder|Builder pattern implementation of data quality ensuring the application of quality rules on object to intantiate|
 
 # STRUCTURE MODELS
 Several packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
@@ -61,6 +68,7 @@ classDiagram
     }
     class IUniqueness {
         <<interface>>
+        +basedOne() Set~Field~
     }
     class RelationRole {
     }
@@ -94,7 +102,51 @@ classDiagram
     }
 
 ```
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+    class IFactRepository~T~ {
+        <<interface>>
+        +nextIdentity() T
+        +factOfId(Identifier aFactId) T
+        +remove(T fact) boolean
+        +removeAll(Collection~T~ aFactsCollection)
+        +save(T aFact) T
+        +saveAll(Collection~T~ aFactsCollection)
+    }
+    class IFactStore~T~ {
+        <<interface>>
+        +append(T fact)
+        +findEventFrom(Identifier uid) T
+    }
+    class QualitativeDataBuilder {
+        <<abstract>>
+        +makedCompleteness()$
+        +makeConsistency()$
+        +makeConformity()$
+        +makeAccuracy()$
+        +makeIntegrity()$
+        +makeTimeliness()$
+        +getResult()$ Object
+    }
 
+```
 
 
 ## REGISTRY
