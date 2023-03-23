@@ -121,6 +121,7 @@ classDiagram
         <<abstract>>
         -mediated : HashMap
         #context : IContext
+        #managedHandlers() HashMap~String, ICommandHandler~
     }
     class IBoundedContext {
         <<interface>>
@@ -186,7 +187,7 @@ classDiagram
         <<abstract>>
 
 
-        #managedHandlers() HashMap~String, ICommandHandler~
+
     }
 
 
