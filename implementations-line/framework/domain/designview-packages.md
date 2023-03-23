@@ -149,10 +149,13 @@ classDiagram
   }
 }%%
 classDiagram
-    IFactStore <|-- IDomainStore
-    IFactRepository <|-- IDomainRepository
+    IFactStore~T~ <|-- IDomainStore~T~
+    IFactRepository~T~ <|-- IDomainRepository~T~
 
     class IFactStore~T~ {
+        <<interface>>
+    }
+    class IFactRepository~T~ {
         <<interface>>
     }
     class IDomainRepository~T~ {
