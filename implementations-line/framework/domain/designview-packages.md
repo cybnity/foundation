@@ -95,7 +95,10 @@ classDiagram
   }
 }%%
 classDiagram
-
+    class DataTransferObject {
+        <<abstract>>
+        +equals(Object obj) boolean
+    }
 
 ```
 
@@ -129,6 +132,9 @@ classDiagram
         <<abstract>>
         -recipientOfCommands : IAggregate
         -notifiablePublishers : Set~DomainEventPublisher~
+        #recipientOfCommands() IAggregate
+        #getNotifiablePublishers() Set~DomainEventPublisher~
+        #setNotifiablePublishers(Set~DomainEventPublisher~ notifiablePublishers)
     }
     class ProcessManager {
         <<abstract>>
