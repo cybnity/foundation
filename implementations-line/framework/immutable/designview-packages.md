@@ -37,8 +37,6 @@ classDiagram
     IVersionable <|.. FactType
     RelationRole "1" --* FactEdge : factsRelationType
     IHistoricalFact <|.. FactRecord
-    VersionConcreteStrategy <.. FactEdge : use
-    VersionConcreteStrategy <.. FactType : use
     IUniqueness <|.. FactEdge
     IUniqueness <|.. FactRecord
     IUniqueness <|.. FactType
