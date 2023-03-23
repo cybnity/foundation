@@ -6,6 +6,7 @@ The technical description regarding behavior and best usage is maintained into t
 
 |Class Type|Motivation|
 | :-- | :-- |
+|ExecutableComponentChecker| |
 |FactEdge| |
 |FactsProvider| |
 |FactRecord| |
@@ -16,6 +17,7 @@ The technical description regarding behavior and best usage is maintained into t
 |QualitativeDataBuilder|Builder pattern implementation of data quality ensuring the application of quality rules on object to intantiate|
 |QualitativeDataGenerator|Producer of qualitative data that manage execution of quality rules for instance to build as ACID model|
 |RelationRole| |
+|StructuralVersionStrategy| |
 |TypeVersion| |
 
 # STRUCTURE MODELS
@@ -255,6 +257,10 @@ classDiagram
         #getContext() IContext
         #checkConfigurationVariables()
         #requiredEnvironmentVariables()$ Set~IReadableConfiguration~
+    }
+    class StructuralVersionStrategy {
+        <<abstract>>
+        +composeCanonicalVersionHash(Class~?~ factType)$ String
     }
 
 ```
