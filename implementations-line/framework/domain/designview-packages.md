@@ -50,6 +50,15 @@ classDiagram
     class IdentifiableFact {
         <<interface>>
     }
+    class IVersionable {
+        <<interface>>
+    }
+    class IContext {
+        <<interface>>
+    }
+    class Serializable {
+        <<interface>>
+    }
     class IReferenceable {
         <<interface>>
     }
@@ -166,6 +175,9 @@ classDiagram
         +generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId) Identifier
         +generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds) Identifier
     }
+    class ISessionContext {
+        <<interface>>
+    }
 
 ```
 
@@ -196,6 +208,9 @@ classDiagram
     Unmodifiable <|.. EventStream
     Serializable <|.. EventStream
 
+    class Serializable {
+        <<interface>>
+    }
     class ISubscribable {
         <<interface>>
     }
@@ -259,6 +274,9 @@ classDiagram
     IWriteModel <|-- IApplicationService
     IApplicationService <|.. ApplicationService
     
+    class IWriteModel {
+        <<interface>>
+    }
     class IApplicationService {
         <<interface>>
     }
