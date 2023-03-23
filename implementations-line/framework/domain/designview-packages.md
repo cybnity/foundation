@@ -107,6 +107,8 @@ classDiagram
 }%%
 classDiagram
     ICommandHandler <|.. ProcessManager
+    Identifier <|.. IdentifierStringBased
+    ValueObject~String~ <|-- IdentifierStringBased
 
     class ICommandHandler {
         <<interface>>
@@ -116,6 +118,22 @@ classDiagram
     class DataTransferObject {
         <<abstract>>
         +equals(Object obj) boolean
+    }
+    class ProcessManager {
+        <<abstract>>
+    }
+    class Identifier {
+        <<interface>>
+    }
+    class IdentifierStringBased {
+        -value : String
+        -name : String
+        build(Collection~Identifier~ basedOn)$ Identifier
+        +IdentifierStringBased(String name, String value)
+        +immutable() Serializable
+        +name() String
+        +value() Serializable
+        +valueHashCodeContributors() String[]
     }
 
 ```
