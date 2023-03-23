@@ -54,10 +54,6 @@ classDiagram
     IHistoricalFact <|.. ChildFact
     IdentifiableFact <|.. ChildFact
 
-    class BaseConstants {
-        <<enumeration>>
-        IDENTIFIER_ID
-    }
     class AuditLog {
         +AuditoLog()
         +immutable() Serializable
@@ -77,6 +73,10 @@ classDiagram
         +equals(Object fact) boolean
         #generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId)$ Identifier
         #generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds)$ Identifier
+    }
+    class BaseConstants {
+        <<enumeration>>
+        IDENTIFIER_ID
     }
 
 ```
