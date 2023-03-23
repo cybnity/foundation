@@ -31,11 +31,6 @@ classDiagram
     IReferenceable <|.. DomainEvent
     IdentifiableFact <|.. DomainEvent
     IdentifiableFact <|-- IAggregate
-    ISubscribable <|.. DomainEventPublisher
-    ISubscribable <|.. Repository
-    ISubscribable <|.. EventStore
-    IEventStore <|.. EventStore
-    Unmodifiable <|.. EventStream
     
     class DomainEvent {
         <<abstract>>
@@ -57,14 +52,36 @@ classDiagram
     class IReferenceable {
         <<interface>>
     }
-    class DomainEventPublisher {
-        +publish(T domainEvent) ~T~
-        +reset() DomainEventPublisher
+
+```
+
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
     }
-    class DomainEventSubscriber {
-        <<abstract>>
-        +handleEvent(T event)
-        +subscribeToEventType() Class
+  }
+}%%
+classDiagram
+    ISubscribable <|.. DomainEventPublisher
+    ISubscribable <|.. Repository
+    ISubscribable <|.. EventStore
+    IEventStore <|.. EventStore
+    Unmodifiable <|.. EventStream
+
+    class ISubscribable {
+        <<interface>>
     }
     class EventStore {
         <<abstract>>
@@ -76,15 +93,20 @@ classDiagram
         +loadEventStream(Identifier uid) EventStream
         +loadEventStream(Identifier uid, int skipEvents, int maxCount) EventStream
     }
+    class Repository {
+        <<abstract>>
+    }
+    class DomainEventSubscriber {
+        <<abstract>>
+        +handleEvent(T event)
+        +subscribeToEventType() Class
+    }
     class EventStream {
         -version : int
         -events : List~DomainEvent~
     }
     class Unmodifiable {
         <<interface>>
-    }
-    class Repository {
-        <<abstract>>
     }
 
 ```
