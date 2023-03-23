@@ -77,6 +77,7 @@ classDiagram
 }%%
 classDiagram
     ChildFact <|-- CommonChildFactImpl
+    ChildFact <|-- SocialEntity
     Entity <|-- DomainEntityImpl
     FactRecord <|-- EventRecord
     MutableProperty <|-- ActivityState
