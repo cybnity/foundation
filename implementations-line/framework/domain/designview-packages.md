@@ -197,6 +197,15 @@ classDiagram
         +versionHash() String
         +identified() Identifier
     }
+    class Entity {
+        <<abstract>>
+    }
+    class Validator {
+        <<abstract>>
+        -notificationHandler : IValidationNotificationHandler
+        +Validator(IValidationNotificationHandler notified)
+        +validate()$
+    }
 
 ```
 ## MODEL
