@@ -4,7 +4,7 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Represent a producer of qualitative data (e.g generic fat ready to be stored
+ * Represent a producer of qualitative data (e.g generic fact ready to be stored
  * into an event store).
  * 
  * This building process execute the instantiation of an object with application

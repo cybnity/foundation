@@ -13,6 +13,7 @@ The technical description regarding behavior and best usage is maintained into t
 |IFactStore| |
 |IUniqueness| |
 |QualitativeDataBuilder|Builder pattern implementation of data quality ensuring the application of quality rules on object to intantiate|
+|QualitativeDataGenerator|Producer of qualitative data that manage execution of quality rules for instance to build as ACID model|
 
 # STRUCTURE MODELS
 Several packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
@@ -38,6 +39,10 @@ Several packages are implemented to organize the components (e.g specification e
   }
 }%%
 classDiagram
+    Unmodifiable <|.. RelationRole
+    IVersionable <|.. RelationRole
+    IUniqueness <|.. RelationRole
+    Serializable <|.. RelationRole
     Unmodifiable <|.. FactEdge
     Unmodifiable <|.. FactType
     IVersionable <|.. FactEdge
@@ -49,7 +54,9 @@ classDiagram
     IUniqueness <|.. FactType
     Serializable <|.. FactEdge
     Serializable <|.. FactType
-    TypeVersion <-- FactRecord : factTypeVersion
+    TypeVersion "1" --* FactRecord : factTypeVersion
+    FactType "1" --o RelationRole : relationDeclaredByOwnerType
+    FactType "1" --o RelationRole : relationTargetingOtherFactType
 
     class FactType {
         -name : String
@@ -71,6 +78,10 @@ classDiagram
         +basedOne() Set~Field~
     }
     class RelationRole {
+        -minLetterQty : int = 50
+        -name : String
+        -id : String
+        +RelationRole(String roleName, FactType relationDeclaredByOwnerType, FactType relationTargetingOtherFactType, String identifier)
     }
     class FactEdge {
         -successorId : String
@@ -121,6 +132,8 @@ classDiagram
   }
 }%%
 classDiagram
+    QualitativeDataBuilder <-- QualitativeDataGenerator : builder
+
     class IFactRepository~T~ {
         <<interface>>
         +nextIdentity() T
@@ -144,6 +157,10 @@ classDiagram
         +makeIntegrity()$
         +makeTimeliness()$
         +getResult()$ Object
+    }
+    class QualitativeDataGenerator {
+        +QualitativeDataGenerator(QualitativeDataBuilder builder)
+        +build()
     }
 
 ```
