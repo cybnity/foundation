@@ -56,6 +56,7 @@ Main project's package regarding the immutability capabilities, this package inc
   }
 }%%
 classDiagram
+    IHistoricalFact <|-- IGroup
     IReferenceable <|.. Entity
     ChildFact ..|> IdentifiableFact
     IdentifiableFact <|.. Entity
@@ -67,6 +68,10 @@ classDiagram
     Entity "0..1" <-- EntityReference : referenceRelation
     IHistoricalFact <|-- IDeletionFact
 
+    class IGroup {
+        <<interface>>
+        +identified() Identifier
+    }
     class IdentifiableFact {
         <<interface>>
         +identified() Identifier
