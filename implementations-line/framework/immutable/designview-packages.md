@@ -63,6 +63,10 @@ classDiagram
     Serializable <|.. AuditLog
     EntityReference "0..n" --o EntityReference : prior
 
+    class BaseConstants {
+        <<enumeration>>
+        IDENTIFIER_ID
+    }
     class Entity {
         #identifiedBy : ArrayList~Identifier~
         #createdAt : OffsetDateTime
@@ -94,10 +98,6 @@ classDiagram
         +equals(Object fact) boolean
         #generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId)$ Identifier
         #generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds)$ Identifier
-    }
-    class BaseConstants {
-        <<enumeration>>
-        IDENTIFIER_ID
     }
     class EntityReference {
     }
