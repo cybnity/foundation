@@ -34,11 +34,11 @@ classDiagram
     Ummodifiable <|.. FactEdge
     IVersionable <|.. FactEdge
     RelationRole "1" --* FactEdge : factsRelationType
-    IUniqueness <|.. FactEdge
     IHistoricalFact <|.. FactRecord
+    VersionConcreteStrategy <.. FactEdge : use
+    IUniqueness <|.. FactEdge
     IUniqueness <|.. FactRecord
     Serializable <|.. FactEdge
-    VersionConcreteStrategy <.. FactEdge : use
     TypeVersion <-- FactRecord : factTypeVersion
 
     class IHistoricalFact {
