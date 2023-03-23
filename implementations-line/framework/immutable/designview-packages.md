@@ -83,6 +83,7 @@ classDiagram
     Entity "0..1" <-- EntityReference : referenceRelation
     IHistoricalFact <|-- IDeletionFact
     HistoryState "0..1" <-- MutableProperty : historyStatus
+    Entity "1" --o MutableProperty : owner
 
     class HistoryState {
         <<enumeration>>
@@ -93,7 +94,6 @@ classDiagram
     }
     class MutableProperty {
         <<abstract>>
-        #entity : Entity
         #value : HashMap
         #prior : LinkedHashSet~MutableProperty~
         #changedAt : OffsetDateTime

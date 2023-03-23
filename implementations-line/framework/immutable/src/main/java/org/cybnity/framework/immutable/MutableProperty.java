@@ -45,7 +45,7 @@ public abstract class MutableProperty implements IHistoricalFact {
     /**
      * The owner of this mutable property.
      */
-    protected Entity entity;
+    protected Entity owner;
 
     /**
      * Current value of the property. Can be unique (e.g about a simple String field
@@ -115,7 +115,7 @@ public abstract class MutableProperty implements IHistoricalFact {
 	if (propertyCurrentValue == null || propertyCurrentValue.isEmpty())
 	    throw new IllegalArgumentException("PropertyCurrentValue mandatory parameter is missing!");
 	try {
-	    this.entity = (Entity) propertyOwner.immutable();
+	    this.owner = (Entity) propertyOwner.immutable();
 	    // Set of prior versions is empty by default
 	    this.prior = new LinkedHashSet<>();
 	    // Set the current states of changed values regarding this property version
@@ -240,7 +240,7 @@ public abstract class MutableProperty implements IHistoricalFact {
      *                               instance.
      */
     public Entity owner() throws ImmutabilityException {
-	return (Entity) this.entity.immutable();
+	return (Entity) this.owner.immutable();
     }
 
     /**

@@ -89,7 +89,7 @@ public class OrganizationDescriptor extends MutableProperty {
      *                               instance
      */
     public Entity owner() throws ImmutabilityException {
-	return (Entity) this.entity.immutable();
+	return (Entity) this.owner.immutable();
     }
 
     /**

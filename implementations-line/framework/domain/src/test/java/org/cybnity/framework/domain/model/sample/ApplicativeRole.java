@@ -119,7 +119,7 @@ public class ApplicativeRole extends MutableProperty {
      *                               instance
      */
     public Entity owner() throws ImmutabilityException {
-	return (Entity) this.entity.immutable();
+	return (Entity) this.owner.immutable();
     }
 
     /**
