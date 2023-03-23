@@ -92,6 +92,12 @@ classDiagram
         <<interface>>
         +handle(Command command)
     }
+    class IQueryResponse {
+        <<interface>>
+    }
+    class IService {
+        <<interface>>
+    }
 
 ```
 ```mermaid
@@ -126,11 +132,9 @@ classDiagram
         <<abstract>>
         +equals(Object obj) boolean
     }
-    class IQueryResponse {
-        <<interface>>
-    }
     class ProcessManager {
         <<abstract>>
+        -mediated : HasMap~String, ICommandHandler~
     }
     class Identifier {
         <<interface>>
@@ -144,9 +148,6 @@ classDiagram
         +name() String
         +value() Serializable
         +valueHashCodeContributors() String[]
-    }
-    class IService {
-        <<interface>>
     }
     class ISubscribable {
         <<interface>>
