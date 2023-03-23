@@ -65,9 +65,6 @@ classDiagram
     IContext <|-- IBoundedContext
     ChildFact <|-- NotificationLog
     Entity <|-- UnidentifiableFactNotificationLog
-    IdentifiableFact <|.. Command
-    IVersionable <|.. Command
-    IReferenceable <|.. Command
 
     class CommandHandlingService {
         <<abstract>>
@@ -110,7 +107,7 @@ classDiagram
     class Validator {
         <<abstract>>
         -notificationHandler : IValidationNotificationHandler
-        +validate()
+        +validate()*
     }
     class IWriteModel {
         <<interface>>
@@ -123,6 +120,32 @@ classDiagram
         <<abstract>>
         #valueEquality(ValueObject~T~ obj)*
     }
+
+```
+
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+    IdentifiableFact <|.. Command
+    IVersionable <|.. Command
+    IReferenceable <|.. Command
+
     class IVersionable {
         <<interface>>
         +versionUID() Long
@@ -140,6 +163,5 @@ classDiagram
     }
 
 ```
-
 #
 [Back To Home](README.md)
