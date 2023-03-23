@@ -14,6 +14,8 @@ The technical description regarding behavior and best usage is maintained into t
 |IUniqueness| |
 |QualitativeDataBuilder|Builder pattern implementation of data quality ensuring the application of quality rules on object to intantiate|
 |QualitativeDataGenerator|Producer of qualitative data that manage execution of quality rules for instance to build as ACID model|
+|RelationRole| |
+|TypeVersion| |
 
 # STRUCTURE MODELS
 Several packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
