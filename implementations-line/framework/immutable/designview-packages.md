@@ -100,6 +100,19 @@ classDiagram
         #generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds)$ Identifier
     }
     class EntityReference {
+        -historyStatus : HistoryState
+        -changedAt : OffsetDateTime
+        +EntityReference(Entity referenceOwner, Entity inRelationWith, HistoryState status)
+        +EntityReference(Entity referenceOwner, Entity inRelationWith, HistoryState status, EntityReference... predecessors)
+        +historyStatus() HistoryState
+        +setHistoryStatus(HistoryState state)
+        +getEntity() Entity
+        +getReferencedRelation() Entity
+        #setReferencedRelation(Entity referencedRelation)
+        +immutable() Serializable
+        +occurredAt() OffsetDateTime
+        +versionHash() String
+        +equals(Object obj) boolean
     }
 
 ```
