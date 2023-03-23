@@ -78,7 +78,6 @@ classDiagram
 classDiagram
     Entity <|-- DomainEntityImpl
     FactRecord <|-- EventRecord
-    MutableProperty <|-- ActivityState
     IdentifiableFact <|-- IAggregate
 
     class IAggregate {
@@ -127,12 +126,37 @@ classDiagram
     ChildFact <|-- CommonChildFactImpl
     ChildFact <|-- SocialEntity
     ChildFact <|-- Tenant
+    MutableProperty <|-- ActivityState
+    Tenant --> "0..1" MutableProperty : organization
 
     class ChildFact {
         <<abstract>>
     }
     class Tenant {
+        -activityStatus : ActivityState
     }
+
+```
+
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
     class Predecessors {
         +generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId)$ Identifier
         +generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds)$ Identifier
