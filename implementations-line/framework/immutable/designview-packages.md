@@ -23,6 +23,8 @@ The technical description regarding behavior and best usage is maintained into t
 |Identifier| |
 |IFactRepository| |
 |IFactStore| |
+|IGroup| |
+|IHistoricalFact| |
 |IUniqueness| |
 |QualitativeDataBuilder|Builder pattern implementation of data quality ensuring the application of quality rules on object to intantiate|
 |QualitativeDataGenerator|Producer of qualitative data that manage execution of quality rules for instance to build as ACID model|
@@ -56,6 +58,9 @@ Main project's package regarding the immutability capabilities, this package inc
   }
 }%%
 classDiagram
+    Unmodifiable <|-- IHistoricalFact
+    IVersionable <|-- IHistoricalFact
+    Serializable <|-- IHistoricalFact
     IHistoricalFact <|-- IGroup
     IReferenceable <|.. Entity
     ChildFact ..|> IdentifiableFact
@@ -68,6 +73,10 @@ classDiagram
     Entity "0..1" <-- EntityReference : referenceRelation
     IHistoricalFact <|-- IDeletionFact
 
+    class IHistoricalFact {
+        <<interface>>
+        +occurredAt() OffsetDateTime
+    }
     class IGroup {
         <<interface>>
         +identified() Identifier
