@@ -6,6 +6,9 @@ The technical description regarding behavior and best usage is maintained into t
 
 |Class Type|Motivation|
 | :-- | :-- |
+|AuditLog| |
+|BaseConstants| |
+|ChildFact| |
 |ExecutableComponentChecker| |
 |FactEdge| |
 |FactsProvider| |
@@ -24,7 +27,61 @@ The technical description regarding behavior and best usage is maintained into t
 # STRUCTURE MODELS
 Several packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
 
-## PERSISTENCE
+# IMMUTABLE
+Main project's package regarding the immutability capabilities, this package include severel sub-packages additionnaly to these components.
+
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+    Unmodifiable <|.. AuditLog
+    Serializable <|.. AuditLog
+    IHistoricalFact <|.. ChildFact
+    IdentifiableFact <|.. ChildFact
+
+    class BaseConstants {
+        <<enumeration>>
+        IDENTIFIER_ID
+    }
+    class AuditLog {
+        +AuditoLog()
+        +immutable() Serializable
+    }
+    class ChildFact {
+        <<abstract>>
+        #parent : Entity
+        #identifiedBy : ArrayList~Identifier~
+        #createdAt : OffsetDateTime
+        +ChildFact(Entity predecessor, Identifier id)
+        +ChildFact(Entity predecessor, LinkedHashSet~Identifier~ identifiers)
+        +identifiers() Collection~Identifier~
+        +occurredAt() OffsetDateTime
+        +parent() Entity
+        +valueHashCodeContributors() String[]
+        +hashCode() int
+        +equals(Object fact) boolean
+        #generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId)$ Identifier
+        #generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds)$ Identifier
+    }
+
+```
+
+## PERSISTENCE SUB-PACKAGE
 
 ```mermaid
 %%{
@@ -195,8 +252,7 @@ classDiagram
 
 ```
 
-
-## REGISTRY
+## REGISTRY SUB-PACKAGE
 
 ```mermaid
 %%{
@@ -227,7 +283,7 @@ classDiagram
 
 ```
 
-## UTILITY
+## UTILITY SUB-PACKAGE
 
 ```mermaid
 %%{
