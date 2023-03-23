@@ -127,9 +127,9 @@ classDiagram
     ChildFact <|-- SocialEntity
     ChildFact <|-- Tenant
     MutableProperty <|-- ActivityState
+    Tenant ..> Predecessors : use
     Tenant *-- "0..1" MutableProperty : organization
     Tenant *-- "0..1" ActivityState : activityStatus
-    Tenant ..> Predecessors : use
 
     class ChildFact {
         <<abstract>>
