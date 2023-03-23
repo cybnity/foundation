@@ -41,6 +41,7 @@ The technical description regarding behavior and best usage is maintained into t
 |RelationRole| |
 |StringBasedNaturalKeyBuilder| |
 |StructuralVersionStrategy| |
+|Transaction| |
 |TypeVersion| |
 |VersionConcreteStrategy| |
 
@@ -84,9 +85,16 @@ classDiagram
     Entity "1" --o EntityReference : entity
     Entity "0..1" <-- EntityReference : referenceRelation
     IHistoricalFact <|-- IDeletionFact
+    IHistoricalFact <|.. Transaction
     HistoryState "0..1" <-- MutableProperty : historyStatus
     Entity "1" --o MutableProperty : owner
+    Transaction --> "0..n" TransactionItem : items
 
+    class Transaction {
+        #transactionParentContext : Entity
+        #createdAt : OffsetDateTime
+        -transactionId : Identifier
+    }
     class HistoryState {
         <<enumeration>>
         ARCHIVED
