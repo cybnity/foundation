@@ -33,16 +33,7 @@ classDiagram
     IdentifiableFact <|-- IAggregate
     MutableProperty <|-- ActivityState
     ChildFact <|-- CommonChildFactImpl
-    Entity <|-- DomainEntityImpl
 
-    class Entity {
-        <<abstract>>
-    }
-    class DomainEntityImpl {
-        +identified() Identifier
-        +immutable() Serializable
-        +versionHash() String
-    }
     class DomainEvent {
         <<abstract>>
         -occuredOn : OffsetDateTime
@@ -88,7 +79,16 @@ classDiagram
   }
 }%%
 classDiagram
+    Entity <|-- DomainEntityImpl
 
+    class Entity {
+        <<abstract>>
+    }
+    class DomainEntityImpl {
+        +identified() Identifier
+        +immutable() Serializable
+        +versionHash() String
+    }
 
 ```
 
