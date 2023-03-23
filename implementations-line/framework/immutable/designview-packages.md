@@ -51,6 +51,7 @@ Main project's package regarding the immutability capabilities, this package inc
   }
 }%%
 classDiagram
+    IdentifiableFact <|.. Entity
     IHistoricalFact <|.. EntityReference
     IHistoricalFact <|.. ChildFact
     IdentifiableFact <|.. ChildFact
@@ -58,7 +59,6 @@ classDiagram
     Entity "1" --o EntityReference : entity
     IReferenceable <|.. Entity
     IHistoricalFact <|.. Entity
-    IdentifiableFact <|.. Entity
     Unmodifiable <|.. AuditLog
     Serializable <|.. AuditLog
     EntityReference "0..n" --o EntityReference : prior
