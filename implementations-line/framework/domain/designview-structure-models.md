@@ -119,7 +119,7 @@ classDiagram
     }
     class ProcessManager {
         <<abstract>>
-        -mediated : HashMap
+        -mediated : HashMap~String~
     }
     class IBoundedContext {
         <<interface>>
