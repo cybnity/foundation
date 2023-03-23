@@ -56,12 +56,12 @@ classDiagram
     IdentifiableFact <|.. Entity
     IHistoricalFact <|.. EntityReference
     IHistoricalFact <|.. ChildFact
-    Entity "0..1" <-- EntityReference : referenceRelation
     Entity "1" --o EntityReference : entity
     IHistoricalFact <|.. Entity
     Unmodifiable <|.. AuditLog
     Serializable <|.. AuditLog
     EntityReference "0..n" --o EntityReference : prior
+    Entity "0..1" <-- EntityReference : referenceRelation
 
     class BaseConstants {
         <<enumeration>>
