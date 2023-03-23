@@ -1,8 +1,10 @@
-package org.cybnity.framework.domain;
+package org.cybnity.framework.domain.model;
 
 import java.io.Serializable;
 import java.util.Collection;
 
+import org.cybnity.framework.domain.IdentifierStringBased;
+import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.ChildFact;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
@@ -21,11 +23,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
 public class NotificationLog extends ChildFact {
 
-    private static final long serialVersionUID = 1L;
-    /**
-     * Name of this type of identifier.
-     */
-    public static String IDENTIFIER_NAME = UnidentifiableFactNotificationLog.IDENTIFIER_NAME;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(NotificationLog.class).hashCode();
 
     /**
      * Default constructor of log regarding a fact that was observed (e.g a stored
@@ -38,11 +37,11 @@ public class NotificationLog extends ChildFact {
      *                                  defined or without defined identifier. When
      *                                  logEventId is using an identifier name that
      *                                  is not equals to
-     *                                  NotificationLog.IDENTIFIER_NAME.
+     *                                  BaseConstants.IDENTIFIER_ID.name().
      */
     public NotificationLog(Entity loggedEvent, Identifier logEventId) throws IllegalArgumentException {
 	super(loggedEvent, logEventId);
-	if (!IDENTIFIER_NAME.equals(logEventId.name()))
+	if (!BaseConstants.IDENTIFIER_ID.name().equals(logEventId.name()))
 	    throw new IllegalArgumentException(
 		    "The identifier name of the logEventId parameter is not valid! Should be equals to NotificationLog.IDENTIFIER_NAME value");
     }
@@ -63,13 +62,7 @@ public class NotificationLog extends ChildFact {
 
     @Override
     public Identifier identified() {
-	StringBuffer combinedId = new StringBuffer();
-	for (Identifier id : this.identifiers()) {
-	    combinedId.append(id.value());
-	}
-	// Return combined identifier normally only based on unique value found in
-	// identifiers list
-	return new IdentifierStringBased(IDENTIFIER_NAME, combinedId.toString());
+	return IdentifierStringBased.build(this.identifiers());
     }
 
     /**

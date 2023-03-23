@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.IHistoricalFact;
 import org.cybnity.framework.immutable.Identifier;
@@ -26,12 +27,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
 public class UnidentifiableFactNotificationLog extends Entity {
 
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * Name of this type of identifier.
-     */
-    public static String IDENTIFIER_NAME = "log_uid";
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(UnidentifiableFactNotificationLog.class).hashCode();
 
     /**
      * Set of original facts that were origins of this log.
@@ -49,12 +46,12 @@ public class UnidentifiableFactNotificationLog extends Entity {
      *                                  defined or without defined identifier. When
      *                                  logEventId is using an identifier name that
      *                                  is not equals to
-     *                                  NotificationLog.IDENTIFIER_NAME.
+     *                                  BaseConstants.IDENTIFIER_ID.name().
      */
     public UnidentifiableFactNotificationLog(Identifier logEventId, IHistoricalFact... loggedFacts)
 	    throws IllegalArgumentException {
 	super(logEventId);
-	if (!IDENTIFIER_NAME.equals(logEventId.name()))
+	if (!BaseConstants.IDENTIFIER_ID.name().equals(logEventId.name()))
 	    throw new IllegalArgumentException(
 		    "The identifier name of the logEventId parameter is not valid! Should be equals to NotificationLog.IDENTIFIER_NAME value");
 	if (loggedFacts != null && loggedFacts.length > 0)
@@ -106,7 +103,7 @@ public class UnidentifiableFactNotificationLog extends Entity {
 	}
 	// Return combined identifier normally only based on unique value found in
 	// identifiers list
-	return new IdentifierStringBased(IDENTIFIER_NAME, combinedId.toString());
+	return new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), combinedId.toString());
     }
 
 }

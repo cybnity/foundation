@@ -17,7 +17,6 @@ import org.cybnity.framework.domain.model.sample.readmodel.ApplicativeRoleDTO;
 import org.cybnity.framework.domain.model.sample.readmodel.DenormalizedEntityImpl;
 import org.cybnity.framework.domain.model.sample.readmodel.UserAccountDTO;
 import org.cybnity.framework.domain.model.sample.readmodel.UserAccountRepository;
-import org.cybnity.framework.domain.model.sample.writemodel.DomainEntityImpl;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStore;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStoreImpl;
@@ -119,7 +118,6 @@ public class UserAccountCQRSCollaborationUseCaseTest {
 	ProcessManager processManager = new UserAccountManagementProcessesImpl(domainContext);
 
 	// Create a domain event requested to create a new user account aggregate object
-	UserAccountAggregate account = new UserAccountAggregate(accountId, accountOwner.reference());
 	Entity eventId = new UserAccountIdentityCreation(accountId);
 	UserAccountCreateCommand event = new UserAccountCreateCommand(eventId);
 	event.accountUID = (String) accountId.value();

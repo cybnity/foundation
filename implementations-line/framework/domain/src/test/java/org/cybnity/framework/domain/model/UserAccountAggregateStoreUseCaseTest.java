@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.application.sample.UserAccountAggregate;
 import org.cybnity.framework.domain.application.sample.UserAccountCreateCommand;
-import org.cybnity.framework.domain.model.sample.writemodel.DomainEntityImpl;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStoreImpl;
 import org.cybnity.framework.immutable.BaseConstants;

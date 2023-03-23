@@ -2,6 +2,7 @@ package org.cybnity.framework.immutable;
 
 import java.time.OffsetDateTime;
 
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -17,8 +18,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * are not causally related.
  * 
  * When a member shal leave an assigned group as Membership fact, a <<Membership
- * Name>>Deletion fact ({@link org.cybnity.framework.immutable.IDeletionFact}) is
- * created with membership fact as predecessor.
+ * Name>>Deletion fact ({@link org.cybnity.framework.immutable.IDeletionFact})
+ * is created with membership fact as predecessor.
  * 
  * Related patterns: if the model requires that the entity be a member of only
  * one group, and that group cannot change, then consider using the Ownership
@@ -33,7 +34,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public abstract class Membership implements IHistoricalFact {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(Membership.class).hashCode();
     /**
      * When the relation was created.
      */

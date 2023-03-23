@@ -3,7 +3,10 @@ package org.cybnity.framework.immutable;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -36,12 +39,13 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public abstract class MutableProperty implements IHistoricalFact {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(MutableProperty.class).hashCode();
 
     /**
      * The owner of this mutable property.
      */
-    protected Entity entity;
+    protected Entity owner;
 
     /**
      * Current value of the property. Can be unique (e.g about a simple String field
@@ -111,7 +115,7 @@ public abstract class MutableProperty implements IHistoricalFact {
 	if (propertyCurrentValue == null || propertyCurrentValue.isEmpty())
 	    throw new IllegalArgumentException("PropertyCurrentValue mandatory parameter is missing!");
 	try {
-	    this.entity = (Entity) propertyOwner.immutable();
+	    this.owner = (Entity) propertyOwner.immutable();
 	    // Set of prior versions is empty by default
 	    this.prior = new LinkedHashSet<>();
 	    // Set the current states of changed values regarding this property version
@@ -169,6 +173,77 @@ public abstract class MutableProperty implements IHistoricalFact {
     }
 
     /**
+     * Default equality of mutable property based on several compared values (class
+     * type, owner entity, current values defining this property, history status,
+     * changed date).
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (obj == this)
+	    return true;
+	boolean isEquals = false;
+	if (obj.getClass() == this.getClass()) {
+	    try {
+		MutableProperty compared = (MutableProperty) obj;
+		// Check if same property owner
+		if (compared.owner().equals(this.owner())) {
+		    // Check if same status value
+		    if (compared.historyStatus() == this.historyStatus()) {
+			// Check the values equality
+			if (compared.value != null && this.value != null) {
+			    // Comparable values are existing
+
+			    // Check that all values of this property are existing and equals into the
+			    // compared property
+			    boolean notEqualsValueFound = false;
+			    for (Map.Entry<String, Object> entry : this.value.entrySet()) {
+				if (!compared.value.containsKey(entry.getKey())
+					|| !compared.value.containsValue(entry.getValue())) {
+				    // Missing equals value and key is found
+				    // Stop search because not equals values into the compared instance with the
+				    // values hosted by this instance
+				    notEqualsValueFound = true;
+				    break;
+				}
+			    }
+			    if (!notEqualsValueFound) {
+				// Check that all values of the compared instance are existing and equals into
+				// this property
+				for (Map.Entry<String, Object> entry : compared.value.entrySet()) {
+				    if (!this.value.containsKey(entry.getKey())
+					    || !this.value.containsValue(entry.getValue())) {
+					// Missing equals value and key is found
+					// Stop search because not equals values into this instance with the
+					// values hosted by the compared instance
+					notEqualsValueFound = true;
+					break;
+				    }
+				}
+			    }
+			    isEquals = !notEqualsValueFound;
+			}
+		    }
+		}
+	    } catch (Exception e) {
+		// any missing information generating null pointer exception or problem of
+		// information read
+	    }
+	}
+	return isEquals;
+    }
+
+    /**
+     * Who is the owner of this property
+     * 
+     * @return The owner
+     * @throws ImmutabilityException If impossible creation of immutable version of
+     *                               instance.
+     */
+    public Entity owner() throws ImmutabilityException {
+	return (Entity) this.owner.immutable();
+    }
+
+    /**
      * This property version state (e.g in a situation of concurrent change of
      * predecessor values requiring merging of new status to fix the new value of
      * this one) regarding its anterior versions.
@@ -189,10 +264,73 @@ public abstract class MutableProperty implements IHistoricalFact {
      * 
      * @param state Status of this version as current version property in front of
      *              potential other parallel/concurrent versions regarding a same
-     *              priors.
+     *              priors. If null, ignored.
      */
     public void setHistoryStatus(HistoryState state) {
-	this.historyStatus = state;
+	if (state != null)
+	    this.historyStatus = state;
+    }
+
+    /**
+     * Add the history of this current instance, into a version of property to
+     * enhance (e.g as a new version of this one).
+     * 
+     * @param versionToEnhance Mandatory version to update. Ignored when null.
+     * @param versionState     Optional history status to set on the the
+     *                         versionToEnhance property.
+     * @return The versionToEnhance instance including the added history.
+     * @throws IllegalArgumentException When the property parameter to enhance is
+     *                                  not the same class type than this property.
+     */
+    public MutableProperty enhanceHistoryOf(MutableProperty versionToEnhance, HistoryState versionState)
+	    throws IllegalArgumentException {
+	if (versionToEnhance != null) {
+	    if (this.getClass() != versionToEnhance.getClass())
+		throw new IllegalArgumentException("Invalid type of version to enhance!");
+	    // Archive the previous versions regarding existing history when exist
+	    Set<MutableProperty> changedPredecessors = this.changesHistory();
+	    // Add current version into history
+	    changedPredecessors.add(this);
+	    if (versionState != null)
+		// Set the state to the current new version of this property
+		versionToEnhance.setHistoryStatus(versionState);
+	    // Set the old history (including the previous last version of this property)
+	    versionToEnhance.updateChangesHistory(changedPredecessors);
+	}
+	return versionToEnhance;
+    }
+
+    /**
+     * Get the history chain of previous versions of this property including
+     * previous changed values versions.
+     * 
+     * @return A changes history. Empty list by default.
+     */
+    public Set<MutableProperty> changesHistory() {
+	// Read previous changes history (not including the current version)
+	LinkedHashSet<MutableProperty> history = new LinkedHashSet<>();
+	for (MutableProperty previousChangedProperty : this.prior) {
+	    history.add(previousChangedProperty);
+	}
+	return history;
+    }
+
+    /**
+     * Update the history old versions of this property.
+     * 
+     * @param versions To set as new version of this property versions history.
+     *                 Ignore if null or empty.
+     */
+    public void updateChangesHistory(Set<MutableProperty> versions) {
+	if (versions != null && !versions.isEmpty()) {
+	    // Update the story at end of previous versions
+	    LinkedHashSet<MutableProperty> history = new LinkedHashSet<>();
+	    for (MutableProperty aVersion : versions) {
+		history.add(aVersion);
+	    }
+	    // Replace current history
+	    this.prior = history;
+	}
     }
 
     /**

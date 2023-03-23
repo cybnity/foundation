@@ -10,6 +10,7 @@ Release Name: V0 - FRAMEWORK
 ## ADDS
 |Issue|Origin/Cause|Description|
 |:--|:--|:--|
+|58|REQ_SEC_3|Tenant support for users of same organization|
 |145|REQ_ROB_3|Application-agnostic fact reading for storage|
 |158|REQ_SCA_4|Support of CQRS pattern and event sourcing concerns combined|
 |154|REQ_MAIN_7|Support bounded context message coordination layer (Process Manager pattern)|

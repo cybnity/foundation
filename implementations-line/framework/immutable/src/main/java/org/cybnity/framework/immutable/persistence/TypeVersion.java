@@ -1,5 +1,7 @@
 package org.cybnity.framework.immutable.persistence;
 
+import java.io.Serializable;
+
 import org.cybnity.framework.immutable.NaturalKeyIdentifierGenerator;
 import org.cybnity.framework.immutable.StringBasedNaturalKeyBuilder;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
@@ -14,7 +16,10 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Robusteness, reqId = "REQ_ROB_3")
-public class TypeVersion {
+public class TypeVersion implements Serializable {
+
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(TypeVersion.class).hashCode();
 
     /**
      * Hash value of an object type

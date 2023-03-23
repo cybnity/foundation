@@ -2,6 +2,7 @@ package org.cybnity.framework.immutable;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -31,6 +32,7 @@ public class MutablePropertyUseCaseTest {
     private Identifier id;
     private String organizationName;
     private HashMap<String, Object> address;
+    private String city = "Los Angeles", state = "California", street = "-- Confidential :) --";
 
     @BeforeEach
     public void initOrganizationSample() throws Exception {
@@ -39,9 +41,9 @@ public class MutablePropertyUseCaseTest {
 	org = new Organization(id, organizationName);
 
 	address = new HashMap<>();
-	address.put(PhysicalAddressProperty.PropertyAttributeKey.City.name(), "Los Angeles");
-	address.put(PhysicalAddressProperty.PropertyAttributeKey.State.name(), "California");
-	address.put(PhysicalAddressProperty.PropertyAttributeKey.Street.name(), "-- Confidential :) --");
+	address.put(PhysicalAddressProperty.PropertyAttributeKey.City.name(), city);
+	address.put(PhysicalAddressProperty.PropertyAttributeKey.State.name(), state);
+	address.put(PhysicalAddressProperty.PropertyAttributeKey.Street.name(), street);
     }
 
     @AfterEach
@@ -82,7 +84,7 @@ public class MutablePropertyUseCaseTest {
 	assertNotNull(changeableAddress.owner(), "Should had been saved as reference owner!");
 
 	// Check that base history is empty as prior history
-	Set<PhysicalAddressProperty> history = changeableAddress.changesHistory();
+	Set<MutableProperty> history = changeableAddress.changesHistory();
 	assertTrue(history.isEmpty(), "Should be empty of any changed value!");
 
     }
@@ -93,9 +95,9 @@ public class MutablePropertyUseCaseTest {
 	String city1 = (String) address.get(PhysicalAddressProperty.PropertyAttributeKey.City.name());
 	PhysicalAddressProperty changeableAddress = new PhysicalAddressProperty(org, address,
 		/* default status applied by constructor */ null);
-	Set<PhysicalAddressProperty> history = changeableAddress.changesHistory(); // current version not
-										   // included because none previous
-										   // version
+	Set<MutableProperty> history = changeableAddress.changesHistory(); // current version not
+									   // included because none previous
+									   // version
 	// Check empty history and default history status
 	assertTrue(history.isEmpty(), "None anterior history shall exist!");
 	// Check default history status applied by constructor
@@ -119,7 +121,7 @@ public class MutablePropertyUseCaseTest {
 	// Check assigned history status of the updated property
 	assertEquals(HistoryState.MERGED, lastAddress.historyStatus(), "Invalid assigned status by constructor!");
 	// Check historized predecessor contents
-	for (PhysicalAddressProperty priorAddress : history) {
+	for (MutableProperty priorAddress : history) {
 	    HashMap<String, Object> priorValue = priorAddress.value;
 	    for (Entry<String, Object> originalAddress : address.entrySet()) {
 		String propertyAttributeName = originalAddress.getKey();
@@ -146,16 +148,16 @@ public class MutablePropertyUseCaseTest {
 											     // origins of changed
 											     // property
 	// Check history chain including previous addresses backuped contents
-	for (PhysicalAddressProperty aPriorAddress : history) {
+	for (MutableProperty aPriorAddress : history) {
 	    HashMap<String, Object> priorValue = aPriorAddress.value;
 	    // Check if it's the last historized address (inverse path in history)
 	    assertEquals(city2, priorValue.get(PhysicalAddressProperty.PropertyAttributeKey.City.name()),
 		    "Previous prior is not the good!");
 	    // Verify that previous historized property value also contain a chained history
 	    // of old addresses
-	    Set<PhysicalAddressProperty> anteriors = aPriorAddress.changesHistory();
+	    Set<MutableProperty> anteriors = aPriorAddress.changesHistory();
 	    assertFalse(anteriors.isEmpty(), "More old address should had been historized!");
-	    for (PhysicalAddressProperty anAnteriors : anteriors) {
+	    for (MutableProperty anAnteriors : anteriors) {
 		HashMap<String, Object> anteriorValue = anAnteriors.value;
 		// Check if it's the anterior address
 		assertEquals(city1, anteriorValue.get(PhysicalAddressProperty.PropertyAttributeKey.City.name()),
@@ -164,4 +166,33 @@ public class MutablePropertyUseCaseTest {
 	}
     }
 
+    /**
+     * Verify the rules of equality applied on a mutable property.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void givenSameOwnerHistoryValueProperties_whenEqualsEvaluation_thenTrue() throws Exception {
+	// Create two instances including same types of contents
+	PhysicalAddressProperty address1 = new PhysicalAddressProperty(org, address,
+		/* default status applied by constructor */ null);
+	PhysicalAddressProperty address2 = new PhysicalAddressProperty(org, address,
+		/* default status applied by constructor */ null);
+	// Check that all equals contents are evaluated as identical
+	assertEquals(address1, address2, "Same contents shall had been detected!");
+	assertEquals(address2, address1, "Same contents shall had been detected!");
+
+	// Change one value of one of the property to compare (simulating a difference
+	// of property definition)
+	HashMap<String, Object> address3 = new HashMap<>();
+	address3.put(PhysicalAddressProperty.PropertyAttributeKey.City.name(), city + "other");
+	address3.put(PhysicalAddressProperty.PropertyAttributeKey.State.name(), state);
+	address3.put(PhysicalAddressProperty.PropertyAttributeKey.Street.name(), street);
+
+	// Check that difference is detected during equality evaluation regarding the
+	// values of the 2 internal values
+	assertNotEquals(address1, address3, "Difference in values shall had been detected!");
+	assertNotEquals(address3, address1, "Difference in values shall had been detected!");
+
+    }
 }

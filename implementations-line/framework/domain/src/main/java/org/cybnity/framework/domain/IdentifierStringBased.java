@@ -1,9 +1,12 @@
 package org.cybnity.framework.domain;
 
 import java.io.Serializable;
+import java.util.Collection;
 
+import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -14,14 +17,26 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public class IdentifierStringBased implements Identifier {
+public class IdentifierStringBased extends ValueObject<String> implements Identifier {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(IdentifierStringBased.class).hashCode();
     private String value;
     private String name;
 
-    public IdentifierStringBased(String name, String value) {
+    /**
+     * Default constructor.
+     * 
+     * @param name  Mandatory name of the identifier (e.g uuid).
+     * @param value Mandatory value of the identifier.
+     * @throws IllegalArgumentException When any mandatory parameter is missing.
+     */
+    public IdentifierStringBased(String name, String value) throws IllegalArgumentException {
+	if (name == null || "".equals(name))
+	    throw new IllegalArgumentException("The name parameter is required!");
 	this.name = name;
+	if (value == null || "".equals(value))
+	    throw new IllegalArgumentException("The value parameter is required!");
 	this.value = value;
     }
 
@@ -40,50 +55,47 @@ public class IdentifierStringBased implements Identifier {
 	return this.value;
     }
 
-    /**
-     * Redefined hash code calculation method which include the functional contents
-     * hash code values into the returned number.
-     */
-    @Override
-    public int hashCode() {
-	// Read the contribution values of functional equality regarding this instance
-	String[] functionalValues = valueHashCodeContributors();
-	int hashCodeValue = +(169065 * 179);
-	if (functionalValues != null && functionalValues.length > 0) {
-	    for (String s : functionalValues) {
-		if (s != null) {
-		    hashCodeValue = +s.hashCode();
-		}
-	    }
-	} else {
-	    // Keep standard hashcode value calculation default implementation
-	    hashCodeValue = super.hashCode();
-	}
-	return hashCodeValue;
-    }
-
     @Override
     public String[] valueHashCodeContributors() {
-	return new String[] { this.value };
+	return new String[] { this.value, this.name };
     }
 
     /**
-     * Redefine the comparison of this fact with another based on the identifier.
+     * Generate an identifier based on a list (or unique contained instance) of
+     * identifiers. This method is reusable for any class requiring calculation of
+     * combinated identifier.
      * 
-     * @param fact To compare.
-     * @return True if this fact is based on the same identifier(s) as the fact
-     *         argument; false otherwise.
+     * @param basedOn Mandatory set of identifiers (e.g unique instance or multiple
+     *                to concat). Shall contain a minimum one instance of identifier
+     *                usable for generation of resulting identifier to return.
+     * @return An instance of identifier. When all the source identifiers have the
+     *         same identifying name, the returned instance use the same name. When
+     *         several names are found from the source identifiers, the name of the
+     *         returned instance is equals to BaseConstants.IDENTIFIER_ID.name() .
+     * @throws IllegalArgumentException When mandatory parameter is missing.
      */
-    @Override
-    public boolean equals(Object obj) {
-	if (obj == this)
-	    return true;
-	if (obj != null && Identifier.class.isAssignableFrom(obj.getClass())) {
-	    Identifier compared = (Identifier) obj;
-	    // Compare equality based on each instance's identifier (unique or based on
-	    // identifying informations combination)
-	    return this.value.equals(compared.value());
+    public static Identifier build(Collection<Identifier> basedOn) throws IllegalArgumentException {
+	if (basedOn == null || basedOn.isEmpty())
+	    throw new IllegalArgumentException(
+		    "basedOn parameter is required and shall contain a minimum one identifier!");
+	StringBuffer combinedId = new StringBuffer();
+	String uniqueIdName = null;
+	boolean uniqueNameFound = true;
+	for (Identifier id : basedOn) {
+	    combinedId.append(id.value());
+	    if (uniqueIdName != null) {
+		// Check if same global name used for all the identifiers
+		if (!uniqueIdName.equals(id.name()))
+		    uniqueNameFound = false;
+	    } else {
+		// Initialize default identifier name based on the found identifying information
+		// label
+		uniqueIdName = id.name();
+	    }
 	}
-	return false;
+	// Return combined identifier
+	return new IdentifierStringBased((uniqueNameFound) ? uniqueIdName : BaseConstants.IDENTIFIER_ID.name(),
+		combinedId.toString());
     }
+
 }

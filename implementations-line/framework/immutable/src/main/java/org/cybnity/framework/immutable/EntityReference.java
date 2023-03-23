@@ -32,7 +32,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public class EntityReference implements IHistoricalFact {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(EntityReference.class).hashCode();
 
     /**
      * The owner of this reference, as primary entity.
@@ -243,4 +244,20 @@ public class EntityReference implements IHistoricalFact {
     public String versionHash() {
 	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
+
+    /**
+     * Redefine equality as based on this owner attribute equals() method that is
+     * original source entity of this reference.
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (obj == this)
+	    return true;
+	if (obj != null && obj.getClass().equals(getClass())) {
+	    EntityReference compared = (EntityReference) obj;
+	    return this.entity.equals(compared.entity);
+	}
+	return false;
+    }
+
 }

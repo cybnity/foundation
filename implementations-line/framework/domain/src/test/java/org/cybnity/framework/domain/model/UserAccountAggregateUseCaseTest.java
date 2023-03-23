@@ -16,7 +16,6 @@ import org.cybnity.framework.domain.model.sample.ApplicativeRole;
 import org.cybnity.framework.domain.model.sample.readmodel.ApplicativeRoleDTO;
 import org.cybnity.framework.domain.model.sample.readmodel.DenormalizedEntityImpl;
 import org.cybnity.framework.domain.model.sample.readmodel.UserAccountRepository;
-import org.cybnity.framework.domain.model.sample.writemodel.DomainEntityImpl;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStore;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStoreImpl;
@@ -24,6 +23,7 @@ import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.MutableProperty;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -162,9 +162,9 @@ public class UserAccountAggregateUseCaseTest {
 		    "The current role should be in last status assigned (Cancelled)!");
 
 	    // Check that role have an history of several status (committed, cancelled)
-	    Set<ApplicativeRole> story = assignedRole.changesHistory();
+	    Set<MutableProperty> story = assignedRole.changesHistory();
 	    assertFalse(story.isEmpty(), "One previous version shall exist regarding the original status (committed)!");
-	    ApplicativeRole previousOriginalRoleVersion = story.iterator().next();
+	    ApplicativeRole previousOriginalRoleVersion = (ApplicativeRole) story.iterator().next();
 	    assertEquals(HistoryState.COMMITTED, previousOriginalRoleVersion.historyStatus(),
 		    "Invalid status of the previous role originally created in Committed state!");
 

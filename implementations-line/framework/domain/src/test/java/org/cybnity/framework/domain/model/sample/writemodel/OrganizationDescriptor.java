@@ -1,4 +1,4 @@
-package org.cybnity.framework.immutable.sample;
+package org.cybnity.framework.domain.model.sample.writemodel;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
@@ -11,10 +11,9 @@ import org.cybnity.framework.immutable.MutableProperty;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
- * Example of specific property regarding an organization, that can be changed
- * (e.g by organization manager when the company's physical address is moved),
- * and which need to historized in an immutable way the history of changes
- * (version of this information).
+ * Example of specific definition regarding an organization, that can be changed
+ * (e.g company name change during its life), and which need to historized in an
+ * immutable way the history of changes (version of this information).
  * 
  * Sample usable to evaluate the
  * {@link org.cybnity.framework.immutable.MutableProperty} pattern.
@@ -22,30 +21,39 @@ import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
  * @author olivier
  *
  */
-public class PhysicalAddressProperty extends MutableProperty {
+public class OrganizationDescriptor extends MutableProperty {
 
     private static final long serialVersionUID = 1L;
     private OffsetDateTime versionedAt;
 
     /**
      * Example of keys set regarding the multiple attribute defining this complex
-     * physical address, and that each change need to be versioned/treated as a
-     * single atomic fact.
+     * organization, and that each change need to be versioned/treated as a single
+     * atomic fact.
      */
     public enum PropertyAttributeKey {
-	Street, City, Country, State;
+	Name, LocationCity, LocationCountry;
     }
 
-    public PhysicalAddressProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue,
+    public OrganizationDescriptor(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue,
 	    HistoryState status) throws IllegalArgumentException {
 	super(propertyOwner, propertyCurrentValue, status);
 	this.versionedAt = OffsetDateTime.now();
     }
 
-    public PhysicalAddressProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue,
-	    HistoryState status, PhysicalAddressProperty... prior) throws IllegalArgumentException {
+    public OrganizationDescriptor(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue,
+	    HistoryState status, OrganizationDescriptor... prior) throws IllegalArgumentException {
 	super(propertyOwner, propertyCurrentValue, status, prior);
 	this.versionedAt = OffsetDateTime.now();
+    }
+
+    /**
+     * Get the name of the organization.
+     * 
+     * @return A label or null.
+     */
+    public String getOrganizationName() {
+	return (String) this.currentValue().getOrDefault(PropertyAttributeKey.Name.name(), null);
     }
 
     @Override
@@ -55,7 +63,13 @@ public class PhysicalAddressProperty extends MutableProperty {
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	return null;
+	OrganizationDescriptor copy = new OrganizationDescriptor(this.owner(), this.currentValue(),
+		this.historyStatus());
+	// Complete with additional attributes of this complex property
+	copy.versionedAt = this.versionedAt;
+	copy.changedAt = this.occurredAt();
+	copy.updateChangesHistory(this.changesHistory());
+	return copy;
     }
 
     /**
@@ -65,6 +79,17 @@ public class PhysicalAddressProperty extends MutableProperty {
      */
     public HashMap<String, Object> currentValue() {
 	return this.value;
+    }
+
+    /**
+     * Who is the owner of this property
+     * 
+     * @return The owner
+     * @throws ImmutabilityException If impossible creation of immutable version of
+     *                               instance
+     */
+    public Entity owner() throws ImmutabilityException {
+	return (Entity) this.owner.immutable();
     }
 
     /**

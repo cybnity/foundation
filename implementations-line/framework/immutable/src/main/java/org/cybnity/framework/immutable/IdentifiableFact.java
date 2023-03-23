@@ -32,5 +32,5 @@ public interface IdentifiableFact {
      * @return The unique functional values used to idenfity uniquely this instance.
      *         Or empty array.
      */
-    public abstract String[] valueHashCodeContributors();
+    public String[] valueHashCodeContributors();
 }

@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -30,7 +31,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(ChildFact.class).hashCode();
 
     /**
      * Predecessor (as Owner of this child) of this child fact.
@@ -107,7 +109,7 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
      * Default constructor.
      * 
      * @param predecessor Mandatory parent of this child entity.
-     * @param identifiers Set of optional base identifiers of this entity, that
+     * @param identifiers Optional set of base identifiers of this entity, that
      *                    contains non-duplicable elements.
      * @throws IllegalArgumentException When identifiers parameter is null or each
      *                                  item does not include name and value.
@@ -130,11 +132,12 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
 	}
 	Collection<Identifier> origins = null;
 	if (identifiers != null && !identifiers.isEmpty()) {
+	    // Control quality of identification contributors
 	    origins = new LinkedHashSet<Identifier>(identifiers.size());
-	    // Get immutable version of identifiers
+	    // Get immutable version of this child's identifiers
 	    try {
 		for (Identifier id : identifiers) {
-		    // Check conformity of identifier
+		    // Check conformity of each identifier
 		    if (id.name() == null || id.name().equals("") || id.value() == null) {
 			throw new IllegalArgumentException(
 				"Any child base identifier parameter's name and value is required!");
@@ -186,11 +189,8 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
     }
 
     /**
-     * This method has the same contract as valueEquality() method in that all
-     * values that are functionally equal also produce equal hash code value. This
-     * method is called by default hashCode() method of this ValueObject instance
-     * and shall provide the list of values contributing to define the unicity of
-     * this instance (e.g also used for valueEquality() comparison).
+     * This method provide the list of values contributing to define the unicity of
+     * this instance (e.g also used for hashCode() comparison).
      * 
      * @return The unique functional values used to idenfity uniquely this instance.
      *         Or empty array.
@@ -198,8 +198,8 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
     @Override
     public String[] valueHashCodeContributors() {
 	try {
-	    return new String[] { /** Based only on identifier value **/
-		    (String) this.identified().value() };
+	    Identifier id = this.identified();
+	    return new String[] { id.value().toString(), id.name() };
 	} catch (ImmutabilityException ie) {
 	    return new String[] {};
 	}
@@ -217,7 +217,7 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
 	if (functionalValues != null && functionalValues.length > 0) {
 	    for (String s : functionalValues) {
 		if (s != null) {
-		    hashCodeValue = +s.hashCode();
+		    hashCodeValue += s.hashCode();
 		}
 	    }
 	} else {

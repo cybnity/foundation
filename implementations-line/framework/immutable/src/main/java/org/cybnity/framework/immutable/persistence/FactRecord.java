@@ -35,7 +35,7 @@ public class FactRecord implements IHistoricalFact, IUniqueness {
 	    .composeCanonicalVersionHash(FactRecord.class).hashCode();
 
     private Serializable body;
-    private OffsetDateTime factOccuredAt;
+    private OffsetDateTime factOccurredAt;
     private OffsetDateTime recordedAt;
     private int bodyHash;
     private TypeVersion factTypeVersion;
@@ -60,7 +60,7 @@ public class FactRecord implements IHistoricalFact, IUniqueness {
 	}
 	this.body = originFact;
 	this.bodyHash = originFact.hashCode();
-	this.factOccuredAt = originFact.occurredAt();
+	this.factOccurredAt = originFact.occurredAt();
 	this.factTypeVersion = new TypeVersion(originFact.getClass());
 	if (IdentifiableFact.class.isAssignableFrom(originFact.getClass())) {
 	    IdentifiableFact identifiedFact = (IdentifiableFact) originFact;
@@ -157,7 +157,7 @@ public class FactRecord implements IHistoricalFact, IUniqueness {
      */
     @Override
     public OffsetDateTime occurredAt() {
-	return this.factOccuredAt;
+	return this.factOccurredAt;
     }
 
 }

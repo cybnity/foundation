@@ -11,6 +11,7 @@ import org.cybnity.framework.immutable.IVersionable;
 import org.cybnity.framework.immutable.IdentifiableFact;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -33,7 +34,8 @@ public abstract class Command implements IdentifiableFact, IVersionable, Seriali
     /**
      * Version of this class type.
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(Command.class).hashCode();
 
     /**
      * Identifying information of this event.
@@ -85,11 +87,11 @@ public abstract class Command implements IdentifiableFact, IVersionable, Seriali
     }
 
     /**
-     * This method has the same contract as valueEquality() method in that all
-     * values that are functionally equal also produce equal hash code value. This
-     * method is called by default hashCode() method of this ValueObject instance
-     * and shall provide the list of values contributing to define the unicity of
-     * this instance (e.g also used for valueEquality() comparison).
+     * This method get all values that are functionally equal also produce equal
+     * hash code value. This method is called by default hashCode() method of this
+     * ValueObject instance and shall provide the list of values contributing to
+     * define the unicity of this instance (e.g also used for valueEquality()
+     * comparison).
      * 
      * @return The unique functional values used to idenfity uniquely this instance.
      *         Or empty array.
@@ -97,8 +99,8 @@ public abstract class Command implements IdentifiableFact, IVersionable, Seriali
     @Override
     public String[] valueHashCodeContributors() {
 	try {
-	    return new String[] { /** Based only on identifier value **/
-		    (String) this.identified().value() };
+	    Identifier id = this.identified();
+	    return new String[] { id.value().toString(), id.name() };
 	} catch (Exception ie) {
 	    // In case of null pointer exception regarding unknown identifier command
 	    return new String[] {};
@@ -117,7 +119,7 @@ public abstract class Command implements IdentifiableFact, IVersionable, Seriali
 	if (functionalValues != null && functionalValues.length > 0) {
 	    for (String s : functionalValues) {
 		if (s != null) {
-		    hashCodeValue = +s.hashCode();
+		    hashCodeValue += s.hashCode();
 		}
 	    }
 	} else {

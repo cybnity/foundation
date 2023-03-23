@@ -1,4 +1,4 @@
-package org.cybnity.framework.domain;
+package org.cybnity.framework.domain.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -6,8 +6,7 @@ import java.util.Set;
 import javax.management.modelmbean.InvalidTargetObjectTypeException;
 
 import org.cybnity.framework.IContext;
-import org.cybnity.framework.domain.model.IAggregate;
-import org.cybnity.framework.domain.model.DomainEventPublisher;
+import org.cybnity.framework.domain.ProcessManager;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
