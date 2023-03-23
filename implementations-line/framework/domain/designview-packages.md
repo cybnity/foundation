@@ -138,7 +138,11 @@ classDiagram
         +subscribeToEventType() Class
     }
     class DomainEventPublisher {
-        instance()$ DomainEventPublisher
+        +instance()$ DomainEventPublisher
+        +subscribe(DomainEventSubscriber~T~ aSubscriber) ~T~
+        +remove(DomaineEventSubscriber~T~ aSubscriber) ~T~
+        +publish(T aDomainEvent) ~T~
+        +reset() DomainEventPublisher
     }
     class EventStream {
         -version : int
