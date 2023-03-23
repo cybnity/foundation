@@ -34,6 +34,7 @@ The technical description regarding behavior and best usage is maintained into t
 |IVersionable| |
 |LocationIndependentIdentityNaturalKeyBuilder| |
 |Membership| |
+|MutableProperty| |
 |QualitativeDataBuilder|Builder pattern implementation of data quality ensuring the application of quality rules on object to intantiate|
 |QualitativeDataGenerator|Producer of qualitative data that manage execution of quality rules for instance to build as ACID model|
 |RelationRole| |
@@ -69,6 +70,7 @@ classDiagram
     Unmodifiable <|-- IHistoricalFact
     IVersionable <|-- IHistoricalFact
     Serializable <|-- IHistoricalFact
+    IHistoricalFact <|.. MutableProperty
     IHistoricalFact <|-- IRestorationFact
     IReferenceable <|.. Entity
     ChildFact ..|> IdentifiableFact
@@ -80,7 +82,32 @@ classDiagram
     Entity "1" --o EntityReference : entity
     Entity "0..1" <-- EntityReference : referenceRelation
     IHistoricalFact <|-- IDeletionFact
+    HistoryState "0..1" <-- MutableProperty : historyStatus
 
+    class HistoryState {
+        <<enumeration>>
+        ARCHIVED
+        MERGED
+        COMMITTED
+        CANCELLED
+    }
+    class MutableProperty {
+        <<abstract>>
+        #entity : Entity
+        #value : HashMap
+        #prior : LinkedHashSet~MutableProperty~
+        #changedAt : OffsetDateTime
+        +MutableProperty(Entity propertyOwner, HashMap propertyCurrentValue, HistoryState status)
+        +MutableProperty(Entity propertyOwner, HashMap propertyCurrentValue, HistoryState status, MutableProperty... predecessors)
+        +equals(Object obj) boolean
+        +occurredAt() OffsetDateTime
+        +owner() Entity
+        +historyStatus() HistoryState
+        +setHistoryStatus(HistoryState state)
+        +enhanceHistoryOf(MutableProperty versionToEnhance, HistoryState versionState) MutableProperty
+        +changesHistory() Set~MutableProperty~
+        +updateChangesHistory(Set~MutableProperty~ versions)
+    }
     class IHistoricalFact {
         <<interface>>
         +occurredAt() OffsetDateTime
@@ -180,13 +207,6 @@ classDiagram
     class Evaluations {
         +isIdentifiedEquals(IdentifiableFact fact, IdentifiableFact otherFact)$ boolean
         +isEpochSecondEquals(OffsetDateTime aDate, OffsetDateTime another)$ boolean
-    }
-    class HistoryState {
-        <<enumeration>>
-        ARCHIVED
-        MERGED
-        COMMITTED
-        CANCELLED
     }
 ```
 ```mermaid
