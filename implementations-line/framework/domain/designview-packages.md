@@ -85,6 +85,13 @@ classDiagram
         +occuredOn() OffsetDateTime
         +reference() EntityReference
     }
+    class IReadModel {
+        <<interface>>
+    }
+    class IWriteModel {
+        <<interface>>
+        +handle(Command command)
+    }
 
 ```
 ```mermaid
@@ -137,13 +144,6 @@ classDiagram
         +name() String
         +value() Serializable
         +valueHashCodeContributors() String[]
-    }
-    class IReadModel {
-        <<interface>>
-    }
-    class IWriteModel {
-        <<interface>>
-        +handle(Command command)
     }
     class IService {
         <<interface>>
