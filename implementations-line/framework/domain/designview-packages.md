@@ -132,10 +132,10 @@ classDiagram
     class Repository {
         <<abstract>>
     }
-    class DomainEventSubscriber {
+    class DomainEventSubscriber~T~ {
         <<abstract>>
-        +handleEvent(T event)
-        +subscribeToEventType() Class
+        +handleEvent(T event)*
+        +subscribeToEventType()* Class~?~
     }
     class DomainEventPublisher {
         +instance()$ DomainEventPublisher
