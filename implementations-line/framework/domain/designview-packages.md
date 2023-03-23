@@ -39,10 +39,6 @@ classDiagram
         +DomainEvent()
         +DomainEvent(Entity uid)
     }
-    class IAggregate {
-        <<interface>>
-        +execute(Command change, IContext ctx)
-    }
     class IHistoricalFact {
         <<interface>>
     }
@@ -81,6 +77,10 @@ classDiagram
     FactRecord <|-- EventRecord
     MutableProperty <|-- ActivityState
 
+    class IAggregate {
+        <<interface>>
+        +execute(Command change, IContext ctx)
+    }
     class Entity {
         <<abstract>>
     }
