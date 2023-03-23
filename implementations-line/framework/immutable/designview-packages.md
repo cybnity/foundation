@@ -28,6 +28,8 @@ The technical description regarding behavior and best usage is maintained into t
 |IMember| |
 |ImmutabilityException| |
 |IOwnership| |
+|IReferenceable| |
+|IRestorationFact| |
 |IUniqueness| |
 |QualitativeDataBuilder|Builder pattern implementation of data quality ensuring the application of quality rules on object to intantiate|
 |QualitativeDataGenerator|Producer of qualitative data that manage execution of quality rules for instance to build as ACID model|
@@ -64,6 +66,7 @@ classDiagram
     Unmodifiable <|-- IHistoricalFact
     IVersionable <|-- IHistoricalFact
     Serializable <|-- IHistoricalFact
+    IHistoricalFact <|-- IRestorationFact
     IHistoricalFact <|-- IGroup
     IHistoricalFact <|-- IMember
     IReferenceable <|.. Entity
@@ -80,6 +83,10 @@ classDiagram
     class IHistoricalFact {
         <<interface>>
         +occurredAt() OffsetDateTime
+    }
+    class IRestorationFact {
+        <<interface>>
+        +deletion() IDeletionFact
     }
     class IMember {
         <<interface>>
@@ -195,6 +202,30 @@ classDiagram
     class IOwnership {
         <<interface>>
         +childrenOfParent(IHistoricalFact parent) Collection~ChildFact~
+    }
+```
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+    class IReferenceable {
+        <<interface>>
+        +reference() EntityReference
     }
 ```
 
