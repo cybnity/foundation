@@ -76,9 +76,11 @@ classDiagram
   }
 }%%
 classDiagram
-    MutableProperty <|-- ActivityState
     ChildFact <|-- CommonChildFactImpl
     Entity <|-- DomainEntityImpl
+    FactRecord <|-- EventRecord
+    MutableProperty <|-- ActivityState
+
     class Entity {
         <<abstract>>
     }
@@ -89,6 +91,10 @@ classDiagram
     }
     class ChildFact {
         <<abstract>>
+    }
+    class EventRecord {
+        +immutable() Serializable
+        +versionHash() String
     }
 
 ```
@@ -117,6 +123,7 @@ classDiagram
     ISubscribable <|.. EventStore
     IEventStore <|.. EventStore
     Unmodifiable <|.. EventStream
+    Serializable <|.. EventStream
 
     class ISubscribable {
         <<interface>>
@@ -149,6 +156,7 @@ classDiagram
     class EventStream {
         -version : int
         -events : List~DomainEvent~
+        +immutable() Serializable
     }
     class Unmodifiable {
         <<interface>>
