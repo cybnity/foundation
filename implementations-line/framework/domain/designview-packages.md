@@ -175,6 +175,7 @@ classDiagram
 classDiagram
     Entity <|-- UnidentifiableFactNotificationLog
     ValueObject~String~ <|-- IdentifierStringBased
+    ValueObject~T~ <|-- ValueObject~String~
 
     class UnidentifiableFactNotificationLog {
         -originalFacts : List~IHistoricalFact~
