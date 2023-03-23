@@ -129,7 +129,7 @@ classDiagram
     MutableProperty <|-- ActivityState
     Tenant *-- "0..1" MutableProperty : organization
     Tenant *-- "0..1" ActivityState : activityStatus
-    Tenant ..> Predecessors
+    Tenant ..> Predecessors : use
 
     class ChildFact {
         <<abstract>>
@@ -153,31 +153,6 @@ classDiagram
 
 ```
 
-```mermaid
-%%{
-  init: {
-    'theme': 'base',
-    'themeVariables': {
-        'background': '#ffffff',
-        'fontFamily': 'arial',
-        'fontSize': '18px',
-        'primaryColor': '#fff',
-        'primaryBorderColor': '#0e2a43',
-        'secondaryBorderColor': '#0e2a43',
-        'tertiaryBorderColor': '#0e2a43',
-        'edgeLabelBackground':'#0e2a43',
-        'lineColor': '#0e2a43',
-        'tertiaryColor': '#fff'
-    }
-  }
-}%%
-classDiagram
-    class Predecessors {
-        +generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId)$ Identifier
-        +generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds)$ Identifier
-    }
-
-```
 
 ```mermaid
 %%{
