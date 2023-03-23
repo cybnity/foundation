@@ -33,12 +33,12 @@ Several packages are implemented to organize the components (e.g specification e
 classDiagram
     Ummodifiable <|.. FactEdge
     IVersionable <|.. FactEdge
+    RelationRole "1" --* FactEdge : factsRelationType
     IUniqueness <|.. FactEdge
     IHistoricalFact <|.. FactRecord
     IUniqueness <|.. FactRecord
     Serializable <|.. FactEdge
     VersionConcreteStrategy <.. FactEdge : use
-    RelationRole "1" --* FactEdge : factsRelationType
     TypeVersion <-- FactRecord : factTypeVersion
 
     class IHistoricalFact {
