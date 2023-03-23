@@ -55,6 +55,15 @@ classDiagram
         -BasicConfigurationVariable(String aName)
         +getName() String
     }
+    class HealthyOperableComponentChecker {
+        <<abstract>>
+        -checkedStatus : boolean = false
+        +checkOperableState()
+        +isOperableStateChecked() boolean
+        #checkConfigurationVariables()$
+        #checkOperatingFiles()$
+        #checkResourcesPermissions()$
+    }
 ```
 
 #
