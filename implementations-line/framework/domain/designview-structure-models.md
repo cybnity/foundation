@@ -68,6 +68,7 @@ classDiagram
     IdentifiableFact <|.. Command
     IVersionable <|.. Command
     IReferenceable <|.. Command
+
     class CommandHandlingService {
         <<abstract>>
         -recipientOfCommands : IAggregate
@@ -109,7 +110,7 @@ classDiagram
     class Validator {
         <<abstract>>
         -notificationHandler : IValidationNotificationHandler
-        +validate()*
+        +validate()
     }
     class IWriteModel {
         <<interface>>
