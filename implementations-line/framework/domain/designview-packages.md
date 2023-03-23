@@ -197,11 +197,10 @@ classDiagram
         <<interface>>
     }
     class IdentifierStringBased {
-        << ValueObject<String> >>
         -value : String
         -name : String
-        +build(Collection~Identifier~ basedOn)$ Identifier
         +IdentifierStringBased(String name, String value)
+        +build(Collection~Identifier~ basedOn)$ Identifier
         +immutable() Serializable
         +name() String
         +value() Serializable
