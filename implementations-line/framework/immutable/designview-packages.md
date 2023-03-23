@@ -10,6 +10,7 @@ The technical description regarding behavior and best usage is maintained into t
 |BaseConstants| |
 |ChildFact| |
 |Entity| |
+|EntityReference| |
 |ExecutableComponentChecker| |
 |FactEdge| |
 |FactsProvider| |
@@ -52,11 +53,15 @@ Main project's package regarding the immutability capabilities, this package inc
 classDiagram
     IHistoricalFact <|.. ChildFact
     IdentifiableFact <|.. ChildFact
+    IHistoricalFact <|.. EntityReference
+    Entity "0..1" <-- EntityReference : referenceRelation
+    Entity "1" --o EntityReference : entity
     IHistoricalFact <|.. Entity
     IdentifiableFact <|.. Entity
     IReferenceable <|.. Entity
     Unmodifiable <|.. AuditLog
     Serializable <|.. AuditLog
+    EntityReference "0..n" --o EntityReference : prior
 
     class Entity {
         #identifiedBy : ArrayList~Identifier~
@@ -93,6 +98,8 @@ classDiagram
     class BaseConstants {
         <<enumeration>>
         IDENTIFIER_ID
+    }
+    class EntityReference {
     }
 
 ```
