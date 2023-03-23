@@ -32,7 +32,7 @@ public class NotificationLogUseCaseTest {
 
     @BeforeEach
     public void initLogOrigin() {
-	originalLogId = new IdentifierStringBased(NotificationLog.IDENTIFIER_NAME, "KJHG986754");
+	originalLogId = new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), "KJHG986754");
 	userAccountCreationFact = new UserAccountIdentityCreation(
 		new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), "98765DFGHJKJHG"));
     }
@@ -55,26 +55,28 @@ public class NotificationLogUseCaseTest {
 	// Check that log id is not modified and without dependency with the logged
 	// fact's identifier
 	Identifier identifiedBy = eventLog.identified();
-	assertEquals( originalLogId,
-		identifiedBy,"Should not had been modified with any dependency to logged parent's identifier!");
+	assertEquals(originalLogId, identifiedBy,
+		"Should not had been modified with any dependency to logged parent's identifier!");
 	// Verifi only one identifying information is saved regarding this log
 	assertEquals(
-		
-		1, eventLog.identifiers().size(),"Invalid quantity of identifying information generated for this log only based on unique technical id!");
+
+		1, eventLog.identifiers().size(),
+		"Invalid quantity of identifying information generated for this log only based on unique technical id!");
 	// Verify immutable copy generated
 	NotificationLog copy = (NotificationLog) eventLog.immutable();
 	// Check equals log id copied
-	assertEquals( originalLogId, copy.identified(),"Invalid immutable version of log id!");
+	assertEquals(originalLogId, copy.identified(), "Invalid immutable version of log id!");
 	// Check equals parent attached
-	assertEquals( userAccountCreationFact, copy.parent(),"Invalid immutable version of logged fact!");
+	assertEquals(userAccountCreationFact, copy.parent(), "Invalid immutable version of logged fact!");
     }
 
     @Test
     public void givenInvalidIdentifierName_whenConstructor_thenIllegalArgumentException() {
 	assertThrows(IllegalArgumentException.class, () -> {
-	// Create instance of log identifier based on invalid identifier name
-	originalLogId = new IdentifierStringBased("any_other_uuid_name", "KJHG986754");
-	new NotificationLog(userAccountCreationFact, originalLogId);});
+	    // Create instance of log identifier based on invalid identifier name
+	    originalLogId = new IdentifierStringBased("any_other_uuid_name", "KJHG986754");
+	    new NotificationLog(userAccountCreationFact, originalLogId);
+	});
     }
 
 }

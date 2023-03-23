@@ -137,9 +137,9 @@ classDiagram
         -mediated : HasMap
         #context : IContext
         +ProcessManager(IContext ctx)
+        #managedHandlers()$ HashMap
         #initializeHandlers()
         #delegation() HashMap
-        managedHandlers()$ HashMap
     }
     class Identifier {
         <<interface>>
@@ -168,7 +168,37 @@ classDiagram
     }
 
 ```
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+    Entity <|-- UnidentifiableFactNotificationLog
 
+    class UnidentifiableFactNotificationLog {
+        -originalFacts : List~IHistoricalFact~
+        +UnidentifiableFactNotificationLog(Identifier logEventId, IHistoricalFact... loggedFacts)
+        +originalFacts() List~IHistoricalFact~
+        +immutable() Serializable
+        +versionHash() String
+        +identified() Identifier
+    }
+
+```
 ## MODEL
 
 ```mermaid
