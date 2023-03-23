@@ -52,7 +52,6 @@ classDiagram
     IUniqueness <|.. FactType
     Serializable <|.. FactEdge
     Serializable <|.. FactType
-    TypeVersion "1" --* FactRecord : factTypeVersion
     FactType "1" --o RelationRole : relationDeclaredByOwnerType
     FactType "1" --o RelationRole : relationTargetingOtherFactType
 
@@ -113,6 +112,7 @@ classDiagram
     QualitativeDataBuilder <-- QualitativeDataGenerator : builder
     IHistoricalFact <|.. FactRecord
     IUniqueness <|.. FactRecord
+    TypeVersion "1" --* FactRecord : factTypeVersion
 
     class IHistoricalFact {
         <<interface>>
