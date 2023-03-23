@@ -5,6 +5,54 @@ Presentation of the deisng view packages and provided components.
 
 Several packages are implemented to organize the components (e.g specification elements, implementation components) into the `org.cybnity.framework` main package.
 
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+    IdentifiableFact <|-- IAggregate
+    IHistoricalFact <|.. DomainEvent
+    IVersionable <|.. DomainEvent
+    IReferenceable <|.. DomainEvent
+    IdentifiableFact <|.. DomainEvent
+
+    class DomainEvent {
+        <<abstract>>
+        -occuredOn : OffsetDateTime
+        -identifiedBy : Entity
+        +DomainEvent()
+        +DomainEvent(Entity uid)
+    }
+    class IAggregate {
+        <<interface>>
+        +execute(Command change, IContext ctx)
+    }
+    class IHistoricalFact {
+        <<interface>>
+    }
+    class IdentifiableFact {
+        <<interface>>
+    }
+    class IReferenceable {
+        <<interface>>
+    }
+
+```
+
 ## MODEL
 
 ```mermaid
@@ -26,34 +74,9 @@ Several packages are implemented to organize the components (e.g specification e
   }
 }%%
 classDiagram
-    IHistoricalFact <|.. DomainEvent
-    IVersionable <|.. DomainEvent
-    IReferenceable <|.. DomainEvent
-    IdentifiableFact <|.. DomainEvent
-    IdentifiableFact <|-- IAggregate
     MutableProperty <|-- ActivityState
     ChildFact <|-- CommonChildFactImpl
 
-    class DomainEvent {
-        <<abstract>>
-        -occuredOn : OffsetDateTime
-        -identifiedBy : Entity
-        +DomainEvent()
-        +DomainEvent(Entity uid)
-    }
-    class IHistoricalFact {
-        <<interface>>
-    }
-    class IdentifiableFact {
-        <<interface>>
-    }
-    class IAggregate {
-        <<interface>>
-        +execute(Command change, IContext ctx)
-    }
-    class IReferenceable {
-        <<interface>>
-    }
     class ChildFact {
         <<abstract>>
     }
