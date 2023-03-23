@@ -25,6 +25,9 @@ The technical description regarding behavior and best usage is maintained into t
 |IFactStore| |
 |IGroup| |
 |IHistoricalFact| |
+|IMember| |
+|ImmutabilityException| |
+|IOwnership| |
 |IUniqueness| |
 |QualitativeDataBuilder|Builder pattern implementation of data quality ensuring the application of quality rules on object to intantiate|
 |QualitativeDataGenerator|Producer of qualitative data that manage execution of quality rules for instance to build as ACID model|
@@ -62,6 +65,7 @@ classDiagram
     IVersionable <|-- IHistoricalFact
     Serializable <|-- IHistoricalFact
     IHistoricalFact <|-- IGroup
+    IHistoricalFact <|-- IMember
     IReferenceable <|.. Entity
     ChildFact ..|> IdentifiableFact
     IdentifiableFact <|.. Entity
@@ -76,6 +80,10 @@ classDiagram
     class IHistoricalFact {
         <<interface>>
         +occurredAt() OffsetDateTime
+    }
+    class IMember {
+        <<interface>>
+        +identified() Identifier
     }
     class IGroup {
         <<interface>>
@@ -158,6 +166,7 @@ classDiagram
     Serializable <|.. AuditLog
     Unmodifiable <|-- Identifier
     Serializable <|-- Identifier
+    Exception <|-- ImmutabilityException
     class Identifier {
         <<interface>>
         +name() String
@@ -182,6 +191,10 @@ classDiagram
         MERGED
         COMMITTED
         CANCELLED
+    }
+    class IOwnership {
+        <<interface>>
+        +childrenOfParent(IHistoricalFact parent) Collection~ChildFact~
     }
 ```
 
