@@ -96,6 +96,13 @@ classDiagram
         +immutable() Serializable
         +versionHash() String
     }
+    class IDomainModel {
+        <<interface>>
+    }
+    class Predecessors {
+        +generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId)$ Identifier
+        +generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds)$ Identifier
+    }
 
 ```
 
