@@ -107,6 +107,11 @@ classDiagram
     ICommandHandler <|.. ProcessManager
     ProcessManager <|-- CommandHandlingService
 
+    class CommandHandlingService {
+        <<abstract>>
+        -recipientOfCommands : IAggregate
+        -notifiablePublishers : Set~DomainEventPublisher~
+    }
     class IBoundedContext {
         <<interface>>
     }
@@ -170,11 +175,7 @@ classDiagram
     ICommandHandler <|.. ProcessManager
     ProcessManager <|-- CommandHandlingService
 
-    class CommandHandlingService {
-        <<abstract>>
-        -recipientOfCommands : IAggregate
-        -notifiablePublishers : Set~DomainEventPublisher~
-    }
+
     class ProcessManager {
         <<abstract>>
         -mediated : HashMap~String, ICommandHandler~
