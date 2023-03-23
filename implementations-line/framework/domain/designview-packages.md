@@ -174,8 +174,7 @@ classDiagram
 }%%
 classDiagram
     Entity <|-- UnidentifiableFactNotificationLog
-    ValueObject~String~ <|-- IdentifierStringBased
-    ValueObject~T~ <|-- ValueObject~String~
+    ValueObject~T~ <|-- IdentifierStringBased
 
     class UnidentifiableFactNotificationLog {
         -originalFacts : List~IHistoricalFact~
@@ -198,6 +197,7 @@ classDiagram
         <<interface>>
     }
     class IdentifierStringBased {
+        <<ValueObject~String~>>
         -value : String
         -name : String
         +build(Collection~Identifier~ basedOn)$ Identifier
