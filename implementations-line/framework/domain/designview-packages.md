@@ -26,7 +26,6 @@ Several packages are implemented to organize the components (e.g specification e
   }
 }%%
 classDiagram
-    IdentifiableFact <|-- IAggregate
     IHistoricalFact <|.. DomainEvent
     IVersionable <|.. DomainEvent
     IReferenceable <|.. DomainEvent
@@ -76,6 +75,7 @@ classDiagram
     Entity <|-- DomainEntityImpl
     FactRecord <|-- EventRecord
     MutableProperty <|-- ActivityState
+    IdentifiableFact <|-- IAggregate
 
     class IAggregate {
         <<interface>>
