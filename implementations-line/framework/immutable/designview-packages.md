@@ -19,6 +19,7 @@ The technical description regarding behavior and best usage is maintained into t
 |RelationRole| |
 |StructuralVersionStrategy| |
 |TypeVersion| |
+|VersionConcreteStrategy| |
 
 # STRUCTURE MODELS
 Several packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
@@ -248,6 +249,7 @@ classDiagram
 }%%
 classDiagram
     HealthyOperableComponentChecker <|.. ExecutableComponentChecker
+    StructuralVersionStrategy <|-- VersionConcreteStrategy
 
     class ExecutableComponentChecker {
         <<abstract>>
@@ -261,6 +263,11 @@ classDiagram
     class StructuralVersionStrategy {
         <<abstract>>
         +composeCanonicalVersionHash(Class~?~ factType)$ String
+    }
+    class VersionConcreteStrategy {
+        +VersionConcreteStrategy()
+        -getAllFields(Class~?~ clazz) List~Field~
+        +composeCanonicalVersionHash(Class~?~ factType) String
     }
 
 ```
