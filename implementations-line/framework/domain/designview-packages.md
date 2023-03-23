@@ -3,7 +3,9 @@ Presentation of the deisng view packages and provided components.
 
 # STRUCTURE MODELS
 
-## MODEL PACKAGE
+Several packages are implemented to organize the components (e.g specification elements, implementation components) into the `org.cybnity.framework` main package.
+
+## MODEL
 
 ```mermaid
 %%{
@@ -87,7 +89,7 @@ classDiagram
 
 ```
 
-## APPLICATION PACKAGE
+## APPLICATION
 
 ```mermaid
 %%{
@@ -122,6 +124,50 @@ classDiagram
         +findNotificationLog(Identifier logId, EventStore store) NotificationLog
         +currentNotificatiopnLog() NotificationLog
         +publishNotification()
+    }
+
+```
+
+## INFRASTRUCTURE
+
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+    IFactStore <|-- IDomainStore
+    IFactRepository <|-- IDomainRepository
+
+    class IFactStore~T~ {
+        <<interface>>
+    }
+    class IDomainRepository~T~ {
+        <<interface>>
+        +nextIdentity(ISessionContext ctx) T
+        +factOfId(Identifier aFactId, ISessionContext ctx) T
+        +remove(T fact, ISessionContext ctx) boolean
+        +removeAll(Collection~T~ aFactCollection, ISessionContext ctx)
+        +save(T aFact, ISessionContext ctx) T
+        +saveAll(Collection~T~ aFactCollection, ISessionContext ctx)
+    }
+    class IDomainStore~T~ {
+        <<interface>>
+        +append(T fact, ISessionContext ctx)
+        +findEventFrom(Identifier uid, ISessionContext ctx)
     }
 
 ```

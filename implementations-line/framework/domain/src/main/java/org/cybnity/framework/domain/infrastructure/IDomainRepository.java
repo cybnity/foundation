@@ -29,7 +29,7 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      *            id) usable for persistence management.
      * @return A technical identifier.
      */
-    public T nexIdentity(ISessionContext ctx);
+    public T nextIdentity(ISessionContext ctx);
 
     /**
      * Find a historical fact identified.
