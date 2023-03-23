@@ -39,6 +39,7 @@ The technical description regarding behavior and best usage is maintained into t
 |QualitativeDataBuilder|Builder pattern implementation of data quality ensuring the application of quality rules on object to intantiate|
 |QualitativeDataGenerator|Producer of qualitative data that manage execution of quality rules for instance to build as ACID model|
 |RelationRole| |
+|StringBasedNaturalKeyBuilder| |
 |StructuralVersionStrategy| |
 |TypeVersion| |
 |VersionConcreteStrategy| |
@@ -231,7 +232,7 @@ classDiagram
 classDiagram
     IHistoricalFact <|-- IMember
     IHistoricalFact <|-- IGroup
-    Membership o-- "1" IMember : member
+    IMember "1" --o Membership : member
     IGroup "1" --o Membership : group
 
     class IGroup {
@@ -290,6 +291,7 @@ classDiagram
 }%%
 classDiagram
     NaturalKeyIdentifierGenerator --> "1" LocationIndependentIdentityNaturalKeyBuilder : builder
+    LocationIndependentIdentityNaturalKeyBuilder <|-- StringBasedNaturalKeyBuilder
 
     class LocationIndependentIdentityNaturalKeyBuilder {
         <<abstract>>
@@ -301,6 +303,17 @@ classDiagram
     class NaturalKeyIdentifierGenerator {
         +NaturalKeyIdentifierGenerator(LocationIndependentIdentityNaturalKeyBuilder builder)
         +build()
+    }
+    class StringBasedNaturalKeyBuilder {
+        -transformationResult : String
+        -minCharacters : int = 0
+        -isPartialTransformationStarted : boolean = false
+        +StringBasedNaturalKeyBuilder(String aNaturalKey, int minLetterQty)
+        +convertAllLettersToLowerCase()
+        +dropPunctuationMarks()
+        +removeAnySpace()
+        +generateMinimumCharactersQuantity()
+        +getResult() String
     }
 ```
 
