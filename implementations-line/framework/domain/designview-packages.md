@@ -3,9 +3,9 @@ Presentation of the deisng view packages and provided components.
 
 # STRUCTURE MODELS
 
-Several packages are implemented to organize the components (e.g specification elements, implementation components) into the `org.cybnity.framework` main package.
+Several packages are implemented to organize the components (e.g specification elements, implementation components) into the `org.cybnity.framework.domain` main package.
 
-## FRAMEWORK
+## DOMAIN
 
 ```mermaid
 %%{
@@ -30,6 +30,11 @@ classDiagram
     IVersionable <|.. DomainEvent
     IReferenceable <|.. DomainEvent
     IdentifiableFact <|.. DomainEvent
+    IdentifiableFact <|.. Command
+    IVersionable <|.. Command
+    Serializable <|.. Command
+    IReferenceable <|.. Command
+    Evaluations <.. Command : use
     IContext <|-- ISessionContext
 
     class DomainEvent {
@@ -51,6 +56,17 @@ classDiagram
     class ISessionContext {
         <<interface>>
         +tenant() Tenant
+    }
+    class Command {
+        <<abstract>>
+        #identifiedBy : Entity
+        #occuredOn : OffsetDateTime
+        +identified() Identifier
+        +valueHashCodeContributors() String[]
+        +hashCode() int
+        +equals(Object event) boolean
+        +occuredOn() OffsetDateTime
+        +reference() EntityReference
     }
 
 ```
