@@ -129,11 +129,26 @@ classDiagram
     MutableProperty <|-- ActivityState
     Tenant *-- "0..1" MutableProperty : organization
     Tenant *-- "0..1" ActivityState : activityStatus
+    Tenant ..> Predecessors
 
     class ChildFact {
         <<abstract>>
     }
+    class Predecessors {
+        +generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId)$ Identifier
+        +generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds)$ Identifier
+    }
     class Tenant {
+        +status() ActivityState
+        +activate() MutableProperty
+        +deactivate() MutableProperty
+        +setOrganization(MutableProperty tenantRepresentedBy)
+        +organization() MutableProperty
+        +immutable() Serializable
+        +versionHash() String
+        +identified() Identifier
+        +generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId) Identifier
+        +generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds) Identifier
     }
 
 ```
