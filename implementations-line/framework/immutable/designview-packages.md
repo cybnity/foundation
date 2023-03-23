@@ -290,7 +290,7 @@ classDiagram
   }
 }%%
 classDiagram
-    NaturalKeyIdentifierGenerator --> "1" LocationIndependentIdentityNaturalKeyBuilder : builder
+    NaturalKeyIdentifierGenerator o-- "1" LocationIndependentIdentityNaturalKeyBuilder : builder
     LocationIndependentIdentityNaturalKeyBuilder <|-- StringBasedNaturalKeyBuilder
 
     class LocationIndependentIdentityNaturalKeyBuilder {
