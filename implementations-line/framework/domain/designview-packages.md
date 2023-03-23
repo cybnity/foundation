@@ -188,7 +188,12 @@ classDiagram
     FactRecord <|-- EventRecord
     IdentifiableFact <|-- IAggregate
     ProcessManager <|-- CommandHandlingService
+    Context <|-- SessionContext
+    ISessionContext <|.. SessionContext
 
+    class ISessionContext {
+        <<interface>>
+    }
     class CommandHandlingService {
         <<abstract>>
         -recipientOfCommands : IAggregate
@@ -244,8 +249,6 @@ classDiagram
   }
 }%%
 classDiagram
-    Context <|-- SessionContext
-    ISessionContext <|.. SessionContext
     ChildFact <|-- CommonChildFactImpl
     ChildFact <|-- SocialEntity
     ChildFact <|-- NotificationLog
@@ -273,9 +276,6 @@ classDiagram
         +identified() Identifier
         +generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId) Identifier
         +generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds) Identifier
-    }
-    class ISessionContext {
-        <<interface>>
     }
     class NotificationLog {
         +NotificationLog(Entity loggedEvent, Identifier logEventId)
