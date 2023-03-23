@@ -35,8 +35,8 @@ classDiagram
     IVersionable <|.. FactEdge
     IUniqueness <|.. FactEdge
     Serializable <|.. FactEdge
-    RelationRole "1" --* FactEdge : factsRelationType
     VersionConcreteStrategy <.. FactEdge : use
+    RelationRole "1" --* FactEdge : factsRelationType
     class RelationRole {
     }
     class FactEdge {
