@@ -127,13 +127,13 @@ classDiagram
     ChildFact <|-- SocialEntity
     ChildFact <|-- Tenant
     MutableProperty <|-- ActivityState
-    Tenant --> "0..1" MutableProperty : organization
+    Tenant *-- "0..1" MutableProperty : organization
+    Tenant *-- "0..1" ActivityState : activityStatus
 
     class ChildFact {
         <<abstract>>
     }
     class Tenant {
-        -activityStatus : ActivityState
     }
 
 ```
