@@ -35,6 +35,7 @@ The technical description regarding behavior and best usage is maintained into t
 |LocationIndependentIdentityNaturalKeyBuilder| |
 |Membership| |
 |MutableProperty| |
+|NaturalKeyIdentifierGenerator| |
 |QualitativeDataBuilder|Builder pattern implementation of data quality ensuring the application of quality rules on object to intantiate|
 |QualitativeDataGenerator|Producer of qualitative data that manage execution of quality rules for instance to build as ACID model|
 |RelationRole| |
@@ -245,13 +246,6 @@ classDiagram
         <<interface>>
         +versionHash() String
     }
-    class LocationIndependentIdentityNaturalKeyBuilder {
-        <<abstract>>
-        +convertAllLettersToLowerCase()$
-        +dropPunctuationMarks()$
-        +removeAnySpace()$
-        +generateMinimumCharactersQuantity()$
-    }
     class IOwnership {
         <<interface>>
         +childrenOfParent(IHistoricalFact parent) Collection~ChildFact~
@@ -274,6 +268,39 @@ classDiagram
     }
     class IHistoricalFact {
         <<interface>>
+    }
+```
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+    LocationIndependentIdentityNaturalKeyBuilder "1" : builder <-- NaturalKeyIdentifierGenerator
+
+    class LocationIndependentIdentityNaturalKeyBuilder {
+        <<abstract>>
+        +convertAllLettersToLowerCase()$
+        +dropPunctuationMarks()$
+        +removeAnySpace()$
+        +generateMinimumCharactersQuantity()$
+    }
+    class NaturalKeyIdentifierGenerator {
+        +NaturalKeyIdentifierGenerator(LocationIndependentIdentityNaturalKeyBuilder builder)
+        +build()
     }
 ```
 
