@@ -11,6 +11,7 @@ The technical description regarding behavior and best usage is maintained into t
 |ChildFact| |
 |Entity| |
 |EntityReference| |
+|Evaluations| |
 |ExecutableComponentChecker| |
 |FactEdge| |
 |FactsProvider| |
@@ -63,10 +64,6 @@ classDiagram
     Entity "1" --o EntityReference : entity
     Entity "0..1" <-- EntityReference : referenceRelation
 
-    class BaseConstants {
-        <<enumeration>>
-        IDENTIFIER_ID
-    }
     class Entity {
         #identifiedBy : ArrayList~Identifier~
         #createdAt : OffsetDateTime
@@ -115,6 +112,35 @@ classDiagram
         +equals(Object obj) boolean
     }
 
+```
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+
+    class Evaluations {
+        +isIdentifiedEquals(IdentifiableFact fact, IdentifiableFact otherFact)$ boolean
+        +isEpochSecondEquals(OffsetDateTime aDate, OffsetDateTime another)$ boolean
+    }
+    class BaseConstants {
+        <<enumeration>>
+        IDENTIFIER_ID
+    }
 ```
 
 ## PERSISTENCE SUB-PACKAGE
