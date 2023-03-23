@@ -10,6 +10,11 @@ For more detail, the technical description regarding behavior and best usage is 
 |Class Type|Motivation|
 | :-- | :-- |
 |BasicConfigurationVariable| |
+|Context| |
+|IContext| |
+|IReadableConfiguration| |
+|MissingConfigurationException| |
+|UnoperationalStateException| |
 
 ## STRUCTURE MODELS
 Presentation of the design view of the `org.cybnity.framework.framework` main project's artifacts package.
@@ -39,7 +44,17 @@ See complementary presentation of [detailed structure models implemented into th
 classDiagram
     IReadableConfiguration <|.. BasicConfigurationVariable
     IContext <|.. Context
+    UnoperationalStateException <|-- MissingConfigurationException
+    Exception <|-- UnoperationalStateException
 
+    class IContext {
+        <<interface>>
+        +get(Class~?~ typeOfResult) Object
+        +get(String resourceName) Object
+        +get(IReadableConfiguration config) String
+        +addResource(Object instance, String resourceName, boolean forceReplace) boolean
+        +remove(String resourceName) boolean
+    }
     class Context {
         -resources : ConcurrentHashMap
         +Context()
@@ -63,6 +78,9 @@ classDiagram
         #checkConfigurationVariables()$
         #checkOperatingFiles()$
         #checkResourcesPermissions()$
+    }
+    class IReadableConfiguration {
+        +getName() String
     }
 ```
 
