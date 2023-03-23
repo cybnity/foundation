@@ -57,10 +57,16 @@ See the presentation of [detailed structure models implemented into the sub-pack
     }
   }
 }%%
+
 classDiagram
     ICommandHandler <|.. ProcessManager
     ProcessManager <|-- CommandHandlingService
-
+    IContext <|-- IBoundedContext
+    ChildFact <|-- NotificationLog
+    Entity <|-- UnidentifiableFactNotificationLog
+    IdentifiableFact <|.. Command
+    IVersionable <|.. Command
+    IReferenceable <|.. Command
     class CommandHandlingService {
         <<abstract>>
         -recipientOfCommands : IAggregate
@@ -77,32 +83,6 @@ classDiagram
         +handle(Command command, IContext ctx)
         +handleCommandTypeVersions() Set~Long~
     }
-
-```
-
-```mermaid
-%%{
-  init: {
-    'theme': 'base',
-    'themeVariables': {
-        'background': '#ffffff',
-        'fontFamily': 'arial',
-        'fontSize': '18px',
-        'primaryColor': '#fff',
-        'primaryBorderColor': '#0e2a43',
-        'secondaryBorderColor': '#0e2a43',
-        'tertiaryBorderColor': '#0e2a43',
-        'edgeLabelBackground':'#0e2a43',
-        'lineColor': '#0e2a43',
-        'tertiaryColor': '#fff'
-    }
-  }
-}%%
-classDiagram
-    IContext <|-- IBoundedContext
-    ChildFact <|-- NotificationLog
-    Entity <|-- UnidentifiableFactNotificationLog
-
     class IBoundedContext {
         <<interface>>
     }
@@ -141,31 +121,6 @@ classDiagram
         <<abstract>>
         #valueEquality(ValueObject~T~ obj)*
     }
-
-```
-
-```mermaid
-%%{
-  init: {
-    'theme': 'base',
-    'themeVariables': {
-        'background': '#ffffff',
-        'fontFamily': 'arial',
-        'fontSize': '18px',
-        'primaryColor': '#fff',
-        'primaryBorderColor': '#0e2a43',
-        'secondaryBorderColor': '#0e2a43',
-        'tertiaryBorderColor': '#0e2a43',
-        'edgeLabelBackground':'#0e2a43',
-        'lineColor': '#0e2a43',
-        'tertiaryColor': '#fff'
-    }
-  }
-}%%
-classDiagram
-    IdentifiableFact <|.. Command
-    IVersionable <|.. Command
-    IReferenceable <|.. Command
     class IVersionable {
         <<interface>>
         +versionUID() Long
