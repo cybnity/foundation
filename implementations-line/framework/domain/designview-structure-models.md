@@ -104,6 +104,8 @@ classDiagram
     IContext <|-- IBoundedContext
     ChildFact <|-- NotificationLog
     Entity <|-- UnidentifiableFactNotificationLog
+    ICommandHandler <|.. ProcessManager
+    ProcessManager <|-- CommandHandlingService
 
     class IBoundedContext {
         <<interface>>
