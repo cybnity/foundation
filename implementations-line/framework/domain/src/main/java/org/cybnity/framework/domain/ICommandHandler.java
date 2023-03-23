@@ -17,7 +17,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * the aggregate to a persistence system.
  * 
  * Typically, the command handlers are organized into a class (see
- * {@link org.cybnity.framework.domain.CommandHandlingService}) that contains
+ * {@link org.cybnity.framework.domain.model.CommandHandlingService}) that contains
  * all of the handlers for a specific aggregate type.
  * 
  * Commands should be processed once, by a single recipient. The messaging

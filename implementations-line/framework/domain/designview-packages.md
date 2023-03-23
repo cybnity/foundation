@@ -1,11 +1,8 @@
 ## PURPOSE
-Presentation of the deisng view packages and provided components.
+Presentation of the deisng view packages and provided components into the `org.cybnity.framework.domain` main project's artifacts package.
 
 # STRUCTURE MODELS
-
-Several packages are implemented to organize the components (e.g specification elements, implementation components) into the `org.cybnity.framework.domain` main package.
-
-## DOMAIN
+Several sub-packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
 
 ```mermaid
 %%{
@@ -79,6 +76,28 @@ classDiagram
     }
 
 ```
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+
+
+```
 
 ## MODEL
 
@@ -104,7 +123,19 @@ classDiagram
     Entity <|-- DomainEntityImpl
     FactRecord <|-- EventRecord
     IdentifiableFact <|-- IAggregate
+    ProcessManager <|-- CommandHandlingService
 
+    class CommandHandlingService {
+        <<abstract>>
+        -recipientOfCommands : IAggregate
+        -notifiablePublishers : Set~DomainEventPublisher~
+    }
+    class ProcessManager {
+        <<abstract>>
+    }
+    class IdentifiableFact {
+        <<interface>>
+    }
     class IAggregate {
         <<interface>>
         +execute(Command change, IContext ctx)
