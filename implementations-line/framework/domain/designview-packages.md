@@ -1,6 +1,9 @@
 ## PURPOSE
 Presentation of the design view regarding the sub-packages of `org.cybnity.framework.domain` project.
 
+# DESIGN VIEW
+The technical description regarding behavior and best usage is maintained into the Javadoc of each component.
+
 # STRUCTURE MODELS
 Several packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
 
