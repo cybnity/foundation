@@ -245,7 +245,17 @@ classDiagram
   }
 }%%
 classDiagram
+    HealthyOperableComponentChecker <|.. ExecutableComponentChecker
 
+    class ExecutableComponentChecker {
+        <<abstract>>
+        -context : IContext
+        +ExecutableComponentChecker(IContext ctx)
+        +ExecutableComponentChecker()
+        #getContext() IContext
+        #checkConfigurationVariables()
+        #requiredEnvironmentVariables()$ Set~IReadableConfiguration~
+    }
 
 ```
 
