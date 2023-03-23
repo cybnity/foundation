@@ -119,7 +119,7 @@ classDiagram
     }
     class ProcessManager {
         <<abstract>>
-        -mediated : HashMap~String,ICommandHandler~
+        -mediated : HashMap
     }
     class IBoundedContext {
         <<interface>>
