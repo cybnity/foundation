@@ -77,7 +77,6 @@ jobs:
     name: Latest version publishing
     # Publish not tagged snapshot version but as a common name equals to latest version of staging branch available for other domain application projects managed in other repositories
     if: ${{ success()
-          && github.event_name == 'push'
           && needs.define_project_release_name.outputs.is_snapshot == 'true'
           && needs.define_project_release_name.outputs.release_name != ''
           }}
