@@ -42,6 +42,7 @@ The technical description regarding behavior and best usage is maintained into t
 |StringBasedNaturalKeyBuilder| |
 |StructuralVersionStrategy| |
 |Transaction| |
+|TransactionItem| |
 |TypeVersion| |
 |VersionConcreteStrategy| |
 
@@ -94,6 +95,21 @@ classDiagram
         #transactionParentContext : Entity
         #createdAt : OffsetDateTime
         -transactionId : Identifier
+        +Transaction(Entity transactionParentContext, Identifier id)
+        +immutable() Serializable
+        +transactionId() Identifier
+        +occurredAt() OffsetDateTime
+        +transactionParentContext() Entity
+        +getItems() Set~TransactionItem~
+        +setItems(Set~TransactionItem~ items)
+        +versionHash() String
+    }
+    class TransactionItem {
+        -itemContext : Entity
+        -propertyState : MutableProperty
+        +TransactionItem(Entity childEntityContext, MutableProperty childPropertyVersion)
+        +getItemContext() Entity
+        +getPropertyState() MutableProperty
     }
     class HistoryState {
         <<enumeration>>
