@@ -80,7 +80,6 @@ classDiagram
 }%%
 classDiagram
     Entity <|-- DomainEntityImpl
-
     class Entity {
         <<abstract>>
     }
@@ -137,6 +136,9 @@ classDiagram
         <<abstract>>
         +handleEvent(T event)
         +subscribeToEventType() Class
+    }
+    class DomainEventPublisher {
+        instance() DomainEventPublisher$
     }
     class EventStream {
         -version : int
