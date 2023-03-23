@@ -55,6 +55,15 @@ classDiagram
     Serializable <|.. FactEdge
     Serializable <|.. FactType
 
+    class Unmodifiable {
+        <<interface>>
+    }
+    class IVersionable {
+        <<interface>>
+    }
+    class Serializable {
+        <<interface>>
+    }
     class FactType {
         -name : String
         -id : String
@@ -113,8 +122,23 @@ classDiagram
     IHistoricalFact <|.. FactRecord
     IUniqueness <|.. FactRecord
     TypeVersion "1" --* FactRecord : factTypeVersion
+    Serializable <|.. TypeVersion
 
     class IHistoricalFact {
+        <<interface>>
+    }
+    class TypeVersion {
+        -hash : String
+        -id : String
+        -minLetterQty : int = 20
+        -factType : FactType
+        +TypeVersion(Class~?~ subject, String identifier)
+        +TypeVersion(Class~?~ subject)
+        +factType FactType
+        +hash() String
+        +id() String
+    }
+    class IUniqueness {
         <<interface>>
     }
     class FactRecord {
