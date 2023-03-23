@@ -106,6 +106,13 @@ classDiagram
   }
 }%%
 classDiagram
+    ICommandHandler <|.. ProcessManager
+
+    class ICommandHandler {
+        <<interface>>
+        +handle(Command command, IContext ctx)
+        +handledCommandTypeVersions() Set~String~
+    }
     class DataTransferObject {
         <<abstract>>
         +equals(Object obj) boolean
