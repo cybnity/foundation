@@ -141,6 +141,10 @@ classDiagram
     class IReadModel {
         <<interface>>
     }
+    class IWriteModel {
+        <<interface>>
+        +handle(Command command)
+    }
     class IService {
         <<interface>>
     }
@@ -148,6 +152,13 @@ classDiagram
         <<interface>>
         +subscribe(DomainEventSubscriber~T~ aSubscriber) ~T~
         +remove(DomainEventSubscriber~T~ aSubscriber) ~T~
+    }
+    class IValidationNotificationHandler {
+        <<interface>>
+        +handleError(String message)
+    }
+    class IViewModelGenerator {
+        <<interface>>
     }
 
 ```
@@ -237,6 +248,7 @@ classDiagram
     ISessionContext <|.. SessionContext
     ChildFact <|-- CommonChildFactImpl
     ChildFact <|-- SocialEntity
+    ChildFact <|-- NotificationLog
     ChildFact <|-- Tenant
     MutableProperty <|-- ActivityState
     Tenant ..> Predecessors : use
@@ -264,6 +276,29 @@ classDiagram
     }
     class ISessionContext {
         <<interface>>
+    }
+    class NotificationLog {
+        +NotificationLog(Entity loggedEvent, Identifier logEventId)
+        +versionHash() String
+        +identified() Identifier
+        +generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId) Identifier
+        +generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds) Identifier
+    }
+    class SocialEntity {
+        +SocialEntity(Entity predecessor, Identifier id)
+        +SocialEntity(Entity predecessor, LinkedHashSet~Identifier~ identifiers)
+        +versionHash() String
+        +identified() Identifier
+        +generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId) Identifier
+        +generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds) Identifier
+    }
+    class CommonChildFactImpl {
+        +CommonChildFactImpl(Entity predecessor, Identifier id)
+        +CommonChildFactImpl(Entity predecessor, LinkedHashSet~Identifier~ identifiers)
+        +versionHash() String
+        +identified() Identifier
+        +generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId) Identifier
+        +generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds) Identifier
     }
 
 ```

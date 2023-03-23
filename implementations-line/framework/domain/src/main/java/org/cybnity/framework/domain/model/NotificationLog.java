@@ -1,8 +1,10 @@
-package org.cybnity.framework.domain;
+package org.cybnity.framework.domain.model;
 
 import java.io.Serializable;
 import java.util.Collection;
 
+import org.cybnity.framework.domain.IdentifierStringBased;
+import org.cybnity.framework.domain.UnidentifiableFactNotificationLog;
 import org.cybnity.framework.immutable.ChildFact;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;

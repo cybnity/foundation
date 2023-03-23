@@ -1,7 +1,7 @@
 package org.cybnity.framework.domain.application;
 
-import org.cybnity.framework.domain.NotificationLog;
 import org.cybnity.framework.domain.model.EventStore;
+import org.cybnity.framework.domain.model.NotificationLog;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
