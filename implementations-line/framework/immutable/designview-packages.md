@@ -44,6 +44,7 @@ The technical description regarding behavior and best usage is maintained into t
 |Transaction| |
 |TransactionItem| |
 |TypeVersion| |
+|Unmodifiable| |
 |VersionConcreteStrategy| |
 
 # STRUCTURE MODELS
@@ -137,6 +138,16 @@ classDiagram
     class IHistoricalFact {
         <<interface>>
         +occurredAt() OffsetDateTime
+    }
+    class Unmodifiable {
+        <<interface>>
+        +immutable() Serializable
+    }
+    class IVersionable {
+        <<interface>>
+    }
+    class IReferenceable {
+        <<interface>>
     }
     class IRestorationFact {
         <<interface>>
