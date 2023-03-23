@@ -64,12 +64,6 @@ classDiagram
     IVersionable <|.. Command
     IReferenceable <|.. Command
 
-    ICommandHandler <|.. ProcessManager
-    ProcessManager <|-- CommandHandlingService
-    IContext <|-- IBoundedContext
-    ChildFact <|-- NotificationLog
-    Entity <|-- UnidentifiableFactNotificationLog
-
     class IVersionable {
         <<interface>>
         +versionUID() Long
@@ -85,6 +79,34 @@ classDiagram
         -identifiedBy : Entity
         -occuredOn : Temporal
     }
+
+```
+
+
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+    ICommandHandler <|.. ProcessManager
+    ProcessManager <|-- CommandHandlingService
+    IContext <|-- IBoundedContext
+    ChildFact <|-- NotificationLog
+    Entity <|-- UnidentifiableFactNotificationLog
 
     class CommandHandlingService {
         <<abstract>>
