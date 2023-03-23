@@ -7,6 +7,7 @@ The technical description regarding behavior and best usage is maintained into t
 |Class Type|Motivation|
 | :-- | :-- |
 |FactEdge| |
+|FactsProvider| |
 |FactRecord| |
 |FactType| |
 |IFactRepository| |
@@ -213,7 +214,13 @@ classDiagram
   }
 }%%
 classDiagram
-
+    IOwnership <|.. FactsProvider
+    class FactsProvider {
+        <<abstract>>
+    }
+    class IOwnership {
+        <<interface>>
+    }
 
 ```
 
