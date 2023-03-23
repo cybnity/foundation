@@ -119,6 +119,9 @@ classDiagram
         <<abstract>>
         +equals(Object obj) boolean
     }
+    class IQueryResponse {
+        <<interface>>
+    }
     class ProcessManager {
         <<abstract>>
     }
@@ -128,12 +131,23 @@ classDiagram
     class IdentifierStringBased {
         -value : String
         -name : String
-        build(Collection~Identifier~ basedOn)$ Identifier
+        +build(Collection~Identifier~ basedOn)$ Identifier
         +IdentifierStringBased(String name, String value)
         +immutable() Serializable
         +name() String
         +value() Serializable
         +valueHashCodeContributors() String[]
+    }
+    class IReadModel {
+        <<interface>>
+    }
+    class IService {
+        <<interface>>
+    }
+    class ISubscribable {
+        <<interface>>
+        +subscribe(DomainEventSubscriber~T~ aSubscriber) ~T~
+        +remove(DomainEventSubscriber~T~ aSubscriber) ~T~
     }
 
 ```
@@ -308,7 +322,7 @@ classDiagram
     class DomainEventPublisher {
         +instance()$ DomainEventPublisher
         +subscribe(DomainEventSubscriber~T~ aSubscriber) ~T~
-        +remove(DomaineEventSubscriber~T~ aSubscriber) ~T~
+        +remove(DomainEventSubscriber~T~ aSubscriber) ~T~
         +publish(T aDomainEvent) ~T~
         +reset() DomainEventPublisher
     }
