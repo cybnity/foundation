@@ -145,12 +145,14 @@ classDiagram
     }
     class IVersionable {
         <<interface>>
+        +versionHash() String
     }
     class Serializable {
         <<interface>>
     }
     class IReferenceable {
         <<interface>>
+        +reference() EntityReference
     }
     class IRestorationFact {
         <<interface>>
@@ -276,14 +278,6 @@ classDiagram
     class IGroup {
         <<interface>>
         +identified() Identifier
-    }
-    class IReferenceable {
-        <<interface>>
-        +reference() EntityReference
-    }
-    class IVersionable {
-        <<interface>>
-        +versionHash() String
     }
     class IOwnership {
         <<interface>>
