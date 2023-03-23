@@ -39,21 +39,21 @@ Several packages are implemented to organize the components (e.g specification e
   }
 }%%
 classDiagram
-    Unmodifiable <|.. RelationRole
-    IVersionable <|.. RelationRole
-    IUniqueness <|.. RelationRole
     Serializable <|.. RelationRole
+    RelationRole "1" --* FactEdge : factsRelationType
+    FactType "1" --o RelationRole : relationDeclaredByOwnerType
+    FactType "1" --o RelationRole : relationTargetingOtherFactType
+    Unmodifiable <|.. RelationRole
     Unmodifiable <|.. FactEdge
     Unmodifiable <|.. FactType
+    IVersionable <|.. RelationRole
     IVersionable <|.. FactEdge
     IVersionable <|.. FactType
-    RelationRole "1" --* FactEdge : factsRelationType
+    IUniqueness <|.. RelationRole
     IUniqueness <|.. FactEdge
     IUniqueness <|.. FactType
     Serializable <|.. FactEdge
     Serializable <|.. FactType
-    FactType "1" --o RelationRole : relationDeclaredByOwnerType
-    FactType "1" --o RelationRole : relationTargetingOtherFactType
 
     class FactType {
         -name : String
