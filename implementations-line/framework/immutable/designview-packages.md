@@ -31,7 +31,7 @@ Several packages are implemented to organize the components (e.g specification e
   }
 }%%
 classDiagram
-    Ummodifiable <|.. FactEdge
+    Unmodifiable <|.. FactEdge
     Unmodifiable <|.. FactType
     IVersionable <|.. FactEdge
     IVersionable <|.. FactType
