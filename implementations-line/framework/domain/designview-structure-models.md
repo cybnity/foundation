@@ -7,6 +7,8 @@ Several structural patterns are supporting the domain (e.g event sourcing) and a
 ### Sub-Packages
 See the presentation of [detailed structure models implemented into the sub-packages](designview-packages.md).
 
+### Key Components
+
 |Class Type|Motivation|
 | :-- | :-- |
 |Command|Imperative and identifiabl element that is a request for the system to perform a task|
