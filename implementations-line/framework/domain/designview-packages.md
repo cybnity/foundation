@@ -5,6 +5,8 @@ Presentation of the deisng view packages and provided components.
 
 Several packages are implemented to organize the components (e.g specification elements, implementation components) into the `org.cybnity.framework` main package.
 
+## FRAMEWORK
+
 ```mermaid
 %%{
   init: {
@@ -76,32 +78,6 @@ classDiagram
 classDiagram
     MutableProperty <|-- ActivityState
     ChildFact <|-- CommonChildFactImpl
-
-    class ChildFact {
-        <<abstract>>
-    }
-
-```
-
-```mermaid
-%%{
-  init: {
-    'theme': 'base',
-    'themeVariables': {
-        'background': '#ffffff',
-        'fontFamily': 'arial',
-        'fontSize': '18px',
-        'primaryColor': '#fff',
-        'primaryBorderColor': '#0e2a43',
-        'secondaryBorderColor': '#0e2a43',
-        'tertiaryBorderColor': '#0e2a43',
-        'edgeLabelBackground':'#0e2a43',
-        'lineColor': '#0e2a43',
-        'tertiaryColor': '#fff'
-    }
-  }
-}%%
-classDiagram
     Entity <|-- DomainEntityImpl
     class Entity {
         <<abstract>>
@@ -110,6 +86,9 @@ classDiagram
         +identified() Identifier
         +immutable() Serializable
         +versionHash() String
+    }
+    class ChildFact {
+        <<abstract>>
     }
 
 ```
