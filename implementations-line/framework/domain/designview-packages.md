@@ -197,7 +197,7 @@ classDiagram
         <<interface>>
     }
     class IdentifierStringBased {
-        <<ValueObject~String~>>
+        <<ValueObject<String>>>
         -value : String
         -name : String
         +build(Collection~Identifier~ basedOn)$ Identifier
