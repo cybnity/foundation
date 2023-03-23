@@ -134,7 +134,12 @@ classDiagram
     }
     class ProcessManager {
         <<abstract>>
-        -mediated : HasMap~String, ICommandHandler~
+        -mediated : HasMap
+        #context : IContext
+        +ProcessManager(IContext ctx)
+        #initializeHandlers()
+        #delegation() HashMap
+        managedHandlers()$ HashMap
     }
     class Identifier {
         <<interface>>
