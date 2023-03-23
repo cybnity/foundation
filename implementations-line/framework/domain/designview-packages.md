@@ -138,7 +138,7 @@ classDiagram
         +subscribeToEventType() Class
     }
     class DomainEventPublisher {
-        instance() DomainEventPublisher$
+        instance()$ DomainEventPublisher
     }
     class EventStream {
         -version : int
