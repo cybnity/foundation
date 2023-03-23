@@ -17,6 +17,7 @@ The technical description regarding behavior and best usage is maintained into t
 |FactsProvider| |
 |FactRecord| |
 |FactType| |
+|HistoryState| |
 |IFactRepository| |
 |IFactStore| |
 |IUniqueness| |
@@ -140,6 +141,13 @@ classDiagram
     class BaseConstants {
         <<enumeration>>
         IDENTIFIER_ID
+    }
+    class HistoryState {
+        <<enumeration>>
+        ARCHIVED
+        MERGED
+        COMMITTED
+        CANCELLED
     }
 ```
 
