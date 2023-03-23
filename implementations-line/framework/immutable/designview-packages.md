@@ -48,9 +48,7 @@ classDiagram
     IVersionable <|.. FactEdge
     IVersionable <|.. FactType
     RelationRole "1" --* FactEdge : factsRelationType
-    IHistoricalFact <|.. FactRecord
     IUniqueness <|.. FactEdge
-    IUniqueness <|.. FactRecord
     IUniqueness <|.. FactType
     Serializable <|.. FactEdge
     Serializable <|.. FactType
@@ -69,9 +67,6 @@ classDiagram
         +name() String
         +immutable() Serializable
         +versionHash() String
-    }
-    class IHistoricalFact {
-        <<interface>>
     }
     class IUniqueness {
         <<interface>>
@@ -93,23 +88,6 @@ classDiagram
         +successorId() String
         +immutable() Serializable
         +versionHash() String
-    }
-    class FactRecord {
-        -body : Serializable
-        -factOccurredAt : OffsetDateTime
-        -recordedAt : OffsetDateTime
-        -bodyHash : int
-        -factId : Integer
-        +FactRecord(IHistoricalFact originFact)
-        +basedOn() Set~Field~
-        +getFactId() Integer
-        +bodyHash() int
-        +body() Serializable
-        +factTypeVersion() TypeVersion
-        +recordedAt() OffsetDateTime
-        +immutable() Serializable
-        +versionHash() String
-        +occurredAt() OffsetDateTime
     }
 
 ```
@@ -133,7 +111,29 @@ classDiagram
 }%%
 classDiagram
     QualitativeDataBuilder <-- QualitativeDataGenerator : builder
+    IHistoricalFact <|.. FactRecord
+    IUniqueness <|.. FactRecord
 
+    class IHistoricalFact {
+        <<interface>>
+    }
+    class FactRecord {
+        -body : Serializable
+        -factOccurredAt : OffsetDateTime
+        -recordedAt : OffsetDateTime
+        -bodyHash : int
+        -factId : Integer
+        +FactRecord(IHistoricalFact originFact)
+        +basedOn() Set~Field~
+        +getFactId() Integer
+        +bodyHash() int
+        +body() Serializable
+        +factTypeVersion() TypeVersion
+        +recordedAt() OffsetDateTime
+        +immutable() Serializable
+        +versionHash() String
+        +occurredAt() OffsetDateTime
+    }
     class IFactRepository~T~ {
         <<interface>>
         +nextIdentity() T
