@@ -31,6 +31,9 @@ The technical description regarding behavior and best usage is maintained into t
 |IReferenceable| |
 |IRestorationFact| |
 |IUniqueness| |
+|IVersionable| |
+|LocationIndependentIdentityNaturalKeyBuilder| |
+|Membership| |
 |QualitativeDataBuilder|Builder pattern implementation of data quality ensuring the application of quality rules on object to intantiate|
 |QualitativeDataGenerator|Producer of qualitative data that manage execution of quality rules for instance to build as ACID model|
 |RelationRole| |
@@ -67,8 +70,6 @@ classDiagram
     IVersionable <|-- IHistoricalFact
     Serializable <|-- IHistoricalFact
     IHistoricalFact <|-- IRestorationFact
-    IHistoricalFact <|-- IGroup
-    IHistoricalFact <|-- IMember
     IReferenceable <|.. Entity
     ChildFact ..|> IdentifiableFact
     IdentifiableFact <|.. Entity
@@ -87,14 +88,6 @@ classDiagram
     class IRestorationFact {
         <<interface>>
         +deletion() IDeletionFact
-    }
-    class IMember {
-        <<interface>>
-        +identified() Identifier
-    }
-    class IGroup {
-        <<interface>>
-        +identified() Identifier
     }
     class IdentifiableFact {
         <<interface>>
@@ -188,20 +181,12 @@ classDiagram
         +isIdentifiedEquals(IdentifiableFact fact, IdentifiableFact otherFact)$ boolean
         +isEpochSecondEquals(OffsetDateTime aDate, OffsetDateTime another)$ boolean
     }
-    class BaseConstants {
-        <<enumeration>>
-        IDENTIFIER_ID
-    }
     class HistoryState {
         <<enumeration>>
         ARCHIVED
         MERGED
         COMMITTED
         CANCELLED
-    }
-    class IOwnership {
-        <<interface>>
-        +childrenOfParent(IHistoricalFact parent) Collection~ChildFact~
     }
 ```
 ```mermaid
@@ -223,9 +208,52 @@ classDiagram
   }
 }%%
 classDiagram
+    IHistoricalFact <|-- IMember
+    IHistoricalFact <|-- IGroup
+    IMember "1" --o Membership : member
+    IGroup "1" --o Membership : group
+
+    class IGroup {
+        <<interface>>
+        +identified() Identifier
+    }
     class IReferenceable {
         <<interface>>
         +reference() EntityReference
+    }
+    class IVersionable {
+        <<interface>>
+        +versionHash() String
+    }
+    class LocationIndependentIdentityNaturalKeyBuilder {
+        <<abstract>>
+        +convertAllLettersToLowerCase()$
+        +dropPunctuationMarks()$
+        +removeAnySpace()$
+        +generateMinimumCharactersQuantity()$
+    }
+    class IOwnership {
+        <<interface>>
+        +childrenOfParent(IHistoricalFact parent) Collection~ChildFact~
+    }
+    class BaseConstants {
+        <<enumeration>>
+        IDENTIFIER_ID
+    }
+    class IMember {
+        <<interface>>
+        +identified() Identifier
+    }
+    class Membership {
+        <<abstract>>
+        #createdAt : OffsetDateTime
+        +Membership(IMember member, IGroup group)
+        +member() IMember
+        +group() IGroup
+        +occurredAt() OffsetDateTime
+    }
+    class IHistoricalFact {
+        <<interface>>
     }
 ```
 
