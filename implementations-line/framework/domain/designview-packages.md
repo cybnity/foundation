@@ -4,6 +4,34 @@ Presentation of the design view regarding the sub-packages of `org.cybnity.frame
 # DESIGN VIEW
 The technical description regarding behavior and best usage is maintained into the Javadoc of each component.
 
+|Class Type|Motivation|
+| :-- | :-- |
+|ActivityState| |
+|ApplicationService| |
+|CommandHandlingService|Represent a component which manage handlers regarding specific Aggregate type|
+|CommonChildFactImpl|Reusable generic implementation class as child of immutable historical fact|
+|DomainEntityImpl| |
+|DomainEventPublisher|Publishing service from a domain model as repository service for Aggregates notifying their state changes|
+|DomainEventSubscriber|Interest contract to be notified when types of facts are changed|
+|EventRecord| |
+|EventStore|Persistence system of event and aggregate types regarding a single bounded context|
+|EventStream|Append-only nature stream of domain events in order of occurence regarding a domain object|
+|IAggregate|Identifiable fact that defines a consistency boundary including multiple related objects (e.g domain and/or value objects)|
+|IApplicationService|Applicative behaviors contract regarding an application layer|
+|IContext|Generic contact allowing to share and provide information in an area of usage|
+|IDomainModel| |
+|IDomainRepository| |
+|IDomainStore| |
+|IEventStore|Contract regarding storing (with append-only approach) and hydratation of a type of event (e.g versions stream)|
+|INotificationService|Publishing of events from event store via messaging infrastructure|
+|IVersionable|Supports multiple versions of a same event type|
+|NotificationLog|Log event regarding an identifiable domain fact|
+|Predecessors| |
+|Repository|Preservation of domain objects. Each persistent Aggregate type have a repository|
+|SessionContext|Implementation class of a ISessionContext|
+|SocialEntity| |
+|Tenant| |
+
 # STRUCTURE MODELS
 Several packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
 
