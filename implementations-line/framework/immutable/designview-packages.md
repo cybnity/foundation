@@ -38,6 +38,7 @@ classDiagram
     RelationRole "1" --* FactEdge : factsRelationType
     IHistoricalFact <|.. FactRecord
     VersionConcreteStrategy <.. FactEdge : use
+    VersionConcreteStrategy <.. FactType : use
     IUniqueness <|.. FactEdge
     IUniqueness <|.. FactRecord
     IUniqueness <|.. FactType
@@ -48,7 +49,14 @@ classDiagram
     class FactType {
         -name : String
         -id : String
-        -minLetterQty$
+        -minLetterQty : int = 50
+        +FactType(String categoryName, String identifier)
+        +FactType(String categoryName)
+        +basedOn() Set~Field~
+        +id() String
+        +name() String
+        +immutable() Serializable
+        +versionHash() String
     }
     class IHistoricalFact {
         <<interface>>
