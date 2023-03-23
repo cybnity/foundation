@@ -31,7 +31,9 @@ classDiagram
     IReferenceable <|.. DomainEvent
     IdentifiableFact <|.. DomainEvent
     IdentifiableFact <|-- IAggregate
-    
+    MutableProperty <|-- ActivityState
+    ChildFact <|-- CommonChildFactImpl
+
     class DomainEvent {
         <<abstract>>
         -occuredOn : OffsetDateTime
@@ -51,6 +53,9 @@ classDiagram
     }
     class IReferenceable {
         <<interface>>
+    }
+    class ChildFact {
+        <<abstract>>
     }
 
 ```
