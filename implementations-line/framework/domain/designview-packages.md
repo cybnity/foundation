@@ -33,6 +33,7 @@ classDiagram
     IReferenceable <|.. Command
     Evaluations <.. Command : use
     IContext <|-- ISessionContext
+    IContext <|-- IBoundedContext
 
     class DomainEvent {
         <<abstract>>
@@ -58,6 +59,9 @@ classDiagram
         <<interface>>
     }
     class IContext {
+        <<interface>>
+    }
+    class IBoundedContext {
         <<interface>>
     }
     class Serializable {
