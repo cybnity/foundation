@@ -48,7 +48,7 @@ classDiagram
     class FactType {
         -name : String
         -id : String
-        -minLetterQty$ int
+        -minLetterQty$
     }
     class IHistoricalFact {
         <<interface>>
