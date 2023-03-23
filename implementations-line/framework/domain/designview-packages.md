@@ -30,6 +30,7 @@ classDiagram
     IVersionable <|.. DomainEvent
     IReferenceable <|.. DomainEvent
     IdentifiableFact <|.. DomainEvent
+    IContext <|-- ISessionContext
 
     class DomainEvent {
         <<abstract>>
@@ -46,6 +47,10 @@ classDiagram
     }
     class IReferenceable {
         <<interface>>
+    }
+    class ISessionContext {
+        <<interface>>
+        +tenant() Tenant
     }
 
 ```
@@ -99,6 +104,31 @@ classDiagram
     class IDomainModel {
         <<interface>>
     }
+
+```
+
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+    Context <|-- SessionContext
+    ISessionContext <|.. SessionContext
+
     class Predecessors {
         +generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId)$ Identifier
         +generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds)$ Identifier
