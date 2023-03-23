@@ -49,10 +49,10 @@ Main project's package regarding the immutability capabilities, this package inc
   }
 }%%
 classDiagram
-    Unmodifiable <|.. AuditLog
-    Serializable <|.. AuditLog
     IHistoricalFact <|.. ChildFact
     IdentifiableFact <|.. ChildFact
+    Unmodifiable <|.. AuditLog
+    Serializable <|.. AuditLog
 
     class AuditLog {
         +AuditoLog()
