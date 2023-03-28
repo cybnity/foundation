@@ -83,6 +83,8 @@ kubectl --namespace default port-forward svc/reactive-backend-system 8082:80
 
 ```
 
+Some executable scripts are provided by the [systems modules sub-projects](/implementation-line/systems/modules) that simplify the start of all the ports forwarding of the K8s services according the environment used (e.g local-env).
+
 </p>
 </details>
 
