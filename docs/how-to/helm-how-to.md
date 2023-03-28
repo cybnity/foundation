@@ -76,8 +76,10 @@ For access to Pod or Service since external point of the Cluster, start a proces
 ```shell
 # Access from external web browser on HTTP://127.0.0.1:8080/ to keycloak running in LoadBalancer mode on port 81 TCP
 kubectl port-forward --namespace default svc/access-control-sso-system 8080:81
-# Access from external web browser on HTTP://127.0.0.1:8081/ to Reactive frontend Service instance running in ClusterIP mode on port 80 TCP
+# Access from external web browser on HTTP://127.0.0.1:8081/ to Web Reactive Frontend service instance running in ClusterIP mode on port 80 TCP
 kubectl --namespace default port-forward svc/web-reactive-frontend-system 8081:80
+# Access from external web browser on HTTP://127.0.0.1:8082/ to Reactive Backend service instance running in ClusterIP mode on port 80 TCP
+kubectl --namespace default port-forward svc/reactive-backend-system 8082:80
 
 ```
 
