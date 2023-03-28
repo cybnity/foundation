@@ -86,8 +86,8 @@ image:
   pullSecrets: []
 
   # Overriding the Helm chart name ensures configuration files also change
-  nameOverride: "domains-interactions-space-server"
-  fullnameOverride: "domains-interactions-space-server-chart"
+  nameOverride: "dis-system"
+  fullnameOverride: "dis-system"
 
   ## Set to true if you would like to see extra information on logs
   ##
@@ -1714,26 +1714,26 @@ zookeeper:
   enabled: true
   ## @param zookeeper.replicaCount Number of ZooKeeper nodes
   ##
-  replicaCount: 1
+  replicaCount: 3
   ## ZooKeeper authenticaiton
   ##
   auth:
     client:
       ## @param zookeeper.auth.client.enabled Enable ZooKeeper auth
       ##
-      enabled: false
+      enabled: true
       ## @param zookeeper.auth.client.clientUser User that will use ZooKeeper clients to auth
       ##
-      clientUser: ""
+      clientUser: "clientUser"
       ## @param zookeeper.auth.client.clientPassword Password that will use ZooKeeper clients to auth
       ##
-      clientPassword: ""
+      clientPassword: "clientUserSecretPWD"
       ## @param zookeeper.auth.client.serverUsers Comma, semicolon or whitespace separated list of user to be created. Specify them as a string, for example: "user1,user2,admin"
       ##
-      serverUsers: ""
+      serverUsers: "rts,gw"
       ## @param zookeeper.auth.client.serverPasswords Comma, semicolon or whitespace separated list of passwords to assign to users when created. Specify them as a string, for example: "pass4user1, pass4user2, pass4admin"
       ##
-      serverPasswords: ""
+      serverPasswords: "rtspass,gwpass"
   ## ZooKeeper Persistence parameters
   ## ref: https://kubernetes.io/docs/user-guide/persistent-volumes/
   ## @param zookeeper.persistence.enabled Enable persistence on ZooKeeper using PVC(s)

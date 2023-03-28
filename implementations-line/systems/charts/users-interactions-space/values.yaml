@@ -99,8 +99,8 @@ image:
   pullSecrets: []
 
   # Overriding the Helm chart name ensures configuration files also change
-  nameOverride: "users-interactions-space-server"
-  fullnameOverride: "users-interactions-space-server-chart"
+  nameOverride: "uis-system"
+  fullnameOverride: "uis-system"
 
   ## Enable debug mode
   ##

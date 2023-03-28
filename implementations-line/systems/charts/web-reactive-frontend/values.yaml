@@ -12,8 +12,8 @@ image:
 
 imagePullSecrets: []
 # Overriding the Helm chart name ensures configuration files also change
-nameOverride: "web-reactive-frontend-server"
-fullnameOverride: "web-reactive-frontend-server-chart"
+nameOverride: "web-reactive-frontend-system"
+fullnameOverride: "web-reactive-frontend-system"
 
 # Service account name (provide an identity for process that run in a Pod; by default named 'default') in the namespace for the Helm chart generates when the cluster is runned
 serviceAccount:

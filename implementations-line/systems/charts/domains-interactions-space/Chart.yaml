@@ -13,8 +13,7 @@ dependencies:
   tags:
   - bitnami-common
   version: 2.x.x
-description: Kafka distributed streaming platform designed to build real-time
-  pipelines used by application services.
+description: Kafka distributed streaming and domains collaboration platform.
 # @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_1")
 home: https://github.com/bitnami/charts/tree/main/bitnami/kafka
 icon: https://bitnami.com/assets/stacks/kafka/img/kafka-stack-220x234.png

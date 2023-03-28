@@ -20,7 +20,10 @@ helm pull "bitnami/xxx" --untar
 Install a defined chart into the Kubernetes cluster:
 
 ```shell
-helm install reactive-backend-server-chart ./reactive-messaging-gateway/ --values ./reactive-messaging-gateway/values.yaml
+# Install local templates from charts directory
+helm install reactive-backend-system ./reactive-messaging-gateway/ --values ./reactive-messaging-gateway/values.yaml
+# Install repository template (e.g hosted by a third-party's repository server) with specific values.yaml to apply
+helm install access-control-sso-system -f ./access-control-sso-system/values.yaml bitnami/keycloak
 ```
 
 </p>
@@ -30,7 +33,7 @@ helm install reactive-backend-server-chart ./reactive-messaging-gateway/ --value
 Upgrade a release to a specified or current version of a chart or configuration into the Kubernetes cluster:
 
 ```shell
-helm upgrade reactive-backend-server-chart ./reactive-messaging-gateway
+helm upgrade reactive-backend-system ./reactive-messaging-gateway
 ```
 
 </p>
@@ -50,7 +53,7 @@ helm ls
 Specific version to roll back to or leave argument black, in which cas it rolls back to the previous version.
 
 ```shell
-helm rollback reactive-backend-server-chart 1
+helm rollback reactive-backend-system 1
 ```
 
 </p>
@@ -61,7 +64,21 @@ helm rollback reactive-backend-server-chart 1
 Uninstall a release completely from the Kubernetes cluster:
 
 ```shell
-helm uninstall reactive-backend-server-chart
+helm uninstall reactive-backend-system
+```
+
+</p>
+</details>
+<details><summary>Forward external port to POD/Service internal port</summary>
+<p>
+For access to Pod or Service since external point of the Cluster, start a process in a dedicated linux shell forwarding the calls via:
+
+```shell
+# Access from external web browser on HTTP://127.0.0.1:8080/ to keycloak running in LoadBalancer mode on port 81 TCP
+kubectl port-forward --namespace default svc/access-control-sso-system 8080:81
+# Access from external web browser on HTTP://127.0.0.1:8081/ to Reactive frontend Service instance running in ClusterIP mode on port 80 TCP
+kubectl --namespace default port-forward svc/web-reactive-frontend-system 8081:80
+
 ```
 
 </p>
