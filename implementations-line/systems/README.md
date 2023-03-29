@@ -66,6 +66,91 @@ reactive-messaging-gateway
     └── ...
 ```
 
+## PROVISIONED SYSTEMS ARCHITECTURE
+
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '12px',
+        'primaryColor': '#fff',
+        'primaryTextColor': '#0e2a43',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryColor': '#fff',
+        'secondaryTextColor': '#fff',
+        'secondaryBorderColor': '#fff',
+        'tertiaryColor': '#fff',
+        'tertiaryTextColor': '#fff',
+        'tertiaryBorderColor': '#fff',
+        'lineColor': '#0e2a43',
+        'titleColor': '#fff',
+        'textColor': '#fff',
+        'lineColor': '#0e2a43',
+        'nodeTextColor': '#fff',
+        'nodeBorder': '#0e2a43',
+        'noteTextColor': '#fff',
+        'noteBorderColor': '#fff'
+    },
+    'flowchart': { 'curve': 'monotoneX' }
+  }
+}%%
+flowchart TB
+  subgraph cluster["Local-Env Cluster"]
+     direction TB
+     subgraph controlplane["Control Plane"]
+     end
+     subgraph ui["<br>#60;#60;Node#62;#62; User Interfaces Area<br>"]
+       direction TB
+       subgraph uilayer1[" "]
+         direction LR
+         subgraph service1["#60;#60;Service#62;#62;<br> web-reactive-frontend-system"]
+            portforward1["Port Forward"] -. "8081:80" .-> pod1["POD"]
+         end
+         subgraph service2["#32;#60;#60;Service#62;#62; reactive-backend-system#32;"]
+            portforward2["Port Forward"] -. "8082:80" .-> pod2["POD"]
+         end
+         subgraph service3["#60;#60;LoadBalancer Service#62;#62;<br>access-control-sso-system"]
+            portforward3["Port Forward"] -. "8080:81" .-> pod3["POD"]
+         end
+         service4["#60;#60;Service#62;#62;<br>access-control-sso-system-postgresql"]
+         service5["#60;#60;Service#62;#62;<br>dis-system-kafka"]
+         service6["#60;#60;Service#62;#62;<br>dis-brokers-registry-system"]
+         service7["#60;#60;Service#62;#62;<br>uis-system-redis"]
+       end
+     end
+     subgraph di["<br>#60;#60;Node#62;#62; Domains I/O Area<br>"]
+     end
+     subgraph da["<br>#60;#60;Node#62;#62; Domains Area<br>"]
+     end
+     subgraph is["<br>#60;#60;Node#62;#62; Infrastructure Services Area<br>"]
+     end
+  end
+  controlplane -- "tcp:80" --> service1
+  controlplane -- "tcp:80" --> service2
+  controlplane -- "tcp:81" --> service3
+  controlplane -- "tcp:5432" --> service4
+  controlplane -- "tcp:9092" --> service5
+  controlplane -- "tcp:2181" --> service6
+  controlplane -- "tcp:2888" --> service6
+  controlplane -- "tcp:3888" --> service6
+  controlplane -- "tcp:6379" --> service7
+  
+  classDef red fill:#e5302a, stroke:#e5302a, color:#fff
+  classDef medium fill:#fff, stroke:#3a5572, color:#3a5572
+  classDef mediumfill fill:#3a5572, stroke:#3a5572, color:#fff
+  classDef mediumdot fill:#fff, stroke:#3a5572, color:#3a5572, stroke-dasharray: 5 5
+  classDef dark fill:#0e2a43, stroke:#fff, color:#fff
+  classDef internalconfig fill:#0e2a43, stroke:#fff, color:#fff
+  class service1,service2,service3,service4,service5,service6,service7 mediumfill;
+  class ui,di,da,is medium;
+  class controlplane mediumdot;
+  class pod1,pod2,pod3 dark;
+  class portforward1,portforward2,portforward3 internalconfig;
+
+```
 # INFRASTRUCTURE PROJECTS
 The infrastructure projects governs the provisioning management at the Kubernetes level as an Infrastructure-As-Code implementation.
 
