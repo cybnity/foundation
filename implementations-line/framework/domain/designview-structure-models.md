@@ -31,7 +31,6 @@ Presentation of the design view of the `org.cybnity.framework.domain` main proje
 ### Sub-Packages
 See complementary presentation of [detailed structure models implemented into the sub-packages](designview-packages.md).
 
-
 ```mermaid
 %%{
   init: {
