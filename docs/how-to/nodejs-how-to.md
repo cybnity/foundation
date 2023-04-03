@@ -32,6 +32,17 @@ npm -v
 </details>
 
 ## NPM RUN
+<details><summary>Reinstall project modules</summary>
+<p>
+  
+Execute from the web project folder:
+
+```shell
+npm install
+```
+
+</p>
+</details>
 <details><summary>Run application</summary>
 <p>
 
