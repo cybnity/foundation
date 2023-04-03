@@ -3,18 +3,35 @@ Tools and commands allowing to manage the Node.js web application supported by R
 
 # NODEJS USAGE
 
-## NPM RUN
+## NODEJS VERSION MANAGEMENT
 <details><summary>Prepare development stack</summary>
 <p>
 
-From project directory, update NPM to the latest version
+From project directory, update Node version to the latest version
 
 ```shell
-sudo npm install -g latest
+#From Mac
+node -v
+  
+# Install Node version manager
+# - N manager installed via NPM
+npm install -g n
+# or installed via brew
+brew install n
+
+# Install N packages manager of Node via
+sudo n latest
+
+# check node version updated
+node -v
+# check npm version updated
+npm -v
 ```
 
 </p>
 </details>
+
+## NPM RUN
 <details><summary>Run application</summary>
 <p>
 
@@ -79,28 +96,22 @@ npm run eject
 </p>
 </details>
 
-## NODEJS
-<details><summary>Prepare development stack</summary>
-<p>
-
-From project directory, update Node version to the latest version
-
-```shell
-#From Mac
-node -v
-# Install or upgrade node version installed
-sudo brew install node
-```
-
-</p>
-</details>
-
 ## REACTJS
 <details><summary>Create React application</summary>
 <p>
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+</p>
+</details>
+<details><summary>Maintain ReactJS script on latest version</summary>
+<p>   
+From project folder, update all dependencies required by the reactjs application with react-script
+
+```shell
+npm install react-scripts@latest
+```
 
 </p>
 </details>
