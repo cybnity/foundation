@@ -4,6 +4,17 @@ Tools and commands allowing to manage the Node.js web application supported by R
 # NODEJS USAGE
 
 ## NPM RUN
+<details><summary>Prepare development stack</summary>
+<p>
+
+From project directory, update NPM to the latest version
+
+```shell
+sudo npm install -g latest
+```
+
+</p>
+</details>
 <details><summary>Run application</summary>
 <p>
 
@@ -63,6 +74,22 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 
 ```shell
 npm run eject
+```
+
+</p>
+</details>
+
+## NODEJS
+<details><summary>Prepare development stack</summary>
+<p>
+
+From project directory, update Node version to the latest version
+
+```shell
+#From Mac
+node -v
+# Install or upgrade node version installed
+sudo brew install node
 ```
 
 </p>
