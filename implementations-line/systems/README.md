@@ -95,7 +95,7 @@ reactive-messaging-gateway
         'noteTextColor': '#fff',
         'noteBorderColor': '#fff'
     },
-    'flowchart': { 'curve': 'monotoneX' }
+    'flowchart': { 'curve': 'monotoneY' }
   }
 }%%
 flowchart TB
@@ -107,6 +107,9 @@ flowchart TB
        direction TB
        subgraph uilayer1[" "]
          direction LR
+         subgraph service8["#60;#60;LoadBalancer Service#62;#62;<br>ui-apis-gateway-system"]
+            pod4["POD"]
+         end
          subgraph service1["#60;#60;Service#62;#62;<br> web-reactive-frontend-system"]
             portforward1["Port Forward"] -. "8081:80" .-> pod1["POD"]
          end
@@ -129,15 +132,19 @@ flowchart TB
      subgraph is["<br>#60;#60;Node#62;#62; Infrastructure Services Area<br>"]
      end
   end
-  controlplane -- "tcp:80" --> service1
-  controlplane -- "tcp:80" --> service2
-  controlplane -- "tcp:81" --> service3
-  controlplane -- "tcp:5432" --> service4
-  controlplane -- "tcp:9092" --> service5
-  controlplane -- "tcp:2181" --> service6
-  controlplane -- "tcp:2888" --> service6
-  controlplane -- "tcp:3888" --> service6
-  controlplane -- "tcp:6379" --> service7
+  controlplane -- "ClusterIP/tcp:80" --> service1
+  controlplane -- "ClusterIP/tcp:80" --> service2
+  controlplane -- "ClusterIP/tcp:81" --> service3
+  controlplane -- "ExternalIP/tcp:81" --> service3
+  controlplane -- "ClusterIP/tcp:5432" --> service4
+  controlplane -- "ClusterIP/tcp:9092" --> service5
+  controlplane -- "ClusterIP/tcp:2181" --> service6
+  controlplane -- "ClusterIP/tcp:2888" --> service6
+  controlplane -- "ClusterIP/tcp:3888" --> service6
+  controlplane -- "ClusterIP/tcp:6379" --> service7
+  controlplane -- "ClusterIP/tcp:80" --> service8
+  controlplane -- "ExternalIP/http:80" --> service8
+  controlplane -- "ExternalIP/https:443" --> service8
   
   classDef red fill:#e5302a, stroke:#e5302a, color:#fff
   classDef medium fill:#fff, stroke:#3a5572, color:#3a5572
@@ -145,10 +152,10 @@ flowchart TB
   classDef mediumdot fill:#fff, stroke:#3a5572, color:#3a5572, stroke-dasharray: 5 5
   classDef dark fill:#0e2a43, stroke:#fff, color:#fff
   classDef internalconfig fill:#0e2a43, stroke:#fff, color:#fff
-  class service1,service2,service3,service4,service5,service6,service7 mediumfill;
+  class service1,service2,service3,service4,service5,service6,service7,service8 mediumfill;
   class ui,di,da,is medium;
   class controlplane mediumdot;
-  class pod1,pod2,pod3 dark;
+  class pod1,pod2,pod3,pod4 dark;
   class portforward1,portforward2,portforward3 internalconfig;
 
 ```
