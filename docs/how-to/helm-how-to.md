@@ -87,6 +87,29 @@ Some executable scripts are provided by the [systems modules sub-projects](/impl
 
 </p>
 </details>
+<details><summary>Minikube activation</summary>
+<p>
+
+To activate the ingress module in Minikube:
+
+```shell
+minikube addons enable ingress
+
+```
+
+When minikube is started, the LoadBalancer does not expose external ip by default.
+
+So, to expose automatically any LoadBalancer external ip by Minikube, start Minikube tunneling:
+
+```shell
+minikube tunnel
+
+# To show exposed ports
+kubectl get svc
+```
+
+</p>
+</details>
 
 ## Charts Distribution
 Helm is usable to package, publish, and fetch Kubernetes applications as Chart archives.
