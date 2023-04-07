@@ -125,14 +125,20 @@ flowchart TB
      end
      subgraph di["<br>#60;#60;Node#62;#62; Domains I/O Area<br>"]
          direction LR
-         subgraph uilayer2[" "]
+         subgraph applayer1[" "]
             service5["#60;#60;Service#62;#62;<br>dis-system-kafka"]
             service6["#60;#60;Service#62;#62;<br>dis-brokers-registry-system"]
          end
      end
      subgraph da["<br>#60;#60;Node#62;#62; Domains Area<br>"]
+         direction LR
+         subgraph applayer2[" "]
+         end
      end
      subgraph is["<br>#60;#60;Node#62;#62; Infrastructure Services Area<br>"]
+         direction LR
+         subgraph inflayer1[" "]
+         end
      end
   end
   controlplane -- "ClusterIP/tcp:80" --> service1
