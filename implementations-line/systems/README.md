@@ -137,14 +137,14 @@ flowchart TB
   controlplane -- "ClusterIP/tcp:81" --> service3
   controlplane -- "ExternalIP/tcp:81" --> service3
   controlplane -- "ClusterIP/tcp:5432" --> service4
-  controlplane -- "ClusterIP/tcp:9092" --> service5
-  controlplane -- "ClusterIP/tcp:2181" --> service6
-  controlplane -- "ClusterIP/tcp:2888" --> service6
-  controlplane -- "ClusterIP/tcp:3888" --> service6
   controlplane -- "ClusterIP/tcp:6379" --> service7
   controlplane -- "ClusterIP/tcp:80" --> service8
   controlplane -- "ExternalIP/http:80" --> service8
   controlplane -- "ExternalIP/https:443" --> service8
+  controlplane -- "ClusterIP/tcp:9092" --> service5
+  controlplane -- "ClusterIP/tcp:2181" --> service6
+  controlplane -- "ClusterIP/tcp:2888" --> service6
+  controlplane -- "ClusterIP/tcp:3888" --> service6
   
   classDef red fill:#e5302a, stroke:#e5302a, color:#fff
   classDef medium fill:#fff, stroke:#3a5572, color:#3a5572
