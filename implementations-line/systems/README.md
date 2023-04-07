@@ -124,8 +124,11 @@ flowchart TB
        end
      end
      subgraph di["<br>#60;#60;Node#62;#62; Domains I/O Area<br>"]
-         service5["#60;#60;Service#62;#62;<br>dis-system-kafka"]
-         service6["#60;#60;Service#62;#62;<br>dis-brokers-registry-system"]
+         direction LR
+         subgraph uilayer2[" "]
+            service5["#60;#60;Service#62;#62;<br>dis-system-kafka"]
+            service6["#60;#60;Service#62;#62;<br>dis-brokers-registry-system"]
+         end
      end
      subgraph da["<br>#60;#60;Node#62;#62; Domains Area<br>"]
      end
