@@ -131,14 +131,14 @@ flowchart TB
          end
      end
      subgraph da["<br>#60;#60;Node#62;#62; Domains Area<br>"]
-         direction LR
+         %%direction LR
          subgraph applayer2[" "]
-         end
+         end%%
      end
      subgraph is["<br>#60;#60;Node#62;#62; Infrastructure Services Area<br>"]
-         direction LR
+         %%direction LR
          subgraph inflayer1[" "]
-         end
+         end%%
      end
   end
   controlplane -- "ClusterIP/tcp:80" --> service1
