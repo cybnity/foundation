@@ -120,12 +120,12 @@ flowchart TB
             portforward3["Port Forward"] -. "8080:81" .-> pod3["POD"]
          end
          service4["#60;#60;Service#62;#62;<br>access-control-sso-system-postgresql"]
-         service5["#60;#60;Service#62;#62;<br>dis-system-kafka"]
-         service6["#60;#60;Service#62;#62;<br>dis-brokers-registry-system"]
          service7["#60;#60;Service#62;#62;<br>uis-system-redis"]
        end
      end
      subgraph di["<br>#60;#60;Node#62;#62; Domains I/O Area<br>"]
+         service5["#60;#60;Service#62;#62;<br>dis-system-kafka"]
+         service6["#60;#60;Service#62;#62;<br>dis-brokers-registry-system"]
      end
      subgraph da["<br>#60;#60;Node#62;#62; Domains Area<br>"]
      end
