@@ -101,6 +101,7 @@ reactive-messaging-gateway
 flowchart LR
   subgraph cluster["Local-Env Cluster"]
      direction LR
+     subgraph tunnel["Tunnel"]
      subgraph controlplane["Control Plane"]
      end
      subgraph ui[" #60;#60;Node#62;#62; User Interfaces Area "]
@@ -141,27 +142,28 @@ flowchart LR
          %% end
      end
   end
-  controlplane -- "ClusterIP/tcp:80" --> service1
-  controlplane -- "ClusterIP/tcp:80" --> service2
+  tunnel -- "route x.y.y.y/z" --> controlplane
+  controlplane -. "ClusterIP/tcp:80" .-> service1
+  controlplane -. "ClusterIP/tcp:80" .-> service2
   podproxy1 -. "8081:80" .-> service1
   podproxy1 -. "8082:80" .-> service2
   podproxy1 -. "8080:81" .-> service3
-  controlplane -- "ClusterIP/tcp:81" --> service3
+  controlplane -. "ClusterIP/tcp:81" .-> service3
   controlplane -- "ExternalIP/tcp:81 (temporary for admin)" --> service3
-  controlplane -- "ClusterIP/tcp:5432" --> service4
-  controlplane -- "ClusterIP/tcp:6379" --> service7
-  controlplane -- "ClusterIP/tcp:80" --> service8
-  controlplane -- "ClusterIP/tcp:8081" --> service8
-  controlplane -- "ClusterIP/tcp:8080" --> service8
-  controlplane -- "ClusterIP/tcp:8082" --> service8
+  controlplane -. "ClusterIP/tcp:5432" .-> service4
+  controlplane -. "ClusterIP/tcp:6379" .-> service7
+  controlplane -. "ClusterIP/tcp:80" .-> service8
+  controlplane -. "ClusterIP/tcp:8081" .-> service8
+  controlplane -. "ClusterIP/tcp:8080" .-> service8
+  controlplane -. "ClusterIP/tcp:8082" .-> service8
   controlplane -- "ExternalIP/http:80" --> service8
   controlplane -- "ExternalIP/http:8080" --> service8
   controlplane -- "ExternalIP/http:8081" --> service8
   controlplane -- "ExternalIP/http:8082" --> service8
-  controlplane -- "ClusterIP/tcp:9092" --> service5
-  controlplane -- "ClusterIP/tcp:2181" --> service6
-  controlplane -- "ClusterIP/tcp:2888" --> service6
-  controlplane -- "ClusterIP/tcp:3888" --> service6
+  controlplane -. "ClusterIP/tcp:9092" .-> service5
+  controlplane -. "ClusterIP/tcp:2181" .-> service6
+  controlplane -. "ClusterIP/tcp:2888" .-> service6
+  controlplane -. "ClusterIP/tcp:3888" .-> service6
   
   classDef red fill:#e5302a, stroke:#e5302a, color:#fff
   classDef medium fill:#fff, stroke:#3a5572, color:#3a5572
@@ -173,6 +175,7 @@ flowchart LR
   class ui,di,da,is medium;
   class controlplane mediumdot;
   class pod1,pod2,pod3,podproxy1 dark;
+  class tunnel red;
 
 ```
 # INFRASTRUCTURE PROJECTS
