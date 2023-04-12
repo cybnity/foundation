@@ -146,17 +146,13 @@ flowchart LR
   tunnel -- "route x.y.y.y/z" --> controlplane
   controlplane -. "ClusterIP/tcp:80" .-> service1
   controlplane -. "ClusterIP/tcp:80" .-> service2
-  podproxy1 == "8081:80" ==> service1
-  podproxy1 == "8082:80" ==> service2
-  podproxy1 == "8080:81" ==> service3
+  podproxy1 -- "8081:80" --> service1
+  podproxy1 -- "8082:80" --> service2
+  podproxy1 -- "8080:81" --> service3
   controlplane -. "ClusterIP/tcp:81" .-> service3
   controlplane -- "ExternalIP/tcp:81 (temporary for admin)" --> service3
   controlplane -. "ClusterIP/tcp:5432" .-> service4
   controlplane -. "ClusterIP/tcp:6379" .-> service7
-  controlplane -. "ClusterIP/tcp:80" .-> service8
-  controlplane -. "ClusterIP/tcp:8081" .-> service8
-  controlplane -. "ClusterIP/tcp:8080" .-> service8
-  controlplane -. "ClusterIP/tcp:8082" .-> service8
   controlplane -- "ExternalIP/http:80" --> service8
   controlplane -- "ExternalIP/http:8080" --> service8
   controlplane -- "ExternalIP/http:8081" --> service8
@@ -173,12 +169,11 @@ flowchart LR
   classDef reddot fill:#fff, stroke:#e5302a, color:#e5302a, stroke-dasharray: 5 5, stroke-width:3px
   classDef dark fill:#0e2a43, stroke:#fff, color:#fff
   classDef internalconfig fill:#0e2a43, stroke:#fff, color:#fff
-  class service1,service2,service3,service4,service5,service6,service7,service8 mediumfill;
+  class service1,service2,service3,service4,service5,service6,service7 mediumfill;
   class ui,di,da,is medium;
-  style controlplane fill:#fff, stroke:#e5302a, color:#e5302a, stroke-dasharray: 5 5, stroke-width:3px
-
   class pod1,pod2,pod3,podproxy1 dark;
-  class tunnel red;
+  class tunnel,service8 red;
+  class controlplane reddot;
 
 ```
 # INFRASTRUCTURE PROJECTS
