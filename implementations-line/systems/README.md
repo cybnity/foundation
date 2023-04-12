@@ -95,7 +95,7 @@ reactive-messaging-gateway
         'noteTextColor': '#fff',
         'noteBorderColor': '#fff'
     },
-    'flowchart': { 'curve': 'basis' }
+    'flowchart': { 'curve': 'linear' }
   }
 }%%
 flowchart LR
@@ -107,7 +107,7 @@ flowchart LR
        direction LR
        subgraph uilayer1[" "]
          direction TB
-         subgraph service8[" #60;#60;LoadBalancer Service#62;#62; <br> >ui-apis-gateway-system-haproxy "]
+         subgraph service8["\n #60;#60;LoadBalancer Service#62;#62; <br> ui-apis-gateway-system-haproxy "]
             podproxy1["POD"]
          end
          subgraph service1[" #60;#60;Service#62;#62; web-reactive-frontend-system "]
