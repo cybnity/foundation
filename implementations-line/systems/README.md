@@ -102,6 +102,7 @@ flowchart LR
   subgraph cluster["Local-Env Cluster"]
      direction LR
      subgraph tunnel["Tunnel"]
+     end
      subgraph controlplane["Control Plane"]
      end
      subgraph ui[" #60;#60;Node#62;#62; User Interfaces Area "]
