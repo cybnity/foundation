@@ -100,11 +100,11 @@ reactive-messaging-gateway
 }%%
 flowchart LR
   subgraph cluster["Local-Env Cluster"]
-     direction TB
+     direction LR
      subgraph controlplane["Control Plane"]
      end
      subgraph ui["<br>#60;#60;Node#62;#62; User Interfaces Area<br>"]
-       direction TB
+       direction LR
        subgraph uilayer1[" "]
          direction TB
          subgraph service8["#60;#60;LoadBalancer Service#62;#62;<br>ui-apis-gateway-system-haproxy"]
@@ -124,19 +124,19 @@ flowchart LR
        end
      end
      subgraph di["<br>#60;#60;Node#62;#62; Domains I/O Area<br>"]
-         direction TB
+         direction LR
          subgraph applayer1[" "]
             service5["#60;#60;Service#62;#62;<br>dis-system-kafka"]
             service6["#60;#60;Service#62;#62;<br>dis-brokers-registry-system"]
          end
      end
      subgraph da["<br>#60;#60;Node#62;#62; Domains Area<br>"]
-         %% direction TB
+         %% direction LR
          %% subgraph applayer2[" "]
          %% end
      end
      subgraph is["<br>#60;#60;Node#62;#62; Infrastructure Services Area<br>"]
-         %% direction TB
+         %% direction LR
          %% subgraph inflayer1[" "]
          %% end
      end
