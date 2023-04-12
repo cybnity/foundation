@@ -160,8 +160,8 @@ flowchart LR
   podproxy1 -- "8081:80" --> service1
   podproxy1 -- "8082:80" --> service2
   controlplane -. "tcp:81" .-> clusterip7 -.-> pod3
-  podproxy1 -- "8080:81" --> service3
   controlplane -- "ExternalIP/tcp:81 (temporary for admin)" --> service3
+  podproxy1 -- "8080:81" --> service3
   controlplane -. "tcp:5432" .-> clusterip2
   controlplane -. "tcp:6379" .-> clusterip3
   controlplane -- "ExternalIP/http:80" --> service8
