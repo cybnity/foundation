@@ -1,4 +1,6 @@
 #! /bin/bash
+
+# BE CAREFULL, MINIKUBE LOST LABELS ON NODES WHEN RESTARTED
 echo "Add labels to the cluster nodes"
 
 kubectl label nodes local-dev layer=user-interfaces-area
