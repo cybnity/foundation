@@ -166,16 +166,17 @@ flowchart LR
   controlplane -. "ClusterIP/tcp:2888" .-> service6
   controlplane -. "ClusterIP/tcp:3888" .-> service6
   
-  classDef red fill:#e5302a, stroke:#e5302a, color:#fff, stroke-width:1px
+  classDef red fill:#e5302a, stroke:#e5302a, color:#fff, stroke-width:3px
   classDef medium fill:#fff, stroke:#3a5572, color:#3a5572
   classDef mediumfill fill:#3a5572, stroke:#3a5572, color:#fff
   classDef mediumdot fill:#fff, stroke:#3a5572, color:#3a5572, stroke-dasharray: 5 5
-  classDef reddot fill:#fff, stroke:#e5302a, color:#e5302a, stroke-dasharray: 5 5, stroke-width:2px
+  classDef reddot fill:#fff, stroke:#e5302a, color:#e5302a, stroke-dasharray: 5 5, stroke-width:3px
   classDef dark fill:#0e2a43, stroke:#fff, color:#fff
   classDef internalconfig fill:#0e2a43, stroke:#fff, color:#fff
   class service1,service2,service3,service4,service5,service6,service7,service8 mediumfill;
   class ui,di,da,is medium;
-  class controlplane reddot;
+  style controlplane fill:#fff, stroke:#e5302a, color:#e5302a, stroke-dasharray: 5 5, stroke-width:3px
+
   class pod1,pod2,pod3,podproxy1 dark;
   class tunnel red;
 
