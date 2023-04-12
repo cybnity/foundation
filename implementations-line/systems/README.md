@@ -103,7 +103,7 @@ flowchart LR
      direction LR
      subgraph controlplane["Control Plane"]
      end
-     subgraph ui["<br>#60;#60;Node#62;#62; User Interfaces Area<br>"]
+     subgraph ui["<p>#60;#60;Node#62;#62; User Interfaces Area</p>"]
        direction LR
        subgraph uilayer1[" "]
          direction TB
