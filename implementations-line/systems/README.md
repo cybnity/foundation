@@ -107,17 +107,17 @@ flowchart LR
        direction LR
        subgraph uilayer1[" "]
          direction TB
-         subgraph service8[" #60;#60;LoadBalancer Service#62;#62; ui-apis-gateway-system-haproxy "]
+         subgraph service8[" #60;#60;LoadBalancer Service#62;#62; <br> >ui-apis-gateway-system-haproxy "]
             podproxy1["POD"]
          end
          subgraph service1[" #60;#60;Service#62;#62; web-reactive-frontend-system "]
-            podproxy1 -. "8081:80" .-> pod1["POD"]
+            pod1["POD"]
          end
          subgraph service2[" #32;#60;#60;Service#62;#62; reactive-backend-system#32; "]
-            podproxy1 -. "8082:80" .-> pod2["POD"]
+            pod2["POD"]
          end
          subgraph service3[" #60;#60;LoadBalancer Service#62;#62; access-control-sso-system "]
-            podproxy1 -. "8080:81" .-> pod3["POD"]
+            pod3["POD"]
          end
          service4[" #60;#60;Service#62;#62; access-control-sso-system-postgresql "]
          service7[" #60;#60;Service#62;#62; uis-system-redis "]
@@ -144,7 +144,10 @@ flowchart LR
   controlplane -- "ClusterIP/tcp:80" --> service1
   controlplane -- "ClusterIP/tcp:80" --> service2
   controlplane -- "ClusterIP/tcp:81" --> service3
-  controlplane -- "ExternalIP/tcp:81" --> service3
+  podproxy1 -. "8081:80" .-> service1
+  podproxy1 -. "8082:80" .-> service2
+  podproxy1 -. "8080:81" .-> service3
+  controlplane -- "ExternalIP/tcp:81 (temporary for admin)" --> service3
   controlplane -- "ClusterIP/tcp:5432" --> service4
   controlplane -- "ClusterIP/tcp:6379" --> service7
   controlplane -- "ClusterIP/tcp:80" --> service8
