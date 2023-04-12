@@ -103,39 +103,39 @@ flowchart LR
      direction LR
      subgraph controlplane["Control Plane"]
      end
-     subgraph ui["<p>#60;#60;Node#62;#62; User Interfaces Area</p>"]
+     subgraph ui[" #60;#60;Node#62;#62; User Interfaces Area "]
        direction LR
        subgraph uilayer1[" "]
          direction TB
-         subgraph service8["#60;#60;LoadBalancer Service#62;#62;<br>ui-apis-gateway-system-haproxy"]
-            pod4["POD"]
+         subgraph service8[" #60;#60;LoadBalancer Service#62;#62; ui-apis-gateway-system-haproxy "]
+            podproxy1["POD"]
          end
-         subgraph service1[" #60;#60;Service#62;#62; <br> web-reactive-frontend-system "]
-            portforward1["Port Forward"] -. "8081:80" .-> pod1["POD"]
+         subgraph service1[" #60;#60;Service#62;#62; web-reactive-frontend-system "]
+            podproxy1 -. "8081:80" .-> pod1["POD"]
          end
-         subgraph service2["#32;#60;#60;Service#62;#62; reactive-backend-system#32;"]
-            portforward2["Port Forward"] -. "8082:80" .-> pod2["POD"]
+         subgraph service2[" #32;#60;#60;Service#62;#62; reactive-backend-system#32; "]
+            podproxy1 -. "8082:80" .-> pod2["POD"]
          end
-         subgraph service3["#60;#60;LoadBalancer Service#62;#62;<br>access-control-sso-system"]
-            portforward3["Port Forward"] -. "8080:81" .-> pod3["POD"]
+         subgraph service3[" #60;#60;LoadBalancer Service#62;#62; access-control-sso-system "]
+            podproxy1 -. "8080:81" .-> pod3["POD"]
          end
-         service4["#60;#60;Service#62;#62;<br>access-control-sso-system-postgresql"]
-         service7["#60;#60;Service#62;#62;<br>uis-system-redis"]
+         service4[" #60;#60;Service#62;#62; access-control-sso-system-postgresql "]
+         service7[" #60;#60;Service#62;#62; uis-system-redis "]
        end
      end
-     subgraph di["<p>#60;#60;Node#62;#62; Domains I/O Area</p>"]
+     subgraph di[" #60;#60;Node#62;#62; Domains I/O Area"]
          direction LR
          subgraph applayer1[" "]
-            service5["#60;#60;Service#62;#62;<br>dis-system-kafka"]
-            service6["#60;#60;Service#62;#62;<br>dis-brokers-registry-system"]
+            service5[" #60;#60;Service#62;#62; dis-system-kafka "]
+            service6[" #60;#60;Service#62;#62; dis-brokers-registry-system "]
          end
      end
-     subgraph da["<p>#60;#60;Node#62;#62; Domains Area</p>"]
+     subgraph da[" #60;#60;Node#62;#62; Domains Area "]
          %% direction LR
          %% subgraph applayer2[" "]
          %% end
      end
-     subgraph is["<p>#60;#60;Node#62;#62; Infrastructure Services Area</p>"]
+     subgraph is[" #60;#60;Node#62;#62; Infrastructure Services Area "]
          %% direction LR
          %% subgraph inflayer1[" "]
          %% end
@@ -169,8 +169,7 @@ flowchart LR
   class service1,service2,service3,service4,service5,service6,service7,service8 mediumfill;
   class ui,di,da,is medium;
   class controlplane mediumdot;
-  class pod1,pod2,pod3,pod4 dark;
-  class portforward1,portforward2,portforward3 internalconfig;
+  class pod1,pod2,pod3,podproxy1 dark;
 
 ```
 # INFRASTRUCTURE PROJECTS
