@@ -155,9 +155,9 @@ flowchart LR
      end
   end
   tunnel -- "route x.y.y.y/z" --> controlplane
+  podproxy1 -- "8081:80" --> service1
   controlplane -. "tcp:80" .-> clusterip1 -.-> pod1
   controlplane -. "tcp:80" .-> clusterip4 -.-> pod2
-  podproxy1 -- "8081:80" --> service1
   podproxy1 -- "8082:80" --> service2
   controlplane -. "tcp:81" .-> clusterip7 -.-> pod3
   controlplane -- "ExternalIP/tcp:81 (temporary for admin)" --> service3
