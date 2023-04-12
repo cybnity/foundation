@@ -113,13 +113,16 @@ flowchart LR
             podproxy1["POD"]
          end
          subgraph service1[" #60;#60;Service#62;#62; \n web-reactive-frontend-system "]
-            clusterip1["ClusterIP"] --> pod1["POD"]
+            clusterip1["ClusterIP"]
+            pod1["POD"]
          end
          subgraph service2[" #32;#60;#60;Service#62;#62; \n reactive-backend-system#32; "]
-            clusterip4["ClusterIP"] --> pod2["POD"]
+            clusterip4["ClusterIP"]
+            pod2["POD"]
          end
          subgraph service3[" #60;#60;LoadBalancer Service#62;#62; \n access-control-sso-system "]
-            clusterip7["ClusterIP"] --> pod3["POD"]
+            clusterip7["ClusterIP"]
+            pod3["POD"]
          end
          subgraph service4[" #60;#60;Service#62;#62; \n access-control-sso-system-postgresql "]
             clusterip2["ClusterIP"]
@@ -152,11 +155,11 @@ flowchart LR
      end
   end
   tunnel -- "route x.y.y.y/z" --> controlplane
-  controlplane -. "tcp:80" .-> clusterip1
-  controlplane -. "tcp:80" .-> clusterip4
+  controlplane -. "tcp:80" .-> clusterip1 -.-> pod1
+  controlplane -. "tcp:80" .-> clusterip4 -.-> pod2
   podproxy1 -- "8081:80" --> service1
   podproxy1 -- "8082:80" --> service2
-  controlplane -. "tcp:81" .-> clusterip7
+  controlplane -. "tcp:81" .-> clusterip7 -.-> pod3
   podproxy1 -- "8080:81" --> service3
   controlplane -- "ExternalIP/tcp:81 (temporary for admin)" --> service3
   controlplane -. "tcp:5432" .-> clusterip2
