@@ -98,7 +98,7 @@ reactive-messaging-gateway
     'flowchart': { 'curve': 'monotoneY' }
   }
 }%%
-flowchart TB
+flowchart LR
   subgraph cluster["Local-Env Cluster"]
      direction TB
      subgraph controlplane["Control Plane"]
@@ -107,7 +107,7 @@ flowchart TB
        direction TB
        subgraph uilayer1[" "]
          direction LR
-         subgraph service8["#60;#60;LoadBalancer Service#62;#62;<br>ui-apis-gateway-system"]
+         subgraph service8["#60;#60;LoadBalancer Service#62;#62;<br>ui-apis-gateway-system-haproxy"]
             pod4["POD"]
          end
          subgraph service1["#60;#60;Service#62;#62;<br> web-reactive-frontend-system"]
@@ -124,19 +124,19 @@ flowchart TB
        end
      end
      subgraph di["<br>#60;#60;Node#62;#62; Domains I/O Area<br>"]
-         direction LR
+         direction TB
          subgraph applayer1[" "]
             service5["#60;#60;Service#62;#62;<br>dis-system-kafka"]
             service6["#60;#60;Service#62;#62;<br>dis-brokers-registry-system"]
          end
      end
      subgraph da["<br>#60;#60;Node#62;#62; Domains Area<br>"]
-         %% direction LR
+         %% direction TB
          %% subgraph applayer2[" "]
          %% end
      end
      subgraph is["<br>#60;#60;Node#62;#62; Infrastructure Services Area<br>"]
-         %% direction LR
+         %% direction TB
          %% subgraph inflayer1[" "]
          %% end
      end
@@ -148,8 +148,13 @@ flowchart TB
   controlplane -- "ClusterIP/tcp:5432" --> service4
   controlplane -- "ClusterIP/tcp:6379" --> service7
   controlplane -- "ClusterIP/tcp:80" --> service8
+  controlplane -- "ClusterIP/tcp:8081" --> service8
+  controlplane -- "ClusterIP/tcp:8080" --> service8
+  controlplane -- "ClusterIP/tcp:8082" --> service8
   controlplane -- "ExternalIP/http:80" --> service8
-  controlplane -- "ExternalIP/https:443" --> service8
+  controlplane -- "ExternalIP/http:8080" --> service8
+  controlplane -- "ExternalIP/http:8081" --> service8
+  controlplane -- "ExternalIP/http:8082" --> service8
   controlplane -- "ClusterIP/tcp:9092" --> service5
   controlplane -- "ClusterIP/tcp:2181" --> service6
   controlplane -- "ClusterIP/tcp:2888" --> service6

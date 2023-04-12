@@ -11,19 +11,20 @@ Bitnami helm charts if used to defined a reverse proxy.
 
 See [GitHub project](https://github.com/bitnami/charts/tree/main/bitnami/haproxy/#installing-the-chart) for more detail.
 
-## Installation of ui-apis-gateway-system
+## Installation of ui-apis-gateway-system-haproxy
+The reverse proxy and its load balancing as cluster's entrypoint is implemented via HAProxy packaged by [Helm project](haproxy).
+
+Deployment into an environment is performed via Helm command line:
 
 ```console
 helm install ui-apis-gateway-system -f ./haproxy/values.yaml bitnami/haproxy
 ```
 
+## Routing
+The HAProxy configuration file (values.yaml) help to customize the original Bitnami HAProxy Helm charts, including:
+- external > internal routing configuration (e.g port mapping)
 
-
-
-
-
-
-# Kubernetes NGINX Ingress Controller
-This Ingress controller is developed as a reverse proxy and load balancer for Kubernetes via [GitHub](https://github.com/kubernetes/ingress-nginx).
-
-Maintained by the Kubernetes community, see [documentation](https://kubernetes.github.io/ingress-nginx/) for more details.
+The current implementation is only based on ports mapping (e.g one dedicated external port exposed out of the cluster) for access to:
+- web-reactive-frontend-system via port 8081 or port 80
+- reactive-backend-system via port 8082
+- access-control-sso-system via port 8081
