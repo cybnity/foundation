@@ -95,7 +95,7 @@ reactive-messaging-gateway
         'noteTextColor': '#fff',
         'noteBorderColor': '#fff'
     },
-    'flowchart': { 'curve': 'cardinal' }
+    'flowchart': { 'curve': 'basis' }
   }
 }%%
 flowchart LR
