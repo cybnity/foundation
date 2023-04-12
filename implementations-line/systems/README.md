@@ -113,23 +113,33 @@ flowchart LR
             podproxy1["POD"]
          end
          subgraph service1[" #60;#60;Service#62;#62; \n web-reactive-frontend-system "]
+            clusterip1["ClusterIP"]
             pod1["POD"]
          end
          subgraph service2[" #32;#60;#60;Service#62;#62; \n reactive-backend-system#32; "]
+            clusterip4["ClusterIP"]
             pod2["POD"]
          end
          subgraph service3[" #60;#60;LoadBalancer Service#62;#62; \n access-control-sso-system "]
             pod3["POD"]
          end
-         service4["\n #60;#60;Service#62;#62; \n access-control-sso-system-postgresql "]
-         service7[" #60;#60;Service#62;#62; \n uis-system-redis "]
+         subgraph service4[" #60;#60;Service#62;#62; \n access-control-sso-system-postgresql "]
+            clusterip2["ClusterIP"]
+         end
+         subgraph service7[" #60;#60;Service#62;#62; \n uis-system-redis "]
+            clusterip3["ClusterIP"]
+         end
        end
      end
      subgraph di[" #60;#60;Node#62;#62; Domains I/O Area"]
          direction LR
          subgraph applayer1[" "]
-            service5[" #60;#60;Service#62;#62; \n dis-system-kafka "]
-            service6[" #60;#60;Service#62;#62; \n dis-brokers-registry-system "]
+            subgraph service5[" #60;#60;Service#62;#62; \n dis-system-kafka "]
+               clusterip5["ClusterIP"]
+            end
+            subgraph service6[" #60;#60;Service#62;#62; \n dis-brokers-registry-system "]
+               clusterip6["ClusterIP"]
+            end
          end
      end
      subgraph da[" #60;#60;Node#62;#62; Domains Area "]
@@ -144,23 +154,23 @@ flowchart LR
      end
   end
   tunnel -- "route x.y.y.y/z" --> controlplane
-  controlplane -. "ClusterIP/tcp:80" .-> service1
-  controlplane -. "ClusterIP/tcp:80" .-> service2
+  controlplane -. "tcp:80" .-> clusterip1
+  controlplane -. "tcp:80" .-> clusterip4
   podproxy1 -- "8081:80" --> service1
   podproxy1 -- "8082:80" --> service2
   podproxy1 -- "8080:81" --> service3
-  controlplane -. "ClusterIP/tcp:81" .-> service3
+  controlplane -. "tcp:81" .-> service3
   controlplane -- "ExternalIP/tcp:81 (temporary for admin)" --> service3
-  controlplane -. "ClusterIP/tcp:5432" .-> service4
-  controlplane -. "ClusterIP/tcp:6379" .-> service7
+  controlplane -. "tcp:5432" .-> clusterip2
+  controlplane -. "tcp:6379" .-> clusterip3
   controlplane -- "ExternalIP/http:80" --> service8
   controlplane -- "ExternalIP/http:8080" --> service8
   controlplane -- "ExternalIP/http:8081" --> service8
   controlplane -- "ExternalIP/http:8082" --> service8
-  controlplane -. "ClusterIP/tcp:9092" .-> service5
-  controlplane -. "ClusterIP/tcp:2181" .-> service6
-  controlplane -. "ClusterIP/tcp:2888" .-> service6
-  controlplane -. "ClusterIP/tcp:3888" .-> service6
+  controlplane -. "tcp:9092" .-> clusterip5
+  controlplane -. "tcp:2181" .-> clusterip6
+  controlplane -. "tcp:2888" .-> clusterip6
+  controlplane -. "tcp:3888" .-> clusterip6
   
   classDef red fill:#e5302a, stroke:#e5302a, color:#fff, stroke-width:3px
   classDef medium fill:#fff, stroke:#3a5572, color:#3a5572
@@ -171,7 +181,7 @@ flowchart LR
   classDef internalconfig fill:#0e2a43, stroke:#fff, color:#fff
   class service1,service2,service3,service4,service5,service6,service7 mediumfill;
   class ui,di,da,is medium;
-  class pod1,pod2,pod3,podproxy1 dark;
+  class pod1,pod2,pod3,podproxy1,clusterip1,clusterip2,clusterip3,clusterip4,clusterip5,clusterip6 dark;
   class tunnel,service8 red;
   class controlplane reddot;
 
