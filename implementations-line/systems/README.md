@@ -110,7 +110,7 @@ flowchart LR
          subgraph service8["#60;#60;LoadBalancer Service#62;#62;<br>ui-apis-gateway-system-haproxy"]
             pod4["POD"]
          end
-         subgraph service1["<p style="text-align: center;">#60;#60;Service#62;#62;<br>web-reactive-frontend-system</p>"]
+         subgraph service1["<p>#60;#60;Service#62;#62;</p><p>web-reactive-frontend-system</p>"]
             portforward1["Port Forward"] -. "8081:80" .-> pod1["POD"]
          end
          subgraph service2["#32;#60;#60;Service#62;#62; reactive-backend-system#32;"]
