@@ -103,39 +103,39 @@ flowchart LR
      direction LR
      subgraph controlplane["Control Plane"]
      end
-     subgraph ui["\n #60;#60;Node#62;#62; User Interfaces Area "]
+     subgraph ui[" #60;#60;Node#62;#62; User Interfaces Area "]
        direction LR
        subgraph uilayer1[" "]
          direction TB
          subgraph service8["\n #60;#60;LoadBalancer Service#62;#62; \n ui-apis-gateway-system-haproxy "]
             podproxy1["POD"]
          end
-         subgraph service1["\n #60;#60;Service#62;#62; \n web-reactive-frontend-system "]
+         subgraph service1[" #60;#60;Service#62;#62; \n web-reactive-frontend-system "]
             pod1["POD"]
          end
-         subgraph service2["\n #32;#60;#60;Service#62;#62; \n reactive-backend-system#32; "]
+         subgraph service2[" #32;#60;#60;Service#62;#62; \n reactive-backend-system#32; "]
             pod2["POD"]
          end
-         subgraph service3["\n #60;#60;LoadBalancer Service#62;#62; \n access-control-sso-system "]
+         subgraph service3[" #60;#60;LoadBalancer Service#62;#62; \n access-control-sso-system "]
             pod3["POD"]
          end
          service4["\n #60;#60;Service#62;#62; \n access-control-sso-system-postgresql "]
-         service7["\n #60;#60;Service#62;#62; \n uis-system-redis "]
+         service7[" #60;#60;Service#62;#62; \n uis-system-redis "]
        end
      end
-     subgraph di["\n #60;#60;Node#62;#62; Domains I/O Area"]
+     subgraph di[" #60;#60;Node#62;#62; Domains I/O Area"]
          direction LR
          subgraph applayer1[" "]
-            service5["\n #60;#60;Service#62;#62; \n dis-system-kafka "]
-            service6["\n #60;#60;Service#62;#62; \n dis-brokers-registry-system "]
+            service5[" #60;#60;Service#62;#62; \n dis-system-kafka "]
+            service6[" #60;#60;Service#62;#62; \n dis-brokers-registry-system "]
          end
      end
-     subgraph da["\n #60;#60;Node#62;#62; Domains Area "]
+     subgraph da[" #60;#60;Node#62;#62; Domains Area "]
          %% direction LR
          %% subgraph applayer2[" "]
          %% end
      end
-     subgraph is["\n #60;#60;Node#62;#62; Infrastructure Services Area "]
+     subgraph is[" #60;#60;Node#62;#62; Infrastructure Services Area "]
          %% direction LR
          %% subgraph inflayer1[" "]
          %% end
