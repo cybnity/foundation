@@ -117,10 +117,11 @@ flowchart LR
             pod1["POD"]
          end
          subgraph service2[" #32;#60;#60;Service#62;#62; \n reactive-backend-system#32; "]
-            clusterip4["ClusterIP"]
             pod2["POD"]
+            clusterip4["ClusterIP"]
          end
          subgraph service3[" #60;#60;LoadBalancer Service#62;#62; \n access-control-sso-system "]
+            clusterip7["ClusterIP"]
             pod3["POD"]
          end
          subgraph service4[" #60;#60;Service#62;#62; \n access-control-sso-system-postgresql "]
@@ -159,7 +160,7 @@ flowchart LR
   podproxy1 -- "8081:80" --> service1
   podproxy1 -- "8082:80" --> service2
   podproxy1 -- "8080:81" --> service3
-  controlplane -. "tcp:81" .-> service3
+  controlplane -. "tcp:81" .-> clusterip7
   controlplane -- "ExternalIP/tcp:81 (temporary for admin)" --> service3
   controlplane -. "tcp:5432" .-> clusterip2
   controlplane -. "tcp:6379" .-> clusterip3
@@ -181,7 +182,7 @@ flowchart LR
   classDef internalconfig fill:#0e2a43, stroke:#fff, color:#fff
   class service1,service2,service3,service4,service5,service6,service7 mediumfill;
   class ui,di,da,is medium;
-  class pod1,pod2,pod3,podproxy1,clusterip1,clusterip2,clusterip3,clusterip4,clusterip5,clusterip6 dark;
+  class pod1,pod2,pod3,podproxy1,clusterip1,clusterip2,clusterip3,clusterip4,clusterip5,clusterip6,clusterip7 dark;
   class tunnel,service8 red;
   class controlplane reddot;
 
