@@ -106,7 +106,7 @@ flowchart LR
      subgraph ui["<br>#60;#60;Node#62;#62; User Interfaces Area<br>"]
        direction TB
        subgraph uilayer1[" "]
-         direction LR
+         direction TB
          subgraph service8["#60;#60;LoadBalancer Service#62;#62;<br>ui-apis-gateway-system-haproxy"]
             pod4["POD"]
          end
