@@ -12,9 +12,6 @@ export default function NavBar() {
 					<li className='mx-1'>
 						<Link to='/resource'>Login</Link>
 					</li>
-					<li className='mx-1'>
-						<Link to='/resource'>Resource</Link>
-					</li>
 				</ul>
 			</div>
 		</nav>

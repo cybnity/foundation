@@ -9,8 +9,9 @@ export default function Resources() {
 	// Track the render cycle when the component is mounted onto the DOM to invoke the Keycloak instance
 	useEffect(() => {
 		const keycloak = Keycloak('/keycloak.json');
+
 		keycloak.init({ onLoad: 'login-required', checkLoginIframe: false, silentCheckSsoFallback: false }).then(authenticated => {
-			setKeycloak(keycloak)
+			setKeycloak(keycloak);
 			console.log("authenticated="+authenticated);
 			if (authenticated) {
 				window.accessToken = keycloak.token;
@@ -20,9 +21,10 @@ export default function Resources() {
 	}, [])
 
 	const loadData = function () {
+		console.log("start loadData...");
 	    document.getElementById('username').innerText = keycloak.subject;
 	
-	    const url = 'http://localhost:8080/restful-service';
+	    const url = 'http://10.101.238.65:80/auth/restful-service';
 	
 	    const req = new XMLHttpRequest();
 	    req.open('GET', url, true);
