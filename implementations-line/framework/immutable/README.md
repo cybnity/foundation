@@ -2,7 +2,7 @@
 Presentation of the transversal framework components regarding architecture components respecting the immutability design patterns.
 
 # DESIGN VIEW
-Several structural patterns are supporting the immutability and are reusable (e.g by inheritance) for coding of sofwtare elements (e.g aggregate, value objects).
+Several structural patterns are supporting the immutability and are reusable (e.g by inheritance) for coding of software elements (e.g aggregate, value objects).
 
 |Class Type|Motivation|
 | :-- | :-- |
