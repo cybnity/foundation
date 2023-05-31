@@ -13,8 +13,7 @@
 	<name>CYBNITY FEATURES</name>
 
 	<modules>
-		<!--
-		<module>workflow-process</module>-->
+		<module>workflow-process</module>
 		<module>domain</module>
 		<!--
 		<module>technical</module>
@@ -24,6 +23,11 @@
 		<module>integrated-partners</module>-->
 	</modules>
 
+	<properties>
+		<!-- CYBNITY Foundation dependencies link-->
+		<foundation.compatibility.version>staging-latest-SNAPSHOT</foundation.compatibility.version>
+	</properties>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -31,6 +35,11 @@
 				<artifactId>support</artifactId>
 				<scope>compile</scope>
 				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.cybnity.framework</groupId>
+				<artifactId>domain</artifactId>
+				<version>${foundation.compatibility.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
