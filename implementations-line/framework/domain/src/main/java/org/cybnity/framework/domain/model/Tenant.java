@@ -117,7 +117,7 @@ public class Tenant extends ChildFact {
      * @param status A status. If existent tenant's status is not included already
      *               in this parameter, this method verify it and add the current
      *               state as previous version to maintain the changes history
-     *               regaarding the mutable state. If null, the method ignore the
+     *               regarding the mutable state. If null, the method ignore the
      *               requested change and maintain the already existent state.
      */
     private void setStatus(ActivityState status) {
@@ -143,7 +143,7 @@ public class Tenant extends ChildFact {
      * version.
      * 
      * @return A mutable version of the new current state.
-     * @throws ImmutabilityException When impossible assignation of this reference
+     * @throws ImmutabilityException When impossible assigning of this reference
      *                               as owner of an activity state change.
      */
     public MutableProperty activate() throws ImmutabilityException {
@@ -169,7 +169,7 @@ public class Tenant extends ChildFact {
 
     /**
      * Define a logical organization regarding this tenant when none previously
-     * defined. When existent previous organization about this tenant, this method
+     * defined. When existing previous organization about this tenant, this method
      * make a change on the previous defined organization (changes history is saved)
      * to defined the new one as current.
      * 

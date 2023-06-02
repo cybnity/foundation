@@ -23,11 +23,6 @@
 		<module>integrated-partners</module>-->
 	</modules>
 
-	<properties>
-		<!-- CYBNITY Foundation dependencies link-->
-		<foundation.compatibility.version>staging-latest-SNAPSHOT</foundation.compatibility.version>
-	</properties>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -39,7 +34,7 @@
 			<dependency>
 				<groupId>org.cybnity.framework</groupId>
 				<artifactId>domain</artifactId>
-				<version>${foundation.compatibility.version}</version>
+				<version>${revision}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -48,6 +43,10 @@
 		<dependency>
 			<groupId>org.cybnity.framework</groupId>
 			<artifactId>support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.cybnity.framework</groupId>
+			<artifactId>domain</artifactId>
 		</dependency>
 	</dependencies>
 </project>

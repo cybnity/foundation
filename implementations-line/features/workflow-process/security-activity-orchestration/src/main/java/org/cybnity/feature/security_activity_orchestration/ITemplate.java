@@ -1,10 +1,16 @@
 package org.cybnity.feature.security_activity_orchestration;
 
 /**
- * Contract based on a template file (e.g JSON, XML) of NIST or ISO27001 standard.
- * Cybersecurity framework including RMF process steps (and optional included
- * sub-tasks definitions) as ConcreteHandler definitions.
+ * Contract based on a template file (e.g JSON, XML) of NIST or ISO27001
+ * standard. Cybersecurity framework including RMF process steps (and optional
+ * included sub-tasks definitions) as ConcreteHandler definitions.
  */
 public interface ITemplate {
 
+	/**
+	 * Get the name of the template.
+	 * 
+	 * @return A name.
+	 */
+	public String name();
 }

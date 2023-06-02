@@ -12,10 +12,4 @@
 	<packaging>jar</packaging>
 	<name>- Activity orchestration components</name>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.cybnity.framework</groupId>
-			<artifactId>domain</artifactId>
-		</dependency>
-	</dependencies>
 </project>

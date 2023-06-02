@@ -41,7 +41,7 @@ public class TenantUseCaseTest {
 	tenant = new Tenant(new DomainEntityImpl(id),
 		/*
 		 * Simulate auto-assigned parent identifier without extension of the child id
-		 * generation based on identifiers and minimum quantity of lenght
+		 * generation based on identifiers and minimum quantity of length
 		 */ null, /* Simulate unknown original activity state */ null);
 
 	// Define attributes of tenant owner
@@ -59,7 +59,7 @@ public class TenantUseCaseTest {
     }
 
     /**
-     * Test that when a named tenant (original organization representant) is
+     * Test that when a named tenant (original organization representer) is
      * upgraded regarding its naming mutable property, the attribute versions
      * history is managed by the tenant.
      * 

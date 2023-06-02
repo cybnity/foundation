@@ -129,4 +129,12 @@
 		<system>GitHub</system>
 		<url>https://github.com/cybnity/foundation/issues/</url>
 	</issueManagement>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>3.0.0-M7</version>
+			</plugin>
+		</plugins>
+	</build>
 </project>
