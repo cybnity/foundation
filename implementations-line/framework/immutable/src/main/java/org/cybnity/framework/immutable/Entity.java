@@ -45,7 +45,7 @@ public abstract class Entity implements IHistoricalFact, IdentifiableFact, IRefe
      * shall follows the Ownership pattern. While the entity's fact cannot be
      * deleted, the Delete pattern simulates the removal of this entity.
      * 
-     * This collection implementation contains non-duplicable elements at every
+     * This collection implementation contains non-duplicated elements at every
      * given time.
      */
     protected ArrayList<Identifier> identifiedBy;
@@ -83,7 +83,7 @@ public abstract class Entity implements IHistoricalFact, IdentifiableFact, IRefe
      * Default constructor.
      * 
      * @param identifiers Set of mandatory identifiers of this entity, that contains
-     *                    non-duplicable elements.
+     *                    non-duplicated elements.
      * @throws IllegalArgumentException When identifiers parameter is null or each
      *                                  item does not include name and value.
      */

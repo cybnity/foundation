@@ -20,13 +20,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit test of ProcessTemplate behaviors regarding its instantiation and
- * supported requirements.
+ * Unit test of Process behaviors regarding its instantiation and supported
+ * requirements.
  * 
  * @author olivier
  *
  */
-public class ProcessTemplateUseCaseTest {
+public class ProcessUseCaseTest {
 
 	private Identifier id;
 	private String templateName;
@@ -41,7 +41,7 @@ public class ProcessTemplateUseCaseTest {
 		org = new Organization(id, "CYBNITY");
 		// template definition
 		specification = new HashMap<>();
-		specification.put(ProcessTemplate.PropertyAttributeKey.Name.name(), templateName);
+		specification.put(Process.PropertyAttributeKey.Name.name(), templateName);
 		specification.put(ActivityState.PropertyAttributeKey.StateValue.name(), Boolean.TRUE);
 	}
 
@@ -56,21 +56,20 @@ public class ProcessTemplateUseCaseTest {
 	public void givenUnknownPropertyOwner_whenConstructor_thenIllegalArgumentExceptionThrown() {
 		assertThrows(IllegalArgumentException.class, () -> {
 			// Try instantiation with violation of mandatory owner parameter
-			new ProcessTemplate(/* undefined owner */ null, specification,
-					/* default status applied by constructor */ null);
+			new Process(/* undefined owner */ null, specification, /* default status applied by constructor */ null);
 		});
 	}
 
 	@Test
 	public void givenValidTemplateInitialValue_whenConstructor_thenMutabilityChainInitialized() throws Exception {
 		// Create required valid property initial value
-		ProcessTemplate changeableTemplate = new ProcessTemplate(org, specification, HistoryState.COMMITTED,
-				/* default status applied by constructor */ (ProcessTemplate[]) null);
+		Process changeableTemplate = new Process(org.identity(), specification, HistoryState.COMMITTED,
+				/* default status applied by constructor */ (Process[]) null);
 
 		// Verify current values version is saved
 		HashMap<String, Object> currentVersion = changeableTemplate.currentValue();
-		assertEquals(specification.get(ProcessTemplate.PropertyAttributeKey.Name.name()),
-				currentVersion.get(ProcessTemplate.PropertyAttributeKey.Name.name()),
+		assertEquals(specification.get(Process.PropertyAttributeKey.Name.name()),
+				currentVersion.get(Process.PropertyAttributeKey.Name.name()),
 				"Attribute's value shall had been initialized by default!");
 
 		// Check saved owner
@@ -89,8 +88,8 @@ public class ProcessTemplateUseCaseTest {
 	 */
 	@Test
 	public void givenSpecification_whenConstructor_thenNamed() throws Exception {
-		ProcessTemplate t = new ProcessTemplate(org, specification, HistoryState.COMMITTED,
-				/* default status applied by constructor */ (ProcessTemplate[]) null);
+		Process t = new Process(org.identity(), specification, HistoryState.COMMITTED,
+				/* default status applied by constructor */ (Process[]) null);
 		assertNotNull(t.name());
 		assertTrue(t.isActive());
 		assertNotNull(t.occurredAt());
@@ -107,12 +106,12 @@ public class ProcessTemplateUseCaseTest {
 	@Test
 	public void givenSameNamedTemplate_whenEqualsEvaluation_thenTrue() throws Exception {
 		// Create two instances including same types of contents
-		ProcessTemplate t1 = new ProcessTemplate(org, specification, HistoryState.COMMITTED,
-				/* default status applied by constructor */ (ProcessTemplate[]) null);
-		ProcessTemplate t2 = new ProcessTemplate(org, (HashMap<String, Object>) specification.clone(),
-				HistoryState.COMMITTED, /* default status applied by constructor */ (ProcessTemplate[]) null);
-		ProcessTemplate t3 = new ProcessTemplate(org, (HashMap<String, Object>) specification.clone(),
-				HistoryState.COMMITTED, /* default status applied by constructor */ (ProcessTemplate[]) null);
+		Process t1 = new Process(org.identity(), specification, HistoryState.COMMITTED,
+				/* default status applied by constructor */ (Process[]) null);
+		Process t2 = new Process(org.identity(), (HashMap<String, Object>) specification.clone(),
+				HistoryState.COMMITTED, /* default status applied by constructor */ (Process[]) null);
+		Process t3 = new Process(org.identity(), (HashMap<String, Object>) specification.clone(),
+				HistoryState.COMMITTED, /* default status applied by constructor */ (Process[]) null);
 
 		// Check that all equals contents are evaluated as identical
 		assertEquals(t1, t2, "Same contents shall had been detected!");
@@ -122,7 +121,7 @@ public class ProcessTemplateUseCaseTest {
 		// Change one value of one of the property to compare (simulating a difference
 		// of property definition)
 		HashMap<String, Object> specificationChanged = t3.currentValue();
-		specificationChanged.put(ProcessTemplate.PropertyAttributeKey.Name.name(), "otherName");
+		specificationChanged.put(Process.PropertyAttributeKey.Name.name(), "otherName");
 
 		// Check that difference is detected during equality evaluation regarding the
 		// values of the template names

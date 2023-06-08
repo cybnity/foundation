@@ -9,7 +9,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * Identifying information (e.g natural key, GUID, timestamp, or some
  * combination of those and other location-independent identifiers).
  * 
- * A location-independent identity can be generated fron any system node, is
+ * A location-independent identity can be generated from any system node, is
  * immutable and can be compared.
  * 
  * @author olivier

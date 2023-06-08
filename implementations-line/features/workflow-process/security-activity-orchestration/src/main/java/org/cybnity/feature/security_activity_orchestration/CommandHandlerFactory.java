@@ -23,7 +23,7 @@ public abstract class CommandHandlerFactory {
 	 * @return New instance of command handler.
 	 * @throws IllegalArgumentException When mandatory parameter is not defined.
 	 */
-	public abstract ICommandHandler create(ITemplate template) throws IllegalArgumentException;
+	public abstract ICommandChainHandler create(ITemplate template) throws IllegalArgumentException;
 
 	/**
 	 * Create an instance of handler based on the read of a context.
@@ -33,5 +33,5 @@ public abstract class CommandHandlerFactory {
 	 * @return New instance of command handler.
 	 * @throws IllegalArgumentException When mandatory parameter is not defined.
 	 */
-	public abstract ICommandHandler create(IContext context) throws IllegalArgumentException;
+	public abstract ICommandChainHandler create(IContext context) throws IllegalArgumentException;
 }

@@ -17,7 +17,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * This fact is a successor of both a group and a member. The group and member
  * are not causally related.
  * 
- * When a member shal leave an assigned group as Membership fact, a <<Membership
+ * When a member shall leave an assigned group as Membership fact, a <<Membership
  * Name>>Deletion fact ({@link org.cybnity.framework.immutable.IDeletionFact})
  * is created with membership fact as predecessor.
  * 

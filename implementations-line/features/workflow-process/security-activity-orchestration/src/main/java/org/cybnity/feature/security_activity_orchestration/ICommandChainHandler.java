@@ -8,14 +8,14 @@ import org.cybnity.framework.domain.Command;
  * Chain of responsibility pattern implementation regarding the handling of
  * workflow command events.
  */
-public interface ICommandHandler {
+public interface ICommandChainHandler {
 
 	/**
 	 * Define a chain of next handler
 	 * 
 	 * @param next A next handler executable.
 	 */
-	public void setNext(Collection<ICommandHandler> next);
+	public void setNext(Collection<ICommandChainHandler> next);
 
 	/**
 	 * Handle and execute a command.

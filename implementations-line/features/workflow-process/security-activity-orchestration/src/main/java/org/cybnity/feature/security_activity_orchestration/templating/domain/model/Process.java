@@ -12,12 +12,14 @@ import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
-public class ProcessTemplate extends ActivityState implements ITemplate {
+public class Process extends ActivityState implements ITemplate {
 
 	private static final long serialVersionUID = new VersionConcreteStrategy()
-			.composeCanonicalVersionHash(ActivityState.class).hashCode();
+			.composeCanonicalVersionHash(Process.class).hashCode();
 
 	private OffsetDateTime versionedAt;
+	
+	private ProcessDescriptor description;
 
 	/**
 	 * Keys set regarding the multiple attribute defining this complex template, and
@@ -39,7 +41,7 @@ public class ProcessTemplate extends ActivityState implements ITemplate {
 	 * @throws ImmutabilityException    When impossible creation of immutable
 	 *                                  version regarding the owner instance.
 	 */
-	public ProcessTemplate(EntityReference propertyOwner, Boolean isActiveStatus)
+	public Process(EntityReference propertyOwner, Boolean isActiveStatus)
 			throws IllegalArgumentException, ImmutabilityException {
 		super(propertyOwner, isActiveStatus);
 		this.versionedAt = OffsetDateTime.now();
@@ -57,7 +59,7 @@ public class ProcessTemplate extends ActivityState implements ITemplate {
 	 * @throws ImmutabilityException    When impossible creation of immutable
 	 *                                  version regarding the owner instance.
 	 */
-	public ProcessTemplate(EntityReference propertyOwner, Boolean isActiveStatus, ProcessTemplate... predecessors)
+	public Process(EntityReference propertyOwner, Boolean isActiveStatus, Process... predecessors)
 			throws IllegalArgumentException, ImmutabilityException {
 		super(propertyOwner, isActiveStatus, predecessors);
 		this.versionedAt = OffsetDateTime.now();
@@ -81,15 +83,15 @@ public class ProcessTemplate extends ActivityState implements ITemplate {
 	 *                                  can not be cloned regarding immutable entity
 	 *                                  parameter.
 	 */
-	public ProcessTemplate(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
-			ProcessTemplate... predecessors) {
+	public Process(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
+			Process... predecessors) {
 		super(propertyOwner, propertyCurrentValue, status, predecessors);
 		this.versionedAt = OffsetDateTime.now();
 	}
 
 	@Override
 	public Serializable immutable() throws ImmutabilityException {
-		ProcessTemplate copy = new ProcessTemplate(this.owner(), this.currentValue(), this.historyStatus());
+		Process copy = new Process(this.owner(), this.currentValue(), this.historyStatus());
 		// Complete with additional attributes of this complex property
 		copy.versionedAt = this.versionedAt;
 		copy.changedAt = this.occurredAt();
@@ -105,9 +107,9 @@ public class ProcessTemplate extends ActivityState implements ITemplate {
 	public boolean equals(Object obj) {
 		boolean isEquals = false;
 		// Comparison based on owner, status, version functional attributes
-		if (super.equals(obj) && obj instanceof ProcessTemplate) {
+		if (super.equals(obj) && obj instanceof Process) {
 			try {
-				ProcessTemplate compared = (ProcessTemplate) obj;
+				Process compared = (Process) obj;
 				// Check if same names
 				String objNameAttribute = compared.name();
 				String thisNameAttribute = this.name();

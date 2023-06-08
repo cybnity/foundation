@@ -29,7 +29,7 @@ public interface IdentifiableFact {
      * and shall provide the list of values contributing to define the unicity of
      * this instance (e.g also used for valueEquality() comparison).
      * 
-     * @return The unique functional values used to idenfity uniquely this instance.
+     * @return The unique functional values used to identify uniquely this instance.
      *         Or empty array.
      */
     public String[] valueHashCodeContributors();

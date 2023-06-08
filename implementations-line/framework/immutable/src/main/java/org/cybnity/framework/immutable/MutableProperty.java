@@ -50,7 +50,7 @@ public abstract class MutableProperty implements IHistoricalFact {
 	/**
 	 * Current value of the property. Can be unique (e.g about a simple String field
 	 * of an Entity), but also represents a current version of a combined complex
-	 * object (e.g aggregation of multiples properties constituing a complex
+	 * object (e.g aggregation of multiples properties constitute a complex
 	 * Entity).
 	 * 
 	 * The key is the property name, and the value is its current captured recent
