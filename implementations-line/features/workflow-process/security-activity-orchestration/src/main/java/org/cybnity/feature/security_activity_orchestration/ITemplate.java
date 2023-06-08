@@ -12,5 +12,5 @@ public interface ITemplate {
 	 * 
 	 * @return A name.
 	 */
-	public String name();
+	public Attribute name();
 }
