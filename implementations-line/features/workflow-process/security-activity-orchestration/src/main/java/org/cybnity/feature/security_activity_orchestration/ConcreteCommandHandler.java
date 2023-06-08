@@ -7,9 +7,9 @@ import org.cybnity.framework.domain.Command;
 /**
  * Basic implementation class.
  */
-public class ConcreteCommandHandler extends CommandHandler {
+public class ConcreteCommandHandler extends ChainCommandHandler {
 
-	public ConcreteCommandHandler(Collection<CommandHandler> next) {
+	public ConcreteCommandHandler(Collection<ChainCommandHandler> next) {
 		super(next);
 	}
 

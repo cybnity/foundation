@@ -63,7 +63,7 @@ public class IdentifierStringBased extends ValueObject<String> implements Identi
     /**
      * Generate an identifier based on a list (or unique contained instance) of
      * identifiers. This method is reusable for any class requiring calculation of
-     * combinated identifier.
+     * combined identifier.
      * 
      * @param basedOn Mandatory set of identifiers (e.g unique instance or multiple
      *                to concat). Shall contain a minimum one instance of identifier
