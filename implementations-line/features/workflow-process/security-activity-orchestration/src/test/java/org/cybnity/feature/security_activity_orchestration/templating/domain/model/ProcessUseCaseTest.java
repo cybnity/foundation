@@ -7,8 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
+import org.cybnity.feature.security_activity_orchestration.domain.model.Process;
 import org.cybnity.feature.security_activity_orchestration.sample.Organization;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.model.ActivityState;
@@ -35,7 +37,7 @@ public class ProcessUseCaseTest {
 
 	@BeforeEach
 	public void initSample() throws Exception {
-		templateName = "NIST RMF template";
+		templateName = "NIST RMF template";// TODO changer pour un objet de type Attribute en place de String
 		// Owner of template
 		id = new IdentifierStringBased("uuid", "LKJHDGHFJGKH87654");
 		org = new Organization(id, "CYBNITY");
@@ -67,7 +69,7 @@ public class ProcessUseCaseTest {
 				/* default status applied by constructor */ (Process[]) null);
 
 		// Verify current values version is saved
-		HashMap<String, Object> currentVersion = changeableTemplate.currentValue();
+		Map<String, Object> currentVersion = changeableTemplate.currentValue();
 		assertEquals(specification.get(Process.PropertyAttributeKey.Name.name()),
 				currentVersion.get(Process.PropertyAttributeKey.Name.name()),
 				"Attribute's value shall had been initialized by default!");
@@ -120,7 +122,7 @@ public class ProcessUseCaseTest {
 
 		// Change one value of one of the property to compare (simulating a difference
 		// of property definition)
-		HashMap<String, Object> specificationChanged = t3.currentValue();
+		Map<String, Object> specificationChanged = t3.currentValue();
 		specificationChanged.put(Process.PropertyAttributeKey.Name.name(), "otherName");
 
 		// Check that difference is detected during equality evaluation regarding the
