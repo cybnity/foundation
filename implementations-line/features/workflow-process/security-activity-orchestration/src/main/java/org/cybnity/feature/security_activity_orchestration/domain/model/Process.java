@@ -27,7 +27,7 @@ public class Process extends ActivityState implements ITemplate {
 	 * that each change need to be versioned/treated as a single atomic fact.
 	 */
 	public enum PropertyAttributeKey {
-		/** Name of the template **/
+		/** Naming attribute of the template **/
 		Name;
 	}
 
