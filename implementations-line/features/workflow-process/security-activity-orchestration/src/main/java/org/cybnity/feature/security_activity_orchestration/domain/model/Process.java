@@ -1,9 +1,10 @@
-package org.cybnity.feature.security_activity_orchestration.templating.domain.model;
+package org.cybnity.feature.security_activity_orchestration.domain.model;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 
+import org.cybnity.feature.security_activity_orchestration.Attribute;
 import org.cybnity.feature.security_activity_orchestration.ITemplate;
 import org.cybnity.framework.domain.model.ActivityState;
 import org.cybnity.framework.immutable.Entity;
@@ -18,7 +19,7 @@ public class Process extends ActivityState implements ITemplate {
 			.composeCanonicalVersionHash(Process.class).hashCode();
 
 	private OffsetDateTime versionedAt;
-	
+
 	private ProcessDescriptor description;
 
 	/**
@@ -26,7 +27,7 @@ public class Process extends ActivityState implements ITemplate {
 	 * that each change need to be versioned/treated as a single atomic fact.
 	 */
 	public enum PropertyAttributeKey {
-		/** Name of the template **/
+		/** Naming attribute of the template **/
 		Name;
 	}
 
@@ -91,7 +92,8 @@ public class Process extends ActivityState implements ITemplate {
 
 	@Override
 	public Serializable immutable() throws ImmutabilityException {
-		Process copy = new Process(this.owner(), this.currentValue(), this.historyStatus());
+		Process copy = new Process(this.owner(), new HashMap<String, Object>(this.currentValue()),
+				this.historyStatus());
 		// Complete with additional attributes of this complex property
 		copy.versionedAt = this.versionedAt;
 		copy.changedAt = this.occurredAt();
@@ -111,8 +113,8 @@ public class Process extends ActivityState implements ITemplate {
 			try {
 				Process compared = (Process) obj;
 				// Check if same names
-				String objNameAttribute = compared.name();
-				String thisNameAttribute = this.name();
+				Attribute objNameAttribute = compared.name();
+				Attribute thisNameAttribute = this.name();
 				if (objNameAttribute != null && thisNameAttribute != null) {
 					isEquals = objNameAttribute.equals(thisNameAttribute);
 				}
@@ -130,9 +132,9 @@ public class Process extends ActivityState implements ITemplate {
 	 * @return A label or null.
 	 */
 	@Override
-	public String name() {
+	public Attribute name() {
 		if (this.currentValue() != null) {
-			return (String) this.currentValue().getOrDefault(PropertyAttributeKey.Name.name(), null);
+			return (Attribute) this.currentValue().getOrDefault(PropertyAttributeKey.Name.name(), null);
 		}
 		return null;
 	}

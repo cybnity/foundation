@@ -13,7 +13,7 @@ import org.cybnity.framework.IContext;
  * definitions.
  *
  */
-public abstract class CommandHandlerFactory {
+public abstract class WorkflowCommandHandlerFactory {
 
 	/**
 	 * Create an instance of handler based on a template definition.
@@ -23,7 +23,7 @@ public abstract class CommandHandlerFactory {
 	 * @return New instance of command handler.
 	 * @throws IllegalArgumentException When mandatory parameter is not defined.
 	 */
-	public abstract ICommandChainHandler create(ITemplate template) throws IllegalArgumentException;
+	public abstract IWorkflowCommandHandler create(ITemplate template) throws IllegalArgumentException;
 
 	/**
 	 * Create an instance of handler based on the read of a context.
@@ -33,5 +33,5 @@ public abstract class CommandHandlerFactory {
 	 * @return New instance of command handler.
 	 * @throws IllegalArgumentException When mandatory parameter is not defined.
 	 */
-	public abstract ICommandChainHandler create(IContext context) throws IllegalArgumentException;
+	public abstract IWorkflowCommandHandler create(IContext context) throws IllegalArgumentException;
 }

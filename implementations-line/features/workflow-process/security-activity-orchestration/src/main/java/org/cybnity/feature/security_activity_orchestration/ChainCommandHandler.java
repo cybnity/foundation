@@ -9,15 +9,15 @@ import org.cybnity.framework.domain.Command;
  * Contract of command handling implementing the chain of responsibility chain
  * pattern.
  */
-public abstract class CommandHandler {
+public abstract class ChainCommandHandler {
 	private String label;
 	/**
 	 * In sequence approach, only one next handler can be defined. In parallel
 	 * approach of possible next handler, a set of unordered next handlers can be
 	 * defined.
 	 */
-	private Collection<CommandHandler> next;
-	private List<CommandHandler> subTasks;
+	private Collection<ChainCommandHandler> next;
+	private List<ChainCommandHandler> subTasks;
 
 	/**
 	 * Default constructor.
@@ -25,7 +25,7 @@ public abstract class CommandHandler {
 	 * @param next Optional set of next handler unique instance (sequential chain)
 	 *             or multiple (parallel chain) of the responsibility chain actors.
 	 */
-	public CommandHandler(Collection<CommandHandler> next) {
+	public ChainCommandHandler(Collection<ChainCommandHandler> next) {
 		this.next = next;
 	}
 
@@ -36,7 +36,7 @@ public abstract class CommandHandler {
 	 *         handler can be defined. In parallel approach of possible next
 	 *         handler, a set of unordered next handlers can be defined.
 	 */
-	protected Collection<CommandHandler> next() {
+	protected Collection<ChainCommandHandler> next() {
 		return this.next;
 	}
 
@@ -61,7 +61,7 @@ public abstract class CommandHandler {
 			boolean isHandled = false;
 			// Check if there is any sub-task which could support the request handling
 			if (this.subTasks() != null) {
-				for (CommandHandler subTaskHandler : this.subTasks()) {
+				for (ChainCommandHandler subTaskHandler : this.subTasks()) {
 					// Identity and execute the possible unique or parallel sub-handlers
 					// which could support the request
 					if (subTaskHandler != null) {
@@ -78,7 +78,7 @@ public abstract class CommandHandler {
 			// is supporting the request to be handled when it was not already handled by
 			// this handling instance
 			if (!isHandled && this.next() != null) {
-				for (CommandHandler nextHandler : this.next) {
+				for (ChainCommandHandler nextHandler : this.next) {
 					// Identify and execute the possible unique or parallel next handlers
 					// which could support the request
 					if (nextHandler != null)
@@ -117,7 +117,7 @@ public abstract class CommandHandler {
 	 * 
 	 * @return A list of sub-tasks or null.
 	 */
-	protected List<CommandHandler> subTasks() {
+	protected List<ChainCommandHandler> subTasks() {
 		return this.subTasks;
 	}
 

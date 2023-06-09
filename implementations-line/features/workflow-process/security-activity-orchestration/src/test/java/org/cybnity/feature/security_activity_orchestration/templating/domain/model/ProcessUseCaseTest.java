@@ -7,8 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
+import org.cybnity.feature.security_activity_orchestration.Attribute;
+import org.cybnity.feature.security_activity_orchestration.domain.model.Process;
 import org.cybnity.feature.security_activity_orchestration.sample.Organization;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.model.ActivityState;
@@ -29,19 +32,21 @@ import org.junit.jupiter.api.Test;
 public class ProcessUseCaseTest {
 
 	private Identifier id;
-	private String templateName;
+	private String templateName, namingAttribute;
 	private Organization org;
 	private HashMap<String, Object> specification;
 
 	@BeforeEach
 	public void initSample() throws Exception {
 		templateName = "NIST RMF template";
+		namingAttribute = "name";
+		Attribute namedAs = new Attribute(namingAttribute, templateName);
 		// Owner of template
 		id = new IdentifierStringBased("uuid", "LKJHDGHFJGKH87654");
 		org = new Organization(id, "CYBNITY");
 		// template definition
 		specification = new HashMap<>();
-		specification.put(Process.PropertyAttributeKey.Name.name(), templateName);
+		specification.put(Process.PropertyAttributeKey.Name.name(), namedAs);
 		specification.put(ActivityState.PropertyAttributeKey.StateValue.name(), Boolean.TRUE);
 	}
 
@@ -67,7 +72,7 @@ public class ProcessUseCaseTest {
 				/* default status applied by constructor */ (Process[]) null);
 
 		// Verify current values version is saved
-		HashMap<String, Object> currentVersion = changeableTemplate.currentValue();
+		Map<String, Object> currentVersion = changeableTemplate.currentValue();
 		assertEquals(specification.get(Process.PropertyAttributeKey.Name.name()),
 				currentVersion.get(Process.PropertyAttributeKey.Name.name()),
 				"Attribute's value shall had been initialized by default!");
@@ -120,12 +125,19 @@ public class ProcessUseCaseTest {
 
 		// Change one value of one of the property to compare (simulating a difference
 		// of property definition)
-		HashMap<String, Object> specificationChanged = t3.currentValue();
-		specificationChanged.put(Process.PropertyAttributeKey.Name.name(), "otherName");
+		Map<String, Object> specificationChanged = t3.currentValue();
+		// Build a new version of the read immutable instance, but with a difference
+		// naming attribute
+		HashMap<String, Object> changed = new HashMap<String, Object>();
+		changed.putAll(specificationChanged);
+		changed.put(Process.PropertyAttributeKey.Name.name(), new Attribute(namingAttribute, "otherName"));
+		// Create t4 equals to t3 but including difference into the specification
+		Process t4 = new Process(org.identity(), changed, HistoryState.COMMITTED,
+				/* default status applied by constructor */ (Process[]) null);
 
 		// Check that difference is detected during equality evaluation regarding the
 		// values of the template names
-		assertNotEquals(t2, t3, "Difference in values shall had been detected!");
+		assertNotEquals(t3, t4, "Difference in values shall had been detected!");
 
 	}
 }
