@@ -65,7 +65,7 @@ public class UserAccountAggregateStoreUseCaseTest {
 	@Test
 	public void givenIdentifiedUserAccount_whenAppendedInCollectionOrientedStore_thenEntryRetrieved() throws Exception {
 		// Create an identifiable user account based on a owner entity
-		UserAccountAggregate account = new UserAccountAggregate(accountId, accountOwner.reference());
+		UserAccountAggregate account = new UserAccountAggregate(accountId, accountOwner);
 
 		// Create an event simulating an original command of user account creation
 		Entity eventId = new UserAccountIdentityCreation(accountId);

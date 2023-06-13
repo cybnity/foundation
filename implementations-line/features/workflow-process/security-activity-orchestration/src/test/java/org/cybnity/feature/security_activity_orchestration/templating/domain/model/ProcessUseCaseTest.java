@@ -45,7 +45,7 @@ public class ProcessUseCaseTest {
 		id = new IdentifierStringBased("uuid", "LKJHDGHFJGKH87654");
 		org = new Organization(id, "CYBNITY");
 		// template definition
-		specification = new HashMap<>();
+		specification = new HashMap<String, Object>();
 		specification.put(Process.PropertyAttributeKey.Name.name(), namedAs);
 		specification.put(ActivityState.PropertyAttributeKey.StateValue.name(), Boolean.TRUE);
 	}

@@ -5,7 +5,7 @@ import java.util.LinkedHashSet;
 
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.domain.model.AggregateRoot;
+import org.cybnity.framework.domain.model.Aggregate;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -17,7 +17,7 @@ import org.cybnity.framework.immutable.ImmutabilityException;
  * @author olivier
  *
  */
-public class Organization extends AggregateRoot implements Serializable {
+public class Organization extends Aggregate implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private final String unmodifiableOrganizationName;

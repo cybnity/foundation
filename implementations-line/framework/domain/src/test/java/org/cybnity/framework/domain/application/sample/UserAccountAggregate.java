@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.IdentifierStringBased;
-import org.cybnity.framework.domain.model.AggregateRoot;
+import org.cybnity.framework.domain.model.Aggregate;
 import org.cybnity.framework.domain.model.CommonChildFactImpl;
 import org.cybnity.framework.domain.model.DomainEventPublisher;
 import org.cybnity.framework.domain.model.sample.ApplicativeRole;
@@ -33,7 +33,7 @@ import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
  * @author olivier
  *
  */
-public class UserAccountAggregate extends AggregateRoot implements Serializable, IVersionable {
+public class UserAccountAggregate extends Aggregate implements Serializable, IVersionable {
 
 	private EntityReference user;
 	private Entity identity;
@@ -50,14 +50,15 @@ public class UserAccountAggregate extends AggregateRoot implements Serializable,
 	/**
 	 * Default constructor of an account.
 	 * 
-	 * @param id            Mandatory identifier of this user account.
-	 * @param userIdentity  Mandatory user identity who is owner of this account.
-	 * @param assignedRoles Optional roles allowed to the user via this account.
+	 * @param id           Mandatory identifier of this user account.
+	 * @param userIdentity Mandatory user identity who is owner of this account.
 	 * @throws IllegalArgumentException When mandatory parameter is missing (e.g id
 	 *                                  parameter is null and does not include name
 	 *                                  and value).
 	 */
-	public UserAccountAggregate(Identifier id, EntityReference userIdentity) throws IllegalArgumentException {
+	public UserAccountAggregate(Identifier id, Entity userIdentity)
+			throws IllegalArgumentException, ImmutabilityException {
+		super(userIdentity, id);
 		identity = new DomainEntityImpl(id);
 		if (!BaseConstants.IDENTIFIER_ID.name().equals(id.name()))
 			throw new IllegalArgumentException(
@@ -66,19 +67,7 @@ public class UserAccountAggregate extends AggregateRoot implements Serializable,
 		if (userIdentity == null)
 			throw new IllegalArgumentException("userIdentity parameter is required!");
 		// Save unmodifiable user identity which is owner of this account
-		this.user = userIdentity;
-	}
-
-	/**
-	 * Default constructor.
-	 * 
-	 * @param identifiers Set of mandatory identifiers of this entity, that contains
-	 *                    non-duplicated elements.
-	 * @throws IllegalArgumentException When identifiers parameter is null or each
-	 *                                  item does not include name and value.
-	 */
-	protected UserAccountAggregate(LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
-		identity = new DomainEntityImpl(identifiers);
+		this.user = userIdentity.reference();
 	}
 
 	@Override

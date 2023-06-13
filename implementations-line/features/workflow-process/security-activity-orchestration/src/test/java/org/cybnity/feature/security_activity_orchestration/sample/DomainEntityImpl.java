@@ -17,6 +17,11 @@ import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
  * 
  * A domain entity DOES NOT CONTAIN MUTABLE properties.
  * 
+ * A domain entity can represent an aggregate root (equals to an identification
+ * mean) which is an identifiable domain object (e.g persistent business object
+ * as immutable version of a complex domain object) attached to an aggregate
+ * domain object.
+ * 
  * @author olivier
  *
  */

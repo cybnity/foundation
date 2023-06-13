@@ -95,7 +95,7 @@ public class UserAccountAggregateUseCaseTest {
 	@Test
 	public void givenIdentifierUserAccountWithRole_whenChangedRole_thenRoleFactGraphMaintained() throws Exception {
 		// Create a user account
-		UserAccountAggregate account = new UserAccountAggregate(accountId, accountOwner.reference());
+		UserAccountAggregate account = new UserAccountAggregate(accountId, accountOwner);
 		// Create an event simulating an original command of user account creation
 		Entity eventId = new UserAccountIdentityCreation(accountId);
 		UserAccountCreateCommand event = new UserAccountCreateCommand(eventId);

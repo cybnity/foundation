@@ -6,14 +6,24 @@ import java.util.HashMap;
 
 import org.cybnity.feature.security_activity_orchestration.Attribute;
 import org.cybnity.feature.security_activity_orchestration.ITemplate;
-import org.cybnity.framework.domain.model.ActivityState;
+import org.cybnity.framework.domain.model.IdentifiableAggregate;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
 
-public class Process extends ActivityState implements ITemplate {
+/**
+ * Represent a workflow based on steps (e.g risk management process) realizable
+ * by an actor and specifying an organizational model framing activities.
+ * 
+ * @author olivier
+ *
+ */
+@Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
+public class Process extends IdentifiableAggregate implements ITemplate {
 
 	private static final long serialVersionUID = new VersionConcreteStrategy()
 			.composeCanonicalVersionHash(Process.class).hashCode();
