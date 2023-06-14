@@ -6,12 +6,14 @@ The technical description regarding behavior and best usage is maintained into t
 
 |Class Type|Motivation|
 | :-- | :-- |
-| | |
+|Attribute| |
+|IState| |
+|ProcessDescriptor| |
 
 # STRUCTURE MODELS
 Several packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
 
-## TEMPLATING package
+## domain.model package
 
 ```mermaid
 %%{
@@ -31,7 +33,34 @@ Several packages are implemented to organize the components (e.g specification e
     }
   }
 }%%
-
+classDiagram
+	class Attribute {
+		<<ValueObject>>
+		-value : String
+		-name : String
+		+name() String
+		+value() String
+		+immutable() Serializable
+	}
+    class ProcessDescriptor {
+		<<MutableProperty>>
+		-PropertyAttributeKey.Name : String
+		-PropertyAttributeKey.Properties : Collection~Attribute~
+		+getName() String
+		+properties() Collection~Attribute~
+	}
+	class IState {
+		<<interface>>
+		+properties() Collection~Attribute~
+	}
+	class ActivityState {
+		<<org.cybnity.framework.domain.model.MutableProperty>>
+		+isActive() Boolean
+	}
+	class ITemplate {
+		<<interface>>
+		+name() Attribute
+	}
 
 ```
 #

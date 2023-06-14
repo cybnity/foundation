@@ -17,13 +17,13 @@ import org.cybnity.framework.immutable.Identifier;
 public class Predecessors {
 
     /**
-     * Generate a combinated identifier based on an original entity identifier (if
+     * Generate a combined identifier based on an original entity identifier (if
      * known) and predecessors identifiers.
      * 
      * @param predecessor     Mandatory base predecessor.
      * @param childOriginalId Optional identifier of a child that identifier need to
-     *                        be included into the generated combinated identifier.
-     * @return A combinated identifier based on the predecessors identifiers and
+     *                        be included into the generated combined identifier.
+     * @return A combined identifier based on the predecessors identifiers and
      *         optional the child original identifier.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      */
@@ -56,18 +56,18 @@ public class Predecessors {
 	    childIdName = BaseConstants.IDENTIFIER_ID.name();
 	}
 
-	// Create new identifier from origin concatened with parent identifying
+	// Create new identifier from origin joined with parent identifying
 	// information
 	return new IdentifierStringBased(childIdName, value.toString());
     }
 
     /**
-     * Generate a combinated identifier based on a prior entities.
+     * Generate a combined identifier based on a prior entities.
      * 
      * @param predecessor     Mandatory base predecessor.
      * @param childOriginalId Optional identifier of a child that identifier need to
-     *                        be included into the generated combinated identifier.
-     * @return A combinated identifier based on the predecessors identifiers and
+     *                        be included into the generated combined identifier.
+     * @return A combined identifier based on the predecessors identifiers and
      *         optional the child original identifier.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      */

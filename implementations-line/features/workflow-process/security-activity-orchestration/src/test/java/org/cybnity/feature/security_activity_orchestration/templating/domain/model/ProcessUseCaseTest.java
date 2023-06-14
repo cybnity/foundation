@@ -12,9 +12,11 @@ import java.util.Set;
 
 import org.cybnity.feature.security_activity_orchestration.Attribute;
 import org.cybnity.feature.security_activity_orchestration.domain.model.Process;
+import org.cybnity.feature.security_activity_orchestration.sample.DomainEntityImpl;
 import org.cybnity.feature.security_activity_orchestration.sample.Organization;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.model.ActivityState;
+import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.MutableProperty;
@@ -32,6 +34,7 @@ import org.junit.jupiter.api.Test;
 public class ProcessUseCaseTest {
 
 	private Identifier id;
+	private Entity aggregateRoot;
 	private String templateName, namingAttribute;
 	private Organization org;
 	private HashMap<String, Object> specification;
@@ -43,7 +46,8 @@ public class ProcessUseCaseTest {
 		Attribute namedAs = new Attribute(namingAttribute, templateName);
 		// Owner of template
 		id = new IdentifierStringBased("uuid", "LKJHDGHFJGKH87654");
-		org = new Organization(id, "CYBNITY");
+		aggregateRoot = new DomainEntityImpl(id);
+		org = new Organization(aggregateRoot, "CYBNITY");
 		// template definition
 		specification = new HashMap<String, Object>();
 		specification.put(Process.PropertyAttributeKey.Name.name(), namedAs);

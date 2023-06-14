@@ -1,7 +1,7 @@
 package org.cybnity.feature.security_activity_orchestration.domain.model;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +11,8 @@ import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.MutableProperty;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Definition regarding a process, that can be changed, and which need to be
@@ -23,29 +25,31 @@ import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
  * @author olivier
  *
  */
+@Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
 public class ProcessDescriptor extends MutableProperty {
 
-	private static final long serialVersionUID = 1L;
-	private OffsetDateTime versionedAt;
+	private static final long serialVersionUID = new VersionConcreteStrategy()
+			.composeCanonicalVersionHash(ProcessDescriptor.class).hashCode();
 
 	/**
 	 * Keys set regarding the multiple attribute defining this complex organization,
 	 * and that each change need to be versioned/treated as a single atomic fact.
 	 */
 	public enum PropertyAttributeKey {
-		Name;
+		/** Name of a process **/
+		Name,
+		/** Attributes collection specifying the process as a description of it */
+		Properties;
 	}
 
 	public ProcessDescriptor(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status)
 			throws IllegalArgumentException {
 		super(propertyOwner, propertyCurrentValue, status);
-		this.versionedAt = OffsetDateTime.now();
 	}
 
 	public ProcessDescriptor(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
 			ProcessDescriptor... prior) throws IllegalArgumentException {
 		super(propertyOwner, propertyCurrentValue, status, prior);
-		this.versionedAt = OffsetDateTime.now();
 	}
 
 	/**
@@ -53,13 +57,25 @@ public class ProcessDescriptor extends MutableProperty {
 	 * 
 	 * @return A label or null.
 	 */
-	public String getName() {
+	public String name() {
 		return (String) this.currentValue().getOrDefault(PropertyAttributeKey.Name.name(), null);
 	}
 
-	@Override
-	public OffsetDateTime occurredAt() {
-		return this.versionedAt;
+	/**
+	 * Get the description properties regarding this process.
+	 * 
+	 * @return A set of properties specifying the process description, or null.
+	 */
+	@SuppressWarnings("unchecked")
+	public Collection<Attribute> properties() {
+		try {
+			return (Collection<Attribute>) this.currentValue().getOrDefault(PropertyAttributeKey.Properties.name(),
+					null);
+		} catch (Exception cce) {
+			// Invalid type of collection object implemented. Add developer log about coding
+			// problem
+		}
+		return null;
 	}
 
 	@Override
@@ -67,7 +83,6 @@ public class ProcessDescriptor extends MutableProperty {
 		ProcessDescriptor copy = new ProcessDescriptor(this.owner(), new HashMap<String, Object>(this.currentValue()),
 				this.historyStatus());
 		// Complete with additional attributes of this complex property
-		copy.versionedAt = this.versionedAt;
 		copy.changedAt = this.occurredAt();
 		copy.updateChangesHistory(this.changesHistory());
 		return copy;

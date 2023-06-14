@@ -66,7 +66,7 @@ public class IdentifierStringBased extends ValueObject<String> implements Identi
 	 * combined identifier.
 	 * 
 	 * @param basedOn Mandatory set of identifiers (e.g unique instance or multiple
-	 *                to concat). Shall contain a minimum one instance of identifier
+	 *                to concate). Shall contain a minimum one instance of identifier
 	 *                usable for generation of resulting identifier to return.
 	 * @return An instance of identifier. When all the source identifiers have the
 	 *         same identifying name, the returned instance use the same name. When

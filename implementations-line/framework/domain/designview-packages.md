@@ -7,6 +7,7 @@ The technical description regarding behavior and best usage is maintained into t
 |Class Type|Motivation|
 | :-- | :-- |
 |ActivityState| |
+|Aggregate|Scope of informations set which can be mutable (e.g domain entity aggregating value objects and/or entities reference), or immutable domain object (e.g entity reference)|
 |ApplicationService| |
 |CommandHandlingService|Represent a component which manage handlers regarding specific Aggregate type|
 |CommonChildFactImpl|Reusable generic implementation class as child of immutable historical fact|
@@ -18,6 +19,7 @@ The technical description regarding behavior and best usage is maintained into t
 |EventStream|Append-only nature stream of domain events in order of occurence regarding a domain object|
 |IAggregate|Identifiable fact that defines a consistency boundary including multiple related objects (e.g domain and/or value objects)|
 |IApplicationService|Applicative behaviors contract regarding an application layer|
+|IAggregate|In a Domain-Driven Design (DDD), an aggregate defines a consistency boundary. An aggregate may consist of multiple related objects, all of which could be persisted together (e.g atomic operation)|
 |IContext|Generic contact allowing to share and provide information in an area of usage|
 |IDomainModel| |
 |IDomainRepository| |
@@ -35,7 +37,7 @@ The technical description regarding behavior and best usage is maintained into t
 # STRUCTURE MODELS
 Several packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
 
-## MODEL
+## MODEL PACKAGE
 
 ```mermaid
 %%{
@@ -125,6 +127,10 @@ classDiagram
     ChildFact <|-- SocialEntity
     ChildFact <|-- NotificationLog
     ChildFact <|-- Tenant
+    CommonChildFactImpl <|-- Aggregate
+    IAggregate <|.. Aggregate
+    Serializable <|.. Aggregate
+    IVersionable <|.. Aggregate
     MutableProperty <|-- ActivityState
     Tenant ..> Predecessors : use
     Tenant *-- "0..1" MutableProperty : organization
@@ -171,6 +177,11 @@ classDiagram
         +identified() Identifier
         +generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId) Identifier
         +generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds) Identifier
+    }
+    class Aggregate {
+    }
+    class IAggregate {
+        <<interface>>
     }
 
 ```

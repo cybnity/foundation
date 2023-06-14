@@ -1,16 +1,22 @@
 package org.cybnity.feature.security_activity_orchestration;
 
+import org.cybnity.feature.security_activity_orchestration.domain.model.Attribute;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
+
 /**
- * Contract based on a template file (e.g JSON, XML) of NIST or ISO27001
- * standard. Cybersecurity framework including RMF process steps (and optional
- * included sub-tasks definitions) as ConcreteHandler definitions.
+ * Represent a contract of templating regarding an information.
+ * 
+ * @author olivier
+ *
  */
+@Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
 public interface ITemplate {
 
 	/**
-	 * Get the name of the template.
+	 * Get the logical name this object model identified as a template.
 	 * 
-	 * @return A name.
+	 * @return A template name or null.
 	 */
 	public Attribute name();
 }
