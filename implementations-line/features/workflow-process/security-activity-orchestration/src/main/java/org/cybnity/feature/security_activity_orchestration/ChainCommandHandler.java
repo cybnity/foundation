@@ -4,11 +4,14 @@ import java.util.Collection;
 import java.util.List;
 
 import org.cybnity.framework.domain.Command;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Contract of command handling implementing the chain of responsibility chain
  * pattern.
  */
+@Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
 public abstract class ChainCommandHandler {
 	private String label;
 	/**
@@ -22,11 +25,15 @@ public abstract class ChainCommandHandler {
 	/**
 	 * Default constructor.
 	 * 
-	 * @param next Optional set of next handler unique instance (sequential chain)
-	 *             or multiple (parallel chain) of the responsibility chain actors.
+	 * @param next     Optional set of next handler unique instance (sequential
+	 *                 chain) or multiple (parallel chain) of the responsibility
+	 *                 chain actors.
+	 * @param subTasks Optional list of ordered sub-tasks realized by this chain
+	 *                 command.
 	 */
-	public ChainCommandHandler(Collection<ChainCommandHandler> next) {
+	public ChainCommandHandler(Collection<ChainCommandHandler> next, List<ChainCommandHandler> subTasks) {
 		this.next = next;
+		this.subTasks = subTasks;
 	}
 
 	/**

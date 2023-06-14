@@ -9,10 +9,10 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Represent a characteristic which can be add to a topic (e.g an technical
- * named attribute which is defined on-fly on an existing object, including a
- * value). It's more or less like a generic property assignable to any topic or
- * object (e.g property on a workflow step instance).
+ * Represent a characteristic which can be add to a topic (e.g a technical named
+ * attribute which is defined on-fly on an existing object, including a value).
+ * It's more or less like a generic property assignable to any topic or object
+ * (e.g property on a workflow step instance).
  * 
  * For example, can be use to defined a tag regarding a property added to a
  * domain or aggregate object.

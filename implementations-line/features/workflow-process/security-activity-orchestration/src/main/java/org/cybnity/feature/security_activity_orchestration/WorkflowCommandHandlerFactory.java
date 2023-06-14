@@ -1,6 +1,8 @@
 package org.cybnity.feature.security_activity_orchestration;
 
 import org.cybnity.framework.IContext;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Factory of handler.
@@ -13,6 +15,7 @@ import org.cybnity.framework.IContext;
  * definitions.
  *
  */
+@Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
 public abstract class WorkflowCommandHandlerFactory {
 
 	/**

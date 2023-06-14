@@ -19,9 +19,6 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * historized in an immutable way the history of changes (version of this
  * information).
  * 
- * Sample usable to evaluate the
- * {@link org.cybnity.framework.immutable.MutableProperty} pattern.
- * 
  * @author olivier
  *
  */
