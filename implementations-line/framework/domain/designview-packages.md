@@ -183,6 +183,12 @@ classDiagram
     class IAggregate {
         <<interface>>
     }
+    class Serializable {
+        <<interface>>
+    }
+    class IVersionable {
+        <<interface>>
+    }
 
 ```
 
