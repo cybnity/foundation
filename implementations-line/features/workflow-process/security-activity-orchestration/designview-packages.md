@@ -34,8 +34,8 @@ Several packages are implemented to organize the components (e.g specification e
   }
 }%%
 classDiagram
-	Unmodifiable <|.. Attribute
 	note for Attribute "Domain framework based as immutable property<br>(e.g primary responsibility stakeholder, supporting roles)<br><br>"
+	Unmodifiable <|.. Attribute
 
 	class Unmodifiable {
 		<<interface>>
@@ -65,7 +65,10 @@ classDiagram
 	}
 	class ITemplate {
 		<<interface>>
-		+name() Attribute
+		+name() String
+	}
+    class CompletionState {
+		<<MutableProperty>>
 	}
 	class IAggregate {
 		<<interface>>
@@ -73,7 +76,14 @@ classDiagram
 	class IWorkflowCommandHandler {
 		<<interface>>
 	}
-	class ConcreteCommandChainHandler {
+	class Step {
+		<<MutableProperty>>
+		+Step(@required Collection~Attribute~ properties)
+		+name() String
+		+properties() Collection~Attribute~
+	}
+	class ChainCommandHandler {
+      <<abstract>>
 	}
 
 ```

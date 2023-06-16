@@ -10,7 +10,6 @@ For more detail, the technical description regarding behavior and best usage is 
 |Class Type|Motivation|
 | :-- | :-- |
 |ChainCommandHandler|Contract of command handling implementing the chain of responsibility chain pattern|
-|ConcreteCommandChainHandler|Basic implementation class of handler regarding a command of responsibility chain|
 |ITemplate|Represent a contract of templating regarding an information|
 |IWorkflowCommandHandler|Chain of responsibility pattern implementation regarding the handling of workflow command events|
 |WorkflowCommandHandlerFactory|Factory of handler. Can be based on a template file (e.g JSON, XML) of standard (e.g NIST, ISO27001).<br>For example, factory is usable to define cyber-security framework including RMF process steps (and optional sub-tasks definitions) as ConcreteHandler definitions|
@@ -38,12 +37,7 @@ Presentation of the design view of the `org.cybnity.feature.security_activity_or
 }%%
 classDiagram
   WorkflowCommandHandlerFactory ..> IWorkflowCommandHandler
-  ChainCommandHandler <|.. ConcreteCommandChainHandler
 
-  class ConcreteCommandChainHandler {
-      +ConcreteCommandHandler(Collection~ChainCommandHandler~ next, List~ChainCommandHandler~ subTasks)
-      #canHandle(Command request) boolean
-  }
   class ChainCommandHandler {
       <<abstract>>
       -label : String
@@ -52,9 +46,10 @@ classDiagram
       +ChainCommandHandler(Collection~ChainCommandHandler~ next, List~ChainCommandHandler~ subTasks)
       #next() Collection~ChainCommandHandler~
       #canHandle(Command request)* boolean
+      #subTasks() List~ChainCommandHandler~
+      +addParallelNextHandler(ChainCommandHandler next)
       final +handle(Command request)
       +label() String
-      #subTasks() List~ChainCommandHandler~
   }
   class WorkflowCommandHandlerFactory {
       <<abstract>>
@@ -63,7 +58,7 @@ classDiagram
   }
   class IWorkflowCommandHandler {
       <<interface>>
-      +setNext(Collection~IWorkflowCommandHandler~ next)
+      +addParallelNextHandler(ChainCommandHandler next)
       +handle(Command request)
   }
   class ITemplate {

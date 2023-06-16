@@ -11,7 +11,7 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Historical fact referencing (e.g as an aggregate) a parent as predecessor.
+ * Historical fact (e.g as an aggregate) referencing a parent as predecessor.
  * Low-cost way to documenting the desired owner relationship. The identity of
  * the parent is part of the identity of this child. Because prerequisites are
  * immutable, a child cannot be moved to another parent. Ownership relation

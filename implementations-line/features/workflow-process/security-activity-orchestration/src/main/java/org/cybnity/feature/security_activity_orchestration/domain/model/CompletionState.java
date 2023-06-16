@@ -43,37 +43,42 @@ public class CompletionState extends MutableProperty {
 	/**
 	 * Default constructor.
 	 * 
-	 * @param propertyOwner  Mandatory owner of this state (e.g step entity),
-	 *                       including the entity information.
-	 * @param named Mandatory name of this state property.
-	 * @param percentage Optional current rate of completion.
+	 * @param propertyOwner Mandatory owner of this state (e.g step entity),
+	 *                      including the entity information.
+	 * @param named         Mandatory name of this state property.
+	 * @param percentage    Optional current rate of completion.
 	 * @throws IllegalArgumentException When mandatory parameter is missing.
 	 * @throws ImmutabilityException    When impossible creation of immutable
 	 *                                  version regarding the owner instance.
 	 */
 	public CompletionState(EntityReference propertyOwner, String named, Float currentPercentageOfCompletion)
 			throws IllegalArgumentException, ImmutabilityException {
-		this(propertyOwner, isActiveStatus, (CompletionState) null);
+		this(propertyOwner, named, currentPercentageOfCompletion, (CompletionState) null);
 	}
 
 	/**
 	 * Constructor with predecessors state automatically to save as history.
 	 * 
-	 * @param propertyOwner  Mandatory owner of this state (e.g account entity),
-	 *                       including the entity information.
-	 * @param isActiveStatus Mandatory value of state property (e.g true when
-	 *                       active).
-	 * @param predecessors   Optional prior states.
+	 * @param propertyOwner Mandatory owner of this state (e.g process), including
+	 *                      the entity information.
+	 * @param named         Mandatory name of this state property.
+	 * @param percentage    Optional current rate of completion.
+	 * @param predecessors  Optional prior states.
 	 * @throws IllegalArgumentException When mandatory parameter is missing.
 	 * @throws ImmutabilityException    When impossible creation of immutable
 	 *                                  version regarding the owner instance.
 	 */
-	public CompletionState(EntityReference propertyOwner, Boolean isActiveStatus, CompletionState... predecessors)
-			throws IllegalArgumentException, ImmutabilityException {
+	public CompletionState(EntityReference propertyOwner, String named, Float currentPercentageOfCompletion,
+			CompletionState... predecessors) throws IllegalArgumentException, ImmutabilityException {
 		this( /* Reference identifier equals to the owner of this state */
 				(propertyOwner != null) ? propertyOwner.getEntity() : null,
-				(isActiveStatus != null) ? buildPropertyValue(PropertyAttributeKey.Name, isActiveStatus) : null,
+				(named != null && !"".equals(named)) ? buildPropertyValue(PropertyAttributeKey.Name, named) : null,
 				HistoryState.COMMITTED, predecessors);
+		if (named == null || "".equals(named))
+			throw new IllegalArgumentException("Name parameter is required!");
+		if (currentPercentageOfCompletion != null) {
+			this.value.put(PropertyAttributeKey.Percentage.name(), currentPercentageOfCompletion);
+		}
 	}
 
 	/**
@@ -101,10 +106,10 @@ public class CompletionState extends MutableProperty {
 
 	@Override
 	public Serializable immutable() throws ImmutabilityException {
-		CompletionState copy = new CompletionState(this.ownerReference(), this.isActive());
+		CompletionState copy = new CompletionState(this.owner(), new HashMap<String, Object>(this.currentValue()),
+				this.historyStatus(), (CompletionState[]) null);
 		// Complete with additional attributes of this complex property
 		copy.changedAt = this.occurredAt();
-		copy.historyStatus = this.historyStatus();
 		copy.updateChangesHistory(this.changesHistory());
 		return copy;
 	}
@@ -145,12 +150,21 @@ public class CompletionState extends MutableProperty {
 	}
 
 	/**
-	 * Get the status.
+	 * Get the state name.
 	 * 
-	 * @return True if active state. False if deactivated.
+	 * @return A name.
 	 */
-	public Boolean isActive() {
-		return (Boolean) this.currentValue().get(PropertyAttributeKey.Name.name());
+	public String name() {
+		return (String) this.currentValue().get(PropertyAttributeKey.Name.name());
+	}
+
+	/**
+	 * Get the percentage of completion.
+	 * 
+	 * @return A percentage or null.
+	 */
+	public Float percentage() {
+		return (Float) this.currentValue().getOrDefault(PropertyAttributeKey.Percentage.name(), null);
 	}
 
 	/**
@@ -179,8 +193,8 @@ public class CompletionState extends MutableProperty {
 
 				// Check if same property owner
 				if (compared.owner().equals(this.owner())) {
-					// Check if same status value
-					if (compared.isActive().equals(this.isActive())) {
+					// Check if same name value
+					if (compared.name().equals(this.name())) {
 						// Check if same history version
 						if (compared.historyStatus() == this.historyStatus()) {
 							isEquals = true;

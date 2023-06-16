@@ -2,6 +2,8 @@ package org.cybnity.framework.domain.model;
 
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
+import org.cybnity.framework.immutable.EntityReference;
+import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -20,7 +22,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * operation). When it's an aggregate of multiple types, one type is identified
  * as the aggregate root. The access to all of the objects shall be performed
  * over the aggregate root, that only hold references to the aggregate root.
- * Every aggregate instance should have a unique identifier.
+ * Every aggregate instance should have a unique identifier when represents a
+ * boundary with persistence capability.
  * 
  * @author olivier
  *
@@ -41,4 +44,15 @@ public interface IAggregate {
 	 *                                  (e.g conformity problem).
 	 */
 	public void execute(Command change, IContext ctx) throws IllegalArgumentException;
+
+	/**
+	 * Get the reference to the aggregate root entity.
+	 * 
+	 * @return A reference or null (when the aggregate is not a persistent or
+	 *         historical domain entity; in case of undefined identifier of dynamic
+	 *         aggregate representing a domain boundary of capabilities only).
+	 * @exception ImmutabilityException When impossible reference generation.
+	 */
+	public EntityReference root() throws ImmutabilityException;
+
 }

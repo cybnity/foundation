@@ -1,5 +1,6 @@
 package org.cybnity.feature.security_activity_orchestration;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,6 +35,26 @@ public abstract class ChainCommandHandler {
 	public ChainCommandHandler(Collection<ChainCommandHandler> next, List<ChainCommandHandler> subTasks) {
 		this.next = next;
 		this.subTasks = subTasks;
+	}
+
+	/**
+	 * Generally only one next handler (defined during this handling constructor
+	 * call) is optionally defined into this chain command handling service. But
+	 * it's possible to require parallel handlers simultaneous (and not ordered)
+	 * called by this handler managing command received. In this case, this method
+	 * allow to add parallel handlers to the current handler.
+	 * 
+	 * @param next Handler to add into the next parallel handlers which shall be
+	 *             called for each handled command. Ignored when null parameter.
+	 */
+	public void addParallelNextHandler(ChainCommandHandler next) {
+		if (next != null) {
+			if (this.next == null)
+				// Initialize the container of chain command handling services
+				this.next = new ArrayList<>();
+			// Add the new handler as parallel command receiver
+			this.next.add(next);
+		}
 	}
 
 	/**

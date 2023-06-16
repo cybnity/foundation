@@ -1,4 +1,4 @@
-package org.cybnity.feature.security_activity_orchestration.sample;
+package org.cybnity.framework.domain.model;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
@@ -19,19 +19,19 @@ import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
  * 
  * A domain entity can represent an aggregate root (equals to an identification
  * mean) which is an identifiable domain object (e.g persistent business object
- * as immutable version of a complex domain object) attached to an aggregate
- * domain object.
+ * as immutable version of a complex domain object) attached to a reference of
+ * aggregate instance.
  * 
  * @author olivier
  *
  */
-public class DomainEntityImpl extends Entity {
+public class DomainEntity extends Entity {
 
 	/**
 	 * Version of this class type.
 	 */
 	private static final long serialVersionUID = new VersionConcreteStrategy()
-			.composeCanonicalVersionHash(DomainEntityImpl.class).hashCode();
+			.composeCanonicalVersionHash(DomainEntity.class).hashCode();
 
 	/**
 	 * Default constructor.
@@ -40,7 +40,7 @@ public class DomainEntityImpl extends Entity {
 	 * @throws IllegalArgumentException When id parameter is null and does not
 	 *                                  include name and value.
 	 */
-	public DomainEntityImpl(Identifier id) throws IllegalArgumentException {
+	public DomainEntity(Identifier id) throws IllegalArgumentException {
 		super(id);
 	}
 
@@ -52,7 +52,7 @@ public class DomainEntityImpl extends Entity {
 	 * @throws IllegalArgumentException When identifiers parameter is null or each
 	 *                                  item does not include name and value.
 	 */
-	public DomainEntityImpl(LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
+	public DomainEntity(LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
 		super(identifiers);
 	}
 
@@ -64,7 +64,7 @@ public class DomainEntityImpl extends Entity {
 	@Override
 	public Serializable immutable() throws ImmutabilityException {
 		LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
-		return new DomainEntityImpl(ids);
+		return new DomainEntity(ids);
 	}
 
 	/**

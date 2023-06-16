@@ -70,6 +70,8 @@ public class ActivityState extends MutableProperty {
 				(propertyOwner != null) ? propertyOwner.getEntity() : null,
 				(isActiveStatus != null) ? buildPropertyValue(PropertyAttributeKey.StateValue, isActiveStatus) : null,
 				HistoryState.COMMITTED, predecessors);
+		if (isActiveStatus == null)
+			throw new IllegalArgumentException("isActiveStatus parameter is required!");
 	}
 
 	/**

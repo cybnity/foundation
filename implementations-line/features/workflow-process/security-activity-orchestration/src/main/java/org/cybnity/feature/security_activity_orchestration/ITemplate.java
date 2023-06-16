@@ -1,6 +1,5 @@
 package org.cybnity.feature.security_activity_orchestration;
 
-import org.cybnity.feature.security_activity_orchestration.domain.model.Attribute;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -18,5 +17,5 @@ public interface ITemplate {
 	 * 
 	 * @return A template name or null.
 	 */
-	public Attribute name();
+	public String name();
 }

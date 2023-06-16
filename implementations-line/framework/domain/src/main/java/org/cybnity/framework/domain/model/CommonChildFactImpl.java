@@ -16,7 +16,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 /**
  * Generic child fact implementation class.
  * 
- * Can be extended as a root aggregate entity.
+ * Can be extended as a root aggregate object.
  * 
  * @author olivier
  *
@@ -68,13 +68,24 @@ public class CommonChildFactImpl extends ChildFact {
 
 	@Override
 	public Identifier identified() {
-		return IdentifierStringBased.build(this.identifiers());
+		Identifier id = null;
+		try {
+			id = IdentifierStringBased.build(this.identifiers());
+		} catch (Exception e) {
+			// When none identifier defined regarding this child fact (e.g boundary of
+			// domain aggregate without persistence capability that doesn't need to be
+			// identified in long-time period)
+		}
+		return id;
 	}
 
 	@Override
 	public Serializable immutable() throws ImmutabilityException {
 		LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
-		return new CommonChildFactImpl(this.parent(), ids);
+		CommonChildFactImpl copy = new CommonChildFactImpl(this.parent(), ids);
+		// Complete with additional attributes of this complex object
+		copy.createdAt = this.occurredAt();
+		return copy;
 	}
 
 	/**

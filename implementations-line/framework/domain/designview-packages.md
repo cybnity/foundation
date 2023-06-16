@@ -11,6 +11,7 @@ The technical description regarding behavior and best usage is maintained into t
 |ApplicationService|Represent a component of a service layer hosted by a domain boundary|
 |CommandHandlingService|Represent a component which manage handlers regarding specific Aggregate type|
 |CommonChildFactImpl|Reusable generic implementation class as child of immutable historical fact|
+|CompletionState|Represent a state of completion defining by a name and optionally by a percentage value about reached completion rate|
 |DomainEntityImpl|Basic and common domain entity implementation object. A domain entity IS NOT MODIFIABLE and is equals to an identifiable fact. A domain entity DOES NOT CONTAIN MUTABLE properties.<br>A domain entity can represent an aggregate root (equals to an identification mean) which is an identifiable domain object (e.g persistent business object as immutable version of a complex domain object) attached to an aggregate domain object|
 |DomainEventPublisher|Publishing service from a domain model as repository service for Aggregates notifying their state changes|
 |DomainEventSubscriber|Interest contract to be notified when types of facts are changed|
@@ -85,6 +86,7 @@ classDiagram
     class IAggregate {
         <<interface>>
         +execute(Command change, IContext ctx)
+        +root() EntityReference
     }
     class Entity {
         <<abstract>>
@@ -179,6 +181,7 @@ classDiagram
         +generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds) Identifier
     }
     class Aggregate {
+        +root() EntityReference
     }
     class IAggregate {
         <<interface>>
@@ -188,6 +191,10 @@ classDiagram
     }
     class IVersionable {
         <<interface>>
+    }
+    class ActivityState {
+        <<MutableProperty>>
+        +isActive() Boolean
     }
 
 ```
@@ -258,6 +265,11 @@ classDiagram
     class Unmodifiable {
         <<interface>>
     }
+    class CompletionState {
+		<<MutableProperty>>
+		+name() String
+		+percentage() Float
+	}
 
 ```
 

@@ -9,10 +9,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cybnity.feature.security_activity_orchestration.Attribute;
+import org.cybnity.feature.security_activity_orchestration.domain.model.Attribute;
 import org.cybnity.feature.security_activity_orchestration.domain.model.ProcessDescriptor;
-import org.cybnity.feature.security_activity_orchestration.sample.DomainEntityImpl;
 import org.cybnity.framework.domain.IdentifierStringBased;
+import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.HistoryState;
@@ -35,7 +35,7 @@ public class ProcessDescriptorUseCaseTest {
 	@BeforeEach
 	public void init() {
 		Identifier id = new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), "JHGFH87654");
-		this.processId = new DomainEntityImpl(id);
+		this.processId = new DomainEntity(id);
 	}
 
 	@AfterEach
