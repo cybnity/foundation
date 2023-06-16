@@ -7,12 +7,12 @@ The technical description regarding behavior and best usage is maintained into t
 |Class Type|Motivation|
 | :-- | :-- |
 |ActivityState|State of activity (e.g active or not active) regarding a subject that can be used as an activity tag for any type of subject|
-|Aggregate|Scope of informations set which can be mutable (e.g domain entity aggregating value objects and/or entities reference), or immutable domain object (e.g entity reference)|
+|Aggregate|Represents a scope of informations providing attributes and/or capabilities as a complex domain object. An aggregate root of the process entity domain is defined via immutable attributes (e.g ValueObject, EntityReference of other domains' objects, ChildFact historical and identified fact) and/or mutable attributes (e.g MutableProperty objects)|
 |ApplicationService|Represent a component of a service layer hosted by a domain boundary|
 |CommandHandlingService|Represent a component which manage handlers regarding specific Aggregate type|
 |CommonChildFactImpl|Reusable generic implementation class as child of immutable historical fact|
 |CompletionState|Represent a state of completion defining by a name and optionally by a percentage value about reached completion rate|
-|DomainEntityImpl|Basic and common domain entity implementation object. A domain entity IS NOT MODIFIABLE and is equals to an identifiable fact. A domain entity DOES NOT CONTAIN MUTABLE properties.<br>A domain entity can represent an aggregate root (equals to an identification mean) which is an identifiable domain object (e.g persistent business object as immutable version of a complex domain object) attached to an aggregate domain object|
+|DomainEntity|Basic and common domain entity implementation object. A domain entity IS NOT MODIFIABLE and is equals to an identifiable fact. A domain entity DOES NOT CONTAIN MUTABLE properties.<br>A domain entity can represent an aggregate root (equals to an identification mean) which is an identifiable domain object (e.g persistent business object as immutable version of a complex domain object) attached to an aggregate domain object|
 |DomainEventPublisher|Publishing service from a domain model as repository service for Aggregates notifying their state changes|
 |DomainEventSubscriber|Interest contract to be notified when types of facts are changed|
 |EventRecord|Represent a recorded fact relative to an event which is manageable by a store, including the original version of event tracked and extracted informations allowing to store/retrieve it|
@@ -59,7 +59,7 @@ Several packages are implemented to organize the components (e.g specification e
   }
 }%%
 classDiagram
-    Entity <|-- DomainEntityImpl
+    Entity <|-- DomainEntity
     FactRecord <|-- EventRecord
     IdentifiableFact <|-- IAggregate
     ProcessManager <|-- CommandHandlingService
@@ -91,7 +91,7 @@ classDiagram
     class Entity {
         <<abstract>>
     }
-    class DomainEntityImpl {
+    class DomainEntity {
         +identified() Identifier
         +immutable() Serializable
         +versionHash() String
