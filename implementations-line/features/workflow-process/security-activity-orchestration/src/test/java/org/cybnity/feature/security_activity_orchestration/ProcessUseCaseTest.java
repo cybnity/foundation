@@ -1,6 +1,7 @@
 package org.cybnity.feature.security_activity_orchestration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -85,11 +86,9 @@ public class ProcessUseCaseTest {
 		assertEquals(company, p.parent(), "Invalid predecessor defined as prerequisite parent of the process!");
 		assertNotNull(p.root());
 		assertNotNull(p.versionHash());
-	}
-
-	@Test
-	public void givenProcess_whenConstructor_thenStateDefined() throws Exception {
-		//throw new Exception("to implement");
+		// Check that default not active state is defined
+		assertNotNull(p.activation());
+		assertFalse(p.activation().isActive());
 	}
 
 	/**

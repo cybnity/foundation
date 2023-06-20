@@ -76,6 +76,8 @@ public class Process extends Aggregate implements ITemplate {
 			checkDescriptionConformity(desc, rootEntity());
 			this.description = desc;
 		}
+		// Initialize default activity state
+		this.activation = defaultActivation();
 	}
 
 	/**
@@ -115,6 +117,8 @@ public class Process extends Aggregate implements ITemplate {
 			checkDescriptionConformity(desc, rootEntity());
 			this.description = desc;
 		}
+		// Initialize default activity state
+		this.activation = defaultActivation();
 	}
 
 	/**
@@ -130,23 +134,35 @@ public class Process extends Aggregate implements ITemplate {
 	 *                    required when the process shall be persistent. Else can be
 	 *                    without identity when not persistent process.
 	 * @param description Mandatory description of this process.
+	 * @param activation  Mandatory activation of this process.
 	 * @throws IllegalArgumentException When any mandatory parameter is missing.
 	 *                                  When a problem of immutability is occurred.
 	 *                                  When predecessor mandatory parameter is not
 	 *                                  defined or without defined identifier.
 	 * @throws ImmutabilityException    When impossible read of identifier version.
 	 */
-	private Process(Entity predecessor, LinkedHashSet<Identifier> identifiers, ProcessDescriptor description)
-			throws IllegalArgumentException, ImmutabilityException {
+	private Process(Entity predecessor, LinkedHashSet<Identifier> identifiers, ProcessDescriptor description,
+			ActivityState activation) throws IllegalArgumentException, ImmutabilityException {
 		super(predecessor, identifiers);
 		// None quality control
 		this.description = description;
+		this.activation = activation;
+	}
+
+	/**
+	 * Get the default activation state.
+	 * 
+	 * @throws ImmutabilityException When process root instance can be reused as
+	 *                               immutable owner of the activity property.
+	 */
+	private ActivityState defaultActivation() throws ImmutabilityException {
+		return new ActivityState(this.root(), Boolean.FALSE);
 	}
 
 	@Override
 	public Serializable immutable() throws ImmutabilityException {
 		Process copy = new Process(this.parent(), new LinkedHashSet<>(this.identifiers()),
-				(ProcessDescriptor) this.description.immutable());
+				(ProcessDescriptor) this.description.immutable(), this.activation());
 		// Complete with additional attributes of this complex aggregate
 		copy.createdAt = this.occurredAt();
 		return copy;
@@ -226,7 +242,7 @@ public class Process extends Aggregate implements ITemplate {
 	 * define the process and if owner is equals.
 	 * 
 	 * @param description  Description instance hosting the attributes to verify.
-	 * @param processOwner Optional owner of the description to compare as a
+	 * @param processOwner Mandatory owner of the description to compare as a
 	 *                     description condition.
 	 * @throws IllegalArgumentException When description instance is not valid.
 	 * @throws ImmutabilityException    When impossible read of description's owner.
@@ -234,8 +250,8 @@ public class Process extends Aggregate implements ITemplate {
 	private void checkDescriptionConformity(ProcessDescriptor description, Entity processOwner)
 			throws IllegalArgumentException, ImmutabilityException {
 		if (description != null) {
-			// if (processOwner == null)
-			// throw new IllegalArgumentException("Process owner parameter is required!");
+			if (processOwner == null)
+				throw new IllegalArgumentException("Process owner parameter is required!");
 			// Check that minimum name attribute is defined into the description
 
 			// Check the process name
@@ -260,20 +276,46 @@ public class Process extends Aggregate implements ITemplate {
 	 *                                  is not valid in terms of minimum conformity.
 	 *                                  When state parameter is not regarding same
 	 *                                  process identity.
+	 * @throws ImmutabilityException    When impossible read of state's owner.
 	 */
-	public void changeActivation(ActivityState state) throws IllegalArgumentException {
+	public void changeActivation(ActivityState state) throws IllegalArgumentException, ImmutabilityException {
 		if (state == null)
 			throw new IllegalArgumentException("The state parameter is required!");
+		// Check conformity of new version
+		checkActivationConformity(state, rootEntity());
+		// Update this process activation status
+		this.activation = state;
 	}
 
 	/**
-	 * Verify if the state include
+	 * Verify if the state include basic attributes and values (e.g
+	 * PropertyAttributeKey.StateValue) and that property owner is equals to this
+	 * process.
 	 * 
-	 * @param state
-	 * @throws IllegalArgumentException
+	 * @param state        Mandatory state to check.
+	 * @param processOwner Mandatory owner of the state to compare as a status
+	 *                     condition.
+	 * @throws IllegalArgumentException When non conformity cause is detected.
+	 * @throws ImmutabilityException    When impossible read of description's owner.
 	 */
-	private void checkActivationConformity(ActivityState state) throws IllegalArgumentException {
+	private void checkActivationConformity(ActivityState state, Entity processOwner)
+			throws IllegalArgumentException, ImmutabilityException {
+		if (state != null) {
+			if (processOwner == null)
+				throw new IllegalArgumentException("Process owner parameter is required!");
+			// Check that minimum name attribute is defined into the status
 
+			// Check the status value
+			if (state.isActive() == null)
+				throw new IllegalArgumentException("Status value is required from state!");
+
+			if (processOwner != null) {
+				// Check that owner of the new state is equals to this process identity
+				if (state.owner() == null || !state.owner().equals(processOwner))
+					throw new IllegalArgumentException(
+							"The owner of the new activity state shall be equals to this process!");
+			}
+		}
 	}
 
 	/**
