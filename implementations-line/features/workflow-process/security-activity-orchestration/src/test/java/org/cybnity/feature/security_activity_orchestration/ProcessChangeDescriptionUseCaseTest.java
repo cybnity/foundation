@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
  * @author olivier
  *
  */
-public class ProcessSetDescriptionUseCaseTest {
+public class ProcessChangeDescriptionUseCaseTest {
 
 	/**
 	 * Verify that update of description is refused with a description that is not
@@ -34,19 +34,19 @@ public class ProcessSetDescriptionUseCaseTest {
 		// Create a process described
 		DomainEntity processIdentity = TestSampleFactory.createIdentity();
 		Process p = new Process(/* predecessor */ TestSampleFactory.createOrganization(null),
-				TestSampleFactory.createIdentity().identified(),
-				TestSampleFactory.createProcessDescription(processIdentity, "NIST RMF"));
+				processIdentity.identified(), new HashMap<String, Object>(
+						TestSampleFactory.createProcessDescription(processIdentity, "NIST RMF").currentValue()));
 		// Prepare a new version of description BUT THAT IS NOT ABOUT THE SAME PROCESS
 		// IDENTITY
 		String nameV2 = "NIST RMF V2";
 		HashMap<String, Object> descriptionAttr = new HashMap<>();
 		descriptionAttr.put(ProcessDescriptor.PropertyAttributeKey.Name.name(), nameV2);
-		ProcessDescriptor v2 = new ProcessDescriptor(new DomainEntity(p.identified()), descriptionAttr,
+		ProcessDescriptor v2 = new ProcessDescriptor(TestSampleFactory.createIdentity(), descriptionAttr,
 				HistoryState.COMMITTED, /* prior version */ p.description());
 
 		// Try to update with invalid description owner
 		assertThrows(IllegalArgumentException.class, () -> {
-			p.setDescription(v2);
+			p.changeDescription(v2);
 		});
 
 	}
@@ -63,8 +63,8 @@ public class ProcessSetDescriptionUseCaseTest {
 		DomainEntity processIdentity = TestSampleFactory.createIdentity();
 		String nameV1 = "NIST RMF";
 		Process p = new Process(/* predecessor */ TestSampleFactory.createOrganization(null),
-				TestSampleFactory.createIdentity().identified(),
-				TestSampleFactory.createProcessDescription(processIdentity, nameV1));
+				processIdentity.identified(), new HashMap<String, Object>(
+						TestSampleFactory.createProcessDescription(processIdentity, nameV1).currentValue()));
 		// Get the original description of the process
 		ProcessDescriptor description = p.description();
 		Set<MutableProperty> history = description.changesHistory(); // current version not
@@ -79,10 +79,10 @@ public class ProcessSetDescriptionUseCaseTest {
 		String nameV2 = "NIST RMF V2";
 		HashMap<String, Object> descriptionAttr = new HashMap<>();
 		descriptionAttr.put(ProcessDescriptor.PropertyAttributeKey.Name.name(), nameV2);
-		ProcessDescriptor v2 = new ProcessDescriptor(processIdentity, descriptionAttr, HistoryState.COMMITTED,
+		ProcessDescriptor v2 = new ProcessDescriptor(p.root().getEntity(), descriptionAttr, HistoryState.COMMITTED,
 				/* prior version */ p.description());
 		// Set new version of the process description
-		p.setDescription(v2);
+		p.changeDescription(v2);
 
 		// Check that process description is updated and based on V2 name
 		assertEquals(nameV2, p.name());
@@ -90,10 +90,10 @@ public class ProcessSetDescriptionUseCaseTest {
 		String nameV3 = "NIST RMF V3";
 		descriptionAttr = new HashMap<>();
 		descriptionAttr.put(ProcessDescriptor.PropertyAttributeKey.Name.name(), nameV3);
-		ProcessDescriptor v3 = new ProcessDescriptor(processIdentity, descriptionAttr, HistoryState.COMMITTED,
+		ProcessDescriptor v3 = new ProcessDescriptor(p.root().getEntity(), descriptionAttr, HistoryState.COMMITTED,
 				/* prior version */ p.description());
 		// Set new version of the process description
-		p.setDescription(v3);
+		p.changeDescription(v3);
 
 		// Check that history is including the V1 version
 		assertEquals(1, p.description().changesHistory().size(),

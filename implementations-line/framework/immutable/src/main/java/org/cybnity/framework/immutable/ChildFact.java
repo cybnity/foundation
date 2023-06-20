@@ -192,7 +192,7 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
 	 * This method provide the list of values contributing to define the unicity of
 	 * this instance (e.g also used for hashCode() comparison).
 	 * 
-	 * @return The unique functional values used to idenfity uniquely this instance.
+	 * @return The unique functional values used to identify uniquely this instance.
 	 *         Or empty array.
 	 */
 	@Override

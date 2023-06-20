@@ -84,14 +84,32 @@ public abstract class Aggregate extends CommonChildFactImpl implements IAggregat
 	@Override
 	public EntityReference root() throws ImmutabilityException {
 		// Read the identity of this root aggregate domain object
-		Identifier id = this.identified();
+		DomainEntity aggregateRootEntity = rootEntity();
 		EntityReference ref = null;
-		if (id != null) {
-			Entity aggregateRootEntity = new DomainEntity(id);
+		if (aggregateRootEntity != null) {
 			// Build an identification reference
 			ref = aggregateRootEntity.reference();
 		} // Else it's an aggregate representing a dynamic domain boundary without
 			// persistence capability
 		return ref;
+	}
+
+	/**
+	 * Get the identity of this aggregate when existing.
+	 * 
+	 * @return A domain entity identity instance based on current identifier of the
+	 *         aggregate root. Null when not identifier defined regarding this
+	 *         aggregate.
+	 * @throws ImmutabilityException
+	 */
+	protected DomainEntity rootEntity() throws ImmutabilityException {
+		// Read the identity of this root aggregate domain object
+		Identifier id = this.identified();
+		DomainEntity aggregateRootEntity = null;
+		if (id != null) {
+			aggregateRootEntity = new DomainEntity(id);
+		} // Else it's an aggregate representing a dynamic domain boundary without
+			// persistence capability
+		return aggregateRootEntity;
 	}
 }

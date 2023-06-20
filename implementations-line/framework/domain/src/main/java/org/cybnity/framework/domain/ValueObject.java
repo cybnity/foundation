@@ -26,8 +26,8 @@ public abstract class ValueObject<T> implements Unmodifiable {
 
 	/**
 	 * Implement value equality redefined method that ensure the functional
-	 * comparison of the instance about compared types of both objects and then
-	 * their attributes.
+	 * comparison of the instance about compared types of both objects and their
+	 * attributes.
 	 */
 	@Override
 	public boolean equals(Object obj) {

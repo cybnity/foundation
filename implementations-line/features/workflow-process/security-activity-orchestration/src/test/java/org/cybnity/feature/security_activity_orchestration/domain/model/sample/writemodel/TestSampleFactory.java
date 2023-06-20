@@ -23,10 +23,7 @@ public class TestSampleFactory {
 	 */
 	public static ProcessDescriptor createProcessDescription(DomainEntity processIdentity, String processName) {
 		HashMap<String, Object> descriptorAttributes = new HashMap<>();
-		descriptorAttributes.put(
-				org.cybnity.feature.security_activity_orchestration.domain.model.ProcessDescriptor.PropertyAttributeKey.Name
-						.name(),
-				processName);
+		descriptorAttributes.put(ProcessDescriptor.PropertyAttributeKey.Name.name(), processName);
 		return new ProcessDescriptor(processIdentity, descriptorAttributes, HistoryState.COMMITTED);
 	}
 

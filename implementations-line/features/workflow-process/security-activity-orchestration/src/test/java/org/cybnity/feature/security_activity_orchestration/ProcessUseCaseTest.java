@@ -36,6 +36,7 @@ public class ProcessUseCaseTest {
 	private DomainEntity companyEntity;
 	private Organization company;
 	private ProcessDescriptor processDesc;
+	private DomainEntity processIdentity;
 
 	@BeforeEach
 	public void initSamples() throws Exception {
@@ -53,8 +54,8 @@ public class ProcessUseCaseTest {
 		organisationAttr.put(PropertyAttributeKey.Name.name(), "CYBNITY France");
 		organizationDesc = new OrganizationDescriptor(company, organisationAttr, HistoryState.COMMITTED);
 		tenant.setOrganization(organizationDesc);
-		processDesc = TestSampleFactory.createProcessDescription(TestSampleFactory.createIdentity(), "NIST RMF");
-
+		processIdentity = TestSampleFactory.createIdentity();
+		processDesc = TestSampleFactory.createProcessDescription(processIdentity, "NIST RMF");
 	}
 
 	@AfterEach
@@ -73,8 +74,8 @@ public class ProcessUseCaseTest {
 	@Test
 	public void givenNamedProcess_whenConstructor_thenSuccessInstantiation() throws Exception {
 		// Define a described process
-		Process p = new Process(/* predecessor */ company, TestSampleFactory.createIdentity().identified(),
-				processDesc);
+		Process p = new Process(/* predecessor */ company, processIdentity.identified(),
+				new HashMap<>(processDesc.currentValue()));
 		assertNotNull(p);
 		assertNotNull(p.name());
 		assertNotNull(p.description());
@@ -84,6 +85,11 @@ public class ProcessUseCaseTest {
 		assertEquals(company, p.parent(), "Invalid predecessor defined as prerequisite parent of the process!");
 		assertNotNull(p.root());
 		assertNotNull(p.versionHash());
+	}
+
+	@Test
+	public void givenProcess_whenConstructor_thenStateDefined() throws Exception {
+		//throw new Exception("to implement");
 	}
 
 	/**
@@ -108,14 +114,14 @@ public class ProcessUseCaseTest {
 	@Test
 	public void givenInvalidMinimumDescription_whenConstructor_thenIllegalArgumentExceptionThrown() {
 		DomainEntity processEntity = TestSampleFactory.createIdentity();
-		ProcessDescriptor invalidDescription = TestSampleFactory
-				.createProcessDescription(TestSampleFactory.createIdentity(), /* undefined */ null);
+		ProcessDescriptor invalidDescription = TestSampleFactory.createProcessDescription(processEntity,
+				/* undefined */ null);
 
 		// Check the description which not include minimum attributes required is not
 		// accepted by constructor (conformity failure)
 		assertThrows(IllegalArgumentException.class, () -> {
 			new Process(/* predecessor of the process is the existing tenant domain entity */tenant.parent(),
-					processEntity.identified(), invalidDescription);
+					processEntity.identified(), new HashMap<String, Object>(invalidDescription.currentValue()));
 		});
 	}
 
@@ -126,14 +132,14 @@ public class ProcessUseCaseTest {
 	@Test
 	public void givenInvalidEmptyDescription_whenConstructor_thenIllegalArgumentExceptionThrown() {
 		DomainEntity processEntity = TestSampleFactory.createIdentity();
-		ProcessDescriptor invalidDescription = TestSampleFactory
-				.createProcessDescription(TestSampleFactory.createIdentity(), /* empty name */ "");
+		ProcessDescriptor invalidDescription = TestSampleFactory.createProcessDescription(processEntity,
+				/* empty name */ "");
 
 		// Check the description which include minimum attribute but that is empty is
 		// not accepted by constructor (conformity failure)
 		assertThrows(IllegalArgumentException.class, () -> {
 			new Process(/* predecessor of the process is the existing tenant domain entity */company,
-					processEntity.identified(), invalidDescription);
+					processEntity.identified(), new HashMap<String, Object>(invalidDescription.currentValue()));
 		});
 	}
 

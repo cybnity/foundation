@@ -71,7 +71,7 @@ public class ProcessDescriptorUseCaseTest {
 		assertNotNull(desc.versionHash()); // Which version of descriptor type
 		assertNotNull(desc.occurredAt()); // When immutable descriptor created
 		assertNotNull(desc.owner()); // Attached descriptor to process identity
-		assertEquals(this.processId, desc.owner());
+		assertEquals(processId, desc.owner());
 
 		// Verify if immutable version is completed
 		ProcessDescriptor clone = (ProcessDescriptor) desc.immutable();
