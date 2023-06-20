@@ -1,4 +1,4 @@
-package org.cybnity.feature.security_activity_orchestration.templating.domain.model;
+package org.cybnity.feature.security_activity_orchestration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

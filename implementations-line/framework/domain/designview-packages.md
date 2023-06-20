@@ -61,7 +61,7 @@ Several packages are implemented to organize the components (e.g specification e
 classDiagram
     Entity <|-- DomainEntity
     FactRecord <|-- EventRecord
-    IdentifiableFact <|-- IAggregate
+    ICommandHandler <|-- IAggregate
     ProcessManager <|-- CommandHandlingService
     Context <|-- SessionContext
     ISessionContext <|.. SessionContext
@@ -80,12 +80,11 @@ classDiagram
     class ProcessManager {
         <<abstract>>
     }
-    class IdentifiableFact {
+    class ICommandHandler {
         <<interface>>
     }
     class IAggregate {
         <<interface>>
-        +execute(Command change, IContext ctx)
         +root() EntityReference
     }
     class Entity {

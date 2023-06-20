@@ -1,7 +1,5 @@
 package org.cybnity.feature.security_activity_orchestration;
 
-import org.cybnity.feature.security_activity_orchestration.templating.domain.model.ProcessDescriptorUseCaseTest;
-import org.cybnity.feature.security_activity_orchestration.templating.domain.model.ProcessUseCaseTest;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 
@@ -12,6 +10,6 @@ import org.junit.platform.suite.api.Suite;
  *
  */
 @Suite
-@SelectClasses({ ProcessDescriptorUseCaseTest.class, ProcessUseCaseTest.class })
+@SelectClasses({ ProcessDescriptorUseCaseTest.class, ProcessUseCaseTest.class, ProcessSetDescriptionUseCaseTest.class })
 public class AllTests {
 }

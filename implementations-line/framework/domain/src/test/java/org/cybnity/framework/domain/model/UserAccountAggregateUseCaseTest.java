@@ -123,7 +123,7 @@ public class UserAccountAggregateUseCaseTest {
 		roleAssignmentCommand.userAccountIdentifier = (String) account.identified().value();
 
 		// Add the role to the aggregate account
-		currentAccount.execute(roleAssignmentCommand, this.domainContext);
+		currentAccount.handle(roleAssignmentCommand, this.domainContext);
 
 		// Reload the saved state of account from store
 		currentAccount = writeModelStore.findFrom(event.accountUID);
@@ -147,7 +147,7 @@ public class UserAccountAggregateUseCaseTest {
 
 		// Update the role (history graph) to the aggregate account regarding a removed
 		// role
-		currentAccount.execute(roleAssignmentCommand, this.domainContext);
+		currentAccount.handle(roleAssignmentCommand, this.domainContext);
 		// Reload the saved state of account from store
 		currentAccount = writeModelStore.findFrom(event.accountUID);
 		assertTrue(currentAccount.assignedRoles().size() == 1,

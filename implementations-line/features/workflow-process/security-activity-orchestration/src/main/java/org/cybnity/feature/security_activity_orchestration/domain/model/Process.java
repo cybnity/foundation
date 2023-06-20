@@ -2,6 +2,7 @@ package org.cybnity.feature.security_activity_orchestration.domain.model;
 
 import java.io.Serializable;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.cybnity.feature.security_activity_orchestration.ITemplate;
 import org.cybnity.framework.IContext;
@@ -60,18 +61,6 @@ public class Process extends Aggregate implements ITemplate {
 			checkDescriptionConformity(description);
 		}
 		this.description = description;
-	}
-
-	// TODO coder le changement de la version de la description setDescription(...)
-	// comme mutable géré
-
-	private void checkDescriptionConformity(ProcessDescriptor description) throws IllegalArgumentException {
-		if (description != null) {
-			// Check that minimum name attribute is defined into the description
-			String processName = description.name();
-			if (processName == null || "".equals(processName))
-				throw new IllegalArgumentException("Process name is required from description!");
-		}
 	}
 
 	/**
@@ -160,10 +149,67 @@ public class Process extends Aggregate implements ITemplate {
 		return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
 	}
 
+	/**
+	 * Change the current description of this process with automatic change history
+	 * management.
+	 * 
+	 * @param description Mandatory new version of description for replace the
+	 *                    current description.
+	 * @throws IllegalArgumentException When mandatory parameter is not defined or
+	 *                                  is not valid in terms of minimum conformity.
+	 *                                  When description parameter is not regarding
+	 *                                  same process identity.
+	 * @throws ImmutabilityException    When impossible read of description's owner.
+	 */
+	public void setDescription(ProcessDescriptor description) throws IllegalArgumentException, ImmutabilityException {
+		if (description == null)
+			throw new IllegalArgumentException("The description parameter is required!");
+		// Check conformity of new version
+		checkDescriptionConformity(description);
+		// Check that owner of the new description is equals to this process identity
+		if (description.owner() == null || !description.owner().equals(this.description.owner()))
+			throw new IllegalArgumentException(
+					"The owner of the new description shall be equals to this process identity!");
+		// Update this process description
+		this.description = description;
+	}
+
+	/**
+	 * Get a description regarding this process.
+	 * 
+	 * @return An immutable version of this process description.
+	 * @throws ImmutabilityException When impossible return of an immutable version
+	 *                               of the description.
+	 */
+	public ProcessDescriptor description() throws ImmutabilityException {
+		return (ProcessDescriptor) this.description.immutable();
+	}
+
+	/**
+	 * Verify if the description include the minimum set of attributes required to
+	 * define the process.
+	 * 
+	 * @param description Description instance hosting the attributes to verify.
+	 * @throws IllegalArgumentException When description instance is not valid.
+	 */
+	private void checkDescriptionConformity(ProcessDescriptor description) throws IllegalArgumentException {
+		if (description != null) {
+			// Check that minimum name attribute is defined into the description
+			String processName = description.name();
+			if (processName == null || "".equals(processName))
+				throw new IllegalArgumentException("Process name is required from description!");
+		}
+	}
+
 	@Override
-	public void execute(Command change, IContext ctx) throws IllegalArgumentException {
+	public void handle(Command change, IContext ctx) throws IllegalArgumentException {
 		// TODO coder traitement de la demande de changement selon l'attribute ciblé ou
 		// l'état de progression du process ou de ses sous-états
+		// Utiliser un delegate pour cet aggregate de type CommandHandlingService
+	}
 
+	@Override
+	public Set<String> handledCommandTypeVersions() {
+		return null;
 	}
 }

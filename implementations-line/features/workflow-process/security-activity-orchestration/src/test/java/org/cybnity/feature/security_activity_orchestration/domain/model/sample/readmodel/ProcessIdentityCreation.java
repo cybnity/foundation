@@ -1,4 +1,4 @@
-package org.cybnity.feature.security_activity_orchestration.templating.domain.model.sample;
+package org.cybnity.feature.security_activity_orchestration.domain.model.sample.readmodel;
 
 import java.io.Serializable;
 import java.util.LinkedHashSet;

@@ -1,6 +1,7 @@
 package org.cybnity.framework.domain.application.sample;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -71,11 +72,18 @@ public class UserAccountAggregate extends Aggregate implements Serializable, IVe
 	}
 
 	@Override
-	public void execute(Command change, IContext ctx) throws IllegalArgumentException {
+	public Set<String> handledCommandTypeVersions() {
+		Set<String> versions = new HashSet<>();
+		versions.add(new VersionConcreteStrategy().composeCanonicalVersionHash(AssignRoleToUserAccountCommand.class));
+		return versions;
+	}
+
+	@Override
+	public void handle(Command command, IContext ctx) throws IllegalArgumentException {
 		if (ctx == null)
 			throw new IllegalArgumentException("Context parameter is required!");
-		if (change instanceof AssignRoleToUserAccountCommand) {
-			AssignRoleToUserAccountCommand toProcess = (AssignRoleToUserAccountCommand) change;
+		if (command instanceof AssignRoleToUserAccountCommand) {
+			AssignRoleToUserAccountCommand toProcess = (AssignRoleToUserAccountCommand) command;
 			ApplicativeRoleDTO toAssign = toProcess.assignedRole;
 			String userAccountId = toProcess.userAccountIdentifier;
 			// Security check regarding a modification requested for this user account

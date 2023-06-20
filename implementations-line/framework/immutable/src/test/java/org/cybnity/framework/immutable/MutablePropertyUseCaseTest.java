@@ -87,7 +87,6 @@ public class MutablePropertyUseCaseTest {
 		// Check that base history is empty as prior history
 		Set<MutableProperty> history = changeableAddress.changesHistory();
 		assertTrue(history.isEmpty(), "Should be empty of any changed value!");
-
 	}
 
 	@Test
