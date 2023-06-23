@@ -37,6 +37,36 @@ classDiagram
 	note for Attribute "Domain framework based as immutable property<br>(e.g primary responsibility stakeholder, supporting roles)<br><br>"
 	Unmodifiable <|.. Attribute
 
+
+	class Process {
+		<<Aggregate>>
+		+builder ProcessBuilder$
+		+Process(Entity predecessor, Identifier id, HashMap<String, Object> descriptionAttributes)
+		+Process(Entity predecessor, LinkedHashSet<Identifier> identifiers, HashMap<String, Object> descriptionAttributes)
+		+Process(ProcessBuilder buildManager)
+		+name() String
+		+activation() ActivityState
+		+changeActivation(ActivityState state)
+		+completion() CompletionState
+		+changeCompletion(CompletionState state)
+		+description() ProcessDescriptor
+		+changeDescription(ProcessDescriptor description)
+		+staging() Staging
+		+changeStaging(Staging stageing)
+		-checkStagingConformity(Staging staging, Entity processOwner)
+		-checkDescriptionConformity(ProcessDescriptor description, Entity processOwner)
+		-checkCompletionConformity(CompletionState state, Entity processOwner)
+		-checkActivationConformity(ActivityState state, Entity processOwner)
+	}
+	class Staging {
+		<<MutableProperty>>
+		+steps : List~Step~
+		+Staging(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status)
+		+Staging(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status, Staging... prior)
+		+steps() List~Step~
+		+owner() Entity
+		-checkStepsConformity()
+	}
 	class Unmodifiable {
 		<<interface>>
 	}
@@ -54,6 +84,7 @@ classDiagram
 		-PropertyAttributeKey.Properties : Collection~Attribute~
 		+getName() String
 		+properties() Collection~Attribute~
+		+owner() Entity
 	}
 	class IState {
 		<<interface>>

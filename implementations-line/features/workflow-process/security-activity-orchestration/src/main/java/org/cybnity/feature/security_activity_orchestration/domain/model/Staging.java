@@ -39,13 +39,39 @@ public class Staging extends MutableProperty {
 	}
 
 	public Staging(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status)
-			throws IllegalArgumentException {
+			throws IllegalArgumentException, ImmutabilityException {
 		super(propertyOwner, propertyCurrentValue, status);
+		// Check that minimum one step is included
+		checkStepsConformity();
 	}
 
 	public Staging(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
-			Staging... prior) throws IllegalArgumentException {
+			Staging... prior) throws IllegalArgumentException, ImmutabilityException {
 		super(propertyOwner, propertyCurrentValue, status, prior);
+		// Check that minimum one step is included
+		checkStepsConformity();
+	}
+
+	/**
+	 * Verify if the steps include a minimum one step, and that steps are valid (e.g
+	 * owner equals to this staging owner).
+	 * 
+	 * @throws IllegalArgumentException When cause of invalidity is detected.
+	 * @throws ImmutabilityException    When problem of property read.
+	 */
+	private void checkStepsConformity() throws IllegalArgumentException, ImmutabilityException {
+		List<Step> steps = steps();
+		// Check that minimum one step is defined
+		if (steps == null || steps.isEmpty() || steps.size() < 1)
+			throw new IllegalArgumentException("Minimum one step is required to define a valid staging!");
+		Entity stagingOwnerIdentity = this.owner();
+		// Verify that each step owner is equals to the process entity (property owner)
+		for (Step step : steps) {
+			if (!step.owner().equals(stagingOwnerIdentity))
+				throw new IllegalArgumentException(
+						"Each step must be owned by this staging identity! Invalid defined property owner on item: "
+								+ step.name());
+		}
 	}
 
 	/**

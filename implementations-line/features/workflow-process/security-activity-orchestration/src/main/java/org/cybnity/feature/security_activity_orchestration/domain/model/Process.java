@@ -3,7 +3,6 @@ package org.cybnity.feature.security_activity_orchestration.domain.model;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.cybnity.feature.security_activity_orchestration.ITemplate;
@@ -286,37 +285,21 @@ public class Process extends Aggregate implements ITemplate {
 	}
 
 	/**
-	 * Verify if the staging include a minimum one step, and that staging and steps
-	 * are valid (e.g owner equals to the process owner parameter).
+	 * Verify if the staging is valid (e.g owner equals to the process owner
+	 * parameter).
 	 * 
 	 * @param staging      Optional staging to verify. Ignore if null.
 	 * @param processOwner Optional process owner to compare. No control of staging
-	 *                     and steps owning when null.
-	 * @throws IllegalArgumentException When mandatory parameter is missing.
+	 *                     owning when null.
+	 * @throws IllegalArgumentException When cause of invalidity is detected.
 	 * @throws ImmutabilityException    When problem of property read.
 	 */
 	private void checkStagingConformity(Staging staging, Entity processOwner)
 			throws IllegalArgumentException, ImmutabilityException {
-		if (staging != null) {
-			List<Step> steps = staging.steps();
-			// Check that minimum one step is defined
-			if (steps == null || steps.isEmpty() || steps.size() < 1)
-				throw new IllegalArgumentException("Minimum one step is required to define a process staging!");
-
-			if (processOwner != null) {
-				// Check staging owner
-				Entity stagingOwnerIdentity = staging.owner();
-				if (!stagingOwnerIdentity.equals(processOwner))
-					throw new IllegalArgumentException("Staging must be owned by this process identity!");
-
-				// Verify that each step owner is equals to the process entity (property owner)
-				for (Step step : steps) {
-					if (!step.owner().equals(processOwner))
-						throw new IllegalArgumentException(
-								"Each step must be owned by this process identity! Invalid defined property owner on item: "
-										+ step.name());
-				}
-			}
+		if (staging != null && processOwner != null) {
+			// Check staging owner
+			if (!staging.owner().equals(processOwner))
+				throw new IllegalArgumentException("Staging must be owned by this process identity!");
 		}
 	}
 
