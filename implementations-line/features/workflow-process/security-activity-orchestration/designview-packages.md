@@ -40,6 +40,24 @@ Several packages are implemented to organize the components (e.g specification e
 classDiagram
 	note for Attribute "Domain framework based as immutable property<br>(e.g primary responsibility stakeholder, supporting roles)<br><br>"
 	Unmodifiable <|.. Attribute
+	Process *-- "1" CompletionState : completion
+	Process ..> ProcessBuilder : template build via
+	note for ProcessBuilder "Builder pattern without rupture of the immutability<br>(valideConformity() called by build() method), allowing<br>templating via new Process.builder(identity).activation(...)<br>.description(...).steps(...).build();<br><br>"
+	IAggregate <|.. Process
+	note for IAggregate "Immutable framework based"
+	ActivityState "1" --* Step : activation
+	Step *-- "1" CompletionState : completion
+	ITemplate <|.. Process
+	Process *-- "1" ProcessDescriptor : description
+	Process *-- "0..1" Staging : staging
+	Staging *-- "1..*" Step : steps
+	ITemplate <|.. Step
+	Step ..> "1 commandProcessor" ChainCommandHandler : delegate command handling
+	Step *-- "1..*" Attribute : properties
+	IState ..> Attribute
+	IWorkflowCommandHandler <|.. Step
+	IState <|.. Step
+	Process *-- "1" ActivityState : activation
 
 	class Process {
 		<<Aggregate>>
