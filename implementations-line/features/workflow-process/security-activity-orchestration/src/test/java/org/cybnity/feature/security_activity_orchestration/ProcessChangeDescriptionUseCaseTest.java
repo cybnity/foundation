@@ -22,20 +22,18 @@ import org.junit.jupiter.api.Test;
  * @author olivier
  *
  */
-public class ProcessChangeDescriptionUseCaseTest {
+public class ProcessChangeDescriptionUseCaseTest extends AbstractProcessEvaluation {
 
 	/**
 	 * Verify that update of description is refused with a description that is not
 	 * property with same owner than the updated process.
 	 */
 	@Test
-	public void givenProcessDescriptionUpdateAttempt_whenNotEqualsOwner_thenIllegalArgumentThrown()
+	public void givenNotEqualsOwner_whenChangeProcessDescription_thenIllegalArgumentThrown()
 			throws ImmutabilityException {
 		// Create a process described
-		DomainEntity processIdentity = TestSampleFactory.createIdentity();
 		Process p = new Process(/* predecessor */ TestSampleFactory.createOrganization(null),
-				processIdentity.identified(), new HashMap<String, Object>(
-						TestSampleFactory.createProcessDescription(processIdentity, "NIST RMF").currentValue()));
+				processIdentity.identified(), new HashMap<String, Object>(processDesc.currentValue()));
 		// Prepare a new version of description BUT THAT IS NOT ABOUT THE SAME PROCESS
 		// IDENTITY
 		String nameV2 = "NIST RMF V2";

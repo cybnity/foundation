@@ -3,6 +3,7 @@ package org.cybnity.feature.security_activity_orchestration.domain.model;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.cybnity.feature.security_activity_orchestration.ITemplate;
@@ -21,7 +22,6 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 /**
  * Represent a workflow based on steps (e.g risk management process) realizable
  * by an actor and specifying an organizational model framing activities.
- * 
  * 
  * @author olivier
  *
@@ -42,7 +42,19 @@ public class Process extends Aggregate implements ITemplate {
 	private ActivityState activation;
 
 	/**
+	 * Status of completion regarding the realization of this process instance (e.g
+	 * according to the executed steps)
+	 */
+	private CompletionState completion;
+
+	/**
+	 * Stages defining the process realization.
+	 */
+	private Staging staging;
+
+	/**
 	 * Default constructor. The default activation state is defined as not active.
+	 * The completion state is defined by default at zero progress rate.
 	 * 
 	 * @param predecessor           Mandatory parent of this process domain entity
 	 *                              as aggregate. For example, can be a created
@@ -78,11 +90,13 @@ public class Process extends Aggregate implements ITemplate {
 		}
 		// Initialize default activity state
 		this.activation = defaultActivation();
+		// Initialize default completion state
+		this.completion = defaultCompletion();
 	}
 
 	/**
 	 * Specific partial constructor. The default activation state is defined as not
-	 * active.
+	 * active. The completion state is defined by default at zero progress rate.
 	 * 
 	 * @param predecessor           Mandatory parent of this process domain entity
 	 *                              as aggregate. For example, can be a created
@@ -119,6 +133,8 @@ public class Process extends Aggregate implements ITemplate {
 		}
 		// Initialize default activity state
 		this.activation = defaultActivation();
+		// Initialize default completion state
+		this.completion = defaultCompletion();
 	}
 
 	/**
@@ -135,6 +151,9 @@ public class Process extends Aggregate implements ITemplate {
 	 *                    without identity when not persistent process.
 	 * @param description Mandatory description of this process.
 	 * @param activation  Mandatory activation of this process.
+	 * @param completion  Mandatory completion of this process.
+	 * @param staging     Optional stages defining this process steps included a
+	 *                    minimum one step.
 	 * @throws IllegalArgumentException When any mandatory parameter is missing.
 	 *                                  When a problem of immutability is occurred.
 	 *                                  When predecessor mandatory parameter is not
@@ -142,17 +161,33 @@ public class Process extends Aggregate implements ITemplate {
 	 * @throws ImmutabilityException    When impossible read of identifier version.
 	 */
 	private Process(Entity predecessor, LinkedHashSet<Identifier> identifiers, ProcessDescriptor description,
-			ActivityState activation) throws IllegalArgumentException, ImmutabilityException {
+			ActivityState activation, CompletionState completion, Staging staging)
+			throws IllegalArgumentException, ImmutabilityException {
 		super(predecessor, identifiers);
 		// None quality control
 		this.description = description;
 		this.activation = activation;
+		this.completion = completion;
+		this.staging = staging;
+	}
+
+	/**
+	 * Get the default completion state.
+	 * 
+	 * @return Default completion state defined at zero percentage of progress.
+	 * @throws ImmutabilityException When process root instance can't be reused as
+	 *                               immutable owner of the completion property.
+	 */
+	private CompletionState defaultCompletion() throws ImmutabilityException {
+		return new CompletionState(this.root(), "InitialCompletionStatus",
+				/* Initial percentage defined at zero of completion rate */ Float.valueOf(0.0f));
 	}
 
 	/**
 	 * Get the default activation state.
 	 * 
-	 * @throws ImmutabilityException When process root instance can be reused as
+	 * @return Default activity state instance defined as inactive.
+	 * @throws ImmutabilityException When process root instance can't be reused as
 	 *                               immutable owner of the activity property.
 	 */
 	private ActivityState defaultActivation() throws ImmutabilityException {
@@ -162,7 +197,7 @@ public class Process extends Aggregate implements ITemplate {
 	@Override
 	public Serializable immutable() throws ImmutabilityException {
 		Process copy = new Process(this.parent(), new LinkedHashSet<>(this.identifiers()),
-				(ProcessDescriptor) this.description.immutable(), this.activation());
+				(ProcessDescriptor) this.description.immutable(), this.activation(), this.completion(), this.staging());
 		// Complete with additional attributes of this complex aggregate
 		copy.createdAt = this.occurredAt();
 		return copy;
@@ -207,12 +242,82 @@ public class Process extends Aggregate implements ITemplate {
 	}
 
 	/**
+	 * Get the staging defining the realization of this process.
+	 * 
+	 * @return An immutable staging or null.
+	 * @throws ImmutabilityException When existing staging can't be returned as
+	 *                               immutable version.
+	 */
+	public Staging staging() throws ImmutabilityException {
+		Staging s = null;
+		if (this.staging != null)
+			s = (Staging) this.staging.immutable();
+		return s;
+	}
+
+	/**
 	 * Implement the generation of version hash regarding this class type according
 	 * to a concrete strategy utility service.
 	 */
 	@Override
 	public String versionHash() {
 		return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+	}
+
+	/**
+	 * Change the current staging of this process.
+	 * 
+	 * @param staginig Mandatory new version of staging version for replace the
+	 *                 current process's steps definition.
+	 * @throws IllegalArgumentException When mandatory parameter is not defined or
+	 *                                  is not valid in terms of minimum conformity.
+	 *                                  When staging parameter is not regarding same
+	 *                                  process identity.
+	 * @throws ImmutabilityException    When impossible read of any stage and/or
+	 *                                  step's owner.
+	 */
+	public void changeStaging(Staging staging) throws IllegalArgumentException, ImmutabilityException {
+		if (staging == null)
+			throw new IllegalArgumentException("Stages parameter is required with included minimum one step!");
+		// Check conformity of integrated stages and steps
+		checkStagingConformity(staging, rootEntity());
+		// Update this staging
+		this.staging = staging;
+	}
+
+	/**
+	 * Verify if the staging include a minimum one step, and that staging and steps
+	 * are valid (e.g owner equals to the process owner parameter).
+	 * 
+	 * @param staging      Optional staging to verify. Ignore if null.
+	 * @param processOwner Optional process owner to compare. No control of staging
+	 *                     and steps owning when null.
+	 * @throws IllegalArgumentException When mandatory parameter is missing.
+	 * @throws ImmutabilityException    When problem of property read.
+	 */
+	private void checkStagingConformity(Staging staging, Entity processOwner)
+			throws IllegalArgumentException, ImmutabilityException {
+		if (staging != null) {
+			List<Step> steps = staging.steps();
+			// Check that minimum one step is defined
+			if (steps == null || steps.isEmpty() || steps.size() < 1)
+				throw new IllegalArgumentException("Minimum one step is required to define a process staging!");
+
+			if (processOwner != null) {
+				// Check staging owner
+				Entity stagingOwnerIdentity = staging.owner();
+				if (!stagingOwnerIdentity.equals(processOwner))
+					throw new IllegalArgumentException("Staging must be owned by this process identity!");
+
+				// Verify that each step owner is equals to the process entity (property owner)
+				for (Step step : steps) {
+					if (!step.owner().equals(processOwner))
+						throw new IllegalArgumentException(
+								"Each step must be owned by this process identity! Invalid defined property owner on item: "
+										+ step.name());
+				}
+			}
+		}
 	}
 
 	/**
@@ -241,7 +346,8 @@ public class Process extends Aggregate implements ITemplate {
 	 * Verify if the description include the minimum set of attributes required to
 	 * define the process and if owner is equals.
 	 * 
-	 * @param description  Description instance hosting the attributes to verify.
+	 * @param description  Optional description instance hosting the attributes to
+	 *                     verify.
 	 * @param processOwner Mandatory owner of the description to compare as a
 	 *                     description condition.
 	 * @throws IllegalArgumentException When description instance is not valid.
@@ -269,6 +375,62 @@ public class Process extends Aggregate implements ITemplate {
 	}
 
 	/**
+	 * Update the current completion state by a new version.
+	 * 
+	 * @param state Mandatory new version of state.
+	 * @throws IllegalArgumentException When mandatory parameter is not defined or
+	 *                                  is not valid in terms of minimum conformity.
+	 *                                  When state parameter is not regarding same
+	 *                                  process identity.
+	 * @throws ImmutabilityException    When impossible read of state's owner.
+	 */
+	public void changeCompletion(CompletionState state) throws IllegalArgumentException, ImmutabilityException {
+		if (state == null)
+			throw new IllegalArgumentException("The state parameter is required!");
+		// Check conformity of new version
+		checkCompletionConformity(state, rootEntity());
+		// Update the completion state
+		this.completion = state;
+	}
+
+	/**
+	 * Verify if the state include basic attributes and values and that property
+	 * owner is equals to this process. For example, a Not-a-Number or negative
+	 * completion rate is not a valid value for percentage of completion.
+	 * 
+	 * @param state        Optional state to check.
+	 * @param processOwner Mandatory owner of the state to compare as a status
+	 *                     condition.
+	 * @throws IllegalArgumentException When non conformity cause is detected.
+	 * @throws ImmutabilityException    When impossible read of description's owner.
+	 */
+	private void checkCompletionConformity(CompletionState state, Entity processOwner)
+			throws IllegalArgumentException, ImmutabilityException {
+		if (state != null) {
+			if (processOwner == null)
+				throw new IllegalArgumentException("Process owner parameter is required!");
+			// Check that minimum name and percentage attributes are defined into the status
+
+			// Check the name value
+			if (state.name() == null)
+				throw new IllegalArgumentException("Name value is required from state!");
+			// Check the percentage value
+			if (state.percentage() == null)
+				throw new IllegalArgumentException("Percentage value is required from state!");
+			// Check that percentage is positive
+			if (state.percentage().isNaN() || state.percentage().compareTo(Float.valueOf(0.0f)) < 0)
+				throw new IllegalArgumentException("Percentage value must be positive!");
+
+			if (processOwner != null) {
+				// Check that owner of the new state is equals to this process identity
+				if (state.owner() == null || !state.owner().equals(processOwner))
+					throw new IllegalArgumentException(
+							"The owner of the new completion state shall be equals to this process!");
+			}
+		}
+	}
+
+	/**
 	 * Update the current activation state by a new version.
 	 * 
 	 * @param state Mandatory new version of state.
@@ -288,9 +450,8 @@ public class Process extends Aggregate implements ITemplate {
 	}
 
 	/**
-	 * Verify if the state include basic attributes and values (e.g
-	 * PropertyAttributeKey.StateValue) and that property owner is equals to this
-	 * process.
+	 * Verify if the state include basic attributes and values and that property
+	 * owner is equals to this process.
 	 * 
 	 * @param state        Mandatory state to check.
 	 * @param processOwner Mandatory owner of the state to compare as a status
@@ -338,6 +499,17 @@ public class Process extends Aggregate implements ITemplate {
 	 */
 	public ActivityState activation() throws ImmutabilityException {
 		return (ActivityState) this.activation.immutable();
+	}
+
+	/**
+	 * Get the current status of process completion.
+	 * 
+	 * @return An immutable version of the state.
+	 * @throws ImmutabilityException When impossible return of immutable version of
+	 *                               the status.
+	 */
+	public CompletionState completion() throws ImmutabilityException {
+		return (CompletionState) this.completion.immutable();
 	}
 
 	@Override

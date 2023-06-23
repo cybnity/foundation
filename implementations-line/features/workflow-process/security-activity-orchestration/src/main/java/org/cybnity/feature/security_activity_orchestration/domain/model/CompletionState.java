@@ -18,7 +18,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * Represent a state of completion defining by a name and optionally by a
  * percentage value about reached completion rate.
  * 
- * Can be used as an activity state for any type of subject.
+ * Can be used as an progress monitoring state that is extended for any type of
+ * subject.
  * 
  * @author olivier
  *
