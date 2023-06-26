@@ -98,7 +98,7 @@ public class UserAccountCQRSCollaborationUseCaseTest {
 	@Test
 	public void givenWriteModelStore_whenDomainObjectChanged_thenReadModelUpdatedViaSubscribers() throws Exception {
 		// Create a domain event requested to create a new user account aggregate object
-		UserAccountAggregate account = new UserAccountAggregate(accountId, accountOwner.reference());
+		UserAccountAggregate account = new UserAccountAggregate(accountId, accountOwner);
 		Entity eventId = new UserAccountIdentityCreation(accountId);
 		UserAccountCreateCommand event = new UserAccountCreateCommand(eventId);
 		event.accountUID = (String) accountId.value();

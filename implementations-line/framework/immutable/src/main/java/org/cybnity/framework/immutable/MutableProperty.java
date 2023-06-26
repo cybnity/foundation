@@ -66,7 +66,7 @@ public abstract class MutableProperty implements IHistoricalFact {
 	 * change. In this situation, the application will typically present all leaves
 	 * as candidate values where each one represents a value that was concurrently
 	 * set for the property and has not been superseded. The user can select among
-	 * the candidate values and resolve the dispute (can alos be accomplished via a
+	 * the candidate values and resolve the dispute (can also be accomplished via a
 	 * simple function over the leaves, such as a maximum equals to a several-way
 	 * merge).
 	 * 

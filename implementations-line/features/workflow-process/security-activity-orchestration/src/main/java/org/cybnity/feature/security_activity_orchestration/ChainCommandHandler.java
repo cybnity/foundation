@@ -1,14 +1,18 @@
 package org.cybnity.feature.security_activity_orchestration;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.cybnity.framework.domain.Command;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Contract of command handling implementing the chain of responsibility chain
  * pattern.
  */
+@Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
 public abstract class ChainCommandHandler {
 	private String label;
 	/**
@@ -22,11 +26,35 @@ public abstract class ChainCommandHandler {
 	/**
 	 * Default constructor.
 	 * 
-	 * @param next Optional set of next handler unique instance (sequential chain)
-	 *             or multiple (parallel chain) of the responsibility chain actors.
+	 * @param next     Optional set of next handler unique instance (sequential
+	 *                 chain) or multiple (parallel chain) of the responsibility
+	 *                 chain actors.
+	 * @param subTasks Optional list of ordered sub-tasks realized by this chain
+	 *                 command.
 	 */
-	public ChainCommandHandler(Collection<ChainCommandHandler> next) {
+	public ChainCommandHandler(Collection<ChainCommandHandler> next, List<ChainCommandHandler> subTasks) {
 		this.next = next;
+		this.subTasks = subTasks;
+	}
+
+	/**
+	 * Generally only one next handler (defined during this handling constructor
+	 * call) is optionally defined into this chain command handling service. But
+	 * it's possible to require parallel handlers simultaneous (and not ordered)
+	 * called by this handler managing command received. In this case, this method
+	 * allow to add parallel handlers to the current handler.
+	 * 
+	 * @param next Handler to add into the next parallel handlers which shall be
+	 *             called for each handled command. Ignored when null parameter.
+	 */
+	public void addParallelNextHandler(ChainCommandHandler next) {
+		if (next != null) {
+			if (this.next == null)
+				// Initialize the container of chain command handling services
+				this.next = new ArrayList<>();
+			// Add the new handler as parallel command receiver
+			this.next.add(next);
+		}
 	}
 
 	/**

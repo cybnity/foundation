@@ -95,7 +95,7 @@ public class UserAccountAggregateUseCaseTest {
 	@Test
 	public void givenIdentifierUserAccountWithRole_whenChangedRole_thenRoleFactGraphMaintained() throws Exception {
 		// Create a user account
-		UserAccountAggregate account = new UserAccountAggregate(accountId, accountOwner.reference());
+		UserAccountAggregate account = new UserAccountAggregate(accountId, accountOwner);
 		// Create an event simulating an original command of user account creation
 		Entity eventId = new UserAccountIdentityCreation(accountId);
 		UserAccountCreateCommand event = new UserAccountCreateCommand(eventId);
@@ -123,7 +123,7 @@ public class UserAccountAggregateUseCaseTest {
 		roleAssignmentCommand.userAccountIdentifier = (String) account.identified().value();
 
 		// Add the role to the aggregate account
-		currentAccount.execute(roleAssignmentCommand, this.domainContext);
+		currentAccount.handle(roleAssignmentCommand, this.domainContext);
 
 		// Reload the saved state of account from store
 		currentAccount = writeModelStore.findFrom(event.accountUID);
@@ -147,7 +147,7 @@ public class UserAccountAggregateUseCaseTest {
 
 		// Update the role (history graph) to the aggregate account regarding a removed
 		// role
-		currentAccount.execute(roleAssignmentCommand, this.domainContext);
+		currentAccount.handle(roleAssignmentCommand, this.domainContext);
 		// Reload the saved state of account from store
 		currentAccount = writeModelStore.findFrom(event.accountUID);
 		assertTrue(currentAccount.assignedRoles().size() == 1,

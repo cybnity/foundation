@@ -18,72 +18,72 @@ import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStore;
  */
 public class ApplicativeRoleAllocationCommandHandler implements ICommandHandler {
 
-    private Class<?> supportedCommand = AssignRoleToUserAccountCommand.class;
-    private UserAccountManagementDomainContext context;
+	private Class<?> supportedCommand = AssignRoleToUserAccountCommand.class;
+	private UserAccountManagementDomainContext context;
 
-    /**
-     * Default constructor.
-     * 
-     * @param ctx Mandatory context.
-     * @throws IllegalArgumentException When mandatory parameter is missing.
-     */
-    public ApplicativeRoleAllocationCommandHandler(UserAccountManagementDomainContext ctx)
-	    throws IllegalArgumentException {
-	if (ctx == null)
-	    throw new IllegalArgumentException("Context parameter is required!");
-	context = ctx;
-    }
+	/**
+	 * Default constructor.
+	 * 
+	 * @param ctx Mandatory context.
+	 * @throws IllegalArgumentException When mandatory parameter is missing.
+	 */
+	public ApplicativeRoleAllocationCommandHandler(UserAccountManagementDomainContext ctx)
+			throws IllegalArgumentException {
+		if (ctx == null)
+			throw new IllegalArgumentException("Context parameter is required!");
+		context = ctx;
+	}
 
-    @Override
-    public void handle(Command command, IContext ctx) throws IllegalArgumentException {
-	if (command == null)
-	    throw new IllegalArgumentException("The command parameter is required!");
-	if (command instanceof AssignRoleToUserAccountCommand) {
-	    AssignRoleToUserAccountCommand toProcess = (AssignRoleToUserAccountCommand) command;
-	    ApplicativeRoleDTO roleToAssign = toProcess.assignedRole;
-	    String userAccountId = toProcess.userAccountIdentifier;
+	@Override
+	public void handle(Command command, IContext ctx) throws IllegalArgumentException {
+		if (command == null)
+			throw new IllegalArgumentException("The command parameter is required!");
+		if (command instanceof AssignRoleToUserAccountCommand) {
+			AssignRoleToUserAccountCommand toProcess = (AssignRoleToUserAccountCommand) command;
+			ApplicativeRoleDTO roleToAssign = toProcess.assignedRole;
+			String userAccountId = toProcess.userAccountIdentifier;
 
-	    if (roleToAssign != null && userAccountId != null) {
-		// Normally save into a persistence system (e.g Datastore of user accounts)
-		UserAccountStore accountStore = context.getWriteModelStore();
+			if (roleToAssign != null && userAccountId != null) {
+				// Normally save into a persistence system (e.g Datastore of user accounts)
+				UserAccountStore accountStore = context.getWriteModelStore();
 
-		// Search the user account and role to modify regarding current version (from
-		// datastore of accounts/roles)
-		UserAccountAggregate account = accountStore.findFrom(userAccountId);
-		if (account != null) {
-		    // Delegate command processing to the found aggregate object
-		    // (which manage the domain boundary regarding the roles assignment state
-		    account.execute(toProcess, ctx);
+				// Search the user account and role to modify regarding current version (from
+				// datastore of accounts/roles)
+				UserAccountAggregate account = accountStore.findFrom(userAccountId);
+				if (account != null) {
+					// Delegate command processing to the found aggregate object
+					// (which manage the domain boundary regarding the roles assignment state
+					account.handle(toProcess, ctx);
+				} else {
+					// Notify that command is ignored because regarding an unknown user account
+					// which is not existing
+					throw new IllegalArgumentException("Unknown user account targeted by the identifier (accountId="
+							+ userAccountId + ") received into the command!");
+				}
+			} else {
+				throw new IllegalArgumentException(
+						"Invalid received command that shall contain role to assign and user account identifier!");
+			}
 		} else {
-		    // Notify that command is ignored because regarding an unknown user account
-		    // which is not existing
-		    throw new IllegalArgumentException("Unknown user account targeted by the identifier (accountId="
-			    + userAccountId + ") received into the command!");
+			// Log problem of bad linking between this handler and the type of command
+			// supported
+			throw new IllegalArgumentException("Unsupported type of command (only " + supportedCommand.getName()
+					+ " command is handled by this handler)!");
 		}
-	    } else {
-		throw new IllegalArgumentException(
-			"Invalid received command that shall contain role to assign and user account identifier!");
-	    }
-	} else {
-	    // Log problem of bad linking between this handler and the type of command
-	    // supported
-	    throw new IllegalArgumentException("Unsupported type of command (only " + supportedCommand.getName()
-		    + " command is handled by this handler)!");
 	}
-    }
 
-    @Override
-    public Set<String> handledCommandTypeVersions() {
-	Set<String> set = new HashSet<String>();
-	try {
-	    AssignRoleToUserAccountCommand obj = (AssignRoleToUserAccountCommand) Class
-		    .forName(supportedCommand.getName()).getDeclaredConstructor().newInstance((Object[]) null);
-	    set.add(obj.versionHash());
-	} catch (Exception e) {
-	    // Log not found exception regarding the command type normally supported
-	    e.printStackTrace();
+	@Override
+	public Set<String> handledCommandTypeVersions() {
+		Set<String> set = new HashSet<String>();
+		try {
+			AssignRoleToUserAccountCommand obj = (AssignRoleToUserAccountCommand) Class
+					.forName(supportedCommand.getName()).getDeclaredConstructor().newInstance((Object[]) null);
+			set.add(obj.versionHash());
+		} catch (Exception e) {
+			// Log not found exception regarding the command type normally supported
+			e.printStackTrace();
+		}
+		return set;
 	}
-	return set;
-    }
 
 }

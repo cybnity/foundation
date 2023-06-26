@@ -14,25 +14,26 @@ import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
  */
 public class AssignRoleToUserAccountCommand extends Command {
 
-    private static final long serialVersionUID = 1L;
-    public ApplicativeRoleDTO assignedRole;
-    public String userAccountIdentifier;
+	private static final long serialVersionUID = new VersionConcreteStrategy()
+			.composeCanonicalVersionHash(AssignRoleToUserAccountCommand.class).hashCode();
+	public ApplicativeRoleDTO assignedRole;
+	public String userAccountIdentifier;
 
-    public AssignRoleToUserAccountCommand() {
-	super();
-    }
+	public AssignRoleToUserAccountCommand() {
+		super();
+	}
 
-    public AssignRoleToUserAccountCommand(Entity identifiedBy) {
-	super(identifiedBy);
-    }
+	public AssignRoleToUserAccountCommand(Entity identifiedBy) {
+		super(identifiedBy);
+	}
 
-    /**
-     * Implement the generation of version hash regarding this class type according
-     * to a concrete strategy utility service.
-     */
-    @Override
-    public String versionHash() {
-	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
-    }
+	/**
+	 * Implement the generation of version hash regarding this class type according
+	 * to a concrete strategy utility service.
+	 */
+	@Override
+	public String versionHash() {
+		return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+	}
 
 }

@@ -1,4 +1,4 @@
-package org.cybnity.framework.domain.model;
+package org.cybnity.feature.security_activity_orchestration.domain.model;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -15,63 +15,71 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Represent a state of activity (e.g active or not active) regarding a subject.
- * Can be used as an activity tag for any type of subject.
+ * Represent a state of completion defining by a name and optionally by a
+ * percentage value about reached completion rate.
+ * 
+ * Can be used as an progress monitoring state that is extended for any type of
+ * subject.
  * 
  * @author olivier
  *
  */
-@Requirement(reqType = RequirementCategory.Security, reqId = "REQ_SEC_3")
-public class ActivityState extends MutableProperty {
+@Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
+public class CompletionState extends MutableProperty {
 
 	private static final long serialVersionUID = new VersionConcreteStrategy()
-			.composeCanonicalVersionHash(ActivityState.class).hashCode();
+			.composeCanonicalVersionHash(CompletionState.class).hashCode();
 
 	/**
 	 * The keys set regarding the multiple attributes defining this state, and that
 	 * each change need to be versioned/treated as a single atomic fact.
 	 */
 	public enum PropertyAttributeKey {
-		/** Boolean active/deactive state **/
-		StateValue;
+		/** Name of a completion state **/
+		Name,
+		/** Numeric rate of completion based on a Float value */
+		Percentage;
 	}
 
 	/**
 	 * Default constructor.
 	 * 
-	 * @param propertyOwner  Mandatory owner of this state (e.g account entity),
-	 *                       including the entity information.
-	 * @param isActiveStatus Mandatory value of state property (e.g true when
-	 *                       active).
+	 * @param propertyOwner Mandatory owner of this state (e.g step entity),
+	 *                      including the entity information.
+	 * @param named         Mandatory name of this state property.
+	 * @param percentage    Optional current rate of completion.
 	 * @throws IllegalArgumentException When mandatory parameter is missing.
 	 * @throws ImmutabilityException    When impossible creation of immutable
 	 *                                  version regarding the owner instance.
 	 */
-	public ActivityState(EntityReference propertyOwner, Boolean isActiveStatus)
+	public CompletionState(EntityReference propertyOwner, String named, Float currentPercentageOfCompletion)
 			throws IllegalArgumentException, ImmutabilityException {
-		this(propertyOwner, isActiveStatus, (ActivityState) null);
+		this(propertyOwner, named, currentPercentageOfCompletion, (CompletionState) null);
 	}
 
 	/**
 	 * Constructor with predecessors state automatically to save as history.
 	 * 
-	 * @param propertyOwner  Mandatory owner of this state (e.g account entity),
-	 *                       including the entity information.
-	 * @param isActiveStatus Mandatory value of state property (e.g true when
-	 *                       active).
-	 * @param predecessors   Optional prior states.
+	 * @param propertyOwner Mandatory owner of this state (e.g process), including
+	 *                      the entity information.
+	 * @param named         Mandatory name of this state property.
+	 * @param percentage    Optional current rate of completion.
+	 * @param predecessors  Optional prior states.
 	 * @throws IllegalArgumentException When mandatory parameter is missing.
 	 * @throws ImmutabilityException    When impossible creation of immutable
 	 *                                  version regarding the owner instance.
 	 */
-	public ActivityState(EntityReference propertyOwner, Boolean isActiveStatus, ActivityState... predecessors)
-			throws IllegalArgumentException, ImmutabilityException {
+	public CompletionState(EntityReference propertyOwner, String named, Float currentPercentageOfCompletion,
+			CompletionState... predecessors) throws IllegalArgumentException, ImmutabilityException {
 		this( /* Reference identifier equals to the owner of this state */
 				(propertyOwner != null) ? propertyOwner.getEntity() : null,
-				(isActiveStatus != null) ? buildPropertyValue(PropertyAttributeKey.StateValue, isActiveStatus) : null,
+				(named != null && !"".equals(named)) ? buildPropertyValue(PropertyAttributeKey.Name, named) : null,
 				HistoryState.COMMITTED, predecessors);
-		if (isActiveStatus == null)
-			throw new IllegalArgumentException("isActiveStatus parameter is required!");
+		if (named == null || "".equals(named))
+			throw new IllegalArgumentException("Name parameter is required!");
+		if (currentPercentageOfCompletion != null) {
+			this.value.put(PropertyAttributeKey.Percentage.name(), currentPercentageOfCompletion);
+		}
 	}
 
 	/**
@@ -92,17 +100,17 @@ public class ActivityState extends MutableProperty {
 	 *                                  can not be cloned regarding immutable entity
 	 *                                  parameter.
 	 */
-	public ActivityState(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
-			@Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3") ActivityState... predecessors) {
+	public CompletionState(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
+			@Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3") CompletionState... predecessors) {
 		super(propertyOwner, propertyCurrentValue, status, predecessors);
 	}
 
 	@Override
 	public Serializable immutable() throws ImmutabilityException {
-		ActivityState copy = new ActivityState(this.ownerReference(), this.isActive());
+		CompletionState copy = new CompletionState(this.owner(), new HashMap<String, Object>(this.currentValue()),
+				this.historyStatus(), (CompletionState[]) null);
 		// Complete with additional attributes of this complex property
 		copy.changedAt = this.occurredAt();
-		copy.historyStatus = this.historyStatus();
 		copy.updateChangesHistory(this.changesHistory());
 		return copy;
 	}
@@ -143,12 +151,21 @@ public class ActivityState extends MutableProperty {
 	}
 
 	/**
-	 * Get the status.
+	 * Get the state name.
 	 * 
-	 * @return True if active state. False if deactivated.
+	 * @return A name.
 	 */
-	public Boolean isActive() {
-		return (Boolean) this.currentValue().get(PropertyAttributeKey.StateValue.name());
+	public String name() {
+		return (String) this.currentValue().get(PropertyAttributeKey.Name.name());
+	}
+
+	/**
+	 * Get the percentage of completion.
+	 * 
+	 * @return A percentage or null.
+	 */
+	public Float percentage() {
+		return (Float) this.currentValue().getOrDefault(PropertyAttributeKey.Percentage.name(), null);
 	}
 
 	/**
@@ -171,14 +188,14 @@ public class ActivityState extends MutableProperty {
 		if (obj == this)
 			return true;
 		boolean isEquals = false;
-		if (obj instanceof ActivityState) {
+		if (obj instanceof CompletionState) {
 			try {
-				ActivityState compared = (ActivityState) obj;
+				CompletionState compared = (CompletionState) obj;
 
 				// Check if same property owner
 				if (compared.owner().equals(this.owner())) {
-					// Check if same status value
-					if (compared.isActive().equals(this.isActive())) {
+					// Check if same name value
+					if (compared.name().equals(this.name())) {
 						// Check if same history version
 						if (compared.historyStatus() == this.historyStatus()) {
 							isEquals = true;

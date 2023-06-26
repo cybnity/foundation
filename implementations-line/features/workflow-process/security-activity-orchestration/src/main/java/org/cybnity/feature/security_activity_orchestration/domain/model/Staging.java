@@ -1,9 +1,10 @@
 package org.cybnity.feature.security_activity_orchestration.domain.model;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.cybnity.framework.immutable.Entity;
@@ -15,69 +16,77 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Definition regarding a process, that can be changed, and which need to be
- * historized in an immutable way the history of changes (version of this
- * information).
+ * Definition of a workflow specification based on steps, that can be changed,
+ * and which need to be historized in an immutable way the history of changes
+ * (version of this information).
  * 
  * @author olivier
  *
  */
 @Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
-public class ProcessDescriptor extends MutableProperty {
+public class Staging extends MutableProperty {
 
 	private static final long serialVersionUID = new VersionConcreteStrategy()
-			.composeCanonicalVersionHash(ProcessDescriptor.class).hashCode();
+			.composeCanonicalVersionHash(Staging.class).hashCode();
 
 	/**
 	 * Keys set regarding the multiple attribute defining this complex organization,
 	 * and that each change need to be versioned/treated as a single atomic fact.
 	 */
 	public enum PropertyAttributeKey {
-		/** Name of a process **/
-		Name,
-		/** Attributes collection specifying the process as a description of it */
-		Properties;
+		/** Steps definition **/
+		Steps;
 	}
 
-	public ProcessDescriptor(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status)
-			throws IllegalArgumentException {
+	public Staging(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status)
+			throws IllegalArgumentException, ImmutabilityException {
 		super(propertyOwner, propertyCurrentValue, status);
+		// Check that minimum one step is included
+		checkStepsConformity();
 	}
 
-	public ProcessDescriptor(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
-			ProcessDescriptor... prior) throws IllegalArgumentException {
+	public Staging(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
+			Staging... prior) throws IllegalArgumentException, ImmutabilityException {
 		super(propertyOwner, propertyCurrentValue, status, prior);
+		// Check that minimum one step is included
+		checkStepsConformity();
 	}
 
 	/**
-	 * Get the process name.
+	 * Verify if the steps include a minimum one step, and that steps are valid (e.g
+	 * owner equals to this staging owner).
 	 * 
-	 * @return A label or null.
+	 * @throws IllegalArgumentException When cause of invalidity is detected.
+	 * @throws ImmutabilityException    When problem of property read.
 	 */
-	public String name() {
-		return (String) this.currentValue().getOrDefault(PropertyAttributeKey.Name.name(), null);
+	private void checkStepsConformity() throws IllegalArgumentException, ImmutabilityException {
+		List<Step> steps = steps();
+		// Check that minimum one step is defined
+		if (steps == null || steps.isEmpty() || steps.size() < 1)
+			throw new IllegalArgumentException("Minimum one step is required to define a valid staging!");
+		Entity stagingOwnerIdentity = this.owner();
+		// Verify that each step owner is equals to the process entity (property owner)
+		for (Step step : steps) {
+			if (!step.owner().equals(stagingOwnerIdentity))
+				throw new IllegalArgumentException(
+						"Each step must be owned by this staging identity! Invalid defined property owner on item: "
+								+ step.name());
+		}
 	}
 
 	/**
-	 * Get the description properties regarding this process.
+	 * Get the ordered steps.
 	 * 
-	 * @return A set of properties specifying the process description, or null.
+	 * @return A list including steps or empty list.
 	 */
 	@SuppressWarnings("unchecked")
-	public Collection<Attribute> properties() {
-		try {
-			return (Collection<Attribute>) this.currentValue().getOrDefault(PropertyAttributeKey.Properties.name(),
-					null);
-		} catch (Exception cce) {
-			// Invalid type of collection object implemented. Add developer log about coding
-			// problem
-		}
-		return null;
+	public List<Step> steps() {
+		return (List<Step>) this.currentValue().getOrDefault(PropertyAttributeKey.Steps.name(), new LinkedList<>());
 	}
 
 	@Override
 	public Serializable immutable() throws ImmutabilityException {
-		ProcessDescriptor copy = new ProcessDescriptor(this.owner(), new HashMap<String, Object>(this.currentValue()),
+		Staging copy = new Staging(this.owner(), new HashMap<String, Object>(this.currentValue()),
 				this.historyStatus());
 		// Complete with additional attributes of this complex property
 		copy.changedAt = this.occurredAt();
