@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:implementations-line/features/workflow-process/security-activity-orchestration/src/test/java/org/cybnity/feature/security_activity_orchestration/domain/model/sample/writemodel/OrganizationDescriptor.java
 package org.cybnity.feature.security_activity_orchestration.domain.model.sample.writemodel;
-========
-package org.cybnity.feature.security_activity_orchestration.domain.model;
->>>>>>>> staging:implementations-line/features/workflow-process/security-activity-orchestration/src/main/java/org/cybnity/feature/security_activity_orchestration/domain/model/ProcessDescriptor.java
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
@@ -69,12 +65,9 @@ public class OrganizationDescriptor extends MutableProperty {
 
 	@Override
 	public Serializable immutable() throws ImmutabilityException {
-<<<<<<<< HEAD:implementations-line/features/workflow-process/security-activity-orchestration/src/test/java/org/cybnity/feature/security_activity_orchestration/domain/model/sample/writemodel/OrganizationDescriptor.java
-		OrganizationDescriptor copy = new OrganizationDescriptor(this.owner(), this.currentValue(),
-========
-		ProcessDescriptor copy = new ProcessDescriptor(this.owner(), new HashMap<String, Object>(this.currentValue()),
->>>>>>>> staging:implementations-line/features/workflow-process/security-activity-orchestration/src/main/java/org/cybnity/feature/security_activity_orchestration/domain/model/ProcessDescriptor.java
-				this.historyStatus());
+		OrganizationDescriptor copy = new OrganizationDescriptor(this.owner(),
+				new HashMap<String, Object>(this.currentValue()), this.historyStatus);
+
 		// Complete with additional attributes of this complex property
 		copy.versionedAt = this.versionedAt;
 		copy.changedAt = this.occurredAt();
