@@ -148,7 +148,7 @@ classDiagram
 		-ProcessBuilder(@required LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName)
 		+instance(LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName)$ ProcessBuilder
 		+build() Process
-		+valideConformity(Process instance) ImmutabilityException
+		+valideConformity(Process instance)$
 		+withActivation(Boolean isActiveStatus) ProcessBuilder
 		+withCompletion(@required String named, Float currentPercentageOfCompletion) ProcessBuilder
 		+withDescription(Collection~Attribute~ properties) Processbuilder

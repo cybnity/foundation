@@ -114,7 +114,7 @@ public final class ProcessBuilder {
 	 * @throws IllegalArgumentException When any instance content is not valid. When
 	 *                                  instance parameter is null.
 	 */
-	public void validateConformity(Process instance) throws ImmutabilityException, IllegalArgumentException {
+	public static void validateConformity(Process instance) throws ImmutabilityException, IllegalArgumentException {
 		if (instance == null)
 			throw new IllegalArgumentException("Instance parameter is required to validate its conformity!");
 		// Verify description contents

@@ -33,7 +33,7 @@ public class ProcessBuilderUseCaseTest extends AbstractProcessEvaluation {
 		ProcessBuilder builder = ProcessBuilder.instance(processIds, /* predecessor */ company, processDesc.name());
 		Process p = builder.build();
 		// Verify the instance conformity
-		builder.validateConformity(p);
+		ProcessBuilder.validateConformity(p);
 
 		assertNotNull(p);
 		assertNotNull(p.name());
