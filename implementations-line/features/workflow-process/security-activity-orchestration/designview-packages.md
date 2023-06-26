@@ -10,8 +10,9 @@ The technical description regarding behavior and best usage is maintained into t
 |CompletionState|Represent a state of completion defining by a name and optionally by a percentage value about reached completion rate|
 |IState|Represent a providing contract regarding the description of a state (e.g a process step) based on a collection of attributes|
 |Process|Represent a workflow based on steps (e.g risk management process) realizable by an actor and specifying an organizational model framing activities|
+|ProcessBuilder|Utility class implementing the builder design pattern to create easily a process instance automatically mananing the instantiation dependencies between internal domain facts|
 |ProcessDescriptor|Definition regarding a process, that can be changed, and which need to be historized in an immutable way the history of changes (version of this information)|
-|Staging|Workflow specification based on steps, that can be changed, and which is historized in an immutable way the history of changes|
+|Staging|Ordered and/or paralellized workflow specification based on steps, that can be changed, and which is historized in an immutable way the history of changes|
 |Step|Represent a workflow phase (e.g also named process step) that define a state of a working set (e.g unique or multiple actions)|
 
 # STRUCTURE MODELS
@@ -38,8 +39,6 @@ Several packages are implemented to organize the components (e.g specification e
   }
 }%%
 classDiagram
-	note for Attribute "Domain framework based as immutable property<br>(e.g primary responsibility stakeholder, supporting roles)<br><br>"
-	Unmodifiable <|.. Attribute
 	Process *-- "1" CompletionState : completion
 	Process <.. ProcessBuilder : build instances
 	note for ProcessBuilder "Builder pattern without rupture of the immutability<br>(valideConformity() called by build() method), allowing<br>templating via new Process.builder(identity).activation(...)<br>.description(...).steps(...).build();<br><br>"
@@ -57,7 +56,9 @@ classDiagram
 	IWorkflowCommandHandler <|.. Step
 	IState <|.. Step
 	Process *-- "1" ActivityState : activation
+	Unmodifiable <|.. Attribute
 	IState ..> Attribute
+	note for Attribute "Domain framework based as immutable property<br>(e.g primary responsibility stakeholder, supporting roles)<br><br>"
 
 	class Process {
 		<<Aggregate>>
