@@ -1,8 +1,14 @@
+<<<<<<<< HEAD:implementations-line/features/workflow-process/security-activity-orchestration/src/test/java/org/cybnity/feature/security_activity_orchestration/domain/model/sample/writemodel/OrganizationDescriptor.java
 package org.cybnity.feature.security_activity_orchestration.domain.model.sample.writemodel;
+========
+package org.cybnity.feature.security_activity_orchestration.domain.model;
+>>>>>>>> staging:implementations-line/features/workflow-process/security-activity-orchestration/src/main/java/org/cybnity/feature/security_activity_orchestration/domain/model/ProcessDescriptor.java
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.HistoryState;
@@ -63,7 +69,11 @@ public class OrganizationDescriptor extends MutableProperty {
 
 	@Override
 	public Serializable immutable() throws ImmutabilityException {
+<<<<<<<< HEAD:implementations-line/features/workflow-process/security-activity-orchestration/src/test/java/org/cybnity/feature/security_activity_orchestration/domain/model/sample/writemodel/OrganizationDescriptor.java
 		OrganizationDescriptor copy = new OrganizationDescriptor(this.owner(), this.currentValue(),
+========
+		ProcessDescriptor copy = new ProcessDescriptor(this.owner(), new HashMap<String, Object>(this.currentValue()),
+>>>>>>>> staging:implementations-line/features/workflow-process/security-activity-orchestration/src/main/java/org/cybnity/feature/security_activity_orchestration/domain/model/ProcessDescriptor.java
 				this.historyStatus());
 		// Complete with additional attributes of this complex property
 		copy.versionedAt = this.versionedAt;
@@ -77,8 +87,8 @@ public class OrganizationDescriptor extends MutableProperty {
 	 * 
 	 * @return A set of valued attributes.
 	 */
-	public HashMap<String, Object> currentValue() {
-		return this.value;
+	public Map<String, Object> currentValue() {
+		return Collections.unmodifiableMap(this.value);
 	}
 
 	/**

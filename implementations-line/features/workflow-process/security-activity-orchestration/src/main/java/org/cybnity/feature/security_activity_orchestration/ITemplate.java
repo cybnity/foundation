@@ -17,5 +17,5 @@ public interface ITemplate {
 	 * 
 	 * @return A template name or null.
 	 */
-	public String name();
+	public Attribute name();
 }
