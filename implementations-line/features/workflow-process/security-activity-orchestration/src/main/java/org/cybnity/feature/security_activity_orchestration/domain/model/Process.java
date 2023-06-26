@@ -149,8 +149,8 @@ public class Process extends Aggregate implements ITemplate {
 	 *                    required when the process shall be persistent. Else can be
 	 *                    without identity when not persistent process.
 	 * @param description Mandatory description of this process.
-	 * @param activation  Mandatory activation of this process.
-	 * @param completion  Mandatory completion of this process.
+	 * @param activation  Optional activation of this process.
+	 * @param completion  Optional completion of this process.
 	 * @param staging     Optional stages defining this process steps included a
 	 *                    minimum one step.
 	 * @throws IllegalArgumentException When any mandatory parameter is missing.
@@ -165,9 +165,19 @@ public class Process extends Aggregate implements ITemplate {
 		super(predecessor, identifiers);
 		// None quality control
 		this.description = description;
-		this.activation = activation;
-		this.completion = completion;
-		this.staging = staging;
+		if (activation != null) {
+			this.activation = activation;
+		} else {
+			// Initialize default activity state
+			this.activation = defaultActivation();
+		}
+		if (completion != null) {
+			this.completion = completion;
+		} else {// Initialize default completion state
+			this.completion = defaultCompletion();
+		}
+		if (staging != null)
+			this.staging = staging;
 	}
 
 	/**
@@ -294,7 +304,7 @@ public class Process extends Aggregate implements ITemplate {
 	 * @throws IllegalArgumentException When cause of invalidity is detected.
 	 * @throws ImmutabilityException    When problem of property read.
 	 */
-	private void checkStagingConformity(Staging staging, Entity processOwner)
+	void checkStagingConformity(Staging staging, Entity processOwner)
 			throws IllegalArgumentException, ImmutabilityException {
 		if (staging != null && processOwner != null) {
 			// Check staging owner
@@ -336,7 +346,7 @@ public class Process extends Aggregate implements ITemplate {
 	 * @throws IllegalArgumentException When description instance is not valid.
 	 * @throws ImmutabilityException    When impossible read of description's owner.
 	 */
-	private void checkDescriptionConformity(ProcessDescriptor description, Entity processOwner)
+	void checkDescriptionConformity(ProcessDescriptor description, Entity processOwner)
 			throws IllegalArgumentException, ImmutabilityException {
 		if (description != null) {
 			if (processOwner == null)
@@ -387,7 +397,7 @@ public class Process extends Aggregate implements ITemplate {
 	 * @throws IllegalArgumentException When non conformity cause is detected.
 	 * @throws ImmutabilityException    When impossible read of description's owner.
 	 */
-	private void checkCompletionConformity(CompletionState state, Entity processOwner)
+	void checkCompletionConformity(CompletionState state, Entity processOwner)
 			throws IllegalArgumentException, ImmutabilityException {
 		if (state != null) {
 			if (processOwner == null)
@@ -442,7 +452,7 @@ public class Process extends Aggregate implements ITemplate {
 	 * @throws IllegalArgumentException When non conformity cause is detected.
 	 * @throws ImmutabilityException    When impossible read of description's owner.
 	 */
-	private void checkActivationConformity(ActivityState state, Entity processOwner)
+	void checkActivationConformity(ActivityState state, Entity processOwner)
 			throws IllegalArgumentException, ImmutabilityException {
 		if (state != null) {
 			if (processOwner == null)
@@ -499,7 +509,8 @@ public class Process extends Aggregate implements ITemplate {
 	public void handle(Command change, IContext ctx) throws IllegalArgumentException {
 		// TODO coder traitement de la demande de changement selon l'attribute ciblé ou
 		// l'état de progression du process ou de ses sous-états
-		// Utiliser un delegate pour cet aggregate de type CommandHandlingService
+
+		// Utiliser un delegate de type CommandHandlingService pour cet aggregate
 	}
 
 	@Override

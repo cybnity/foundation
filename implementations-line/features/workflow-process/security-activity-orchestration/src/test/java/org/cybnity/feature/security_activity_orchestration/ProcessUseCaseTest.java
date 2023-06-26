@@ -42,7 +42,7 @@ public class ProcessUseCaseTest extends AbstractProcessEvaluation {
 		assertNotNull(p.versionHash());
 		// Check that default not active state is defined
 		assertNotNull(p.activation());
-		assertFalse(p.activation().isActive());
+		assertFalse(p.activation().isActive());// Not active by default
 		// Check that default completion state is defined and equals to zero percentage
 		assertNotNull(p.completion());
 		assertEquals(Float.valueOf(0.0f), p.completion().percentage());

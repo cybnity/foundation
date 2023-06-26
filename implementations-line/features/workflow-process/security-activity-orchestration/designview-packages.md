@@ -137,6 +137,23 @@ classDiagram
 	class ChainCommandHandler {
       <<abstract>>
 	}
+	class ProcessBuilder {
+		final -processIdentifiers : LinkedHashSet~Identifier~
+		final -processParent : Entity
+		-activation : Boolean
+		-completionName : String
+		-currentPercentageOfCompletion : Float
+		-description : Collection~Attribute~
+		-processName : String
+
+		-ProcessBuilder(@required LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName)
+		+instance(LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName)$ ProcessBuilder
+		+build() Process
+		+valideConformity(Process instance) ImmutabilityException
+		+withActivation(Boolean isActiveStatus) ProcessBuilder
+		+withCompletion(@required String named, Float currentPercentageOfCompletion) ProcessBuilder
+		+withDescription(Collection~Attribute~ properties) Processbuilder
+	}
 
 ```
 #
