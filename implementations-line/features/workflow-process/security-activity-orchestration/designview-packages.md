@@ -39,6 +39,7 @@ Several packages are implemented to organize the components (e.g specification e
 }%%
 classDiagram
 	note for Attribute "Domain framework based as immutable property<br>(e.g primary responsibility stakeholder, supporting roles)<br><br>"
+	IState ..> Attribute
 	Unmodifiable <|.. Attribute
 	Process *-- "1" CompletionState : completion
 	Process <.. ProcessBuilder : build instances
@@ -54,7 +55,6 @@ classDiagram
 	ITemplate <|.. Step
 	Step ..> "1 commandProcessor" ChainCommandHandler : delegate command handling
 	Step *-- "1..*" Attribute : properties
-	IState ..> Attribute
 	IWorkflowCommandHandler <|.. Step
 	IState <|.. Step
 	Process *-- "1" ActivityState : activation
