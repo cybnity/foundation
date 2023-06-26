@@ -41,7 +41,7 @@ classDiagram
 	note for Attribute "Domain framework based as immutable property<br>(e.g primary responsibility stakeholder, supporting roles)<br><br>"
 	Unmodifiable <|.. Attribute
 	Process *-- "1" CompletionState : completion
-	Process ..> ProcessBuilder : template build via
+	Process <.. ProcessBuilder : build instances
 	note for ProcessBuilder "Builder pattern without rupture of the immutability<br>(valideConformity() called by build() method), allowing<br>templating via new Process.builder(identity).activation(...)<br>.description(...).steps(...).build();<br><br>"
 	IAggregate <|.. Process
 	note for IAggregate "Immutable framework based"
@@ -61,7 +61,6 @@ classDiagram
 
 	class Process {
 		<<Aggregate>>
-		+builder ProcessBuilder$
 		+Process(Entity predecessor, Identifier id, HashMap<String, Object> descriptionAttributes)
 		+Process(Entity predecessor, LinkedHashSet<Identifier> identifiers, HashMap<String, Object> descriptionAttributes)
 		+Process(ProcessBuilder buildManager)
