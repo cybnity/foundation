@@ -509,12 +509,16 @@ public class Process extends Aggregate implements ITemplate {
 	public void handle(Command change, IContext ctx) throws IllegalArgumentException {
 		// TODO coder traitement de la demande de changement selon l'attribute ciblé ou
 		// l'état de progression du process ou de ses sous-états
+		// appliquer un patter strategy qui utilise le délégué en charge d'implémenter le comportement
+		// spécialisé au regard du processus qui se joue
 
 		// Utiliser un delegate de type CommandHandlingService pour cet aggregate
 	}
 
 	@Override
 	public Set<String> handledCommandTypeVersions() {
+		// TODO coder retour des versions de command event relatif aux change request de
+		// description, completion, activation, staging...
 		return null;
 	}
 }

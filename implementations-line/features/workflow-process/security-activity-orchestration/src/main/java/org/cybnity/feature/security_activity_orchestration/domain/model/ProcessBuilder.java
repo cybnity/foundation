@@ -4,12 +4,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 
+import org.cybnity.feature.security_activity_orchestration.IProcessBuilder;
 import org.cybnity.framework.domain.model.ActivityState;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Factory class implementing the builder design pattern to create a process.
@@ -17,7 +20,8 @@ import org.cybnity.framework.immutable.ImmutabilityException;
  * @author olivier
  *
  */
-public final class ProcessBuilder {
+@Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
+public final class ProcessBuilder implements IProcessBuilder {
 
 	private final LinkedHashSet<Identifier> processIdentifiers;
 	private final Entity processParent;
