@@ -10,7 +10,6 @@ For more detail, the technical description regarding behavior and best usage is 
 |Class Type|Motivation|
 | :-- | :-- |
 |ChainCommandHandler|Contract of command handling implementing the chain of responsibility chain pattern|
-|ITemplate|Represent a contract of templating regarding an information|
 |IWorkflowCommandHandler|Chain of responsibility pattern implementation regarding the handling of workflow command events|
 |WorkflowCommandHandlerFactory|Factory of handler. Can be based on a template file (e.g JSON, XML) of standard (e.g NIST, ISO27001).<br>For example, factory is usable to define cyber-security framework including RMF process steps (and optional sub-tasks definitions) as ConcreteHandler definitions|
 
@@ -60,10 +59,6 @@ classDiagram
       <<interface>>
       +addParallelNextHandler(ChainCommandHandler next)
       +handle(Command request)
-  }
-  class ITemplate {
-      <<interface>>
-      +name() Attribute
   }
 
 ```

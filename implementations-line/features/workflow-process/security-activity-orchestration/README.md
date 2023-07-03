@@ -1,5 +1,5 @@
 ## PURPOSE
-Presentation of the features dedicated to a scope of security capabilities.
+Presentation of the features dedicated to a scope of security activities orchestration.
 
 # FUNCTIONAL VIEW
 Presentation of the capabilities area which allow realization of orchestration requirements.

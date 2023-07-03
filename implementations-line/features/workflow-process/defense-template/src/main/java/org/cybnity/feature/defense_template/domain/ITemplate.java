@@ -1,10 +1,10 @@
-package org.cybnity.feature.security_activity_orchestration;
+package org.cybnity.feature.defense_template.domain;
 
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Represent a contract of templating regarding an information.
+ * Represent a contract supported by a topic which can be reused as template.
  * 
  * @author olivier
  *
@@ -18,4 +18,11 @@ public interface ITemplate {
 	 * @return A template name or null.
 	 */
 	public String name();
+
+	/**
+	 * Get the description about the type of this template.
+	 * 
+	 * @return A named type (e.g risk assessment process) or null.
+	 */
+	public DomainObjectType type();
 }

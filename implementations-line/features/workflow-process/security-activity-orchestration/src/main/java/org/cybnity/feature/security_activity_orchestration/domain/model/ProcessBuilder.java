@@ -84,6 +84,7 @@ public final class ProcessBuilder implements IProcessBuilder {
 		// Build process description including a name attribute is required as minimum
 		// description attribute defined
 		HashMap<String, Object> descriptorAttributes = new HashMap<>();
+		// Required name is added
 		descriptorAttributes.put(ProcessDescriptor.PropertyAttributeKey.Name.name(), this.processName);
 		if (this.description != null) {
 			// Add description properties
@@ -150,4 +151,5 @@ public final class ProcessBuilder implements IProcessBuilder {
 		this.description = properties;
 		return this;
 	}
+
 }

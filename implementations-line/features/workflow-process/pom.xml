@@ -13,5 +13,6 @@
 	<name>Workflow and process features</name>
 	<modules>
 		<module>security-activity-orchestration</module>
+		<module>defense-template</module>
 	</modules>
 </project>

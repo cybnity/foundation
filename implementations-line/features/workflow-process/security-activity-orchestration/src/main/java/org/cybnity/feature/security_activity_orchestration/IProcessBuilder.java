@@ -25,7 +25,4 @@ public interface IProcessBuilder {
 	 *                                  before to call this method.
 	 */
 	public Process build() throws ImmutabilityException, IllegalArgumentException;
-
-	// TODO ajouter retourne le type de process buildé (ex TemplateType retourné par
-	// le ITemplate qui est instancié)
 }

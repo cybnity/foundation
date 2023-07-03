@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>workflow-process</artifactId>
+		<groupId>org.cybnity.features</groupId>
+		<version>${revision}</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<groupId>org.cybnity.feature.domain</groupId>
+	<artifactId>defense-template</artifactId>
+	<version>${revision}</version>
+	<packaging>jar</packaging>
+	<name>- Defense template process module</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.cybnity.feature.domain</groupId>
+			<artifactId>security-activity-orchestration</artifactId>
+			<version>${revision}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- BDD tests execution management -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<!--
+				<dependencies>
+					<dependency>
+				<groupId>org.junit.platform</groupId>
+				<artifactId>junit-platform-surefire-provider</artifactId>
+				<version>[1.3.2,)</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<includes>
+				<include>**/*UseCaseTest.java</include>
+				<include>**/*Test.java</include>
+					</includes>
+				<skip>false</skip>
+					<properties>
+						<configurationParameters>
+				cucumber.junit-platform.naming-strategy=long
+				</configurationParameters>
+					</properties>
+				</configuration>-->
+			</plugin>
+		</plugins>
+	</build>
+</project>

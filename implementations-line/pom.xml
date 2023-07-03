@@ -31,6 +31,38 @@
 		<docker.nodejs.image.name>node:16.17.0-bullseye</docker.nodejs.image.name>
 	</properties>
 
+	<dependencyManagement>
+		<dependencies>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>5.9.3</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-bom</artifactId>
+                <version>7.12.1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+	</dependencies>
+
 	<reporting>
 		<plugins>
 			<plugin>

@@ -1,5 +1,6 @@
-package org.cybnity.feature.security_activity_orchestration;
+package org.cybnity.feature.defense_template.domain;
 
+import org.cybnity.feature.security_activity_orchestration.IWorkflowCommandHandler;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;

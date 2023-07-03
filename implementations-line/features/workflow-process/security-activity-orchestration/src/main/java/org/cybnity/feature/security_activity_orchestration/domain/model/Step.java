@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.cybnity.feature.security_activity_orchestration.ChainCommandHandler;
-import org.cybnity.feature.security_activity_orchestration.ITemplate;
 import org.cybnity.feature.security_activity_orchestration.IWorkflowCommandHandler;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.immutable.Entity;
@@ -29,7 +28,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
-public class Step extends MutableProperty implements ITemplate, IWorkflowCommandHandler, IState {
+public class Step extends MutableProperty implements IWorkflowCommandHandler, IState {
 
 	private static final long serialVersionUID = new VersionConcreteStrategy().composeCanonicalVersionHash(Step.class)
 			.hashCode();
@@ -50,7 +49,11 @@ public class Step extends MutableProperty implements ITemplate, IWorkflowCommand
 		 * Attributes collection specifying the step description (e.g organization
 		 * level)
 		 */
-		Properties;
+		Properties,
+		/**
+		 * Type of step (e.g risk treatment phase; risk review)
+		 */
+		Type;
 	}
 
 	/**

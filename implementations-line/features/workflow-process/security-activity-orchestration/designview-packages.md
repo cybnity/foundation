@@ -46,11 +46,9 @@ classDiagram
 	note for IAggregate "Immutable framework based"
 	ActivityState "1" --* Step : activation
 	Step *-- "1" CompletionState : completion
-	ITemplate <|.. Process
 	Process *-- "1" ProcessDescriptor : description
 	Process *-- "0..1" Staging : staging
 	Staging *-- "1..*" Step : steps
-	ITemplate <|.. Step
 	Step ..> "1 commandProcessor" ChainCommandHandler : delegate command handling
 	Step *-- "1..*" Attribute : properties
 	IWorkflowCommandHandler <|.. Step
@@ -73,7 +71,7 @@ classDiagram
 		+description() ProcessDescriptor
 		+changeDescription(ProcessDescriptor description)
 		+staging() Staging
-		+changeStaging(Staging stageing)
+		+changeStaging(Staging staging)
 		-checkStagingConformity(Staging staging, Entity processOwner)
 		-checkDescriptionConformity(ProcessDescriptor description, Entity processOwner)
 		-checkCompletionConformity(CompletionState state, Entity processOwner)
@@ -115,10 +113,6 @@ classDiagram
 		<<org.cybnity.framework.domain.model.MutableProperty>>
 		+isActive() Boolean
 	}
-	class ITemplate {
-		<<interface>>
-		+name() String
-	}
     class CompletionState {
 		<<MutableProperty>>
 	}
@@ -131,7 +125,6 @@ classDiagram
 	class Step {
 		<<MutableProperty>>
 		+Step(@required Collection~Attribute~ properties)
-		+name() String
 		+properties() Collection~Attribute~
 	}
 	class ChainCommandHandler {

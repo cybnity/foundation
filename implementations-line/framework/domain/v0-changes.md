@@ -10,7 +10,7 @@ Release Name: V0 - FRAMEWORK
 ## ADDS
 |Issue|Origin/Cause|Description|
 |:--|:--|:--|
-|95|REQ_FCT_73|CompletionState added as reusable status for workflow state machine support|
+|95|REQ_FCT_73|CompletionState, ITemplate, TemplateType added as reusable status for workflow state machine support|
 |58|REQ_SEC_3|Tenant support for users of same organization|
 |145|REQ_ROB_3|Application-agnostic fact reading for storage|
 |158|REQ_SCA_4|Support of CQRS pattern and event sourcing concerns combined|

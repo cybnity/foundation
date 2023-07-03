@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.cybnity.feature.security_activity_orchestration.ITemplate;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.model.ActivityState;
@@ -26,7 +25,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
-public class Process extends Aggregate implements ITemplate {
+public class Process extends Aggregate {
 
 	private static final long serialVersionUID = new VersionConcreteStrategy()
 			.composeCanonicalVersionHash(Process.class).hashCode();
@@ -67,7 +66,8 @@ public class Process extends Aggregate implements ITemplate {
 	 *                              without identity when not persistent process.
 	 * @param descriptionAttributes Mandatory description of this process. A name
 	 *                              attribute is required as minimum description
-	 *                              attribute defined.
+	 *                              attribute defined. An optional DomainObjectType
+	 *                              can be included.
 	 * @throws IllegalArgumentException When any mandatory parameter is missing.
 	 *                                  When a problem of immutability is occurred.
 	 *                                  When predecessor mandatory parameter is not
@@ -110,7 +110,8 @@ public class Process extends Aggregate implements ITemplate {
 	 *                              not persistent process.
 	 * @param descriptionAttributes Mandatory description of this process. A name
 	 *                              attribute is required as minimum description
-	 *                              attribute defined.
+	 *                              attribute defined. An optional DomainObjectType
+	 *                              can be included.
 	 * @throws IllegalArgumentException When identifiers parameter is null or each
 	 *                                  item does not include name and value. When
 	 *                                  predecessor mandatory parameter is not
@@ -148,7 +149,8 @@ public class Process extends Aggregate implements ITemplate {
 	 *                    non-duplicable elements. For example, identifier is
 	 *                    required when the process shall be persistent. Else can be
 	 *                    without identity when not persistent process.
-	 * @param description Mandatory description of this process.
+	 * @param description Mandatory description of this process. An optional
+	 *                    DomainObjectType can be included.
 	 * @param activation  Optional activation of this process.
 	 * @param completion  Optional completion of this process.
 	 * @param staging     Optional stages defining this process steps included a
@@ -242,7 +244,6 @@ public class Process extends Aggregate implements ITemplate {
 	 * 
 	 * @return A label or null.
 	 */
-	@Override
 	public String name() {
 		if (this.description != null) {
 			return this.description.name();
@@ -364,6 +365,10 @@ public class Process extends Aggregate implements ITemplate {
 					throw new IllegalArgumentException(
 							"The owner of the new description shall be equals to this process!");
 			}
+
+			// DomainObjectType processType= description.type();
+			// Optional defined DomainObjectType processType does not require conformity
+			// check
 		}
 	}
 
@@ -509,7 +514,8 @@ public class Process extends Aggregate implements ITemplate {
 	public void handle(Command change, IContext ctx) throws IllegalArgumentException {
 		// TODO coder traitement de la demande de changement selon l'attribute ciblé ou
 		// l'état de progression du process ou de ses sous-états
-		// appliquer un patter strategy qui utilise le délégué en charge d'implémenter le comportement
+		// appliquer un patter strategy qui utilise le délégué en charge d'implémenter
+		// le comportement
 		// spécialisé au regard du processus qui se joue
 
 		// Utiliser un delegate de type CommandHandlingService pour cet aggregate
