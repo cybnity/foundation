@@ -8,7 +8,9 @@ import java.util.Map;
 
 import org.cybnity.feature.security_activity_orchestration.ChainCommandHandler;
 import org.cybnity.feature.security_activity_orchestration.IWorkflowCommandHandler;
+import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
+import org.cybnity.framework.domain.IState;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.HistoryState;

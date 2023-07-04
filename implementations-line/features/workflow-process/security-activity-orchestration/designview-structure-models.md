@@ -11,7 +11,6 @@ For more detail, the technical description regarding behavior and best usage is 
 | :-- | :-- |
 |ChainCommandHandler|Contract of command handling implementing the chain of responsibility chain pattern|
 |IWorkflowCommandHandler|Chain of responsibility pattern implementation regarding the handling of workflow command events|
-|WorkflowCommandHandlerFactory|Factory of handler. Can be based on a template file (e.g JSON, XML) of standard (e.g NIST, ISO27001).<br>For example, factory is usable to define cyber-security framework including RMF process steps (and optional sub-tasks definitions) as ConcreteHandler definitions|
 
 ## STRUCTURE MODELS
 Presentation of the design view of the `org.cybnity.feature.security_activity_orchestration` main project's artifacts package.
@@ -52,8 +51,6 @@ classDiagram
   }
   class WorkflowCommandHandlerFactory {
       <<abstract>>
-      +create(ITemplate template)* IWorkflowCommandHandler
-      +create(IContext context)* IWorkflowCommandHandler
   }
   class IWorkflowCommandHandler {
       <<interface>>

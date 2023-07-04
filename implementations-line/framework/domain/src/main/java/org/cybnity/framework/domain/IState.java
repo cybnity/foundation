@@ -1,4 +1,4 @@
-package org.cybnity.feature.security_activity_orchestration.domain.model;
+package org.cybnity.framework.domain;
 
 import java.util.Collection;
 

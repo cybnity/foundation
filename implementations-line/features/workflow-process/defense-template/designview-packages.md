@@ -7,7 +7,7 @@ The technical description regarding behavior and best usage is maintained into t
 |Class Type|Motivation|
 | :-- | :-- |
 |Referential|Basis implementation class of a referential|
-|Template|Common implementation class regarding a specification object which define a template (e.g process aggregate object)|
+|Template|Common definition class regarding a specification object which define a template (e.g process aggregate object)|
 
 # STRUCTURE MODELS
 Several packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
@@ -48,9 +48,18 @@ classDiagram
   class Template {
     <<Aggregate>>
     -originReferential : IReferential
-    +Template(Entity predecessor, Identifier id, IReferential originReferential)
-    +Template(Entity predecessor, LinkedHashSet~Identifier~ identifiers, IReferential originReferential)
-    #originReferential() IReferential
+    -name : MutableAttribute
+    -modelOf : DomainObjectType
+    +Template(Entity predecessor, Identifier id, IReferential originReferential, String name,
+			DomainObjectType modelOf)
+    +Template(Entity predecessor, LinkedHashSet~Identifier~ identifiers, IReferential originReferential, String name,
+			DomainObjectType modelOf)
+    -Template(Entity predecessor, LinkedHashSet~Identifier~ identifiers, IReferential originReferential,
+			MutableAttribute name, DomainObjectType modelOf)
+    +originReferential() IReferential
+    +named() MutableAttribute
+    +name() String
+    +type() DomainObjectType
   }
 
 ```

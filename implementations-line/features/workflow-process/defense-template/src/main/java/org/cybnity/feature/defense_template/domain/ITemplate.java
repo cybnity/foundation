@@ -1,5 +1,6 @@
 package org.cybnity.feature.defense_template.domain;
 
+import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -22,7 +23,10 @@ public interface ITemplate {
 	/**
 	 * Get the description about the type of this template.
 	 * 
-	 * @return A named type (e.g risk assessment process) or null.
+	 * @return An immutable version named type (e.g risk assessment process) or
+	 *         null.
+	 * @throws ImmutabilityException When problem of immutable version
+	 *                               instantiation.
 	 */
-	public DomainObjectType type();
+	public DomainObjectType type() throws ImmutabilityException;
 }

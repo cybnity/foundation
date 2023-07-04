@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 
 import org.cybnity.feature.security_activity_orchestration.IProcessBuilder;
+import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.model.ActivityState;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.Entity;
+import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -21,7 +23,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
-public final class ProcessBuilder implements IProcessBuilder {
+public class ProcessBuilder implements IProcessBuilder {
 
 	private final LinkedHashSet<Identifier> processIdentifiers;
 	private final Entity processParent;
@@ -30,6 +32,8 @@ public final class ProcessBuilder implements IProcessBuilder {
 	private Float currentPercentageOfCompletion;
 	private Collection<Attribute> description;
 	private String processName;
+	private EntityReference templateEntityRef = null;
+	private Process instance;
 
 	/**
 	 * Default Constructor of process from unique or multiple identifiers to use for
@@ -40,7 +44,7 @@ public final class ProcessBuilder implements IProcessBuilder {
 	 * @param processName        Mandatory name of the process to build.
 	 * @throws IllegalArgumentException When missing mandatory parameter.
 	 */
-	private ProcessBuilder(LinkedHashSet<Identifier> processIdentifiers, Entity processParent, String processName)
+	protected ProcessBuilder(LinkedHashSet<Identifier> processIdentifiers, Entity processParent, String processName)
 			throws IllegalArgumentException {
 		if (processIdentifiers == null || processIdentifiers.isEmpty())
 			throw new IllegalArgumentException("Process identity is required!");
@@ -67,17 +71,16 @@ public final class ProcessBuilder implements IProcessBuilder {
 	}
 
 	/**
-	 * Creation of the process instance according to the attributes defined into
-	 * this builder component.
+	 * Creation of a basis process instance according to the attributes defined into
+	 * this builder component, that does not include any defined staging.
 	 * 
-	 * @return A new instance of process.
 	 * @throws ImmutabilityException    When impossible use of immutable version of
 	 *                                  a build content.
 	 * @throws IllegalArgumentException when mandatory content is missing to execute
 	 *                                  the build process and shall be completed
 	 *                                  before to call this method.
 	 */
-	public Process build() throws ImmutabilityException, IllegalArgumentException {
+	public void build() throws ImmutabilityException, IllegalArgumentException {
 		// Build process identity
 		DomainEntity processIdentity = new DomainEntity(this.processIdentifiers);
 
@@ -89,6 +92,11 @@ public final class ProcessBuilder implements IProcessBuilder {
 		if (this.description != null) {
 			// Add description properties
 			descriptorAttributes.put(ProcessDescriptor.PropertyAttributeKey.Properties.name(), this.description);
+		}
+		if (this.templateEntityRef != null) {
+			// Add template domain reference
+			descriptorAttributes.put(ProcessDescriptor.PropertyAttributeKey.TemplateEntityRef.name(),
+					this.templateEntityRef);
 		}
 		ProcessDescriptor processDescription = new ProcessDescriptor(processIdentity, descriptorAttributes,
 				HistoryState.COMMITTED);
@@ -106,8 +114,22 @@ public final class ProcessBuilder implements IProcessBuilder {
 			instance.changeCompletion(
 					new CompletionState(instance.root(), this.completionName, this.currentPercentageOfCompletion));
 		}
+		// Set the built instance
+		setResult(instance);
+	}
 
-		return instance;
+	/**
+	 * Update the pre-built instance.
+	 * 
+	 * @param instance An instance defining a result of build.
+	 */
+	protected void setResult(Process instance) {
+		this.instance = instance;
+	}
+
+	@Override
+	public Process getResult() {
+		return this.instance;
 	}
 
 	/**
@@ -149,6 +171,11 @@ public final class ProcessBuilder implements IProcessBuilder {
 
 	public ProcessBuilder withDescription(Collection<Attribute> properties) {
 		this.description = properties;
+		return this;
+	}
+
+	public ProcessBuilder withTemplateEntityReference(EntityReference templateRef) {
+		this.templateEntityRef = templateRef;
 		return this;
 	}
 

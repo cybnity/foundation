@@ -9,6 +9,8 @@ import java.util.LinkedHashSet;
 
 import org.cybnity.feature.security_activity_orchestration.domain.model.Process;
 import org.cybnity.feature.security_activity_orchestration.domain.model.ProcessBuilder;
+import org.cybnity.feature.security_activity_orchestration.domain.model.sample.writemodel.TestSampleFactory;
+import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.Identifier;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +33,8 @@ public class ProcessBuilderUseCaseTest extends AbstractProcessEvaluation {
 		LinkedHashSet<Identifier> processIds = new LinkedHashSet<>();
 		processIds.add(processIdentity.identified());
 		ProcessBuilder builder = ProcessBuilder.instance(processIds, /* predecessor */ company, processDesc.name());
-		Process p = builder.build();
+		builder.build();
+		Process p = builder.getResult();
 		// Verify the instance conformity
 		ProcessBuilder.validateConformity(p);
 
@@ -64,10 +67,34 @@ public class ProcessBuilderUseCaseTest extends AbstractProcessEvaluation {
 		Boolean customActivation = Boolean.TRUE;
 		ProcessBuilder builder = ProcessBuilder.instance(processIds, /* predecessor */ company, processDesc.name())
 				.withActivation(customActivation).withCompletion("customCompletionName", customCompletionRate);
-		Process p = builder.build();
+		builder.build();
+		Process p = builder.getResult();
 		// Check that custom values had been taken
 		assertEquals(customActivation, p.activation().isActive());
 		assertEquals(customCompletionRate, p.completion().percentage());
+	}
+
+	/**
+	 * Check that a process based on a template referenced as origin structure,
+	 * include a description identifying the original source template reference.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void givenProcessTemplate_whenBuild_thenProcessDescriptionIncludingTemplateReference() throws Exception {
+		// Define template domain entity reference
+		DomainEntity templateDomainEntityRef = TestSampleFactory.createIdentity();
+		// Define a process identifiers
+		LinkedHashSet<Identifier> processIds = new LinkedHashSet<>();
+		processIds.add(processIdentity.identified());
+		ProcessBuilder builder = ProcessBuilder.instance(processIds, /* predecessor */ company, processDesc.name())
+				.withTemplateEntityReference(templateDomainEntityRef.reference());
+		builder.build();
+		Process p = builder.getResult();
+		// Verify the instance conformity
+		ProcessBuilder.validateConformity(p);
+		// Check template reference saved
+		assertEquals(templateDomainEntityRef, p.description().templateEntityRef().getEntity());
 	}
 
 	/**

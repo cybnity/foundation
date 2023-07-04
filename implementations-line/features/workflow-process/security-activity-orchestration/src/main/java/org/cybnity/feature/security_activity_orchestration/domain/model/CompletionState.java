@@ -73,7 +73,8 @@ public class CompletionState extends MutableProperty {
 			CompletionState... predecessors) throws IllegalArgumentException, ImmutabilityException {
 		this( /* Reference identifier equals to the owner of this state */
 				(propertyOwner != null) ? propertyOwner.getEntity() : null,
-				(named != null && !"".equals(named)) ? buildPropertyValue(PropertyAttributeKey.Name, named) : null,
+				(named != null && !"".equals(named)) ? buildPropertyValue(PropertyAttributeKey.Name.name(), named)
+						: null,
 				HistoryState.COMMITTED, predecessors);
 		if (named == null || "".equals(named))
 			throw new IllegalArgumentException("Name parameter is required!");
@@ -113,23 +114,6 @@ public class CompletionState extends MutableProperty {
 		copy.changedAt = this.occurredAt();
 		copy.updateChangesHistory(this.changesHistory());
 		return copy;
-	}
-
-	/**
-	 * Build a definition of property based on property name and value.
-	 * 
-	 * @param key   Mandatory key name of the property.
-	 * @param value Value of the key.
-	 * @return A definition of the property.
-	 * @throws IllegalArgumentException When any mandatory parameter is missing.
-	 */
-	static public HashMap<String, Object> buildPropertyValue(PropertyAttributeKey key, Object value)
-			throws IllegalArgumentException {
-		if (key == null)
-			throw new IllegalArgumentException("key parameter is required!");
-		HashMap<String, Object> val = new HashMap<>();
-		val.put(key.name(), value);
-		return val;
 	}
 
 	/**

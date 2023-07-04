@@ -1,6 +1,7 @@
 package org.cybnity.feature.defense_template.domain.model;
 
 import org.cybnity.feature.security_activity_orchestration.IProcessBuilder;
+import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -14,10 +15,31 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
 public class ProcessBuildDirector {
 
-	public void createProcess(IProcessBuilder builder) throws IllegalArgumentException {
-		// Set customized names and contents of the process to build
-		// as configuration
+	private IProcessBuilder builder;
 
-		// return the specialized class type of NISTRMF
+	public ProcessBuildDirector(IProcessBuilder builder) throws IllegalArgumentException {
+		// Initialize the default builder
+		change(builder);
+	}
+
+	/**
+	 * Change the builder that director shall use for process instance build.
+	 * 
+	 * @param builder Mandatory builder instance.
+	 * @throws IllegalArgumentException When mandatory parameter is missing.
+	 */
+	public void change(IProcessBuilder builder) throws IllegalArgumentException {
+		if (builder == null)
+			throw new IllegalArgumentException("Builder parameter is required!");
+		this.builder = builder;
+	}
+
+	/**
+	 * 
+	 * @throws ImmutabilityException When impossible
+	 */
+	public void make() throws ImmutabilityException {
+		// Execute the unique or multiple steps of build managed by the builder
+		this.builder.build();
 	}
 }

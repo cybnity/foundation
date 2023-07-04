@@ -66,8 +66,9 @@ public class Process extends Aggregate {
 	 *                              without identity when not persistent process.
 	 * @param descriptionAttributes Mandatory description of this process. A name
 	 *                              attribute is required as minimum description
-	 *                              attribute defined. An optional DomainObjectType
-	 *                              can be included.
+	 *                              attribute defined. An optional template
+	 *                              EntityReference can be included as origin of the
+	 *                              process structure.
 	 * @throws IllegalArgumentException When any mandatory parameter is missing.
 	 *                                  When a problem of immutability is occurred.
 	 *                                  When predecessor mandatory parameter is not
@@ -110,8 +111,9 @@ public class Process extends Aggregate {
 	 *                              not persistent process.
 	 * @param descriptionAttributes Mandatory description of this process. A name
 	 *                              attribute is required as minimum description
-	 *                              attribute defined. An optional DomainObjectType
-	 *                              can be included.
+	 *                              attribute defined. An optional template
+	 *                              EntityReference can be included as origin of the
+	 *                              process structure
 	 * @throws IllegalArgumentException When identifiers parameter is null or each
 	 *                                  item does not include name and value. When
 	 *                                  predecessor mandatory parameter is not
@@ -150,7 +152,8 @@ public class Process extends Aggregate {
 	 *                    required when the process shall be persistent. Else can be
 	 *                    without identity when not persistent process.
 	 * @param description Mandatory description of this process. An optional
-	 *                    DomainObjectType can be included.
+	 *                    template EntityReference can be included as origin of the
+	 *                    process structure
 	 * @param activation  Optional activation of this process.
 	 * @param completion  Optional completion of this process.
 	 * @param staging     Optional stages defining this process steps included a
@@ -161,7 +164,7 @@ public class Process extends Aggregate {
 	 *                                  defined or without defined identifier.
 	 * @throws ImmutabilityException    When impossible read of identifier version.
 	 */
-	private Process(Entity predecessor, LinkedHashSet<Identifier> identifiers, ProcessDescriptor description,
+	protected Process(Entity predecessor, LinkedHashSet<Identifier> identifiers, ProcessDescriptor description,
 			ActivityState activation, CompletionState completion, Staging staging)
 			throws IllegalArgumentException, ImmutabilityException {
 		super(predecessor, identifiers);
@@ -366,9 +369,8 @@ public class Process extends Aggregate {
 							"The owner of the new description shall be equals to this process!");
 			}
 
-			// DomainObjectType processType= description.type();
-			// Optional defined DomainObjectType processType does not require conformity
-			// check
+			// Optional defined DomainObjectType (description.type()) processType does not
+			// require conformity check
 		}
 	}
 

@@ -78,12 +78,12 @@ public class CompletionState extends MutableProperty {
 		this( /* Reference identifier equals to the owner of this state */
 				(propertyOwner != null) ? propertyOwner.getEntity() : null,
 				(currentStateName != null && !"".equals(currentStateName))
-						? buildPropertyValue(PropertyAttributeKey.StateName, currentStateName)
+						? buildPropertyValue(PropertyAttributeKey.StateName.name(), currentStateName)
 						: null,
 				HistoryState.COMMITTED, predecessors);
 		if (currentPercentage != null) {
 			// Add additional properties
-			this.value.putAll(buildPropertyValue(PropertyAttributeKey.Percentage, currentPercentage));
+			this.value.putAll(buildPropertyValue(PropertyAttributeKey.Percentage.name(), currentPercentage));
 		}
 	}
 
@@ -118,23 +118,6 @@ public class CompletionState extends MutableProperty {
 		copy.historyStatus = this.historyStatus();
 		copy.updateChangesHistory(this.changesHistory());
 		return copy;
-	}
-
-	/**
-	 * Build a definition of property based on property name and value.
-	 * 
-	 * @param key   Mandatory key name of the property.
-	 * @param value Value of the key.
-	 * @return A definition of the property.
-	 * @throws IllegalArgumentException When any mandatory parameter is missing.
-	 */
-	static public HashMap<String, Object> buildPropertyValue(PropertyAttributeKey key, Object value)
-			throws IllegalArgumentException {
-		if (key == null)
-			throw new IllegalArgumentException("key parameter is required!");
-		HashMap<String, Object> val = new HashMap<>();
-		val.put(key.name(), value);
-		return val;
 	}
 
 	/**
