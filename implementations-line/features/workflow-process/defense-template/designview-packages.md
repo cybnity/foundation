@@ -47,6 +47,12 @@ classDiagram
     -label : String
   }
 
+  class ProcessBuildDirector {
+    +ProcessBuildDirector(IProcessBuilder builder)
+    +change(IProcessBuilder builder)
+    +make()
+  }
+
   class Template {
     <<Aggregate>>
     -originReferential : IReferential
@@ -62,12 +68,6 @@ classDiagram
     +named() MutableAttribute
     +name() String
     +type() DomainObjectType
-  }
-
-  class ProcessBuildDirector {
-    +ProcessBuildDirector(IProcessBuilder builder)
-    +change(IProcessBuilder builder)
-    +make()
   }
 
 ```
