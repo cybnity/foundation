@@ -120,8 +120,21 @@ classDiagram
 	}
 	class Step {
 		<<MutableProperty>>
-		+Step(@required Collection~Attribute~ properties)
+		-PropertyAttributeKey.Name : String
+		-PropertyAttributeKey.Properties : Collection~Attribute~
+		+Step(EntityReference propertyOwner, String name, ChainCommandHandler commandHandlingDelegate)
+		+Step(EntityReference propertyOwner, String name, ChainCommandHandler commandHandlingDelegate,
+			Step... predecessors)
+		+Step(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
+			ChainCommandHandler commandHandlingDelegate)
+		+Step(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
+			ChainCommandHandler commandHandlingDelegate, Step... predecessors)
 		+properties() Collection~Attribute~
+		+name() String
+		+setCommandProcessor(ChainCommandHandler commandHandlingDelegate)
+		+addParallelNextHandler(ChainCommandHandler next)
+		+ownerReference() EntityReference
+		+handle(Command request)
 	}
 	class ChainCommandHandler {
       <<abstract>>
@@ -135,6 +148,7 @@ classDiagram
 		-description : Collection~Attribute~
 		-processName : String
 		-templateEntityRef : EntityReference
+		-i18nTranslation : Locale
 
 		#ProcessBuilder(@required LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName)
 		+instance(LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName)$ ProcessBuilder
@@ -144,6 +158,8 @@ classDiagram
 		+withCompletion(@required String named, Float currentPercentageOfCompletion) ProcessBuilder
 		+withDescription(Collection~Attribute~ properties) Processbuilder
 		+withTemplateEntityReference(EntityReference templateRef) ProcessBuilder
+		+withI18NTranslation(Locale i18nTranslation) ProcessBuilder
+		#getI18NProperties() ResourceBundle
 	}
 
 ```

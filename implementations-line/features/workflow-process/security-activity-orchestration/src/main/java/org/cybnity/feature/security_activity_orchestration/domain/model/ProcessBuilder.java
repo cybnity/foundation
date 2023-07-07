@@ -3,6 +3,9 @@ package org.cybnity.feature.security_activity_orchestration.domain.model;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import org.cybnity.feature.security_activity_orchestration.IProcessBuilder;
 import org.cybnity.framework.domain.Attribute;
@@ -34,18 +37,23 @@ public class ProcessBuilder implements IProcessBuilder {
 	private String processName;
 	private EntityReference templateEntityRef = null;
 	private Process instance;
+	protected Locale i18nTranslation;
+	private String resourcesBaseName;
 
 	/**
 	 * Default Constructor of process from unique or multiple identifiers to use for
-	 * the process identity.
+	 * the process identity with translation managed.
 	 * 
 	 * @param processIdentifiers Mandatory identity of the process to build.
 	 * @param processParent      Mandatory predecessor of the process to build.
 	 * @param processName        Mandatory name of the process to build.
+	 * @param language           Optional language of translation to use for content
+	 *                           build.
+	 * @param resourcesBaseName  Optional name of file resource bundle.
 	 * @throws IllegalArgumentException When missing mandatory parameter.
 	 */
-	protected ProcessBuilder(LinkedHashSet<Identifier> processIdentifiers, Entity processParent, String processName)
-			throws IllegalArgumentException {
+	protected ProcessBuilder(LinkedHashSet<Identifier> processIdentifiers, Entity processParent, String processName,
+			Locale language, String resourcesBaseName) throws IllegalArgumentException {
 		if (processIdentifiers == null || processIdentifiers.isEmpty())
 			throw new IllegalArgumentException("Process identity is required!");
 		if (processParent == null)
@@ -55,6 +63,11 @@ public class ProcessBuilder implements IProcessBuilder {
 		this.processIdentifiers = processIdentifiers;
 		this.processParent = processParent;
 		this.processName = processName;
+
+		if (language != null)
+			this.i18nTranslation = language;
+		if (resourcesBaseName != null && !"".equals(resourcesBaseName))
+			this.resourcesBaseName = resourcesBaseName;
 	}
 
 	/**
@@ -62,17 +75,36 @@ public class ProcessBuilder implements IProcessBuilder {
 	 * 
 	 * @param processIdentity Mandatory identity of the process to build.
 	 * @param processParent   Mandatory predecessor of the process to build.
-	 * @param processName     Mandatory name of the process to build.
+	 * @param processName     Mandatory name of the process to build. It can be
+	 *                        valued as the name property key when a i18N locale is
+	 *                        defined.
 	 * @throws IllegalArgumentException When missing mandatory parameter.
 	 */
 	public static ProcessBuilder instance(LinkedHashSet<Identifier> processIdentifiers, Entity processParent,
 			String processName) throws IllegalArgumentException {
-		return new ProcessBuilder(processIdentifiers, processParent, processName);
+		return ProcessBuilder.instance(processIdentifiers, processParent, processName, null, null);
+	}
+
+	/**
+	 * Get a builder instance allowing preparation of a process instantiation.
+	 * 
+	 * @param processIdentity   Mandatory identity of the process to build.
+	 * @param processParent     Mandatory predecessor of the process to build.
+	 * @param processName       Mandatory name of the process to build.
+	 * @param language          Optional language of translation to use for content
+	 *                          build.
+	 * @param resourcesBaseName Optional name of file resource bundle.
+	 * @throws IllegalArgumentException When missing mandatory parameter.
+	 */
+	public static ProcessBuilder instance(LinkedHashSet<Identifier> processIdentifiers, Entity processParent,
+			String processName, Locale language, String resourcesBaseName) throws IllegalArgumentException {
+		return new ProcessBuilder(processIdentifiers, processParent, processName, language, resourcesBaseName);
 	}
 
 	/**
 	 * Creation of a basis process instance according to the attributes defined into
-	 * this builder component, that does not include any defined staging.
+	 * this builder component. It include description but that does not include any
+	 * defined staging.
 	 * 
 	 * @throws ImmutabilityException    When impossible use of immutable version of
 	 *                                  a build content.
@@ -87,8 +119,13 @@ public class ProcessBuilder implements IProcessBuilder {
 		// Build process description including a name attribute is required as minimum
 		// description attribute defined
 		HashMap<String, Object> descriptorAttributes = new HashMap<>();
-		// Required name is added
+
+		// Read optional defined translation set of value
+		// ResourceBundle bundle = getI18NProperties();
+
+		// Required name adding in translated version or original value
 		descriptorAttributes.put(ProcessDescriptor.PropertyAttributeKey.Name.name(), this.processName);
+
 		if (this.description != null) {
 			// Add description properties
 			descriptorAttributes.put(ProcessDescriptor.PropertyAttributeKey.Properties.name(), this.description);
@@ -177,6 +214,27 @@ public class ProcessBuilder implements IProcessBuilder {
 	public ProcessBuilder withTemplateEntityReference(EntityReference templateRef) {
 		this.templateEntityRef = templateRef;
 		return this;
+	}
+
+	public ProcessBuilder withI18NTranslation(Locale i18nTranslation, String resourcesBaseName) {
+		this.i18nTranslation = i18nTranslation;
+		this.resourcesBaseName = resourcesBaseName;
+		return this;
+	}
+
+	/**
+	 * Get the translation bundle usable for contents build.
+	 * 
+	 * @return A bundle of translated properties, or null.
+	 * @throws MissingResourceException if no resource bundle for the specified base
+	 *                                  name can be found.
+	 */
+	protected ResourceBundle getI18NProperties() throws MissingResourceException {
+		ResourceBundle bundle = null;
+		if (this.i18nTranslation != null && this.resourcesBaseName != null && !"".equals(this.resourcesBaseName)) {
+			bundle = ResourceBundle.getBundle(this.resourcesBaseName, this.i18nTranslation);
+		}
+		return bundle;
 	}
 
 }

@@ -24,8 +24,6 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * Represent a workflow phase (e.g also named process step) that define a state
  * of a working set (e.g unique or multiple actions).
  * 
- * Can be used to define .
- * 
  * @author olivier
  *
  */
@@ -51,11 +49,7 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 		 * Attributes collection specifying the step description (e.g organization
 		 * level)
 		 */
-		Properties,
-		/**
-		 * Type of step (e.g risk treatment phase; risk review)
-		 */
-		Type;
+		Properties;
 	}
 
 	/**

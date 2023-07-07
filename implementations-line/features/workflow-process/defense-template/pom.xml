@@ -13,7 +13,6 @@
 	<version>${revision}</version>
 	<packaging>jar</packaging>
 	<name>- Defense template process module</name>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.cybnity.feature.domain</groupId>
