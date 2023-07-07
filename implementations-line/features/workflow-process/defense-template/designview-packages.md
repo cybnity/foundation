@@ -96,7 +96,7 @@ classDiagram
 classDiagram
   ProcessBuilder <|-- NISTRMFProcessBuilder
   class NISTRMFProcessBuilder {
-    String : I18N_BASE_NAME$
+    +I18N_BASE_NAME : String$
     -NISTRMFProcessBuilder(LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName, Locale language)
     +instance(LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName, Locale language) ProcessBuilder
     +build()
