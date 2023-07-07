@@ -5,7 +5,7 @@ Presentation of the features dedicated to a scope of security capabilities allow
 Presentation of the capabilities area which allow realization of templates requirements.
 
 # DESIGN VIEW
-- [Risk management framework](risk-management-framework.md): NIST Risk Management Framework (RMF) supported
+- [Risk management framework](risk-management-framework.md) about NIST Risk Management Framework (RMF) supported
 - [Structure models presentation](designview-structure-models.md) that give an overview of some key components.
 - [Sub-packages structure models](designview-packages.md) detailing specific sub-packages contents.
 
