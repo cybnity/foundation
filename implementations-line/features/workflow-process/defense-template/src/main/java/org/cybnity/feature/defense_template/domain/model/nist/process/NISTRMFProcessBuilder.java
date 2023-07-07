@@ -23,7 +23,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Builder implementation class creating NIST RMF process instance that is
- * customized (as template) according to the NIST RMF standard;
+ * customized (as template) according to the NIST RMF standard.
  * 
  * @author olivier
  *
