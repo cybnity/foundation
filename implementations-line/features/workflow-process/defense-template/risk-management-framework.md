@@ -22,7 +22,9 @@ The NIST risk management process includes several steps (e.g prepare, assess, ca
         'fontSize': '18px',
         'primaryColor': '#fff',
         'primaryBorderColor': '#0e2a43',
-        'edgeLabelBackground':'#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#fff',
         'lineColor': '#0e2a43',
         'tertiaryColor': '#fff'
     }
