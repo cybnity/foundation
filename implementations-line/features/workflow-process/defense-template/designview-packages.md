@@ -110,7 +110,7 @@ classDiagram
 
 ```
 ### RMF custom process Life Cycle
-The templated process is defined by a specific life cycle respecting the NIST RMF specification.
+The templated process is defined by a specific life cycle respecting the NIST RMF specification (see [design documentation](risk-management-framework.md)).
 
 ```mermaid
 %%{
