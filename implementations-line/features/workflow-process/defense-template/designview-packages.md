@@ -95,6 +95,7 @@ classDiagram
 }%%
 classDiagram
   ProcessBuilder <|-- NISTRMFProcessBuilder
+  note for RMFPropertyKeyI18n "Internationalization property keys supporting translations"
   class NISTRMFProcessBuilder {
     +I18N_BASE_NAME String$
     -NISTRMFProcessBuilder(LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName, Locale language)
@@ -102,6 +103,9 @@ classDiagram
     +build()
     -defineStaging(Process instance)
     -defineCommandsHandling(Process instance)
+  }
+  class RMFPropertyKeyI18n {
+    <<enum>>
   }
 
 ```

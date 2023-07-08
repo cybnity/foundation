@@ -104,10 +104,10 @@ public class NISTRMFProcessBuilder extends ProcessBuilder {
 	/**
 	 * NIST RMF main phases defining its staging structure.
 	 */
-	private static I18nPropertyKey[] stagingPhases = { I18nPropertyKey.PROCESS_RMF_STAGING_STEP_PREPARE,
-			I18nPropertyKey.PROCESS_RMF_STAGING_STEP_CATEGORIZE, I18nPropertyKey.PROCESS_RMF_STAGING_STEP_SELECT,
-			I18nPropertyKey.PROCESS_RMF_STAGING_STEP_IMPLEMENT, I18nPropertyKey.PROCESS_RMF_STAGING_STEP_ASSESS,
-			I18nPropertyKey.PROCESS_RMF_STAGING_STEP_AUTHORIZE, I18nPropertyKey.PROCESS_RMF_STAGING_STEP_MONITOR };
+	private static RMFPropertyKeyI18n[] stagingPhases = { RMFPropertyKeyI18n.PROCESS_RMF_STAGING_STEP_PREPARE,
+			RMFPropertyKeyI18n.PROCESS_RMF_STAGING_STEP_CATEGORIZE, RMFPropertyKeyI18n.PROCESS_RMF_STAGING_STEP_SELECT,
+			RMFPropertyKeyI18n.PROCESS_RMF_STAGING_STEP_IMPLEMENT, RMFPropertyKeyI18n.PROCESS_RMF_STAGING_STEP_ASSESS,
+			RMFPropertyKeyI18n.PROCESS_RMF_STAGING_STEP_AUTHORIZE, RMFPropertyKeyI18n.PROCESS_RMF_STAGING_STEP_MONITOR };
 
 	/**
 	 * Create and set the process with the RMF standard steps defining its staging.
@@ -131,7 +131,7 @@ public class NISTRMFProcessBuilder extends ProcessBuilder {
 		ResourceBundle bundle = getI18NProperties();
 
 		// Create each staging step without handling including sub-steps
-		for (I18nPropertyKey aStepName : stagingPhases) {
+		for (RMFPropertyKeyI18n aStepName : stagingPhases) {
 			steps.add(new Step(propertyOwner, bundle.getString(aStepName.key()),
 					/*
 					 * processor allowing the step to interpret the commands handling relative to

@@ -6,7 +6,7 @@ package org.cybnity.feature.defense_template.domain.model.nist.process;
  * @author olivier
  *
  */
-public enum I18nPropertyKey {
+public enum RMFPropertyKeyI18n {
 
 	PROCESS_RMF_STAGING_STEP_PREPARE("nist.process.rmf.staging.step.prepare"),
 	PROCESS_RMF_STAGING_STEP_CATEGORIZE("nist.process.rmf.staging.step.categorize"),
@@ -18,7 +18,7 @@ public enum I18nPropertyKey {
 
 	private String key;
 
-	private I18nPropertyKey(String key) {
+	private RMFPropertyKeyI18n(String key) {
 		this.key = key;
 	}
 
