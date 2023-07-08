@@ -71,10 +71,10 @@ classDiagram
 		+changeDescription(ProcessDescriptor description)
 		+staging() Staging
 		+changeStaging(Staging staging)
-		-checkStagingConformity(Staging staging, Entity processOwner)
-		-checkDescriptionConformity(ProcessDescriptor description, Entity processOwner)
-		-checkCompletionConformity(CompletionState state, Entity processOwner)
-		-checkActivationConformity(ActivityState state, Entity processOwner)
+		-checkStagingConformity(Staging staging, Entity processOwning)
+		-checkDescriptionConformity(ProcessDescriptor description, Entity processOwning)
+		-checkCompletionConformity(CompletionState state, Entity processOwning)
+		-checkActivationConformity(ActivityState state, Entity processOwning)
 	}
 	class Staging {
 		<<MutableProperty>>
@@ -107,10 +107,19 @@ classDiagram
 	}
 	class ActivityState {
 		<<org.cybnity.framework.domain.model.MutableProperty>>
+		-PropertyAttributeKey.StateValue : Boolean
 		+isActive() Boolean
+		+ownerReference() EntityReference
+		+checkActivationConformity(ActivityState state, Entity owner)$
 	}
     class CompletionState {
 		<<MutableProperty>>
+		-PropertyAttributeKey.Name : String
+		-PropertyAttributeKey.Percentage : Float
+		+name() String
+		+percentage() Float
+		+ownerReference() EntityReference
+		+checkCompletionConformity(CompletionState state, Entity owner)$
 	}
 	class IAggregate {
 		<<interface>>
@@ -122,6 +131,7 @@ classDiagram
 		<<MutableProperty>>
 		-PropertyAttributeKey.Name : String
 		-PropertyAttributeKey.Properties : Collection~Attribute~
+		-PropertyAttributeKey.SubSteps : List~Step~
 		+Step(EntityReference propertyOwner, String name, ChainCommandHandler commandHandlingDelegate)
 		+Step(EntityReference propertyOwner, String name, ChainCommandHandler commandHandlingDelegate,
 			Step... predecessors)
@@ -135,6 +145,11 @@ classDiagram
 		+addParallelNextHandler(ChainCommandHandler next)
 		+ownerReference() EntityReference
 		+handle(Command request)
+		+subStates() List~IState~
+		+activation() ActivityState
+		+changeActivation(ActivityState state)
+		+completion() CompletionState
+		+changeCompletion(CompletionState state)
 	}
 	class ChainCommandHandler {
       <<abstract>>

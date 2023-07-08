@@ -176,4 +176,33 @@ public class ActivityState extends MutableProperty {
 		}
 		return isEquals;
 	}
+
+	/**
+	 * Verify if the state include basic attributes and values and that property
+	 * owner is equals to the owner.
+	 * 
+	 * @param state Mandatory state to check.
+	 * @param owner Mandatory owner of the state to compare as a status condition.
+	 * @throws IllegalArgumentException When non conformity cause is detected.
+	 * @throws ImmutabilityException    When impossible read of description's owner.
+	 */
+	public static void checkActivationConformity(ActivityState state, Entity owner)
+			throws IllegalArgumentException, ImmutabilityException {
+		if (state != null) {
+			if (owner == null)
+				throw new IllegalArgumentException("State owner parameter is required!");
+			// Check that minimum name attribute is defined into the status
+
+			// Check the status value
+			if (state.isActive() == null)
+				throw new IllegalArgumentException("Status value is required from state!");
+
+			if (owner != null) {
+				// Check that owner of the state is equals to this owner identity
+				if (state.owner() == null || !state.owner().equals(owner))
+					throw new IllegalArgumentException(
+							"The owner of the activity state shall be equals to the owner parameter!");
+			}
+		}
+	}
 }

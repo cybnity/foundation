@@ -18,6 +18,7 @@ For more detail, the technical description regarding behavior and best usage is 
 |IReadModel|Denormalized dto repository (also named Query Model) supporting CQRS pattern|
 |IService|Domain service usable to perform a significant business process created in a domain model when the operation feels out of place as a method on an Aggregate or a Value Object|
 |ISessionContext|Context regarding a moment of interaction (e.g user interaction with system)|
+|IState|Represent a providing contract regarding the description of a state (e.g a process step) based on a collection of attributes. A state can include sub-state into its life cycle|
 |ISubscribable|Contract of notifications reception about fact events|
 |IValidationNotificationHandler|Handling of problems detected on a subject (e.g Entity attribute) implementing deleted validation approach|
 |IViewModelGenerator|Manager of destructured data production regarding read model view usabel by UI layer|
@@ -251,6 +252,7 @@ classDiagram
 	class IState {
 		<<interface>>
 		+properties() Collection~Attribute~
+		+subStates() List~IState~
 	}
 	class MutableAttribute {
         <<MutableProperty>>

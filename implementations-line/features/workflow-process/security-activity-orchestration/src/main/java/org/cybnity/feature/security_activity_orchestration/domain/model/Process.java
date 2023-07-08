@@ -34,6 +34,7 @@ public class Process extends Aggregate {
 	 * Mutable description of this process.
 	 */
 	private ProcessDescriptor description;
+
 	/**
 	 * Status of activation of this process.
 	 */
@@ -302,17 +303,17 @@ public class Process extends Aggregate {
 	 * Verify if the staging is valid (e.g owner equals to the process owner
 	 * parameter).
 	 * 
-	 * @param staging      Optional staging to verify. Ignore if null.
-	 * @param processOwner Optional process owner to compare. No control of staging
-	 *                     owning when null.
+	 * @param staging       Optional staging to verify. Ignore if null.
+	 * @param processOwning Optional process owner to compare. No control of staging
+	 *                      owning when null.
 	 * @throws IllegalArgumentException When cause of invalidity is detected.
 	 * @throws ImmutabilityException    When problem of property read.
 	 */
-	void checkStagingConformity(Staging staging, Entity processOwner)
+	void checkStagingConformity(Staging staging, Entity processOwning)
 			throws IllegalArgumentException, ImmutabilityException {
-		if (staging != null && processOwner != null) {
+		if (staging != null && processOwning != null) {
 			// Check staging owner
-			if (!staging.owner().equals(processOwner))
+			if (!staging.owner().equals(processOwning))
 				throw new IllegalArgumentException("Staging must be owned by this process identity!");
 		}
 	}
@@ -343,17 +344,17 @@ public class Process extends Aggregate {
 	 * Verify if the description include the minimum set of attributes required to
 	 * define the process and if owner is equals.
 	 * 
-	 * @param description  Optional description instance hosting the attributes to
-	 *                     verify.
-	 * @param processOwner Mandatory owner of the description to compare as a
-	 *                     description condition.
+	 * @param description   Optional description instance hosting the attributes to
+	 *                      verify.
+	 * @param processOwning Mandatory owner of the description to compare as a
+	 *                      description condition.
 	 * @throws IllegalArgumentException When description instance is not valid.
 	 * @throws ImmutabilityException    When impossible read of description's owner.
 	 */
-	void checkDescriptionConformity(ProcessDescriptor description, Entity processOwner)
+	void checkDescriptionConformity(ProcessDescriptor description, Entity processOwning)
 			throws IllegalArgumentException, ImmutabilityException {
 		if (description != null) {
-			if (processOwner == null)
+			if (processOwning == null)
 				throw new IllegalArgumentException("Process owner parameter is required!");
 			// Check that minimum name attribute is defined into the description
 
@@ -362,9 +363,9 @@ public class Process extends Aggregate {
 			if (processName == null || "".equals(processName))
 				throw new IllegalArgumentException("Process name is required from description!");
 
-			if (processOwner != null) {
+			if (processOwning != null) {
 				// Check that owner of the new description is equals to this process identity
-				if (description.owner() == null || !description.owner().equals(processOwner))
+				if (description.owner() == null || !description.owner().equals(processOwning))
 					throw new IllegalArgumentException(
 							"The owner of the new description shall be equals to this process!");
 			}
@@ -398,36 +399,15 @@ public class Process extends Aggregate {
 	 * owner is equals to this process. For example, a Not-a-Number or negative
 	 * completion rate is not a valid value for percentage of completion.
 	 * 
-	 * @param state        Optional state to check.
-	 * @param processOwner Mandatory owner of the state to compare as a status
-	 *                     condition.
+	 * @param state         Optional state to check.
+	 * @param processOwning Mandatory owner of the state to compare as a status
+	 *                      condition.
 	 * @throws IllegalArgumentException When non conformity cause is detected.
 	 * @throws ImmutabilityException    When impossible read of description's owner.
 	 */
-	void checkCompletionConformity(CompletionState state, Entity processOwner)
+	void checkCompletionConformity(CompletionState state, Entity processOwning)
 			throws IllegalArgumentException, ImmutabilityException {
-		if (state != null) {
-			if (processOwner == null)
-				throw new IllegalArgumentException("Process owner parameter is required!");
-			// Check that minimum name and percentage attributes are defined into the status
-
-			// Check the name value
-			if (state.name() == null)
-				throw new IllegalArgumentException("Name value is required from state!");
-			// Check the percentage value
-			if (state.percentage() == null)
-				throw new IllegalArgumentException("Percentage value is required from state!");
-			// Check that percentage is positive
-			if (state.percentage().isNaN() || state.percentage().compareTo(Float.valueOf(0.0f)) < 0)
-				throw new IllegalArgumentException("Percentage value must be positive!");
-
-			if (processOwner != null) {
-				// Check that owner of the new state is equals to this process identity
-				if (state.owner() == null || !state.owner().equals(processOwner))
-					throw new IllegalArgumentException(
-							"The owner of the new completion state shall be equals to this process!");
-			}
-		}
+		CompletionState.checkCompletionConformity(state, processOwning);
 	}
 
 	/**
@@ -453,30 +433,15 @@ public class Process extends Aggregate {
 	 * Verify if the state include basic attributes and values and that property
 	 * owner is equals to this process.
 	 * 
-	 * @param state        Mandatory state to check.
-	 * @param processOwner Mandatory owner of the state to compare as a status
-	 *                     condition.
+	 * @param state         Mandatory state to check.
+	 * @param processOwning Mandatory owner of the state to compare as a status
+	 *                      condition.
 	 * @throws IllegalArgumentException When non conformity cause is detected.
 	 * @throws ImmutabilityException    When impossible read of description's owner.
 	 */
-	void checkActivationConformity(ActivityState state, Entity processOwner)
+	void checkActivationConformity(ActivityState state, Entity processOwning)
 			throws IllegalArgumentException, ImmutabilityException {
-		if (state != null) {
-			if (processOwner == null)
-				throw new IllegalArgumentException("Process owner parameter is required!");
-			// Check that minimum name attribute is defined into the status
-
-			// Check the status value
-			if (state.isActive() == null)
-				throw new IllegalArgumentException("Status value is required from state!");
-
-			if (processOwner != null) {
-				// Check that owner of the new state is equals to this process identity
-				if (state.owner() == null || !state.owner().equals(processOwner))
-					throw new IllegalArgumentException(
-							"The owner of the new activity state shall be equals to this process!");
-			}
-		}
+		ActivityState.checkActivationConformity(state, processOwning);
 	}
 
 	/**

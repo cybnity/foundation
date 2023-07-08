@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.cybnity.feature.security_activity_orchestration.ChainCommandHandler;
@@ -11,6 +12,7 @@ import org.cybnity.feature.security_activity_orchestration.IWorkflowCommandHandl
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.IState;
+import org.cybnity.framework.domain.model.ActivityState;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.HistoryState;
@@ -49,7 +51,16 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 		 * Attributes collection specifying the step description (e.g organization
 		 * level)
 		 */
-		Properties;
+		Properties,
+		/** Sub steps definition **/
+		SubSteps,
+		/**
+		 * Status of completion regarding the realization of this step instance (e.g
+		 * according to the executed sub-steps)
+		 **/
+		CompletionState,
+		/** Status of activation of this step **/
+		ActivityState;
 	}
 
 	/**
@@ -298,4 +309,95 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 			this.commandProcessor.handle(request);
 	}
 
+	/**
+	 * Get the ordered sub-steps when existing.
+	 * 
+	 * @return A list including sub-steps or null.
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<IState> subStates() {
+		try {
+			return (List<IState>) this.currentValue().getOrDefault(PropertyAttributeKey.SubSteps.name(),
+					/* Return null sub-states by default */ null);
+		} catch (Exception cce) {
+			// Invalid type of list object implemented. Add developer log about coding
+			// problem
+		}
+		return null;
+	}
+
+	/**
+	 * Update the current activation state by a new version.
+	 * 
+	 * @param state Mandatory new version of state.
+	 * @throws IllegalArgumentException When mandatory parameter is not defined or
+	 *                                  is not valid in terms of minimum conformity.
+	 *                                  When state parameter is not regarding same
+	 *                                  step identity.
+	 * @throws ImmutabilityException    When impossible read of state's owner.
+	 */
+	public void changeActivation(ActivityState state) throws IllegalArgumentException, ImmutabilityException {
+		if (state == null)
+			throw new IllegalArgumentException("The state parameter is required!");
+		// Check conformity of new version
+		checkActivationConformity(state, owner());
+		// Update this activation status
+
+		// TODO code modification dans les propriété du status de l'activity statep du
+		// step avec historique
+		// this.activation = state;
+	}
+
+	/**
+	 * Update the current completion state by a new version.
+	 * 
+	 * @param state Mandatory new version of state.
+	 * @throws IllegalArgumentException When mandatory parameter is not defined or
+	 *                                  is not valid in terms of minimum conformity.
+	 *                                  When state parameter is not regarding same
+	 *                                  step identity.
+	 * @throws ImmutabilityException    When impossible read of state's owner.
+	 */
+	public void changeCompletion(CompletionState state) throws IllegalArgumentException, ImmutabilityException {
+		if (state == null)
+			throw new IllegalArgumentException("The state parameter is required!");
+		// Check conformity of new version
+		checkCompletionConformity(state, owner());
+		// Update the completion state
+		// TODO modifier dans les proprieté le status de la completion du step avec
+		// historique
+		// this.completion = state;
+	}
+
+	/**
+	 * Verify if the state include basic attributes and values and that property
+	 * owner is equals to this step.
+	 * 
+	 * @param state      Mandatory state to check.
+	 * @param stepOwning Mandatory owner of the state to compare as a status
+	 *                   condition.
+	 * @throws IllegalArgumentException When non conformity cause is detected.
+	 * @throws ImmutabilityException    When impossible read of description's owner.
+	 */
+	void checkActivationConformity(ActivityState state, Entity stepOwning)
+			throws IllegalArgumentException, ImmutabilityException {
+		ActivityState.checkActivationConformity(state, stepOwning);
+	}
+
+	/**
+	 * Verify if the state include basic attributes and values and that property
+	 * owner is equals to this step. For example, a Not-a-Number or negative
+	 * completion rate is not a valid value for percentage of completion.
+	 * 
+	 * @param state      Optional state to check.
+	 * @param stepOwning Mandatory owner of the state to compare as a status
+	 *                   condition.
+	 * @throws IllegalArgumentException When non conformity cause is detected.
+	 * @throws ImmutabilityException    When impossible read of description's owner.
+	 */
+	void checkCompletionConformity(CompletionState state, Entity stepOwning)
+			throws IllegalArgumentException, ImmutabilityException {
+		CompletionState.checkCompletionConformity(state, stepOwning);
+	}
 }
