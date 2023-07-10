@@ -48,6 +48,7 @@ classDiagram
       +addParallelNextHandler(ChainCommandHandler next)
       final +handle(Command request)
       +label() String
+      +handledCommandTypeVersions()* Set~String~
   }
   class WorkflowCommandHandlerFactory {
       <<abstract>>

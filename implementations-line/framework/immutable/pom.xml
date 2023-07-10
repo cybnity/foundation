@@ -13,7 +13,6 @@
 	<version>${revision}</version>
 	<packaging>jar</packaging>
 	<name>- Immutable framework library</name>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.cybnity.framework</groupId>

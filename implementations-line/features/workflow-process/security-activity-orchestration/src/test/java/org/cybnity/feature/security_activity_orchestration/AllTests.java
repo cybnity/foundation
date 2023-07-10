@@ -13,6 +13,6 @@ import org.junit.platform.suite.api.Suite;
 @SelectClasses({ ProcessDescriptorUseCaseTest.class, ProcessUseCaseTest.class,
 		ProcessChangeDescriptionUseCaseTest.class, ProcessChangeActivationUseCaseTest.class,
 		ProcessChangeCompletionUseCaseTest.class, ProcessChangeStagingUseCaseTest.class,
-		ProcessBuilderUseCaseTest.class })
+		ProcessBuilderUseCaseTest.class, StepUseCaseTest.class })
 public class AllTests {
 }

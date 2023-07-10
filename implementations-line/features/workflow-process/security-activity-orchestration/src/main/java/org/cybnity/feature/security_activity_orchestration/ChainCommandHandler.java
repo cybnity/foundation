@@ -3,6 +3,7 @@ package org.cybnity.feature.security_activity_orchestration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.support.annotation.Requirement;
@@ -148,5 +149,15 @@ public abstract class ChainCommandHandler {
 	protected List<ChainCommandHandler> subTasks() {
 		return this.subTasks;
 	}
+
+	/**
+	 * Get the version number regarding the types of Command which are supported by
+	 * this handler.
+	 * 
+	 * @return A set of versions that this handler is capable to handle (e.g
+	 *         specific versions of a same type of command). Null or empty set when
+	 *         any type of Command can be treated by this handler.
+	 */
+	public abstract Set<String> handledCommandTypeVersions();
 
 }

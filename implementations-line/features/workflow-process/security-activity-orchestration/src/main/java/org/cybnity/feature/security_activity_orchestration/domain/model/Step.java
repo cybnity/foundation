@@ -103,6 +103,7 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 				HistoryState.COMMITTED, commandHandlingDelegate, predecessors);
 		if (name == null || "".equals(name))
 			throw new IllegalArgumentException("Name parameter is required!");
+
 	}
 
 	/**
@@ -113,7 +114,9 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 	 *                                mutable property chain.
 	 * @param propertyCurrentValue    Mandatory current version of value(s)
 	 *                                regarding the property. Support included keys
-	 *                                with null value.
+	 *                                with null value.When none activation or
+	 *                                completion state is defined, a default state
+	 *                                is automatically assigned to this step.
 	 * @param status                  Optional state of this property version. If
 	 *                                null,
 	 *                                {@link org.cybnity.framework.immutable.HistoryState.Committed}
@@ -130,6 +133,21 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 		super(propertyOwner, propertyCurrentValue, status);
 		if (commandHandlingDelegate != null)
 			setCommandProcessor(commandHandlingDelegate);
+		if (this.value != null) {
+			// Check existing activation and completion states defined
+			try {
+				// Else initialize default states
+				if (this.value.get(PropertyAttributeKey.ActivityState.name()) == null) {
+					this.value.put(PropertyAttributeKey.ActivityState.name(), defaultActivation());
+				}
+				if (this.value.get(PropertyAttributeKey.CompletionState.name()) == null) {
+					this.value.put(PropertyAttributeKey.CompletionState.name(), defaultCompletion());
+				}
+			} catch (ImmutabilityException ie) {
+				// Impossible usage of activation instance that should never arrive
+				// Make log for developers
+			}
+		}
 	}
 
 	/**
@@ -140,7 +158,9 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 	 *                                mutable property chain.
 	 * @param propertyCurrentValue    Mandatory current version of value(s)
 	 *                                regarding the property. Support included keys
-	 *                                with null value.
+	 *                                with null value. When none activation or
+	 *                                completion state is defined, a default state
+	 *                                is automatically assigned to this step.
 	 * @param status                  Optional history state of this property
 	 *                                version. If null,
 	 *                                {@link org.cybnity.framework.immutable.HistoryState.Committed}
@@ -159,6 +179,44 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 		super(propertyOwner, propertyCurrentValue, status, predecessors);
 		if (commandHandlingDelegate != null)
 			setCommandProcessor(commandHandlingDelegate);
+		if (this.value != null) {
+			// Check existing activation and completion states defined
+			try {
+				// Else initialize default states
+				if (this.value.get(PropertyAttributeKey.ActivityState.name()) == null) {
+					this.value.put(PropertyAttributeKey.ActivityState.name(), defaultActivation());
+				}
+				if (this.value.get(PropertyAttributeKey.CompletionState.name()) == null) {
+					this.value.put(PropertyAttributeKey.CompletionState.name(), defaultCompletion());
+				}
+			} catch (ImmutabilityException ie) {
+				// Impossible usage of activation instance that should never arrive
+				// Make log for developers
+			}
+		}
+	}
+
+	/**
+	 * Get the default completion state.
+	 * 
+	 * @return Default completion state defined at zero percentage of progress.
+	 * @throws ImmutabilityException When process root instance can't be reused as
+	 *                               immutable owner of the completion property.
+	 */
+	private CompletionState defaultCompletion() throws ImmutabilityException {
+		return new CompletionState(ownerReference(), "InitialCompletionStatus",
+				/* Initial percentage defined at zero of completion rate */ Float.valueOf(0.0f));
+	}
+
+	/**
+	 * Get the default activation state.
+	 * 
+	 * @return Default activity state instance defined as inactive.
+	 * @throws ImmutabilityException When process root instance can't be reused as
+	 *                               immutable owner of the activity property.
+	 */
+	private ActivityState defaultActivation() throws ImmutabilityException {
+		return new ActivityState(ownerReference(), Boolean.FALSE);
 	}
 
 	/**
@@ -234,6 +292,37 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 	public Collection<Attribute> properties() {
 		try {
 			return (Collection<Attribute>) this.currentValue().getOrDefault(PropertyAttributeKey.Properties.name(),
+					null);
+		} catch (Exception cce) {
+			// Invalid type of collection object implemented. Add developer log about coding
+			// problem
+		}
+		return null;
+	}
+
+	/**
+	 * Get the current status of activation of this step.
+	 * 
+	 * @return A state or null.
+	 */
+	public ActivityState activation() {
+		try {
+			return (ActivityState) this.currentValue().getOrDefault(PropertyAttributeKey.ActivityState.name(), null);
+		} catch (Exception cce) {
+			// Invalid type of collection object implemented. Add developer log about coding
+			// problem
+		}
+		return null;
+	}
+
+	/**
+	 * Get the current status of completion of this step.
+	 * 
+	 * @return A state or null.
+	 */
+	public CompletionState completion() {
+		try {
+			return (CompletionState) this.currentValue().getOrDefault(PropertyAttributeKey.CompletionState.name(),
 					null);
 		} catch (Exception cce) {
 			// Invalid type of collection object implemented. Add developer log about coding
@@ -343,10 +432,7 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 		// Check conformity of new version
 		checkActivationConformity(state, owner());
 		// Update this activation status
-
-		// TODO code modification dans les propriété du status de l'activity statep du
-		// step avec historique
-		// this.activation = state;
+		this.value.put(PropertyAttributeKey.ActivityState.name(), state);
 	}
 
 	/**
@@ -365,9 +451,7 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 		// Check conformity of new version
 		checkCompletionConformity(state, owner());
 		// Update the completion state
-		// TODO modifier dans les proprieté le status de la completion du step avec
-		// historique
-		// this.completion = state;
+		this.value.put(PropertyAttributeKey.CompletionState.name(), state);
 	}
 
 	/**

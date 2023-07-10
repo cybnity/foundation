@@ -51,6 +51,7 @@ classDiagram
 	Step ..> "1 commandProcessor" ChainCommandHandler : delegate command handling
 	Step *-- "1..*" Attribute : properties
 	IWorkflowCommandHandler <|.. Step
+	IWorkflowCommandHandler <|.. Process
 	IState <|.. Step
 	Process *-- "1" ActivityState : activation
 	Unmodifiable <|.. Attribute
@@ -61,7 +62,7 @@ classDiagram
 		+Process(Entity predecessor, Identifier id, HashMap<String, Object> descriptionAttributes)
 		+Process(Entity predecessor, LinkedHashSet~Identifier~ identifiers, HashMap<String, Object> descriptionAttributes)
 		#Process(Entity predecessor, LinkedHashSet~Identifier~ identifiers, ProcessDescriptor description,
-			ActivityState activation, CompletionState completion, Staging staging)
+			ActivityState activation, CompletionState completion, Staging staging, ChainCommandHandler commandHandlingDelegate)
 		+name() String
 		+activation() ActivityState
 		+changeActivation(ActivityState state)

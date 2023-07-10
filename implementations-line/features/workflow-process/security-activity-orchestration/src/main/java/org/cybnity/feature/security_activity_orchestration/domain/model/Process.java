@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.cybnity.feature.security_activity_orchestration.ChainCommandHandler;
+import org.cybnity.feature.security_activity_orchestration.IWorkflowCommandHandler;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.model.ActivityState;
@@ -25,7 +27,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
-public class Process extends Aggregate {
+public class Process extends Aggregate implements IWorkflowCommandHandler {
 
 	private static final long serialVersionUID = new VersionConcreteStrategy()
 			.composeCanonicalVersionHash(Process.class).hashCode();
@@ -50,6 +52,11 @@ public class Process extends Aggregate {
 	 * Stages defining the process realization.
 	 */
 	private Staging staging;
+
+	/**
+	 * Delegation class supporting the handling of commands.
+	 */
+	private ChainCommandHandler commandProcessor;
 
 	/**
 	 * Default constructor. The default activation state is defined as not active.
@@ -143,22 +150,27 @@ public class Process extends Aggregate {
 	/**
 	 * Internal constructor dedicated to immutability management.
 	 * 
-	 * @param predecessor Mandatory parent of this process domain entity as
-	 *                    aggregate. For example, can be a created social entity
-	 *                    fact (see org.cybnity.framework.domain.model.SocialEntity}
-	 *                    which shall exist before to create this process related to
-	 *                    the organization.
-	 * @param identifiers Optional set of identifiers of this entity, that contains
-	 *                    non-duplicable elements. For example, identifier is
-	 *                    required when the process shall be persistent. Else can be
-	 *                    without identity when not persistent process.
-	 * @param description Mandatory description of this process. An optional
-	 *                    template EntityReference can be included as origin of the
-	 *                    process structure
-	 * @param activation  Optional activation of this process.
-	 * @param completion  Optional completion of this process.
-	 * @param staging     Optional stages defining this process steps included a
-	 *                    minimum one step.
+	 * @param predecessor             Mandatory parent of this process domain entity
+	 *                                as aggregate. For example, can be a created
+	 *                                social entity fact (see
+	 *                                org.cybnity.framework.domain.model.SocialEntity}
+	 *                                which shall exist before to create this
+	 *                                process related to the organization.
+	 * @param identifiers             Optional set of identifiers of this entity,
+	 *                                that contains non-duplicable elements. For
+	 *                                example, identifier is required when the
+	 *                                process shall be persistent. Else can be
+	 *                                without identity when not persistent process.
+	 * @param description             Mandatory description of this process. An
+	 *                                optional template EntityReference can be
+	 *                                included as origin of the process structure
+	 * @param activation              Optional activation of this process.
+	 * @param completion              Optional completion of this process.
+	 * @param staging                 Optional stages defining this process steps
+	 *                                included a minimum one step.
+	 * @param commandHandlingDelegate Optional processor allowing the process to
+	 *                                interpret the commands handling relative to
+	 *                                the process and/or to its staging.
 	 * @throws IllegalArgumentException When any mandatory parameter is missing.
 	 *                                  When a problem of immutability is occurred.
 	 *                                  When predecessor mandatory parameter is not
@@ -166,8 +178,8 @@ public class Process extends Aggregate {
 	 * @throws ImmutabilityException    When impossible read of identifier version.
 	 */
 	protected Process(Entity predecessor, LinkedHashSet<Identifier> identifiers, ProcessDescriptor description,
-			ActivityState activation, CompletionState completion, Staging staging)
-			throws IllegalArgumentException, ImmutabilityException {
+			ActivityState activation, CompletionState completion, Staging staging,
+			ChainCommandHandler commandHandlingDelegate) throws IllegalArgumentException, ImmutabilityException {
 		super(predecessor, identifiers);
 		// None quality control
 		this.description = description;
@@ -184,6 +196,8 @@ public class Process extends Aggregate {
 		}
 		if (staging != null)
 			this.staging = staging;
+		if (commandHandlingDelegate != null)
+			setCommandProcessor(commandHandlingDelegate);
 	}
 
 	/**
@@ -212,7 +226,8 @@ public class Process extends Aggregate {
 	@Override
 	public Serializable immutable() throws ImmutabilityException {
 		Process copy = new Process(this.parent(), new LinkedHashSet<>(this.identifiers()),
-				(ProcessDescriptor) this.description.immutable(), this.activation(), this.completion(), this.staging());
+				(ProcessDescriptor) this.description.immutable(), this.activation(), this.completion(), this.staging(),
+				this.commandProcessor);
 		// Complete with additional attributes of this complex aggregate
 		copy.createdAt = this.occurredAt();
 		return copy;
@@ -477,6 +492,17 @@ public class Process extends Aggregate {
 		return (CompletionState) this.completion.immutable();
 	}
 
+	/**
+	 * Define the step command handling processor that allow the process to
+	 * interpret the commands handling relative to the process and/or to its
+	 * staging.
+	 * 
+	 * @param commandHandlingDelegate A handling processor.
+	 */
+	public void setCommandProcessor(ChainCommandHandler commandHandlingDelegate) {
+		this.commandProcessor = commandHandlingDelegate;
+	}
+
 	@Override
 	public void handle(Command change, IContext ctx) throws IllegalArgumentException {
 		// TODO coder traitement de la demande de changement selon l'attribute ciblé ou
@@ -490,8 +516,34 @@ public class Process extends Aggregate {
 
 	@Override
 	public Set<String> handledCommandTypeVersions() {
-		// TODO coder retour des versions de command event relatif aux change request de
-		// description, completion, activation, staging...
+		if (this.commandProcessor != null) {
+			return this.commandProcessor.handledCommandTypeVersions();
+		}
 		return null;
+	}
+
+	@Override
+	public void addParallelNextHandler(ChainCommandHandler next) {
+		if (next != null) {
+			if (this.commandProcessor == null) {
+				// Initialize the current main processor which was not defined during the
+				// construction of this instance
+				this.commandProcessor = next;
+			} else {
+				// Add a parallel handler regarding this step, to the existing processor
+				// (defined during instantiation of this step)
+				this.commandProcessor.addParallelNextHandler(next);
+			}
+		}
+	}
+
+	/**
+	 * Handle the command relative to this process or staging when command processor
+	 * delegation is defined.
+	 */
+	@Override
+	public void handle(Command request) {
+		if (request != null && this.commandProcessor != null)
+			this.commandProcessor.handle(request);
 	}
 }
