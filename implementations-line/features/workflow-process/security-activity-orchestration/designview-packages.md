@@ -158,24 +158,24 @@ classDiagram
 	class ProcessBuilder {
 		final -processIdentifiers : LinkedHashSet~Identifier~
 		final -processParent : Entity
-		-activation : Boolean
-		-completionName : String
-		-currentPercentageOfCompletion : Float
-		-description : Collection~Attribute~
-		-processName : String
+		#activation : Boolean
+		#completionName : String
+		#currentPercentageOfCompletion : Float
+		#description : Collection~Attribute~
+		#processName : String
 		-templateEntityRef : EntityReference
-		-i18nTranslation : Locale
 
-		#ProcessBuilder(@required LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName)
+		#ProcessBuilder(@required LinkedHashSet~Identifier~ processIdentifiers, @required Entity processParent)
+		#ProcessBuilder(LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName)
+		+instance(LinkedHashSet~Identifier~ processIdentifiers, Entity processParent)$ ProcessBuilder
 		+instance(LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName)$ ProcessBuilder
+
 		+build() Process
 		+valideConformity(Process instance)$
 		+withActivation(Boolean isActiveStatus) ProcessBuilder
 		+withCompletion(@required String named, Float currentPercentageOfCompletion) ProcessBuilder
 		+withDescription(Collection~Attribute~ properties) Processbuilder
 		+withTemplateEntityReference(EntityReference templateRef) ProcessBuilder
-		+withI18NTranslation(Locale i18nTranslation) ProcessBuilder
-		#getI18NProperties() ResourceBundle
 	}
 
 ```

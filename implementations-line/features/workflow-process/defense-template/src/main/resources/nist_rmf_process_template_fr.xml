@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Process name="RMF">
+	<Description>
+		<Properties>
+			<Attribute name="standard">NIST</Attribute>
+			<Attribute name="fullName">Risk Management Framework</Attribute>
+			<Attribute name="description"><![CDATA[Execute the RMF from an organization- and a system-level perspective by establishing a context and priorities for managing security and privacy risk.]]></Attribute>
+			<Attribute name="finalizedStateDescription"><![CDATA[Finalized step is confirmed via publication of RiskAssessmentPrepared event.]]></Attribute>
+		</Properties>
+	</Description>
+	<Activation isActiveStatus="false"></Activation>
+	<Completion name="default" percentage="0.0"></Completion>
+	<Staging>
+		<Step>
+			<Name>PR&#x00C9;PARE</Name>
+			<Properties>
+				<Attribute name="level">OrganizationLevel</Attribute>
+			</Properties>
+			<SubStates>
+				<Step>
+					<Name>Risk management roles</Name>
+					<Properties>
+						<Attribute name="level">OrganizationLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>Risk management strategy</Name>
+					<Properties>
+						<Attribute name="level">OrganizationLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>Risk assessment organization</Name>
+					<Properties>
+						<Attribute name="level">OrganizationLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>Organizationnaly tailored control baselines and
+						cybersecurity profiles
+					</Name>
+					<Properties>
+						<Attribute name="level">OrganizationLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>Common control identification</Name>
+					<Properties>
+						<Attribute name="level">OrganizationLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>Impact level prioritization</Name>
+					<Properties>
+						<Attribute name="level">OrganizationLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>Continuous monitoring strategy organization</Name>
+					<Properties>
+						<Attribute name="level">OrganizationLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>Mission or business focus</Name>
+					<Properties>
+						<Attribute name="level">SystemLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>System stakeholders</Name>
+					<Properties>
+						<Attribute name="level">SystemLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>Asset identification</Name>
+					<Properties>
+						<Attribute name="level">SystemLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>Authorization boundary</Name>
+					<Properties>
+						<Attribute name="level">SystemLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>Information types</Name>
+					<Properties>
+						<Attribute name="level">SystemLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>Information life cycle</Name>
+					<Properties>
+						<Attribute name="level">SystemLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>Risk assessment system</Name>
+					<Properties>
+						<Attribute name="level">SystemLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>Requirements definition</Name>
+					<Properties>
+						<Attribute name="level">SystemLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>Enterprise architecture</Name>
+					<Properties>
+						<Attribute name="level">SystemLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>Requirements allocation</Name>
+					<Properties>
+						<Attribute name="level">SystemLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+				<Step>
+					<Name>System registration</Name>
+					<Properties>
+						<Attribute name="level">SystemLevel</Attribute>
+					</Properties>
+					<SubStates>
+					</SubStates>
+					<Activation isActiveStatus="false"></Activation>
+					<Completion name="default" percentage="0.0"></Completion>
+				</Step>
+			</SubStates>
+			<Activation isActiveStatus="false"></Activation>
+			<Completion name="default" percentage="0.0"></Completion>
+		</Step>
+		<Step>
+			<Name>CAT&#x00C9;GORISE</Name>
+			<Properties>
+				<Attribute name="level">OrganizationLevel</Attribute>
+			</Properties>
+			<SubStates>
+			</SubStates>
+			<Activation isActiveStatus="false"></Activation>
+			<Completion name="default" percentage="0.0"></Completion>
+		</Step>
+		<Step>
+			<Name>S&#x00C9;LECTIONNE</Name>
+			<Properties>
+				<Attribute name="level">OrganizationLevel</Attribute>
+			</Properties>
+			<SubStates>
+			</SubStates>
+			<Activation isActiveStatus="false"></Activation>
+			<Completion name="default" percentage="0.0"></Completion>
+		</Step>
+		<Step>
+			<Name>IMPL&#x00C9;MENTE</Name>
+			<Properties>
+				<Attribute name="level">OrganizationLevel</Attribute>
+			</Properties>
+			<SubStates>
+			</SubStates>
+			<Activation isActiveStatus="false"></Activation>
+			<Completion name="default" percentage="0.0"></Completion>
+		</Step>
+		<Step>
+			<Name>&#x00C9;VALUE</Name>
+			<Properties>
+				<Attribute name="level">OrganizationLevel</Attribute>
+			</Properties>
+			<SubStates>
+			</SubStates>
+			<Activation isActiveStatus="false"></Activation>
+			<Completion name="default" percentage="0.0"></Completion>
+		</Step>
+		<Step>
+			<Name>AUTHORISE</Name>
+			<Properties>
+				<Attribute name="level">OrganizationLevel</Attribute>
+			</Properties>
+			<SubStates>
+			</SubStates>
+			<Activation isActiveStatus="false"></Activation>
+			<Completion name="default" percentage="0.0"></Completion>
+		</Step>
+		<Step>
+			<Name>SURVEILLE</Name>
+			<Properties>
+				<Attribute name="level">OrganizationLevel</Attribute>
+			</Properties>
+			<SubStates>
+			</SubStates>
+			<Activation isActiveStatus="false"></Activation>
+			<Completion name="default" percentage="0.0"></Completion>
+		</Step>
+	</Staging>
+</Process>

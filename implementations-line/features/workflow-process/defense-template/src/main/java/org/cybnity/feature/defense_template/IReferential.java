@@ -1,4 +1,4 @@
-package org.cybnity.feature.defense_template.domain;
+package org.cybnity.feature.defense_template;
 
 import org.cybnity.framework.immutable.Unmodifiable;
 import org.cybnity.framework.support.annotation.Requirement;

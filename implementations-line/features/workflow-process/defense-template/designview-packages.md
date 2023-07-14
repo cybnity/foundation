@@ -6,13 +6,62 @@ The technical description regarding behavior and best usage is maintained into t
 
 |Class Type|Motivation|
 | :-- | :-- |
-|NISTRMFProcessBuilder|Builder implementation class creating NIST RMF process instance that is customized (as template) according to the NIST RMF standard|
+|IProcessBuildPreparation|Represent a observation contract of a template resource read, allowing to received found resource's contents as prepared value (e.g during an XML document parsing use by a process build director)|
 |ProcessBuildDirector|Responsible of coordination regarding the build of several types of processes|
+|ProcessTemplateXMLParser|DOM parsing implementation class of XML document defining a process template as specification reusable by a process builder to instantiate a customized process (e.g NIST RMF process)|
 |Referential|Basis implementation class of a referential|
 |Template|Common definition class regarding a specification object which define a template (e.g process aggregate object)|
+|StepSpecification|Specification contents regarding a definition of process step. Container of informations allowing to collect values from a specification file (e.g XML document) and that can be extract for build of domain object instances|
+|XMLProcessProcessBuilder|Builder implementation class creating a process instance that is based on an XML template (e.g XML document specifying the structure of a NIST RMF process)|
 
 # STRUCTURE MODELS
 Several packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
+
+## SERVICE PACKAGE
+
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#0e2a43',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+classDiagram
+  ProcessBuilder <|-- XMLProcessProcessBuilder
+  IProcessBuildPreparation <|.. XMLProcessProcessBuilder
+
+  class IProcessBuildPreparation {
+    <<interface>>
+    +processNamedAs(String name)
+    +processDescriptionProperties(Collection~Attribute~ attributes)
+    +processActivation(Boolean isActive)
+    +processCompletion(String completionName, Float currentPercentageOfCompletion)
+    +processStaging(List~StepSpecification~ steps)
+  }
+
+  class XMLProcessProcessBuilder {
+    -staging : List~StepSpecification~
+
+    -XMLProcessProcessBuilder(LinkedHashSet~Identifier~ processIdentifiers, Entity processParent)
+    +XMLProcessProcessBuilder instance(LinkedHashSet~Identifier~ processIdentifiers, Entity processParent)$
+    +build()
+    -defineStaging(Process instance)
+    -defineSteps(EntityReference propertyOwner, List~StepSpecification~ stagingDef) List~Step~
+    -defineCommandsHandling(Process instance)
+  }
+
+```
 
 ## DOMAIN.MODEL PACKAGE
 
@@ -48,9 +97,10 @@ classDiagram
   }
 
   class ProcessBuildDirector {
+    -builder IProcessBuilder
     +ProcessBuildDirector(IProcessBuilder builder)
     +change(IProcessBuilder builder)
-    +make()
+    +make(InputStream templateDocument)
   }
 
   class Template {
@@ -72,43 +122,6 @@ classDiagram
 
 ```
 
-## DOMAIN.MODEL.NIST PACKAGE
-
-### Process sub-package
-```mermaid
-%%{
-  init: {
-    'theme': 'base',
-    'themeVariables': {
-        'background': '#ffffff',
-        'fontFamily': 'arial',
-        'fontSize': '18px',
-        'primaryColor': '#fff',
-        'primaryBorderColor': '#0e2a43',
-        'secondaryBorderColor': '#0e2a43',
-        'tertiaryBorderColor': '#0e2a43',
-        'edgeLabelBackground':'#0e2a43',
-        'lineColor': '#0e2a43',
-        'tertiaryColor': '#fff'
-    }
-  }
-}%%
-classDiagram
-  ProcessBuilder <|-- NISTRMFProcessBuilder
-  note for RMFPropertyKeyI18n "Internationalization property keys supporting translations"
-  class NISTRMFProcessBuilder {
-    +I18N_BASE_NAME String$
-    -NISTRMFProcessBuilder(LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName, Locale language)
-    +instance(LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName, Locale language) ProcessBuilder
-    +build()
-    -defineStaging(Process instance)
-    -defineCommandsHandling(Process instance)
-  }
-  class RMFPropertyKeyI18n {
-    <<enum>>
-  }
-
-```
 ### RMF custom process Life Cycle
 The templated process is defined by a specific life cycle respecting the NIST RMF specification (see [design documentation](risk-management-framework.md)).
 

@@ -13,6 +13,7 @@ import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.IState;
 import org.cybnity.framework.domain.model.ActivityState;
+import org.cybnity.framework.domain.model.CompletionState;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.HistoryState;
@@ -90,7 +91,7 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 	 * @param commandHandlingDelegate Optional processor allowing the step to
 	 *                                interpret the commands handling relative to
 	 *                                the step and/or to its subtasks.
-	 * @param predecessors            Optional prior steps.
+	 * @param predecessors            Optional ancestor steps.
 	 * @throws IllegalArgumentException When mandatory parameter is missing.
 	 * @throws ImmutabilityException    When impossible creation of immutable
 	 *                                  version regarding the owner instance.
@@ -168,7 +169,7 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 	 * @param commandHandlingDelegate Optional processor allowing the step to
 	 *                                interpret the commands handling relative to
 	 *                                the step and/or to its subtasks.
-	 * @param predecessors            Optional prior steps.
+	 * @param predecessors            Optional anterior steps.
 	 * @throws IllegalArgumentException When mandatory parameter is missing, or when
 	 *                                  can not be cloned regarding immutable entity
 	 *                                  parameter.

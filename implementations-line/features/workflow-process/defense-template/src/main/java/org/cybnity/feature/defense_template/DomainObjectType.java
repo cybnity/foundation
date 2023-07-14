@@ -1,4 +1,4 @@
-package org.cybnity.feature.defense_template.domain;
+package org.cybnity.feature.defense_template;
 
 import java.io.Serializable;
 

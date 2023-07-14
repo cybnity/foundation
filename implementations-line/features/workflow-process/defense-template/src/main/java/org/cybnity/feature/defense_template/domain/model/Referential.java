@@ -2,7 +2,7 @@ package org.cybnity.feature.defense_template.domain.model;
 
 import java.io.Serializable;
 
-import org.cybnity.feature.defense_template.domain.IReferential;
+import org.cybnity.feature.defense_template.IReferential;
 import org.cybnity.framework.domain.ValueObject;
 import org.cybnity.framework.immutable.IVersionable;
 import org.cybnity.framework.immutable.ImmutabilityException;

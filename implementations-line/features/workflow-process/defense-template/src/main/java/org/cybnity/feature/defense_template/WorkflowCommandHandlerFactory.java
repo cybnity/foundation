@@ -1,4 +1,4 @@
-package org.cybnity.feature.defense_template.domain;
+package org.cybnity.feature.defense_template;
 
 import org.cybnity.feature.security_activity_orchestration.IWorkflowCommandHandler;
 import org.cybnity.framework.IContext;

@@ -41,6 +41,7 @@ classDiagram
       -label : String
       -next : Collection~ChainCommandHandler~
       -subTasks : List~ChainCommandHandler~
+      -context : IContext
       +ChainCommandHandler(Collection~ChainCommandHandler~ next, List~ChainCommandHandler~ subTasks)
       #next() Collection~ChainCommandHandler~
       #canHandle(Command request)* boolean
@@ -48,7 +49,10 @@ classDiagram
       +addParallelNextHandler(ChainCommandHandler next)
       final +handle(Command request)
       +label() String
+      #setLabel(String aName)
       +handledCommandTypeVersions()* Set~String~
+      #context() IContext
+      +changeContext(IContext ctx)
   }
   class WorkflowCommandHandlerFactory {
       <<abstract>>

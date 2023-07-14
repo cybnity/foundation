@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.cybnity.feature.defense_template.domain.DomainObjectType;
-import org.cybnity.feature.defense_template.domain.IReferential;
-import org.cybnity.feature.defense_template.domain.ITemplate;
+import org.cybnity.feature.defense_template.DomainObjectType;
+import org.cybnity.feature.defense_template.IReferential;
+import org.cybnity.feature.defense_template.ITemplate;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;

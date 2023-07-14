@@ -11,6 +11,7 @@ import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.model.ActivityState;
 import org.cybnity.framework.domain.model.Aggregate;
+import org.cybnity.framework.domain.model.CompletionState;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.Identifier;
@@ -505,13 +506,13 @@ public class Process extends Aggregate implements IWorkflowCommandHandler {
 
 	@Override
 	public void handle(Command change, IContext ctx) throws IllegalArgumentException {
-		// TODO coder traitement de la demande de changement selon l'attribute ciblé ou
-		// l'état de progression du process ou de ses sous-états
-		// appliquer un patter strategy qui utilise le délégué en charge d'implémenter
-		// le comportement
-		// spécialisé au regard du processus qui se joue
-
-		// Utiliser un delegate de type CommandHandlingService pour cet aggregate
+		// Optionally define on-fly the context usable during the command handling
+		if (ctx != null && this.commandProcessor != null) {
+			// Update the handler context
+			this.commandProcessor.changeContext(ctx);
+		}
+		// Execute the handling
+		handle(change);
 	}
 
 	@Override
