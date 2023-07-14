@@ -108,12 +108,9 @@ classDiagram
     -originReferential : IReferential
     -name : MutableAttribute
     -modelOf : DomainObjectType
-    +Template(Entity predecessor, Identifier id, IReferential originReferential, String name,
-			DomainObjectType modelOf)
-    +Template(Entity predecessor, LinkedHashSet~Identifier~ identifiers, IReferential originReferential, String name,
-			DomainObjectType modelOf)
-    -Template(Entity predecessor, LinkedHashSet~Identifier~ identifiers, IReferential originReferential,
-			MutableAttribute name, DomainObjectType modelOf)
+    +Template(Entity predecessor, Identifier id, IReferential originReferential, String name, DomainObjectType modelOf)
+    +Template(Entity predecessor, LinkedHashSet~Identifier~ identifiers, IReferential originReferential, String name, DomainObjectType modelOf)
+    -Template(Entity predecessor, LinkedHashSet~Identifier~ identifiers, IReferential originReferential, MutableAttribute name, DomainObjectType modelOf)
     +originReferential() IReferential
     +named() MutableAttribute
     +name() String
