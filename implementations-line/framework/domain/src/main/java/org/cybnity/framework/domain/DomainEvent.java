@@ -47,9 +47,9 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
 			.composeCanonicalVersionHash(DomainEvent.class).hashCode();
 
 	/**
-	 * As event name reflect the past nature of the occurence, an event is not
-	 * occuring now but it occured previously. This property indicates when the
-	 * event occured.
+	 * As event name reflect the past nature of the occurrence, an event is not
+	 * occurring now but it occurred previously. This property indicates when the
+	 * event occurred.
 	 * 
 	 */
 	protected OffsetDateTime occuredOn;
@@ -137,7 +137,7 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
 				}
 			}
 		} else {
-			// Keep standard hashcode value calculation default implementation
+			// Keep standard hash code value calculation default implementation
 			hashCodeValue = super.hashCode();
 		}
 		return hashCodeValue;

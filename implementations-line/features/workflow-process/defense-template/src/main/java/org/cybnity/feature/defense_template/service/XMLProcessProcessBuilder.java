@@ -185,6 +185,15 @@ public class XMLProcessProcessBuilder extends ProcessBuilder implements IProcess
 						defineSteps(propertyOwner, stepDef.getSubStates()));
 			}
 
+			// Define supported incoming event types when specified
+			if (stepDef.getActivationEventTypes() != null && !stepDef.getActivationEventTypes().isEmpty()) {
+				// Define monitored event types allowing automatic activation in step
+				stepCurrentProperties.put(
+						org.cybnity.feature.security_activity_orchestration.domain.model.Step.PropertyAttributeKey.ActivationEventTypes
+								.name(),
+						stepDef.getActivationEventTypes());
+			}
+
 			// Create instance of process step as sequential phase
 			aStep = new Step(propertyOwner.getEntity(), stepCurrentProperties, stepStatus,
 					/*

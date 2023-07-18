@@ -6,6 +6,7 @@ import java.io.InputStream;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.cybnity.feature.defense_template.service.IProcessBuildPreparation;
+import org.cybnity.feature.defense_template.service.NotSupportedTemplateValueException;
 import org.cybnity.feature.defense_template.service.ProcessTemplateXMLParser;
 import org.cybnity.feature.security_activity_orchestration.IProcessBuilder;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -60,15 +61,18 @@ public class ProcessBuildDirector {
 	 *                         preparation phase. If null, preparation phase is
 	 *                         ignored and default build is executed without
 	 *                         contents preparation.
-	 * @throws ImmutabilityException        When impossible
-	 * @throws ParserConfigurationException When error occurred during build
-	 *                                      preparation step using template
-	 *                                      document.
-	 * @throws SAXException                 When template parsing problem.
-	 * @throws IOException                  When template input stream read error.
+	 * @throws ImmutabilityException              When impossible
+	 * @throws ParserConfigurationException       When error occurred during build
+	 *                                            preparation step using template
+	 *                                            document.
+	 * @throws SAXException                       When template parsing problem.
+	 * @throws IOException                        When template input stream read
+	 *                                            error.
+	 * @throws NotSupportedTemplateValueException When a template element is not
+	 *                                            valid.
 	 */
-	public void make(InputStream templateDocument)
-			throws ImmutabilityException, ParserConfigurationException, SAXException, IOException {
+	public void make(InputStream templateDocument) throws ImmutabilityException, ParserConfigurationException,
+			SAXException, IOException, NotSupportedTemplateValueException {
 		if (templateDocument != null && IProcessBuildPreparation.class.isAssignableFrom(this.builder.getClass())) {
 			// Prepare the build required contents from a XML document specifying a process
 			// template into a language supported

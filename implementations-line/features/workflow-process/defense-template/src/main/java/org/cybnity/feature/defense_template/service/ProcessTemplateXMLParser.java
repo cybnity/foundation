@@ -23,9 +23,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * DOM parsing implementation class of XML document defining a process template as specification reusable
- * by a process builder to instantiate a customized process (e.g NIST RMF
- * process).
+ * DOM parsing implementation class of XML document defining a process template
+ * as specification reusable by a process builder to instantiate a customized
+ * process (e.g NIST RMF process).
  * 
  * @author olivier
  *
@@ -41,7 +41,8 @@ public class ProcessTemplateXMLParser {
 	 *
 	 */
 	public enum NodeNameSpecification {
-		Process, Description, Activation, Completion, Properties, Attribute, Staging, Step, Name, SubStates;
+		Process, Description, Activation, Completion, Properties, Attribute, Staging, Step, Name, SubStates,
+		ActivationIncomingConditions;
 	}
 
 	/**
@@ -49,7 +50,7 @@ public class ProcessTemplateXMLParser {
 	 * a process defined into a valid XML document.
 	 */
 	public enum NodeAttributeNameSpecification {
-		name, isActiveStatus, percentage;
+		name, isActiveStatus, percentage, referential;
 	}
 
 	/**
@@ -77,17 +78,20 @@ public class ProcessTemplateXMLParser {
 	 * 
 	 * @param documentIn Mandatory stream to read as XML document.
 	 * @param observer   Mandatory observer that shall be notify during the parsing.
-	 * @throws ParserConfigurationException When any required configuration for
-	 *                                      document building (DOM parsing based) is
-	 *                                      missing.
-	 * @throws IOException                  If any IO errors occur during the
-	 *                                      parsing.
-	 * @throws SAXException                 If any parse errors occur during the
-	 *                                      parsing.
-	 * @throws IllegalArgumentException     When required parameter is missing.
+	 * @throws ParserConfigurationException       When any required configuration
+	 *                                            for document building (DOM parsing
+	 *                                            based) is missing.
+	 * @throws IOException                        If any IO errors occur during the
+	 *                                            parsing.
+	 * @throws SAXException                       If any parse errors occur during
+	 *                                            the parsing.
+	 * @throws IllegalArgumentException           When required parameter is
+	 *                                            missing.
+	 * @throws NotSupportedTemplateValueException When a node element description is
+	 *                                            not valid.
 	 */
-	public void parse(InputStream documentIn, IProcessBuildPreparation observer)
-			throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException {
+	public void parse(InputStream documentIn, IProcessBuildPreparation observer) throws ParserConfigurationException,
+			IOException, SAXException, IllegalArgumentException, NotSupportedTemplateValueException {
 		if (documentIn == null)
 			throw new IllegalArgumentException("DocumentIn parameter is required!");
 		if (observer == null)
@@ -108,8 +112,13 @@ public class ProcessTemplateXMLParser {
 	 * 
 	 * @param doc      Mandatory document instance already parsed.
 	 * @param observer Mandatory observer to notify.
+	 * @throws NotSupportedTemplateValueException When referential event type
+	 *                                            description is defined in node but
+	 *                                            that is unknown from referential
+	 *                                            indicated.
 	 */
-	private void readAllContents(Document doc, IProcessBuildPreparation observer) {
+	private void readAllContents(Document doc, IProcessBuildPreparation observer)
+			throws NotSupportedTemplateValueException {
 		NodeList root = doc.getElementsByTagName(NodeNameSpecification.Process.name());
 		Node process = root.item(0);
 		if (process.getNodeType() == Node.ELEMENT_NODE) {
@@ -125,8 +134,12 @@ public class ProcessTemplateXMLParser {
 	 * 
 	 * @param parent Mandatory steps parent (e.g SubStates container node).
 	 * @return A list of steps or empty list.
+	 * @throws NotSupportedTemplateValueException When referential event type
+	 *                                            description is defined in node but
+	 *                                            that is unknown from referential
+	 *                                            indicated.
 	 */
-	private List<StepSpecification> getSteps(Node parent) {
+	private List<StepSpecification> getSteps(Node parent) throws NotSupportedTemplateValueException {
 		List<StepSpecification> steps = new LinkedList<>();
 		if (parent != null && parent.hasChildNodes()) {
 			// Find all steps defining the parent
@@ -161,9 +174,10 @@ public class ProcessTemplateXMLParser {
 							if (stepSpecElement.getNodeName().equals(NodeNameSpecification.Name.name())) {
 								// Read mandatory step name
 								stepName = stepSpecElement.getTextContent();
-								if (stepName != null && !"".equals(stepName)) {
-									step.setName(stepName);
-								}
+								if (stepName == null || "".equals(stepName))
+									throw new NotSupportedTemplateValueException(
+											"Invalid Step node specificatin found without mandatory text content value!");
+								step.setName(stepName);
 							}
 
 							if (stepSpecElement.getNodeName().equals(NodeNameSpecification.Properties.name())) {
@@ -182,6 +196,78 @@ public class ProcessTemplateXMLParser {
 								if (!"".equals(isActive)) {
 									step.setActivationState(Boolean.getBoolean(isActive));
 								}
+								if (stepSpecElement.hasChildNodes()) {
+									// Read optional defined activation incoming conditions
+									NodeList conditions = stepSpecElement.getChildNodes();
+									Node activationCondition;
+									Collection<Enum<?>> activationEventTypes = new ArrayList<>();
+									String activationEventType, eventTypeReferential;
+									Node eventType;
+									Element activationIncomingEventTypeElement;
+									NodeList incomingEventTypes;
+									for (int c = 0; c < conditions.getLength(); c++) {
+										activationCondition = conditions.item(c);
+										if (activationCondition != null && activationCondition.getNodeName()
+												.equals(NodeNameSpecification.ActivationIncomingConditions.name())) {
+											incomingEventTypes = activationCondition.getChildNodes();
+
+											for (int incomingEventTypesCount = 0; incomingEventTypesCount < incomingEventTypes
+													.getLength(); incomingEventTypesCount++) {
+												// Identify the logical names of each event type supported as cause of
+												// automatic activation of the step
+												eventType = incomingEventTypes.item(incomingEventTypesCount);
+												if (eventType.getNodeType() == Node.ELEMENT_NODE) {
+													activationIncomingEventTypeElement = (Element) eventType;
+													activationEventType = activationIncomingEventTypeElement
+															.getNodeName();
+													eventTypeReferential = activationIncomingEventTypeElement
+															.getAttribute(
+																	NodeAttributeNameSpecification.referential.name());
+													if (!"".equals(eventTypeReferential)) {
+														try {
+															// Instantiate event type referential supporting the type of
+															// event type specified in template
+															Object[] referentialEnum = getClass().getClassLoader()
+																	.loadClass(eventTypeReferential).getEnumConstants();
+
+															if (referentialEnum == null)
+																throw new NotSupportedTemplateValueException(
+																		"Step specification contain an event type declaration (sub-node of ActivationIncomingConditions) about an invalid referential attribute value (perhaps is not an Enum type) that is unknown from the class path!");
+															Enum<?> refEnum;
+															// Instantiate event type from supported referential
+															for (Object referentialCustomEventType : referentialEnum) {
+																if (referentialCustomEventType.getClass().isEnum()) {
+																	refEnum = (Enum<?>) referentialCustomEventType;
+																	// Detect the supported event type as defined in the
+																	// template
+																	if (refEnum.name()
+																			.equalsIgnoreCase(activationEventType)) {
+																		// Supported event type instance
+																		// Save it as cause of step activation
+																		activationEventTypes.add(refEnum);
+																		break; // Stop search from referential
+																	}
+																}
+															}
+														} catch (ClassNotFoundException cnfe) {
+															// Unknown type of enumeration referential class from class
+															// path
+															throw new NotSupportedTemplateValueException(cnfe);
+														}
+													} else {
+														throw new NotSupportedTemplateValueException(
+																"One Step with ActivationIncomingConditions sub-node require mandatory referential attribute which is currently not defined!");
+													}
+												}
+											}
+										}
+									}
+
+									// Define the found specified step activation conditions into the step result
+									if (!activationEventTypes.isEmpty())
+										step.setActivationEventTypes(activationEventTypes);
+								}
+
 							}
 
 							if (stepSpecElement.getNodeName().equals(NodeNameSpecification.Completion.name())) {
@@ -221,8 +307,13 @@ public class ProcessTemplateXMLParser {
 	 * 
 	 * @param parent   Mandatory process to read.
 	 * @param observer To notify.
+	 * @throws NotSupportedTemplateValueException When referential event type
+	 *                                            description is defined in node but
+	 *                                            that is unknown from referential
+	 *                                            indicated.
 	 */
-	private void getProcessStaging(Node parent, IProcessBuildPreparation observer) {
+	private void getProcessStaging(Node parent, IProcessBuildPreparation observer)
+			throws NotSupportedTemplateValueException {
 		if (observer != null && parent != null && parent.getNodeType() == Node.ELEMENT_NODE) {
 			Element element = (Element) parent;
 			NodeList staging = element.getElementsByTagName(NodeNameSpecification.Staging.name());

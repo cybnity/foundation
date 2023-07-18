@@ -61,7 +61,12 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 		 **/
 		CompletionState,
 		/** Status of activation of this step **/
-		ActivityState;
+		ActivityState,
+		/**
+		 * Event types that are supported as cause of auto-activation of this step (e.g
+		 * handle for automatic change activityState to active)
+		 **/
+		ActivationEventTypes;
 	}
 
 	/**
@@ -148,6 +153,9 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 				// Impossible usage of activation instance that should never arrive
 				// Make log for developers
 			}
+
+			// Initialize automatic activation events handling when existing
+			initializeAutomaticActivationEventsHandling();
 		}
 	}
 
@@ -193,6 +201,33 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 			} catch (ImmutabilityException ie) {
 				// Impossible usage of activation instance that should never arrive
 				// Make log for developers
+			}
+			// Initialize automatic activation events handling when existing
+			initializeAutomaticActivationEventsHandling();
+		}
+	}
+
+	/**
+	 * Initialized the handler that support the monitoring of even types which can
+	 * automatically change the current activation status of this step when handled
+	 * (e.g detected after a performed change on a followed domain object or group
+	 * of object's attributes). This method read the event types supported as
+	 * activation sources, create the handler managing the interpretation of each
+	 * event types and add this handling capability to this step.
+	 */
+	private void initializeAutomaticActivationEventsHandling() {
+		// Found existing event types to read that allow to support the automatic
+		// activation of this step
+		Collection<Enum<?>> activationEventTypes = activationEventTypes();
+		if (activationEventTypes != null && !activationEventTypes.isEmpty()) {
+			for (Enum<?> activationEventItem : activationEventTypes) {
+				if (activationEventItem != null) {
+					// Create a handler of the type of event justifying a change of this step
+					// activation state
+					
+					// TODO create handler of activation state automatic change with set of handler dedicated to interpretation of events types
+					
+				}
 			}
 		}
 	}
@@ -282,6 +317,26 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 	 */
 	public String name() {
 		return (String) this.currentValue().get(PropertyAttributeKey.Name.name());
+	}
+
+	/**
+	 * Get the list of event types that are supported and are causes of automatic
+	 * change of activation state to active status.
+	 * 
+	 * @return A set of event types or null.
+	 */
+	@SuppressWarnings("unchecked")
+	public Collection<Enum<?>> activationEventTypes() {
+		Object value = this.currentValue().getOrDefault(PropertyAttributeKey.ActivationEventTypes.name(), null);
+		if (value != null) {
+			try {
+				return Collections.unmodifiableCollection((Collection<Enum<?>>) value);
+			} catch (Exception cce) {
+				// Invalid type of collection object implemented.
+				// Add developer log about coding problem
+			}
+		}
+		return null;
 	}
 
 	/**

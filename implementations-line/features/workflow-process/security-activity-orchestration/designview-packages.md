@@ -133,6 +133,7 @@ classDiagram
 		-PropertyAttributeKey.Name : String
 		-PropertyAttributeKey.Properties : Collection~Attribute~
 		-PropertyAttributeKey.SubSteps : List~Step~
+		-PropertyAttributeKey.ActivationEventTypes : Collection~Enum~
 		+Step(EntityReference propertyOwner, String name, ChainCommandHandler commandHandlingDelegate)
 		+Step(EntityReference propertyOwner, String name, ChainCommandHandler commandHandlingDelegate,
 			Step... predecessors)
@@ -140,6 +141,7 @@ classDiagram
 			ChainCommandHandler commandHandlingDelegate)
 		+Step(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
 			ChainCommandHandler commandHandlingDelegate, Step... predecessors)
+		-initializeAutomaticActivationEventsHandling()
 		+properties() Collection~Attribute~
 		+name() String
 		+setCommandProcessor(ChainCommandHandler commandHandlingDelegate)
@@ -179,5 +181,13 @@ classDiagram
 	}
 
 ```
+
+### DOMAIN.MODEL.EVENT PACKAGE
+Several types of domain events are defining regarding changes detected and/or promoted by the domain. This package includes event types which are managed by this domain.
+
+|Class Type|Motivation|
+| :-- | :-- |
+|SecurityActivityOrchestrationEventReferential|Referential of event types supported by the security activity orchestration feature|
+
 #
 [Back To Home](README.md)

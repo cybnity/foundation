@@ -96,7 +96,8 @@
 							<Completion name="default" percentage="0.0"></Completion>
 						</Step>
 						<Step>
-							<Name>Organizationally tailored control baselines establishment</Name>
+							<Name>Organizationally tailored control baselines establishment
+							</Name>
 							<Properties>
 								<Attribute name="level">OrganizationLevel</Attribute>
 							</Properties>
@@ -310,7 +311,12 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 			</SubStates>
-			<Activation isActiveStatus="false"></Activation>
+			<Activation isActiveStatus="false">
+				<ActivationIncomingConditions>
+					<RiskAssessmentPrepared
+						referential="org.cybnity.feature.security_activity_orchestration.domain.event.SecurityActivityOrchestrationEventReferential" />
+				</ActivationIncomingConditions>
+			</Activation>
 			<Completion name="default" percentage="0.0"></Completion>
 		</Step>
 		<Step>
@@ -380,7 +386,14 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 			</SubStates>
-			<Activation isActiveStatus="false"></Activation>
+			<Activation isActiveStatus="false">
+				<ActivationIncomingConditions>
+					<RiskAssessmentPrepared
+						referential="org.cybnity.feature.security_activity_orchestration.domain.event.SecurityActivityOrchestrationEventReferential" />
+					<InformationSystemCategorized
+						referential="org.cybnity.feature.security_activity_orchestration.domain.event.SecurityActivityOrchestrationEventReferential" />
+				</ActivationIncomingConditions>
+			</Activation>
 			<Completion name="default" percentage="0.0"></Completion>
 		</Step>
 		<Step>
@@ -410,7 +423,14 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 			</SubStates>
-			<Activation isActiveStatus="false"></Activation>
+			<Activation isActiveStatus="false">
+				<ActivationIncomingConditions>
+					<RiskAssessmentPrepared
+						referential="org.cybnity.feature.security_activity_orchestration.domain.event.SecurityActivityOrchestrationEventReferential" />
+					<SecurityControlsSelected
+						referential="org.cybnity.feature.security_activity_orchestration.domain.event.SecurityActivityOrchestrationEventReferential" />
+				</ActivationIncomingConditions>
+			</Activation>
 			<Completion name="default" percentage="0.0"></Completion>
 		</Step>
 		<Step>
@@ -480,7 +500,14 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 			</SubStates>
-			<Activation isActiveStatus="false"></Activation>
+			<Activation isActiveStatus="false">
+				<ActivationIncomingConditions>
+					<RiskAssessmentPrepared
+						referential="org.cybnity.feature.security_activity_orchestration.domain.event.SecurityActivityOrchestrationEventReferential" />
+					<SecurityControlsImplemented
+						referential="org.cybnity.feature.security_activity_orchestration.domain.event.SecurityActivityOrchestrationEventReferential" />
+				</ActivationIncomingConditions>
+			</Activation>
 			<Completion name="default" percentage="0.0"></Completion>
 		</Step>
 		<Step>
@@ -540,7 +567,14 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 			</SubStates>
-			<Activation isActiveStatus="false"></Activation>
+			<Activation isActiveStatus="false">
+				<ActivationIncomingConditions>
+					<RiskAssessmentPrepared
+						referential="org.cybnity.feature.security_activity_orchestration.domain.event.SecurityActivityOrchestrationEventReferential" />
+					<SecurityControlsInstantiationAssessed
+						referential="org.cybnity.feature.security_activity_orchestration.domain.event.SecurityActivityOrchestrationEventReferential" />
+				</ActivationIncomingConditions>
+			</Activation>
 			<Completion name="default" percentage="0.0"></Completion>
 		</Step>
 		<Step>
@@ -630,7 +664,14 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 			</SubStates>
-			<Activation isActiveStatus="false"></Activation>
+			<Activation isActiveStatus="false">
+				<ActivationIncomingConditions>
+					<RiskAssessmentPrepared
+						referential="org.cybnity.feature.security_activity_orchestration.domain.event.SecurityActivityOrchestrationEventReferential" />
+					<SystemAuthorized
+						referential="org.cybnity.feature.security_activity_orchestration.domain.event.SecurityActivityOrchestrationEventReferential" />
+				</ActivationIncomingConditions>
+			</Activation>
 			<Completion name="default" percentage="0.0"></Completion>
 		</Step>
 	</Staging>

@@ -21,8 +21,17 @@ public class StepSpecification {
 	private Boolean activationState;
 	private String completionName;
 	private Float currentPercentageOfCompletion;
+	private Collection<Enum<?>> activationEventTypes;
 
 	public StepSpecification() {
+	}
+
+	public void setActivationEventTypes(Collection<Enum<?>> eventTypes) {
+		this.activationEventTypes = eventTypes;
+	}
+
+	public Collection<Enum<?>> getActivationEventTypes() {
+		return this.activationEventTypes;
 	}
 
 	public String getName() {
