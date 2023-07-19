@@ -120,6 +120,14 @@ public class CreateStandardizedProcessStepDefinitions {
 				// Check that full name of process is good
 				assertTrue(this.fullName.equalsIgnoreCase(property.value()));
 			}
+			if ("description".equals(property.name())) {
+				// Check that description of process is good
+				assertNotNull(property.value());
+			}
+			if ("finalizedStateDescription".equals(property.name())) {
+				// Check that description of process is good
+				assertNotNull(property.value());
+			}
 		}
 	}
 

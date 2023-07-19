@@ -214,6 +214,10 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 	 * of object's attributes). This method read the event types supported as
 	 * activation sources, create the handler managing the interpretation of each
 	 * event types and add this handling capability to this step.
+	 * 
+	 * The handling of each event type is based on a generic
+	 * ConcreteDomainChangeEvent domain events monitored where each one handled
+	 * include a type of event occurred (allow to avoid static coded event type).
 	 */
 	private void initializeAutomaticActivationEventsHandling() {
 		// Found existing event types to read that allow to support the automatic
@@ -224,9 +228,10 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 				if (activationEventItem != null) {
 					// Create a handler of the type of event justifying a change of this step
 					// activation state
-					
-					// TODO create handler of activation state automatic change with set of handler dedicated to interpretation of events types
-					
+
+					// TODO create handler of activation state automatic change with set of handler
+					// dedicated to interpretation of events types
+
 				}
 			}
 		}

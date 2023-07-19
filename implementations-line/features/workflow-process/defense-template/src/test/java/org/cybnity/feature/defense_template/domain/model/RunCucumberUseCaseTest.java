@@ -14,6 +14,6 @@ import org.junit.platform.suite.api.Suite;
 @SelectClasspathResource("org/cybnity/feature/defense_template/domain/model")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "org.cybnity.feature.defense_template.domain.model")
 @Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
-class RunCucumberUseCaseTest {
+public class RunCucumberUseCaseTest {
 
 }
