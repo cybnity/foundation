@@ -187,7 +187,7 @@ Several types of domain events are defining regarding changes detected and/or pr
 
 |Class Type|Motivation|
 | :-- | :-- |
-|SecurityActivityOrchestrationEventReferential|Referential of event types supported by the security activity orchestration feature|
+|SecurityActivityOrchestrationEventReferential|Referential of event types supported by the security activity orchestration feature (e.g handled by NIST RMF process template steps)|
 
 #
 [Back To Home](README.md)

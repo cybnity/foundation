@@ -4,8 +4,8 @@
 		<Properties>
 			<Attribute name="standard">NIST</Attribute>
 			<Attribute name="fullName">Risk Management Framework</Attribute>
-			<Attribute name="description"><![CDATA[Execute the RMF from an organization- and a system-level perspective by establishing a context and priorities for managing security and privacy risk.]]></Attribute>
-			<Attribute name="finalizedStateDescription"><![CDATA[Finalized step is confirmed via publication of RiskAssessmentPrepared event.]]></Attribute>
+			<Attribute name="description"><![CDATA[Définit un standard de gestion des risques depuis une perspective organisationnelle ou système, en établissant un contexte et des priorités pour gérer les risques de sécurité et de confidentialité.]]></Attribute>
+			<Attribute name="finalizedStateDescription"><![CDATA[L'état finalisé est confirmé par la publication d'un évènement de type RiskAssessmentPrepared.]]></Attribute>
 		</Properties>
 	</Description>
 	<Activation isActiveStatus="false"></Activation>
@@ -14,27 +14,27 @@
 		<Step>
 			<Name>PR&#x00C9;PARE</Name>
 			<Properties>
-				<Attribute name="level">OrganizationLevel</Attribute>
+				<Attribute name="level">Niveau organisation</Attribute>
 			</Properties>
 			<SubStates>
 				<Step>
-					<Name>Risk management roles</Name>
+					<Name>Rôles de gestion des risques</Name>
 					<Properties>
-						<Attribute name="level">OrganizationLevel</Attribute>
+						<Attribute name="level">Niveau organisation</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
-							<Name>Risk management roles definition</Name>
+							<Name>Définition des rôles de gestion des risques</Name>
 							<Properties>
-								<Attribute name="level">OrganizationLevel</Attribute>
+								<Attribute name="level">Niveau organisation</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
 						</Step>
 						<Step>
-							<Name>Risk management individual identities definition</Name>
+							<Name>Définition des identités individuelles des gestionnaires de risques</Name>
 							<Properties>
-								<Attribute name="level">OrganizationLevel</Attribute>
+								<Attribute name="level">Niveau organisation</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -44,15 +44,15 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>Risk management strategy</Name>
+					<Name>Stratégie de gestion des risques</Name>
 					<Properties>
-						<Attribute name="level">OrganizationLevel</Attribute>
+						<Attribute name="level">Niveau organisation</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
-							<Name>Risk management strategy establishment</Name>
+							<Name>Elaboration de la stratégie de gestion des risques</Name>
 							<Properties>
-								<Attribute name="level">OrganizationLevel</Attribute>
+								<Attribute name="level">Niveau organisation</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -62,34 +62,31 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>Risk assessment organization</Name>
+					<Name>Organisation de l'évaluation des risques</Name>
 					<Properties>
-						<Attribute name="level">OrganizationLevel</Attribute>
+						<Attribute name="level">Niveau organisation</Attribute>
 					</Properties>
 					<Activation isActiveStatus="false"></Activation>
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>Organizationnally tailored control baselines and
-						cybersecurity profiles
-					</Name>
+					<Name>Etat actuel des contrôles et profils de cybersécurité adaptés à l'organisation</Name>
 					<Properties>
-						<Attribute name="level">OrganizationLevel</Attribute>
+						<Attribute name="level">Niveau organisation</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
-							<Name>Cybersecurity profiles establishment</Name>
+							<Name>Elaboration des profils de cybersécurité</Name>
 							<Properties>
-								<Attribute name="level">OrganizationLevel</Attribute>
+								<Attribute name="level">Niveau organisation</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
 						</Step>
 						<Step>
-							<Name>Organizationally tailored control baselines establishment
-							</Name>
+							<Name>Elaboration de la base de référence des contrôles adaptés à l'organisation</Name>
 							<Properties>
-								<Attribute name="level">OrganizationLevel</Attribute>
+								<Attribute name="level">Niveau organisation</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -99,23 +96,23 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>Common control identification</Name>
+					<Name>Identification des contrôles communs</Name>
 					<Properties>
-						<Attribute name="level">OrganizationLevel</Attribute>
+						<Attribute name="level">Niveau organisation</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
-							<Name>Common controls documentation</Name>
+							<Name>Documentation des mesures de contrôles communes</Name>
 							<Properties>
-								<Attribute name="level">OrganizationLevel</Attribute>
+								<Attribute name="level">Niveau organisation</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
 						</Step>
 						<Step>
-							<Name>Common controls publishing</Name>
+							<Name>Publication des contrôles communs</Name>
 							<Properties>
-								<Attribute name="level">OrganizationLevel</Attribute>
+								<Attribute name="level">Niveau organisation</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -125,31 +122,31 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>Impact level prioritization</Name>
+					<Name>Priorisation des niveaux d'impacts</Name>
 					<Properties>
-						<Attribute name="level">OrganizationLevel</Attribute>
+						<Attribute name="level">Niveau organisation</Attribute>
 					</Properties>
 					<Activation isActiveStatus="false"></Activation>
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>Continuous monitoring strategy organization</Name>
+					<Name>Organisation de la stratégie de surveillance continue</Name>
 					<Properties>
-						<Attribute name="level">OrganizationLevel</Attribute>
+						<Attribute name="level">Niveau organisation</Attribute>
 					</Properties>
 					<Activation isActiveStatus="false"></Activation>
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>Mission or business focus</Name>
+					<Name>Focus métiers et missions</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
-							<Name>System mission or business supported processes identification</Name>
+							<Name>Identification des processus métiers ou missions supportés par le système</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -159,15 +156,15 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>System stakeholders</Name>
+					<Name>Parties-prenantes au système</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
-							<Name>System stakeholders identification</Name>
+							<Name>Identification des parties-prenantes du système</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -177,23 +174,23 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>Asset identification</Name>
+					<Name>Identification d'actif</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<Activation isActiveStatus="false"></Activation>
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>Authorization boundary</Name>
+					<Name>Limite d'authorisation</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
-							<Name>Authorization boundary determination</Name>
+							<Name>Détermination des limites d'authorisation</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -203,15 +200,15 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>Information types</Name>
+					<Name>Types d'informations</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
-							<Name>Information types identification</Name>
+							<Name>Identification des natures d'informations</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -221,15 +218,15 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>Information life cycle</Name>
+					<Name>Cycle de vie des informations</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
-							<Name>Information life cycle stages identification</Name>
+							<Name>Identification des phases du cycle de vie des informations</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -239,15 +236,15 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>Risk assessment system</Name>
+					<Name>Système d'évaluation des risques</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
-							<Name>System level risk assessment</Name>
+							<Name>Evaluation du niveau de risque du système</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -257,15 +254,15 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>Requirements definition</Name>
+					<Name>Définition des exigences</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
-							<Name>System security requirements definition</Name>
+							<Name>Définition des exigences de sécurité du système</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -275,15 +272,15 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>Enterprise architecture</Name>
+					<Name>Architecture d'entreprise</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
-							<Name>System placement with enterprise architecture determination</Name>
+							<Name>Détermination du positionnement du système vis à vis de l'architecture d'entreprise</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -293,23 +290,23 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>Requirements allocation</Name>
+					<Name>Allocation d'exigences</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
-							<Name>Security requirements allocation</Name>
+							<Name>Allocation des exigences de sécurité</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
 						</Step>
 						<Step>
-							<Name>Environment security requirements allocation</Name>
+							<Name>Allocation des exigences de sécurité de l'environnement</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -319,15 +316,15 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>System registration</Name>
+					<Name>Inscription du système</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
-							<Name>For purposes system registration</Name>
+							<Name>Proposition de référencement du système</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -343,27 +340,27 @@
 		<Step>
 			<Name>CAT&#x00C9;GORISE</Name>
 			<Properties>
-				<Attribute name="level">SystemLevel</Attribute>
+				<Attribute name="level">Niveau système</Attribute>
 			</Properties>
 			<SubStates>
 				<Step>
-					<Name>System description</Name>
+					<Name>Description du système</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<Activation isActiveStatus="false"></Activation>
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>System categorization</Name>
+					<Name>Catégorisation du système</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
-							<Name>System security categorization</Name>
+							<Name>Catégorisation de sécurité du système</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -373,15 +370,15 @@
 					<Completion name="default" percentage="0.0"></Completion>
 				</Step>
 				<Step>
-					<Name>Security categorization review and approval</Name>
+					<Name>Revue et approbation de la catégorisation de sécurité</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>System security categorization review</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -389,7 +386,7 @@
 						<Step>
 							<Name>System security categorization decision</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -410,19 +407,19 @@
 		<Step>
 			<Name>S&#x00C9;LECTIONNE</Name>
 			<Properties>
-				<Attribute name="level">SystemLevel</Attribute>
+				<Attribute name="level">Niveau système</Attribute>
 			</Properties>
 			<SubStates>
 				<Step>
 					<Name>Control selection</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>Control baselines selection</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -434,13 +431,13 @@
 				<Step>
 					<Name>Control tailoring</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>Control baselines tailoring</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -452,13 +449,13 @@
 				<Step>
 					<Name>Control allocation</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>Security controls designation</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -466,7 +463,7 @@
 						<Step>
 							<Name>Security controls system components allocation</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -478,13 +475,13 @@
 				<Step>
 					<Name>Documentation of planned control implementations</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>Control implementations plan documentation</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -496,13 +493,13 @@
 				<Step>
 					<Name>Continuous monitoring strategy system</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>System continuous monitoring strategy development</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -514,13 +511,13 @@
 				<Step>
 					<Name>Plan review and approval</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>System security plans review</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -528,7 +525,7 @@
 						<Step>
 							<Name>System security plans decision</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -551,19 +548,19 @@
 		<Step>
 			<Name>IMPL&#x00C9;MENTE</Name>
 			<Properties>
-				<Attribute name="level">SystemLevel</Attribute>
+				<Attribute name="level">Niveau système</Attribute>
 			</Properties>
 			<SubStates>
 				<Step>
 					<Name>Control implementation</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>Security controls implementation</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -575,13 +572,13 @@
 				<Step>
 					<Name>Update control implementation information</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>Security controls implementation plans change</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -604,19 +601,19 @@
 		<Step>
 			<Name>&#x00C9;VALUE</Name>
 			<Properties>
-				<Attribute name="level">SystemLevel</Attribute>
+				<Attribute name="level">Niveau système</Attribute>
 			</Properties>
 			<SubStates>
 				<Step>
 					<Name>Assessor selection</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>Assessor team selection</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -628,13 +625,13 @@
 				<Step>
 					<Name>Assessment plan</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>Security assessment plans documentation delivery</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -642,7 +639,7 @@
 						<Step>
 							<Name>Security assessment plans review</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -650,7 +647,7 @@
 						<Step>
 							<Name>Security assessment plans decision</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -662,13 +659,13 @@
 				<Step>
 					<Name>Control assessment</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>Security controls assessment</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -680,13 +677,13 @@
 				<Step>
 					<Name>Assessment report</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>Security controls assessment reporting</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -698,13 +695,13 @@
 				<Step>
 					<Name>Remediation actions</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>Security control deficiencies remediation</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -716,13 +713,13 @@
 				<Step>
 					<Name>Plan of action and milestones</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>Security plan change management</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -745,19 +742,19 @@
 		<Step>
 			<Name>AUTHORISE</Name>
 			<Properties>
-				<Attribute name="level">SystemLevel</Attribute>
+				<Attribute name="level">Niveau système</Attribute>
 			</Properties>
 			<SubStates>
 				<Step>
 					<Name>Authorization package</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>System authorization package development</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -769,13 +766,13 @@
 				<Step>
 					<Name>Risk analysis and determination</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>System risk determination rendering</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -787,13 +784,13 @@
 				<Step>
 					<Name>Risk response</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>Risk responses providing</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -805,13 +802,13 @@
 				<Step>
 					<Name>Authorization decision</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>System security controls authorization decision</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -819,7 +816,7 @@
 						<Step>
 							<Name>System authorization decision</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -831,13 +828,13 @@
 				<Step>
 					<Name>Authorization reporting</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>Authorization report providing</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -860,19 +857,19 @@
 		<Step>
 			<Name>SURVEILLE</Name>
 			<Properties>
-				<Attribute name="level">SystemLevel</Attribute>
+				<Attribute name="level">Niveau système</Attribute>
 			</Properties>
 			<SubStates>
 				<Step>
 					<Name>System and environment changes</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>System and environment changes monitoring</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -884,13 +881,13 @@
 				<Step>
 					<Name>Ongoing assessments</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>Control effectiveness assessments</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -902,13 +899,13 @@
 				<Step>
 					<Name>Ongoing risk response</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>Monitoring activities output analysis</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -916,7 +913,7 @@
 						<Step>
 							<Name>Identified risk responses deployment</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -928,7 +925,7 @@
 				<Step>
 					<Name>Authorization package updates</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<Activation isActiveStatus="false"></Activation>
 					<Completion name="default" percentage="0.0"></Completion>
@@ -936,13 +933,13 @@
 				<Step>
 					<Name>Security and privacy reporting</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>System security posture reporting</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -954,13 +951,13 @@
 				<Step>
 					<Name>Ongoing authorization</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>System authorization changes notification</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -972,13 +969,13 @@
 				<Step>
 					<Name>System disposal</Name>
 					<Properties>
-						<Attribute name="level">SystemLevel</Attribute>
+						<Attribute name="level">Niveau système</Attribute>
 					</Properties>
 					<SubStates>
 						<Step>
 							<Name>System disposal strategy definition</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>
@@ -986,7 +983,7 @@
 						<Step>
 							<Name>System disposal strategy implementation</Name>
 							<Properties>
-								<Attribute name="level">SystemLevel</Attribute>
+								<Attribute name="level">Niveau système</Attribute>
 							</Properties>
 							<Activation isActiveStatus="false"></Activation>
 							<Completion name="default" percentage="0.0"></Completion>

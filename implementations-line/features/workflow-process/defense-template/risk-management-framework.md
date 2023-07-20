@@ -46,6 +46,61 @@ graph RL
 
 ```
 
+### Process and sub-tasks
+Several sub-process that are responsible to produce deliverable during each process phase are existing and are optionnally constraints by other one.
+
+Find here a presentation of the facts stream which define a moment into a NIST RMF standard risk assessment generating several interactions flow (materialized by domain events at end of tasks realization) when one or several risk entities that are created.
+
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+        'background': '#ffffff',
+        'fontFamily': 'arial',
+        'fontSize': '18px',
+        'primaryColor': '#fff',
+        'primaryBorderColor': '#0e2a43',
+        'secondaryBorderColor': '#0e2a43',
+        'tertiaryBorderColor': '#0e2a43',
+        'edgeLabelBackground':'#fff',
+        'lineColor': '#0e2a43',
+        'tertiaryColor': '#fff'
+    }
+  }
+}%%
+graph RL
+  RiskManagementLevel
+  RiskManagementLevel --> InformationSystemRiskPerspectiveLevel
+  RiskManagementLevel --> BuzinessProcessRiskPerspectiveLevel
+  RiskManagementLevel --> OrganizationRiskPerspectiveLevel
+  RiskManagementStrategy --> RMF
+  Risk -- risk identified --> RiskIdentification
+  Risk -- management level assigned --> InformationSystemRiskPerspectiveLevel
+  Role -- responsibility assigned --> RiskIdentification
+  RMF -- risk management strategy established --> RiskIdentification
+  OrganizationalRiskTolerance -- risk tolerance established --> RiskIdentification
+  Missions -- missions identified --> RiskIdentification
+  BusinessFunctions -- business functions identified --> RiskIdentification
+  InformationSystem -- IS identified --> RiskIdentification
+  InformationSystemFunctions -- supported missions/functions processes identified --> Missions & BusinessFunctions & InformationSystem
+  Stakeholders -- information system interested key stakeholders identified --> InformationSystem
+  Assets -- assets identified and prioritized --> InformationSystem & RiskIdentification
+  Threats -- organizations threats understood --> Organizations
+  Threats -- IS threats understood --> InformationSystem
+  PotentialAdverseEffects -- potential adverse effects understood --> Individuals & Threats
+  OrganizationLevelRiskAssessment -- organization level risks assessment conducted --> Organizations & PotentialAdverseEffects
+  SystemLevelRiskAssessment -- system level risks assessment conducted --> PotentialAdverseEffects & InformationSystem
+  SecurityRequirements -- security and privacy requirement identified and prioritized --> OrganizationLevelRiskAssessment & SystemLevelRiskAssessment
+  CommonControls -- common controls determined --> SecurityRequirements
+  AuthorizationBoundaries -- IS authorization boundaries determined --> InformationSystem & CommonControls
+  InformationSystem -- IS defined as enterprise architecture element --> EnterpriseArchitectureElement
+  SecurityArchitectures -- security and privacy architectures developed --> EnterpriseArchitectureElement & CommonControls
+  DeconflictedSecurityRequirements -- security and privacy requirements identified, aligned, deconflicted --> SecurityRequirements
+  DeconflictedSecurityRequirements -- security and privacy requirements allocated --> InformationSystem & EnterpriseArchitectureElement & Organizations
+
+```
+
 #### Risk assessment
 Feature Type: make risk-based cybersecurity risk assessment of a scope
 
