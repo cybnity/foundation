@@ -38,6 +38,13 @@ The technical description regarding behavior and best usage is maintained into t
 # STRUCTURE MODELS
 Several packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
 
+## MODEL.EVENT PACKAGE
+Several types of domain events are defined by each applicative domain. This package includes enabler and utilities classes which are reusable by the domain implements.
+
+|Class Type|Motivation|
+| :-- | :-- |
+|ConcreteDomainChangeEvent|Generic event regarding a change occurred on a topic relative to a domain|
+
 ## MODEL PACKAGE
 
 ```mermaid
@@ -197,7 +204,6 @@ classDiagram
     }
 
 ```
-
 
 ```mermaid
 %%{

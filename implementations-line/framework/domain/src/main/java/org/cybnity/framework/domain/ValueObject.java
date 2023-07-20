@@ -9,7 +9,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * as immutable. Represents a conceptual whole by composing related attributes
  * as an integral unit. It is completely replaceable when the measurement or
  * description changes, that can be compared with others using Value equality or
- * hashcode value.
+ * hash code value.
  * 
  * A Value Object doesn't have any identity, it is entirely identified by its
  * value and is immutability.

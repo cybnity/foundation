@@ -50,8 +50,7 @@ public abstract class MutableProperty implements IHistoricalFact {
 	/**
 	 * Current value of the property. Can be unique (e.g about a simple String field
 	 * of an Entity), but also represents a current version of a combined complex
-	 * object (e.g aggregation of multiples properties constitute a complex
-	 * Entity).
+	 * object (e.g aggregation of multiples properties constitute a complex Entity).
 	 * 
 	 * The key is the property name, and the value is its current captured recent
 	 * value version.
@@ -162,7 +161,8 @@ public abstract class MutableProperty implements IHistoricalFact {
 		this(propertyOwner, propertyCurrentValue, status);
 		if (predecessors != null) {
 			// Manage the possible parallel concurrently previous state (e.g regarding
-			// original previous values of this property that were evaluated to dedicate this
+			// original previous values of this property that were evaluated to dedicate
+			// this
 			// new value)
 			for (MutableProperty p : predecessors) {
 				if (p != null) {
@@ -340,5 +340,21 @@ public abstract class MutableProperty implements IHistoricalFact {
 	public OffsetDateTime occurredAt() {
 		// Return immutable value of the fact time
 		return this.changedAt;
+	}
+
+	/**
+	 * Build a definition of property based on property name and value.
+	 * 
+	 * @param key   Mandatory name of the property.
+	 * @param value Value of the key.
+	 * @return A definition of the property.
+	 * @throws IllegalArgumentException When any mandatory parameter is missing.
+	 */
+	static public HashMap<String, Object> buildPropertyValue(String key, Object value) throws IllegalArgumentException {
+		if (key == null)
+			throw new IllegalArgumentException("key parameter is required!");
+		HashMap<String, Object> val = new HashMap<>();
+		val.put(key, value);
+		return val;
 	}
 }

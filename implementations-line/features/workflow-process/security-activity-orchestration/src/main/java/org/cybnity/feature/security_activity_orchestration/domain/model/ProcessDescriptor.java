@@ -6,7 +6,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.immutable.Entity;
+import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.MutableProperty;
@@ -36,7 +38,12 @@ public class ProcessDescriptor extends MutableProperty {
 		/** Name of a process **/
 		Name,
 		/** Attributes collection specifying the process as a description of it */
-		Properties;
+		Properties,
+		/**
+		 * Template reference (EntityReference) that was source of structure regarding a
+		 * process
+		 **/
+		TemplateEntityRef;
 	}
 
 	public ProcessDescriptor(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status)
@@ -47,6 +54,16 @@ public class ProcessDescriptor extends MutableProperty {
 	public ProcessDescriptor(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
 			ProcessDescriptor... prior) throws IllegalArgumentException {
 		super(propertyOwner, propertyCurrentValue, status, prior);
+	}
+
+	/**
+	 * Get the reference of a template domain entity which was the origin of the
+	 * process structure.
+	 * 
+	 * @return A template entity reference or null.
+	 */
+	public EntityReference templateEntityRef() {
+		return (EntityReference) this.currentValue().getOrDefault(PropertyAttributeKey.TemplateEntityRef.name(), null);
 	}
 
 	/**

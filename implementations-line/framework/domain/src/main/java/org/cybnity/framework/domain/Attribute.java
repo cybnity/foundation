@@ -1,8 +1,7 @@
-package org.cybnity.feature.security_activity_orchestration;
+package org.cybnity.framework.domain;
 
 import java.io.Serializable;
 
-import org.cybnity.framework.domain.ValueObject;
 import org.cybnity.framework.immutable.IVersionable;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;

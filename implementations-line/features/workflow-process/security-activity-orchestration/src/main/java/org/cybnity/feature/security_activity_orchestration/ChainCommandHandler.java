@@ -3,18 +3,29 @@ package org.cybnity.feature.security_activity_orchestration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
+import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Contract of command handling implementing the chain of responsibility chain
- * pattern.
+ * Contract of command handling implementing the responsibility chain pattern.
  */
 @Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
 public abstract class ChainCommandHandler {
+
+	/**
+	 * Logical name of this handler.
+	 */
 	private String label;
+
+	/**
+	 * Optional context usable during a command handling execution.
+	 */
+	private IContext context;
+
 	/**
 	 * In sequence approach, only one next handler can be defined. In parallel
 	 * approach of possible next handler, a set of unordered next handlers can be
@@ -133,10 +144,21 @@ public abstract class ChainCommandHandler {
 	/**
 	 * Get the name of this handler.
 	 * 
-	 * @return A name.
+	 * @return A logical name when defined. Else return this.getClass().getName().
 	 */
 	public String label() {
+		if (this.label == null || "".equals(this.label))
+			return this.getClass().getName();
 		return this.label;
+	}
+
+	/**
+	 * Define a logical name for this handler.
+	 * 
+	 * @param aName A name.
+	 */
+	protected void setLabel(String aName) {
+		this.label = aName;
 	}
 
 	/**
@@ -148,5 +170,35 @@ public abstract class ChainCommandHandler {
 	protected List<ChainCommandHandler> subTasks() {
 		return this.subTasks;
 	}
+
+	/**
+	 * Get defined context.
+	 * 
+	 * @return A context or null.
+	 */
+	protected IContext context() {
+		return this.context;
+	}
+
+	/**
+	 * Change the context that is usable by the handler.
+	 * 
+	 * @param ctx A context which can be used dynamically (e.g at the runtime)
+	 *            during the command treatment, by the canHandle(Command command)
+	 *            method.
+	 */
+	public void changeContext(IContext ctx) {
+		this.context = ctx;
+	}
+
+	/**
+	 * Get the version number regarding the types of Command which are supported by
+	 * this handler.
+	 * 
+	 * @return A set of versions that this handler is capable to handle (e.g
+	 *         specific versions of a same type of command). Null or empty set when
+	 *         any type of Command can be treated by this handler.
+	 */
+	public abstract Set<String> handledCommandTypeVersions();
 
 }

@@ -6,7 +6,6 @@ The technical description regarding behavior and best usage is maintained into t
 
 |Class Type|Motivation|
 | :-- | :-- |
-|Attribute|Represent a characteristic which can be add to a topic (e.g a technical named attribute which is defined on-fly on an existing object, including a value). It's more or less like a generic property assignable to any topic or object (e.g property on a workflow step instance).<br>For example, can be use to defined a tag regarding a property added to a domain or aggregate object|
 |CompletionState|Represent a state of completion defining by a name and optionally by a percentage value about reached completion rate|
 |IState|Represent a providing contract regarding the description of a state (e.g a process step) based on a collection of attributes|
 |Process|Represent a workflow based on steps (e.g risk management process) realizable by an actor and specifying an organizational model framing activities|
@@ -46,25 +45,24 @@ classDiagram
 	note for IAggregate "Immutable framework based"
 	ActivityState "1" --* Step : activation
 	Step *-- "1" CompletionState : completion
-	ITemplate <|.. Process
 	Process *-- "1" ProcessDescriptor : description
 	Process *-- "0..1" Staging : staging
 	Staging *-- "1..*" Step : steps
-	ITemplate <|.. Step
 	Step ..> "1 commandProcessor" ChainCommandHandler : delegate command handling
 	Step *-- "1..*" Attribute : properties
 	IWorkflowCommandHandler <|.. Step
+	IWorkflowCommandHandler <|.. Process
 	IState <|.. Step
 	Process *-- "1" ActivityState : activation
 	Unmodifiable <|.. Attribute
-	IState ..> Attribute
 	note for Attribute "Domain framework based as immutable property<br>(e.g primary responsibility stakeholder, supporting roles)<br><br>"
 
 	class Process {
 		<<Aggregate>>
 		+Process(Entity predecessor, Identifier id, HashMap<String, Object> descriptionAttributes)
-		+Process(Entity predecessor, LinkedHashSet<Identifier> identifiers, HashMap<String, Object> descriptionAttributes)
-		+Process(ProcessBuilder buildManager)
+		+Process(Entity predecessor, LinkedHashSet~Identifier~ identifiers, HashMap<String, Object> descriptionAttributes)
+		#Process(Entity predecessor, LinkedHashSet~Identifier~ identifiers, ProcessDescriptor description,
+			ActivityState activation, CompletionState completion, Staging staging, ChainCommandHandler commandHandlingDelegate)
 		+name() String
 		+activation() ActivityState
 		+changeActivation(ActivityState state)
@@ -73,11 +71,11 @@ classDiagram
 		+description() ProcessDescriptor
 		+changeDescription(ProcessDescriptor description)
 		+staging() Staging
-		+changeStaging(Staging stageing)
-		-checkStagingConformity(Staging staging, Entity processOwner)
-		-checkDescriptionConformity(ProcessDescriptor description, Entity processOwner)
-		-checkCompletionConformity(CompletionState state, Entity processOwner)
-		-checkActivationConformity(ActivityState state, Entity processOwner)
+		+changeStaging(Staging staging)
+		-checkStagingConformity(Staging staging, Entity processOwning)
+		-checkDescriptionConformity(ProcessDescriptor description, Entity processOwning)
+		-checkCompletionConformity(CompletionState state, Entity processOwning)
+		-checkActivationConformity(ActivityState state, Entity processOwning)
 	}
 	class Staging {
 		<<MutableProperty>>
@@ -93,19 +91,16 @@ classDiagram
 	}
 	class Attribute {
 		<<ValueObject>>
-		-value : String
-		-name : String
-		+name() String
-		+value() String
-		+immutable() Serializable
 	}
     class ProcessDescriptor {
 		<<MutableProperty>>
 		-PropertyAttributeKey.Name : String
 		-PropertyAttributeKey.Properties : Collection~Attribute~
+		-PropertyAttributeKey.TemplateEntityRef : EntityReference
 		+getName() String
 		+properties() Collection~Attribute~
 		+owner() Entity
+		+templateEntityRef() EntityReference
 	}
 	class IState {
 		<<interface>>
@@ -113,14 +108,19 @@ classDiagram
 	}
 	class ActivityState {
 		<<org.cybnity.framework.domain.model.MutableProperty>>
+		-PropertyAttributeKey.StateValue : Boolean
 		+isActive() Boolean
-	}
-	class ITemplate {
-		<<interface>>
-		+name() String
+		+ownerReference() EntityReference
+		+checkActivationConformity(ActivityState state, Entity owner)$
 	}
     class CompletionState {
 		<<MutableProperty>>
+		-PropertyAttributeKey.Name : String
+		-PropertyAttributeKey.Percentage : Float
+		+name() String
+		+percentage() Float
+		+ownerReference() EntityReference
+		+checkCompletionConformity(CompletionState state, Entity owner)$
 	}
 	class IAggregate {
 		<<interface>>
@@ -130,9 +130,29 @@ classDiagram
 	}
 	class Step {
 		<<MutableProperty>>
-		+Step(@required Collection~Attribute~ properties)
-		+name() String
+		-PropertyAttributeKey.Name : String
+		-PropertyAttributeKey.Properties : Collection~Attribute~
+		-PropertyAttributeKey.SubSteps : List~Step~
+		-PropertyAttributeKey.ActivationEventTypes : Collection~Enum~
+		+Step(EntityReference propertyOwner, String name, ChainCommandHandler commandHandlingDelegate)
+		+Step(EntityReference propertyOwner, String name, ChainCommandHandler commandHandlingDelegate,
+			Step... predecessors)
+		+Step(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
+			ChainCommandHandler commandHandlingDelegate)
+		+Step(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status,
+			ChainCommandHandler commandHandlingDelegate, Step... predecessors)
+		-initializeAutomaticActivationEventsHandling()
 		+properties() Collection~Attribute~
+		+name() String
+		+setCommandProcessor(ChainCommandHandler commandHandlingDelegate)
+		+addParallelNextHandler(ChainCommandHandler next)
+		+ownerReference() EntityReference
+		+handle(Command request)
+		+subStates() List~IState~
+		+activation() ActivityState
+		+changeActivation(ActivityState state)
+		+completion() CompletionState
+		+changeCompletion(CompletionState state)
 	}
 	class ChainCommandHandler {
       <<abstract>>
@@ -140,21 +160,34 @@ classDiagram
 	class ProcessBuilder {
 		final -processIdentifiers : LinkedHashSet~Identifier~
 		final -processParent : Entity
-		-activation : Boolean
-		-completionName : String
-		-currentPercentageOfCompletion : Float
-		-description : Collection~Attribute~
-		-processName : String
+		#activation : Boolean
+		#completionName : String
+		#currentPercentageOfCompletion : Float
+		#description : Collection~Attribute~
+		#processName : String
+		-templateEntityRef : EntityReference
 
-		-ProcessBuilder(@required LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName)
+		#ProcessBuilder(@required LinkedHashSet~Identifier~ processIdentifiers, @required Entity processParent)
+		#ProcessBuilder(LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName)
+		+instance(LinkedHashSet~Identifier~ processIdentifiers, Entity processParent)$ ProcessBuilder
 		+instance(LinkedHashSet~Identifier~ processIdentifiers, Entity processParent, String processName)$ ProcessBuilder
+
 		+build() Process
 		+valideConformity(Process instance)$
 		+withActivation(Boolean isActiveStatus) ProcessBuilder
 		+withCompletion(@required String named, Float currentPercentageOfCompletion) ProcessBuilder
 		+withDescription(Collection~Attribute~ properties) Processbuilder
+		+withTemplateEntityReference(EntityReference templateRef) ProcessBuilder
 	}
 
 ```
+
+### DOMAIN.MODEL.EVENT PACKAGE
+Several types of domain events are defining regarding changes detected and/or promoted by the domain. This package includes event types which are managed by this domain.
+
+|Class Type|Motivation|
+| :-- | :-- |
+|SecurityActivityOrchestrationEventReferential|Referential of event types supported by the security activity orchestration feature (e.g handled by NIST RMF process template steps)|
+
 #
 [Back To Home](README.md)

@@ -34,20 +34,20 @@ package org.cybnity.framework.domain;
  */
 public abstract class DataTransferObject {
 
-    /**
-     * Implement value equality redefined method that ensure the functional
-     * comparison of the instance about compared types of both objects and then
-     * their attributes.
-     */
-    @Override
-    public boolean equals(Object obj) {
-	boolean equalsObject = false;
-	if (obj == this)
-	    return true;
-	if (obj != null && this.getClass() == obj.getClass()) {
-	    // Compare all the functional contributors, so comparison based on hashcode
-	    equalsObject = (obj.hashCode() == this.hashCode());
+	/**
+	 * Implement value equality redefined method that ensure the functional
+	 * comparison of the instance about compared types of both objects and then
+	 * their attributes.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		boolean equalsObject = false;
+		if (obj == this)
+			return true;
+		if (obj != null && this.getClass() == obj.getClass()) {
+			// Compare all the functional contributors, so comparison based on hash code
+			equalsObject = (obj.hashCode() == this.hashCode());
+		}
+		return equalsObject;
 	}
-	return equalsObject;
-    }
 }

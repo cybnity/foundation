@@ -78,12 +78,14 @@ public class CompletionState extends MutableProperty {
 		this( /* Reference identifier equals to the owner of this state */
 				(propertyOwner != null) ? propertyOwner.getEntity() : null,
 				(currentStateName != null && !"".equals(currentStateName))
-						? buildPropertyValue(PropertyAttributeKey.StateName, currentStateName)
+						? buildPropertyValue(PropertyAttributeKey.StateName.name(), currentStateName)
 						: null,
 				HistoryState.COMMITTED, predecessors);
+		if (currentStateName == null || "".equals(currentStateName))
+			throw new IllegalArgumentException("currentStateName parameter is required!");
 		if (currentPercentage != null) {
 			// Add additional properties
-			this.value.putAll(buildPropertyValue(PropertyAttributeKey.Percentage, currentPercentage));
+			this.value.putAll(buildPropertyValue(PropertyAttributeKey.Percentage.name(), currentPercentage));
 		}
 	}
 
@@ -121,23 +123,6 @@ public class CompletionState extends MutableProperty {
 	}
 
 	/**
-	 * Build a definition of property based on property name and value.
-	 * 
-	 * @param key   Mandatory key name of the property.
-	 * @param value Value of the key.
-	 * @return A definition of the property.
-	 * @throws IllegalArgumentException When any mandatory parameter is missing.
-	 */
-	static public HashMap<String, Object> buildPropertyValue(PropertyAttributeKey key, Object value)
-			throws IllegalArgumentException {
-		if (key == null)
-			throw new IllegalArgumentException("key parameter is required!");
-		HashMap<String, Object> val = new HashMap<>();
-		val.put(key.name(), value);
-		return val;
-	}
-
-	/**
 	 * Implement the generation of version hash regarding this class type according
 	 * to a concrete strategy utility service.
 	 */
@@ -152,7 +137,7 @@ public class CompletionState extends MutableProperty {
 	 * @return An unmodifiable set of valued attributes.
 	 */
 	public Map<String, Object> currentValue() {
-		return (HashMap<String, Object>) Collections.unmodifiableMap(this.value);
+		return Collections.unmodifiableMap(this.value);
 	}
 
 	/**
@@ -213,5 +198,41 @@ public class CompletionState extends MutableProperty {
 			}
 		}
 		return isEquals;
+	}
+
+	/**
+	 * Verify if the state include basic attributes and values and that property
+	 * owner is equals to the owner. For example, a Not-a-Number or negative
+	 * completion rate is not a valid value for percentage of completion.
+	 * 
+	 * @param state Optional state to check.
+	 * @param owner Mandatory owner of the state to compare as a status condition.
+	 * @throws IllegalArgumentException When non conformity cause is detected.
+	 * @throws ImmutabilityException    When impossible read of description's owner.
+	 */
+	public static void checkCompletionConformity(CompletionState state, Entity owner)
+			throws IllegalArgumentException, ImmutabilityException {
+		if (state != null) {
+			if (owner == null)
+				throw new IllegalArgumentException("State owner parameter is required!");
+			// Check that minimum name and percentage attributes are defined into the status
+
+			// Check the name value
+			if (state.stateName() == null)
+				throw new IllegalArgumentException("Name value is required from state!");
+			// Check the percentage value
+			if (state.percentage() == null)
+				throw new IllegalArgumentException("Percentage value is required from state!");
+			// Check that percentage is positive
+			if (state.percentage().isNaN() || state.percentage().compareTo(Float.valueOf(0.0f)) < 0)
+				throw new IllegalArgumentException("Percentage value must be positive!");
+
+			if (owner != null) {
+				// Check that owner of the new state is equals to the owner identity
+				if (state.owner() == null || !state.owner().equals(owner))
+					throw new IllegalArgumentException(
+							"The owner of the completion state shall be equals to owner parameter!");
+			}
+		}
 	}
 }

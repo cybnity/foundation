@@ -9,8 +9,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cybnity.feature.security_activity_orchestration.domain.model.Attribute;
 import org.cybnity.feature.security_activity_orchestration.domain.model.ProcessDescriptor;
+import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.BaseConstants;

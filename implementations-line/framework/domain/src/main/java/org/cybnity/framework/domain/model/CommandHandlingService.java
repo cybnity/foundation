@@ -35,7 +35,7 @@ public abstract class CommandHandlingService extends ProcessManager {
 	 * Default constructor initializing recipient of handlers regarding the
 	 * aggregate type.
 	 * 
-	 * @param type                   Mandatory type or perimeter manage by this
+	 * @param type                   Mandatory type or boundary manage by this
 	 *                               commands handling service, usable for method
 	 *                               call (e.g in direct or remote via a messaging
 	 *                               service).
@@ -49,7 +49,7 @@ public abstract class CommandHandlingService extends ProcessManager {
 	 *                               instance.
 	 * @throws IllegalArgumentException         WHen mandatory parameter is missing.
 	 * @throws InvalidTargetObjectTypeException When none managed handlers are
-	 *                                          identified (non sens of
+	 *                                          identified (non sense of
 	 *                                          instantiation regarding this
 	 *                                          component without any delegation
 	 *                                          defined) or some eligible handler

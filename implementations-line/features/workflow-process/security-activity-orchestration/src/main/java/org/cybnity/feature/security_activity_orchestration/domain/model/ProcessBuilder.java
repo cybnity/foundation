@@ -4,12 +4,18 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 
+import org.cybnity.feature.security_activity_orchestration.IProcessBuilder;
+import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.model.ActivityState;
+import org.cybnity.framework.domain.model.CompletionState;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.Entity;
+import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Factory class implementing the builder design pattern to create a process.
@@ -17,26 +23,59 @@ import org.cybnity.framework.immutable.ImmutabilityException;
  * @author olivier
  *
  */
-public final class ProcessBuilder {
+@Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
+public class ProcessBuilder implements IProcessBuilder {
 
 	private final LinkedHashSet<Identifier> processIdentifiers;
 	private final Entity processParent;
-	private Boolean activation;
-	private String completionName;
-	private Float currentPercentageOfCompletion;
-	private Collection<Attribute> description;
-	private String processName;
+	protected Boolean activation;
+	protected String completionName;
+	protected Float currentPercentageOfCompletion;
+	protected Collection<Attribute> description;
+	protected String processName;
+	private EntityReference templateEntityRef = null;
+	private Process instance;
+
+	/**
+	 * Constructor of builder from unique or multiple identifiers to use for the
+	 * process identity with translation managed.
+	 * 
+	 * @param processIdentifiers Mandatory identity of the process to build.
+	 * @param processParent      Mandatory predecessor of the process to build.
+	 * @throws IllegalArgumentException When missing mandatory parameter.
+	 */
+	protected ProcessBuilder(LinkedHashSet<Identifier> processIdentifiers, Entity processParent)
+			throws IllegalArgumentException {
+		if (processIdentifiers == null || processIdentifiers.isEmpty())
+			throw new IllegalArgumentException("Process identity is required!");
+		if (processParent == null)
+			throw new IllegalArgumentException("Process parent is required!");
+		this.processIdentifiers = processIdentifiers;
+		this.processParent = processParent;
+	}
+
+	/**
+	 * Get a builder instance allowing preparation of a process instantiation.
+	 * 
+	 * @param processIdentity Mandatory identity of the process to build.
+	 * @param processParent   Mandatory predecessor of the process to build.
+	 * @throws IllegalArgumentException When missing mandatory parameter.
+	 */
+	public static ProcessBuilder instance(LinkedHashSet<Identifier> processIdentifiers, Entity processParent)
+			throws IllegalArgumentException {
+		return new ProcessBuilder(processIdentifiers, processParent);
+	}
 
 	/**
 	 * Default Constructor of process from unique or multiple identifiers to use for
-	 * the process identity.
+	 * the process identity with translation managed.
 	 * 
 	 * @param processIdentifiers Mandatory identity of the process to build.
 	 * @param processParent      Mandatory predecessor of the process to build.
 	 * @param processName        Mandatory name of the process to build.
 	 * @throws IllegalArgumentException When missing mandatory parameter.
 	 */
-	private ProcessBuilder(LinkedHashSet<Identifier> processIdentifiers, Entity processParent, String processName)
+	protected ProcessBuilder(LinkedHashSet<Identifier> processIdentifiers, Entity processParent, String processName)
 			throws IllegalArgumentException {
 		if (processIdentifiers == null || processIdentifiers.isEmpty())
 			throw new IllegalArgumentException("Process identity is required!");
@@ -54,7 +93,9 @@ public final class ProcessBuilder {
 	 * 
 	 * @param processIdentity Mandatory identity of the process to build.
 	 * @param processParent   Mandatory predecessor of the process to build.
-	 * @param processName     Mandatory name of the process to build.
+	 * @param processName     Mandatory name of the process to build. It can be
+	 *                        valued as the name property key when a i18N locale is
+	 *                        defined.
 	 * @throws IllegalArgumentException When missing mandatory parameter.
 	 */
 	public static ProcessBuilder instance(LinkedHashSet<Identifier> processIdentifiers, Entity processParent,
@@ -63,27 +104,37 @@ public final class ProcessBuilder {
 	}
 
 	/**
-	 * Creation of the process instance according to the attributes defined into
-	 * this builder component.
+	 * Creation of a basis process instance according to the attributes defined into
+	 * this builder component. It include description but that does not include any
+	 * defined staging.
 	 * 
-	 * @return A new instance of process.
 	 * @throws ImmutabilityException    When impossible use of immutable version of
 	 *                                  a build content.
 	 * @throws IllegalArgumentException when mandatory content is missing to execute
 	 *                                  the build process and shall be completed
 	 *                                  before to call this method.
 	 */
-	public Process build() throws ImmutabilityException, IllegalArgumentException {
+	public void build() throws ImmutabilityException, IllegalArgumentException {
+		if (processName == null || "".equals(processName))
+			throw new IllegalArgumentException("Process name is required!");
 		// Build process identity
 		DomainEntity processIdentity = new DomainEntity(this.processIdentifiers);
 
 		// Build process description including a name attribute is required as minimum
 		// description attribute defined
 		HashMap<String, Object> descriptorAttributes = new HashMap<>();
+
+		// Required name adding in translated version or original value
 		descriptorAttributes.put(ProcessDescriptor.PropertyAttributeKey.Name.name(), this.processName);
+
 		if (this.description != null) {
 			// Add description properties
 			descriptorAttributes.put(ProcessDescriptor.PropertyAttributeKey.Properties.name(), this.description);
+		}
+		if (this.templateEntityRef != null) {
+			// Add template domain reference
+			descriptorAttributes.put(ProcessDescriptor.PropertyAttributeKey.TemplateEntityRef.name(),
+					this.templateEntityRef);
 		}
 		ProcessDescriptor processDescription = new ProcessDescriptor(processIdentity, descriptorAttributes,
 				HistoryState.COMMITTED);
@@ -96,13 +147,27 @@ public final class ProcessBuilder {
 			// Change the default activation state
 			instance.changeActivation(new ActivityState(instance.root(), this.activation));
 		}
-		if (this.completionName != null && !this.completionName.equals(instance.completion().name())) {
+		if (this.completionName != null && !this.completionName.equals(instance.completion().stateName())) {
 			// Change the default completion state
 			instance.changeCompletion(
 					new CompletionState(instance.root(), this.completionName, this.currentPercentageOfCompletion));
 		}
+		// Set the built instance
+		setResult(instance);
+	}
 
-		return instance;
+	/**
+	 * Update the pre-built instance.
+	 * 
+	 * @param instance An instance defining a result of build.
+	 */
+	protected void setResult(Process instance) {
+		this.instance = instance;
+	}
+
+	@Override
+	public Process getResult() {
+		return this.instance;
 	}
 
 	/**
@@ -146,4 +211,10 @@ public final class ProcessBuilder {
 		this.description = properties;
 		return this;
 	}
+
+	public ProcessBuilder withTemplateEntityReference(EntityReference templateRef) {
+		this.templateEntityRef = templateRef;
+		return this;
+	}
+
 }

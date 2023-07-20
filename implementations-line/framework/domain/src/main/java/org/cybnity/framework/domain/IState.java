@@ -1,6 +1,7 @@
-package org.cybnity.feature.security_activity_orchestration.domain.model;
+package org.cybnity.framework.domain;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
@@ -8,6 +9,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 /**
  * Represent a providing contract regarding the description of a state (e.g a
  * process step) based on a collection of attributes.
+ * 
+ * A state can include sub-state into its life cycle.
  * 
  * @author olivier
  *
@@ -21,4 +24,12 @@ public interface IState {
 	 * @return A set of properties or null.
 	 */
 	public Collection<Attribute> properties();
+
+	/**
+	 * Get existing sub-states defining a more detailed life cycle of this state.
+	 * 
+	 * @return A list of ordered sub-states included into this state life cycle. Or
+	 *         null by default.
+	 */
+	public List<IState> subStates();
 }
