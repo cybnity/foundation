@@ -28,3 +28,5 @@ __Example of Tactical Workstation Components Deployment Model__
 
 ## Platforms
 The isolation of environments (e.g UI experience, application and micro-services), which execute the Systems, implements a Space Based Architecture (SBA) approach to organize the deployment model via an infrastructure providing technical services (e.g network service, persistence systems solution, operations monitoring, security systems).
+
+The implementation project regarding the provisioning model of the platform's elements is presented by the [systems architecture page](/implementations-line/systems/README.md).

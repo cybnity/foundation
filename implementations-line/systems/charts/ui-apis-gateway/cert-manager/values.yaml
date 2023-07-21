@@ -1,0 +1,66 @@
+# Customization of the default values for cert-manager
+
+# IMAGE VERSION SUPPORTED BY THE CustomResourceDefinition created into the cluster instance
+image.tag: v1.11.1
+
+# ASSIGNMENT TO THE NODE ('layer' label value relative to a cluster area) USING THE CERT-MANAGER
+## Node labels for pod assignment
+nodeSelector:
+    layer: user-interfaces-area
+
+# Labels to add to the cert-manager pod
+podLabels:
+    type: ui-cert-manager
+
+## Node affinity for pod assignment
+affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: layer
+            operator: In
+            values:
+            - user-interfaces-area
+
+## Node labels for webhook pod assignment
+webhook.nodeSelector:
+   layer: user-interfaces-area
+## Node affinity for webhook pod assignment in the same area where the cert-manager pod had been deployed
+webhook.affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: type
+              operator: In
+              values:
+              - ui-cert-manager
+
+## Node labels for cainjector pod assignment
+cainjector.nodeSelector:
+    layer: user-interfaces-area
+## Node affinity for cainjector pod assignment in the same area where the cert-manager pod had been deployed
+cainjector.affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: type
+              operator: In
+              values:
+              - ui-cert-manager
+
+## Node labels for startupapicheck pod assignment
+startupapicheck.nodeSelector:
+    layer: user-interfaces-area
+## Node affinity for startupapicheck pod assignment in the same area where the cert-manager pod had been deployed
+startupapicheck.affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: type
+              operator: In
+              values:
+              - ui-cert-manager
