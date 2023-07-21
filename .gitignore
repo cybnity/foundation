@@ -18,3 +18,4 @@ buildNumber.properties
 .flattened-pom.xml
 **/package-lock.json
 implementations-line/cockpit-foundations/actions-scheduling/acsc-ui-modules/acsc-frontend/package-lock.json
+*.tgz

@@ -72,10 +72,34 @@ Helm is usable to package, publish, and fetch Kubernetes applications as Chart a
 
 <details><summary>Package chart</summary>
 <p>
-Create a versioned archive file of charts to be able to distribute them:
+Create a versioned archive file of charts to be able to distribute them (e.g to Helm charts repository):
 
 ```shell
 helm package ./reactive-messaging-gateway
+```
+
+An option also exist to sign the chart archive if need.
+</p>
+
+<details><summary>Publish chart package repository</summary>
+<p>
+1. From the Dockerhub platform profile page, create a Personal Access Token (PAT) from the Profile > Security section with a name (e.g `olivier-pat-token`).
+
+- Save the PAT password value into an environment variable allowing reuse from workstation and/or system that publish the helm charts
+
+```shell
+echo $REG_PAT | helm registry login registry-1.docker.io -u cybnity --password-stdin
+```
+
+2. From local directory where a packaged chart is ready for publish
+
+- Push a packaged chart to Dokerhub repository:
+
+```shell
+# Login with a Dockerhub account and password, according to the context where PAT can be used (e.g cybnity organization)
+helm registry login registry-1.docker.io -u cybnity
+
+helm push reactive-messaging-gateway-0.1.0.tgz  oci://registry-1.docker.io/cybnity
 ```
 
 An option also exist to sign the chart archive if need.
