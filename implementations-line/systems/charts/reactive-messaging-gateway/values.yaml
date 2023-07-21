@@ -15,14 +15,14 @@ env:
   # Java application environment variables that are logically used by the applicative module
   # via the AppConfigurationVariable enumerations
   - name: "REACTIVE_BACKEND_ENDPOINT_HTTP_SERVER_PORT"
-    value: "80"
+    value: "8080"
   # via the ReadModelConfigurationVariable enumerations
   - name: "REDIS_READMODEL_SERVER_HOST"
     value: "localhost"
   - name: "REDIS_READMODEL_SERVER_PORT"
     value: "6379"
   - name: "REDIS_READMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD"
-    value: "PRg53nV82DQy"
+    value: "1gEGHneiLT"
   - name: "REDIS_READMODEL_DATABASE_NUMBER"
     value: "2"
   - name: "REDIS_READMODEL_CONNECTION_DEFAULT_USERACCOUNT"
@@ -33,7 +33,7 @@ env:
   - name: "REDIS_WRITEMODEL_SERVER_PORT"
     value: "6379"
   - name: "REDIS_WRITEMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD"
-    value: "PRg53nV82DQy"
+    value: "1gEGHneiLT"
   - name: "REDIS_WRITEMODEL_DATABASE_NUMBER"
     value: "1"
   - name: "REDIS_WRITEMODEL_CONNECTION_DEFAULT_USERACCOUNT"
@@ -41,8 +41,8 @@ env:
 
 imagePullSecrets: []
 # Overriding the Helm chart name ensures configuration files also change
-nameOverride: "reactive-backend-system"
-fullnameOverride: "reactive-backend-system"
+nameOverride: "reactive-backend-server"
+fullnameOverride: "reactive-backend-server-chart"
 
 # Service account name (provide an identity for process that run in a Pod; by default named 'default') in the namespace for the Helm chart generates when the cluster is runned
 serviceAccount:
@@ -68,7 +68,7 @@ securityContext: {}
   # runAsUser: 1000
 
 deployment:
-  imageHealthCheckPort: 80
+  imageHealthCheckPort: 8080
   imageHealthCheckInitialDelaySeconds: 60
   imageHealthCheckPeriodSeconds: 300
   imageHttpHealthLivenessProbe: /static/health.html
@@ -77,7 +77,7 @@ deployment:
 service:
   # Networking service type (e.g ClusterIP; NodePort is recommended for Minikube). See https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types for more detail
   type: ClusterIP
-  port: 80
+  port: 8080
 
 ingress:
   enabled: false
@@ -111,8 +111,7 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-nodeSelector:
-    layer : user-interfaces-area
+nodeSelector: {}
 
 tolerations: []
 
