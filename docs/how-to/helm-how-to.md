@@ -15,13 +15,22 @@ helm pull "bitnami/xxx" --untar
 
 </p>
 </details>
+<details><summary>Test chart</summary>
+<p>
+Using `--dry-run` will make it easier to test your chart code, but it won't ensure that Kubernetes itself will accept the templates you generate.
+
+```shell
+helm install --debug --dry-run goodly-guppy ./reactive-backend-system
+```
+</p>
+</details>
 <details><summary>Install a chart</summary>
 <p>
 Install a defined chart into the Kubernetes cluster:
 
 ```shell
 # Install local templates from charts directory
-helm install reactive-backend-system ./reactive-messaging-gateway/ --values ./reactive-messaging-gateway/values.yaml
+helm install reactive-backend-system ./reactive-backend-system/ --values ./reactive-backend-system/values.yaml
 # Install repository template (e.g hosted by a third-party's repository server) with specific values.yaml to apply
 helm install access-control-sso-system -f ./access-control-sso-system/values.yaml bitnami/keycloak
 ```
@@ -33,7 +42,7 @@ helm install access-control-sso-system -f ./access-control-sso-system/values.yam
 Upgrade a release to a specified or current version of a chart or configuration into the Kubernetes cluster:
 
 ```shell
-helm upgrade reactive-backend-system ./reactive-messaging-gateway
+helm upgrade reactive-backend-system ./reactive-backend-system
 ```
 
 </p>
