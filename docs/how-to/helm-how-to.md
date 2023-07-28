@@ -123,6 +123,16 @@ kubectl get svc
 ## Charts Distribution
 Helm is usable to package, publish, and fetch Kubernetes applications as Chart archives.
 
+<details><summary>Add CYBNITY helm repo on local repo catalog</summary>
+<p>
+
+```shell
+helm repo add cybnity https://cybnity.github.io/iac-helm-charts
+```
+
+</p>
+</details>
+
 <details><summary>Package chart</summary>
 <p>
 Create a versioned archive file of charts to be able to distribute them (e.g to Helm charts repository):
@@ -133,6 +143,7 @@ helm package ./reactive-messaging-gateway
 
 An option also exist to sign the chart archive if need.
 </p>
+</details>
 
 <details><summary>Publish chart package repository</summary>
 <p>
