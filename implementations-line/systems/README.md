@@ -30,18 +30,6 @@ Perimeter: the deployable application components (e.g Java autonomous applicatio
 Project type: Maven or Node.js implementation structures; dockerization auto-generated (e.g Dockerfile generation, image template tagging, push to Docker repository) via Maven plugin.
 
 Description: each java application project contains a configuration of its containerization (e.g docker plugin activation into its `pom.xml` file, and a `src\main\docker\xxx-assembly.xml` defining specific jar and files assembled into the application system generated as Docker image). Each application system generated is an extended JRE-TEE docker image, ready for start as an autonomous system. Help documentation about the used maven plugin is available [here](https://dmp.fabric8.io/#introduction).
-- [reactive-messaging-gateway](charts/reactive-messaging-gateway): provisioning project of [containerized web backend server](../cockpit-foundations/reactive-messaging-gateway).
-- [web-reactive-frontend](charts/web-reactive-frontend): provisioning project of [containerized web frontend server](../cockpit-foundations/web-reactive-frontend).
-
-## REUSABLE PROVISIONING SYSTEM PROJECTS
-Perimeter: some infrastructure third-party software (e.g Zookeeper application) are available on the market as template of provisioning helping to quickly customize the runtime (provisioning of pre-configured Docker image) into a Kubernetes platform. Some infrastructure components are reused by CYBNITY as infrastructure systems with customization of the prepared templates of their images helmization.
-
-Project type: Helm implementation structures.
-
-Description: several generic infrastructure projects required by the CYBNITY implementation architecture are managed.
-- [dis-brokers-registry](charts/dis-brokers-registry): bitnami Helm project of Zookeeper image provisioning, customized for the CYBNITY needs (e.g implementation of Kafka brokers registry). This provisioning project is deployable and is supported by a `bitnami/zookeeper` version including a `3.8.1-debian-11-r0` operating system libraries. This implementation (hosted on [ArtifactHUB](https://artifacthub.io/packages/helm/riftbit/zookeeper)) is currently used to reduce the maintenance effort of a dedicated Helm project based on the `framework\services-registry-container` docker image project.
-- [users-interactions-space](charts/users-interactions-space): bitnami Helm project of Redis image provisioning, customized for the CYBNITY needs (e.g implementation of collaboration space in UI area). This provisioning project is deployable and is supported by a `bitnami/redis` version including `7.0.8-debian-11-r0` operating system libraries. This implementatio (hosted on [ArtifactHUB](https://artifacthub.io/packages/helm/goauthentik/redis)) is currently used to reduce the maintenance effort of a dedicated Helm project based on the `infrastructure\integration\system\users-interactions-broker` docker image project.
-- [domains-interactions-space](charts/domains-interactions-space): bitnami Helm project of Kafka image provisioning, customized for the CYBNITY needs (e.g implementation of collaboration space in Domains I/O area). This provisioning project is deployable and is supported by a `bitnami/kafka` version including `3.3.2-debian-11-r0` operating system libraries. This implementatio (hosted on [ArtifactHUB](https://artifacthub.io/packages/helm/bitnami/kafka)) is currently used to reduce the maintenance effort of a dedicated Helm project based on the `infrastructure\integration\system\domains-interactions-broker` docker image project.
 
 ### STANDARD STRUCTURE OF A CONTAINERIZED JAVA APPLICATION
 Example of a `reactive-messaging-gateway` application system project structure:

@@ -7,12 +7,31 @@ The Dockerfile of the project is automated via Maven plugin that generate in-mem
 A docker orchestrator should be started previously to execute any docker command line.
 
 ``` shell
-# Start minikube
-minikube start --driver=hyperkit --container-runtime=docker
-# Export docker host and Docker daemon into the shell context variables
-minikube docker-env
+# Create a minikube profile (allowed memory and cpu are defined PER NODE)
+minikube start --driver=hyperkit --container-runtime=docker --profile local-dev --nodes 4 --cpus 2 --disk-size '7g' --memory '4g'
+
+# WHEN CLUSTER INCLUDING ONLY ONE UNIQUE NODE : Export docker host and Docker daemon into the shell context variables
+  minikube docker-env
 # Set docker env
-eval $(minikube docker-env)
+  eval $(minikube docker-env)
+
+# Start a cluster profiled
+minikube start -p local-dev
+
+# Add CYBNITY deployment labels regarding each node according to the CYBNITY cluster areas
+## kubectl label nodes local-dev <label-name>=<label-value>
+kubectl label nodes local-dev layer=user-interfaces-area
+kubectl label nodes local-dev-m02 layer=domains-io-area
+kubectl label nodes local-dev-m03 layer=domains-area
+kubectl label nodes local-dev-m04 layer=infrastructure-services-area
+
+# Verify the labeled zones
+kubectl get nodes --show-labels
+
+# Start web dashboard of a profile (and included nodes)
+minikube dashboard -p local-dev
+
+
 ```
 
 ## BUILD OF IMAGE
