@@ -8,11 +8,11 @@ A docker orchestrator should be started previously to execute any docker command
 
 ``` shell
 # Create a minikube profile (allowed memory and cpu are defined PER NODE)
-minikube start --driver=hyperkit --container-runtime=docker --profile local-dev --nodes 4 --cpus 2 --disk-size '5g' --memory '4g'
+minikube start --driver=hyperkit --container-runtime=docker --profile local-dev --nodes 4 --cpus 2 --disk-size '7g' --memory '4g'
 
 # WHEN CLUSTER INCLUDING ONLY ONE UNIQUE NODE : Export docker host and Docker daemon into the shell context variables
   minikube docker-env
-  # Set docker env
+# Set docker env
   eval $(minikube docker-env)
 
 # Start a cluster profiled
