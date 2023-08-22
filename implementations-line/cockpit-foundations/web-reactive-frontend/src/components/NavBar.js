@@ -1,25 +1,28 @@
 import { Link } from 'react-router-dom';
+import { Navbar, Container, Nav } from 'react-bootstrap';
+import logo from './../media/cybnity-gorilla-light.svg';
 
 export default function NavBar() {
 	return (
-		<nav>
-			<div className='flex justify-around items-center py-5 bg-[#234]'>
-				<h1 className='font-semibold font-2xl'>CYBNITY Defense Platform</h1>
-				<ul className='flex'>
-					<li className='mx-1'>
-						<Link to='/'>Home</Link>
-					</li>
-					<li className='mx-1'>
-						<Link to='/organization_signup'>Sign-up organization</Link>
-					</li>
-					<li className='mx-1'>
-						<Link to='/useraccount_signup'>Sign-up account</Link>
-					</li>
-					<li className='mx-1'>
-						<Link to='/resource'>Sign-in account</Link>
-					</li>
-				</ul>
-			</div>
-		</nav>
+		<Navbar bg="secondary" variant="dark" expand="lg">
+			<Container fluid>
+				<Navbar.Brand href="/">
+					<img
+						alt=""
+						src={logo}
+						width="30"
+						height="30"
+						className="d-inline-block align-top"
+					/>{' '}
+					CYBNITY Defense Platform
+				</Navbar.Brand>
+				<Nav className="me-auto">
+					<Nav.Link href="/">HOME</Nav.Link>
+					<Nav.Link href="/organization_signup">SIGN-UP ORGANIZATION</Nav.Link>
+					<Nav.Link href="/useraccount_signup">SIGN-UP ACCOUNT</Nav.Link>
+					<Nav.Link href="/resource">SIGN-IN</Nav.Link>
+				</Nav>
+			</Container>
+		</Navbar>
 	);
 };
