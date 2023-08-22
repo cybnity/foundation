@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Keycloak from 'keycloak-js';
 
-export default function Resources() {
+export default function Login() {
 	// Check the keycloak instance and authentication
 	const [keycloak, setKeycloak] = useState(null)
 	const [authenticated, setAuthenticated] = useState(false)

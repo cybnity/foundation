@@ -7,28 +7,16 @@
   src: url(fonts/Gotham/GothamMedium.ttf);
 }
 
-
-body {
-  margin: 0;
-  font-family: GothamThin, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: GothamThin, source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
 h2 {
   font-family: GothamMedium;
   color: #3a5572;
 }
 
 .App {
+  margin: 0;
   text-align: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .App-logo {
@@ -54,7 +42,7 @@ h2 {
 }
 
 .App-link {
-  color: #E6E6E6;
+  color: #ffffff;
 }
 
 @keyframes App-logo-spin {

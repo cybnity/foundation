@@ -18,9 +18,8 @@ export default function NavBar() {
 				</Navbar.Brand>
 				<Nav className="me-auto">
 					<Nav.Link href="/">HOME</Nav.Link>
-					<Nav.Link href="/organization_signup">SIGN-UP ORGANIZATION</Nav.Link>
-					<Nav.Link href="/useraccount_signup">SIGN-UP ACCOUNT</Nav.Link>
-					<Nav.Link href="/resource">SIGN-IN</Nav.Link>
+					<Nav.Link href="/account_registration">SIGN UP</Nav.Link>
+					<Nav.Link href="/login">LOG IN</Nav.Link>
 				</Nav>
 			</Container>
 		</Navbar>

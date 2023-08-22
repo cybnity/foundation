@@ -1,8 +1,8 @@
 export default function Home() {
   return (
-    <div>
+    <div className="p-3 mb-2 bg-secondary text-white">
       <p> </p>
-      <h2>Welcome Home UI</h2>
+      <h1>Welcome Home UI</h1>
     </div>
   );
 };
