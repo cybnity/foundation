@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import Home from './components/Home';
-import AccountRegistration from './components/access-control/AccountRegistration';
+import AccountRegistration from './features/access-control/AccountRegistration';
 import Login from './components/Login';
 
 export default function App() {

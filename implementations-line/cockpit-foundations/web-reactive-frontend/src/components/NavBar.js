@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import { Navbar, Container, Nav } from 'react-bootstrap';
-import logo from './../media/cybnity-gorilla-light.svg';
+import logo from '../media/cybnity-gorilla-light.svg';
 
 export default function NavBar() {
 	return (
-		<Navbar bg="secondary" variant="dark" expand="lg">
+		<Navbar expand="lg">
 			<Container fluid>
 				<Navbar.Brand href="/">
 					<img

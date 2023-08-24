@@ -34,7 +34,15 @@ npm -v
 ## NPM RUN
 <details><summary>Reinstall project modules</summary>
 <p>
-  
+
+Remove all node_modules sub-folders, the package-lock.json file, and clear the npm cache
+
+```shell
+rm -rf node_modules
+rm -f package-lock.json
+npm cache clean --force
+```
+
 Execute from the web project folder:
 
 ```shell

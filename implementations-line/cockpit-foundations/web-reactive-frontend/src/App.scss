@@ -1,0 +1,109 @@
+@use "sass:meta";
+// SCSS configuration tutorial at https://blog.logrocket.com/the-definitive-guide-to-scss/
+
+/* The following line can be included in a src/App.scss */
+/* 1. Include all components */
+@import '~bootstrap/scss/bootstrap';
+
+/* OR INCLUDE ONLY COMPONENT REQUIRED BY THE APPLICATION FROM SCSS */
+/* 1. Include functions first (so you can manipulate colors, SVGs, calc, etc) */
+//@import "~bootstrap/scss/functions";
+
+/* 2. Include any default variable overrides here */
+
+/* 3. Include remainder of required Bootstrap stylesheets (including any separate color mode stylesheets) */
+//@import "~bootstrap/scss/variables";
+//@import "~bootstrap/scss/variables-dark";
+
+/* 4. Include any default map overrides here */
+
+/* 5. Include remainder of required parts */
+//@import "~bootstrap/scss/maps";
+//@import "~bootstrap/scss/mixins";
+//@import "~bootstrap/scss/root";
+
+/* 6. Optionally include any other parts as needed */
+//@import "~bootstrap/scss/utilities";
+//@import "~bootstrap/scss/reboot";
+//@import "~bootstrap/scss/type";
+//@import "~bootstrap/scss/images";
+//@import "~bootstrap/scss/containers";
+//@import "~bootstrap/scss/grid";
+//@import "~bootstrap/scss/helpers";
+
+/* 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss` */
+//@import "~bootstrap/scss/utilities/api";
+
+/* --- Add additional custom code here --- */
+// Custom fonts
+@mixin font($font-family, $font-file) {
+  @font-face {
+    font-family: $font-family;
+    src: url($font-file);
+    font-weight: normal;
+    font-style: normal;
+  }
+}
+
+@include font('Gotham-Thin', 'fonts/Gotham/Gotham-Thin.otf');
+@include font('Gotham', 'fonts/Gotham/GothamMedium.ttf');
+@include font('Gotham-Bold', 'fonts/Gotham/GothamBold.ttf');
+
+// See the node_module/bootstrap/scss/_variable.scss variable name for variable names identification
+
+// Color system
+// Custom additional colors map
+$darkBlue: #0e2a43;
+$standardBlue: #3a5572;
+$greyLight: #E6E6E6;
+$standardRed: #e5302a;
+
+// scss-docs-start theme-color-variables
+//$primary: $darkBlue;
+//$secondary: $standardBlue;
+//$danger: $standardRed;
+//$light: $greyLight;
+//$dark: $grey;
+//$success:
+//$info:
+//$warning:
+
+// Settings for the `<body>` element.
+$body-text-align: center !default;
+//$body-color: $white;
+//$body-bg: #0e2a43;
+//$body-secondary-color: rgba($body-color, .75) !default;
+//$body-secondary-bg: $blue-200 !default;
+//$body-tertiary-color:       rgba($body-color, .5) !default;
+//$body-tertiary-bg:          $gray-100 !default;
+//$body-emphasis-color:       $black !default;
+
+// scss-docs-start font-variables
+// stylelint-disable value-keyword-case
+$font-family-sans-serif: Gotham, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-family-monospace: Gotham, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+// QGlobal styling by enabling or disabling optional features.
+$enable-gradients: true !default;
+
+:root {
+  --font-family-sans-serif: #{meta.inspect($font-family-sans-serif)};
+  --font-family-monospace: #{meta.inspect($font-family-monospace)};
+  --bs-body-bg: #{meta.inspect($darkBlue)};
+  --bs-body-color: #{meta.inspect($white)};
+  --primary: #{meta.inspect($darkBlue)};
+  --secondary: #{meta.inspect($standardBlue)};
+  --danger: #{meta.inspect($standardRed)};
+}
+
+body {
+  background: linear-gradient(to left, $darkBlue, $standardBlue);
+
+  //background-color: var(--bs-bg-color);
+  //color: var(--datepicker_month-text);
+  margin: 0;
+}
+
+h1 {
+  font-family: Gotham-Thin, $font-family-sans-serif;
+}

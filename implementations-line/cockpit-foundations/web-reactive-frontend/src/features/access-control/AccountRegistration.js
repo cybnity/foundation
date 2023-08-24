@@ -2,7 +2,9 @@ import * as React from 'react';
 import { Button, Form } from 'react-bootstrap/';
 
 export default function AccountRegistration() {
+
   const [tenantName, setTenantName] = React.useState('');
+
   const handleNameChange = (event) => {
     setTenantName(event.target.value);
   };
@@ -23,9 +25,9 @@ export default function AccountRegistration() {
     });
   }
 
-  function handleRegisterTenant() {
+  const handleRegister = () => {
     var jsonBody = {
-      occurredOn: '',
+      occurredOn: new Date().getTime(),
       correlationId: generateUUIDUsingMathRandom(),
       id: generateUUIDUsingMathRandom(),
       type: 'CommandEvent',
@@ -41,28 +43,28 @@ export default function AccountRegistration() {
         name: tenantName
       }
     };
-    console.log("tenant send: " + tenantName);
+    console.log("Build tenant registration message: " + JSON.stringify(jsonBody));
   }
 
   return (
-    <div className="p-3 mb-2 bg-secondary text-white">
-      <p> </p>
-      <h2>User account registration UI</h2>
+    <>
+      <h1>User account registration UI</h1>
 
       <React.Fragment>
         <Form>
-          <Form.Group className="mb-3">
+          <Form.Group >
             <Form.Label>Define your account name to create</Form.Label>
             <Form.Control type="text" placeholder="Enter your organization name" id="organization_name" onChange={handleNameChange}/>
-            <Form.Text className="text-muted">
+
+            <Form.Text>
               Unique label define your your ISMS platform context ;)
             </Form.Text>
           </Form.Group>
 
-          <Button as="a" variant="info" onClick={handleRegisterTenant}>Register</Button>
+          <Button as="a" onClick={handleRegister}>Register</Button>
         </Form>
       </React.Fragment>
-    </div>
+    </>
   );
 
 };
