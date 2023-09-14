@@ -38,13 +38,13 @@ classDiagram
     App --> "1" CompositeScreen :commandCockpit
     CompositeScreen ..> "*" RenderingComponent :assemblablePresentationalComponents
     CompositeScreen ..> "*" DisplayComponent :assemblableCouplingManagersOfLinkableDataProviders
-    DisplayComponent o-- "1..*" RenderingComponent :renderingElements
+    DisplayComponent *-- "1..*" RenderingComponent :renderingElements
     Props --> "1" ContainerComponent :dataControlLayer
     Props --> "1.*" RenderingComponents :presentationLayer
     Props --> "0..1" DataProvider :dataProvider
-    CompositeScreen --> "1" Props :screenContext
+    CompositeScreen --> "1" Props :screenContextProperties
     RenderingComponent ..> "1" Props :dataControlLayer
-    RenderingComponent --> "0..*" RenderingComponents :subElements
+    RenderingComponent --> "0..*" RenderingComponent :subElements
     ContainerComponent ..> "1..*" Props :presentationLayer
     ContainerComponent ..> "0..*" DataProvider :dataLayer
     DataStore ..|> DataProvider
@@ -58,7 +58,6 @@ classDiagram
     }
     class CompositeScreen {
         <<React Component>>
-        -screenContextProperties : Props
     }
     class ContainerComponent {
         <<React Component>>
