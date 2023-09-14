@@ -142,15 +142,15 @@ classDiagram
     ActPanelDisplayer o-- "1" NavigateDisplayer :navigate
     ActPanelDisplayer ..> "0..*" AlertPanelDisplayer
     ActPanelDisplayer o-- "1" CollaboratePanelDisplayer :collaborate
-    Infocon5CockpitDisplayer --> "1..*" ActPanelDisplayer :act
+    ActPanelDisplayer "1..*" <-- Infocon5CockpitDisplayer :act
     Infocon5CockpitDisplayer ..> "0..*" AlertPanelDisplayer
-    Infocon4CockpitDisplayer --> "1..*" ActPanelDisplayer :act
+    ActPanelDisplayer "1..*" <-- Infocon4CockpitDisplayer :act
     Infocon4CockpitDisplayer ..> "0..*" AlertPanelDisplayer
-    Infocon3CockpitDisplayer --> "1..*" ActPanelDisplayer :act
+    ActPanelDisplayer "1..*" <-- Infocon3CockpitDisplayer :act
     Infocon3CockpitDisplayer ..> "0..*" AlertPanelDisplayer
-    Infocon2CockpitDisplayer --> "1..*" ActPanelDisplayer :act
+    ActPanelDisplayer "1..*" <-- Infocon2CockpitDisplayer :act
     Infocon2CockpitDisplayer ..> "0..*" AlertPanelDisplayer
-    Infocon1CockpitDisplayer --> "1..*" ActPanelDisplayer :act
+    ActPanelDisplayer "1..*" <-- Infocon1CockpitDisplayer :act
     Infocon1CockpitDisplayer ..> "0..*" AlertPanelDisplayer
     ReactPanelDisplayer ..> "0..*" AlertPanelDisplayer
     
