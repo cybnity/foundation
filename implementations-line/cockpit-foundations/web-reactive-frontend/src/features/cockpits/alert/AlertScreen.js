@@ -1,4 +1,4 @@
-export default function ReactPanelDisplayer() {
+export default function AlertScreen() {
 
     return (
         <>

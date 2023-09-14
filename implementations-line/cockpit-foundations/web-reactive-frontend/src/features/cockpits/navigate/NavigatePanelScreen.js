@@ -1,4 +1,4 @@
-export default function AlertPanelDisplayer() {
+export default function NavigatePanelScreen() {
 
     return (
         <>

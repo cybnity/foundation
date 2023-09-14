@@ -1,4 +1,4 @@
-export default function NavigateDisplayer() {
+export default function ReactPanelScreen() {
 
     return (
         <>

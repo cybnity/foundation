@@ -4,6 +4,8 @@ Presentation of the design view regarding the sub-packages of `web-reactive-fron
 # DESIGN VIEW
 The technical description regarding behavior and best usage is maintained into the Javadoc of each component.
 
+![image](cockpit-multilayers-canvas.png)
+
 | Component Type     | Motivation                                                                                                                                                                                                                                                                                                                      |
 |:-------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | App                | Application view including the global configuration of a React JS single-page web application including viewport sub-elements                                                                                                                                                                                                   |
@@ -107,17 +109,17 @@ See [concept documentation](https://cybnity.notion.site/CYBNITY-System-Of-Operat
 
 | Component Type              | Motivation                                                                                                                                 |
 |:----------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------|
-| ActPanelDisplayer           | Information or process management view (e.g actions plan, asset detail)                                                                    |
-| AlertPanelDisplayer         | Alerting view (e.g urgent decision modal view) suspending user's current activity for immediate action(s)                                  |
+| ActPanelScreen              | Information or process management view (e.g actions plan, asset detail)                                                                    |
+| AlertScreen                 | Alerting view (e.g urgent decision modal view) suspending user's current activity for immediate action(s)                                  |
 | CollaborationPanelDisplayer | Instant collaboration panel (e.g group chat, team video live) with other team members                                                      |
-| Infocon5CockpitDisplayer    | Operational performance monitoring cockpit                                                                                                 |
-| Infocon4CockpitDisplayer    | Risk of attack operational cockpit                                                                                                         |
-| Infocon3CockpitDisplayer    | Increased alertness & security review cockpit                                                                                              |
-| Infocon2CockpitDisplayer    | Ready to cyber fight cockpit                                                                                                               |
-| Infocon1CockpitDisplayer    | Offensive immediate response cockpit                                                                                                       |
-| NavigateDisplayer           | Search of information, missions, topics and sections of contents (e.g user's role/mission based) allowing to navigate into ISMS            |
-| ReactPanelDisplayer         | Urgency actions command panel (e.g team mobilization, intercom, BCP/DRP start)                                                             |
-| SituationPanelDisplayer     | Environment metrics and situation indicators panel (e.g asset status, risk level, intervention team status) according to a time range zoom |
+| Infocon5CockpitScreen       | Operational performance monitoring cockpit                                                                                                 |
+| Infocon4CockpitScreen       | Risk of attack operational cockpit                                                                                                         |
+| Infocon3CockpitScreen       | Increased alertness & security review cockpit                                                                                              |
+| Infocon2CockpitScreen       | Ready to cyber fight cockpit                                                                                                               |
+| Infocon1CockpitScreen       | Offensive immediate response cockpit                                                                                                       |
+| NavigatePanelScreen         | Search of information, missions, topics and sections of contents (e.g user's role/mission based) allowing to navigate into ISMS            |
+| ReactPanelScreen            | Urgency actions command panel (e.g team mobilization, intercom, BCP/DRP start)                                                             |
+| SituationPanelScreen        | Environment metrics and situation indicators panel (e.g asset status, risk level, intervention team status) according to a time range zoom |
 
 ```mermaid
 %%{
@@ -138,60 +140,60 @@ See [concept documentation](https://cybnity.notion.site/CYBNITY-System-Of-Operat
   }
 }%%
 classDiagram
-    CollaboratePanelDisplayer ..> "0..*" AlertPanelDisplayer
-    ActPanelDisplayer o-- "1" NavigateDisplayer :navigate
-    ActPanelDisplayer ..> "0..*" AlertPanelDisplayer
-    ActPanelDisplayer o-- "1" CollaboratePanelDisplayer :collaborate
-    ActPanelDisplayer "1..*" <-- Infocon5CockpitDisplayer :act
-    Infocon5CockpitDisplayer ..> "0..*" AlertPanelDisplayer
-    ActPanelDisplayer "1..*" <-- Infocon4CockpitDisplayer :act
-    Infocon4CockpitDisplayer ..> "0..*" AlertPanelDisplayer
-    ActPanelDisplayer "1..*" <-- Infocon3CockpitDisplayer :act
-    Infocon3CockpitDisplayer ..> "0..*" AlertPanelDisplayer
-    ActPanelDisplayer "1..*" <-- Infocon2CockpitDisplayer :act
-    Infocon2CockpitDisplayer ..> "0..*" AlertPanelDisplayer
-    ActPanelDisplayer "1..*" <-- Infocon1CockpitDisplayer :act
-    Infocon1CockpitDisplayer ..> "0..*" AlertPanelDisplayer
-    ReactPanelDisplayer ..> "0..*" AlertPanelDisplayer
-    SituationPanelDisplayer ..> "0..*" AlertPanelDisplayer
+    CollaboratePanelScreen ..> "0..*" AlertScreen
+    ActPanelScreen o-- "1" NavigatePanelScreen :navigate
+    ActPanelScreen ..> "0..*" AlertScreen
+    ActPanelScreen o-- "1" CollaboratePanelScreen :collaborate
+    ActPanelScreen "1..*" <-- Infocon5CockpitScreen :act
+    Infocon5CockpitScreen ..> "0..*" AlertScreen
+    ActPanelScreen "1..*" <-- Infocon4CockpitScreen :act
+    Infocon4CockpitScreen ..> "0..*" AlertScreen
+    ActPanelScreen "1..*" <-- Infocon3CockpitScreen :act
+    Infocon3CockpitScreen ..> "0..*" AlertScreen
+    ActPanelScreen "1..*" <-- Infocon2CockpitScreen :act
+    Infocon2CockpitScreen ..> "0..*" AlertScreen
+    ActPanelScreen "1..*" <-- Infocon1CockpitScreen :act
+    Infocon1CockpitScreen ..> "0..*" AlertScreen
+    ReactPanelScreen ..> "0..*" AlertScreen
+    SituationPanelScreen ..> "0..*" AlertScreen
     
-    class Infocon5CockpitDisplayer {
+    class Infocon5CockpitScreen {
         <<DisplayComponent>>
-        -reactView : ReactPanelDisplayer
+        -reactView : ReactPanelScreen
     }
-    class Infocon4CockpitDisplayer {
+    class Infocon4CockpitScreen {
         <<DisplayComponent>>
-        -reactView : ReactPanelDisplayer
+        -reactView : ReactPanelScreen
     }
-    class Infocon3CockpitDisplayer {
+    class Infocon3CockpitScreen {
         <<DisplayComponent>>
-        -reactView : ReactPanelDisplayer
+        -reactView : ReactPanelScreen
     }
-    class Infocon2CockpitDisplayer {
+    class Infocon2CockpitScreen {
         <<DisplayComponent>>
-        -reactView : ReactPanelDisplayer
+        -reactView : ReactPanelScreen
     }
-    class Infocon1CockpitDisplayer {
+    class Infocon1CockpitScreen {
         <<DisplayComponent>>
-        -reactView : ReactPanelDisplayer
+        -reactView : ReactPanelScreen
     }
-    class ReactPanelDisplayer {
-        <<DisplayComponent>>
-    }
-    class SituationPanelDisplayer {
-        <<DisplayComponent>>
-        -reactView : ReactPanelDisplayer
-    }
-    class ActPanelDisplayer {
+    class ReactPanelScreen {
         <<DisplayComponent>>
     }
-    class NavigateDisplayer {
+    class SituationPanelScreen {
+        <<DisplayComponent>>
+        -reactView : ReactPanelScreen
+    }
+    class ActPanelScreen {
         <<DisplayComponent>>
     }
-    class AlertPanelDisplayer {
+    class NavigatePanelScreen {
         <<DisplayComponent>>
     }
-    class CollaboratePanelDisplayer {
+    class AlertScreen {
+        <<DisplayComponent>>
+    }
+    class CollaboratePanelScreen {
         <<DisplayComponent>>
     }
     

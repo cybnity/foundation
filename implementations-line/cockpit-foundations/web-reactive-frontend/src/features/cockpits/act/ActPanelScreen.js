@@ -1,4 +1,4 @@
-export default function ActPanelDisplayer() {
+export default function ActPanelScreen() {
 
     return (
         <>
