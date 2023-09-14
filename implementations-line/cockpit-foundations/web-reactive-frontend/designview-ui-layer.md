@@ -44,7 +44,7 @@ classDiagram
     Props --> "0..1" DataProvider :dataProvider
     CompositeScreen --> "1" Props :screenContextProperties
     RenderingComponent ..> "1" Props :dataControlLayer
-    RenderingComponent --> "0..*" RenderingComponent :subElements
+    RenderingComponent *-- "0..*" RenderingComponent :subElements
     ContainerComponent ..> "1..*" Props :presentationLayer
     ContainerComponent ..> "0..*" DataProvider :dataLayer
     DataStore ..|> DataProvider
