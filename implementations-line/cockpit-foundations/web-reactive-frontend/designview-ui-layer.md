@@ -47,8 +47,8 @@ classDiagram
     RenderingComponent *-- "0..*" RenderingComponent :subElements
     ContainerComponent ..> "1..*" Props :presentationLayer
     ContainerComponent ..> "0..*" DataProvider :dataLayer
-    DataStore ..|> DataProvider
-    EventBus ..|> DataProvider
+    DataProvider <|.. DataStore
+    DataProvider <|.. EventBus
     
     class App {
         <<Reactive App>>
