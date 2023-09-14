@@ -42,7 +42,7 @@ classDiagram
     Props --> "1" ContainerComponent :dataControlLayer
     Props --> "1.*" RenderingComponents :presentationLayer
     Props --> "0..1" DataProvider :dataProvider
-    CompositeScreen --> "1" Props :screenContextProperties
+    CompositeScreen o-- "1" Props :screenContextProperties
     RenderingComponent ..> "1" Props :dataControlLayer
     RenderingComponent *-- "0..*" RenderingComponent :subElements
     ContainerComponent ..> "1..*" Props :presentationLayer
