@@ -40,7 +40,7 @@ classDiagram
     CompositeScreen ..> "*" DisplayComponent :assemblableCouplingManagersOfLinkableDataProviders
     DisplayComponent *-- "1..*" RenderingComponent :renderingElements
     Props --> "1" ContainerComponent :dataControlLayer
-    Props --> "1.*" RenderingComponents :presentationLayer
+    Props --> "1.*" RenderingComponent :presentationLayer
     Props --> "0..1" DataProvider :dataProvider
     CompositeScreen o-- "1" Props :screenContextProperties
     RenderingComponent ..> "1" Props :dataControlLayer
