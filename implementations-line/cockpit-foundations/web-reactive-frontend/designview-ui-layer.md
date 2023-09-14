@@ -35,7 +35,7 @@ The technical description regarding behavior and best usage is maintained into t
   }
 }%%
 classDiagram
-    App --> "1" CompositeScreen :commandCockpit
+    App *-- "1" CompositeScreen :commandCockpit
     CompositeScreen ..> "*" RenderingComponent :assemblablePresentationalComponents
     CompositeScreen ..> "*" DisplayComponent :assemblableCouplingManagersOfLinkableDataProviders
     DisplayComponent *-- "1..*" RenderingComponent :renderingElements
