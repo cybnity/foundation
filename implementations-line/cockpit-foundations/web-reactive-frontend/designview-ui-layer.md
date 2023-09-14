@@ -153,6 +153,7 @@ classDiagram
     ActPanelDisplayer "1..*" <-- Infocon1CockpitDisplayer :act
     Infocon1CockpitDisplayer ..> "0..*" AlertPanelDisplayer
     ReactPanelDisplayer ..> "0..*" AlertPanelDisplayer
+    SituationPanelDisplayer ..> "0..*" AlertPanelDisplayer
     
     class Infocon5CockpitDisplayer {
         <<DisplayComponent>>
