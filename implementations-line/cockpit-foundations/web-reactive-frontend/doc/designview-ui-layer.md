@@ -80,8 +80,11 @@ classDiagram
     }
     
 ```
-# STRUCTURE MODELS
+# IMPLEMENTATION STRUCTURE MODELS
 Several packages are implemented to organize the components (e.g specification elements, implementation components) required by each application module (e.g according to its application domain).
+
+[React Redux library](https://react-redux.js.org/) is reused as implementation model of client-side data layer.
+[Developer documentation](https://create-react-app.dev/) can be use as support for implementation.
 
 ## COMPONENTS PACKAGE
 Several types of common reactive elements are defined included as enabler and utilities components which are reusable into any feature module.
