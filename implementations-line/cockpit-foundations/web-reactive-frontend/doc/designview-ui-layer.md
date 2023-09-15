@@ -107,19 +107,20 @@ The sub-packages are organized by capability/feature module.
 Include cockpit composite elements and sub-elements defining systems of operational cockpits.
 See [concept documentation](https://cybnity.notion.site/CYBNITY-System-Of-Operational-Cockpits-3bc187d32bb947e0a73aaceb998a42ab?pvs=4) for more detail.
 
-| Component Type                | Motivation                                                                                                                                 |
-|:------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------|
-| ActPanelScreenDisplay         | Information or process management view (e.g actions plan, asset detail)                                                                    |
-| AlertScreenDisplay            | Alerting view (e.g urgent decision modal view) suspending user's current activity for immediate action(s)                                  |
-| CollaboratePanelScreenDisplay | Instant collaboration panel (e.g group chat, team video live) with other team members                                                      |
-| Infocon5CockpitScreenDisplay  | Operational performance monitoring cockpit                                                                                                 |
-| Infocon4CockpitScreenDisplay  | Risk of attack operational cockpit                                                                                                         |
-| Infocon3CockpitScreenDisplay  | Increased alertness & security review cockpit                                                                                              |
-| Infocon2CockpitScreenDisplay  | Ready to cyber fight cockpit                                                                                                               |
-| Infocon1CockpitScreenDisplay  | Offensive immediate response cockpit                                                                                                       |
-| NavigatePanelScreenDisplay    | Search of information, missions, topics and sections of contents (e.g user's role/mission based) allowing to navigate into ISMS            |
-| ReactPanelScreenDisplay       | Urgency actions command panel (e.g team mobilization, intercom, BCP/DRP start)                                                             |
-| SituationPanelScreenDisplay   | Environment metrics and situation indicators panel (e.g asset status, risk level, intervention team status) according to a time range zoom |
+| Component Type                | Motivation                                                                                                                                            |
+|:------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ActPanelScreenDisplay         | Information or process management view (e.g actions plan, asset detail)                                                                               |
+| AlertScreenDisplay            | Alerting view (e.g urgent decision modal view) suspending user's current activity for immediate action(s)                                             |
+| CockpitScreen                 | Dynamic configured composite screen materializing the user cockpit according to his organization role and to the current organization's Infocon level |
+| CollaboratePanelScreenDisplay | Instant collaboration panel (e.g group chat, team video live) with other team members                                                                 |
+| Infocon5CockpitScreenDisplay  | Operational performance monitoring cockpit                                                                                                            |
+| Infocon4CockpitScreenDisplay  | Risk of attack operational cockpit                                                                                                                    |
+| Infocon3CockpitScreenDisplay  | Increased alertness & security review cockpit                                                                                                         |
+| Infocon2CockpitScreenDisplay  | Ready to cyber fight cockpit                                                                                                                          |
+| Infocon1CockpitScreenDisplay  | Offensive immediate response cockpit                                                                                                                  |
+| NavigatePanelScreenDisplay    | Search of information, missions, topics and sections of contents (e.g user's role/mission based) allowing to navigate into ISMS                       |
+| ReactPanelScreenDisplay       | Urgency actions command panel (e.g team mobilization, intercom, BCP/DRP start)                                                                        |
+| SituationPanelScreenDisplay   | Environment metrics and situation indicators panel (e.g asset status, risk level, intervention team status) according to a time range zoom            |
 
 ```mermaid
 %%{
@@ -156,6 +157,11 @@ classDiagram
     Infocon1CockpitScreenDisplay ..> "0..*" AlertScreenDisplay
     ReactPanelScreenDisplay ..> "0..*" AlertScreenDisplay
     SituationPanelScreenDisplay ..> "0..*" AlertScreenDisplay
+    CockpitScreen "1" ..> "0..1" Infocon5CockpitScreenDisplay :activeScreenManager
+    CockpitScreen "1" ..> "0..1" Infocon4CockpitScreenDisplay :activeScreenManager
+    CockpitScreen "1" ..> "0..1" Infocon3CockpitScreenDisplay :activeScreenManager
+    CockpitScreen "1" ..> "0..1" Infocon2CockpitScreenDisplay :activeScreenManager
+    CockpitScreen "1" ..> "0..1" Infocon1CockpitScreenDisplay :activeScreenManager
     
     class Infocon5CockpitScreenDisplay {
         <<DisplayComponent>>
@@ -196,6 +202,9 @@ classDiagram
     class CollaboratePanelScreenDisplay {
         <<DisplayComponent>>
     }
+    class CockpitScreen {
+        <<CompositeScreen>>
+    }
     
 ```
 ### Access-control sub-package
@@ -230,4 +239,4 @@ classDiagram
 ```
 
 #
-[Back To Home](README.md)
+[Back To Home](../README.md)

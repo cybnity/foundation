@@ -2,7 +2,6 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import NavBar from './components/NavBar';
 import Home from './components/Home';
 import AccountRegistration from './features/access-control/AccountRegistration';
-import AccessControlCheck from './components/security/AccessControlCheck';
 import SecureCockpit from './components/security/SecureCockpit';
 
 export default function App() {

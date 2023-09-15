@@ -3,7 +3,7 @@ Presentation of implementation project providing frontend web application to fin
 
 # DESIGN VIEW
 Presentation of the design models regarding the web application:
-- [User Interface layer](designview-ui-layer.md)
+- [User Interface layer](doc/designview-ui-layer.md)
 
 # IMPLEMENTATION VIEW
 ## React Application Structure
@@ -58,13 +58,12 @@ Dedicated to Docker image assembly controlled by Maven build tool that package t
 Include files required by the Express http server implementation.
 
 ### public folder
-Include all the files and contents (e.g media files) that are publically accessible over the http service (e.g health check basic html file, favicon for browsers...). Be carefull that media required by components shall not be included in this folder!
+Include all the files and contents (e.g media files) that are public accessible over the http service (e.g health check basic html file, favicon for browsers...). Be carefull that media required by components shall not be included in this folder!
 
 Files hosted in this directory shall only be referenced by HTML pages (e.g over %PUBLIC_URL% folder location variable name).
 
 ### node_modules folder
 Contains all node packages that have been installed according to the specifics versions defined into the __package.json__ file.
-
 
 # COCKPIT-FOUNDATION COMPONENTS
 The source codes managed in this area of Foundation project are about the capabilities provided to the users (e.g web ui services provided to user's web browser) via the user interface layer.
