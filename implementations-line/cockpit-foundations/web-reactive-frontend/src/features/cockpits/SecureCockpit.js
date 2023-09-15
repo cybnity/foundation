@@ -1,6 +1,6 @@
 import React from 'react';
-import gatewayProxy from "../../components/services/GatewayProxy";
-import CockpitScreen from "./CockpitScreen";
+import gatewayProxy from '../../components/services/GatewayProxy';
+import CockpitScreen from './CockpitScreen';
 
 export default function SecureCockpit() {
 

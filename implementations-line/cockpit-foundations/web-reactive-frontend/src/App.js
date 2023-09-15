@@ -1,7 +1,7 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import NavBar from './components/NavBar';
 import Home from './components/Home';
-import AccountRegistration from './features/access-control/AccountRegistration';
+import AccountRegistrationViewRendering from './features/access-control/AccountRegistrationViewRendering';
 import SecureCockpit from './features/cockpits/SecureCockpit';
 
 export default function App() {
@@ -11,7 +11,7 @@ export default function App() {
                 <NavBar/>
                 <Routes>
                     <Route exact path='/' element={<Home/>}/>
-                    <Route path='/account_registration' element={<AccountRegistration/>}/>
+                    <Route path='/account_registration' element={<AccountRegistrationViewRendering/>}/>
                     <Route path="/cockpit" element={<SecureCockpit/>}/>
                 </Routes>
             </div>

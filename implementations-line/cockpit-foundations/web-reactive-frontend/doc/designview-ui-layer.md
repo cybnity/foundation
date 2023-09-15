@@ -84,6 +84,9 @@ classDiagram
 Several packages are implemented to organize the components (e.g specification elements, implementation components) required by each application module (e.g according to its application domain).
 
 [React Redux library](https://react-redux.js.org/) is reused as implementation model of client-side data layer.
+
+The [Redux Toolkit](https://redux.js.org/introduction/why-rtk-is-redux-today) is used as recommended in place of legacy using of redux core package.
+
 [Developer documentation](https://create-react-app.dev/) can be use as support for implementation.
 
 ## COMPONENTS PACKAGE
@@ -216,7 +219,7 @@ Capability providers required by the UI layer of the access-control domain modul
 
 | Component Type      | Motivation |
 |:--------------------|:-----------|
-| AccountRegistration |            |
+| AccountRegistrationViewRendering |            |
 
 ```mermaid
 %%{
@@ -237,7 +240,7 @@ Capability providers required by the UI layer of the access-control domain modul
   }
 }%%
 classDiagram
-    class AccountRegistration {
+    class AccountRegistrationViewRendering {
     }
     
 ```
