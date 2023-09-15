@@ -1,4 +1,6 @@
-class CockpitScreen extends React.Component {
+import {Component} from 'react';
+
+class CockpitScreen extends Component {
     componentDidMount() {
         // Subscribe to data provider(s) changes
         // store.subscribe(() => this.forceUpdate());
@@ -14,3 +16,5 @@ class CockpitScreen extends React.Component {
         );
     }
 }
+
+export default CockpitScreen;

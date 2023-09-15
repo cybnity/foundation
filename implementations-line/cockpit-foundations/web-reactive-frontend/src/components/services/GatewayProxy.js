@@ -14,8 +14,8 @@ const busOptions = {
 const backendUrl = 'http://localhost:8080/eventbus/secure/';
 
 // Connect Backend SockJS api via event bus
-export default eventBus;
 let eventBus = new EventBus(backendUrl, busOptions);
+export default eventBus;
 
 // Set up event bus handlers...
 eventBus.onopen = function () {

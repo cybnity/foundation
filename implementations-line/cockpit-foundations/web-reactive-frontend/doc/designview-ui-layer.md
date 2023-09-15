@@ -204,6 +204,7 @@ classDiagram
     }
     class CockpitScreen {
         <<CompositeScreen>>
+        -screenContextProperties : Props
     }
     
 ```
