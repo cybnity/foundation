@@ -2,7 +2,7 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import NavBar from './components/NavBar';
 import Home from './components/Home';
 import AccountRegistration from './features/access-control/AccountRegistration';
-import SecureCockpit from './components/security/SecureCockpit';
+import SecureCockpit from './features/cockpits/SecureCockpit';
 
 export default function App() {
     return (

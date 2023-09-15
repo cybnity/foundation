@@ -1,11 +1,10 @@
-import {Component} from 'react';
+import React, {Component} from 'react';
 
 class CockpitScreen extends Component {
     componentDidMount() {
         // Subscribe to data provider(s) changes
         // store.subscribe(() => this.forceUpdate());
     }
-
     render() {
         return (
             <>
