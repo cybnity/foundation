@@ -1,9 +1,8 @@
 import React from 'react';
-import gatewayProxy from '../../components/services/GatewayProxy';
+import gatewayProxy from '../../components/services/GatewayBridge';
 import CockpitScreen from './CockpitScreen';
 
 export default function SecureCockpit() {
-
     const [tenantId, setTenantId] = React.useState('');// Tenant of this cockpit runtime context
     const [connectedUserId, setConnectedUserId] = React.useState('');// Identifier of authenticated user
     const [organizationBusEntryPoint, setOrganizationBusEntryPoint] = React.useState(tenantId + '.');

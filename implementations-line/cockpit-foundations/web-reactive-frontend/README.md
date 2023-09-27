@@ -46,7 +46,7 @@ Each ReactJS component have its own folder where each one include dedicated styl
 - Vulnerabilities folder regarding __Vulnerabilities Prevention & Treatment UI module__
 
 For each folder of feature component, several files are defined:
-- index.js that represents the public interface of the folder where everything gets exported that's relevant to the outside world
+- InfoconCockpitScreenContainer.js that represents the public interface of the folder where everything gets exported that's relevant to the outside world
 - component.js that holds the actual implementation logic of the component
 - test.js
 - style.css
