@@ -28,7 +28,8 @@ export default function SituationPanelScreenDisplay() {
                             componentName: 'ActPanelScreenDisplay',
                             closable: true,
                             exportable: true,
-                            imageMode: false
+                            imageMode: false,
+                            titleImage: ''
                         }))}>Test Information Perspective Opening</Button>
 
             <Button as="a" size={'lg'} variant={'secondary'}
@@ -40,7 +41,8 @@ export default function SituationPanelScreenDisplay() {
                             componentName: 'ActPanelScreenDisplay',
                             closable: true,
                             exportable: true,
-                            imageMode: false
+                            imageMode: false,
+                            titleImage: ''
                         }))}>Another Same Type of Information Perspective Opening</Button>
         </>
     );

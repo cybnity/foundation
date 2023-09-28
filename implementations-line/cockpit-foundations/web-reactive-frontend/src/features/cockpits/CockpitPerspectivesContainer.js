@@ -67,7 +67,8 @@ export const CockpitPerspectivesContainer = createSlice(
                     componentName: 'SituationPanelScreenDisplay',
                     closable: false,
                     exportable: false,
-                    imageMode: false
+                    imageMode: false,
+                    titleImage: ''
                 },
                 // Other managed perspectives descriptions
                 // are dynamically added in the array by view containers

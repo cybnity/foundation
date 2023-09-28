@@ -2,8 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import {Col, Container, Navbar, Row} from "react-bootstrap";
-import logo from "../../media/cybnity-gorilla-light.svg";
+import {Col, Container, Row} from "react-bootstrap";
 import {
     perspectiveActivated, perspectiveClosed
 } from './CockpitPerspectivesContainer'
@@ -28,6 +27,24 @@ export default function CockpitScreen() {
     // Dispatcher to the reducers supporting the data layer control
     const dispatch = useDispatch();
 
+    /**
+     * Open an externalized screen over a new browser tab
+     * @param viewComponent The subject to open.
+     */
+    function openExternalized(viewComponent) {
+        if (viewComponent) {
+            // Build url location and internal view to show in new browser tab to open
+            // <ComponentRender componentName={item.componentName}/>
+
+            let url = "\location";
+            const win = window.open(url, '_blank');
+            if (win != null) {
+                // Give focus to externalized view
+                win.focus();
+            }
+        }
+    }
+
     return (
         <Container fluid>
             <Row>
@@ -39,7 +56,7 @@ export default function CockpitScreen() {
                             dispatch(perspectiveActivated({type: 'ACTIVATE_PERSPECTIVE', perspectiveId: eventKey}));
                         }} className="mb-3">
 
-                        <Tab title={<span><NavBarBrandIcon /></span>}>
+                        <Tab title={<span><NavBarBrandIcon/></span>}>
                         </Tab>
                         {perspectivesList.map((item) => (
                             <Tab eventKey={item.id} title={<span>
@@ -56,6 +73,7 @@ export default function CockpitScreen() {
                                             <TfiNewWindow onClick={(event) => {
                                                 event.stopPropagation(); // Avoid propagation to tabs object (parent else which call onSelect)
                                                 console.log("Request externalization of view (id: " + item.id + ") into independent browser");
+                                                openExternalized(item.componentName);
                                             }}/>}
                                         {item.closable &&
                                             <MdClose onClick={(event) => {
