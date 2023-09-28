@@ -65,7 +65,9 @@ export const CockpitPerspectivesContainer = createSlice(
                     id: 'control', // UUID of information screen
                     title: 'CONTROL', // Title of the information screen
                     componentName: 'SituationPanelScreenDisplay',
-                    closable: false
+                    closable: false,
+                    exportable: false,
+                    imageMode: false
                 },
                 // Other managed perspectives descriptions
                 // are dynamically added in the array by view containers

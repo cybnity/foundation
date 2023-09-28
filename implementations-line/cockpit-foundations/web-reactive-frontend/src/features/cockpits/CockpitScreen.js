@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import {Container, Navbar} from "react-bootstrap";
+import {Col, Container, Navbar, Row} from "react-bootstrap";
 import logo from "../../media/cybnity-gorilla-light.svg";
 import {
     perspectiveActivated, perspectiveClosed
@@ -11,6 +11,7 @@ import ComponentRender from "./ComponentRender";
 import {MdClose} from 'react-icons/md';
 import PerspectiveTitleIconConfig from "../../components/icons/PerspectiveTitleIconConfig";
 import {TfiNewWindow} from 'react-icons/tfi';
+import NavBarBrandIcon from "./NavBarBrandIcon";
 
 /**
  * Cockpit composite view including the panels assembled and ready to be customized according to the user role, mission, and organization current infocon level.
@@ -29,40 +30,56 @@ export default function CockpitScreen() {
 
     return (
         <Container fluid>
-            <Navbar.Brand href="/cockpit">
-                <img
-                    alt=""
-                    src={logo}
-                    width="30"
-                    height="30"
-                    className="d-inline-block align-top"
-                />
-            </Navbar.Brand>
-            <Tabs
-                id="perspectivesTabs"
-                activeKey={currentPerspective}
-                onSelect={(eventKey, event) => {
-                    dispatch(perspectiveActivated({type: 'ACTIVATE_PERSPECTIVE', perspectiveId: eventKey}));
-                }} className="mb-3">
+            <Row>
+                <Col>
+                    <Tabs
+                        id="perspectivesTabs"
+                        activeKey={currentPerspective}
+                        onSelect={(eventKey, event) => {
+                            dispatch(perspectiveActivated({type: 'ACTIVATE_PERSPECTIVE', perspectiveId: eventKey}));
+                        }} className="mb-3">
 
-                {perspectivesList.map((item) => (
-                    <Tab eventKey={item.id} title={<span>{item.title}<PerspectiveTitleIconConfig><TfiNewWindow/>
-                        {item.closable &&
-                            <MdClose onClick={(event) => {
-                                event.stopPropagation(); // Avoid propagation to tabs object (parent else which call onSelect)
-                                dispatch(
-                                    perspectiveClosed({
-                                        type: 'CLOSE_PERSPECTIVE',
-                                        id: item.id
-                                    }))
-                            }}/>
+                        <Tab title={<span><NavBarBrandIcon /></span>}>
+                        </Tab>
+                        {perspectivesList.map((item) => (
+                            <Tab eventKey={item.id} title={<span>
+                                {!item.imageMode && item.title}
+                                {item.titleImage &&
+                                    <ComponentRender componentName={item.titleImage} onClick={(event) => {
+                                        event.stopPropagation(); // Avoid propagation to tabs object (parent else which call onSelect)
+
+                                    }}/>
+                                }
+                                {(item.exportable || item.closable) &&
+                                    <PerspectiveTitleIconConfig>
+                                        {item.exportable &&
+                                            <TfiNewWindow onClick={(event) => {
+                                                event.stopPropagation(); // Avoid propagation to tabs object (parent else which call onSelect)
+                                                console.log("Request externalization of view (id: " + item.id + ") into independent browser");
+                                            }}/>}
+                                        {item.closable &&
+                                            <MdClose onClick={(event) => {
+                                                event.stopPropagation(); // Avoid propagation to tabs object (parent else which call onSelect)
+                                                dispatch(
+                                                    perspectiveClosed({
+                                                        type: 'CLOSE_PERSPECTIVE',
+                                                        id: item.id
+                                                    }))
+                                            }}/>
+                                        }
+                                    </PerspectiveTitleIconConfig>}</span>} key={item.id}>
+                                {item.componentName &&
+                                    <ComponentRender componentName={item.componentName}/>
+                                }
+                            </Tab>
+                        ))
                         }
-                        </PerspectiveTitleIconConfig></span>} key={item.id}>
-                        <ComponentRender componentName={item.componentName}/>
-                    </Tab>
-                ))
-                }
-            </Tabs>
+                    </Tabs>
+                </Col>
+                <Col lg="1">
+                    infolevel
+                </Col>
+            </Row>
         </Container>
     );
 }

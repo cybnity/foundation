@@ -26,7 +26,9 @@ export default function SituationPanelScreenDisplay() {
                             id: 'informationUUI',
                             title: 'Business Object A',
                             componentName: 'ActPanelScreenDisplay',
-                            closable: true
+                            closable: true,
+                            exportable: true,
+                            imageMode: false
                         }))}>Test Information Perspective Opening</Button>
 
             <Button as="a" size={'lg'} variant={'secondary'}
@@ -36,7 +38,9 @@ export default function SituationPanelScreenDisplay() {
                             id: 'informationUUI2',
                             title: 'Business Object B',
                             componentName: 'ActPanelScreenDisplay',
-                            closable: true
+                            closable: true,
+                            exportable: true,
+                            imageMode: false
                         }))}>Another Same Type of Information Perspective Opening</Button>
         </>
     );

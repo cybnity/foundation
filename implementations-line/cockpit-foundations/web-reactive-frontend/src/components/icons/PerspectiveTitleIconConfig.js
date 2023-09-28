@@ -1,4 +1,4 @@
-import {IconContext} from "react-icons";
+import { IconContext } from "react-icons";
 
 /**
  * Configuration of icon style reusable as additional icon on perspective title (e.g Tab label).
