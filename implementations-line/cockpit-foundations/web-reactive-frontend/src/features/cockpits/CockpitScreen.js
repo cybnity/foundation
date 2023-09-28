@@ -11,6 +11,7 @@ import {MdClose} from 'react-icons/md';
 import PerspectiveTitleIconConfig from "../../components/icons/PerspectiveTitleIconConfig";
 import {TfiNewWindow} from 'react-icons/tfi';
 import NavBarBrandIcon from "./NavBarBrandIcon";
+import Navbar from 'react-bootstrap/Navbar';
 
 /**
  * Cockpit composite view including the panels assembled and ready to be customized according to the user role, mission, and organization current infocon level.
@@ -93,9 +94,6 @@ export default function CockpitScreen() {
                         ))
                         }
                     </Tabs>
-                </Col>
-                <Col lg="1">
-                    infolevel
                 </Col>
             </Row>
         </Container>
