@@ -29,14 +29,15 @@ export default function CockpitScreen() {
 
     /**
      * Open an externalized screen over a new browser tab
-     * @param viewComponent The subject to open.
+     * @param objectType Type of information that shall be opened in new browser.
+     * @param informationId Unique identifier of information that is managed by the opened new screen.
      */
-    function openExternalized(viewComponent) {
-        if (viewComponent) {
+    function openExternalized(objectType, informationId) {
+        if (objectType && informationId) {
             // Build url location and internal view to show in new browser tab to open
-            // <ComponentRender componentName={item.componentName}/>
-
-            let url = "\location";
+            // Reuse the Route path defined in App.js regarding dynamic display to open (e.g /manage path)
+            // and set the URL parameters
+            let url = "/manage/" + objectType + "/" + informationId;
             const win = window.open(url, '_blank');
             if (win != null) {
                 // Give focus to externalized view
@@ -77,7 +78,7 @@ export default function CockpitScreen() {
                                             <TfiNewWindow onClick={(event) => {
                                                 event.stopPropagation(); // Avoid propagation to tabs object (parent else which call onSelect)
                                                 console.log("Request externalization of view (id: " + item.id + ") into independent browser");
-                                                openExternalized(item.componentName);
+                                                openExternalized('risk', item.id);
                                             }}/>}
                                         {item.closable &&
                                             <MdClose onClick={(event) => {

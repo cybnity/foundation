@@ -85,6 +85,10 @@ The [Redux Toolkit](https://redux.js.org/introduction/why-rtk-is-redux-today) is
 Several types of common reactive elements are defined included as enabler and utilities components which are reusable into any feature module.
 The sub-packages are organized by type of components.
 
+| Component Type                     | Motivation                                                                      |
+|:-----------------------------------|:--------------------------------------------------------------------------------|
+| DynamicStandaloneInformationScreen | Composite screen that allow to show a dedicated and autonomous information type |
+
 ### Security sub-package
 Include components used in secured area.
 
