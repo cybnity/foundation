@@ -1,7 +1,8 @@
 import React from "react";
 
 import logo from "../../media/cybnity-gorilla-light.svg";
-import Navbar from 'react-bootstrap/Navbar';
+import {Col, Container, Row} from "react-bootstrap";
+import {HiMenu} from "react-icons/hi";
 
 /**
  * Icon of cockpit screens manager.
@@ -11,13 +12,22 @@ import Navbar from 'react-bootstrap/Navbar';
 export default function NavBarBrandIcon() {
 
     return (
-        <img
-            alt=""
-            src={logo}
-            width="30"
-            height="30"
-            className="d-inline-block align-middle"
-        />
+        <Container>
+            <Row className="justify-content-md-center">
+                <Col md="auto">
+                    <img
+                        alt=""
+                        src={logo}
+                        width="30"
+                        height="30"
+                        className="d-inline-block align-middle"
+                    /></Col>
+                <Col md="auto">
+                    <HiMenu onClick={(event) => {
+                        console.log("open menu");
+                    }}/></Col>
+            </Row>
+        </Container>
     );
 
 };

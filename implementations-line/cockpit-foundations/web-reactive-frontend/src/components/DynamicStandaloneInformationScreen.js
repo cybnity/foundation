@@ -5,15 +5,18 @@
  */
 import { useLocation, useParams } from 'react-router-dom';
 import {Container} from "react-bootstrap";
+import {useSelector} from "react-redux";
 export default function DynamicStandaloneInformationScreen(props) {
+    // Get current infocon level state
+    const infoconStatusLevel = useSelector((state) => state.infoconLevel.level);
 
     const location = useLocation();
     const { type } = useParams();
-    const { objectId } = useParams();
+    const { resourceId } = useParams();
 
     console.log(location);
     console.log(type);
-    console.log(objectId);
+    console.log(resourceId);
 
     // Identify the type of information to manage
 
@@ -26,10 +29,11 @@ export default function DynamicStandaloneInformationScreen(props) {
 
     return (
         <Container fluid>
+            <p>Infocon level: {infoconStatusLevel}</p>
             <p>
             standalone composed view based on information type to manage</p>
             <p>Type: {type}</p>
-            <p>Information ID: {objectId}</p>
+            <p>Information resource ID: {resourceId}</p>
         </Container>
     );
 }

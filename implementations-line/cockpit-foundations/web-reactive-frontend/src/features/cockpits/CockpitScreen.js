@@ -11,7 +11,6 @@ import {MdClose} from 'react-icons/md';
 import PerspectiveTitleIconConfig from "../../components/icons/PerspectiveTitleIconConfig";
 import {TfiNewWindow} from 'react-icons/tfi';
 import NavBarBrandIcon from "./NavBarBrandIcon";
-
 /**
  * Cockpit composite view including the panels assembled and ready to be customized according to the user role, mission, and organization current infocon level.
  * @returns {Element}
@@ -37,7 +36,7 @@ export default function CockpitScreen() {
             // Build url location and internal view to show in new browser tab to open
             // Reuse the Route path defined in App.js regarding dynamic display to open (e.g /manage path)
             // and set the URL parameters
-            let url = "/manage/" + objectType + "/" + informationId;
+            let url = "/managed-content/" + objectType + "/" + informationId;
             const win = window.open(url, '_blank');
             if (win != null) {
                 // Give focus to externalized view
@@ -58,9 +57,9 @@ export default function CockpitScreen() {
                                 type: 'ACTIVATE_PERSPECTIVE',
                                 perspectiveId: eventKey
                             }));
-                        }} className="mb-3">
+                        }} className="mb-1">
 
-                        <Tab title={<span><NavBarBrandIcon/></span>}>
+                        <Tab tabClassName="simple-tab-button" title={<NavBarBrandIcon/>}>
                         </Tab>
 
                         {perspectivesList.map((item) => (

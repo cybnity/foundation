@@ -21,7 +21,7 @@ export default function Home() {
                 <Link to="/cockpit">
                     COCKPIT ACCESS
                 </Link>
-                <Link to="/account_registration">
+                <Link to="/account-registration">
                     ACCOUNT REGISTRATION
                 </Link>
             </nav>
