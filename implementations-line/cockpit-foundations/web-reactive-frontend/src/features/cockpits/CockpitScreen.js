@@ -42,6 +42,12 @@ export default function CockpitScreen() {
                 // Give focus to externalized view
                 win.focus();
             }
+            // Close original tab
+            dispatch(
+                perspectiveClosed({
+                    type: 'CLOSE_PERSPECTIVE',
+                    id: informationId
+                }))
         }
     }
 
