@@ -1,31 +1,29 @@
 import React from "react";
-
 import logo from "../../media/cybnity-gorilla-light.svg";
 import {Col, Container, Row} from "react-bootstrap";
 import {HiMenu} from "react-icons/hi";
+import {Button} from "react-bootstrap/";
 
 /**
  * Icon of cockpit screens manager.
  * @returns {Element}
  * @constructor
  */
-export default function NavBarBrandIcon() {
+export default function NavBarBrandIcon({menuOnClickHandler}) {
 
     return (
         <Container>
-            <Row className="justify-content-md-center">
-                <Col md="auto">
+            <Row>
+                <Col>
                     <img
-                        alt=""
+                        alt="CYBNITY logo"
                         src={logo}
                         width="30"
                         height="30"
-                        className="d-inline-block align-middle"
-                    /></Col>
-                <Col md="auto">
-                    <HiMenu onClick={(event) => {
-                        console.log("open menu");
-                    }}/></Col>
+                    />
+                </Col>
+                <Col>
+                    <HiMenu onClick={menuOnClickHandler}/></Col>
             </Row>
         </Container>
     );

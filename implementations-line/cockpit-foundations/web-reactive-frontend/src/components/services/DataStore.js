@@ -2,6 +2,7 @@ import {configureStore} from '@reduxjs/toolkit'
 import accountTenantRegistrationReducer from '../../features/access-control/AccountRegistrationContainer'
 import infoconCockpitReducer from '../../features/cockpits/InfoconCockpitScreenContainer'
 import perspectivesCockpitReducer from '../../features/cockpits/CockpitPerspectivesContainer'
+import userContextReducer from '../../features/access-control/UserContextContainer'
 
 export default configureStore({
     // Create an empty local Redux store with automatic configuration of Redux DevTools extension allowing to inspect it while developing
@@ -15,8 +16,10 @@ export default configureStore({
         // --- Cockpits feature data perimeter ---
         // Current perspectives of information managed by cockpit sub-screens
         managedPerspectives: perspectivesCockpitReducer,
+        // User context
+        userContext: userContextReducer,
 
         // Current organization infocon level
         infoconLevel: infoconCockpitReducer,
-    },
+    }
 })

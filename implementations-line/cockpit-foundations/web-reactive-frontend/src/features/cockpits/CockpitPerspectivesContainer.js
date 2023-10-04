@@ -21,7 +21,7 @@ function isManagedPerspective(array, perspectiveId) {
 /**
  * Represents a search of element through an array.
  * @function search
- * @param {Array} array - The array you wanna search trough
+ * @param {Array} array - The array wanted to be searched trough
  * @param {string} key - The key to search for
  * @param {string} [prop] - The property name to find it in
  */

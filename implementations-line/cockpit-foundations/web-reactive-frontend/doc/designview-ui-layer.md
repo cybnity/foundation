@@ -116,7 +116,6 @@ See [concept documentation](https://cybnity.notion.site/CYBNITY-System-Of-Operat
 |:------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ActPanelScreenDisplay         | Information or process management view (e.g actions plan, asset detail)                                                                                                                                     |
 | AlertScreenDisplay            | Alerting view (e.g urgent decision modal view) suspending user's current activity for immediate action(s)                                                                                                   |
-| CockpitContainer              |                                                                                                                                                                                                             |
 | CockpitScreen                 | Dynamic configured composite screen materializing the user cockpit according to his organization role and to the current organization's Infocon level                                                       |
 | CollaboratePanelScreenDisplay | Instant collaboration panel (e.g group chat, team video live) with other team members                                                                                                                       |
 | InfoconCockpitScreenContainer | 5-Operational performance monitoring cockpit; 4-Risk of attack operational cockpit; 3-Increased alertness & security review cockpit; 2-Ready to cyber fight cockpit; 1-Offensive immediate response cockpit |
@@ -147,14 +146,14 @@ classDiagram
     ActPanelScreenDisplay *-- "1" NavigateScreenDisplay :navigate
     ActPanelScreenDisplay ..> "0..*" AlertScreenDisplay
     ActPanelScreenDisplay o-- "1" CollaboratePanelScreenDisplay :collaborate
-    ActPanelScreenDisplay "1..*" <-- CockpitContainer :act
-    CockpitContainer ..> "0..*" AlertScreenDisplay
+    ActPanelScreenDisplay "1..*" <-- UserContextContainer :act
+    UserContextContainer ..> "0..*" AlertScreenDisplay
     CockpitScreen --> "1..*" ActPanelScreenDisplay :manage
     ReactPanelScreenDisplay ..> "0..*" AlertScreenDisplay
     SituationPanelScreenDisplay ..> "0..*" AlertScreenDisplay
-    CockpitScreen "1" ..> "0..1" CockpitContainer :activeScreenManager
+    CockpitScreen "1" ..> "0..1" UserContextContainer :activeScreenManager
     
-    class CockpitContainer {
+    class UserContextContainer {
         <<ContainerComponent>>
     }
     class ReactPanelScreenDisplay {
