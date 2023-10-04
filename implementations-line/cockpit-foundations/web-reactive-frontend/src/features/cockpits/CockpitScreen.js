@@ -128,7 +128,7 @@ export default function CockpitScreen() {
                 <Row>
                     <Col>
                         <Tab.Content>
-                            {perspectivesList.map((item) => <Tab.Pane eventKey={item.id}>
+                            {perspectivesList.map((item) => <Tab.Pane eventKey={item.id} key={item.id}>
                                     {item.componentName && <ComponentRender componentName={item.componentName}/>}
                                 </Tab.Pane>
                             )}

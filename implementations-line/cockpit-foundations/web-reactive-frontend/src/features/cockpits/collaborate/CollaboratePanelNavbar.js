@@ -13,13 +13,13 @@ export default function CollaboratePanelNavbar() {
         <Navbar id='communicationsBar' expand='false' className="bg-body-secondary" fixed="bottom">
             <Container fluid>
                 <Navbar.Brand href="#">INTERCOM</Navbar.Brand>
-                <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`}/>
+                <Navbar.Toggle aria-controls={'collaborate-panel-expand'}/>
                 <Navbar.Offcanvas
-                    id={`offcanvasNavbar-expand-lg`}
-                    aria-labelledby={`offcanvasNavbarLabel-expand-lg`}
+                    id={'collaborate-panel-expand'}
+                    aria-labelledby={'collaborate-panel-expand'}
                     placement="bottom">
                     <Offcanvas.Header closeButton>
-                        <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>
+                        <Offcanvas.Title id={'collaborate-panel-expand'}>
                             INTERCOM
                         </Offcanvas.Title>
                     </Offcanvas.Header>
