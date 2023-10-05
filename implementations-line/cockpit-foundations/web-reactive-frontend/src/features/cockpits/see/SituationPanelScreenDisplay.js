@@ -4,6 +4,7 @@ import {Button, Col, Container, Row} from "react-bootstrap";
 import {
     perspectiveOpened
 } from '../CockpitPerspectivesContainer'
+import {openExternalizedPerspective} from "../ActionCreatorReferential";
 
 /**
  * Situation panel allowing to present information (e.g dashboard of KPI) not dedicated to be managed but focused on visualization (e.g graph navigation).
@@ -24,29 +25,17 @@ export default function SituationPanelScreenDisplay() {
 
                         <Button as="a" size={'lg'} variant={'primary'}
                                 onClick={() => dispatch(
-                                    perspectiveOpened({
-                                        type: 'OPEN_PERSPECTIVE',
-                                        id: 'informationUUI',
-                                        title: 'Business Object A',
-                                        componentName: 'ActPanelScreenDisplay',
-                                        closable: true,
-                                        exportable: true,
-                                        imageMode: false,
-                                        titleImage: ''
-                                    }))}>Test Information Perspective Opening</Button>
+                                    perspectiveOpened(
+                                        openExternalizedPerspective('informationUUI', 'Business Object A', 'ActPanelScreenDisplay'
+                                            , true, true, false, '')
+                                    ))}>Test Information Perspective Opening</Button>
 
                         <Button as="a" size={'lg'} variant={'secondary'}
                                 onClick={() => dispatch(
-                                    perspectiveOpened({
-                                        type: 'OPEN_PERSPECTIVE',
-                                        id: 'informationUUI2',
-                                        title: 'Business Object B',
-                                        componentName: 'ActPanelScreenDisplay',
-                                        closable: true,
-                                        exportable: true,
-                                        imageMode: false,
-                                        titleImage: ''
-                                    }))}>Another Same Type of Information Perspective Opening</Button>
+                                    perspectiveOpened(
+                                        openExternalizedPerspective('informationUUI2', 'Business Object B', 'ActPanelScreenDisplay'
+                                            , true, true, false, '')
+                                    ))}>Another Same Type of Information Perspective Opening</Button>
                     </Col>
                 </Row>
             </Container>
