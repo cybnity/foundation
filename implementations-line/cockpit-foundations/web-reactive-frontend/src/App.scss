@@ -68,10 +68,10 @@ $standardRed: #e5302a;
 //$info:
 //$warning:
 //$theme-colors: (
-        //'primary': $standardBlue
-        //secondary: $darkBlue,
-        //info: $greyLight,
-        //danger: $standardRed
+//'primary': $standardBlue
+//secondary: $darkBlue,
+//info: $greyLight,
+//danger: $standardRed
 //);
 
 // Settings for the `<body>` element.
@@ -99,6 +99,7 @@ $enable-gradients: true !default;
   --bs-body-color: #{meta.inspect($white)};
   --bs-link-color: #{meta.inspect($greyLight)};
   --bs-link-hover-color: #{meta.inspect($greyLight)};
+  --bs-border-radius: 0.250rem;
   --primary: #{meta.inspect($standardBlue)};
   --secondary: #{meta.inspect($greyLight)};
   --danger: #{meta.inspect($standardRed)};
@@ -116,6 +117,7 @@ h1 {
 .cockpit-panel-screen-header {
   background-color: $standardBlue;
 }
+
 /*  font-family: Gotham-Thin, $font-family-sans-serif;
   color: $greyLight;
   text-align: left;
@@ -149,21 +151,30 @@ h1 {
 .tab-bar-logo:hover {
   cursor: pointer;
 }
+
 .nav-link a {
   font-family: Gotham, $font-family-sans-serif;
   font-size: small;
   height: 100% !important;
   vertical-align: middle !important;
 }
+
 .nav-link.active {
   background-color: $standardBlue !important;
   color: $greyLight !important;
 }
+
 .tab-title-icon {
   padding: 0px 0px 0px 10px;
 }
+
 .tab-title-icon:hover {
   cursor: pointer;
+}
+
+.nav-tabs {
+  --bs-nav-tabs-border-width: 0px;
+  --bs-nav-tabs-border-radius: 0px;
 }
 
 /* Extra small devices (phones, 600px and down) */
