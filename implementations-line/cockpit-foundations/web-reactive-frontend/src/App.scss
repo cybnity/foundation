@@ -113,6 +113,17 @@ h1 {
   font-family: Gotham-Thin, $font-family-sans-serif;
 }
 
+.cockpit-panel-screen-header {
+  background-color: $standardBlue;
+}
+/*  font-family: Gotham-Thin, $font-family-sans-serif;
+  color: $greyLight;
+  text-align: left;
+  font-size: larger;
+  padding-left: 10px;
+}*/
+
+// Customized standard dynamic tab bar
 .cockpit-tab-container {
   @include make-container();
   height: 100%;
@@ -138,8 +149,6 @@ h1 {
 .tab-bar-logo:hover {
   cursor: pointer;
 }
-
-// Customized standard dynamic tab bar
 .nav-link a {
   font-family: Gotham, $font-family-sans-serif;
   font-size: small;
@@ -150,11 +159,9 @@ h1 {
   background-color: $standardBlue !important;
   color: $greyLight !important;
 }
-
 .tab-title-icon {
   padding: 0px 0px 0px 10px;
 }
-
 .tab-title-icon:hover {
   cursor: pointer;
 }
