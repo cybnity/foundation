@@ -126,14 +126,14 @@ h1 {
 }
 
 .tab-bar-icon:hover {
-  fill: #0dcaf0;
+  fill: $primary;
   cursor: pointer;
 }
 
-.tab-bar-logo {
-  background-color: $primary;
-  padding: 5px;
+.tab-bar-logo-button {
+  height: inherit !important;
 }
+
 
 .tab-bar-logo:hover {
   cursor: pointer;
@@ -166,8 +166,8 @@ h1 {
     height: 35px;
   }
   .tab-bar-logo {
-    width: 35px;
-    height: 35px;
+    width: 25px;
+    height: 25px;
   }
   .tab-title-icon {
     width: 25px;
@@ -182,8 +182,8 @@ h1 {
     height: 35px;
   }
   .tab-bar-logo {
-    width: 35px;
-    height: 35px;
+    width: 25px;
+    height: 25px;
   }
   .tab-title-icon {
     width: 25px;
@@ -198,8 +198,8 @@ h1 {
     height: 35px;
   }
   .tab-bar-logo {
-    width: 35px;
-    height: 35px;
+    width: 25px;
+    height: 25px;
   }
   .tab-title-icon {
     width: 25px;
@@ -214,8 +214,8 @@ h1 {
     height: 40px;
   }
   .tab-bar-logo {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
   }
   .tab-title-icon {
     width: 30px;
@@ -230,8 +230,8 @@ h1 {
     height: 40px;
   }
   .tab-bar-logo {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
   }
   .tab-title-icon {
     width: 30px;
