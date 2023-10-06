@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import Tab from 'react-bootstrap/Tab';
 import {
-    perspectiveActivated, perspectiveClosed
+    perspectiveActivated, perspectiveClosed, perspectiveOpened
 } from './CockpitPerspectivesContainer'
 import ComponentRender from "./ComponentRender";
 import {MdClose} from 'react-icons/md';
@@ -14,7 +14,7 @@ import CollaboratePanelNavbar from "./collaborate/CollaboratePanelNavbar";
 import NavBarReactIcon from "./NavBarReactIcon";
 import ReactPanelOffCanvas from "./react/ReactPanelOffCanvas";
 import {Col, Nav, Row} from "react-bootstrap";
-import {activatePerspective, closePerspective} from "./ActionCreatorReferential";
+import {activatePerspective, closePerspective, openExternalizedPerspective} from "./ActionCreatorReferential";
 
 /**
  * Cockpit composite view including the panels assembled and ready to be customized according to the user role, mission, and organization current infocon level.
@@ -40,6 +40,17 @@ export default function CockpitScreen() {
      */
     function handleNavigationShortcutsShow() {
         setNavigationShortcutsShow(true);
+    }
+
+    /**
+     * Callback opening the default ISMS control synthesis as home screen (e.g KPI, ISMS report overview) as current situation screen.
+     */
+    function handleCockpitControlHome() {
+        dispatch(
+            perspectiveOpened(
+                openExternalizedPerspective('control' /* UUID of information screen*/, 'CONTROL' /* Title of the information screen*/, 'SituationPanelScreenDisplay'
+                    , true, false, false, '')
+            ));
     }
 
     // Control of notification/react panel
@@ -81,7 +92,8 @@ export default function CockpitScreen() {
             <Tab.Container id="perspectivesTabs" defaultActiveKey={currentPerspective} activeKey={currentPerspective}>
                 <Row>
                     <Col xs="auto">
-                        <NavBarBrandIcon menuOnClickHandler={handleNavigationShortcutsShow}/>
+                        <NavBarBrandIcon logoOnClickHandler={handleCockpitControlHome}
+                                         menuOnClickHandler={handleNavigationShortcutsShow}/>
                     </Col>
                     <Col>
                         <Nav variant="tabs" onSelect={(eventKey, event) => {
@@ -91,28 +103,29 @@ export default function CockpitScreen() {
                         }}>
                             {perspectivesList.map((item) => <Nav.Link key={item.id} eventKey={item.id}>{<span>
                             {!item.imageMode && item.title}
-                                    {item.titleImage &&
+                                    {(item.titleImage && item.titleImage.length > 0) &&
                                         <ComponentRender componentName={item.titleImage} onClick={(event) => {
                                             event.stopPropagation(); // Avoid propagation to tabs object (parent else which call onSelect)
                                         }}/>
                                     }
-                                    {(item.exportable || item.closable) &&
-                                        <PerspectiveTitleIconConfig>
-                                            {item.exportable &&
-                                                <TfiNewWindow onClick={(event) => {
-                                                    event.stopPropagation(); // Avoid propagation to tabs object (parent else which call onSelect)
-                                                    console.log("Request externalization of view (id: " + item.id + ") into independent browser");
-                                                    openExternalized('risk', item.id);
-                                                }}/>}
-                                            {item.closable &&
-                                                <MdClose onClick={(event) => {
-                                                    event.stopPropagation(); // Avoid propagation to tabs object (parent else which call onSelect)
-                                                    dispatch(
-                                                        perspectiveClosed(
-                                                            closePerspective(item.id)))
-                                                }}/>
-                                            }
-                                        </PerspectiveTitleIconConfig>}</span>}</Nav.Link>
+                                    {(item.exportable || item.closable) && <PerspectiveTitleIconConfig>
+                                        {item.exportable &&
+                                            <TfiNewWindow className="tab-title-icon" onClick={(event) => {
+                                                event.stopPropagation(); // Avoid propagation to tabs object (parent else which call onSelect)
+                                                console.log("Request externalization of view (id: " + item.id + ") into independent browser");
+                                                openExternalized('risk', item.id);
+                                            }}/>}
+                                        {item.closable &&
+                                            <MdClose className="tab-title-icon" onClick={(event) => {
+                                                event.stopPropagation(); // Avoid propagation to tabs object (parent else which call onSelect)
+                                                dispatch(
+                                                    perspectiveClosed(
+                                                        closePerspective(item.id)))
+                                            }}/>
+                                        }
+                                    </PerspectiveTitleIconConfig>
+                                    }
+                                    </span>}</Nav.Link>
                             )}
                         </Nav>
                     </Col>

@@ -59,8 +59,8 @@ $greyLight: #E6E6E6;
 $standardRed: #e5302a;
 
 // scss-docs-start theme-color-variables
-//$primary: $darkBlue;
-//$secondary: $standardBlue;
+//$primary: #3a5572;
+//$secondary: #E6E6E6;
 //$danger: $standardRed;
 //$light: $greyLight;
 //$dark: $grey;
@@ -68,8 +68,10 @@ $standardRed: #e5302a;
 //$info:
 //$warning:
 //$theme-colors: (
-//        'info': tomato,
-//        'danger': teal
+        //'primary': $standardBlue
+        //secondary: $darkBlue,
+        //info: $greyLight,
+        //danger: $standardRed
 //);
 
 // Settings for the `<body>` element.
@@ -95,20 +97,144 @@ $enable-gradients: true !default;
   --font-family-monospace: #{meta.inspect($font-family-monospace)};
   --bs-body-bg: #{meta.inspect($darkBlue)};
   --bs-body-color: #{meta.inspect($white)};
-  --primary: #{meta.inspect($darkBlue)};
-  --secondary: #{meta.inspect($standardBlue)};
+  --bs-link-color: #{meta.inspect($greyLight)};
+  --bs-link-hover-color: #{meta.inspect($greyLight)};
+  --primary: #{meta.inspect($standardBlue)};
+  --secondary: #{meta.inspect($greyLight)};
   --danger: #{meta.inspect($standardRed)};
 }
 
 body {
-  background: linear-gradient(to left, $darkBlue, $standardBlue);
   margin: 0;
+  padding: 0;
 }
 
 h1 {
   font-family: Gotham-Thin, $font-family-sans-serif;
 }
 
-.button-noborder {
-  border: none !important;
+.cockpit-tab-container {
+  @include make-container();
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.tab-bar-icon {
+  padding: 5px;
+}
+
+.tab-bar-icon:hover {
+  fill: #0dcaf0;
+  cursor: pointer;
+}
+
+.tab-bar-logo {
+  background-color: $primary;
+  padding: 5px;
+}
+
+.tab-bar-logo:hover {
+  cursor: pointer;
+}
+
+// Customized standard dynamic tab bar
+.nav-link a {
+  font-family: Gotham, $font-family-sans-serif;
+  font-size: small;
+  height: 100% !important;
+  vertical-align: middle !important;
+}
+.nav-link.active {
+  background-color: $standardBlue !important;
+  color: $greyLight !important;
+}
+
+.tab-title-icon {
+  padding: 0px 0px 0px 10px;
+}
+
+.tab-title-icon:hover {
+  cursor: pointer;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .tab-bar-icon {
+    width: 35px;
+    height: 35px;
+  }
+  .tab-bar-logo {
+    width: 35px;
+    height: 35px;
+  }
+  .tab-title-icon {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .tab-bar-icon {
+    width: 35px;
+    height: 35px;
+  }
+  .tab-bar-logo {
+    width: 35px;
+    height: 35px;
+  }
+  .tab-title-icon {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .tab-bar-icon {
+    width: 35px;
+    height: 35px;
+  }
+  .tab-bar-logo {
+    width: 35px;
+    height: 35px;
+  }
+  .tab-title-icon {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .tab-bar-icon {
+    width: 40px;
+    height: 40px;
+  }
+  .tab-bar-logo {
+    width: 40px;
+    height: 40px;
+  }
+  .tab-title-icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .tab-bar-icon {
+    width: 40px;
+    height: 40px;
+  }
+  .tab-bar-logo {
+    width: 40px;
+    height: 40px;
+  }
+  .tab-title-icon {
+    width: 30px;
+    height: 30px;
+  }
 }
