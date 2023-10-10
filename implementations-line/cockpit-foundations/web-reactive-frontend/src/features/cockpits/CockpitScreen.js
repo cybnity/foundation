@@ -88,7 +88,7 @@ export default function CockpitScreen() {
     }
 
     return (
-        <div className="vh-100 overflow-hidden">
+        <div>
             <Tab.Container id="perspectivesTabs" defaultActiveKey={currentPerspective} activeKey={currentPerspective}>
                 <Row>
                     <Col xs="auto">

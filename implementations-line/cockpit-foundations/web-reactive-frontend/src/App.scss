@@ -133,9 +133,18 @@ h1 {
   align-items: center;
   padding: 0;
 }
+.cockpit-tab-container-row {
+  height: inherit;
+  justify-content: center;
+  align-items: center;
+}
+.cockpit-tab-container-col {
+  height: inherit;
+}
 
 .tab-bar-icon {
-  padding: 5px;
+  padding: 2px;
+  height: 100% !important;
 }
 
 .tab-bar-icon:hover {
@@ -145,8 +154,9 @@ h1 {
 
 .tab-bar-logo-button {
   height: inherit !important;
+  padding-block: 0 !important;
+  border-radius: 0 !important;
 }
-
 
 .tab-bar-logo:hover {
   cursor: pointer;
@@ -165,7 +175,9 @@ h1 {
 }
 
 .tab-title-icon {
-  padding: 0px 0px 0px 10px;
+  padding: 0 0 0 10px;
+  height: 100% !important;
+  vertical-align: middle !important;
 }
 
 .tab-title-icon:hover {
@@ -180,79 +192,79 @@ h1 {
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .tab-bar-icon {
-    width: 35px;
-    height: 35px;
+    width: 20px;
+    height: 20px;
   }
   .tab-bar-logo {
-    width: 25px;
-    height: 25px;
+    width: 23px;
+    height: 23px;
   }
   .tab-title-icon {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
   }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
   .tab-bar-icon {
-    width: 35px;
-    height: 35px;
+    width: 20px;
+    height: 20px;
   }
   .tab-bar-logo {
-    width: 25px;
-    height: 25px;
+    width: 23px;
+    height: 23px;
   }
   .tab-title-icon {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
   }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
   .tab-bar-icon {
-    width: 35px;
-    height: 35px;
+    width: 20px;
+    height: 20px;
   }
   .tab-bar-logo {
-    width: 25px;
-    height: 25px;
+    width: 23px;
+    height: 23px;
   }
   .tab-title-icon {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
   }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
   .tab-bar-icon {
-    width: 40px;
-    height: 40px;
+    width: 25px;
+    height: 25px;
   }
   .tab-bar-logo {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
   }
   .tab-title-icon {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
   }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
   .tab-bar-icon {
-    width: 40px;
-    height: 40px;
+    width: 25px;
+    height: 25px;
   }
   .tab-bar-logo {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
   }
   .tab-title-icon {
-    width: 30px;
-    height: 30px;
+    width: 23px;
+    height: 23px;
   }
 }
