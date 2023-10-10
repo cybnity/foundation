@@ -99,10 +99,15 @@ $enable-gradients: true !default;
   --bs-body-color: #{meta.inspect($white)};
   --bs-link-color: #{meta.inspect($greyLight)};
   --bs-link-hover-color: #{meta.inspect($greyLight)};
+  --bs-emphasis-color-rgb: #{meta.inspect($standardRed)};
   --bs-border-radius: 0.250rem;
   --primary: #{meta.inspect($standardBlue)};
   --secondary: #{meta.inspect($greyLight)};
   --danger: #{meta.inspect($standardRed)};
+}
+
+.navbar {
+  --bs-navbar-color: #{meta.inspect($greyLight)};
 }
 
 body {
@@ -118,6 +123,10 @@ h1 {
   background-color: $standardBlue;
 }
 
+.screen-panel-title {
+  text-transform: uppercase;
+}
+
 /*  font-family: Gotham-Thin, $font-family-sans-serif;
   color: $greyLight;
   text-align: left;
@@ -129,7 +138,6 @@ h1 {
 .cockpit-tab-container {
   @include make-container();
   height: 100%;
-  display: flex;
   align-items: center;
   padding: 0;
 }

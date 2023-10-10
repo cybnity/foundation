@@ -5,7 +5,7 @@ import {
     perspectiveOpened
 } from '../CockpitPerspectivesContainer'
 import {openExternalizedPerspective} from "../ActionCreatorReferential";
-import {Form} from "react-bootstrap/";
+import PanelScreenHeader from "../../../components/headers/PanelScreenHeader";
 
 /**
  * Situation panel allowing to present information (e.g dashboard of KPI) not dedicated to be managed but focused on visualization (e.g graph navigation).
@@ -18,21 +18,7 @@ export default function SituationPanelScreenDisplay() {
 
     return (
         <div className="vh-100 overflow-auto">
-            <Navbar className="cockpit-panel-screen-header" id="navigationSearch">
-                <Container fluid>
-                    <Navbar.Collapse className="justify-content-center">
-                        <Form className="d-flex">
-                            <Form.Control
-                                type="text"
-                                placeholder="Search"
-                                className="me-2"
-                                aria-label="Search"
-                            />
-                            <Button type="submit">Submit</Button>
-                        </Form>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
+            <PanelScreenHeader activatedNavigator={false} title="Company security overview"/>
             <Container fluid>
                 <Row>
                     <Col>

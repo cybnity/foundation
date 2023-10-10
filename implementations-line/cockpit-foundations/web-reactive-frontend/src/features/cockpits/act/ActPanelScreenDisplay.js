@@ -1,6 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import React from "react";
 import {Col, Container, Row} from "react-bootstrap";
+import PanelScreenHeader from "../../../components/headers/PanelScreenHeader";
 
 /**
  * Main information management screen that allow to manage any type of unique information or multiple sub-panels (e.g section of information managed).
@@ -23,23 +24,29 @@ export default function ActPanelScreenDisplay() {
 
     return (
         <>
-            <Container fluid className="vh-100 overflow-auto">
-                <Row>
-                    <Col>
-                        <h1>ACT PANEL SCREEN DISPLAY</h1>
-                        <p>INFOCON CURRENT STATUS: {infoconStatusLevel}</p>
-                        <p>SEARCH BUTTON OPENING NavigateScreenDisplay</p>
+            <div className="vh-100 overflow-auto">
+                <PanelScreenHeader activatedNavigator={true}/>
+                <Container fluid>
+                    <Row>
+                        <Col>
+                            <h1>ACT PANEL SCREEN DISPLAY</h1>
+                            <p>INFOCON CURRENT STATUS: {infoconStatusLevel}</p>
+                            <p>SEARCH BUTTON OPENING NavigateScreenDisplay</p>
 
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        </p>
-                    </Col>
-                </Row>
-            </Container>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut
+                                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                                ullamco
+                                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
+                                in
+                                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                                cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </p>
+                        </Col>
+                    </Row>
+                </Container>
+            </div>
         </>
     );
 

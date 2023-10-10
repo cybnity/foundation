@@ -11,7 +11,7 @@ export default function NavBarReactIcon({reactPanelOnClickHandler}) {
 
     return (
         <Container fluid className="cockpit-tab-container">
-            <Row className="cockpit-tab-container-row" xs={1} md={1} lg={1}>
+            <Row className="cockpit-tab-container-row">
                 <Col className="cockpit-tab-container-col">
                     <GoBell onClick={reactPanelOnClickHandler} className="tab-bar-icon"/>
                 </Col>

@@ -12,8 +12,8 @@ import {Button} from "react-bootstrap/";
 export default function NavBarBrandIcon({logoOnClickHandler, menuOnClickHandler}) {
 
     return (
-        <Container fluid className="cockpit-tab-container">
-            <Row className="cockpit-tab-container-row" xs={2} md={2} lg={2}>
+        <Container className="cockpit-tab-container">
+            <Row className="cockpit-tab-container-row">
                 <Col className="cockpit-tab-container-col">
                     <Button className="tab-bar-logo-button">
                         <Image className="tab-bar-logo"
@@ -22,11 +22,10 @@ export default function NavBarBrandIcon({logoOnClickHandler, menuOnClickHandler}
                         /></Button>
                 </Col>
                 <Col>
-                    <HiMenu className="tab-bar-icon"  onClick={menuOnClickHandler}/>
+                    <HiMenu className="tab-bar-icon" onClick={menuOnClickHandler}/>
                 </Col>
             </Row>
         </Container>
-    )
-        ;
+    );
 
 };
