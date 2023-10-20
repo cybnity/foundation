@@ -15,7 +15,7 @@ buildNumber.properties
 **/.classpath
 **/.settings
 # IntelliJ IDEA project files
-**/.idea/*
+**/.idea
 **/.flattened-pom.xml
 .flattened-pom.xml
 **/package-lock.json
