@@ -4,8 +4,10 @@
  * This screen composer select the good sub-screen to assemble and delegate it the information to manage.
  */
 import {useLocation, useParams} from 'react-router-dom';
-import {Container} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import {useSelector} from "react-redux";
+import PanelScreenHeader from "./headers/PanelScreenHeader";
+import React from "react";
 
 export default function DynamicStandaloneInformationScreen(props) {
     // Get current infocon level state
@@ -29,13 +31,19 @@ export default function DynamicStandaloneInformationScreen(props) {
     // Build the main standalone composed screen (e.g without tab, without search bar...) including the dedicated information type display
 
     return (
-        <div className="vh-100 overflow-hidden">
+        <div className="vh-100 overflow-auto">
+            <PanelScreenHeader activatedNavigator={true}/>
             <Container fluid>
-                <p>Infocon level: {infoconStatusLevel}</p>
-                <p>
-                    standalone composed view based on information type to manage</p>
-                <p>Type: {type}</p>
-                <p>Information resource ID: {resourceId}</p>
+                <Row>
+                    <Col>
+                        <h1>INFORMATION TYPE BASED SCREEN DISPLAY</h1>
+                        <p>Infocon level: {infoconStatusLevel}</p>
+                        <p>
+                            standalone composed view based on information type to manage</p>
+                        <p>Type: {type}</p>
+                        <p>Information resource ID: {resourceId}</p>
+                    </Col>
+                </Row>
             </Container>
         </div>
     );

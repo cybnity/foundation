@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Turn on bash's job control
-set -m
+#set -m
 
 # Start primary process (Javascript webserver) and put it in the background
 # node server/server.js &
