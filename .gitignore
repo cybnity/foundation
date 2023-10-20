@@ -14,6 +14,7 @@ buildNumber.properties
 #.project
 #.classpath
 #.settings/
+**/.idea/*
 **/.flattened-pom.xml
 .flattened-pom.xml
 **/package-lock.json
