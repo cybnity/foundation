@@ -11,11 +11,11 @@ buildNumber.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 # Eclipse project workarea
-.project
-.classpath
-.settings/
+**/.project
+**/.classpath
+**/.settings
 # IntelliJ IDEA project files
-.idea/
+**/.idea/*
 **/.flattened-pom.xml
 .flattened-pom.xml
 **/package-lock.json
