@@ -22,5 +22,15 @@
 			<artifactId>immutable</artifactId>
 			<version>${revision}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<!-- Java 8 date/time type `java.time.OffsetDateTime` not supported by default -->
+			<!-- This dependency allow serialization/deserialization of OffsetDateTime -->
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
 	</dependencies>
 </project>

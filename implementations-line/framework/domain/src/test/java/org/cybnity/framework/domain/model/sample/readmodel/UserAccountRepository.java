@@ -1,12 +1,5 @@
 package org.cybnity.framework.domain.model.sample.readmodel;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.application.sample.UserAccountAggregate;
 import org.cybnity.framework.domain.model.CommonChildFactImpl;
@@ -19,6 +12,9 @@ import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStore;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Example of simple in-memory store of instances regarding user account (domain

@@ -1,13 +1,13 @@
 package org.cybnity.framework.domain.application.sample;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.ICommandHandler;
 import org.cybnity.framework.domain.model.sample.readmodel.ApplicativeRoleDTO;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStore;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Sample handling supporting the treatment of a command for add of an

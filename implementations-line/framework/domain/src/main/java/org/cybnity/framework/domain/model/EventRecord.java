@@ -1,7 +1,5 @@
 package org.cybnity.framework.domain.model;
 
-import java.io.Serializable;
-
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -9,6 +7,8 @@ import org.cybnity.framework.immutable.persistence.FactRecord;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.io.Serializable;
 
 /**
  * Represent a recorded fact relative to an event which is manageable by a store

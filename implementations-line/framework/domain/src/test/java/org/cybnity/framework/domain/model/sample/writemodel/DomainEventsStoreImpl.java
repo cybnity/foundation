@@ -1,23 +1,18 @@
 package org.cybnity.framework.domain.model.sample.writemodel;
 
+import org.cybnity.framework.domain.DomainEvent;
+import org.cybnity.framework.domain.IdentifierStringBased;
+import org.cybnity.framework.domain.model.*;
+import org.cybnity.framework.domain.model.sample.EventStoreRecordCommitted;
+import org.cybnity.framework.immutable.BaseConstants;
+import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.ImmutabilityException;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.cybnity.framework.domain.DomainEvent;
-import org.cybnity.framework.domain.IdentifierStringBased;
-import org.cybnity.framework.domain.model.CommonChildFactImpl;
-import org.cybnity.framework.domain.model.DomainEventPublisher;
-import org.cybnity.framework.domain.model.DomainEventSubscriber;
-import org.cybnity.framework.domain.model.EventRecord;
-import org.cybnity.framework.domain.model.EventStore;
-import org.cybnity.framework.domain.model.EventStream;
-import org.cybnity.framework.domain.model.sample.EventStoreRecordCommitted;
-import org.cybnity.framework.immutable.BaseConstants;
-import org.cybnity.framework.immutable.Identifier;
-import org.cybnity.framework.immutable.ImmutabilityException;
 
 /**
  * Example of simple in-memory store of events.

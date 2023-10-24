@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.cybnity.framework.domain.Attribute;
-import org.cybnity.framework.domain.DomainEvent;
+import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.IDescribed;
-import org.cybnity.framework.immutable.Entity;
+import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
@@ -19,33 +19,33 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Generic event regarding a change occurred on a topic relative to a domain.
+ * Generic event regarding a command to execute requested regarding a topic and that can be interpreted by a domain.
  *
  * @author olivier
  */
-@JsonTypeName("changeEvent")
-public class ConcreteDomainChangeEvent extends DomainEvent implements IDescribed {
+@JsonTypeName("commandEvent")
+public class ConcreteCommandEvent extends Command implements IDescribed {
 
     @JsonIgnore
     private static final long serialVersionUID = new VersionConcreteStrategy()
-            .composeCanonicalVersionHash(ConcreteDomainChangeEvent.class).hashCode();
+            .composeCanonicalVersionHash(ConcreteCommandEvent.class).hashCode();
 
     /**
-     * Standard name of the attribute specifying this event type based on a logical
+     * Standard name of the attribute specifying this command type based on a logical
      * type.
      */
     @JsonIgnore
     public static String TYPE = "type";
 
     /**
-     * Identify the original command reference that was cause of this event
+     * Identify the original command reference that was previous source of this command
      * publication.
      */
     @JsonProperty
-    private EntityReference changeCommandRef;
+    private EntityReference priorCommandRef;
 
     /**
-     * Identify the element of the domain model which was changed.
+     * Identify the element of the domain model which was subject of command.
      */
     @JsonProperty
     private EntityReference changedModelElementRef;
@@ -58,11 +58,11 @@ public class ConcreteDomainChangeEvent extends DomainEvent implements IDescribed
     private Collection<Attribute> specification;
 
     @JsonCreator
-    public ConcreteDomainChangeEvent() {
+    public ConcreteCommandEvent() {
         super();
     }
 
-    public ConcreteDomainChangeEvent(Enum<?> eventType) {
+    public ConcreteCommandEvent(Enum<?> eventType) {
         this();
         if (eventType != null) {
             // Add type into specification attributes
@@ -70,11 +70,11 @@ public class ConcreteDomainChangeEvent extends DomainEvent implements IDescribed
         }
     }
 
-    public ConcreteDomainChangeEvent(Entity identifiedBy) {
+    public ConcreteCommandEvent(DomainEntity identifiedBy) {
         super(identifiedBy);
     }
 
-    public ConcreteDomainChangeEvent(Entity identifiedBy, Enum<?> eventType) {
+    public ConcreteCommandEvent(DomainEntity identifiedBy, Enum<?> eventType) {
         super(identifiedBy);
         if (eventType != null) {
             // Add type into specification attributes
@@ -82,7 +82,7 @@ public class ConcreteDomainChangeEvent extends DomainEvent implements IDescribed
         }
     }
 
-    public ConcreteDomainChangeEvent(Entity identifiedBy, String eventType) {
+    public ConcreteCommandEvent(DomainEntity identifiedBy, String eventType) {
         super(identifiedBy);
         if (!"".equals(eventType)) {
             // Add type into specification attributes
@@ -93,13 +93,13 @@ public class ConcreteDomainChangeEvent extends DomainEvent implements IDescribed
     @JsonIgnore
     @Override
     public Serializable immutable() throws ImmutabilityException {
-        ConcreteDomainChangeEvent instance = new ConcreteDomainChangeEvent(this.getIdentifiedBy());
+        ConcreteCommandEvent instance = new ConcreteCommandEvent((DomainEntity) this.getIdentifiedBy());
         instance.occurredOn = this.occurredAt();
 
         // Add immutable version of each additional attributes hosted by this event
-        EntityReference cmdRef = this.changeCommandReference();
+        EntityReference cmdRef = this.priorCommandReference();
         if (cmdRef != null)
-            instance.setChangeCommandRef(cmdRef);
+            instance.setPriorCommandRef(cmdRef);
         EntityReference subjectRef = this.changedModelElementReference();
         if (subjectRef != null)
             instance.setChangedModelElementRef(subjectRef);
@@ -110,36 +110,12 @@ public class ConcreteDomainChangeEvent extends DomainEvent implements IDescribed
     }
 
     /**
-     * Define the reference of the domain element that was changed.
+     * Define the reference of the domain element that was subject of this command execution.
      *
      * @param ref A domain object reference.
      */
     public void setChangedModelElementRef(EntityReference ref) {
         this.changedModelElementRef = ref;
-    }
-
-    /**
-     * Get the reference of the domain element that was subject of change.
-     *
-     * @return A reference immutable version, or null.
-     * @throws ImmutabilityException When impossible return of immutable version.
-     */
-    public EntityReference changedModelElementReference() throws ImmutabilityException {
-        EntityReference r = null;
-        if (this.changedModelElementRef != null)
-            r = (EntityReference) this.changedModelElementRef.immutable();
-        return r;
-    }
-
-    /**
-     * Define the reference of the original command that causing the publication of
-     * this event.
-     *
-     * @param ref A reference (e.g regarding a command event which was treated by a
-     *            domain object to change one or several of its values) or null.
-     */
-    public void setChangeCommandRef(EntityReference ref) {
-        this.changeCommandRef = ref;
     }
 
     /**
@@ -152,15 +128,39 @@ public class ConcreteDomainChangeEvent extends DomainEvent implements IDescribed
     }
 
     /**
-     * Get the reference of the command that was origin of a domain object change.
+     * Get the reference of the domain element that was subject of command.
      *
      * @return A reference immutable version, or null.
      * @throws ImmutabilityException When impossible return of immutable version.
      */
-    public EntityReference changeCommandReference() throws ImmutabilityException {
+    public EntityReference changedModelElementReference() throws ImmutabilityException {
         EntityReference r = null;
-        if (this.changeCommandRef != null)
-            r = (EntityReference) this.changeCommandRef.immutable();
+        if (this.changedModelElementRef != null)
+            r = (EntityReference) this.changedModelElementRef.immutable();
+        return r;
+    }
+
+    /**
+     * Define the reference of a previous command that causing the publication of
+     * this event.
+     *
+     * @param ref A reference (e.g regarding a command event which was treated by a
+     *            domain object to treat) or null.
+     */
+    public void setPriorCommandRef(EntityReference ref) {
+        this.priorCommandRef = ref;
+    }
+
+    /**
+     * Get the reference of the command that was previous to this command.
+     *
+     * @return A reference immutable version, or null.
+     * @throws ImmutabilityException When impossible return of immutable version.
+     */
+    public EntityReference priorCommandReference() throws ImmutabilityException {
+        EntityReference r = null;
+        if (this.priorCommandRef != null)
+            r = (EntityReference) this.priorCommandRef.immutable();
         return r;
     }
 
@@ -201,4 +201,5 @@ public class ConcreteDomainChangeEvent extends DomainEvent implements IDescribed
     public void setOccurredOn(OffsetDateTime occurredOn) {
         this.occurredOn = occurredOn;
     }
+
 }

@@ -1,12 +1,12 @@
 package org.cybnity.framework.domain.model.sample;
 
-import java.io.Serializable;
-
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
+import java.io.Serializable;
 
 /**
  * Example of event regarding an applicative role assigned to a user account.
@@ -31,7 +31,7 @@ public class UserAccountApplicativeRoleAssigned extends DomainEvent {
     @Override
     public Serializable immutable() throws ImmutabilityException {
 	UserAccountApplicativeRoleAssigned instance = new UserAccountApplicativeRoleAssigned(this.getIdentifiedBy());
-	instance.occuredOn = this.occurredAt();
+	instance.occurredOn = this.occurredAt();
 	if (this.changeCommandRef != null)
 	    instance.changeCommandRef = (EntityReference) this.changeCommandRef.immutable();
 	if (this.changedAccountRef != null)

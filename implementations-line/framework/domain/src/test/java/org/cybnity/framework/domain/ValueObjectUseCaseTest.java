@@ -1,9 +1,9 @@
 package org.cybnity.framework.domain;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.cybnity.framework.domain.model.sample.CompanyNameObject;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Unit test of ValueObject behaviors regarding its supported requirements.

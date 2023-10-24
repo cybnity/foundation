@@ -1,10 +1,10 @@
 package org.cybnity.framework.domain;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Represent a providing contract regarding the description of a state (e.g a

@@ -1,10 +1,10 @@
 package org.cybnity.framework.domain;
 
-import java.util.Set;
-
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.util.Set;
 
 /**
  * Represents a responsible of actions realization requested by a stake holder

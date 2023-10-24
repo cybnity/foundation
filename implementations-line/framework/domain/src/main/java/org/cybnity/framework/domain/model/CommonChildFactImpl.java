@@ -1,9 +1,5 @@
 package org.cybnity.framework.domain.model;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.immutable.ChildFact;
 import org.cybnity.framework.immutable.Entity;
@@ -12,6 +8,10 @@ import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 
 /**
  * Generic child fact implementation class.

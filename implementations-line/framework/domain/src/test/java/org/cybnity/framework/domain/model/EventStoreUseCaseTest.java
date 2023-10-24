@@ -1,9 +1,5 @@
 package org.cybnity.framework.domain.model;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.util.UUID;
-
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.model.sample.writemodel.DomainEventsStoreImpl;
@@ -15,6 +11,10 @@ import org.cybnity.framework.immutable.Identifier;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Unit test of DomainEvent behaviors regarding its supported requirements.

@@ -1,15 +1,15 @@
 package org.cybnity.framework.domain.model;
 
+import org.cybnity.framework.domain.DomainEvent;
+import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.Unmodifiable;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.cybnity.framework.domain.DomainEvent;
-import org.cybnity.framework.immutable.ImmutabilityException;
-import org.cybnity.framework.immutable.Unmodifiable;
-import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Represents a stream of domain events in order of occurence that guarantee the

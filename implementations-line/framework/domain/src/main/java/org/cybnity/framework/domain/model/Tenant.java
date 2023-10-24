@@ -1,16 +1,12 @@
 package org.cybnity.framework.domain.model;
 
-import java.io.Serializable;
-import java.util.LinkedHashSet;
-
-import org.cybnity.framework.immutable.BaseConstants;
-import org.cybnity.framework.immutable.Entity;
-import org.cybnity.framework.immutable.Identifier;
-import org.cybnity.framework.immutable.ImmutabilityException;
-import org.cybnity.framework.immutable.MutableProperty;
+import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.io.Serializable;
+import java.util.LinkedHashSet;
 
 /**
  * Represent an organization subscription that allow to define a scope of

@@ -1,14 +1,13 @@
 package org.cybnity.framework.domain.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.management.modelmbean.InvalidTargetObjectTypeException;
-
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.ProcessManager;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import javax.management.modelmbean.InvalidTargetObjectTypeException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represent a component which manage handlers regarding a specific Aggregate

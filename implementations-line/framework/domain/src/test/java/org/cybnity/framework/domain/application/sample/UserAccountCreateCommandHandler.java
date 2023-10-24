@@ -1,14 +1,14 @@
 package org.cybnity.framework.domain.application.sample;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.ICommandHandler;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.ImmutabilityException;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Sample handling supporting the treatment of a command for creation of a new

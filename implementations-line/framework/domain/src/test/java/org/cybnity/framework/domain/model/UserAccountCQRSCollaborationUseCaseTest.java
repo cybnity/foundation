@@ -1,21 +1,10 @@
 package org.cybnity.framework.domain.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.UUID;
-
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.ProcessManager;
-import org.cybnity.framework.domain.application.sample.AssignRoleToUserAccountCommand;
-import org.cybnity.framework.domain.application.sample.UserAccountAggregate;
-import org.cybnity.framework.domain.application.sample.UserAccountCreateCommand;
-import org.cybnity.framework.domain.application.sample.UserAccountManagementDomainContext;
-import org.cybnity.framework.domain.application.sample.UserAccountManagementProcessesImpl;
+import org.cybnity.framework.domain.application.sample.*;
 import org.cybnity.framework.domain.model.sample.DomainEntityImpl;
 import org.cybnity.framework.domain.model.sample.readmodel.ApplicativeRoleDTO;
-import org.cybnity.framework.domain.model.sample.readmodel.DenormalizedEntityImpl;
 import org.cybnity.framework.domain.model.sample.readmodel.UserAccountDTO;
 import org.cybnity.framework.domain.model.sample.readmodel.UserAccountRepository;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
@@ -27,6 +16,10 @@ import org.cybnity.framework.immutable.Identifier;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test of Domain object (UserAccountAggregate by write model) behaviors
@@ -99,7 +92,7 @@ public class UserAccountCQRSCollaborationUseCaseTest {
 	public void givenWriteModelStore_whenDomainObjectChanged_thenReadModelUpdatedViaSubscribers() throws Exception {
 		// Create a domain event requested to create a new user account aggregate object
 		UserAccountAggregate account = new UserAccountAggregate(accountId, accountOwner);
-		Entity eventId = new UserAccountIdentityCreation(accountId);
+		DomainEntity eventId = new UserAccountIdentityCreation(accountId);
 		UserAccountCreateCommand event = new UserAccountCreateCommand(eventId);
 		event.accountUID = (String) accountId.value();
 		event.userIdentity = accountOwner.reference();
@@ -119,7 +112,7 @@ public class UserAccountCQRSCollaborationUseCaseTest {
 		ProcessManager processManager = new UserAccountManagementProcessesImpl(domainContext);
 
 		// Create a domain event requested to create a new user account aggregate object
-		Entity eventId = new UserAccountIdentityCreation(accountId);
+		DomainEntity eventId = new UserAccountIdentityCreation(accountId);
 		UserAccountCreateCommand event = new UserAccountCreateCommand(eventId);
 		event.accountUID = (String) accountId.value();
 		event.userIdentity = accountOwner.reference();
@@ -136,7 +129,7 @@ public class UserAccountCQRSCollaborationUseCaseTest {
 		// Create update command regarding new applicative role to assign for user
 		// account
 		AssignRoleToUserAccountCommand roleAssignmentCommand = new AssignRoleToUserAccountCommand(
-				new DenormalizedEntityImpl(
+				new DomainEntity(
 						new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), UUID.randomUUID().toString())));
 		String roleName = "CISO";
 		// Which role shall be assigned

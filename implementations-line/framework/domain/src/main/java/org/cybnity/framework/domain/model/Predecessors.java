@@ -1,11 +1,11 @@
 package org.cybnity.framework.domain.model;
 
-import java.util.Collection;
-
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
+
+import java.util.Collection;
 
 /**
  * Utility class providing capabilities supporting the management of

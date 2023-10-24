@@ -1,18 +1,14 @@
 package org.cybnity.framework.domain.model;
 
+import org.cybnity.framework.immutable.*;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.cybnity.framework.immutable.Entity;
-import org.cybnity.framework.immutable.EntityReference;
-import org.cybnity.framework.immutable.HistoryState;
-import org.cybnity.framework.immutable.ImmutabilityException;
-import org.cybnity.framework.immutable.MutableProperty;
-import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
-import org.cybnity.framework.support.annotation.Requirement;
-import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Represent a state of completion (e.g status and specific percentage of

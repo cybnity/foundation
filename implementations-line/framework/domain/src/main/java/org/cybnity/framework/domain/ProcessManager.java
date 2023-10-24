@@ -1,13 +1,12 @@
 package org.cybnity.framework.domain;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.management.modelmbean.InvalidTargetObjectTypeException;
-
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import javax.management.modelmbean.InvalidTargetObjectTypeException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Instead of each aggregates sending messages directly to other aggregates, the

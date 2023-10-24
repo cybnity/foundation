@@ -1,10 +1,5 @@
 package org.cybnity.framework.domain.model.sample.writemodel;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.application.sample.UserAccountAggregate;
@@ -13,6 +8,11 @@ import org.cybnity.framework.domain.model.DomainEventPublisher;
 import org.cybnity.framework.domain.model.DomainEventSubscriber;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.ImmutabilityException;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Example of simple in-memory store of user account aggregates.
