@@ -2,15 +2,7 @@ package org.cybnity.framework.domain;
 
 import java.time.OffsetDateTime;
 
-import org.cybnity.framework.immutable.Entity;
-import org.cybnity.framework.immutable.EntityReference;
-import org.cybnity.framework.immutable.Evaluations;
-import org.cybnity.framework.immutable.IHistoricalFact;
-import org.cybnity.framework.immutable.IReferenceable;
-import org.cybnity.framework.immutable.IVersionable;
-import org.cybnity.framework.immutable.IdentifiableFact;
-import org.cybnity.framework.immutable.Identifier;
-import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
@@ -38,7 +30,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, IVersionable, IReferenceable {
+public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, IReferenceable {
 
 	/**
 	 * Version of this class type.
@@ -147,7 +139,7 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
 	 * Redefine the comparison of this event with another based on the identifier is
 	 * known.
 	 * 
-	 * @param fact To compare.
+	 * @param event To compare.
 	 * @return True if this fact is based on the same identifier(s) as the fact
 	 *         argument; false otherwise.
 	 */
@@ -158,7 +150,7 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
 		if (event != null && IdentifiableFact.class.isAssignableFrom(event.getClass())) {
 			try {
 				// Compare equality based on each instance's identifier (unique or based on
-				// identifying informations combination)
+				// identifying information combination)
 				return Evaluations.isIdentifiedEquals(this, (IdentifiableFact) event);
 			} catch (ImmutabilityException ie) {
 				// Impossible creation of immutable version of identifier

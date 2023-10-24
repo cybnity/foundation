@@ -3,7 +3,10 @@ package org.cybnity.framework.domain.application.sample;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
+import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
+import java.io.Serializable;
 
 /**
  * Example of command creating a new user account into a system.
@@ -34,4 +37,8 @@ public class UserAccountCreateCommand extends Command {
 	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 
+    @Override
+    public Serializable immutable() throws ImmutabilityException {
+        return null;
+    }
 }

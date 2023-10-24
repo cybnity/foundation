@@ -3,14 +3,7 @@ package org.cybnity.framework.domain;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 
-import org.cybnity.framework.immutable.Entity;
-import org.cybnity.framework.immutable.EntityReference;
-import org.cybnity.framework.immutable.Evaluations;
-import org.cybnity.framework.immutable.IReferenceable;
-import org.cybnity.framework.immutable.IVersionable;
-import org.cybnity.framework.immutable.IdentifiableFact;
-import org.cybnity.framework.immutable.Identifier;
-import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
@@ -29,7 +22,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  *
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public abstract class Command implements IdentifiableFact, IVersionable, Serializable, IReferenceable {
+public abstract class Command implements IHistoricalFact, IdentifiableFact, Serializable, IReferenceable {
 
 	/**
 	 * Version of this class type.
@@ -66,6 +59,18 @@ public abstract class Command implements IdentifiableFact, IVersionable, Seriali
 	public Command(Entity identifiedBy) {
 		this();
 		this.identifiedBy = identifiedBy;
+	}
+
+	/**
+	 * Get a immutable copy of the original entity of this event.
+	 *
+	 * @return Identity of this event, or null.
+	 */
+	public Entity getIdentifiedBy() throws ImmutabilityException {
+		if (this.identifiedBy != null) {
+			return (Entity) identifiedBy.immutable();
+		}
+		return null;
 	}
 
 	/**
@@ -133,7 +138,7 @@ public abstract class Command implements IdentifiableFact, IVersionable, Seriali
 	 * Redefine the comparison of this event with another based on the identifier is
 	 * known.
 	 * 
-	 * @param fact To compare.
+	 * @param event To compare.
 	 * @return True if this fact is based on the same identifier(s) as the fact
 	 *         argument; false otherwise.
 	 */
@@ -157,7 +162,8 @@ public abstract class Command implements IdentifiableFact, IVersionable, Seriali
 	/**
 	 * Default implementation of even time when it was created.
 	 */
-	public OffsetDateTime occurredOn() {
+	@Override
+	public OffsetDateTime occurredAt() {
 		// Return copy of the fact time
 		return OffsetDateTime.parse(this.occuredOn.toString());
 	}
