@@ -23,7 +23,6 @@ public class ObjectMapperBuilderUseCaseTest {
     @Test
     public void givenCommandEvent_whenCreateJsonVersion_thenStandardFormatAppliedOnObject() throws Exception {
         // Prepare json object (RegisterOrganization command event including organization naming)
-
         Collection<Attribute> definition = new ArrayList<>();
         // Set organization name
         Attribute tenantNameToRegister = new Attribute("OrganizationNaming", "CYBNITY");
@@ -32,10 +31,19 @@ public class ObjectMapperBuilderUseCaseTest {
         // Define a command identifier allowing its identification
         DomainEntity cmdId = new DomainEntity(new IdentifierStringBased("id", UUID.randomUUID().toString()));
 
-        Command event = CommandFactory.create("REGISTER_ORGANIZATION",
+        // Create prior command reference
+        Command priorCmd = CommandFactory.create("REGISTER_ORGANIZATION_PREVIOUS",
                 cmdId,
                 definition,
                 /* none prior command to reference*/ null,
+                /* None pre-identified organization because new creation */ null
+        );
+
+        cmdId = new DomainEntity(new IdentifierStringBased("id", UUID.randomUUID().toString()));
+        Command event = CommandFactory.create("REGISTER_ORGANIZATION",
+                cmdId,
+                definition,
+                /* none prior command to reference*/ priorCmd.reference(),
                 /* None pre-identified organization because new creation */ null
         );
 
@@ -48,6 +56,8 @@ public class ObjectMapperBuilderUseCaseTest {
 
         // Check serialized in JSON format
         String commandJson = mapper.writeValueAsString(event);
+        System.out.println(commandJson);
+
         // Check each content serialized version
         assertTrue(commandJson.contains("occurredOn"), "Shall have been serialized");
         assertTrue(commandJson.contains("REGISTER_ORGANIZATION"), "Shall have been serialized");
@@ -55,8 +65,7 @@ public class ObjectMapperBuilderUseCaseTest {
         assertTrue(commandJson.contains("CYBNITY"), "Shall have been serialized");
 
         // Check deserializable object from serialized version
-        //Command version = mapper.readValue(commandJson, ConcreteCommandEvent.class);
-
+        // or via mapper.readValue(commandJson, ConcreteCommandEvent.class);
         Command version = mapper.readerFor(Command.class).readValue(commandJson);
 
         // Check that serialized/deserialized offset date time (occurredOn, createdAt attribute) are equals to original value (e.g zone id and offset guarantee)

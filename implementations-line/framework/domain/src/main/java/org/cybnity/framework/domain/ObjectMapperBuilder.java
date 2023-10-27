@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.cybnity.framework.immutable.EntityReference;
+import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.Identifier;
 
 import java.text.DateFormat;
@@ -59,9 +61,15 @@ public class ObjectMapperBuilder {
         if (this.preserveOrder) {
             mapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
         }
-        // -- add custom serializer
+        // -- add custom serializers
         SimpleModule module = new SimpleModule();
         module.addSerializer(Identifier.class, new IdentifierSerializer());
+        mapper.registerModule(module);
+        module = new SimpleModule();
+        module.addSerializer(EntityReference.class, new EntityReferenceSerializer());
+        mapper.registerModule(module);
+        module = new SimpleModule();
+        module.addSerializer(HistoryState.class, new HistoryStateSerializer());
         mapper.registerModule(module);
 
         // Deserialization configuration
@@ -71,9 +79,13 @@ public class ObjectMapperBuilder {
         mapper.configure(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS, false);
         // Deserialize list of element as array
         mapper.configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true /* disabled provide java.util.List */);
-        // --- add custom deserializer
+
+        // --- add custom deserializers
         module = new SimpleModule();
         module.addDeserializer(Identifier.class, new IdentifierStringBasedDeserializer(IdentifierStringBased.class));
+        mapper.registerModule(module);
+        module = new SimpleModule();
+        module.addDeserializer(EntityReference.class, new EntityReferenceDeserializer());
         mapper.registerModule(module);
 
         return mapper;
