@@ -1,14 +1,15 @@
 package org.cybnity.framework.domain;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import org.cybnity.framework.immutable.*;
+import org.cybnity.framework.immutable.Entity;
+import org.cybnity.framework.immutable.EntityReference;
+import org.cybnity.framework.immutable.HistoryState;
+import org.cybnity.framework.immutable.ImmutabilityException;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashSet;
 
 /**
  * Custom serializer of any type of EntityReference object.

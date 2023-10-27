@@ -56,7 +56,7 @@ public class ObjectMapperBuilderUseCaseTest {
 
         // Check serialized in JSON format
         String commandJson = mapper.writeValueAsString(event);
-        System.out.println(commandJson);
+        //System.out.println(commandJson);
 
         // Check each content serialized version
         assertTrue(commandJson.contains("occurredOn"), "Shall have been serialized");

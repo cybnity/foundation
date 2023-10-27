@@ -177,7 +177,7 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
         try {
             if (this.getIdentifiedBy() != null) {
                 return new EntityReference((Entity) this.getIdentifiedBy().immutable(),
-                        /* Unknown external relation with the caller of this method */ null, null);
+                        /* Unknown external relation with the caller of this method */ null, null, null);
             }
             return null;
         } catch (Exception e) {

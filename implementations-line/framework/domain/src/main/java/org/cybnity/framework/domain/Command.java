@@ -177,7 +177,7 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, Seri
         try {
             if (this.identifiedBy != null) {
                 return new EntityReference((Entity) this.identifiedBy.immutable(),
-                        /* Unknown external relation with the caller of this method */ null, null);
+                        /* Unknown external relation with the caller of this method */ null, null, null);
             }
             return null;
         } catch (Exception e) {

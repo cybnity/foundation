@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import org.cybnity.framework.domain.ObjectMapperBuilder;
 import org.cybnity.framework.domain.SerializationFormat;
 import org.cybnity.framework.immutable.Identifier;
 
@@ -35,16 +33,11 @@ public class DomainEntityDeserializer extends StdDeserializer<DomainEntity> {
         // Read array of identifiers defining identity of entity
         LinkedHashSet<Identifier> identifiers = new LinkedHashSet<>();
         Iterator<JsonNode> it = node.withArray("identifiedBy").elements();
-        ObjectMapper mapper = new ObjectMapperBuilder()
-                .enableIndentation()
-                .dateFormat()
-                .preserveOrder(true)
-                .build();
 
         while (it.hasNext()) {
             JsonNode el = it.next();
             // Create identifier instance
-            Identifier implId = mapper.readerFor(Identifier.class).readValue(el);
+            Identifier implId = deserializationContext.readTreeAsValue(el, Identifier.class);
             identifiers.add(implId);
         }
 

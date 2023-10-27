@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.cybnity.framework.domain.model.DomainEntityDeserializer;
+import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.Identifier;
@@ -61,6 +63,7 @@ public class ObjectMapperBuilder {
         if (this.preserveOrder) {
             mapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
         }
+
         // -- add custom serializers
         SimpleModule module = new SimpleModule();
         module.addSerializer(Identifier.class, new IdentifierSerializer());
@@ -86,6 +89,12 @@ public class ObjectMapperBuilder {
         mapper.registerModule(module);
         module = new SimpleModule();
         module.addDeserializer(EntityReference.class, new EntityReferenceDeserializer());
+        mapper.registerModule(module);
+        module = new SimpleModule();
+        module.addDeserializer(Entity.class, new DomainEntityDeserializer());
+        mapper.registerModule(module);
+        module = new SimpleModule();
+        module.addDeserializer(HistoryState.class, new HistoryStateDeserializer());
         mapper.registerModule(module);
 
         return mapper;
