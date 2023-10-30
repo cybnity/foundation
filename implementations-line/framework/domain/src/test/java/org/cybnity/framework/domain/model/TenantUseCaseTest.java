@@ -1,15 +1,5 @@
 package org.cybnity.framework.domain.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.HashMap;
-import java.util.UUID;
-
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.model.sample.DomainEntityImpl;
 import org.cybnity.framework.domain.model.sample.writemodel.OrganizationDescriptor;
@@ -21,6 +11,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+
+import java.util.HashMap;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test regarding the behavior of a Tenant class.

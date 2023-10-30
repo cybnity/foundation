@@ -4,7 +4,6 @@
 		<artifactId>cockpit-foundations-impl</artifactId>
 		<groupId>org.cybnity</groupId>
 		<version>${revision}</version>
-		<relativePath>..</relativePath>
 	</parent>
 	<groupId>org.cybnity.cockpit-foundation</groupId>
 	<artifactId>reactive-messaging-gateway</artifactId>

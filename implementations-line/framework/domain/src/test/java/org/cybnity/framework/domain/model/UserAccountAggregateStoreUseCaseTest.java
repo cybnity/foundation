@@ -1,9 +1,5 @@
 package org.cybnity.framework.domain.model;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.util.UUID;
-
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.application.sample.UserAccountAggregate;
 import org.cybnity.framework.domain.application.sample.UserAccountCreateCommand;
@@ -16,6 +12,10 @@ import org.cybnity.framework.immutable.Identifier;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Unit test of Domain object (UserAccountAggregate by write model) store
@@ -68,7 +68,7 @@ public class UserAccountAggregateStoreUseCaseTest {
 		UserAccountAggregate account = new UserAccountAggregate(accountId, accountOwner);
 
 		// Create an event simulating an original command of user account creation
-		Entity eventId = new UserAccountIdentityCreation(accountId);
+		DomainEntity eventId = new UserAccountIdentityCreation(accountId);
 		UserAccountCreateCommand event = new UserAccountCreateCommand(eventId);
 		event.accountUID = (String) accountId.value();
 

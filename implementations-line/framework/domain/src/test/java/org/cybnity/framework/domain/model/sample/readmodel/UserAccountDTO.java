@@ -1,9 +1,9 @@
 package org.cybnity.framework.domain.model.sample.readmodel;
 
+import org.cybnity.framework.immutable.Entity;
+
 import java.time.OffsetDateTime;
 import java.util.Set;
-
-import org.cybnity.framework.immutable.Entity;
 
 /**
  * Example of denormalized version of an instance of UserAccountAggregate, ready

@@ -1,12 +1,12 @@
 package org.cybnity.framework.domain.model;
 
-import java.util.LinkedHashSet;
-
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.util.LinkedHashSet;
 
 /**
  * Represent a social entity instance (e.g a company, a person) which define an

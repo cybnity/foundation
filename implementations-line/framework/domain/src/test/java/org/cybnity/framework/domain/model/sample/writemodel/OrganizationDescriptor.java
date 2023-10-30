@@ -1,14 +1,14 @@
 package org.cybnity.framework.domain.model.sample.writemodel;
 
-import java.io.Serializable;
-import java.time.OffsetDateTime;
-import java.util.HashMap;
-
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.MutableProperty;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
+import java.io.Serializable;
+import java.time.OffsetDateTime;
+import java.util.HashMap;
 
 /**
  * Example of specific definition regarding an organization, that can be changed

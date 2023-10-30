@@ -1,12 +1,12 @@
 package org.cybnity.framework.domain.model.sample;
 
-import javax.management.modelmbean.InvalidTargetObjectTypeException;
-
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.ProcessManager;
 import org.cybnity.framework.domain.application.ApplicationService;
 import org.cybnity.framework.domain.application.sample.UserAccountManagementDomainContext;
 import org.cybnity.framework.domain.application.sample.UserAccountManagementProcessesImpl;
+
+import javax.management.modelmbean.InvalidTargetObjectTypeException;
 
 /**
  * Example of application service component that define an applicative perimeter

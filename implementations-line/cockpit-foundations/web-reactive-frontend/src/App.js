@@ -1,22 +1,28 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import NavBar from './components/NavBar';
-import Home from './components/Home';
-import TenantRegistration from './components/TenantRegistration';
-import UserAccountRegistration from './components/UserAccountRegistration';
-import Resources from './components/Resources';
+import CockpitScreen from "./features/cockpits/CockpitScreen";
+import Home from "./components/Home";
+import AccountRegistrationViewRendering from "./features/access-control/AccountRegistrationViewRendering";
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import NoMatch from "./components/NoMatch";
+import DynamicStandaloneInformationScreen from "./components/DynamicStandaloneInformationScreen";
+import React from "react";
 
+/**
+ * Main reactive application configuration supporting the dedicated cockpit screens.
+ * See Restful definition at https://restfulapi.net/resource-naming/
+ * @returns {JSX.Element}
+ * @constructor
+ */
 export default function App() {
-	return (
-		<div>
-			<BrowserRouter>
-				<NavBar />
-				<Routes>
-					<Route path='/' element={<Home />} />
-					<Route path='/organization_signup' element={<TenantRegistration />} />
-					<Route path='/useraccount_signup' element={<UserAccountRegistration />} />
-					<Route path="/resource" element={<Resources />} />
-				</Routes>
-			</BrowserRouter>
-		</div>
-	);
+
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<Home/>}/>
+                <Route path="/cockpit" element={<CockpitScreen/>}/>
+                <Route path="/account-registration" element={<AccountRegistrationViewRendering/>}/>
+                <Route path="*" element={<NoMatch/>}/>
+                <Route path="/managed-content/:type/:resourceId" element={<DynamicStandaloneInformationScreen/>}/>
+            </Routes>
+        </Router>
+    );
 };

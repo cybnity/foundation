@@ -1,12 +1,12 @@
 package org.cybnity.framework.domain.model.sample;
 
-import java.io.Serializable;
-
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
+import java.io.Serializable;
 
 /**
  * Example of event regarding a store event finalized with success.
@@ -31,7 +31,7 @@ public class EventStoreRecordCommitted extends DomainEvent {
     @Override
     public Serializable immutable() throws ImmutabilityException {
 	EventStoreRecordCommitted instance = new EventStoreRecordCommitted(this.getIdentifiedBy());
-	instance.occuredOn = this.occurredAt();
+	instance.occurredOn = this.occurredAt();
 	if (this.originCommandRef != null)
 	    instance.originCommandRef = (EntityReference) this.originCommandRef.immutable();
 	if (this.storedEvent != null)

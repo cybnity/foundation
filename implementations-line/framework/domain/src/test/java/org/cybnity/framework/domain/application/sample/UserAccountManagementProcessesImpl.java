@@ -1,14 +1,13 @@
 package org.cybnity.framework.domain.application.sample;
 
-import java.util.HashMap;
-import java.util.Set;
-
-import javax.management.modelmbean.InvalidTargetObjectTypeException;
-
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.ICommandHandler;
 import org.cybnity.framework.domain.ProcessManager;
+
+import javax.management.modelmbean.InvalidTargetObjectTypeException;
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Example of handlers service manager regarding a domain boundary.

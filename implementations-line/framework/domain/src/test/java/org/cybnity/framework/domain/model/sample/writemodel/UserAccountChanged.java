@@ -1,12 +1,12 @@
 package org.cybnity.framework.domain.model.sample.writemodel;
 
-import java.io.Serializable;
-
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
+import java.io.Serializable;
 
 /**
  * Example of event regarding an account change executed.
@@ -36,7 +36,7 @@ public class UserAccountChanged extends DomainEvent {
     @Override
     public Serializable immutable() throws ImmutabilityException {
 	UserAccountChanged instance = new UserAccountChanged(this.getIdentifiedBy());
-	instance.occuredOn = this.occurredAt();
+	instance.occurredOn = this.occurredAt();
 	if (this.creationCommandRef != null)
 	    instance.createdAccountRef = (EntityReference) this.creationCommandRef.immutable();
 	if (this.createdAccountRef != null)

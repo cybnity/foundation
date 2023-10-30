@@ -1,11 +1,5 @@
 package org.cybnity.framework.domain.application.sample;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
-
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.IdentifierStringBased;
@@ -17,14 +11,14 @@ import org.cybnity.framework.domain.model.sample.DomainEntityImpl;
 import org.cybnity.framework.domain.model.sample.UserAccountApplicativeRoleAssigned;
 import org.cybnity.framework.domain.model.sample.readmodel.ApplicativeRoleDTO;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStore;
-import org.cybnity.framework.immutable.BaseConstants;
-import org.cybnity.framework.immutable.Entity;
-import org.cybnity.framework.immutable.EntityReference;
-import org.cybnity.framework.immutable.HistoryState;
-import org.cybnity.framework.immutable.IVersionable;
-import org.cybnity.framework.immutable.Identifier;
-import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Sample of business domain aggregate relative to a user account that is not

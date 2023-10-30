@@ -1,48 +1,47 @@
 package org.cybnity.framework.domain.model.sample.writemodel;
 
-import java.io.Serializable;
-import java.util.LinkedHashSet;
-
 import org.cybnity.framework.domain.IdentifierStringBased;
+import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.BaseConstants;
-import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
+import java.io.Serializable;
+import java.util.LinkedHashSet;
+
 /**
  * Simple identifying information regarding a user account creation.
- * 
- * @author olivier
  *
+ * @author olivier
  */
-public class UserAccountIdentityCreation extends Entity {
+public class UserAccountIdentityCreation extends DomainEntity {
 
     private static final long serialVersionUID = new VersionConcreteStrategy()
-	    .composeCanonicalVersionHash(UserAccountIdentityCreation.class).hashCode();
+            .composeCanonicalVersionHash(UserAccountIdentityCreation.class).hashCode();
 
     public UserAccountIdentityCreation(Identifier id) throws IllegalArgumentException {
-	super(id);
+        super(id);
     }
 
     public UserAccountIdentityCreation(LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
-	super(identifiers);
+        super(identifiers);
     }
 
     @Override
     public Identifier identified() {
-	StringBuffer combinedId = new StringBuffer();
-	for (Identifier id : this.identifiers()) {
-	    combinedId.append(id.value());
-	}
-	// Return combined identifier
-	return new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), combinedId.toString());
+        StringBuffer combinedId = new StringBuffer();
+        for (Identifier id : this.identifiers()) {
+            combinedId.append(id.value());
+        }
+        // Return combined identifier
+        return new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), combinedId.toString());
     }
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
-	return new UserAccountIdentityCreation(ids);
+        LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
+        return new UserAccountIdentityCreation(ids);
     }
 
     /**
@@ -51,6 +50,6 @@ public class UserAccountIdentityCreation extends Entity {
      */
     @Override
     public String versionHash() {
-	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+        return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 }

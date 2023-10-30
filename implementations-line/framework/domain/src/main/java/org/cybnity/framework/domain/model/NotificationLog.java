@@ -1,8 +1,5 @@
 package org.cybnity.framework.domain.model;
 
-import java.io.Serializable;
-import java.util.Collection;
-
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
@@ -10,6 +7,9 @@ import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * Log event regarding an identifiable domain event (e.g domain fact which is

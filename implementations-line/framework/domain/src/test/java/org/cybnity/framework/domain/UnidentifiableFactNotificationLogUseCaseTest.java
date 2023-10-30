@@ -1,12 +1,5 @@
 package org.cybnity.framework.domain;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.List;
-
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountChanged;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.IHistoricalFact;
@@ -14,6 +7,10 @@ import org.cybnity.framework.immutable.Identifier;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test of UnidentifiableFactNotificationLog behaviors regarding its

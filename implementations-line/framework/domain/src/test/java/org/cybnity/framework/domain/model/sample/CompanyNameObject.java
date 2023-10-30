@@ -1,9 +1,9 @@
 package org.cybnity.framework.domain.model.sample;
 
-import java.io.Serializable;
-
 import org.cybnity.framework.domain.ValueObject;
 import org.cybnity.framework.immutable.ImmutabilityException;
+
+import java.io.Serializable;
 
 /**
  * Example of value object defining a name of company.

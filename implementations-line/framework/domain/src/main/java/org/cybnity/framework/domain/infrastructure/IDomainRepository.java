@@ -1,12 +1,12 @@
 package org.cybnity.framework.domain.infrastructure;
 
-import java.util.Collection;
-
 import org.cybnity.framework.domain.ISessionContext;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.persistence.IFactRepository;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.util.Collection;
 
 /**
  * Represents a persistence-oriented repository (also sometimes called Aggregate

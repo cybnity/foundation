@@ -1,9 +1,5 @@
 package org.cybnity.framework.domain.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountChanged;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
@@ -11,6 +7,8 @@ import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test of DomainEvent behaviors regarding its supported requirements.

@@ -1,14 +1,14 @@
 package org.cybnity.framework.domain.model.sample;
 
-import java.io.Serializable;
-import java.time.OffsetDateTime;
-import java.util.LinkedHashSet;
-
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
+import java.io.Serializable;
+import java.time.OffsetDateTime;
+import java.util.LinkedHashSet;
 
 /**
  * Basic and common domain entity implementation object.
