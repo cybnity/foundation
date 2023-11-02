@@ -28,4 +28,25 @@ public class EventSpecification {
         }
         return appended;
     }
+
+    /**
+     * Search existing specification attribute based no specific name.
+     *
+     * @param criteriaName  Mandatory name of attribute to find.
+     * @param specification Mandatory list of specification attributes where the criteria shall be search.
+     * @return Found attribute or null.
+     */
+    static public Attribute findSpecificationByName(String criteriaName, Collection<Attribute> specification) {
+        Attribute found = null;
+        if ((criteriaName != null && !criteriaName.isEmpty()) && specification != null) {
+            // Possible search execution
+            for (Attribute at : specification) {
+                if (at != null && at.name() != null && at.name().equalsIgnoreCase(criteriaName)) {
+                    found = at;
+                    break; // Stop search
+                }
+            }
+        }
+        return found;
+    }
 }

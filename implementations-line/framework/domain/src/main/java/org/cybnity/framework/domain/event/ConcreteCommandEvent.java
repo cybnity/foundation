@@ -82,6 +82,33 @@ public class ConcreteCommandEvent extends Command implements IDescribed {
         }
     }
 
+    /**
+     * This implementation method create and store a new attribute based on CORRELATION_ID name into the specification of this command.
+     *
+     * @param eventIdentifier Mandatory defined identifier. None assignment when not defined or empty parameter.
+     */
+    @Override
+    protected void assignCorrelationId(String eventIdentifier) {
+        if (eventIdentifier != null && !eventIdentifier.isEmpty()) {
+            // Create and store attribute dedicated to correlation identifier
+            appendSpecification(new Attribute(CORRELATION_ID, eventIdentifier));
+        }
+    }
+
+    /**
+     * Search existing assigned correlation identifier based on the CORRELATION_ID attribute which could have been generated and stored into the specification set.
+     *
+     * @return Assigned correlation identifier, or null.
+     */
+    @Override
+    protected Attribute correlationId() {
+        if (this.specification != null) {
+            // Search optionally and previously generated correlation id
+            return EventSpecification.findSpecificationByName(CORRELATION_ID, this.specification);
+        }
+        return null;
+    }
+
     public ConcreteCommandEvent(DomainEntity identifiedBy, String eventType) {
         super(identifiedBy);
         if (!"".equals(eventType)) {

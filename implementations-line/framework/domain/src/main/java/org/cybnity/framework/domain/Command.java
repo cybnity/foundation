@@ -1,8 +1,10 @@
 package org.cybnity.framework.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.cybnity.framework.domain.event.ConcreteCommandEvent;
+import org.cybnity.framework.domain.event.CorrelationIdFactory;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
@@ -34,6 +36,12 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, Seri
      */
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(Command.class).hashCode();
+
+    /**
+     * Standard name of the attribute specifying a correlation identifier generated and assigned to this command.
+     */
+    @JsonIgnore
+    public static String CORRELATION_ID = "correlationId";
 
     /**
      * Identifying information of this event.
@@ -76,6 +84,30 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, Seri
         }
         return null;
     }
+
+    /**
+     * Generate and assign correlation identifier to this command.
+     *
+     * @param salt Optional value to be included into the correlation identifier automatically generated and assigned.
+     */
+    public void generateCorrelationId(String salt) {
+        assignCorrelationId(CorrelationIdFactory.generate(salt));
+    }
+
+    /**
+     * Assign a correlation identifier to this command.
+     * This method is called when the generateCorrelationId(String salt) is executed, and shall manage the storage of the generated correlation identifier into this command.
+     *
+     * @param eventIdentifier Mandatory defined identifier. None assignment when not defined or empty parameter.
+     */
+    protected abstract void assignCorrelationId(String eventIdentifier);
+
+    /**
+     * Get correlation identifier when existing.
+     *
+     * @return A correlation identifier assigned to this command. Else null.
+     */
+    protected abstract Attribute correlationId();
 
     /**
      * Get the identification element regarding this event, when it's an

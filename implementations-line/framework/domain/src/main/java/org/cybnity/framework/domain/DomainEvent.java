@@ -44,7 +44,7 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
 
     /**
      * As event name reflect the past nature of the occurrence, an event is not
-     * occurring now but it occurred previously. This property indicates when the
+     * occurring now, but it occurred previously. This property indicates when the
      * event occurred.
      */
     protected OffsetDateTime occurredOn;
@@ -185,4 +185,10 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
         }
     }
 
+    /**
+     * Get correlation identifier when existing.
+     *
+     * @return A correlation identifier of origin cause (e.g command event source generating this event) regarding this event. Else null.
+     */
+    protected abstract Attribute correlationId();
 }

@@ -1,5 +1,6 @@
 package org.cybnity.framework.domain.model.sample.readmodel;
 
+import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
@@ -26,6 +27,11 @@ public class UserAccountDTOChanged extends DomainEvent {
 
     public UserAccountDTOChanged(Entity identity) {
 	super(identity);
+    }
+
+    @Override
+    protected Attribute correlationId() {
+        return null;
     }
 
     @Override

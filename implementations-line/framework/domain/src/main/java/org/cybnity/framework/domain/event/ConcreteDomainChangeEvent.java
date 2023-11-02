@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.cybnity.framework.domain.Attribute;
+import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.framework.immutable.Entity;
@@ -200,5 +201,19 @@ public class ConcreteDomainChangeEvent extends DomainEvent implements IDescribed
      */
     public void setOccurredOn(OffsetDateTime occurredOn) {
         this.occurredOn = occurredOn;
+    }
+
+    /**
+     * Search existing assigned correlation identifier based on the CORRELATION_ID attribute which could have been generated and stored into the specification set.
+     *
+     * @return Assigned correlation identifier, or null.
+     */
+    @Override
+    protected Attribute correlationId() {
+        if (this.specification != null) {
+            // Search optionally and previously generated correlation id
+            return EventSpecification.findSpecificationByName(Command.CORRELATION_ID, this.specification);
+        }
+        return null;
     }
 }

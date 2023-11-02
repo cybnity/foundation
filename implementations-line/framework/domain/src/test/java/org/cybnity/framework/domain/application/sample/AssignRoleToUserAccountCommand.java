@@ -1,5 +1,6 @@
 package org.cybnity.framework.domain.application.sample;
 
+import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.domain.model.sample.readmodel.ApplicativeRoleDTO;
@@ -27,6 +28,21 @@ public class AssignRoleToUserAccountCommand extends Command {
 
     public AssignRoleToUserAccountCommand(DomainEntity identifiedBy) {
         super(identifiedBy);
+    }
+
+    /**
+     * This implementation do nothing.
+     *
+     * @param eventIdentifier Mandatory defined identifier. None assignment when not defined or empty parameter.
+     */
+    @Override
+    protected void assignCorrelationId(String eventIdentifier) {
+
+    }
+
+    @Override
+    protected Attribute correlationId() {
+        return null;
     }
 
     /**
