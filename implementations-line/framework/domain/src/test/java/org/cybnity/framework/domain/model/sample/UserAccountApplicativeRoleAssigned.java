@@ -30,7 +30,7 @@ public class UserAccountApplicativeRoleAssigned extends DomainEvent {
     }
 
     @Override
-    protected Attribute correlationId() {
+    public Attribute correlationId() {
         return null;
     }
 

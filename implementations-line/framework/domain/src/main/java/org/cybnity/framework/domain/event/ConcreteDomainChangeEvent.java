@@ -209,7 +209,7 @@ public class ConcreteDomainChangeEvent extends DomainEvent implements IDescribed
      * @return Assigned correlation identifier, or null.
      */
     @Override
-    protected Attribute correlationId() {
+    public Attribute correlationId() {
         if (this.specification != null) {
             // Search optionally and previously generated correlation id
             return EventSpecification.findSpecificationByName(Command.CORRELATION_ID, this.specification);

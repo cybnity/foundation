@@ -30,7 +30,7 @@ public class UserAccountDTOChanged extends DomainEvent {
     }
 
     @Override
-    protected Attribute correlationId() {
+    public Attribute correlationId() {
         return null;
     }
 

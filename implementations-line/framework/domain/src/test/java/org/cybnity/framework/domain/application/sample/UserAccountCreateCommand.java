@@ -38,7 +38,7 @@ public class UserAccountCreateCommand extends Command {
     }
 
     @Override
-    protected Attribute correlationId() {
+    public Attribute correlationId() {
         return null;
     }
 

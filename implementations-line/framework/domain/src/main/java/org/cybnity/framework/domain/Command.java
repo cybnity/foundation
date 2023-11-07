@@ -107,7 +107,7 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, Seri
      *
      * @return A correlation identifier assigned to this command. Else null.
      */
-    protected abstract Attribute correlationId();
+    public abstract Attribute correlationId();
 
     /**
      * Get the identification element regarding this event, when it's an

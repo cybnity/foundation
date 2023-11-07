@@ -41,7 +41,7 @@ public class AssignRoleToUserAccountCommand extends Command {
     }
 
     @Override
-    protected Attribute correlationId() {
+    public Attribute correlationId() {
         return null;
     }
 

@@ -65,10 +65,11 @@ classDiagram
 
     class DomainEvent {
         <<abstract>>
-        -occuredOn : OffsetDateTime
+        -occurredOn : OffsetDateTime
         -identifiedBy : Entity
         +DomainEvent()
         +DomainEvent(Entity uid)
+        +correlationId()$ Attribute
         +getIdentifiedBy() Entity
         +identified() Identifier
         +valueHashCodeContributors() String[]
@@ -105,7 +106,10 @@ classDiagram
     class Command {
         <<abstract>>
         #identifiedBy : Entity
-        #occuredOn : OffsetDateTime
+        #occurredOn : OffsetDateTime
+        +correlationId()$ Attribute
+        #assignCorrelationId(String eventIdentifier)
+        +generateCorrelationId(String salt)
         +identified() Identifier
         +valueHashCodeContributors() String[]
         +hashCode() int

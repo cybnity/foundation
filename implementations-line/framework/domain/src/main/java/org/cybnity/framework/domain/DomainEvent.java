@@ -190,5 +190,5 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
      *
      * @return A correlation identifier of origin cause (e.g command event source generating this event) regarding this event. Else null.
      */
-    protected abstract Attribute correlationId();
+    public abstract Attribute correlationId();
 }

@@ -34,7 +34,7 @@ public class UserAccountChanged extends DomainEvent {
     }
 
     @Override
-    protected Attribute correlationId() {
+    public Attribute correlationId() {
         return null;
     }
 

@@ -29,7 +29,7 @@ public class EventStoreRecordCommitted extends DomainEvent {
     }
 
     @Override
-    protected Attribute correlationId() {
+    public Attribute correlationId() {
         return null;
     }
 
