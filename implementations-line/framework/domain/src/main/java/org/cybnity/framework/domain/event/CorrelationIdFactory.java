@@ -1,12 +1,5 @@
 package org.cybnity.framework.domain.event;
 
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.cybnity.framework.domain.IdentifierStringBased;
-import org.cybnity.framework.immutable.BaseConstants;
-import org.cybnity.framework.immutable.Identifier;
-
-import java.security.SecureRandom;
-import java.time.LocalDate;
 import java.util.UUID;
 
 /**

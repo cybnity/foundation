@@ -10,7 +10,7 @@ Release Name: V0 - FRAMEWORK
 ## ADDS
 | Issue | Origin/Cause     | Description                                                                                                                                                      |
 |:------|:-----------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 237   | AC-2(8)          | ConcreteCommandEvent added for access-control reuse regarding ac-backend-server entrypoint. Correlation id factory added.                                        |
+| 237   | AC-2(8)          | ConcreteCommandEvent and ConcreteDomainChangeEvent added for access-control bounded context reuse. Factories added                                               |
 | 95    | REQ_FCT_73       | CompletionState, ITemplate, TemplateType added as reusable status for workflow state machine support. ConcreteDomainChangeEvent reusable as generic domain event |
 | 58    | REQ_SEC_3        | Tenant support for users of same organization                                                                                                                    |
 | 145   | REQ_ROB_3        | Application-agnostic fact reading for storage                                                                                                                    |
