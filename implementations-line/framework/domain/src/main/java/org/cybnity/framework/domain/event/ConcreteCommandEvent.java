@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -24,7 +23,7 @@ import java.util.Collections;
  * @author olivier
  */
 @JsonTypeName("commandEvent")
-public class ConcreteCommandEvent extends Command implements IDescribed {
+public class ConcreteCommandEvent extends Command {
 
     @JsonIgnore
     private static final long serialVersionUID = new VersionConcreteStrategy()

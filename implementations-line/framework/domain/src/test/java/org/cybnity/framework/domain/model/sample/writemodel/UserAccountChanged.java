@@ -8,6 +8,8 @@ import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Example of event regarding an account change executed.
@@ -56,5 +58,15 @@ public class UserAccountChanged extends DomainEvent {
     @Override
     public String versionHash() {
         return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+    }
+
+    @Override
+    public Collection<Attribute> specification() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public boolean appendSpecification(Attribute specificationCriteria) {
+        return false;
     }
 }

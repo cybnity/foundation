@@ -8,6 +8,8 @@ import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Example of command adding a new applicative role to a user account into a
@@ -57,5 +59,15 @@ public class AssignRoleToUserAccountCommand extends Command {
     @Override
     public Serializable immutable() throws ImmutabilityException {
         return null;
+    }
+
+    @Override
+    public Collection<Attribute> specification() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public boolean appendSpecification(Attribute specificationCriteria) {
+        return false;
     }
 }

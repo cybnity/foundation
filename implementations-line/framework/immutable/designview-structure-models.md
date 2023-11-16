@@ -7,14 +7,14 @@ Several structural patterns are supporting the immutable capabilities and are re
 ### Key Components
 For more detail, the technical description regarding behavior and best usage is maintained into the Javadoc of each component.
 
-|Class Type|Motivation|
-| :-- | :-- |
-|BasicConfigurationVariable| |
-|Context| |
-|IContext| |
-|IReadableConfiguration| |
-|MissingConfigurationException| |
-|UnoperationalStateException| |
+| Class Type                    | Motivation |
+|:------------------------------|:-----------|
+| BasicConfigurationVariable    |            |
+| Context                       |            |
+| IContext                      |            |
+| IReadableConfiguration        |            |
+| MissingConfigurationException |            |
+| UnoperationalStateException   |            |
 
 ## STRUCTURE MODELS
 Presentation of the design view of the `org.cybnity.framework` main project's artifacts package.

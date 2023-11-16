@@ -8,6 +8,8 @@ import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Example of command creating a new user account into a system.
@@ -30,6 +32,7 @@ public class UserAccountCreateCommand extends Command {
 
     /**
      * This implementation do nothing
+     *
      * @param eventIdentifier Mandatory defined identifier. None assignment when not defined or empty parameter.
      */
     @Override
@@ -54,5 +57,15 @@ public class UserAccountCreateCommand extends Command {
     @Override
     public Serializable immutable() throws ImmutabilityException {
         return null;
+    }
+
+    @Override
+    public Collection<Attribute> specification() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public boolean appendSpecification(Attribute specificationCriteria) {
+        return false;
     }
 }

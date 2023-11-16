@@ -11,7 +11,6 @@ import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
-import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 /**
@@ -29,7 +28,7 @@ import java.time.OffsetDateTime;
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "@type")
 @JsonSubTypes({@JsonSubTypes.Type(value = ConcreteCommandEvent.class, name = "commandEvent")})
-public abstract class Command implements IHistoricalFact, IdentifiableFact, Serializable, IReferenceable {
+public abstract class Command implements IHistoricalFact, IdentifiableFact, IReferenceable, IDescribed {
 
     /**
      * Version of this class type.

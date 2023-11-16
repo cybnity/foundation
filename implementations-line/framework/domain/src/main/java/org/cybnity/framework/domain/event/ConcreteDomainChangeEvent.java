@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.DomainEvent;
-import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -25,7 +24,7 @@ import java.util.Collections;
  * @author olivier
  */
 @JsonTypeName("changeEvent")
-public class ConcreteDomainChangeEvent extends DomainEvent implements IDescribed {
+public class ConcreteDomainChangeEvent extends DomainEvent {
 
     @JsonIgnore
     private static final long serialVersionUID = new VersionConcreteStrategy()
