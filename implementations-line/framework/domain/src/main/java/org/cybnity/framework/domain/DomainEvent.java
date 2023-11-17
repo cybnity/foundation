@@ -1,5 +1,6 @@
 package org.cybnity.framework.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.cybnity.framework.domain.event.ConcreteDomainChangeEvent;
@@ -32,13 +33,14 @@ import java.time.OffsetDateTime;
  * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "@type")
-@JsonSubTypes({@JsonSubTypes.Type(value = ConcreteDomainChangeEvent.class, name = "changeEvent")})
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "@class")
+@JsonSubTypes({@JsonSubTypes.Type(value = ConcreteDomainChangeEvent.class, name = "DomainEvent")})
 public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, IReferenceable, IDescribed {
 
     /**
      * Version of this class type.
      */
+    @JsonIgnore
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(DomainEvent.class).hashCode();
 
@@ -73,7 +75,7 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
     }
 
     /**
-     * Get a immutable copy of the original entity of this event.
+     * Get an immutable copy of the original entity of this event.
      *
      * @return Identity of this event, or null.
      */
@@ -122,20 +124,7 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
      */
     @Override
     public int hashCode() {
-        // Read the contribution values of functional equality regarding this instance
-        String[] functionalValues = valueHashCodeContributors();
-        int hashCodeValue = +(169065 * 179);
-        if (functionalValues != null && functionalValues.length > 0) {
-            for (String s : functionalValues) {
-                if (s != null) {
-                    hashCodeValue += s.hashCode();
-                }
-            }
-        } else {
-            // Keep standard hash code value calculation default implementation
-            hashCodeValue = super.hashCode();
-        }
-        return hashCodeValue;
+        return new EventHashingCapability().getHashCode(this);
     }
 
     /**
@@ -148,17 +137,11 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
      */
     @Override
     public boolean equals(Object event) {
-        if (event == this)
-            return true;
-        if (event != null && IdentifiableFact.class.isAssignableFrom(event.getClass())) {
-            try {
-                // Compare equality based on each instance's identifier (unique or based on
-                // identifying information combination)
-                return Evaluations.isIdentifiedEquals(this, (IdentifiableFact) event);
-            } catch (ImmutabilityException ie) {
-                // Impossible creation of immutable version of identifier
-                // Log problem of implementation
-            }
+        try {
+            return new EventComparisonCapability().isEquals(event, this);
+        } catch (ImmutabilityException ie) {
+            // Impossible creation of immutable version of identifier
+            // TODO: create a problem log
         }
         return false;
     }
@@ -175,8 +158,8 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
     @Override
     public EntityReference reference() throws ImmutabilityException {
         try {
-            if (this.getIdentifiedBy() != null) {
-                return new EntityReference((Entity) this.getIdentifiedBy().immutable(),
+            if (this.identifiedBy != null) {
+                return new EntityReference((Entity) this.identifiedBy.immutable(),
                         /* Unknown external relation with the caller of this method */ null, null, null);
             }
             return null;

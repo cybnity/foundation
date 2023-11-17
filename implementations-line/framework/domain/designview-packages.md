@@ -40,14 +40,15 @@ Several packages are implemented to organize the components (e.g specification e
 ## MODEL.EVENT PACKAGE
 Several types of domain events are defined by each applicative domain. This package includes enabler and utilities classes which are reusable by the domain implements.
 
-| Class Type                | Motivation                                                                                                        |
-|:--------------------------|:------------------------------------------------------------------------------------------------------------------|
-| CommandFactory            | Factory of command event supported by a Anti-Corruption Layer                                                     |
-| ConcreteCommandEvent      | Generic event regarding a command to execute requested regarding a topic and that can be interpreted by a domain  |
-| ConcreteDomainChangeEvent | Generic event regarding a change occurred on a topic relative to a domain                                         |
-| CorrelationIdFactory      | Factory of correlation identifier reusable into command event                                                     |
-| DomainEventFactory        | Factory of domain event (e.g domain aggregate change; bounded context event) supported by a Anti-Corruption Layer |                  
-| EventSpecification        | Utility class regarding event specification                                                                       |
+| Class Type                | Motivation                                                                                                                                 |
+|:--------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------|
+| CommandFactory            | Factory of command event supported by a Anti-Corruption Layer                                                                              |
+| ConcreteCommandEvent      | Generic event regarding a CRQS command type to execute a resource change via a topic and that can be treated by a domain                   |
+| ConcreteDomainChangeEvent | Generic event regarding a change occurred on a topic relative to a domain                                                                  |
+| CorrelationIdFactory      | Factory of correlation identifier reusable into command event                                                                              |
+| DomainEventFactory        | Factory of domain event (e.g domain aggregate change; bounded context event) supported by a Anti-Corruption Layer                          |                  
+| EventSpecification        | Utility class regarding event specification                                                                                                |
+| ConcreteQueryEvent        | Generic event regarding a CQRS query command type to execute a search or read of resources via a topic and that can be treated by a domain |
 
 ## MODEL PACKAGE
 

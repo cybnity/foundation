@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.model.DomainEntity;
+import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
@@ -19,25 +20,29 @@ import java.util.Collections;
 
 /**
  * Generic event regarding a command to execute requested regarding a topic and that can be interpreted by a domain.
+ * It's a Command event of CQRS pattern.
  *
  * @author olivier
  */
-@JsonTypeName("commandEvent")
+@JsonTypeName("Command")
 public class ConcreteCommandEvent extends Command {
 
+    /**
+     * Version of this class type.
+     */
     @JsonIgnore
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(ConcreteCommandEvent.class).hashCode();
 
     /**
-     * Standard name of the attribute specifying this command type based on a logical
+     * Standard type of the attribute specifying this command type based on a logical
      * type.
      */
     @JsonIgnore
     public static String TYPE = "type";
 
     /**
-     * Identify the original command reference that was previous source of this command
+     * Identify the original event reference that was previous source of this command
      * publication.
      */
     @JsonProperty
@@ -69,11 +74,11 @@ public class ConcreteCommandEvent extends Command {
         }
     }
 
-    public ConcreteCommandEvent(DomainEntity identifiedBy) {
+    public ConcreteCommandEvent(Entity identifiedBy) {
         super(identifiedBy);
     }
 
-    public ConcreteCommandEvent(DomainEntity identifiedBy, Enum<?> eventType) {
+    public ConcreteCommandEvent(Entity identifiedBy, Enum<?> eventType) {
         super(identifiedBy);
         if (eventType != null) {
             // Add type into specification attributes
@@ -81,34 +86,7 @@ public class ConcreteCommandEvent extends Command {
         }
     }
 
-    /**
-     * This implementation method create and store a new attribute based on CORRELATION_ID name into the specification of this command.
-     *
-     * @param eventIdentifier Mandatory defined identifier. None assignment when not defined or empty parameter.
-     */
-    @Override
-    protected void assignCorrelationId(String eventIdentifier) {
-        if (eventIdentifier != null && !eventIdentifier.isEmpty()) {
-            // Create and store attribute dedicated to correlation identifier
-            appendSpecification(new Attribute(CORRELATION_ID, eventIdentifier));
-        }
-    }
-
-    /**
-     * Search existing assigned correlation identifier based on the CORRELATION_ID attribute which could have been generated and stored into the specification set.
-     *
-     * @return Assigned correlation identifier, or null.
-     */
-    @Override
-    public Attribute correlationId() {
-        if (this.specification != null) {
-            // Search optionally and previously generated correlation id
-            return EventSpecification.findSpecificationByName(CORRELATION_ID, this.specification);
-        }
-        return null;
-    }
-
-    public ConcreteCommandEvent(DomainEntity identifiedBy, String eventType) {
+    public ConcreteCommandEvent(Entity identifiedBy, String eventType) {
         super(identifiedBy);
         if (!"".equals(eventType)) {
             // Add type into specification attributes
@@ -119,7 +97,7 @@ public class ConcreteCommandEvent extends Command {
     @JsonIgnore
     @Override
     public Serializable immutable() throws ImmutabilityException {
-        ConcreteCommandEvent instance = new ConcreteCommandEvent((DomainEntity) this.getIdentifiedBy());
+        ConcreteCommandEvent instance = new ConcreteCommandEvent(this.getIdentifiedBy());
         instance.occurredOn = this.occurredAt();
 
         // Add immutable version of each additional attributes hosted by this event
@@ -167,10 +145,10 @@ public class ConcreteCommandEvent extends Command {
     }
 
     /**
-     * Define the reference of a previous command that causing the publication of
+     * Define the reference of a previous event that causing the publication of
      * this event.
      *
-     * @param ref A reference (e.g regarding a command event which was treated by a
+     * @param ref A reference (e.g regarding an event which was treated by a
      *            domain object to treat) or null.
      */
     public void setPriorCommandRef(EntityReference ref) {
@@ -178,7 +156,7 @@ public class ConcreteCommandEvent extends Command {
     }
 
     /**
-     * Get the reference of the command that was previous to this command.
+     * Get the reference of the event that was previous to this command.
      *
      * @return A reference immutable version, or null.
      * @throws ImmutabilityException When impossible return of immutable version.
@@ -226,6 +204,33 @@ public class ConcreteCommandEvent extends Command {
      */
     public void setOccurredOn(OffsetDateTime occurredOn) {
         this.occurredOn = occurredOn;
+    }
+
+    /**
+     * Search existing assigned correlation identifier based on the CORRELATION_ID attribute which could have been generated and stored into the specification set.
+     *
+     * @return Assigned correlation identifier, or null.
+     */
+    @Override
+    public Attribute correlationId() {
+        if (this.specification != null) {
+            // Search optionally and previously generated correlation id
+            return EventSpecification.findSpecificationByName(CORRELATION_ID, this.specification);
+        }
+        return null;
+    }
+
+    /**
+     * This implementation method create and store a new attribute based on CORRELATION_ID name into the specification of this command.
+     *
+     * @param eventIdentifier Mandatory defined identifier. None assignment when not defined or empty parameter.
+     */
+    @Override
+    protected void assignCorrelationId(String eventIdentifier) {
+        if (eventIdentifier != null && !eventIdentifier.isEmpty()) {
+            // Create and store attribute dedicated to correlation identifier
+            appendSpecification(new Attribute(CORRELATION_ID, eventIdentifier));
+        }
     }
 
 }

@@ -21,7 +21,7 @@ For more detail, the technical description regarding behavior and best usage is 
 | IState                            | Represent a providing contract regarding the description of a state (e.g a process step) based on a collection of attributes. A state can include sub-state into its life cycle                                                                                                                                                                                                           |
 | ISubscribable                     | Contract of notifications reception about fact events                                                                                                                                                                                                                                                                                                                                     |
 | IValidationNotificationHandler    | Handling of problems detected on a subject (e.g Entity attribute) implementing deleted validation approach                                                                                                                                                                                                                                                                                |
-| IViewModelGenerator               | Manager of destructured data production regarding read model view usabel by UI layer                                                                                                                                                                                                                                                                                                      |
+| IViewModelGenerator               | Manager of destructured data production regarding read model view usable by UI layer                                                                                                                                                                                                                                                                                                      |
 | IWriteModel                       | Also named Command Model, segregation element (e.g event store) of CQRS pattern managing change commands and normalized data                                                                                                                                                                                                                                                              |
 | MutableAttribute                  | Attribute that can be changed, and which need to be historized in an immutable way the history of changes (version of this information)                                                                                                                                                                                                                                                   |
 | ProcessManager                    | Behavior design pattern, is a mediation component that distribute messages when complex routing between Aggregates                                                                                                                                                                                                                                                                        |
@@ -75,7 +75,7 @@ classDiagram
         +valueHashCodeContributors() String[]
         +hashCode() int
         +equals(Object event) boolean
-        +occuredAt() OffsetDateTime
+        +occurredAt() OffsetDateTime
         +reference() EntityReference
     }
     class IHistoricalFact {
@@ -104,14 +104,17 @@ classDiagram
         <<abstract>>
         #identifiedBy : Entity
         #occurredOn : OffsetDateTime
-        +correlationId()$ Attribute
+        +Command()
+        +Command(Entity identifiedBy)
         #assignCorrelationId(String eventIdentifier)
+        +getIdentifiedBy() Entity
+        +correlationId()$ Attribute
         +generateCorrelationId(String salt)
         +identified() Identifier
         +valueHashCodeContributors() String[]
         +hashCode() int
         +equals(Object event) boolean
-        +occuredOn() OffsetDateTime
+        +occurredOn() OffsetDateTime
         +reference() EntityReference
     }
     class IReadModel {

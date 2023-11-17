@@ -18,9 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Unit test of DomainEvent behaviors regarding its supported requirements.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 public class EventStoreUseCaseTest {
 
@@ -28,31 +27,31 @@ public class EventStoreUseCaseTest {
 
     @BeforeEach
     public void initStore() {
-	this.persistenceOrientedStore = (DomainEventsStoreImpl) DomainEventsStoreImpl.instance();
+        this.persistenceOrientedStore = (DomainEventsStoreImpl) DomainEventsStoreImpl.instance();
     }
 
     @AfterEach
     public void cleanStore() {
-	this.persistenceOrientedStore = null;
+        this.persistenceOrientedStore = null;
     }
 
     /**
      * Test of simple persistence-oriented store write and read capability.
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void givenIdentifiedStoredEvent_whenAppendedInPersistenceOrientedStore_thenEntryRetrieved()
-	    throws Exception {
-	// Create an identifiable event
-	Identifier id = new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), UUID.randomUUID().toString());
-	Entity identity = new UserAccountIdentityCreation(id);
-	UserAccountChanged event = new UserAccountChanged(identity);
-	// Add into a store
-	persistenceOrientedStore.append(event);
-	// Search persisted event log
-	DomainEvent saved = persistenceOrientedStore.findEventFrom(id);
-	assertNotNull(saved);
+            throws Exception {
+        // Create an identifiable event
+        Identifier id = new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), UUID.randomUUID().toString());
+        DomainEntity identity = new UserAccountIdentityCreation(id);
+        UserAccountChanged event = new UserAccountChanged(identity);
+        // Add into a store
+        persistenceOrientedStore.append(event);
+        // Search persisted event log
+        DomainEvent saved = persistenceOrientedStore.findEventFrom(id);
+        assertNotNull(saved);
     }
 
 }

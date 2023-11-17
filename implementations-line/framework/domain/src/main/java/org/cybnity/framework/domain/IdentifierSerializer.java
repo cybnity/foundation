@@ -23,7 +23,7 @@ public class IdentifierSerializer extends StdSerializer<Identifier> {
     public void serialize(Identifier identifier, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         jsonGenerator.writeStartObject();
         // Add type info
-        jsonGenerator.writeStringField("@type", identifier.getClass().getSimpleName());
+        jsonGenerator.writeStringField("@class", identifier.getClass().getSimpleName());
         jsonGenerator.writeStringField("name", identifier.name());
         jsonGenerator.writeStringField("value", identifier.value().toString());
         jsonGenerator.writeEndObject();

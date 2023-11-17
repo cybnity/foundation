@@ -27,7 +27,7 @@ public class EntityReferenceSerializer extends StdSerializer<EntityReference> {
     public void serialize(EntityReference entityReference, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         jsonGenerator.writeStartObject();
         // Add type info
-        jsonGenerator.writeStringField("@type", entityReference.getClass().getSimpleName());
+        jsonGenerator.writeStringField("@class", entityReference.getClass().getSimpleName());
 
         try {
             Entity entity = entityReference.getEntity();
