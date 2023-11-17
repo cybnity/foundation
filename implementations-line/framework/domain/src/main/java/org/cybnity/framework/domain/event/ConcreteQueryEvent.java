@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -19,36 +18,40 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Generic event regarding a change occurred on a topic relative to a domain.
+ * Generic event regarding a command to execute requested regarding a topic and that can be interpreted by a domain.
+ * It's a Query event of CQRS pattern.
  *
  * @author olivier
  */
-@JsonTypeName("DomainEvent")
-public class ConcreteDomainChangeEvent extends DomainEvent {
-
-    @JsonIgnore
-    private static final long serialVersionUID = new VersionConcreteStrategy()
-            .composeCanonicalVersionHash(ConcreteDomainChangeEvent.class).hashCode();
+@JsonTypeName("Query")
+public class ConcreteQueryEvent extends Command {
 
     /**
-     * Standard type of the attribute specifying this event type based on a logical
+     * Version of this class type.
+     */
+    @JsonIgnore
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+            .composeCanonicalVersionHash(ConcreteQueryEvent.class).hashCode();
+
+    /**
+     * Standard type of the attribute specifying this query type based on a logical
      * type.
      */
     @JsonIgnore
     public static String TYPE = "type";
 
     /**
-     * Identify the original command reference that was cause of this event
+     * Identify the original event reference that was previous source of this query
      * publication.
      */
     @JsonProperty
-    private EntityReference changeCommandRef;
+    private EntityReference priorCommandRef;
 
     /**
-     * Identify the element of the domain model which was changed.
+     * Identify the element of the domain model which was subject of query.
      */
     @JsonProperty
-    private EntityReference changedModelElementRef;
+    private EntityReference queriedModelElementRef;
 
     /**
      * Collection of contributor to the definition of this event, based on
@@ -58,11 +61,11 @@ public class ConcreteDomainChangeEvent extends DomainEvent {
     private Collection<Attribute> specification;
 
     @JsonCreator
-    public ConcreteDomainChangeEvent() {
+    public ConcreteQueryEvent() {
         super();
     }
 
-    public ConcreteDomainChangeEvent(Enum<?> eventType) {
+    public ConcreteQueryEvent(Enum<?> eventType) {
         this();
         if (eventType != null) {
             // Add type into specification attributes
@@ -70,11 +73,11 @@ public class ConcreteDomainChangeEvent extends DomainEvent {
         }
     }
 
-    public ConcreteDomainChangeEvent(Entity identifiedBy) {
+    public ConcreteQueryEvent(Entity identifiedBy) {
         super(identifiedBy);
     }
 
-    public ConcreteDomainChangeEvent(Entity identifiedBy, Enum<?> eventType) {
+    public ConcreteQueryEvent(Entity identifiedBy, Enum<?> eventType) {
         super(identifiedBy);
         if (eventType != null) {
             // Add type into specification attributes
@@ -82,7 +85,7 @@ public class ConcreteDomainChangeEvent extends DomainEvent {
         }
     }
 
-    public ConcreteDomainChangeEvent(Entity identifiedBy, String eventType) {
+    public ConcreteQueryEvent(Entity identifiedBy, String eventType) {
         super(identifiedBy);
         if (!"".equals(eventType)) {
             // Add type into specification attributes
@@ -93,16 +96,16 @@ public class ConcreteDomainChangeEvent extends DomainEvent {
     @JsonIgnore
     @Override
     public Serializable immutable() throws ImmutabilityException {
-        ConcreteDomainChangeEvent instance = new ConcreteDomainChangeEvent(this.getIdentifiedBy());
+        ConcreteQueryEvent instance = new ConcreteQueryEvent(this.getIdentifiedBy());
         instance.occurredOn = this.occurredAt();
 
         // Add immutable version of each additional attributes hosted by this event
-        EntityReference cmdRef = this.changeCommandReference();
+        EntityReference cmdRef = this.priorCommandReference();
         if (cmdRef != null)
-            instance.setChangeCommandRef(cmdRef);
-        EntityReference subjectRef = this.changedModelElementReference();
+            instance.setPriorCommandRef(cmdRef);
+        EntityReference subjectRef = this.queriedModelElementReference();
         if (subjectRef != null)
-            instance.setChangedModelElementRef(subjectRef);
+            instance.setQueriedModelElementRef(subjectRef);
         if (this.specification != null && !this.specification.isEmpty()) {
             instance.specification = this.specification();
         }
@@ -110,57 +113,57 @@ public class ConcreteDomainChangeEvent extends DomainEvent {
     }
 
     /**
-     * Define the reference of the domain element that was changed.
+     * Define the reference of the domain element that was subject of this query execution.
      *
      * @param ref A domain object reference.
      */
-    public void setChangedModelElementRef(EntityReference ref) {
-        this.changedModelElementRef = ref;
-    }
-
-    /**
-     * Get the reference of the domain element that was subject of change.
-     *
-     * @return A reference immutable version, or null.
-     * @throws ImmutabilityException When impossible return of immutable version.
-     */
-    public EntityReference changedModelElementReference() throws ImmutabilityException {
-        EntityReference r = null;
-        if (this.changedModelElementRef != null)
-            r = (EntityReference) this.changedModelElementRef.immutable();
-        return r;
-    }
-
-    /**
-     * Define the reference of the original command that causing the publication of
-     * this event.
-     *
-     * @param ref A reference (e.g regarding a command event which was treated by a
-     *            domain object to change one or several of its values) or null.
-     */
-    public void setChangeCommandRef(EntityReference ref) {
-        this.changeCommandRef = ref;
+    public void setQueriedModelElementRef(EntityReference ref) {
+        this.queriedModelElementRef = ref;
     }
 
     /**
      * Define collection of contributors to the definition of this event, based on unmodifiable attributes.
      *
-     * @param specification Description element relative to this command event.
+     * @param specification Description element relative to this query event.
      */
     public void setSpecification(Collection<Attribute> specification) {
         this.specification = specification;
     }
 
     /**
-     * Get the reference of the command that was origin of a domain object change.
+     * Get the reference of the domain element that was subject of query.
      *
      * @return A reference immutable version, or null.
      * @throws ImmutabilityException When impossible return of immutable version.
      */
-    public EntityReference changeCommandReference() throws ImmutabilityException {
+    public EntityReference queriedModelElementReference() throws ImmutabilityException {
         EntityReference r = null;
-        if (this.changeCommandRef != null)
-            r = (EntityReference) this.changeCommandRef.immutable();
+        if (this.queriedModelElementRef != null)
+            r = (EntityReference) this.queriedModelElementRef.immutable();
+        return r;
+    }
+
+    /**
+     * Define the reference of a previous event that causing the publication of
+     * this event.
+     *
+     * @param ref A reference (e.g regarding an event which was treated by a
+     *            domain object to treat) or null.
+     */
+    public void setPriorCommandRef(EntityReference ref) {
+        this.priorCommandRef = ref;
+    }
+
+    /**
+     * Get the reference of the event that was previous to this query.
+     *
+     * @return A reference immutable version, or null.
+     * @throws ImmutabilityException When impossible return of immutable version.
+     */
+    public EntityReference priorCommandReference() throws ImmutabilityException {
+        EntityReference r = null;
+        if (this.priorCommandRef != null)
+            r = (EntityReference) this.priorCommandRef.immutable();
         return r;
     }
 
@@ -211,8 +214,22 @@ public class ConcreteDomainChangeEvent extends DomainEvent {
     public Attribute correlationId() {
         if (this.specification != null) {
             // Search optionally and previously generated correlation id
-            return EventSpecification.findSpecificationByName(Command.CORRELATION_ID, this.specification);
+            return EventSpecification.findSpecificationByName(CORRELATION_ID, this.specification);
         }
         return null;
     }
+
+    /**
+     * This implementation method create and store a new attribute based on CORRELATION_ID name into the specification of this command.
+     *
+     * @param eventIdentifier Mandatory defined identifier. None assignment when not defined or empty parameter.
+     */
+    @Override
+    protected void assignCorrelationId(String eventIdentifier) {
+        if (eventIdentifier != null && !eventIdentifier.isEmpty()) {
+            // Create and store attribute dedicated to correlation identifier
+            appendSpecification(new Attribute(CORRELATION_ID, eventIdentifier));
+        }
+    }
+
 }

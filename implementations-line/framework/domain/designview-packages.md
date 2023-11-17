@@ -4,36 +4,35 @@ Presentation of the design view regarding the sub-packages of `org.cybnity.frame
 # DESIGN VIEW
 The technical description regarding behavior and best usage is maintained into the Javadoc of each component.
 
-|Class Type|Motivation|
-| :-- | :-- |
-|ActivityState|State of activity (e.g active or not active) regarding a subject that can be used as an activity tag for any type of subject|
-|Aggregate|Represents a scope of informations providing attributes and/or capabilities as a complex domain object. An aggregate root of the process entity domain is defined via immutable attributes (e.g ValueObject, EntityReference of other domains' objects, ChildFact historical and identified fact) and/or mutable attributes (e.g MutableProperty objects)|
-|ApplicationService|Represent a component of a service layer hosted by a domain boundary|
-|CommandHandlingService|Represent a component which manage handlers regarding specific Aggregate type|
-|CommonChildFactImpl|Reusable generic implementation class as child of immutable historical fact|
-|CompletionState|Represent a state of completion defining by a name and optionally by a percentage value about reached completion rate|
-|DomainEntity|Basic and common domain entity implementation object. A domain entity IS NOT MODIFIABLE and is equals to an identifiable fact. A domain entity DOES NOT CONTAIN MUTABLE properties.<br>A domain entity can represent an aggregate root (equals to an identification mean) which is an identifiable domain object (e.g persistent business object as immutable version of a complex domain object) attached to an aggregate domain object|
-|DomainEventPublisher|Publishing service from a domain model as repository service for Aggregates notifying their state changes|
-|DomainEventSubscriber|Interest contract to be notified when types of facts are changed|
-|EventRecord|Represent a recorded fact relative to an event which is manageable by a store, including the original version of event tracked and extracted informations allowing to store/retrieve it|
-|EventStore|Persistence system of event and aggregate types regarding a single bounded context|
-|EventStream|Append-only nature stream of domain events in order of occurence regarding a domain object|
-|IAggregate|Identifiable fact that defines a consistency boundary including multiple related objects (e.g domain and/or value objects)|
-|IApplicationService|Applicative behaviors contract regarding an application layer|
-|IAggregate|In a Domain-Driven Design (DDD), an aggregate defines a consistency boundary. An aggregate may consist of multiple related objects, all of which could be persisted together (e.g atomic operation)|
-|IContext|Generic contact allowing to share and provide information in an area of usage|
-|IDomainModel|Referential model for a domain, a specification (e.g defined via sub-interface of this one) provide several types of definitions regarding domain's entities, value objects, services and ubiquitous language elements usable in the domain|
-|IDomainRepository|Represents a persistence-oriented repository (also sometimes called Aggregate store, or Aggregate-Oriented database) basic contract for a bounded context.<br>For example, manage the domain data (e.g sharded database for a tenant) ensuring isolation of persistent domain model from the other bounded contexts|
-|IDomainStore|Stream store (with an append-only approach) which maintain history of a type of domain fact (e.g Aggregate versions).<br>For example, manage the domain data (e.g sharded database for a tenant) ensuring isolation of persistent domain model from the other bounded contexts|
-|IEventStore|Contract regarding storing (with append-only approach) and hydratation of a type of event (e.g versions stream)|
-|INotificationService|Publishing of events from event store via messaging infrastructure|
-|IVersionable|Supports multiple versions of a same event type|
-|NotificationLog|Log event regarding an identifiable domain fact|
-|Predecessors|Utility class providing capabilities supporting the management of predecessors and dependent contents|
-|Repository|Preservation of domain objects. Each persistent Aggregate type have a repository|
-|SessionContext|Implementation class of a ISessionContext|
-|SocialEntity|Represent a social entity instance (e.g a company, a person) which define an identifiable structure (e.g organizational, physical)|
-|Tenant|Represent an organization subscription that allow to define a scope of multi-tenant application regarding a named organization which facilitates the users registrations through invitation|
+| Class Type             | Motivation                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|:-----------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ActivityState          | State of activity (e.g active or not active) regarding a subject that can be used as an activity tag for any type of subject                                                                                                                                                                                                                                                                                                             |
+| Aggregate              | Represents a scope of information providing attributes and/or capabilities as a complex domain object. An aggregate root of the process entity domain is defined via immutable attributes (e.g ValueObject, EntityReference of other domains' objects, ChildFact historical and identified fact) and/or mutable attributes (e.g MutableProperty objects)                                                                                 |
+| ApplicationService     | Represent a component of a service layer hosted by a domain boundary                                                                                                                                                                                                                                                                                                                                                                     |
+| CommandHandlingService | Represent a component which manage handlers regarding specific Aggregate type                                                                                                                                                                                                                                                                                                                                                            |
+| CommonChildFactImpl    | Reusable generic implementation class as child of immutable historical fact                                                                                                                                                                                                                                                                                                                                                              |
+| CompletionState        | Represent a state of completion defining by a name and optionally by a percentage value about reached completion rate                                                                                                                                                                                                                                                                                                                    |
+| DomainEntity           | Basic and common domain entity implementation object. A domain entity IS NOT MODIFIABLE and is equals to an identifiable fact. A domain entity DOES NOT CONTAIN MUTABLE properties.<br>A domain entity can represent an aggregate root (equals to an identification mean) which is an identifiable domain object (e.g persistent business object as immutable version of a complex domain object) attached to an aggregate domain object |
+| DomainEventPublisher   | Publishing service from a domain model as repository service for Aggregates notifying their state changes                                                                                                                                                                                                                                                                                                                                |
+| DomainEventSubscriber  | Interest contract to be notified when types of facts are changed                                                                                                                                                                                                                                                                                                                                                                         |
+| EventRecord            | Represent a recorded fact relative to an event which is manageable by a store, including the original version of event tracked and extracted informations allowing to store/retrieve it                                                                                                                                                                                                                                                  |
+| EventStore             | Persistence system of event and aggregate types regarding a single bounded context                                                                                                                                                                                                                                                                                                                                                       |
+| EventStream            | Append-only nature stream of domain events in order of occurence regarding a domain object                                                                                                                                                                                                                                                                                                                                               |
+| IAggregate             | Identifiable fact that defines a consistency boundary including multiple related objects (e.g domain and/or value objects)                                                                                                                                                                                                                                                                                                               |
+| IApplicationService    | Applicative behaviors contract regarding an application layer                                                                                                                                                                                                                                                                                                                                                                            |
+| IAggregate             | In a Domain-Driven Design (DDD), an aggregate defines a consistency boundary. An aggregate may consist of multiple related objects, all of which could be persisted together (e.g atomic operation)                                                                                                                                                                                                                                      |
+| IContext               | Generic contact allowing to share and provide information in an area of usage                                                                                                                                                                                                                                                                                                                                                            |
+| IDomainModel           | Referential model for a domain, a specification (e.g defined via sub-interface of this one) provide several types of definitions regarding domain's entities, value objects, services and ubiquitous language elements usable in the domain                                                                                                                                                                                              |
+| IDomainRepository      | Represents a persistence-oriented repository (also sometimes called Aggregate store, or Aggregate-Oriented database) basic contract for a bounded context.<br>For example, manage the domain data (e.g sharded database for a tenant) ensuring isolation of persistent domain model from the other bounded contexts                                                                                                                      |
+| IDomainStore           | Stream store (with an append-only approach) which maintain history of a type of domain fact (e.g Aggregate versions).<br>For example, manage the domain data (e.g sharded database for a tenant) ensuring isolation of persistent domain model from the other bounded contexts                                                                                                                                                           |
+| IEventStore            | Contract regarding storing (with append-only approach) and hydratation of a type of event (e.g versions stream)                                                                                                                                                                                                                                                                                                                          |
+| INotificationService   | Publishing of events from event store via messaging infrastructure                                                                                                                                                                                                                                                                                                                                                                       |
+| NotificationLog        | Log event regarding an identifiable domain fact                                                                                                                                                                                                                                                                                                                                                                                          |
+| Predecessors           | Utility class providing capabilities supporting the management of predecessors and dependent contents                                                                                                                                                                                                                                                                                                                                    |
+| Repository             | Preservation of domain objects. Each persistent Aggregate type have a repository                                                                                                                                                                                                                                                                                                                                                         |
+| SessionContext         | Implementation class of a ISessionContext                                                                                                                                                                                                                                                                                                                                                                                                |
+| SocialEntity           | Represent a social entity instance (e.g a company, a person) which define an identifiable structure (e.g organizational, physical)                                                                                                                                                                                                                                                                                                       |
+| Tenant                 | Represent an organization subscription that allow to define a scope of multi-tenant application regarding a named organization which facilitates the users registrations through invitation                                                                                                                                                                                                                                              |
 
 # STRUCTURE MODELS
 Several packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
@@ -41,9 +40,15 @@ Several packages are implemented to organize the components (e.g specification e
 ## MODEL.EVENT PACKAGE
 Several types of domain events are defined by each applicative domain. This package includes enabler and utilities classes which are reusable by the domain implements.
 
-|Class Type|Motivation|
-| :-- | :-- |
-|ConcreteDomainChangeEvent|Generic event regarding a change occurred on a topic relative to a domain|
+| Class Type                | Motivation                                                                                                                                 |
+|:--------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------|
+| CommandFactory            | Factory of command event supported by a Anti-Corruption Layer                                                                              |
+| ConcreteCommandEvent      | Generic event regarding a CRQS command type to execute a resource change via a topic and that can be treated by a domain                   |
+| ConcreteDomainChangeEvent | Generic event regarding a change occurred on a topic relative to a domain                                                                  |
+| CorrelationIdFactory      | Factory of correlation identifier reusable into command event                                                                              |
+| DomainEventFactory        | Factory of domain event (e.g domain aggregate change; bounded context event) supported by a Anti-Corruption Layer                          |                  
+| EventSpecification        | Utility class regarding event specification                                                                                                |
+| ConcreteQueryEvent        | Generic event regarding a CQRS query command type to execute a search or read of resources via a topic and that can be treated by a domain |
 
 ## MODEL PACKAGE
 
@@ -138,7 +143,6 @@ classDiagram
     CommonChildFactImpl <|-- Aggregate
     IAggregate <|.. Aggregate
     Serializable <|.. Aggregate
-    IVersionable <|.. Aggregate
     MutableProperty <|-- ActivityState
     Tenant ..> Predecessors : use
     Tenant *-- "0..1" MutableProperty : organization
@@ -193,9 +197,6 @@ classDiagram
         <<interface>>
     }
     class Serializable {
-        <<interface>>
-    }
-    class IVersionable {
         <<interface>>
     }
     class ActivityState {

@@ -1,15 +1,16 @@
 package org.cybnity.framework.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.cybnity.framework.domain.event.ConcreteCommandEvent;
-import org.cybnity.framework.domain.model.DomainEntity;
+import org.cybnity.framework.domain.event.ConcreteQueryEvent;
+import org.cybnity.framework.domain.event.CorrelationIdFactory;
 import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
-import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 /**
@@ -25,20 +26,16 @@ import java.time.OffsetDateTime;
  * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "@type")
-@JsonSubTypes({@JsonSubTypes.Type(value = ConcreteCommandEvent.class, name = "commandEvent")})
-public abstract class Command implements IHistoricalFact, IdentifiableFact, Serializable, IReferenceable {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "@class")
+@JsonSubTypes({@JsonSubTypes.Type(value = ConcreteCommandEvent.class, name = "Command"), @JsonSubTypes.Type(value = ConcreteQueryEvent.class, name = "Query")})
+public abstract class Command implements IHistoricalFact, IdentifiableFact, IReferenceable, IDescribed {
 
     /**
      * Version of this class type.
      */
+    @JsonIgnore
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(Command.class).hashCode();
-
-    /**
-     * Identifying information of this event.
-     */
-    protected DomainEntity identifiedBy;
 
     /**
      * As event name reflect the past nature of the occurrence, an event is not
@@ -46,6 +43,17 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, Seri
      * event occurred.
      */
     protected OffsetDateTime occurredOn;
+
+    /**
+     * Identifying information of this event.
+     */
+    protected Entity identifiedBy;
+
+    /**
+     * Standard name of the attribute specifying a correlation identifier generated and assigned to this command.
+     */
+    @JsonIgnore
+    public static String CORRELATION_ID = "correlationId";
 
     /**
      * Default constructor of unidentifiable event.
@@ -60,13 +68,13 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, Seri
      *
      * @param identifiedBy Optional unique identifier of this event.
      */
-    public Command(DomainEntity identifiedBy) {
+    public Command(Entity identifiedBy) {
         this();
         this.identifiedBy = identifiedBy;
     }
 
     /**
-     * Get a immutable copy of the original entity of this event.
+     * Get an immutable copy of the original entity of this event.
      *
      * @return Identity of this event, or null.
      */
@@ -82,16 +90,13 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, Seri
      * identifiable event.
      *
      * @return Immutable instance of unique identifier of this event, or null.
+     * @throws ImmutabilityException If impossible identifier duplication.
      */
     @Override
-    public Identifier identified() {
-        if (this.identifiedBy != null) {
-            try {
-                return (Identifier) this.identifiedBy.identified().immutable();
-            } catch (ImmutabilityException ce) {
-                // TODO: add runtime log to the LogRegistry if defined
-            }
-        }
+    public Identifier identified() throws ImmutabilityException {
+        Entity entity = getIdentifiedBy();
+        if (entity != null)
+            return entity.identified();
         return null;
     }
 
@@ -122,20 +127,7 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, Seri
      */
     @Override
     public int hashCode() {
-        // Read the contribution values of functional equality regarding this instance
-        String[] functionalValues = valueHashCodeContributors();
-        int hashCodeValue = +(169065 * 179);
-        if (functionalValues != null && functionalValues.length > 0) {
-            for (String s : functionalValues) {
-                if (s != null) {
-                    hashCodeValue += s.hashCode();
-                }
-            }
-        } else {
-            // Keep standard hashcode value calculation default implementation
-            hashCodeValue = super.hashCode();
-        }
-        return hashCodeValue;
+        return new EventHashingCapability().getHashCode(this);
     }
 
     /**
@@ -148,17 +140,11 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, Seri
      */
     @Override
     public boolean equals(Object event) {
-        if (event == this)
-            return true;
-        if (event != null && IdentifiableFact.class.isAssignableFrom(event.getClass())) {
-            try {
-                // Compare equality based on each instance's identifier (unique or based on
-                // identifying information combination)
-                return Evaluations.isIdentifiedEquals(this, (IdentifiableFact) event);
-            } catch (ImmutabilityException ie) {
-                // Impossible creation of immutable version of identifier
-                // Log problem
-            }
+        try {
+            return new EventComparisonCapability().isEquals(event, this);
+        } catch (ImmutabilityException ie) {
+            // Impossible creation of immutable version of identifier
+            // TODO: create a problem log
         }
         return false;
     }
@@ -169,7 +155,7 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, Seri
     @Override
     public OffsetDateTime occurredAt() {
         // Return copy of the fact time
-        return this.occurredOn;
+        return OffsetDateTime.parse(this.occurredOn.toString());
     }
 
     @Override
@@ -184,5 +170,29 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, Seri
             throw new ImmutabilityException(e);
         }
     }
+
+    /**
+     * Get correlation identifier when existing.
+     *
+     * @return A correlation identifier assigned to this command. Else null.
+     */
+    public abstract Attribute correlationId();
+
+    /**
+     * Generate and assign correlation identifier to this command.
+     *
+     * @param salt Optional value to be included into the correlation identifier automatically generated and assigned.
+     */
+    public void generateCorrelationId(String salt) {
+        assignCorrelationId(CorrelationIdFactory.generate(salt));
+    }
+
+    /**
+     * Assign a correlation identifier to this command.
+     * This method is called when the generateCorrelationId(String salt) is executed, and shall manage the storage of the generated correlation identifier into this command.
+     *
+     * @param eventIdentifier Mandatory defined identifier. None assignment when not defined or empty parameter.
+     */
+    protected abstract void assignCorrelationId(String eventIdentifier);
 
 }

@@ -1,12 +1,16 @@
 package org.cybnity.framework.domain.model.sample;
 
+import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.DomainEvent;
+import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Example of event regarding an applicative role assigned to a user account.
@@ -29,6 +33,11 @@ public class UserAccountApplicativeRoleAssigned extends DomainEvent {
     }
 
     @Override
+    public Attribute correlationId() {
+        return null;
+    }
+
+    @Override
     public Serializable immutable() throws ImmutabilityException {
 	UserAccountApplicativeRoleAssigned instance = new UserAccountApplicativeRoleAssigned(this.getIdentifiedBy());
 	instance.occurredOn = this.occurredAt();
@@ -46,5 +55,15 @@ public class UserAccountApplicativeRoleAssigned extends DomainEvent {
     @Override
     public String versionHash() {
 	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+    }
+
+    @Override
+    public Collection<Attribute> specification() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public boolean appendSpecification(Attribute specificationCriteria) {
+        return false;
     }
 }

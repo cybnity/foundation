@@ -1,5 +1,6 @@
 package org.cybnity.framework.domain;
 
+import org.cybnity.framework.domain.event.CorrelationIdFactoryUseCaseTest;
 import org.cybnity.framework.domain.model.*;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
@@ -15,6 +16,6 @@ import org.junit.platform.suite.api.Suite;
         NotificationLogUseCaseTest.class, UnidentifiableFactNotificationLogUseCaseTest.class,
         EventStoreUseCaseTest.class, ContextUseCaseTest.class, UserAccountAggregateUseCaseTest.class,
         UserAccountAggregateStoreUseCaseTest.class, UserAccountCQRSCollaborationUseCaseTest.class,
-        StringBasedNaturalKeyBuilderUseCaseTest.class, TenantUseCaseTest.class, ObjectMapperBuilderUseCaseTest.class})
+        StringBasedNaturalKeyBuilderUseCaseTest.class, TenantUseCaseTest.class, ObjectMapperBuilderUseCaseTest.class, CorrelationIdFactoryUseCaseTest.class})
 public class AllTests {
 }

@@ -27,7 +27,7 @@ import java.util.LinkedHashSet;
  *
  * @author olivier
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "@type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "@class")
 @JsonDeserialize(using = DomainEntityDeserializer.class)
 public class DomainEntity extends Entity {
 
