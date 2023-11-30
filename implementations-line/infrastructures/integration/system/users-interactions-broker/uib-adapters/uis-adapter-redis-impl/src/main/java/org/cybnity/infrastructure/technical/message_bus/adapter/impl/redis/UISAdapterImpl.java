@@ -61,6 +61,10 @@ public class UISAdapterImpl implements UISAdapter {
         if (context == null)
             throw new IllegalArgumentException("Context parameter is required!");
         this.context = context;
+
+        // Check the minimum required data allowing connection to the targeted Redis
+        // server
+        checkHealthyState();
         try {
             // Prepare the Redis option allowing discussions with the Users Interactions Space
             RedisURI writeModelURI = RedisURIFactory.createUISWriteModelURI(this.context);
@@ -69,10 +73,6 @@ public class UISAdapterImpl implements UISAdapter {
         } catch (SecurityException s) {
             throw new UnoperationalStateException(s);
         }
-
-        // Check the minimum required data allowing connection to the targeted Redis
-        // server
-        checkHealthyState();
     }
 
     @Override
@@ -91,11 +91,6 @@ public class UISAdapterImpl implements UISAdapter {
             healthyChecker = new ExecutableAdapterChecker(context);
         // Execution the health check
         healthyChecker.checkOperableState();
-
-        // Test connection and detect the timeout supported by the space client
-        StatefulRedisConnection<String, String> connection = client.connect();
-        connectionTimeout = connection.getTimeout();
-        connection.close();
     }
 
     @Override
@@ -138,7 +133,7 @@ public class UISAdapterImpl implements UISAdapter {
             for (Attribute specification : command.specification()) {
                 if (Stream.Specification.STREAM_ENTRYPOINT_PATH_NAME.name().equals(specification.name())) {
                     recipientPathName = specification.value();
-                    break; //
+                    break; // Stop search
                 }
             }
         } else {

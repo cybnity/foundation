@@ -30,6 +30,8 @@ public class UISLettuceAdapterImplUseCaseTest extends ContextualizedRedisActiveT
         // Try adapter instance creation with automatic configuration of Lettuce client
         // from a valid context settings set
         UISAdapter adapter = new UISAdapterImpl(getContext());
+
+        adapter.freeUpResources();
     }
 
     /**
@@ -63,6 +65,7 @@ public class UISLettuceAdapterImplUseCaseTest extends ContextualizedRedisActiveT
 
         // Check that message was appended with success
         Assertions.assertNotNull(messageId);
+        adapter.freeUpResources();
     }
 
     /**
@@ -102,6 +105,7 @@ public class UISLettuceAdapterImplUseCaseTest extends ContextualizedRedisActiveT
 
         // Check that message was appended with success
         Assertions.assertNotNull(messageId);
+        adapter.freeUpResources();
     }
 
 }
