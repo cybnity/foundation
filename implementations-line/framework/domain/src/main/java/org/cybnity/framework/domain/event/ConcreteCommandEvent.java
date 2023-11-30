@@ -232,5 +232,4 @@ public class ConcreteCommandEvent extends Command {
             appendSpecification(new Attribute(CORRELATION_ID, eventIdentifier));
         }
     }
-
 }
