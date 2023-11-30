@@ -6,12 +6,11 @@
 		<version>${revision}</version>
 		<relativePath>..</relativePath>
 	</parent>
-
 	<groupId>org.cybnity.infrastructure.integration.uis.adapters</groupId>
 	<artifactId>api</artifactId>
+	<version>${revision}</version>
 	<packaging>jar</packaging>
 	<name>---- UIS adapter api</name>
-	
 	<dependencies>
 		<dependency>
 			<groupId>org.cybnity.framework</groupId>
