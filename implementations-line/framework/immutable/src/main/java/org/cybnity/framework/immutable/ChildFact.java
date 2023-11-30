@@ -1,14 +1,14 @@
 package org.cybnity.framework.immutable;
 
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
-
-import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
-import org.cybnity.framework.support.annotation.Requirement;
-import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Historical fact (e.g as an aggregate) referencing a parent as predecessor.
@@ -120,7 +120,7 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
 		if (predecessor == null)
 			throw new IllegalArgumentException("parent parameter is required!");
 		try {
-			// Check mandatory existent identifier of parent (child identifier based on its
+			// Check mandatory existing identifier of parent (child identifier based on its
 			// contribution)
 			Collection<Identifier> predecessorIdentifiers = predecessor.identifiers();
 			if (predecessor.identified() == null || predecessorIdentifiers == null || predecessorIdentifiers.isEmpty())

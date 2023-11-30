@@ -1,24 +1,18 @@
 package org.cybnity.framework.immutable;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import org.cybnity.framework.immutable.sample.IdentifierImpl;
 import org.cybnity.framework.immutable.sample.Organization;
 import org.cybnity.framework.immutable.sample.PhysicalAddressProperty;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test of MutableProperty behaviors regarding its immutability supported

@@ -1,9 +1,9 @@
 package org.cybnity.framework.immutable.sample;
 
-import java.io.Serializable;
-
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+
+import java.io.Serializable;
 
 /**
  * Sample of identifier implementation type only based on a single text chain.

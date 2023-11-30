@@ -1,12 +1,12 @@
 package org.cybnity.framework.immutable;
 
-import java.io.Serializable;
-import java.time.OffsetDateTime;
-import java.util.HashSet;
-
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.io.Serializable;
+import java.time.OffsetDateTime;
+import java.util.HashSet;
 
 /**
  * Represent a mutable relationship between entities.

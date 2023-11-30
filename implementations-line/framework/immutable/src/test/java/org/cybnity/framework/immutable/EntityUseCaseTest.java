@@ -1,16 +1,12 @@
 package org.cybnity.framework.immutable;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.Collection;
-
 import org.cybnity.framework.immutable.sample.EntityImpl;
 import org.cybnity.framework.immutable.sample.IdentifierImpl;
 import org.junit.jupiter.api.Test;
+
+import java.util.Collection;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test of Entity behaviors regarding its immutability supported

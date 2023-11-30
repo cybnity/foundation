@@ -1,11 +1,5 @@
 package org.cybnity.framework.immutable.persistence;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.time.OffsetDateTime;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.cybnity.framework.immutable.IHistoricalFact;
 import org.cybnity.framework.immutable.IdentifiableFact;
 import org.cybnity.framework.immutable.Identifier;
@@ -13,6 +7,12 @@ import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.time.OffsetDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represent a recorded fact relative to a topic (e.g event, command) which is

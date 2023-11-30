@@ -1,9 +1,9 @@
 package org.cybnity.framework.immutable;
 
-import java.util.Collection;
-
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.util.Collection;
 
 /**
  * In historical model, it's not strictly necessary to identify one predecessor

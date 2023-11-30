@@ -1,12 +1,12 @@
 package org.cybnity.framework.immutable.sample;
 
-import java.io.Serializable;
-import java.time.OffsetDateTime;
-
 import org.cybnity.framework.immutable.IGroup;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
+import java.io.Serializable;
+import java.time.OffsetDateTime;
 
 /**
  * Example of logical group regarding an organization.

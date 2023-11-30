@@ -1,14 +1,14 @@
 package org.cybnity.framework.immutable;
 
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
-
-import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
-import org.cybnity.framework.support.annotation.Requirement;
-import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * An entity is a HISTORICAL FACT that contains only identifying information(s).

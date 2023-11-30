@@ -1,9 +1,9 @@
 package org.cybnity.framework.immutable;
 
-import java.io.Serializable;
-
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.io.Serializable;
 
 /**
  * Contract regarding an immutable topic.

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;

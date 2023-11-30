@@ -1,14 +1,14 @@
 package org.cybnity.framework.immutable;
 
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
+
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
-import org.cybnity.framework.support.annotation.Requirement;
-import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Capture a known state of an entity to perform an atomic unit of work.
