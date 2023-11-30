@@ -15,7 +15,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.cybnity.framework</groupId>
-			<artifactId>immutable</artifactId>
+			<artifactId>domain</artifactId>
+			<scope>compile</scope>
 			<version>${revision}</version>
 		</dependency>
 	</dependencies>
