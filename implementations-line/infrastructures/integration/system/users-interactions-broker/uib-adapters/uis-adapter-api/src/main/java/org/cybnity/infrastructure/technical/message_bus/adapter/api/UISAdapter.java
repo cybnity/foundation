@@ -18,7 +18,7 @@ public interface UISAdapter {
     /**
      * For example, disconnect the adapter from the Users Interactions Space.
      */
-    void freeUpResources();
+    public void freeUpResources();
 
     /**
      * Verify the current status of the adapter as healthy and operable for
@@ -26,35 +26,35 @@ public interface UISAdapter {
      *
      * @throws UnoperationalStateException When adapter status problem detected.
      */
-    void checkHealthyState() throws UnoperationalStateException;
+    public void checkHealthyState() throws UnoperationalStateException;
 
     /**
      * Register observers of streams regarding messages published (e.g domain event, command execution status).
      *
      * @param listeners Collection of observers.
      */
-    void register(Collection<StreamObserver> listeners);
+    public void register(Collection<StreamObserver> listeners);
 
     /**
      * Register observers of channels regarding messages published (e.g domain event, command execution status).
      *
      * @param listeners Collection of observers.
      */
-    void subscribe(Collection<ChannelObserver> listeners);
+    public void subscribe(Collection<ChannelObserver> listeners);
 
     /**
      * Stop listening of messages published to streams that match on or more patterns by observers.
      *
      * @param observers Observers to remove from subscribers of streams.
      */
-    void unregister(Collection<StreamObserver> observers);
+    public void unregister(Collection<StreamObserver> observers);
 
     /**
      * Stop listening of messages published to channels that match on or more patterns by observers.
      *
      * @param observers Observers to remove from subscribers of channels.
      */
-    void unsubscribe(Collection<ChannelObserver> observers);
+    public void unsubscribe(Collection<ChannelObserver> observers);
 
     /**
      * Get the current active channels of the space.
@@ -62,7 +62,7 @@ public interface UISAdapter {
      * @param namingFilter Optional pattern (e.g specific domain or subdomain context owner of channels to select) regarding active channels to find. When null, all active channels managed by the space are returned.
      * @return A collection of channels or empty list.
      */
-    Collection<Channel> activeChannels(String namingFilter);
+    public Collection<Channel> activeChannels(String namingFilter);
 
     /**
      * Add a command to be processed into a space entrypoint with persistence guarantee.
@@ -73,7 +73,7 @@ public interface UISAdapter {
      * @throws IllegalArgumentException When mandatory parameter is missing. When recipient parameter is not defined and Stream.Specification.STREAM_ENTRYPOINT_PATH_NAME attribute is not detected into the command's specification.
      * @throws MappingException         When command transformation for data structure supported by the recipient is failed.
      */
-    String append(Command command, Stream recipient) throws IllegalArgumentException, MappingException;
+    public String append(Command command, Stream recipient) throws IllegalArgumentException, MappingException;
 
     /**
      * Add an event into a space entrypoint with persistence guarantee.
@@ -84,7 +84,7 @@ public interface UISAdapter {
      * @throws IllegalArgumentException When mandatory parameter is missing.
      * @throws MappingException         When event transformation for data structure supported by the recipients is failed.
      */
-    String append(DomainEvent event, List<Stream> recipients) throws IllegalArgumentException, MappingException;
+    public String append(DomainEvent event, List<Stream> recipients) throws IllegalArgumentException, MappingException;
 
     /**
      * Publish a command to be processed into a space entrypoint without persistence and treatment guarantee (e.g if none channel subscriber are active).
@@ -94,7 +94,7 @@ public interface UISAdapter {
      * @throws IllegalArgumentException When mandatory parameter is missing. When recipient parameter is not defined and Channel.Specification.STREAM_ENTRYPOINT_PATH_NAME attribute is not detected into the command's specification.
      * @throws MappingException         When command transformation for data structure supported by the recipient is failed.
      */
-    void publish(Command command, Channel recipient) throws IllegalArgumentException, MappingException;
+    public void publish(Command command, Channel recipient) throws IllegalArgumentException, MappingException;
 
     /**
      * Notify an event into the space that is need to be promoted to eventual observers.
@@ -104,6 +104,6 @@ public interface UISAdapter {
      * @throws IllegalArgumentException When mandatory parameter is missing.
      * @throws MappingException         When command transformation for data structure supported by the recipient is failed.
      */
-    void publish(DomainEvent event, Collection<Channel> recipients) throws IllegalArgumentException, MappingException;
+    public void publish(DomainEvent event, Collection<Channel> recipients) throws IllegalArgumentException, MappingException;
 
 }
