@@ -1,17 +1,15 @@
 package org.cybnity.framework.immutable.persistence;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.lang.reflect.Field;
-import java.util.Set;
-
 import org.cybnity.framework.immutable.sample.CreateDepartment;
 import org.cybnity.framework.immutable.sample.DepartmentChanged;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Field;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test of FactEdge behaviors regarding its supported requirements.

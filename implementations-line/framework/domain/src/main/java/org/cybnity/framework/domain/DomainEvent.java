@@ -10,6 +10,7 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Determine something that has happened in the system (e.g typically as a
@@ -112,7 +113,16 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
     public String[] valueHashCodeContributors() {
         try {
             Identifier id = this.identified();
-            return new String[]{id.value().toString(), id.name()};
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(SerializationFormat.DATE_FORMAT_PATTERN);
+
+            return new String[]{
+                    /* Type of identity */
+                    id.name(),
+                    /* Hashed version of this event identifier */
+                    Integer.toString(id.value().hashCode()),
+                    /* Specific time when this command occurred */
+                    formatter.format(occurredOn)
+            };
         } catch (ImmutabilityException ie) {
             return new String[]{};
         }

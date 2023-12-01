@@ -1,15 +1,12 @@
 package org.cybnity.framework.immutable.persistence;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.cybnity.framework.immutable.sample.DepartmentChanged;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.Set;
 
-import org.cybnity.framework.immutable.sample.DepartmentChanged;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test of FactType behaviors regarding its supported requirements.

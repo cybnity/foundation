@@ -1,10 +1,10 @@
 package org.cybnity.framework.immutable.persistence;
 
-import java.lang.reflect.Field;
-import java.util.Set;
-
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.lang.reflect.Field;
+import java.util.Set;
 
 /**
  * Represent a means to determine how the uniqueness of a subject (e.g a fact)

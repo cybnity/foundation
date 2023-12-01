@@ -1,10 +1,10 @@
 package org.cybnity.framework.immutable.persistence;
 
-import java.util.Collection;
-
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.util.Collection;
 
 /**
  * Represents a persistence-oriented repository (also sometimes called Aggregate

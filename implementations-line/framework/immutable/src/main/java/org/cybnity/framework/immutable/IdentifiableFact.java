@@ -16,7 +16,7 @@ public interface IdentifiableFact {
      * Location-independent unique identifier of this fact.
      * 
      * @return Unique based identifier, or derived identifier based on the multiple
-     *         identification informations combined from {@link#identifiers()}.
+     *         identification information combined from {@link#identifiers()}.
      * @throws ImmutabilityException When problem to create immutable copy of this
      *                               fact.
      */

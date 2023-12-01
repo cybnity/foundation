@@ -1,12 +1,12 @@
 package org.cybnity.framework.immutable.persistence;
 
-import java.io.Serializable;
-
 import org.cybnity.framework.immutable.NaturalKeyIdentifierGenerator;
 import org.cybnity.framework.immutable.StringBasedNaturalKeyBuilder;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.io.Serializable;
 
 /**
  * Represent a structural version of object type (e.g fact class, domain event

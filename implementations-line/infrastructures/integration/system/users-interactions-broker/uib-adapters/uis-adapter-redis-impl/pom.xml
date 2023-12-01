@@ -8,6 +8,7 @@
 	</parent>
 	<groupId>org.cybnity.infrastructure.integration.uis.adapters</groupId>
 	<artifactId>redis-impl</artifactId>
+	<version>${revision}</version>
 	<packaging>jar</packaging>
 	<name>---- UIS Redis adapter impl</name>
 	<dependencies>
@@ -26,10 +27,6 @@
 		</dependency>
 		<dependency>
 			<groupId>io.vertx</groupId>
-			<artifactId>vertx-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.vertx</groupId>
 			<artifactId>vertx-redis-client</artifactId>
 		</dependency>
 		<dependency>
@@ -40,6 +37,11 @@
 		<dependency>
 			<groupId>uk.org.webcompere</groupId>
 			<artifactId>system-stubs-jupiter</artifactId>
+		</dependency>
+		<dependency>
+			<!-- Embedded Redis test server (https://github.com/signalapp/embedded-redis) -->
+			<groupId>org.signal</groupId>
+			<artifactId>embedded-redis</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

@@ -1,9 +1,9 @@
 package org.cybnity.framework.immutable;
 
-import java.util.UUID;
-
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.util.UUID;
 
 /**
  * Represent implementation class regarding the build of a value transformed

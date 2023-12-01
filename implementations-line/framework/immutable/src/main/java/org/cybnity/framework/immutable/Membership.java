@@ -1,10 +1,10 @@
 package org.cybnity.framework.immutable;
 
-import java.time.OffsetDateTime;
-
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.time.OffsetDateTime;
 
 /**
  * The membership is a more flexible grouping relationship than the ownership. A

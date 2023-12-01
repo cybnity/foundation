@@ -1,10 +1,10 @@
 package org.cybnity.framework.immutable.sample;
 
-import java.io.Serializable;
-import java.util.LinkedHashSet;
-
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+
+import java.io.Serializable;
+import java.util.LinkedHashSet;
 
 /**
  * Example of domain entity specifically embedding properties that need to be

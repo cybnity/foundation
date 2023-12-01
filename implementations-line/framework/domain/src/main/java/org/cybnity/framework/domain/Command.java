@@ -12,6 +12,7 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Imperative element that is a request for the system to perform a task of
@@ -39,7 +40,7 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, IRef
 
     /**
      * As event name reflect the past nature of the occurrence, an event is not
-     * occurring now but it occurred previously. This property indicates when the
+     * occurring now, but it occurred previously. This property indicates when the
      * event occurred.
      */
     protected OffsetDateTime occurredOn;
@@ -114,7 +115,15 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, IRef
     public String[] valueHashCodeContributors() {
         try {
             Identifier id = this.identified();
-            return new String[]{id.value().toString(), id.name()};
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(SerializationFormat.DATE_FORMAT_PATTERN);
+            return new String[]{
+                    /* Type of identity */
+                    id.name(),
+                    /* Hashed version of this command identifier */
+                    Integer.toString(id.value().hashCode()),
+                    /* Specific time when this command occurred */
+                    formatter.format(occurredOn)
+            };
         } catch (Exception ie) {
             // In case of null pointer exception regarding unknown identifier command
             return new String[]{};

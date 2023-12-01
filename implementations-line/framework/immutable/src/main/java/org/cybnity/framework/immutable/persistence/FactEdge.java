@@ -1,16 +1,16 @@
 package org.cybnity.framework.immutable.persistence;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.cybnity.framework.immutable.IVersionable;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.Unmodifiable;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represent a link between two fact record constituing an existent predecessos

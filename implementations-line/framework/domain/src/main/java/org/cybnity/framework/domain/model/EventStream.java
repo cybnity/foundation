@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Represents a stream of domain events in order of occurence that guarantee the
+ * Represents a stream of domain events in order of occurrence that guarantee the
  * reason for each change to an Aggregate instance will not be lost (as defined
  * by the Aggregates and Event Sourcing pattern A+ES).
  * 
