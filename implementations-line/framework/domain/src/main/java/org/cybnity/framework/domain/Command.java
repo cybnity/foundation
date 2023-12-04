@@ -202,6 +202,6 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, IRef
      *
      * @param eventIdentifier Mandatory defined identifier. None assignment when not defined or empty parameter.
      */
-    protected abstract void assignCorrelationId(String eventIdentifier);
+    public abstract void assignCorrelationId(String eventIdentifier);
 
 }

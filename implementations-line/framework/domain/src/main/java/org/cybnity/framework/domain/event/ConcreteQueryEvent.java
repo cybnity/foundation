@@ -225,7 +225,7 @@ public class ConcreteQueryEvent extends Command {
      * @param eventIdentifier Mandatory defined identifier. None assignment when not defined or empty parameter.
      */
     @Override
-    protected void assignCorrelationId(String eventIdentifier) {
+    public void assignCorrelationId(String eventIdentifier) {
         if (eventIdentifier != null && !eventIdentifier.isEmpty()) {
             // Create and store attribute dedicated to correlation identifier
             appendSpecification(new Attribute(CORRELATION_ID, eventIdentifier));

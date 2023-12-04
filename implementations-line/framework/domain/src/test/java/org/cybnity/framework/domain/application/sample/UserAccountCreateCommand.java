@@ -36,7 +36,7 @@ public class UserAccountCreateCommand extends Command {
      * @param eventIdentifier Mandatory defined identifier. None assignment when not defined or empty parameter.
      */
     @Override
-    protected void assignCorrelationId(String eventIdentifier) {
+    public void assignCorrelationId(String eventIdentifier) {
 
     }
 
