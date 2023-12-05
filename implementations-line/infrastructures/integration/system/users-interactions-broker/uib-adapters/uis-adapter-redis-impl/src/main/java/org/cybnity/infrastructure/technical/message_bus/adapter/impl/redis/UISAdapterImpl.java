@@ -145,6 +145,7 @@ public class UISAdapterImpl implements UISAdapter {
         try {
             // Transform event into supported message type
             MessageMapper mapper = MessageMapperFactory.getMapper(Command.class, HashMap.class);
+
             mapper.transform(command);
             Map<String, String> messageBody = (Map<String, String>) mapper.getResult();
 

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.cybnity.framework.domain.event.ConcreteCommandEvent;
 import org.cybnity.framework.domain.event.ConcreteQueryEvent;
 import org.cybnity.framework.domain.event.CorrelationIdFactory;
+import org.cybnity.framework.domain.infrastructure.MessageHeader;
 import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
@@ -54,7 +55,7 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, IRef
      * Standard name of the attribute specifying a correlation identifier generated and assigned to this command.
      */
     @JsonIgnore
-    public static String CORRELATION_ID = "correlationId";
+    public static String CORRELATION_ID = MessageHeader.CORRELATION_ID.name();
 
     /**
      * Standard type of the attribute specifying this command type based on a logical

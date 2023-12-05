@@ -8,5 +8,10 @@ public enum MessageHeader {
     /**
      * Header regarding a response path (e.g specific channel of message sender observed and based on a transaction identifier according to a middleware used).
      */
-    REPLY_ADDRESS_HEADER;
+    REPLY_ADDRESS_HEADER,
+    /**
+     * Header regarding a transaction identifier considered as unique correlation id.
+     */
+    CORRELATION_ID
+    ;
 }
