@@ -2,7 +2,6 @@ package org.cybnity.framework.domain.model.sample;
 
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.DomainEvent;
-import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -14,9 +13,8 @@ import java.util.Collection;
 
 /**
  * Example of event regarding an applicative role assigned to a user account.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 public class UserAccountApplicativeRoleAssigned extends DomainEvent {
 
@@ -25,11 +23,11 @@ public class UserAccountApplicativeRoleAssigned extends DomainEvent {
     public EntityReference changedAccountRef;
 
     public UserAccountApplicativeRoleAssigned() {
-	super();
+        super();
     }
 
     public UserAccountApplicativeRoleAssigned(Entity identity) {
-	super(identity);
+        super(identity);
     }
 
     @Override
@@ -37,15 +35,25 @@ public class UserAccountApplicativeRoleAssigned extends DomainEvent {
         return null;
     }
 
+    /**
+     * Do nothing.
+     *
+     * @return Null.
+     */
+    @Override
+    public Attribute type() {
+        return null;
+    }
+
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	UserAccountApplicativeRoleAssigned instance = new UserAccountApplicativeRoleAssigned(this.getIdentifiedBy());
-	instance.occurredOn = this.occurredAt();
-	if (this.changeCommandRef != null)
-	    instance.changeCommandRef = (EntityReference) this.changeCommandRef.immutable();
-	if (this.changedAccountRef != null)
-	    instance.changedAccountRef = (EntityReference) this.changedAccountRef.immutable();
-	return instance;
+        UserAccountApplicativeRoleAssigned instance = new UserAccountApplicativeRoleAssigned(this.getIdentifiedBy());
+        instance.occurredOn = this.occurredAt();
+        if (this.changeCommandRef != null)
+            instance.changeCommandRef = (EntityReference) this.changeCommandRef.immutable();
+        if (this.changedAccountRef != null)
+            instance.changedAccountRef = (EntityReference) this.changedAccountRef.immutable();
+        return instance;
     }
 
     /**
@@ -54,7 +62,7 @@ public class UserAccountApplicativeRoleAssigned extends DomainEvent {
      */
     @Override
     public String versionHash() {
-	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+        return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 
     @Override

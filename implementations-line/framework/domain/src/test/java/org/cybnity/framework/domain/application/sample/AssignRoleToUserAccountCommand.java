@@ -42,6 +42,16 @@ public class AssignRoleToUserAccountCommand extends Command {
 
     }
 
+    /**
+     * Do nothing.
+     *
+     * @return Null.
+     */
+    @Override
+    public Attribute type() {
+        return null;
+    }
+
     @Override
     public Attribute correlationId() {
         return null;

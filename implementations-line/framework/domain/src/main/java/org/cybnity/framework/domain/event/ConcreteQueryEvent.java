@@ -34,13 +34,6 @@ public class ConcreteQueryEvent extends Command {
             .composeCanonicalVersionHash(ConcreteQueryEvent.class).hashCode();
 
     /**
-     * Standard type of the attribute specifying this query type based on a logical
-     * type.
-     */
-    @JsonIgnore
-    public static String TYPE = "type";
-
-    /**
      * Identify the original event reference that was previous source of this query
      * publication.
      */
@@ -231,5 +224,15 @@ public class ConcreteQueryEvent extends Command {
             appendSpecification(new Attribute(CORRELATION_ID, eventIdentifier));
         }
     }
+
+    @Override
+    public Attribute type() {
+        if (this.specification != null) {
+            // Search optionally and previously defined type
+            return EventSpecification.findSpecificationByName(TYPE, this.specification);
+        }
+        return null;
+    }
+
 
 }

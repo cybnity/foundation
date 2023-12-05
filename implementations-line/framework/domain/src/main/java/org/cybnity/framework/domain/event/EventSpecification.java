@@ -33,7 +33,7 @@ public class EventSpecification {
      * Search existing specification attribute based no specific name.
      *
      * @param criteriaName  Mandatory name of attribute to find.
-     * @param specification Mandatory list of specification attributes where the criteria shall be search.
+     * @param specification Mandatory list of specification attributes where the criteria shall be searched.
      * @return Found attribute or null.
      */
     static public Attribute findSpecificationByName(String criteriaName, Collection<Attribute> specification) {
@@ -49,4 +49,5 @@ public class EventSpecification {
         }
         return found;
     }
+
 }

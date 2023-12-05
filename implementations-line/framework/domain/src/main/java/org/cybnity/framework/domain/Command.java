@@ -57,6 +57,13 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, IRef
     public static String CORRELATION_ID = "correlationId";
 
     /**
+     * Standard type of the attribute specifying this command type based on a logical
+     * type.
+     */
+    @JsonIgnore
+    public static String TYPE = "type";
+
+    /**
      * Default constructor of unidentifiable event.
      */
     public Command() {
@@ -186,6 +193,13 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, IRef
      * @return A correlation identifier assigned to this command. Else null.
      */
     public abstract Attribute correlationId();
+
+    /**
+     * Get the type specification of this command.
+     *
+     * @return A type or null.
+     */
+    public abstract Attribute type();
 
     /**
      * Generate and assign correlation identifier to this command.

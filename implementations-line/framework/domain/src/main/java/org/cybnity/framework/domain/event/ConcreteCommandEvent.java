@@ -34,13 +34,6 @@ public class ConcreteCommandEvent extends Command {
             .composeCanonicalVersionHash(ConcreteCommandEvent.class).hashCode();
 
     /**
-     * Standard type of the attribute specifying this command type based on a logical
-     * type.
-     */
-    @JsonIgnore
-    public static String TYPE = "type";
-
-    /**
      * Identify the original event reference that was previous source of this command
      * publication.
      */
@@ -215,6 +208,15 @@ public class ConcreteCommandEvent extends Command {
         if (this.specification != null) {
             // Search optionally and previously generated correlation id
             return EventSpecification.findSpecificationByName(CORRELATION_ID, this.specification);
+        }
+        return null;
+    }
+
+    @Override
+    public Attribute type() {
+        if (this.specification != null) {
+            // Search optionally and previously defined type
+            return EventSpecification.findSpecificationByName(TYPE, this.specification);
         }
         return null;
     }
