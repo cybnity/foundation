@@ -14,7 +14,12 @@ public enum ConformityViolation {
     /**
      * A message structure is not supported (e.g does not satisfy the JSON/POJO mapping requirements).
      */
-    UNSUPPORTED_MESSAGE_STRUCTURE
+    UNSUPPORTED_MESSAGE_STRUCTURE,
+
+    /**
+     * None capability is identified as able to perform an event type processing.
+     */
+    UNPROCESSABLE_EVENT_TYPE
 
     ;
 }
