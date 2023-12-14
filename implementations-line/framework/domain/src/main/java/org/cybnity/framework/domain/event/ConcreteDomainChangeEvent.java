@@ -215,4 +215,13 @@ public class ConcreteDomainChangeEvent extends DomainEvent {
         }
         return null;
     }
+
+    @Override
+    public Attribute type() {
+        if (this.specification != null) {
+            // Search optionally and previously defined type
+            return EventSpecification.findSpecificationByName(TYPE, this.specification);
+        }
+        return null;
+    }
 }

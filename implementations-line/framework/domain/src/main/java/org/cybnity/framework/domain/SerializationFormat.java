@@ -8,5 +8,5 @@ public class SerializationFormat {
     /**
      * Standard format of date during serialization transformation.
      */
-    public static String DATE_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZ";
+    public static String DATE_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSz";
 }

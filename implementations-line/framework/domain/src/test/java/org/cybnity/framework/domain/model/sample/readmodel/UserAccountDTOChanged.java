@@ -2,7 +2,6 @@ package org.cybnity.framework.domain.model.sample.readmodel;
 
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.DomainEvent;
-import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -33,6 +32,16 @@ public class UserAccountDTOChanged extends DomainEvent {
 
     @Override
     public Attribute correlationId() {
+        return null;
+    }
+
+    /**
+     * Do nothing.
+     *
+     * @return Null.
+     */
+    @Override
+    public Attribute type() {
         return null;
     }
 

@@ -34,13 +34,6 @@ public class ConcreteCommandEvent extends Command {
             .composeCanonicalVersionHash(ConcreteCommandEvent.class).hashCode();
 
     /**
-     * Standard type of the attribute specifying this command type based on a logical
-     * type.
-     */
-    @JsonIgnore
-    public static String TYPE = "type";
-
-    /**
      * Identify the original event reference that was previous source of this command
      * publication.
      */
@@ -219,13 +212,22 @@ public class ConcreteCommandEvent extends Command {
         return null;
     }
 
+    @Override
+    public Attribute type() {
+        if (this.specification != null) {
+            // Search optionally and previously defined type
+            return EventSpecification.findSpecificationByName(TYPE, this.specification);
+        }
+        return null;
+    }
+
     /**
      * This implementation method create and store a new attribute based on CORRELATION_ID name into the specification of this command.
      *
      * @param eventIdentifier Mandatory defined identifier. None assignment when not defined or empty parameter.
      */
     @Override
-    protected void assignCorrelationId(String eventIdentifier) {
+    public void assignCorrelationId(String eventIdentifier) {
         if (eventIdentifier != null && !eventIdentifier.isEmpty()) {
             // Create and store attribute dedicated to correlation identifier
             appendSpecification(new Attribute(CORRELATION_ID, eventIdentifier));

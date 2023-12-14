@@ -38,8 +38,18 @@ public class AssignRoleToUserAccountCommand extends Command {
      * @param eventIdentifier Mandatory defined identifier. None assignment when not defined or empty parameter.
      */
     @Override
-    protected void assignCorrelationId(String eventIdentifier) {
+    public void assignCorrelationId(String eventIdentifier) {
 
+    }
+
+    /**
+     * Do nothing.
+     *
+     * @return Null.
+     */
+    @Override
+    public Attribute type() {
+        return null;
     }
 
     @Override

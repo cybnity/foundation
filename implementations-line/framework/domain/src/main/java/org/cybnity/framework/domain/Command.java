@@ -6,13 +6,13 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.cybnity.framework.domain.event.ConcreteCommandEvent;
 import org.cybnity.framework.domain.event.ConcreteQueryEvent;
 import org.cybnity.framework.domain.event.CorrelationIdFactory;
+import org.cybnity.framework.domain.infrastructure.MessageHeader;
 import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Imperative element that is a request for the system to perform a task of
@@ -54,7 +54,14 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, IRef
      * Standard name of the attribute specifying a correlation identifier generated and assigned to this command.
      */
     @JsonIgnore
-    public static String CORRELATION_ID = "correlationId";
+    public static String CORRELATION_ID = MessageHeader.CORRELATION_ID.name();
+
+    /**
+     * Standard type of the attribute specifying this command type based on a logical
+     * type.
+     */
+    @JsonIgnore
+    public static String TYPE = "type";
 
     /**
      * Default constructor of unidentifiable event.
@@ -115,14 +122,15 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, IRef
     public String[] valueHashCodeContributors() {
         try {
             Identifier id = this.identified();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(SerializationFormat.DATE_FORMAT_PATTERN);
+            //DateTimeFormatter formatter = DateTimeFormatter.ofPattern(SerializationFormat.DATE_FORMAT_PATTERN);
             return new String[]{
                     /* Type of identity */
                     id.name(),
                     /* Hashed version of this command identifier */
                     Integer.toString(id.value().hashCode()),
                     /* Specific time when this command occurred */
-                    formatter.format(occurredOn)
+                    occurredOn.toString()
+                    //formatter.format(occurredOn)
             };
         } catch (Exception ie) {
             // In case of null pointer exception regarding unknown identifier command
@@ -202,6 +210,6 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, IRef
      *
      * @param eventIdentifier Mandatory defined identifier. None assignment when not defined or empty parameter.
      */
-    protected abstract void assignCorrelationId(String eventIdentifier);
+    public abstract void assignCorrelationId(String eventIdentifier);
 
 }

@@ -2,7 +2,6 @@ package org.cybnity.framework.domain.model.sample;
 
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.DomainEvent;
-import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -36,6 +35,16 @@ public class EventStoreRecordCommitted extends DomainEvent {
         return null;
     }
 
+
+    /**
+     * Do nothing.
+     *
+     * @return Null.
+     */
+    @Override
+    public Attribute type() {
+        return null;
+    }
     @Override
     public Serializable immutable() throws ImmutabilityException {
         EventStoreRecordCommitted instance = new EventStoreRecordCommitted(this.getIdentifiedBy());
