@@ -1,5 +1,6 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
@@ -9,6 +10,7 @@ import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.DomainEvent;
+import org.cybnity.framework.domain.ObjectMapperBuilder;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
 
 import java.time.Duration;
@@ -95,7 +97,13 @@ public class UISAdapterImpl implements UISAdapter {
 
     @Override
     public void register(Collection<StreamObserver> observers) {
+        if (observers != null) {
+            for (StreamObserver listener : observers) {
+
+            }
+        }
         throw new IllegalArgumentException("ADAPTER IMPL SERVICE TO IMPLEMENT!");
+        // TODO créer observer redis sur channel
     }
 
     @Override
@@ -105,6 +113,11 @@ public class UISAdapterImpl implements UISAdapter {
 
     @Override
     public void unregister(Collection<StreamObserver> observers) {
+        if (observers != null) {
+            for (StreamObserver listener : observers) {
+
+            }
+        }
         throw new IllegalArgumentException("ADAPTER IMPL SERVICE TO IMPLEMENT!");
     }
 

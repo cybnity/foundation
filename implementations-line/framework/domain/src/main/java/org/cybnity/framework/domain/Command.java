@@ -13,7 +13,6 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Imperative element that is a request for the system to perform a task of
@@ -123,14 +122,15 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, IRef
     public String[] valueHashCodeContributors() {
         try {
             Identifier id = this.identified();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(SerializationFormat.DATE_FORMAT_PATTERN);
+            //DateTimeFormatter formatter = DateTimeFormatter.ofPattern(SerializationFormat.DATE_FORMAT_PATTERN);
             return new String[]{
                     /* Type of identity */
                     id.name(),
                     /* Hashed version of this command identifier */
                     Integer.toString(id.value().hashCode()),
                     /* Specific time when this command occurred */
-                    formatter.format(occurredOn)
+                    occurredOn.toString()
+                    //formatter.format(occurredOn)
             };
         } catch (Exception ie) {
             // In case of null pointer exception regarding unknown identifier command
@@ -194,13 +194,6 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, IRef
      * @return A correlation identifier assigned to this command. Else null.
      */
     public abstract Attribute correlationId();
-
-    /**
-     * Get the type specification of this command.
-     *
-     * @return A type or null.
-     */
-    public abstract Attribute type();
 
     /**
      * Generate and assign correlation identifier to this command.

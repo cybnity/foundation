@@ -10,7 +10,6 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Determine something that has happened in the system (e.g typically as a
@@ -113,15 +112,15 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
     public String[] valueHashCodeContributors() {
         try {
             Identifier id = this.identified();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(SerializationFormat.DATE_FORMAT_PATTERN);
-
+            //DateTimeFormatter formatter = DateTimeFormatter.ofPattern(SerializationFormat.DATE_FORMAT_PATTERN);
             return new String[]{
                     /* Type of identity */
                     id.name(),
                     /* Hashed version of this event identifier */
                     Integer.toString(id.value().hashCode()),
                     /* Specific time when this command occurred */
-                    formatter.format(occurredOn)
+                    occurredOn.toString()
+                    //formatter.format(occurredOn)
             };
         } catch (ImmutabilityException ie) {
             return new String[]{};
@@ -185,9 +184,4 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
      */
     public abstract Attribute correlationId();
 
-    /**
-     * Get the type specification of this event.
-     * @return A type or null.
-     */
-    public abstract Attribute type();
 }

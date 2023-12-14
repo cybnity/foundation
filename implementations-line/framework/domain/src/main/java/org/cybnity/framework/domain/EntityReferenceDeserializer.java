@@ -11,8 +11,6 @@ import org.cybnity.framework.immutable.HistoryState;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Custom deserializer of entity reference supporting multiple instantiation parameters.
@@ -51,9 +49,7 @@ public class EntityReferenceDeserializer extends StdDeserializer<EntityReference
         String createdAt = node.get("changedAt").asText();
         OffsetDateTime creationDate = null;
         if (!"".equals(createdAt)) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(SerializationFormat.DATE_FORMAT_PATTERN);
-            ZonedDateTime d = ZonedDateTime.parse(createdAt, formatter);
-            creationDate = d.toOffsetDateTime();
+            creationDate = OffsetDateTime.parse(createdAt);
         }
 
         return new EntityReference(referenceOwner, inRelationWith, status, creationDate);

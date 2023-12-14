@@ -7,7 +7,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.cybnity.framework.domain.model.DomainEntityDeserializer;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
@@ -22,7 +24,7 @@ import java.text.SimpleDateFormat;
  */
 public class ObjectMapperBuilder {
     private boolean enableIndentation;
-    private boolean preserveOrder;
+    private boolean preserveOrder = false;
     private DateFormat dateFormat;
 
     public ObjectMapperBuilder enableIndentation() {
@@ -52,14 +54,18 @@ public class ObjectMapperBuilder {
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
-        // Support of OffsetDateTime attributes
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        mapper.registerModule(new JavaTimeModule());
-
         // Serialization configuration
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.configure(SerializationFeature.INDENT_OUTPUT, this.enableIndentation);
         mapper.setDateFormat(this.dateFormat);
+
+        // Support of OffsetDateTime attributes
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper.registerModule(new JavaTimeModule())
+                .registerModule(new ParameterNamesModule())
+                .registerModule(new Jdk8Module());
+        //mapper.findAndRegisterModules();
+
         if (this.preserveOrder) {
             mapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
         }
@@ -83,7 +89,7 @@ public class ObjectMapperBuilder {
         // Deserialize list of element as array
         mapper.configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true /* disabled provide java.util.List */);
 
-        // --- add custom deserializers
+        // --- add custom deserializers ---
         module = new SimpleModule();
         module.addDeserializer(Identifier.class, new IdentifierStringBasedDeserializer(IdentifierStringBased.class));
         mapper.registerModule(module);
@@ -96,7 +102,6 @@ public class ObjectMapperBuilder {
         module = new SimpleModule();
         module.addDeserializer(HistoryState.class, new HistoryStateDeserializer());
         mapper.registerModule(module);
-
         return mapper;
     }
 

@@ -5,13 +5,10 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import org.cybnity.framework.domain.SerializationFormat;
 import org.cybnity.framework.immutable.Identifier;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
@@ -45,9 +42,7 @@ public class DomainEntityDeserializer extends StdDeserializer<DomainEntity> {
         String createdAt = node.get("createdAt").asText();
         OffsetDateTime creationDate = null;
         if (!"".equals(createdAt)) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(SerializationFormat.DATE_FORMAT_PATTERN);
-            ZonedDateTime d = ZonedDateTime.parse(createdAt, formatter);
-            creationDate = d.toOffsetDateTime();
+            creationDate = OffsetDateTime.parse(createdAt);
         }
 
         DomainEntity entity = new DomainEntity(identifiers);
