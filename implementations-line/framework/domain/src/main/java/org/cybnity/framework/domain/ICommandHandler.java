@@ -7,7 +7,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 import java.util.Set;
 
 /**
- * Represents a responsible of actions realization requested by a stake holder
+ * Represents a responsible of actions realization requested by a stakeholder
  * (e.g ui component) via a command event. Typically, the handler receives a
  * command instand from a messaging infrastructure, validates the command
  * validity, locates the aggregate instance that is the target of the command
