@@ -1,6 +1,5 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
-import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.EventToMapTransformer;
 
