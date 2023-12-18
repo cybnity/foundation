@@ -1,7 +1,8 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
 import org.cybnity.framework.domain.Command;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.CommandToMapTransformer;
+import org.cybnity.framework.domain.IDescribed;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.EventToMapTransformer;
 
 import java.util.Map;
 
@@ -24,10 +25,10 @@ public class MessageMapperFactory {
     static MessageMapper getMapper(Class<?> transformable, Class<?> transformableAs) {
         if (transformable != null && transformableAs != null) {
             // Select the origin type to be transformed
-            if (Command.class.isAssignableFrom(transformable)) {
+            if (IDescribed.class.isAssignableFrom(transformable)) {
                 // Select the provided mapper allowing transformation to targeted type
                 if (Map.class.isAssignableFrom(transformableAs)) {
-                    return new CommandToMapTransformer();
+                    return new EventToMapTransformer();
                 }
             }
         }

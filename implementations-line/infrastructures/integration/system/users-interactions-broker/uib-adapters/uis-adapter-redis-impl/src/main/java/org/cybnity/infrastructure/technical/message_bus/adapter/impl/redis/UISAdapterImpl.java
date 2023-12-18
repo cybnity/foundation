@@ -7,10 +7,7 @@ import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
-import org.cybnity.framework.domain.Attribute;
-import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.domain.DomainEvent;
-import org.cybnity.framework.domain.ObjectMapperBuilder;
+import org.cybnity.framework.domain.*;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
 
 import java.time.Duration;
@@ -137,13 +134,13 @@ public class UISAdapterImpl implements UISAdapter {
     }
 
     @Override
-    public String append(Command command, Stream recipient) throws IllegalArgumentException, MappingException {
-        if (command == null) throw new IllegalArgumentException("command parameter is required!");
+    public String append(IDescribed factEvent, Stream recipient) throws IllegalArgumentException, MappingException {
+        if (factEvent == null) throw new IllegalArgumentException("factEvent parameter is required!");
         String recipientPathName = null;
         String messageId = null;
         if (recipient == null) {
             // Detect potential defined recipient stream name from command
-            for (Attribute specification : command.specification()) {
+            for (Attribute specification : factEvent.specification()) {
                 if (Stream.Specification.STREAM_ENTRYPOINT_PATH_NAME.name().equals(specification.name())) {
                     recipientPathName = specification.value();
                     break; // Stop search
@@ -153,13 +150,13 @@ public class UISAdapterImpl implements UISAdapter {
             recipientPathName = recipient.name();
         }
         if (recipientPathName == null || recipientPathName.isEmpty())
-            throw new IllegalArgumentException("Recipient stream name not defined. Impossible push of command on the space!");
+            throw new IllegalArgumentException("Recipient stream name not defined. Impossible push of factEvent on the space!");
         StatefulRedisConnection<String, String> connection = null;
         try {
             // Transform event into supported message type
-            MessageMapper mapper = MessageMapperFactory.getMapper(Command.class, HashMap.class);
+            MessageMapper mapper = MessageMapperFactory.getMapper(IDescribed.class, HashMap.class);
 
-            mapper.transform(command);
+            mapper.transform(factEvent);
             Map<String, String> messageBody = (Map<String, String>) mapper.getResult();
 
             // Send command to identified stream recipient

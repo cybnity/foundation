@@ -2,6 +2,7 @@ package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapp
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cybnity.framework.domain.Command;
+import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.ObjectMapperBuilder;
 import org.cybnity.framework.domain.model.CommonChildFactImpl;
@@ -21,20 +22,20 @@ import java.util.UUID;
 /**
  * Mapper of data structure between Command event and Map<String, String> type.
  */
-public class CommandToMapTransformer implements MessageMapper {
+public class EventToMapTransformer implements MessageMapper {
 
     private Map<String, String> result;
 
     /**
      * Default constructor.
      */
-    public CommandToMapTransformer() {
+    public EventToMapTransformer() {
     }
 
     @Override
     public void transform(Object origin) throws IllegalArgumentException, MappingException {
         if (origin == null) throw new IllegalArgumentException("Origin parameter is required!");
-        if (!Command.class.isAssignableFrom(origin.getClass()))
+        if (!IDescribed.class.isAssignableFrom(origin.getClass()))
             throw new IllegalArgumentException("Origin parameter type is not supported by this mapper!");
         try {
             Command source = (Command) origin;
