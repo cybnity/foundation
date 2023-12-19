@@ -17,4 +17,9 @@ public class NamingConventions {
      */
     public static String CHANNEL_NAME_SEPARATOR = STREAM_NAME_SEPARATOR;
 
+    /**
+     * Define the standardized character usable as separator between text included into a logical name of component in interaction with the UIS.
+     * The separator defined as standard is "-".
+     */
+    public static String SPACE_ACTOR_NAME_SEPARATOR = "-";
 }
