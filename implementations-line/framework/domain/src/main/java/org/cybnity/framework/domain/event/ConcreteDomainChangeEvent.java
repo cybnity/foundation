@@ -1,9 +1,6 @@
 package org.cybnity.framework.domain.event;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.*;
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.DomainEvent;
@@ -23,7 +20,8 @@ import java.util.Collections;
  *
  * @author olivier
  */
-@JsonTypeName("DomainEvent")
+@JsonTypeName("ConcreteDomainChangeEvent")
+@JsonSubTypes({@JsonSubTypes.Type(value = ProcessingUnitPresenceAnnounced.class, name = "ProcessingUnitPresenceAnnounced")})
 public class ConcreteDomainChangeEvent extends DomainEvent {
 
     @JsonIgnore
@@ -55,7 +53,7 @@ public class ConcreteDomainChangeEvent extends DomainEvent {
      * unmodifiable attributes.
      */
     @JsonProperty
-    private Collection<Attribute> specification;
+    protected Collection<Attribute> specification;
 
     @JsonCreator
     public ConcreteDomainChangeEvent() {
@@ -171,7 +169,7 @@ public class ConcreteDomainChangeEvent extends DomainEvent {
     @JsonIgnore
     @Override
     public String versionHash() {
-        return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+        return new VersionConcreteStrategy().composeCanonicalVersionHash(this.getClass());
     }
 
     @JsonIgnore

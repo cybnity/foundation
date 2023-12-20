@@ -51,7 +51,7 @@ public class ConcreteQueryEvent extends Command {
      * unmodifiable attributes.
      */
     @JsonProperty
-    private Collection<Attribute> specification;
+    protected Collection<Attribute> specification;
 
     @JsonCreator
     public ConcreteQueryEvent() {

@@ -34,7 +34,7 @@ import java.time.OffsetDateTime;
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "@class")
-@JsonSubTypes({@JsonSubTypes.Type(value = ConcreteDomainChangeEvent.class, name = "DomainEvent")})
+@JsonSubTypes({@JsonSubTypes.Type(value = ConcreteDomainChangeEvent.class, name = "ConcreteDomainChangeEvent")})
 public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, IReferenceable, IDescribed {
 
     /**
