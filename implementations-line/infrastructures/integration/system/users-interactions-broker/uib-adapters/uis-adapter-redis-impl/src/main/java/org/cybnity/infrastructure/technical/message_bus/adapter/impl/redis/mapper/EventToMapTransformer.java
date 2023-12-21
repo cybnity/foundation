@@ -1,15 +1,11 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.ObjectMapperBuilder;
 import org.cybnity.framework.domain.model.CommonChildFactImpl;
-import org.cybnity.framework.immutable.BaseConstants;
-import org.cybnity.framework.immutable.ChildFact;
-import org.cybnity.framework.immutable.Entity;
-import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.*;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MappingException;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.Stream;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.MessageMapper;
@@ -38,7 +34,7 @@ public class EventToMapTransformer implements MessageMapper {
         if (!IDescribed.class.isAssignableFrom(origin.getClass()))
             throw new IllegalArgumentException("Origin parameter type is not supported by this mapper!");
         try {
-            Command source = (Command) origin;
+            IDescribed source = (IDescribed) origin;
             // Delete potential previous prepared result
             result = null;
 
@@ -60,15 +56,21 @@ public class EventToMapTransformer implements MessageMapper {
             Identifier streamEntryID = new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(),
                     /* identifier as performed transaction number */ UUID.randomUUID().toString());
 
-            Entity factPredecessorID = source.getIdentifiedBy();
-            if (factPredecessorID != null) {
-                // Prepare combined identifiers
-                LinkedHashSet<Identifier> factRecordCombinedIdentificationSources = new LinkedHashSet<>();
-                // Add technical identifier of the stream entry to combine with the fact record predecessor id
-                factRecordCombinedIdentificationSources.add(streamEntryID);
-                // Create a child fact representing a derived event identified by auto-generated combined uid usable by stream partitioning
-                ChildFact factRecord = new CommonChildFactImpl(/* have origin event predecessor */factPredecessorID, factRecordCombinedIdentificationSources);
-                streamEntryID = factRecord.identified(); // Combined uid in place of basis fact record id
+            if (IReferenceable.class.isAssignableFrom(origin.getClass())) {
+                IReferenceable sourceRef = (IReferenceable) source;
+                EntityReference ref = sourceRef.reference();
+                if (ref != null) {
+                    Entity factPredecessorID = ref.getEntity();
+                    if (factPredecessorID != null) {
+                        // Prepare combined identifiers
+                        LinkedHashSet<Identifier> factRecordCombinedIdentificationSources = new LinkedHashSet<>();
+                        // Add technical identifier of the stream entry to combine with the fact record predecessor id
+                        factRecordCombinedIdentificationSources.add(streamEntryID);
+                        // Create a child fact representing a derived event identified by auto-generated combined uid usable by stream partitioning
+                        ChildFact factRecord = new CommonChildFactImpl(/* have origin event predecessor */factPredecessorID, factRecordCombinedIdentificationSources);
+                        streamEntryID = factRecord.identified(); // Combined uid in place of basis fact record id
+                    }
+                }
             }
 
             // Prepare a target type of instance
