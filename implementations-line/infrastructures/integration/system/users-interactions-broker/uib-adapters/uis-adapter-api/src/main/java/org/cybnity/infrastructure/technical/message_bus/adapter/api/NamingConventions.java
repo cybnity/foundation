@@ -1,7 +1,7 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.api;
 
 /**
- * Referential of naming conventions regarding elements managed via the message bus (e.g channel name separator).
+ * Referential of naming conventions regarding elements managed via the space (e.g pub/sub or stream channel name separator).
  */
 public class NamingConventions {
 

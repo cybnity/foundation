@@ -13,7 +13,7 @@ public interface StreamObserver {
      *
      * @return A stream.
      */
-    public Channel observed();
+    public Stream observed();
 
     /**
      * Get the pattern of listening regarding the messages detected into the observed stream.
