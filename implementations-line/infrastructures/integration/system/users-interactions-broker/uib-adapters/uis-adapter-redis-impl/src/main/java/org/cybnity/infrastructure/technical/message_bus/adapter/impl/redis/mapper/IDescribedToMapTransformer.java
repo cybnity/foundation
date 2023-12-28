@@ -18,14 +18,14 @@ import java.util.UUID;
 /**
  * Mapper of data structure between event and Map<String, String> type.
  */
-public class EventToMapTransformer implements MessageMapper {
+public class IDescribedToMapTransformer implements MessageMapper {
 
     private Map<String, String> result;
 
     /**
      * Default constructor.
      */
-    public EventToMapTransformer() {
+    public IDescribedToMapTransformer() {
     }
 
     @Override
