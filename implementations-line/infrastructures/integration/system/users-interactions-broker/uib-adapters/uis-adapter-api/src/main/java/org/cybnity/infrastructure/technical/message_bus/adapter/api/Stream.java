@@ -51,4 +51,19 @@ public class Stream {
         return this.name;
     }
 
+    /**
+     * Equals implementation based on the stream name.
+     *
+     * @param obj To check.
+     * @return False by default. True when equals stream name.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj instanceof Stream) {
+            Stream other = (Stream) obj;
+            return this.name().equals(other.name());
+        }
+        return false;
+    }
 }

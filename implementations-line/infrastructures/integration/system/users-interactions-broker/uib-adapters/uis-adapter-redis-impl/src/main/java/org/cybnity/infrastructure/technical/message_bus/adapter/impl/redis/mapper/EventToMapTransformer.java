@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Mapper of data structure between Command event and Map<String, String> type.
+ * Mapper of data structure between event and Map<String, String> type.
  */
 public class EventToMapTransformer implements MessageMapper {
 
@@ -87,6 +87,11 @@ public class EventToMapTransformer implements MessageMapper {
         }
     }
 
+    /**
+     * Get transformed object as Map<String, String>.
+     *
+     * @return A Map<String, String> instance including Stream.Specification.FACT_RECORD_ID_KEY_NAME.name() and Stream.Specification.MESSAGE_PAYLOAD_KEY_NAME.name() as key informations.
+     */
     @Override
     public Object getResult() {
         return result;

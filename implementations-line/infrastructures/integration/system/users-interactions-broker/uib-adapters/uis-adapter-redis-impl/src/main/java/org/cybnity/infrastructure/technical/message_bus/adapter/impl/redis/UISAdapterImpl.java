@@ -7,16 +7,15 @@ import io.lettuce.core.api.sync.RedisCommands;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.Attribute;
-import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
 
 import java.time.Duration;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.logging.Logger;
 
 /**
  * Implementation class of the adapter client to the Users Interactions Space
@@ -31,9 +30,14 @@ import java.util.Map;
 public class UISAdapterImpl implements UISAdapter {
 
     /**
+     * Technical logging
+     */
+    private static final Logger logger = Logger.getLogger(UISAdapterImpl.class.getName());
+
+    /**
      * Current context of adapter runtime.
      */
-    private IContext context;
+    private final IContext context;
 
     /**
      * Utility class managing the verification of operable adapter instance.
@@ -46,6 +50,17 @@ public class UISAdapterImpl implements UISAdapter {
     private final RedisClient client;
 
     private Duration connectionTimeout;
+
+    /**
+     * Pool of standalone threads registered and executing the streams listening tasks.
+     */
+    private final ExecutorService currentStreamObserversPool = Executors.newCachedThreadPool();
+
+    /**
+     * Started future regarding registered stream observations.
+     * Key = stream path name, Value = started thread.
+     */
+    private final Map<StreamObserver, Future<Void>> currentStreamObserversThreads = new HashMap<>();
 
     /**
      * Default constructor of the adapter ready to manage interactions with the
@@ -80,6 +95,7 @@ public class UISAdapterImpl implements UISAdapter {
     public void freeUpResources() {
         if (client != null) {
             // Remove any existing listeners managed by this client
+            unregister(currentStreamObserversThreads.keySet());
 
             // Disconnect client from space
             client.shutdown();
@@ -95,18 +111,28 @@ public class UISAdapterImpl implements UISAdapter {
     }
 
     @Override
-    public void register(Collection<StreamObserver> observers) {
-        if (observers != null) {
+    public void register(Collection<StreamObserver> observers) throws IllegalArgumentException {
+        if (observers != null && !observers.isEmpty()) {
             for (StreamObserver listener : observers) {
-
+                // Verify that a same observer is not already existing for listening of the same topic (avoiding multiple registration of a same observer)
+                boolean alreadyObservedStreamOverEqualsPattern = false;
+                for (Map.Entry<StreamObserver, Future<Void>> item : currentStreamObserversThreads.entrySet()) {
+                    if (item.getKey().equals(listener)) {
+                        alreadyObservedStreamOverEqualsPattern = true;
+                        break; // Stop search
+                    }
+                }
+                if (!alreadyObservedStreamOverEqualsPattern) {
+                    Future<Void> f = currentStreamObserversPool.submit(new StreamObservationTask(client, listener));
+                    // Get handle to the started thread for potential future stop
+                    currentStreamObserversThreads.put(listener, f);
+                }
             }
         }
-        throw new IllegalArgumentException("ADAPTER IMPL SERVICE TO IMPLEMENT!");
-        // TODO créer observer redis sur channel
     }
 
     @Override
-    public void subscribe(Collection<ChannelObserver> observers) {
+    public void subscribe(Collection<ChannelObserver> observers) throws IllegalArgumentException {
         throw new IllegalArgumentException("ADAPTER IMPL SERVICE TO IMPLEMENT!");
     }
 
@@ -114,10 +140,22 @@ public class UISAdapterImpl implements UISAdapter {
     public void unregister(Collection<StreamObserver> observers) {
         if (observers != null) {
             for (StreamObserver listener : observers) {
-
+                // Find previously registered observation tasks registry based on logical equals
+                for (Map.Entry<StreamObserver, Future<Void>> item : currentStreamObserversThreads.entrySet()) {
+                    if (item.getKey().equals(listener)) {
+                        // Existing equals observer reference which can be interrupted
+                        Future<Void> thread = item.getValue();
+                        if (thread != null) {
+                            // Interrupt the task
+                            thread.cancel(true);
+                            // Clean container of threads regarding the previous instance reference
+                            currentStreamObserversThreads.remove(item.getKey());
+                            logger.info("Observer of stream (" + listener.observed().name() + ") is stopped");
+                        }
+                    }
+                }
             }
         }
-        throw new IllegalArgumentException("ADAPTER IMPL SERVICE TO IMPLEMENT!");
     }
 
     @Override
@@ -131,8 +169,17 @@ public class UISAdapterImpl implements UISAdapter {
     }
 
     @Override
-    public String append(DomainEvent event, List<Stream> recipients) throws IllegalArgumentException, MappingException {
-        throw new IllegalArgumentException("ADAPTER IMPL SERVICE TO IMPLEMENT!");
+    public List<String> append(IDescribed event, List<Stream> recipients) throws IllegalArgumentException, MappingException {
+        if (event == null) throw new IllegalArgumentException("Event parameter is required!");
+        if (recipients == null) throw new IllegalArgumentException("Recipients parameter is required!");
+        if (recipients.isEmpty())
+            throw new IllegalArgumentException("Recipients parameter shall include minimum one recipient!");
+        List<String> messageIdentifiers = new LinkedList<>();
+        // Append the event on each recipient
+        for (Stream s : recipients) {
+            messageIdentifiers.add(this.append(event, s));
+        }
+        return messageIdentifiers;
     }
 
     @Override
@@ -157,7 +204,6 @@ public class UISAdapterImpl implements UISAdapter {
         try {
             // Transform event into supported message type
             MessageMapper mapper = MessageMapperFactory.getMapper(IDescribed.class, HashMap.class);
-
             mapper.transform(factEvent);
             Map<String, String> messageBody = (Map<String, String>) mapper.getResult();
 
@@ -177,12 +223,12 @@ public class UISAdapterImpl implements UISAdapter {
     }
 
     @Override
-    public void publish(Command command, Channel recipient) throws IllegalArgumentException, MappingException {
+    public void publish(IDescribed event, Channel recipient) throws IllegalArgumentException, MappingException {
         throw new IllegalArgumentException("ADAPTER IMPL SERVICE TO IMPLEMENT!");
     }
 
     @Override
-    public void publish(DomainEvent event, Collection<Channel> recipients) throws IllegalArgumentException, MappingException {
+    public void publish(IDescribed event, Collection<Channel> recipients) throws IllegalArgumentException, MappingException {
         throw new IllegalArgumentException("ADAPTER IMPL SERVICE TO IMPLEMENT!");
     }
 

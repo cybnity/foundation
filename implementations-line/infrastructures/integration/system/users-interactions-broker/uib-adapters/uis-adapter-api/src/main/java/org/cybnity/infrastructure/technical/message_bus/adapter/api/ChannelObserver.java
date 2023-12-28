@@ -1,7 +1,6 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.api;
 
-import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.domain.DomainEvent;
+import org.cybnity.framework.domain.IDescribed;
 
 /**
  * Listening of messages published to channel that match one or more patterns.
@@ -23,16 +22,16 @@ public interface ChannelObserver {
     public String observationPattern();
 
     /**
-     * Notify this observer regarding a fact event promoted over the observed channel.
+     * Get the group name that this observer is member.
+     *
+     * @return A group name or null.
+     */
+    public String consumerGroupName();
+
+    /**
+     * Notify this observer regarding a command or domain event promoted over the observed channel.
      *
      * @param event Event. Ignored when null.
      */
-    public void notify(DomainEvent event);
-
-    /**
-     * Notify this observer regarding a command event promoted over the observed channel.
-     *
-     * @param command Event. Ignored when null.
-     */
-    public void notify(Command command);
+    public void notify(IDescribed event);
 }

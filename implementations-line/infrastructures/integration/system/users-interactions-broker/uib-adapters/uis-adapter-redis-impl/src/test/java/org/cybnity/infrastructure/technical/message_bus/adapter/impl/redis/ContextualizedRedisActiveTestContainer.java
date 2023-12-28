@@ -123,13 +123,11 @@ public class ContextualizedRedisActiveTestContainer {
                 //.setting("maxmemory 128M")
                 .build();
         redisServer.start();
-        //System.out.println("Redis test server started");
     }
 
     @AfterEach
     public void cleanValues() {
         redisServer.stop();
-        //System.out.println("Redis test server stopped");
         ctx = null;
     }
 

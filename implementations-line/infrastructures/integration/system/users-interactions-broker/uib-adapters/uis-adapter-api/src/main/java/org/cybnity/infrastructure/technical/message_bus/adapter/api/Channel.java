@@ -50,4 +50,20 @@ public class Channel {
     public String name() {
         return this.name;
     }
+
+    /**
+     * Equals implementation based on the stream name.
+     *
+     * @param obj To check.
+     * @return False by default. True when equals stream name.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj instanceof Channel) {
+            Channel other = (Channel) obj;
+            return this.name().equals(other.name());
+        }
+        return false;
+    }
 }

@@ -1,7 +1,9 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
+import io.lettuce.core.StreamMessage;
 import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.EventToMapTransformer;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.StreamMessageToIDescribedTransformer;
 
 import java.util.Map;
 
@@ -28,6 +30,11 @@ public class MessageMapperFactory {
                 // Select the provided mapper allowing transformation to targeted type
                 if (Map.class.isAssignableFrom(transformableAs)) {
                     return new EventToMapTransformer();
+                }
+            } else if (StreamMessage.class.isAssignableFrom(transformable)) {
+                // Select the mapper allowing transformation to targeted type
+                if(IDescribed.class.isAssignableFrom(transformableAs)) {
+                    return new StreamMessageToIDescribedTransformer();
                 }
             }
         }

@@ -1,12 +1,17 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.api;
 
-import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.domain.DomainEvent;
+import org.cybnity.framework.domain.IDescribed;
 
 /**
  * Listening of messages published to a stream that match one or more patterns.
  */
 public interface StreamObserver {
+
+    /**
+     * Pattern regarding observation of all stream messages.
+     * Default value of pattern is equals to "0-0".
+     */
+    public static String DEFAULT_OBSERVATION_PATTERN = "0-0";
 
     /**
      * Get the stream listened.
@@ -23,16 +28,16 @@ public interface StreamObserver {
     public String observationPattern();
 
     /**
-     * Notify this observer regarding a fact event promoted over the observed stream.
+     * Get the group name that this observer is member.
+     *
+     * @return A group name or null.
+     */
+    public String consumerGroupName();
+
+    /**
+     * Notify this observer regarding a command or domain event promoted over the observed stream.
      *
      * @param event Event. Ignored when null.
      */
-    public void notify(DomainEvent event);
-
-    /**
-     * Notify this observer regarding a command event promoted over the observed stream.
-     *
-     * @param command Event. Ignored when null.
-     */
-    public void notify(Command command);
+    public void notify(IDescribed event);
 }

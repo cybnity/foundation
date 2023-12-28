@@ -1,8 +1,6 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.api;
 
 import org.cybnity.framework.UnoperationalStateException;
-import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IDescribed;
 
 import java.util.Collection;
@@ -32,16 +30,18 @@ public interface UISAdapter {
     /**
      * Register observers of streams regarding messages published (e.g domain event, command execution status).
      *
-     * @param listeners Collection of observers.
+     * @param listeners Collection of observers. Do nothing when null or empty collection.
+     * @throws IllegalArgumentException When mandatory listener's content is detected.
      */
-    public void register(Collection<StreamObserver> listeners);
+    public void register(Collection<StreamObserver> listeners) throws IllegalArgumentException;
 
     /**
      * Register observers of channels regarding messages published (e.g domain event, command execution status).
      *
      * @param listeners Collection of observers.
+     * @throws IllegalArgumentException When mandatory listener's content is detected.
      */
-    public void subscribe(Collection<ChannelObserver> listeners);
+    public void subscribe(Collection<ChannelObserver> listeners) throws IllegalArgumentException;
 
     /**
      * Stop listening of messages published to streams that match on or more patterns by observers.
@@ -68,7 +68,7 @@ public interface UISAdapter {
     /**
      * Add a factEvent to be processed into a space entrypoint with persistence guarantee.
      *
-     * @param factEvent   Mandatory fact to execute by a bounded context that is managing a specific entrypoint (e.g as API entrypoint).
+     * @param factEvent Mandatory fact to execute by a bounded context that is managing a specific entrypoint (e.g as API entrypoint).
      * @param recipient Optional entrypoint (e.g known domain or subdomain feature name) where the factEvent shall be transmitted.
      * @return Specific technical identifier of the message transmitted into the recipient.
      * @throws IllegalArgumentException When mandatory parameter is missing. When recipient parameter is not defined and Stream.Specification.STREAM_ENTRYPOINT_PATH_NAME attribute is not detected into the factEvent's specification.
@@ -81,21 +81,21 @@ public interface UISAdapter {
      *
      * @param event      Mandatory fact to add into a stream.
      * @param recipients Mandatory unique or ordered list of streams where event shall be appended.
-     * @return Specific technical identifier of the messages transmitted into the recipients.
+     * @return Specific technical identifiers of the messages transmitted into the recipients.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      * @throws MappingException         When event transformation for data structure supported by the recipients is failed.
      */
-    public String append(DomainEvent event, List<Stream> recipients) throws IllegalArgumentException, MappingException;
+    public List<String> append(IDescribed event, List<Stream> recipients) throws IllegalArgumentException, MappingException;
 
     /**
-     * Publish a command to be processed into a space entrypoint without persistence and treatment guarantee (e.g if none channel subscriber are active).
+     * Publish an event to be processed into a space entrypoint without persistence and treatment guarantee (e.g if none channel subscriber are active).
      *
-     * @param command   Mandatory fact to execute by a bounded context that is responsible.
-     * @param recipient Optional entrypoint (e.g known domain or subdomain name) where the command shall be transmitted.
+     * @param event     Mandatory fact to execute by a bounded context that is responsible.
+     * @param recipient Optional entrypoint (e.g known domain or subdomain name) where the event shall be transmitted.
      * @throws IllegalArgumentException When mandatory parameter is missing. When recipient parameter is not defined and Channel.Specification.STREAM_ENTRYPOINT_PATH_NAME attribute is not detected into the command's specification.
      * @throws MappingException         When command transformation for data structure supported by the recipient is failed.
      */
-    public void publish(Command command, Channel recipient) throws IllegalArgumentException, MappingException;
+    public void publish(IDescribed event, Channel recipient) throws IllegalArgumentException, MappingException;
 
     /**
      * Notify an event into the space that is need to be promoted to eventual observers.
@@ -105,6 +105,6 @@ public interface UISAdapter {
      * @throws IllegalArgumentException When mandatory parameter is missing.
      * @throws MappingException         When command transformation for data structure supported by the recipient is failed.
      */
-    public void publish(DomainEvent event, Collection<Channel> recipients) throws IllegalArgumentException, MappingException;
+    public void publish(IDescribed event, Collection<Channel> recipients) throws IllegalArgumentException, MappingException;
 
 }
