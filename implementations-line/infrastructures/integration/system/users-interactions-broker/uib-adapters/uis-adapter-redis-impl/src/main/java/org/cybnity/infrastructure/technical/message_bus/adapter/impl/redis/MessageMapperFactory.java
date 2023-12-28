@@ -2,6 +2,7 @@ package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
 import io.lettuce.core.StreamMessage;
 import org.cybnity.framework.domain.IDescribed;
+import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.EventToMapTransformer;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.StreamMessageToIDescribedTransformer;
 

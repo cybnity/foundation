@@ -7,8 +7,8 @@ import org.cybnity.framework.domain.ObjectMapperBuilder;
 import org.cybnity.framework.domain.model.CommonChildFactImpl;
 import org.cybnity.framework.immutable.*;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MappingException;
+import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.Stream;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.MessageMapper;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;

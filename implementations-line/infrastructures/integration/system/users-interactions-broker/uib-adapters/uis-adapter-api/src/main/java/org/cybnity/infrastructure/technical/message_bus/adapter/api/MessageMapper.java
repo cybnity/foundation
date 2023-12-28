@@ -1,6 +1,4 @@
-package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
-
-import org.cybnity.infrastructure.technical.message_bus.adapter.api.MappingException;
+package org.cybnity.infrastructure.technical.message_bus.adapter.api;
 
 /**
  * Contract allowing to transform an object manageable by the space according to a type of data structure supported by Redis.

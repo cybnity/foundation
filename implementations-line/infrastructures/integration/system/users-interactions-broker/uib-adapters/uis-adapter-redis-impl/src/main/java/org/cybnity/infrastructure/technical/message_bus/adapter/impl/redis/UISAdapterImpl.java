@@ -111,7 +111,7 @@ public class UISAdapterImpl implements UISAdapter {
     }
 
     @Override
-    public void register(Collection<StreamObserver> observers) throws IllegalArgumentException {
+    public void register(Collection<StreamObserver> observers, MessageMapper eventMapper) throws IllegalArgumentException {
         if (observers != null && !observers.isEmpty()) {
             for (StreamObserver listener : observers) {
                 // Verify that a same observer is not already existing for listening of the same topic (avoiding multiple registration of a same observer)
@@ -123,7 +123,7 @@ public class UISAdapterImpl implements UISAdapter {
                     }
                 }
                 if (!alreadyObservedStreamOverEqualsPattern) {
-                    Future<Void> f = currentStreamObserversPool.submit(new StreamObservationTask(client, listener));
+                    Future<Void> f = currentStreamObserversPool.submit(new StreamObservationTask(client, listener, eventMapper));
                     // Get handle to the started thread for potential future stop
                     currentStreamObserversThreads.put(listener, f);
                 }
@@ -132,7 +132,7 @@ public class UISAdapterImpl implements UISAdapter {
     }
 
     @Override
-    public void subscribe(Collection<ChannelObserver> observers) throws IllegalArgumentException {
+    public void subscribe(Collection<ChannelObserver> observers, MessageMapper eventMapper) throws IllegalArgumentException {
         throw new IllegalArgumentException("ADAPTER IMPL SERVICE TO IMPLEMENT!");
     }
 
@@ -169,22 +169,24 @@ public class UISAdapterImpl implements UISAdapter {
     }
 
     @Override
-    public List<String> append(IDescribed event, List<Stream> recipients) throws IllegalArgumentException, MappingException {
+    public List<String> append(IDescribed event, List<Stream> recipients, MessageMapper eventMapper) throws IllegalArgumentException, MappingException {
         if (event == null) throw new IllegalArgumentException("Event parameter is required!");
+        if (eventMapper == null) throw new IllegalArgumentException("Event mapper parameter is required!");
         if (recipients == null) throw new IllegalArgumentException("Recipients parameter is required!");
         if (recipients.isEmpty())
             throw new IllegalArgumentException("Recipients parameter shall include minimum one recipient!");
         List<String> messageIdentifiers = new LinkedList<>();
         // Append the event on each recipient
         for (Stream s : recipients) {
-            messageIdentifiers.add(this.append(event, s));
+            messageIdentifiers.add(this.append(event, s, eventMapper));
         }
         return messageIdentifiers;
     }
 
     @Override
-    public String append(IDescribed factEvent, Stream recipient) throws IllegalArgumentException, MappingException {
+    public String append(IDescribed factEvent, Stream recipient, MessageMapper eventMapper) throws IllegalArgumentException, MappingException {
         if (factEvent == null) throw new IllegalArgumentException("factEvent parameter is required!");
+        if (eventMapper == null) throw new IllegalArgumentException("Event mapper parameter is required!");
         String recipientPathName = null;
         String messageId = null;
         if (recipient == null) {
@@ -203,9 +205,8 @@ public class UISAdapterImpl implements UISAdapter {
         StatefulRedisConnection<String, String> connection = null;
         try {
             // Transform event into supported message type
-            MessageMapper mapper = MessageMapperFactory.getMapper(IDescribed.class, HashMap.class);
-            mapper.transform(factEvent);
-            Map<String, String> messageBody = (Map<String, String>) mapper.getResult();
+            eventMapper.transform(factEvent);
+            Map<String, String> messageBody = (Map<String, String>) eventMapper.getResult();
 
             // Send command to identified stream recipient
             connection = client.connect();
@@ -223,12 +224,12 @@ public class UISAdapterImpl implements UISAdapter {
     }
 
     @Override
-    public void publish(IDescribed event, Channel recipient) throws IllegalArgumentException, MappingException {
+    public void publish(IDescribed event, Channel recipient, MessageMapper eventMapper) throws IllegalArgumentException, MappingException {
         throw new IllegalArgumentException("ADAPTER IMPL SERVICE TO IMPLEMENT!");
     }
 
     @Override
-    public void publish(IDescribed event, Collection<Channel> recipients) throws IllegalArgumentException, MappingException {
+    public void publish(IDescribed event, Collection<Channel> recipients, MessageMapper eventMapper) throws IllegalArgumentException, MappingException {
         throw new IllegalArgumentException("ADAPTER IMPL SERVICE TO IMPLEMENT!");
     }
 

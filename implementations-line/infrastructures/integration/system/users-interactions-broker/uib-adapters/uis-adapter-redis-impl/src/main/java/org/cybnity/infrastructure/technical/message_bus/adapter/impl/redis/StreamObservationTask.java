@@ -6,6 +6,7 @@ import io.lettuce.core.api.sync.RedisCommands;
 import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.framework.domain.event.CorrelationIdFactory;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MappingException;
+import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.StreamObserver;
 
 import java.util.List;
@@ -28,20 +29,25 @@ public class StreamObservationTask implements Callable<Void> {
      */
     private final Logger logger = Logger.getLogger(StreamObservationTask.class.getName());
 
+    private MessageMapper mapper;
+
     /**
      * Default constructor.
      *
      * @param client           Mandatory client allowing connection to the stream provider (e.g UIS server).
      * @param delegateToNotify Mandatory delegate to notify when received message from the observed stream.
+     * @param eventMapper      Mandatory message mapper allowing read of messages and their transformation to event types.
      * @throws IllegalArgumentException When mandatory parameter is missing. When the consumer group name of the delegate to notify is not defined.
      */
-    public StreamObservationTask(RedisClient client, StreamObserver delegateToNotify) throws IllegalArgumentException {
+    public StreamObservationTask(RedisClient client, StreamObserver delegateToNotify, MessageMapper eventMapper) throws IllegalArgumentException {
         if (client == null) throw new IllegalArgumentException("Client parameter is required!");
         if (delegateToNotify.consumerGroupName() == null || delegateToNotify.consumerGroupName().isEmpty())
             throw new IllegalArgumentException("Consumer group name is required!");
+        if (eventMapper == null) throw new IllegalArgumentException("Event mapper parameter is required!");
         this.client = client;
         this.consumersGroupName = delegateToNotify.consumerGroupName();
         this.delegate = delegateToNotify;
+        this.mapper = eventMapper;
     }
 
     /**
@@ -85,7 +91,6 @@ public class StreamObservationTask implements Callable<Void> {
             );
             if (!messages.isEmpty()) {
                 // Prepare a mapper supporting messages transformation
-                MessageMapper mapper = MessageMapperFactory.getMapper(StreamMessage.class, IDescribed.class);
                 IDescribed event;
                 for (StreamMessage<String, String> message : messages) {
                     if (message != null) {

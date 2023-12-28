@@ -30,18 +30,20 @@ public interface UISAdapter {
     /**
      * Register observers of streams regarding messages published (e.g domain event, command execution status).
      *
-     * @param listeners Collection of observers. Do nothing when null or empty collection.
+     * @param listeners   Collection of observers. Do nothing when null or empty collection.
+     * @param eventMapper Mandatory mapper of event allowing transformation of message type supported by UIS to event types supported by the caller.
      * @throws IllegalArgumentException When mandatory listener's content is detected.
      */
-    public void register(Collection<StreamObserver> listeners) throws IllegalArgumentException;
+    public void register(Collection<StreamObserver> listeners, MessageMapper eventMapper) throws IllegalArgumentException;
 
     /**
      * Register observers of channels regarding messages published (e.g domain event, command execution status).
      *
-     * @param listeners Collection of observers.
+     * @param listeners   Collection of observers.
+     * @param eventMapper Mandatory mapper of event allowing transformation of message type supported by UIS to event types supported by the caller.
      * @throws IllegalArgumentException When mandatory listener's content is detected.
      */
-    public void subscribe(Collection<ChannelObserver> listeners) throws IllegalArgumentException;
+    public void subscribe(Collection<ChannelObserver> listeners, MessageMapper eventMapper) throws IllegalArgumentException;
 
     /**
      * Stop listening of messages published to streams that match on or more patterns by observers.
@@ -68,43 +70,47 @@ public interface UISAdapter {
     /**
      * Add a factEvent to be processed into a space entrypoint with persistence guarantee.
      *
-     * @param factEvent Mandatory fact to execute by a bounded context that is managing a specific entrypoint (e.g as API entrypoint).
-     * @param recipient Optional entrypoint (e.g known domain or subdomain feature name) where the factEvent shall be transmitted.
+     * @param factEvent   Mandatory fact to execute by a bounded context that is managing a specific entrypoint (e.g as API entrypoint).
+     * @param recipient   Optional entrypoint (e.g known domain or subdomain feature name) where the factEvent shall be transmitted.
+     * @param eventMapper Mandatory mapper regarding the events supported by the caller that shall be transformed into message types supported by UIS stream.
      * @return Specific technical identifier of the message transmitted into the recipient.
      * @throws IllegalArgumentException When mandatory parameter is missing. When recipient parameter is not defined and Stream.Specification.STREAM_ENTRYPOINT_PATH_NAME attribute is not detected into the factEvent's specification.
      * @throws MappingException         When factEvent transformation for data structure supported by the recipient is failed.
      */
-    public String append(IDescribed factEvent, Stream recipient) throws IllegalArgumentException, MappingException;
+    public String append(IDescribed factEvent, Stream recipient, MessageMapper eventMapper) throws IllegalArgumentException, MappingException;
 
     /**
      * Add an event into a space entrypoint with persistence guarantee.
      *
-     * @param event      Mandatory fact to add into a stream.
-     * @param recipients Mandatory unique or ordered list of streams where event shall be appended.
+     * @param event       Mandatory fact to add into a stream.
+     * @param recipients  Mandatory unique or ordered list of streams where event shall be appended.
+     * @param eventMapper Mandatory mapper regarding the events supported by the caller that shall be transformed into message types supported by UIS streams.
      * @return Specific technical identifiers of the messages transmitted into the recipients.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      * @throws MappingException         When event transformation for data structure supported by the recipients is failed.
      */
-    public List<String> append(IDescribed event, List<Stream> recipients) throws IllegalArgumentException, MappingException;
+    public List<String> append(IDescribed event, List<Stream> recipients, MessageMapper eventMapper) throws IllegalArgumentException, MappingException;
 
     /**
      * Publish an event to be processed into a space entrypoint without persistence and treatment guarantee (e.g if none channel subscriber are active).
      *
-     * @param event     Mandatory fact to execute by a bounded context that is responsible.
-     * @param recipient Optional entrypoint (e.g known domain or subdomain name) where the event shall be transmitted.
+     * @param event       Mandatory fact to execute by a bounded context that is responsible.
+     * @param recipient   Optional entrypoint (e.g known domain or subdomain name) where the event shall be transmitted.
+     * @param eventMapper Mandatory mapper regarding the events supported by the caller that shall be transformed into message types supported by UIS channel.
      * @throws IllegalArgumentException When mandatory parameter is missing. When recipient parameter is not defined and Channel.Specification.STREAM_ENTRYPOINT_PATH_NAME attribute is not detected into the command's specification.
      * @throws MappingException         When command transformation for data structure supported by the recipient is failed.
      */
-    public void publish(IDescribed event, Channel recipient) throws IllegalArgumentException, MappingException;
+    public void publish(IDescribed event, Channel recipient, MessageMapper eventMapper) throws IllegalArgumentException, MappingException;
 
     /**
      * Notify an event into the space that is need to be promoted to eventual observers.
      *
-     * @param event      Mandatory fact to publish over channels.
-     * @param recipients Mandatory unique or multiple channels where event shall be published.
+     * @param event       Mandatory fact to publish over channels.
+     * @param recipients  Mandatory unique or multiple channels where event shall be published.
+     * @param eventMapper Mandatory mapper regarding the events supported by the caller that shall be transformed into message types supported by UIS channels.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      * @throws MappingException         When command transformation for data structure supported by the recipient is failed.
      */
-    public void publish(IDescribed event, Collection<Channel> recipients) throws IllegalArgumentException, MappingException;
+    public void publish(IDescribed event, Collection<Channel> recipients, MessageMapper eventMapper) throws IllegalArgumentException, MappingException;
 
 }

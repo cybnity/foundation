@@ -1,9 +1,11 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
+import io.lettuce.core.StreamMessage;
 import org.cybnity.framework.domain.*;
 import org.cybnity.framework.domain.event.CommandFactory;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.BaseConstants;
+import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.Stream;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.StreamObserver;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.UISAdapter;
@@ -123,7 +125,10 @@ public class UISLettuceAdapterImplUseCaseTest extends ContextualizedRedisActiveT
                 observers.add(listener);
 
                 // Register consumer and automatically create stream and consumers group
-                adapter.register(observers);
+                // Define standard and common mapper usable regarding exchanged event types over the Redis stream
+                MessageMapper mapper = MessageMapperFactory.getMapper(StreamMessage.class, IDescribed.class);
+
+                adapter.register(observers, mapper);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -132,9 +137,10 @@ public class UISLettuceAdapterImplUseCaseTest extends ContextualizedRedisActiveT
         Thread second = new Thread(() -> {
             // Simulate autonomous events push in stream
             try {
+                MessageMapper hashMapMapper = MessageMapperFactory.getMapper(IDescribed.class, HashMap.class);
                 // Execute each command via adapter (WITH AUTO-DETECTION OF STREAM RECIPIENT FROM REQUEST EVENT)
                 for (Command requestEvt : requestEvents) {
-                    String messageId = adapter.append(requestEvt, (Stream) null /* None defined stream simulating auto-detection by adapter from the event's embedded specification (STREAM_ENTRYPOINT_PATH_NAME) */);
+                    String messageId = adapter.append(requestEvt, (Stream) null /* None defined stream simulating auto-detection by adapter from the event's embedded specification (STREAM_ENTRYPOINT_PATH_NAME) */, hashMapMapper);
 
                     // Check that message was appended with success
                     Assertions.assertNotNull(messageId);
@@ -194,7 +200,8 @@ public class UISLettuceAdapterImplUseCaseTest extends ContextualizedRedisActiveT
         UISAdapter adapter = new UISAdapterImpl(getContext());
 
         // Execute command via adapter (WITH AUTO-DETECTION OF STREAM RECIPIENT FROM REQUEST EVENT)
-        String messageId = adapter.append(requestEvent, recipient /* Specific stream to feed */);
+        MessageMapper mapper = MessageMapperFactory.getMapper(IDescribed.class, HashMap.class);
+        String messageId = adapter.append(requestEvent, recipient /* Specific stream to feed */, mapper);
 
         // Check that message was appended with success
         Assertions.assertNotNull(messageId);
