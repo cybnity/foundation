@@ -113,7 +113,7 @@ public class UISChannelLettuceAdapterManualTest extends ContextualizedRedisActiv
 
                 // Register consumer and automatically create topic and consumers group
                 // Define standard and common mapper usable regarding exchanged event types over the Redis pub/sub topic
-                MessageMapper mapper = MessageMapperFactory.getMapper(String.class, IDescribed.class);
+                MessageMapper mapper = new MessageMapperFactory().getMapper(String.class, IDescribed.class);
 
                 adapter.subscribe(observers, mapper);
             } catch (Exception e) {
@@ -124,7 +124,7 @@ public class UISChannelLettuceAdapterManualTest extends ContextualizedRedisActiv
         Thread second = new Thread(() -> {
             // Simulate autonomous events push in topic
             try {
-                MessageMapper mapper = MessageMapperFactory.getMapper(IDescribed.class, String.class);
+                MessageMapper mapper = new MessageMapperFactory().getMapper(IDescribed.class, String.class);
                 // Execute each domain event via adapter (WITH AUTO-DETECTION OF CHANNEL RECIPIENT FROM REQUEST EVENT)
                 for (DomainEvent requestEvt : requestEvents) {
                     adapter.publish(requestEvt, (Channel) null /* None defined channel simulating auto-detection by adapter from the event's embedded specification (STREAM_ENTRYPOINT_PATH_NAME) */, mapper);

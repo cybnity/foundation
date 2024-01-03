@@ -10,11 +10,11 @@ import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mappe
 
 /**
  * Utility class allowing to transform an object manageable by the space according to a type of data structure supported by Redis.
- * For example, translate a CommandEvent object into a Map (message body).
+ * For example, translate a CommandEvent object into a String (message body).
  */
 public class MessageMapperFactory {
 
-    private MessageMapperFactory() {
+    public MessageMapperFactory() {
     }
 
     /**
@@ -24,7 +24,7 @@ public class MessageMapperFactory {
      * @param transformableAs Targeted type to generate.
      * @return A mapper, or null when none supported mapping capability between the origin and targeted type.
      */
-    public static MessageMapper getMapper(Class<?> transformable, Class<?> transformableAs) {
+    public MessageMapper getMapper(Class<?> transformable, Class<?> transformableAs) {
         if (transformable != null && transformableAs != null) {
             // Select the origin type to be transformed
             if (IDescribed.class.isAssignableFrom(transformable)) {

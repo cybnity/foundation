@@ -119,7 +119,7 @@ public class UISStreamLettuceAdapterManualTest extends ContextualizedRedisActive
 
                 // Register consumer and automatically create stream and consumers group
                 // Define standard and common mapper usable regarding exchanged event types over the Redis stream
-                MessageMapper mapper = MessageMapperFactory.getMapper(StreamMessage.class, IDescribed.class);
+                MessageMapper mapper = new MessageMapperFactory().getMapper(StreamMessage.class, IDescribed.class);
 
                 adapter.register(observers, mapper);
             } catch (Exception e) {
@@ -130,7 +130,7 @@ public class UISStreamLettuceAdapterManualTest extends ContextualizedRedisActive
         Thread second = new Thread(() -> {
             // Simulate autonomous events push in stream
             try {
-                MessageMapper mapper = MessageMapperFactory.getMapper(IDescribed.class, StreamMessage.class);
+                MessageMapper mapper = new MessageMapperFactory().getMapper(IDescribed.class, StreamMessage.class);
                 // Execute each command via adapter (WITH AUTO-DETECTION OF STREAM RECIPIENT FROM REQUEST EVENT)
                 for (Command requestEvt : requestEvents) {
                     String messageId = adapter.append(requestEvt, (Stream) null /* None defined stream simulating auto-detection by adapter from the event's embedded specification (STREAM_ENTRYPOINT_PATH_NAME) */, mapper);
@@ -191,7 +191,7 @@ public class UISStreamLettuceAdapterManualTest extends ContextualizedRedisActive
         final UISAdapter adapter = new UISAdapterImpl(getContext());
 
         // Execute command via adapter (WITH AUTO-DETECTION OF STREAM RECIPIENT FROM REQUEST EVENT)
-        MessageMapper mapper = MessageMapperFactory.getMapper(IDescribed.class, StreamMessage.class);
+        MessageMapper mapper = new MessageMapperFactory().getMapper(IDescribed.class, StreamMessage.class);
         String messageId = adapter.append(requestEvent, recipient /* Specific stream to feed */, mapper);
 
         // Check that message was appended with success
