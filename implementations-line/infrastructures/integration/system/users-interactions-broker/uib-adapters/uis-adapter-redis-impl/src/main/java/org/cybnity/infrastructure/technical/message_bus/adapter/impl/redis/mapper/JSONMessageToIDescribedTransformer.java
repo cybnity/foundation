@@ -1,45 +1,36 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.lettuce.core.StreamMessage;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.framework.domain.ObjectMapperBuilder;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MappingException;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
-import org.cybnity.infrastructure.technical.message_bus.adapter.api.Stream;
 
 import java.util.Map;
 
 /**
- * Mapper of data structure between StreamMessage and event type.
+ * Mapper of data structure between JSON and event type.
  */
-public class StreamMessageToIDescribedTransformer implements MessageMapper {
+public class JSONMessageToIDescribedTransformer implements MessageMapper {
 
     private IDescribed result;
 
     /**
      * Default constructor.
      */
-    public StreamMessageToIDescribedTransformer() {
+    public JSONMessageToIDescribedTransformer() {
     }
 
     @Override
     public void transform(Object origin) throws IllegalArgumentException, MappingException {
         if (origin == null) throw new IllegalArgumentException("Origin parameter is required!");
-        if (!StreamMessage.class.isAssignableFrom(origin.getClass()))
+        if (!String.class.isAssignableFrom(origin.getClass()))
             throw new IllegalArgumentException("Origin parameter type is not supported by this mapper!");
         try {
-            StreamMessage message = (StreamMessage) origin;
-
             // Read message body
-            Map messageBody = message.getBody();
-            // Read map entries regarding unique identifier of fact record (streams partitioning based on keys)
-            //String streamEntryID = (String) messageBody.get(Stream.Specification.FACT_RECORD_ID_KEY_NAME.name());
-
-            // Read the payload message equals to fact body in a JSON formatted value
-            String sourceEventJSON = (String) messageBody.get(Stream.Specification.MESSAGE_PAYLOAD_KEY_NAME.name());
+            String sourceEventJSON = (String) origin;
 
             // Select JSON transformation mapper allowing JSON deserialization of message payload
             ObjectMapper mapper = new ObjectMapperBuilder()

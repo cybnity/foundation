@@ -22,14 +22,14 @@ import java.util.logging.Logger;
 public class StreamObservationTask implements Callable<Void> {
 
     private final RedisClient client;
-    private final String consumersGroupName;
     private final StreamObserver delegate;
+    private final String consumersGroupName;
     /**
      * Technical logging
      */
     private final Logger logger = Logger.getLogger(StreamObservationTask.class.getName());
 
-    private MessageMapper mapper;
+    private final MessageMapper mapper;
 
     /**
      * Default constructor.
@@ -41,12 +41,14 @@ public class StreamObservationTask implements Callable<Void> {
      */
     public StreamObservationTask(RedisClient client, StreamObserver delegateToNotify, MessageMapper eventMapper) throws IllegalArgumentException {
         if (client == null) throw new IllegalArgumentException("Client parameter is required!");
-        if (delegateToNotify.consumerGroupName() == null || delegateToNotify.consumerGroupName().isEmpty())
+        if (delegateToNotify == null) throw new IllegalArgumentException("DelegateToNotify parameter is required!");
+        // Control the presence of consumer group name that is mandatory for streams listening
+        if (/* Optionally defined */ delegateToNotify.consumerGroupName() == null || delegateToNotify.consumerGroupName().isEmpty())
             throw new IllegalArgumentException("Consumer group name is required!");
         if (eventMapper == null) throw new IllegalArgumentException("Event mapper parameter is required!");
         this.client = client;
-        this.consumersGroupName = delegateToNotify.consumerGroupName();
         this.delegate = delegateToNotify;
+        this.consumersGroupName = delegate.consumerGroupName();
         this.mapper = eventMapper;
     }
 
@@ -64,17 +66,24 @@ public class StreamObservationTask implements Callable<Void> {
         // Identify the path to the observed stream
         String streamPathName = this.delegate.observed().name();
 
+        // TODO Change current standard Stream implementation (that is not observing clusterized redis nodes' topics) for Redis Cluster usage
+        // For example, when a stream in not created on the same Redis node than the observes, some event could be not received
+
         // Initialize a connection to the space
         StatefulRedisConnection<String, String> connection = this.client.connect();
-        RedisCommands<String, String> syncCommands = connection.sync();
+        final RedisCommands<String, String> syncCommands = connection.sync();
 
-        // Create consumer group when not existing
-        try {
-            // Create a group of stream listeners
-            String observationPattern = this.delegate.observationPattern();
-            syncCommands.xgroupCreate(XReadArgs.StreamOffset.from(streamPathName, (observationPattern != null && !observationPattern.isEmpty()) ? observationPattern : StreamObserver.DEFAULT_OBSERVATION_PATTERN), consumersGroupName, XGroupCreateArgs.Builder.mkstream(true));
-        } catch (Exception redisBusyException) {
-            logger.info(String.format("Group '%s' already exists", consumersGroupName));
+        if (consumersGroupName != null && !consumersGroupName.isEmpty()) {
+            // Create consumer group when not existing
+            try {
+                // Create a group of stream listeners
+                String observationPattern = this.delegate.observationPattern();
+                syncCommands.xgroupCreate(XReadArgs.StreamOffset.from(streamPathName, (observationPattern != null && !observationPattern.isEmpty()) ? observationPattern : StreamObserver.DEFAULT_OBSERVATION_PATTERN), consumersGroupName, XGroupCreateArgs.Builder.mkstream(true));
+            } catch (Exception redisBusyException) {
+                logger.info(String.format("Group '%s' already exists", consumersGroupName));
+            }
+        } else {
+            throw new Exception("A consumers group name need to be defined by the delegate as mandatory for stream messages observation!");
         }
 
         // Define a technical name of the consumer instance
@@ -85,29 +94,34 @@ public class StreamObservationTask implements Callable<Void> {
         );
 
         while (true) {
-            List<StreamMessage<String, String>> messages = syncCommands.xreadgroup(
-                    Consumer.from(consumersGroupName, consumerInstanceName),
-                    XReadArgs.StreamOffset.lastConsumed(streamPathName)
-            );
-            if (!messages.isEmpty()) {
-                // Prepare a mapper supporting messages transformation
-                IDescribed event;
-                for (StreamMessage<String, String> message : messages) {
-                    if (message != null) {
-                        try {
-                            // Transform event into supported message type
-                            mapper.transform(message);
-                            event = (IDescribed) mapper.getResult();
-                            // Transmit collected event to the observer
-                            this.delegate.notify(event);
+            try {
+                List<StreamMessage<String, String>> messages = syncCommands.xreadgroup(
+                        Consumer.from(consumersGroupName, consumerInstanceName),
+                        XReadArgs.StreamOffset.lastConsumed(streamPathName)
+                );
+                if (!messages.isEmpty()) {
+                    // Prepare a mapper supporting messages transformation
+                    IDescribed event;
+                    for (StreamMessage<String, String> message : messages) {
+                        if (message != null) {
+                            try {
+                                // Transform event into supported message type
+                                mapper.transform(message);
+                                event = (IDescribed) mapper.getResult();
+                                // Transmit collected event to the observer
+                                this.delegate.notify(event);
 
-                            // Confirm that the message has been processed using XACK
-                            syncCommands.xack(streamPathName, consumersGroupName, message.getId());
-                        } catch (MappingException mape) {
-                            logger.log(Level.SEVERE, "Invalid message type collected from " + this.delegate.observed().name() + " stream!", mape);
+                                // Confirm that the message has been processed using XACK
+                                syncCommands.xack(streamPathName, consumersGroupName, message.getId());
+                            } catch (MappingException mape) {
+                                logger.log(Level.SEVERE, "Invalid message type collected from " + this.delegate.observed().name() + " stream!", mape);
+                            }
                         }
                     }
                 }
+            } catch (Exception e) {
+                // Temporary connection close/re-opening can generate a temporary exception for connection close status
+                //logger.log(Level.SEVERE, "Problem during stream message read from group!", e.getMessage());
             }
         }
     }

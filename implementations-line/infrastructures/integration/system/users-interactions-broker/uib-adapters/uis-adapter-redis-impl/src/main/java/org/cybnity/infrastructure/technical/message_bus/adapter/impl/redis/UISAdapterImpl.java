@@ -1,15 +1,19 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
 import io.lettuce.core.RedisClient;
+import io.lettuce.core.RedisFuture;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
+import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
+import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
 
+import java.lang.reflect.Array;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -57,10 +61,21 @@ public class UISAdapterImpl implements UISAdapter {
     private final ExecutorService currentStreamObserversPool = Executors.newCachedThreadPool();
 
     /**
+     * Pool of standalone threads registered and executing the channels listening tasks.
+     */
+    private final ExecutorService currentChannelObserversPool = Executors.newCachedThreadPool();
+
+    /**
      * Started future regarding registered stream observations.
      * Key = stream path name, Value = started thread.
      */
     private final Map<StreamObserver, Future<Void>> currentStreamObserversThreads = new HashMap<>();
+
+    /**
+     * Started future regarding registered channel observations.
+     * Key = channel path name, Value = started thread.
+     */
+    private final Map<ChannelObserver, Future<Void>> currentChannelObserversThreads = new HashMap<>();
 
     /**
      * Default constructor of the adapter ready to manage interactions with the
@@ -96,6 +111,7 @@ public class UISAdapterImpl implements UISAdapter {
         if (client != null) {
             // Remove any existing listeners managed by this client
             unregister(currentStreamObserversThreads.keySet());
+            unsubscribe(currentChannelObserversThreads.keySet());
 
             // Disconnect client from space
             client.shutdown();
@@ -133,7 +149,23 @@ public class UISAdapterImpl implements UISAdapter {
 
     @Override
     public void subscribe(Collection<ChannelObserver> observers, MessageMapper eventMapper) throws IllegalArgumentException {
-        throw new IllegalArgumentException("ADAPTER IMPL SERVICE TO IMPLEMENT!");
+        if (observers != null && !observers.isEmpty()) {
+            for (ChannelObserver listener : observers) {
+                // Verify that a same observer is not already existing for listening of the same topic (avoiding multiple registration of a same observer)
+                boolean alreadyObservedChannelOverEqualsPattern = false;
+                for (Map.Entry<ChannelObserver, Future<Void>> item : currentChannelObserversThreads.entrySet()) {
+                    if (item.getKey().equals(listener)) {
+                        alreadyObservedChannelOverEqualsPattern = true;
+                        break; // Stop search
+                    }
+                }
+                if (!alreadyObservedChannelOverEqualsPattern) {
+                    Future<Void> f = currentChannelObserversPool.submit(new ChannelObservationTask(client, listener, eventMapper));
+                    // Get handle to the started thread for potential future stop
+                    currentChannelObserversThreads.put(listener, f);
+                }
+            }
+        }
     }
 
     @Override
@@ -160,7 +192,24 @@ public class UISAdapterImpl implements UISAdapter {
 
     @Override
     public void unsubscribe(Collection<ChannelObserver> observers) {
-        throw new IllegalArgumentException("ADAPTER IMPL SERVICE TO IMPLEMENT!");
+        if (observers != null) {
+            for (ChannelObserver listener : observers) {
+                // Find previously registered observation tasks registry based on logical equals
+                for (Map.Entry<ChannelObserver, Future<Void>> item : currentChannelObserversThreads.entrySet()) {
+                    if (item.getKey().equals(listener)) {
+                        // Existing equals observer reference which can be interrupted
+                        Future<Void> thread = item.getValue();
+                        if (thread != null) {
+                            // Interrupt the task
+                            thread.cancel(true);
+                            // Clean container of threads regarding the previous instance reference
+                            currentChannelObserversThreads.remove(item.getKey());
+                            logger.info("Observer of channel (" + listener.observed().name() + ") is stopped");
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -190,7 +239,7 @@ public class UISAdapterImpl implements UISAdapter {
         String recipientPathName = null;
         String messageId = null;
         if (recipient == null) {
-            // Detect potential defined recipient stream name from command
+            // Detect potential defined recipient stream name from event
             for (Attribute specification : factEvent.specification()) {
                 if (Stream.Specification.STREAM_ENTRYPOINT_PATH_NAME.name().equals(specification.name())) {
                     recipientPathName = specification.value();
@@ -208,7 +257,7 @@ public class UISAdapterImpl implements UISAdapter {
             eventMapper.transform(factEvent);
             Map<String, String> messageBody = (Map<String, String>) eventMapper.getResult();
 
-            // Send command to identified stream recipient
+            // Send event to identified stream recipient
             connection = client.connect();
             RedisCommands<String, String> syncCommands = connection.sync();
             messageId = syncCommands.xadd(/* recipient name to feed */ recipientPathName, /* fact record transformed */ messageBody);
@@ -225,12 +274,55 @@ public class UISAdapterImpl implements UISAdapter {
 
     @Override
     public void publish(IDescribed event, Channel recipient, MessageMapper eventMapper) throws IllegalArgumentException, MappingException {
-        throw new IllegalArgumentException("ADAPTER IMPL SERVICE TO IMPLEMENT!");
+        if (event == null) throw new IllegalArgumentException("Event parameter is required!");
+        if (eventMapper == null) throw new IllegalArgumentException("Event mapper parameter is required!");
+        String recipientPathName = null;
+        String messageId = null;
+        if (recipient == null) {
+            // Detect potential defined recipient channel name from event
+            for (Attribute specification : event.specification()) {
+                if (Channel.Specification.CHANNEL_ENTRYPOINT_PATH_NAME.name().equals(specification.name())) {
+                    recipientPathName = specification.value();
+                    break; // Stop search
+                }
+            }
+        } else {
+            recipientPathName = recipient.name();
+        }
+        if (recipientPathName == null || recipientPathName.isEmpty())
+            throw new IllegalArgumentException("Recipient channel name not defined. Impossible publish of event on the space!");
+
+        StatefulRedisPubSubConnection<String, String> connection = null;
+        try {
+            // Transform event into supported message type
+            eventMapper.transform(event);
+            String messageBody = (String) eventMapper.getResult();
+
+            // Send event to identified channel recipient
+            connection = client.connectPubSub();
+            RedisPubSubAsyncCommands<String, String> asyncCommands = connection.async();
+            asyncCommands.publish(/* recipient name to feed */ recipientPathName, /* fact record transformed */ messageBody);
+        } catch (Exception cce) {
+            // result cast problem
+            throw new MappingException(cce);
+        } finally {
+            if (connection != null && connection.isOpen()) {
+                connection.close();
+            }
+        }
     }
 
     @Override
     public void publish(IDescribed event, Collection<Channel> recipients, MessageMapper eventMapper) throws IllegalArgumentException, MappingException {
-        throw new IllegalArgumentException("ADAPTER IMPL SERVICE TO IMPLEMENT!");
+        if (event == null) throw new IllegalArgumentException("Event parameter is required!");
+        if (eventMapper == null) throw new IllegalArgumentException("Event mapper parameter is required!");
+        if (recipients == null) throw new IllegalArgumentException("Recipients parameter is required!");
+        if (recipients.isEmpty())
+            throw new IllegalArgumentException("Recipients parameter shall include minimum one recipient!");
+        // Publish the event on each recipient
+        for (Channel s : recipients) {
+            this.publish(event, s, eventMapper);
+        }
     }
 
 }

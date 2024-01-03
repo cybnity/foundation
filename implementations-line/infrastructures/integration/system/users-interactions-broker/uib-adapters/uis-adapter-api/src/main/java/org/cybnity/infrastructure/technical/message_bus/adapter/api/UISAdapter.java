@@ -32,16 +32,16 @@ public interface UISAdapter {
      *
      * @param listeners   Collection of observers. Do nothing when null or empty collection.
      * @param eventMapper Mandatory mapper of event allowing transformation of message type supported by UIS to event types supported by the caller.
-     * @throws IllegalArgumentException When mandatory listener's content is detected.
+     * @throws IllegalArgumentException When any listener's mandatory content is detected.
      */
     public void register(Collection<StreamObserver> listeners, MessageMapper eventMapper) throws IllegalArgumentException;
 
     /**
      * Register observers of channels regarding messages published (e.g domain event, command execution status).
      *
-     * @param listeners   Collection of observers.
+     * @param listeners   Collection of observers. Do nothing when null or empty collection.
      * @param eventMapper Mandatory mapper of event allowing transformation of message type supported by UIS to event types supported by the caller.
-     * @throws IllegalArgumentException When mandatory listener's content is detected.
+     * @throws IllegalArgumentException When any listener's mandatory content is detected.
      */
     public void subscribe(Collection<ChannelObserver> listeners, MessageMapper eventMapper) throws IllegalArgumentException;
 

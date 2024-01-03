@@ -7,15 +7,21 @@ public class NamingConventions {
 
     /**
      * Define the standardized character usable as separator between text included into a stream path name.
-     * The separator defined as standard is ":".
+     * The separator defined as standard is "-".
      */
-    public static String STREAM_NAME_SEPARATOR = ":";
+    public static String STREAM_NAME_SEPARATOR = "-";
 
     /**
      * Define the standardized character usable as separator between text included into a channel path name.
+     * The separator defined as standard is ".".
+     */
+    public static String CHANNEL_NAME_SEPARATOR = ".";
+
+    /**
+     * Define the standardized character usable as separator between text included into a data key name.
      * The separator defined as standard is ":".
      */
-    public static String CHANNEL_NAME_SEPARATOR = STREAM_NAME_SEPARATOR;
+    public static String KEY_NAME_SEPARATOR = ":";
 
     /**
      * Define the standardized character usable as separator between text included into a logical name of component in interaction with the UIS.

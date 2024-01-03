@@ -2,14 +2,11 @@ package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
 import io.lettuce.core.StreamMessage;
 import org.cybnity.framework.domain.IDescribed;
-import org.cybnity.framework.domain.event.ProcessingUnitPresenceAnnounced;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.IDescribedToArrayTransformer;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.IDescribedToMapTransformer;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.JSONMessageToIDescribedTransformer;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.IDescribedToStreamMessageTransformer;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.IDescribedToJSONMessageTransformer;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.StreamMessageToIDescribedTransformer;
-
-import java.lang.reflect.Array;
-import java.util.Map;
 
 /**
  * Utility class allowing to transform an object manageable by the space according to a type of data structure supported by Redis.
@@ -32,18 +29,20 @@ public class MessageMapperFactory {
             // Select the origin type to be transformed
             if (IDescribed.class.isAssignableFrom(transformable)) {
                 // Select the provided mapper allowing transformation to targeted type
-                if (Map.class.isAssignableFrom(transformableAs)) {
-                    return new IDescribedToMapTransformer();
+                if (StreamMessage.class.isAssignableFrom(transformableAs)) {
+                    return new IDescribedToStreamMessageTransformer();
+                } else if (String.class.isAssignableFrom(transformableAs)) {
+                    return new IDescribedToJSONMessageTransformer();
                 }
             } else if (StreamMessage.class.isAssignableFrom(transformable)) {
                 // Select the mapper allowing transformation to targeted type
                 if (IDescribed.class.isAssignableFrom(transformableAs)) {
                     return new StreamMessageToIDescribedTransformer();
                 }
-            } else if (ProcessingUnitPresenceAnnounced.class.isAssignableFrom(transformable)) {
+            } else if (String.class.isAssignableFrom(transformable)) {
                 // Select the mapper allowing transformation to targeted type
-                if (Array.class.isAssignableFrom(transformableAs)) {
-                    return new IDescribedToArrayTransformer();
+                if (IDescribed.class.isAssignableFrom(transformableAs)) {
+                    return new JSONMessageToIDescribedTransformer();
                 }
             }
         }

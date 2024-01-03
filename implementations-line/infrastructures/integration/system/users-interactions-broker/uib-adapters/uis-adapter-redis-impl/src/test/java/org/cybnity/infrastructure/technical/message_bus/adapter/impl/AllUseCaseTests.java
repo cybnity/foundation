@@ -1,8 +1,6 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl;
 
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.ContextualizedRedisOptionFactoryDeployedSystemIntegrationUseCaseTest;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.ExecutableAdapterCheckerUseCaseTest;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.UISLettuceAdapterImplUseCaseTest;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.*;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 
@@ -14,6 +12,6 @@ import org.junit.platform.suite.api.Suite;
  * @author olivier
  */
 @Suite
-@SelectClasses({ExecutableAdapterCheckerUseCaseTest.class, ContextualizedRedisOptionFactoryDeployedSystemIntegrationUseCaseTest.class, UISLettuceAdapterImplUseCaseTest.class})
+@SelectClasses({ExecutableAdapterCheckerUseCaseTest.class, ContextualizedRedisOptionFactoryDeployedSystemIntegrationUseCaseTest.class, UISLettuceAdapterImplUseCaseTest.class, UISStreamLettuceAdapterUseCaseTest.class, UISChannelLettuceAdapterUseCaseTest.class})
 public class AllUseCaseTests {
 }
