@@ -1,7 +1,6 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
 import io.lettuce.core.RedisClient;
-import io.lettuce.core.RedisFuture;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
@@ -13,7 +12,6 @@ import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
 
-import java.lang.reflect.Array;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ExecutorService;

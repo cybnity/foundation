@@ -8,8 +8,6 @@ import org.cybnity.framework.domain.ObjectMapperBuilder;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MappingException;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
 
-import java.util.Map;
-
 /**
  * Mapper of data structure between JSON and event type.
  */

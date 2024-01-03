@@ -1,19 +1,14 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
-import io.lettuce.core.StreamMessage;
 import org.cybnity.framework.domain.*;
-import org.cybnity.framework.domain.event.CommandFactory;
 import org.cybnity.framework.domain.event.CorrelationIdFactory;
 import org.cybnity.framework.domain.event.DomainEventFactory;
 import org.cybnity.framework.domain.model.DomainEntity;
-import org.cybnity.framework.immutable.BaseConstants;
-import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -23,9 +18,9 @@ import java.util.logging.Logger;
  * Test and check the usage of Redis Pub/Sub via Lettuce adapter.
  */
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class UISChannelLettuceAdapterUseCaseTest extends ContextualizedRedisActiveTestContainer {
+public class UISChannelLettuceAdapterManualTest extends ContextualizedRedisActiveTestContainer {
 
-    private final Logger logger = Logger.getLogger(UISChannelLettuceAdapterUseCaseTest.class.getName());
+    private final Logger logger = Logger.getLogger(UISChannelLettuceAdapterManualTest.class.getName());
 
     /**
      * This test try to publish a domain event into a dedicated topic via adapter, and check that event is promoted by Redis.

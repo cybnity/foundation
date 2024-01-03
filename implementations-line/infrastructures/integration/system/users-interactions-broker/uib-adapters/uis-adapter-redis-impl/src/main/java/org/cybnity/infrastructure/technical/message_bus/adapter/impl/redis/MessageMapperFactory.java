@@ -3,9 +3,9 @@ package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 import io.lettuce.core.StreamMessage;
 import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.JSONMessageToIDescribedTransformer;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.IDescribedToStreamMessageTransformer;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.IDescribedToJSONMessageTransformer;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.IDescribedToStreamMessageTransformer;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.JSONMessageToIDescribedTransformer;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.StreamMessageToIDescribedTransformer;
 
 /**

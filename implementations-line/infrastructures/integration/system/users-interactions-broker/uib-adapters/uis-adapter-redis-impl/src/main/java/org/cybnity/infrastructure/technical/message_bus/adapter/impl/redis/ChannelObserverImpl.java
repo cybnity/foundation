@@ -1,7 +1,6 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.ChannelObserver;
-import org.cybnity.infrastructure.technical.message_bus.adapter.api.StreamObserver;
 
 /**
  * Basic implementation class providing common services.

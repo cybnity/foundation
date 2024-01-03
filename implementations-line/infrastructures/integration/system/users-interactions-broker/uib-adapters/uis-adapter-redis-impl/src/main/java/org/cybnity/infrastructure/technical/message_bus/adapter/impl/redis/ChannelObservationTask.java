@@ -1,21 +1,15 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
-import io.lettuce.core.*;
-import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.sync.RedisCommands;
-import io.lettuce.core.cluster.pubsub.StatefulRedisClusterPubSubConnection;
+import io.lettuce.core.RedisClient;
+import io.lettuce.core.RedisFuture;
 import io.lettuce.core.pubsub.RedisPubSubListener;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
-import io.lettuce.core.pubsub.api.sync.RedisPubSubCommands;
 import org.cybnity.framework.domain.IDescribed;
-import org.cybnity.framework.domain.event.CorrelationIdFactory;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.ChannelObserver;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MappingException;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
-import org.cybnity.infrastructure.technical.message_bus.adapter.api.StreamObserver;
 
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;

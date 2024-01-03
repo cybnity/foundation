@@ -2,18 +2,9 @@ package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapp
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cybnity.framework.domain.IDescribed;
-import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.ObjectMapperBuilder;
-import org.cybnity.framework.domain.model.CommonChildFactImpl;
-import org.cybnity.framework.immutable.*;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MappingException;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
-import org.cybnity.infrastructure.technical.message_bus.adapter.api.Stream;
-
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Mapper of data structure between event and JSON type.
