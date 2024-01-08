@@ -113,6 +113,21 @@ class X {
 
 </p>
 </details>
+<details><summary>SOFTWARE COMPONENTS LOGICAL NAMING CONVENTIONS</summary>
+<p>
+
+To identify several components executed (e.g processing units) into an environment and/or a context (e.g software layer, infrastructure space), a component logical name is often required by the developer to define static name simplifying its identification (e.g by a logs system; for a resource allocation in setting project; for discovery by other logical software component).
+
+For example, a feature processing unit (executed on a Users Interactions Space) that need to be identified as a member of a consumers group (e.g parallel consumers of a same events stream) can be identified by a logical and common group name.
+
+Naming convention helpers allowing to standardize the build of labels are maintained in the CYBNITY layers:
+
+### Java component naming convention
+#### Users Interactions Space's components
+At the UI layer level, the `import org.cybnity.infrastructure.technical.message_bus.adapter.api.NamingConventionHelper` utility class (as implementation helper) is available to developer to manage a naming convention according to several categories of component types which can have interactions over the UIS
+
+</p>
+</details>
 
 #
 [Back To Parent](../)

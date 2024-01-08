@@ -42,7 +42,7 @@ public class NamingConventionHelper {
      */
     public static String buildComponentName(NamingConventionApplicability category, String domainName, String componentMainFunction, String resourceType, String segregationLabel) throws IllegalArgumentException {
         if (category == null) throw new IllegalArgumentException("category parameter is required!");
-        StringBuffer standardLabel = new StringBuffer();
+        StringBuilder standardLabel = new StringBuilder();
         // --- NAMING CONVENTION RULES ---
         // ---- Use NamingConventions.SPACE_ACTOR_NAME_SEPARATOR separator between each naming element
         // Start label with domain name
