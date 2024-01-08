@@ -9,14 +9,24 @@ public class NamingConventionHelper {
      * Category of naming convention supported by the helper relative to specific type of element which shall be logically named according to a convention.
      */
     public enum NamingConventionApplicability {
+
+        /**
+         * Represent a processing unit (e.g UI capability processor) able to manage a treatment (e.g a capability event request processing).
+         */
+        PROCESSING_UNIT("pu"),
         /**
          * Naming convention relative to processing unit providing capability and/or application services.
          */
-        FEATURE_PROCESSING_UNIT("feature_pu"),
+        FEATURE_PROCESSING_UNIT("feature_" + PROCESSING_UNIT),
         /**
          * Naming convention relative to pipeline that manage data and/or event treatment.
          */
-        PIPELINE("pipeline");
+        PIPELINE("pipeline"),
+
+        /**
+         * Naming convention relative to a gateway.
+         */
+        GATEWAY("gateway");
 
         private final String label;
 
