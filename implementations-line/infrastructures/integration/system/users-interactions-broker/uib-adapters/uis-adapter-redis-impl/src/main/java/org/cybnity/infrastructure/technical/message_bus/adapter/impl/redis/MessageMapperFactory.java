@@ -2,6 +2,7 @@ package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
 import io.lettuce.core.StreamMessage;
 import org.cybnity.framework.domain.IDescribed;
+import org.cybnity.infrastructure.technical.message_bus.adapter.api.IMessageMapperProvider;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.IDescribedToJSONMessageTransformer;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.IDescribedToStreamMessageTransformer;
@@ -12,18 +13,12 @@ import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mappe
  * Utility class allowing to transform an object manageable by the space according to a type of data structure supported by Redis.
  * For example, translate a CommandEvent object into a String (message body).
  */
-public class MessageMapperFactory {
+public class MessageMapperFactory implements IMessageMapperProvider {
 
     public MessageMapperFactory() {
     }
 
-    /**
-     * Get an object mapper allowing transformation of a specific type of class.
-     *
-     * @param transformable   Origin object type to map.
-     * @param transformableAs Targeted type to generate.
-     * @return A mapper, or null when none supported mapping capability between the origin and targeted type.
-     */
+    @Override
     public MessageMapper getMapper(Class<?> transformable, Class<?> transformableAs) {
         if (transformable != null && transformableAs != null) {
             // Select the origin type to be transformed
