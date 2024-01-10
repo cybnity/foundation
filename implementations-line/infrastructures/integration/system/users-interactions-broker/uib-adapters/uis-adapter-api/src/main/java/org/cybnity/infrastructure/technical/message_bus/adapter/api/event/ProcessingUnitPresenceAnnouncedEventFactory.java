@@ -1,4 +1,4 @@
-package org.cybnity.framework.application.vertx.common.event;
+package org.cybnity.infrastructure.technical.message_bus.adapter.api.event;
 
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
