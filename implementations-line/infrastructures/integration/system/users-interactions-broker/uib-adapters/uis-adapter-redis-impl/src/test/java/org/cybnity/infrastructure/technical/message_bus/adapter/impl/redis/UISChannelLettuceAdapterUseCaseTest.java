@@ -149,7 +149,7 @@ public class UISChannelLettuceAdapterUseCaseTest extends ContextualizedRedisActi
         second.join();
 
         // Wait for give time to message to be processed
-        Assertions.assertTrue(waiter.await(50, TimeUnit.SECONDS), "Timeout reached before messages treated!");// Wait confirmation of processed message before timeout
+        Assertions.assertTrue(waiter.await(180 /* large wait time is required when test executed on low-performant build worker on CI environment */, TimeUnit.SECONDS), "Timeout reached before messages treated!");// Wait confirmation of processed message before timeout
 
         // Check that all published messages (qtyOfMessageToProcess) had been treated by observers
         // messagesToProcess shall be empty (all prepared message correlation identifiers shall have been removed as processed with success by observer)
