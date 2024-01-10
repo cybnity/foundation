@@ -22,6 +22,16 @@ import java.util.Collections;
 @JsonTypeName("ProcessingUnitPresenceAnnounced")
 public class ProcessingUnitPresenceAnnounced extends ConcreteDomainChangeEvent {
 
+    /**
+     * Supported attributes set by a presence announce.
+     */
+    public enum SpecificationAttribute implements IAttribute {
+        /**
+         * Attribute regarding the logical identification name of a services provider (e.g UI capability processing unit which ensure domain event treatments).
+         */
+        ServiceName;
+    }
+
     @JsonIgnore
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(ProcessingUnitPresenceAnnounced.class).hashCode();
@@ -53,7 +63,6 @@ public class ProcessingUnitPresenceAnnounced extends ConcreteDomainChangeEvent {
     public ProcessingUnitPresenceAnnounced(Entity identifiedBy, String eventType) {
         super(identifiedBy, eventType);
     }
-
 
     @JsonIgnore
     @Override

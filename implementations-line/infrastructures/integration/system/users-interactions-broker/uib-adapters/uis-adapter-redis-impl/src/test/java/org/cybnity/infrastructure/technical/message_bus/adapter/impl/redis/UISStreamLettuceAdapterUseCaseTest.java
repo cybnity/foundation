@@ -19,9 +19,9 @@ import java.util.logging.Logger;
  * Test and check the usage of Redis stream via Lettuce adapter.
  */
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class UISStreamLettuceAdapterManualTest extends ContextualizedRedisActiveTestContainer {
+public class UISStreamLettuceAdapterUseCaseTest extends ContextualizedRedisActiveTestContainer {
 
-    private final Logger logger = Logger.getLogger(UISStreamLettuceAdapterManualTest.class.getName());
+    private final Logger logger = Logger.getLogger(UISStreamLettuceAdapterUseCaseTest.class.getName());
 
     /**
      * This test try to push a command event into a dedicated stream via adapter, and check that event is stored by Redis.
@@ -95,7 +95,7 @@ public class UISStreamLettuceAdapterManualTest extends ContextualizedRedisActive
 
                     @Override
                     public String consumerGroupName() {
-                        return UISStreamLettuceAdapterManualTest.class.getSimpleName() + "-consumers";
+                        return UISStreamLettuceAdapterUseCaseTest.class.getSimpleName() + "-consumers";
                     }
 
                     @Override
@@ -144,9 +144,8 @@ public class UISStreamLettuceAdapterManualTest extends ContextualizedRedisActive
         });
 
         first.start();
-        second.start();
-
         first.join();
+        second.start();
         second.join();
 
         // Wait for give time to message to be processed

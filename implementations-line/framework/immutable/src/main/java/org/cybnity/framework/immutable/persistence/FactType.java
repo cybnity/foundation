@@ -1,5 +1,6 @@
 package org.cybnity.framework.immutable.persistence;
 
+import org.cybnity.framework.INaming;
 import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
@@ -17,7 +18,7 @@ import java.util.Set;
  * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Robusteness, reqId = "REQ_ROB_3")
-public class FactType implements Unmodifiable, IVersionable, Serializable, IUniqueness {
+public class FactType implements Unmodifiable, IVersionable, Serializable, IUniqueness, INaming {
 
     /**
      * Version of this class type.
@@ -107,6 +108,7 @@ public class FactType implements Unmodifiable, IVersionable, Serializable, IUniq
      *
      * @return A label.
      */
+    @Override
     public String name() {
         return this.name;
     }

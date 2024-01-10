@@ -23,5 +23,9 @@
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-web</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>org.cybnity.infrastructure.integration.uis.adapters</groupId>
+            <artifactId>api</artifactId>
+        </dependency>
 	</dependencies>
 </project>

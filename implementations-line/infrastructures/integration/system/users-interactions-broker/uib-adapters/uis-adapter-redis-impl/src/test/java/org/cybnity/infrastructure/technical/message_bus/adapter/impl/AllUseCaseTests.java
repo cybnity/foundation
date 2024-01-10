@@ -12,6 +12,6 @@ import org.junit.platform.suite.api.Suite;
  * @author olivier
  */
 @Suite
-@SelectClasses({ExecutableAdapterCheckerUseCaseTest.class, ContextualizedRedisOptionFactoryDeployedSystemIntegrationUseCaseTest.class, UISLettuceAdapterImplUseCaseTest.class, UISStreamLettuceAdapterManualTest.class, UISChannelLettuceAdapterManualTest.class})
+@SelectClasses({ExecutableAdapterCheckerUseCaseTest.class, ContextualizedRedisOptionFactoryDeployedSystemIntegrationUseCaseTest.class, UISLettuceAdapterImplUseCaseTest.class, UISStreamLettuceAdapterUseCaseTest.class, UISChannelLettuceAdapterUseCaseTest.class})
 public class AllUseCaseTests {
 }

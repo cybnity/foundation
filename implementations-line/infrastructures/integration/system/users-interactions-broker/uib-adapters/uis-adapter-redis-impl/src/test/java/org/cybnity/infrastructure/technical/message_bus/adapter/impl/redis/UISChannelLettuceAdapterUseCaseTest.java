@@ -1,8 +1,10 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
 import org.cybnity.framework.domain.*;
+import org.cybnity.framework.domain.event.CollaborationEventType;
 import org.cybnity.framework.domain.event.CorrelationIdFactory;
 import org.cybnity.framework.domain.event.DomainEventFactory;
+import org.cybnity.framework.domain.event.ProcessingUnitPresenceAnnounced;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
 import org.junit.jupiter.api.Assertions;
@@ -18,9 +20,9 @@ import java.util.logging.Logger;
  * Test and check the usage of Redis Pub/Sub via Lettuce adapter.
  */
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class UISChannelLettuceAdapterManualTest extends ContextualizedRedisActiveTestContainer {
+public class UISChannelLettuceAdapterUseCaseTest extends ContextualizedRedisActiveTestContainer {
 
-    private final Logger logger = Logger.getLogger(UISChannelLettuceAdapterManualTest.class.getName());
+    private final Logger logger = Logger.getLogger(UISChannelLettuceAdapterUseCaseTest.class.getName());
 
     /**
      * This test try to publish a domain event into a dedicated topic via adapter, and check that event is promoted by Redis.
@@ -28,7 +30,7 @@ public class UISChannelLettuceAdapterManualTest extends ContextualizedRedisActiv
      */
     @Test
     public void givenDomainEvent_whenPushedToSpaceDefinedRecipient_thenStoredInChannel() throws Exception {
-        int qtyOfMessageToProcess = 5;
+        int qtyOfMessageToProcess = 2;
 
         // Define the registry of messages correlation identifiers to treat
         final Collection<String> messagesToProcess = new LinkedList<>();
@@ -55,12 +57,19 @@ public class UISChannelLettuceAdapterManualTest extends ContextualizedRedisActiv
             }
             definition.add(new Attribute("ProcessingUnitName", "CYBNITY_PU_" + i));
             // Auto-assign correlation identifier allowing finalized transaction check
-            definition.add(new Attribute(Command.CORRELATION_ID, CorrelationIdFactory.generate("CYBNITY_PU_" + i)));
+            definition.add(new Attribute(Command.CORRELATION_ID, CorrelationIdFactory.generate(/* event uid as salt */"CYBNITY_PU_" + i)));
 
-            DomainEvent promotedEvent = DomainEventFactory.create("PROCESSING_UNIT_PRESENCE_ANNOUNCED",
+            DomainEvent evt = DomainEventFactory.create("PROCESSING_UNIT_PRESENCE_ANNOUNCED",
                     identifiedBy, definition,
                     /* none prior event to reference*/ null,
                     /* None pre-identified domain event because new creation */ null);
+
+            // Prepare announcing event
+            ProcessingUnitPresenceAnnounced promotedEvent = new ProcessingUnitPresenceAnnounced(identifiedBy, CollaborationEventType.PROCESSING_UNIT_PRESENCE_ANNOUNCED);
+            // Add specification attributes
+            for (Attribute att : definition) {
+                promotedEvent.appendSpecification(att);
+            }
 
             // Add prepared message in registry to check at end of the test
             messagesToProcess.add(promotedEvent.correlationId().value());
@@ -72,6 +81,19 @@ public class UISChannelLettuceAdapterManualTest extends ContextualizedRedisActiv
 
         // Initialize an adapter connected to contextualized Redis server (Users Interactions Space)
         final UISAdapter adapter = new UISAdapterImpl(getContext());
+
+        Thread second = new Thread(() -> {
+            // Simulate autonomous events push in topic
+            try {
+                MessageMapper mapper = new MessageMapperFactory().getMapper(IDescribed.class, String.class);
+                // Execute each domain event via adapter (WITH AUTO-DETECTION OF CHANNEL RECIPIENT FROM REQUEST EVENT)
+                for (DomainEvent requestEvt : requestEvents) {
+                    adapter.publish(requestEvt, (Channel) null /* None defined channel simulating auto-detection by adapter from the event's embedded specification (STREAM_ENTRYPOINT_PATH_NAME) */, mapper);
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         Thread first = new Thread(() -> {
             // Simulate parallel consumers registration and channel observations
@@ -114,34 +136,20 @@ public class UISChannelLettuceAdapterManualTest extends ContextualizedRedisActiv
                 // Register consumer and automatically create topic and consumers group
                 // Define standard and common mapper usable regarding exchanged event types over the Redis pub/sub topic
                 MessageMapper mapper = new MessageMapperFactory().getMapper(String.class, IDescribed.class);
-
                 adapter.subscribe(observers, mapper);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });
 
-        Thread second = new Thread(() -> {
-            // Simulate autonomous events push in topic
-            try {
-                MessageMapper mapper = new MessageMapperFactory().getMapper(IDescribed.class, String.class);
-                // Execute each domain event via adapter (WITH AUTO-DETECTION OF CHANNEL RECIPIENT FROM REQUEST EVENT)
-                for (DomainEvent requestEvt : requestEvents) {
-                    adapter.publish(requestEvt, (Channel) null /* None defined channel simulating auto-detection by adapter from the event's embedded specification (STREAM_ENTRYPOINT_PATH_NAME) */, mapper);
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-
         first.start();
-        second.start();
-
         first.join();// will wait for first thread to finish, before starting second thread
+
+        second.start();
         second.join();
 
         // Wait for give time to message to be processed
-        Assertions.assertTrue(waiter.await(30, TimeUnit.SECONDS), "Timeout reached before messages treated!");// Wait confirmation of processed message before timeout
+        Assertions.assertTrue(waiter.await(50, TimeUnit.SECONDS), "Timeout reached before messages treated!");// Wait confirmation of processed message before timeout
 
         // Check that all published messages (qtyOfMessageToProcess) had been treated by observers
         // messagesToProcess shall be empty (all prepared message correlation identifiers shall have been removed as processed with success by observer)

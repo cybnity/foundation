@@ -1,9 +1,9 @@
-package org.cybnity.framework.application.vertx.common.event;
+package org.cybnity.framework.domain.event;
 
 /**
- * Type of system collaboration event supported by the a domain that allow coordination between multiple systems.
+ * Type of system collaboration event supported by a domain that allow coordination between multiple systems.
  */
-public enum CollaborationEventType {
+public enum CollaborationEventType implements IEventType {
 
     /**
      * Event about a processing unit presence change status that is announced.
