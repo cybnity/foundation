@@ -18,11 +18,12 @@ import java.util.logging.Logger;
 
 /**
  * Test and check the usage of Redis Pub/Sub via Lettuce adapter.
+ * This test is available for local and manual test from developer workstation because asserts relative to time observation for validation of the async messages receptions can be variant according to the hardware platform performance used during this test run.
  */
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class UISChannelLettuceAdapterUseCaseTest extends ContextualizedRedisActiveTestContainer {
+public class UISChannelLettuceAdapterManualTest extends ContextualizedRedisActiveTestContainer {
 
-    private final Logger logger = Logger.getLogger(UISChannelLettuceAdapterUseCaseTest.class.getName());
+    private final Logger logger = Logger.getLogger(UISChannelLettuceAdapterManualTest.class.getName());
 
     /**
      * This test try to publish a domain event into a dedicated topic via adapter, and check that event is promoted by Redis.
@@ -149,7 +150,7 @@ public class UISChannelLettuceAdapterUseCaseTest extends ContextualizedRedisActi
         second.join();
 
         // Wait for give time to message to be processed
-        Assertions.assertTrue(waiter.await(180 /* large wait time is required when test executed on low-performant build worker on CI environment */, TimeUnit.SECONDS), "Timeout reached before messages treated!");// Wait confirmation of processed message before timeout
+        Assertions.assertTrue(waiter.await(180 /* large wait time is required when test executed on low-performant build worker on CI environment */, TimeUnit.SECONDS), "Timeout reached before messages treated! Sufficient waiting time to check (in case of required increasing according to the test computer performance)");// Wait confirmation of processed message before timeout
 
         // Check that all published messages (qtyOfMessageToProcess) had been treated by observers
         // messagesToProcess shall be empty (all prepared message correlation identifiers shall have been removed as processed with success by observer)
