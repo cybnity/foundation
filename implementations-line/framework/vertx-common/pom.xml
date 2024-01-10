@@ -9,14 +9,19 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>org.cybnity.framework</groupId>
-	<artifactId>immutable</artifactId>
+	<artifactId>vertx-common</artifactId>
 	<version>${revision}</version>
 	<packaging>jar</packaging>
-	<name>- Immutable framework library</name>
+	<name>- Vert.x common framework library</name>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.cybnity.framework</groupId>
-			<artifactId>support</artifactId>
+			<artifactId>immutable</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-web</artifactId>
 		</dependency>
 	</dependencies>
 </project>

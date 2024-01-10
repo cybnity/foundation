@@ -48,6 +48,18 @@
 				<scope>compile</scope>
 				<version>${revision}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.cybnity.framework</groupId>
+				<artifactId>vertx-common</artifactId>
+				<version>${revision}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.cybnity.framework</groupId>
+				<artifactId>domain</artifactId>
+				<version>${revision}</version>
+				<scope>compile</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 

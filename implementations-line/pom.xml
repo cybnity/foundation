@@ -33,6 +33,16 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.cybnity.framework</groupId>
+				<artifactId>support</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.cybnity.framework</groupId>
+				<artifactId>immutable</artifactId>
+				<version>${revision}</version>
+			</dependency>
             <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>

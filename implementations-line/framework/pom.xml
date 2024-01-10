@@ -13,6 +13,7 @@
 	<name>Framework components</name>
 
 	<modules>
+		<module>vertx-common</module>
 		<module>support</module>
 		<module>immutable</module>
 		<module>domain</module>
