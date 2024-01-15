@@ -182,7 +182,6 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
             }
         }
     }
-
     @Override
     public UISRecipientList delegateDestinations() {
         return delegatesDestinationMap;
