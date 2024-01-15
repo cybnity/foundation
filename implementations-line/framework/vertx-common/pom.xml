@@ -23,9 +23,15 @@
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-web</artifactId>
 		</dependency>
+		<!--
         <dependency>
             <groupId>org.cybnity.infrastructure.integration.uis.adapters</groupId>
             <artifactId>api</artifactId>
-        </dependency>
+        </dependency>-->
+		<dependency>
+			<!-- Integration with Users Interactions Space middleware -->
+			<groupId>org.cybnity.infrastructure.integration.uis.adapters</groupId>
+			<artifactId>redis-impl</artifactId>
+		</dependency>
 	</dependencies>
 </project>

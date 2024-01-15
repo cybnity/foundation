@@ -48,6 +48,11 @@
 				<artifactId>api</artifactId>
 				<version>${revision}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.cybnity.infrastructure.integration.uis.adapters</groupId>
+				<artifactId>redis-impl</artifactId>
+				<version>${revision}</version>
+			</dependency>
             <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
