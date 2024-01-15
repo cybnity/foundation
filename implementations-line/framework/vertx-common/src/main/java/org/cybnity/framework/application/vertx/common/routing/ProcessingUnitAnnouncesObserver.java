@@ -69,9 +69,10 @@ public abstract class ProcessingUnitAnnouncesObserver implements ChannelObserver
      * @param dynamicRoutersControlChannel Mandatory control channel that shall be observed to be notified of processing unit presence announces.
      * @param dynamicRoutingServiceName    Optional name regarding the logical component which own this routing service.
      * @param uisClient                    Optional Users Interactions Space adapter usable for notification of registered routes over UIS channel. When null, the recipients list updated are not notified.
+     * @param dynamicRoutingChangesNotifiedOver Optional channel where event can be promoted when the managed recipients list have been changed.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      */
-    public ProcessingUnitAnnouncesObserver(Channel dynamicRoutersControlChannel, String dynamicRoutingServiceName, UISAdapter uisClient) throws IllegalArgumentException {
+    public ProcessingUnitAnnouncesObserver(Channel dynamicRoutersControlChannel, String dynamicRoutingServiceName, UISAdapter uisClient, Channel dynamicRoutingChangesNotifiedOver) throws IllegalArgumentException {
         if (dynamicRoutersControlChannel == null)
             throw new IllegalArgumentException("Dynamic routers control channel parameter is required!");
         this.dynamicRoutersControlChannel = dynamicRoutersControlChannel;
@@ -80,20 +81,10 @@ public abstract class ProcessingUnitAnnouncesObserver implements ChannelObserver
 
         // Define the collection of topics where recipients list changes shall be promoted
         registeredRoutingPathChange = new ArrayList<>();
-        String changesNotifiedOver = dynamicRoutingChangesNotifiedOver();
-
-        if (changesNotifiedOver != null && !changesNotifiedOver.isEmpty())
+        if (dynamicRoutingChangesNotifiedOver!=null)
             // Only promote recipients list changes when notification channels is defined
-            registeredRoutingPathChange.add(new Channel(dynamicRoutingChangesNotifiedOver()));
+            registeredRoutingPathChange.add(dynamicRoutingChangesNotifiedOver);
     }
-
-    /**
-     * Get the name of the Channel where any routing plan change shall be promoted.
-     * This channel name is managed by this component and allow it to notify any route registration finalized with success over a change event CollaborationEventType.PROCESSING_UNIT_ROUTING_PATHS_REGISTERED.name() promoted.
-     *
-     * @return Channel name to notify. When null, indicate that none notification is promoted by this component regarding the recipient registrations.
-     */
-    protected abstract String dynamicRoutingChangesNotifiedOver();
 
     /**
      * Get the control channel received the announces of presence declared by the processing units eligible as event treatment delegates.
