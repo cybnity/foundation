@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  * Listener of processing unit announces implementing a domain recipients list pattern for dynamic routes registration.
  * It's observation class simplify the implementation of dynamic routes registration by any domain gateway.
  */
-public abstract class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventProcessingManager {
+public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventProcessingManager {
 
     /**
      * Logical name of the component managing routing paths.
