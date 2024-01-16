@@ -54,7 +54,7 @@ public abstract class ProcessingUnitRecipientsManagerObserver implements Channel
                 if (CollaborationEventType.PROCESSING_UNIT_PRESENCE_ANNOUNCE_REQUESTED.name().equals(factEventTypeName)) {
                     // Observed routing path manager is requesting a renewal of routes declarations
                     // Announce the routes supported
-                    announcePresence();
+                    announcePresence(event);
                 } else if (CollaborationEventType.PROCESSING_UNIT_ROUTING_PATHS_REGISTERED.name().equals(factEventTypeName)) {
                     // A previous routing path declaration have been registered by the recipients manager (e.g domain IO Gateway)
                     // It can be the routes declaration by this or by other feature components
@@ -66,8 +66,10 @@ public abstract class ProcessingUnitRecipientsManagerObserver implements Channel
 
     /**
      * Prepare and publish a presence event over the Users Interactions Space allowing to other component to collaborate.
+     *
+     * @param origin Origin request of presence announcing (e.g IO gateway demand of announce renewal).
      */
-    protected abstract void announcePresence();
+    protected abstract void announcePresence(IDescribed origin);
 
     /**
      * Manage a routing path registration confirmed.
