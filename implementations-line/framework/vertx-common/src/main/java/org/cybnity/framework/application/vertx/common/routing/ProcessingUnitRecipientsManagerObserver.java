@@ -45,6 +45,11 @@ public abstract class ProcessingUnitRecipientsManagerObserver implements Channel
         return null;
     }
 
+    /**
+     * Implementation of detection relative to processing unit presence announce requested, of confirmation of previous routing paths registration.
+     *
+     * @param event To treat.
+     */
     @Override
     public void notify(IDescribed event) {
         if (event != null && event.type() != null) {
