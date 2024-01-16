@@ -15,6 +15,7 @@ import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.Channel;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.ChannelObserver;
+import org.cybnity.infrastructure.technical.message_bus.adapter.api.MappingException;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.UISAdapter;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.MessageMapperFactory;
 
@@ -38,7 +39,7 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
     /**
      * Technical logging
      */
-    private static final Logger logger = Logger.getLogger(ProcessingUnitAnnouncesObserver.class.getName());
+    protected static final Logger logger = Logger.getLogger(ProcessingUnitAnnouncesObserver.class.getName());
 
     /**
      * Control channel allowing to receive the computation unit announces of presence which can be registered as eligible execution recipients for event types treatment.
@@ -66,9 +67,9 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
     /**
      * Default constructor.
      *
-     * @param dynamicRoutersControlChannel Mandatory control channel that shall be observed to be notified of processing unit presence announces.
-     * @param dynamicRoutingServiceName    Optional name regarding the logical component which own this routing service.
-     * @param uisClient                    Optional Users Interactions Space adapter usable for notification of registered routes over UIS channel. When null, the recipients list updated are not notified.
+     * @param dynamicRoutersControlChannel      Mandatory control channel that shall be observed to be notified of processing unit presence announces.
+     * @param dynamicRoutingServiceName         Optional name regarding the logical component which own this routing service.
+     * @param uisClient                         Optional Users Interactions Space adapter usable for notification of registered routes over UIS channel. When null, the recipients list updated are not notified.
      * @param dynamicRoutingChangesNotifiedOver Optional channel where event can be promoted when the managed recipients list have been changed.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      */
@@ -81,7 +82,7 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
 
         // Define the collection of topics where recipients list changes shall be promoted
         registeredRoutingPathChange = new ArrayList<>();
-        if (dynamicRoutingChangesNotifiedOver!=null)
+        if (dynamicRoutingChangesNotifiedOver != null)
             // Only promote recipients list changes when notification channels is defined
             registeredRoutingPathChange.add(dynamicRoutingChangesNotifiedOver);
     }
@@ -156,12 +157,7 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
 
                 // Define optional descriptions relative to the gateway notifying the routing map management
                 Collection<Attribute> specification = new ArrayList<>();
-                if (this.dynamicRoutingServiceName != null && !this.dynamicRoutingServiceName.isEmpty())
-                    // Owner of the dynamic routing service
-                    EventSpecification.appendSpecification(new Attribute(AttributeName.ServiceName.name(), dynamicRoutingServiceName), specification);
-
-                // Original path of received registration request
-                EventSpecification.appendSpecification(new Attribute(AttributeName.SourceChannelName.name(), dynamicRoutersControlChannel.name()), specification);
+                updateWithDefaultSpecificationCriteria(specification); // Add default common specification criteria
 
                 // Optional origin event's correlationId if defined (e.g allowing a transactional response interpretation by the subscriber that previously notified its proposal as processing unit)
                 Attribute correlationId = origin.correlationId();
@@ -182,8 +178,44 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
             }
         }
     }
+
+    private Collection<Attribute> updateWithDefaultSpecificationCriteria(Collection<Attribute> specification) {
+        if (specification != null) {
+            if (this.dynamicRoutingServiceName != null && !this.dynamicRoutingServiceName.isEmpty())
+                // Owner of the dynamic routing service
+                EventSpecification.appendSpecification(new Attribute(AttributeName.ServiceName.name(), dynamicRoutingServiceName), specification);
+
+            // Original path of received registration request
+            EventSpecification.appendSpecification(new Attribute(AttributeName.SourceChannelName.name(), dynamicRoutersControlChannel.name()), specification);
+        }
+        return specification;
+    }
+
     @Override
     public UISRecipientList delegateDestinations() {
         return delegatesDestinationMap;
+    }
+
+    /**
+     * Publish a request to processing units which are observing the routing path channel regarding a new of current presence update.
+     * This method allow at any time (e.g in case of reboot of this observer) to notify the providers of routing paths (e.g feature modules) that recipients list need to be re-built from their current supported routes.
+     *
+     * @throws MappingException When problem regarding the build of event to publish.
+     */
+    public void requestPresenceAnnouncesRenewal() throws MappingException {
+        // Define optional descriptions relative to the gateway notifying the processing units
+        Collection<Attribute> specification = new ArrayList<>();
+        updateWithDefaultSpecificationCriteria(specification);
+
+        if (!registeredRoutingPathChange.isEmpty()) {
+            LinkedHashSet<Identifier> childEventIdentifiers = new LinkedHashSet<>();
+            // Define a unique identifier of the new event
+            childEventIdentifiers.add(new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), UUID.randomUUID().toString()));
+            DomainEntity identifiedBy = new DomainEntity(childEventIdentifiers);
+
+            DomainEvent puRegisteredNotification = DomainEventFactory.create(CollaborationEventType.PROCESSING_UNIT_PRESENCE_ANNOUNCE_REQUESTED.name(), identifiedBy, specification, /* priorCommandRef */ null, null /* domain changedModelElementRef */);
+            // Generate a renewal presence declarations to observers
+            uisClient.publish(puRegisteredNotification, registeredRoutingPathChange, new MessageMapperFactory().getMapper(IDescribed.class, String.class));
+        }
     }
 }

@@ -20,4 +20,5 @@ public enum CollaborationEventType implements IEventType {
      * Event about a registered routing paths (e.g path to PU entrypoint channel) to a processing unit (e.g considered as eligible to delegation of command events treatment).
      */
     PROCESSING_UNIT_ROUTING_PATHS_REGISTERED;
+
 }
