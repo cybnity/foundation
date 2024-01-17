@@ -1,14 +1,8 @@
 package org.cybnity.framework.application.vertx.common.routing;
 
 import org.cybnity.framework.application.vertx.common.event.AttributeName;
-import org.cybnity.framework.domain.Attribute;
-import org.cybnity.framework.domain.DomainEvent;
-import org.cybnity.framework.domain.IDescribed;
-import org.cybnity.framework.domain.IdentifierStringBased;
-import org.cybnity.framework.domain.event.CollaborationEventType;
-import org.cybnity.framework.domain.event.DomainEventFactory;
-import org.cybnity.framework.domain.event.EventSpecification;
-import org.cybnity.framework.domain.event.ProcessingUnitPresenceAnnounced;
+import org.cybnity.framework.domain.*;
+import org.cybnity.framework.domain.event.*;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Identifier;
@@ -179,6 +173,11 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
         }
     }
 
+    /**
+     * Define common specification criteria as Attribute into a specification of event.
+     * @param specification The updated specification attributes list (added AttributeName.ServiceName.name() and AttributeName.SourceChannelName.name()).
+     * @return
+     */
     private Collection<Attribute> updateWithDefaultSpecificationCriteria(Collection<Attribute> specification) {
         if (specification != null) {
             if (this.dynamicRoutingServiceName != null && !this.dynamicRoutingServiceName.isEmpty())
@@ -213,7 +212,7 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
             childEventIdentifiers.add(new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), UUID.randomUUID().toString()));
             DomainEntity identifiedBy = new DomainEntity(childEventIdentifiers);
 
-            DomainEvent puRegisteredNotification = DomainEventFactory.create(CollaborationEventType.PROCESSING_UNIT_PRESENCE_ANNOUNCE_REQUESTED.name(), identifiedBy, specification, /* priorCommandRef */ null, null /* domain changedModelElementRef */);
+            Command puRegisteredNotification = CommandFactory.create(CollaborationEventType.PROCESSING_UNIT_PRESENCE_ANNOUNCE_REQUESTED.name(), identifiedBy, specification, /* priorCommandRef */ null, null /* domain changedModelElementRef */);
             // Generate a renewal presence declarations to observers
             uisClient.publish(puRegisteredNotification, registeredRoutingPathChange, new MessageMapperFactory().getMapper(IDescribed.class, String.class));
         }

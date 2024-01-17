@@ -1,7 +1,7 @@
 package org.cybnity.framework.domain.event;
 
 /**
- * Type of system collaboration event supported by a domain that allow coordination between multiple systems.
+ * Type of system collaboration event or command supported by a domain that allow coordination between multiple systems.
  */
 public enum CollaborationEventType implements IEventType {
 
