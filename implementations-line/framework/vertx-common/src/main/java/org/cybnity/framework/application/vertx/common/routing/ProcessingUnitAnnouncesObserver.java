@@ -135,8 +135,9 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
 
                     // Notify confirmed dynamic recipients list changes
                     // when promotion channel is defined
-                    if (changedRecipientsContainer && !registeredRoutingPathChange.isEmpty())
+                    if (changedRecipientsContainer && !registeredRoutingPathChange.isEmpty()) {
                         notifyDynamicRecipientListChanged(puEvent, uisClient);
+                    }
                 } else if (IPresenceObservability.PresenceState.UNAVAILABLE == declaredPresence) {
                     // It's notified presence as unavailable (e.g stopped processing unit which does not continue to deliver services)
                     // but it's possible that another processing unit instance (e.g in case of multiple parallel processors managing events from a same stream endpoint) continue to support the event types previously registered as eligible to forwarding

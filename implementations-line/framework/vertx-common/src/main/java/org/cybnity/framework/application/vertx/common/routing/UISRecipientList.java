@@ -71,7 +71,6 @@ public class UISRecipientList {
                 }
             }
         }
-
         return routingPlanChanged;// Confirm status of modification applied when performed
     }
 
@@ -102,5 +101,13 @@ public class UISRecipientList {
         }
         // Return an immutable version of the list
         return Collections.unmodifiableCollection(supportedEventTypeNames);
+    }
+
+    /**
+     * Get the quantity of current supported routing paths as recipients.
+     * @return A count.
+     */
+    public int routesCount() {
+        return this.routingMap.size();
     }
 }
