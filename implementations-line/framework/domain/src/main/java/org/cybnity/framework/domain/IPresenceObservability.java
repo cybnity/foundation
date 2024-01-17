@@ -1,6 +1,5 @@
 package org.cybnity.framework.domain;
 
-import org.cybnity.framework.INaming;
 import org.cybnity.framework.domain.event.IAttribute;
 import org.cybnity.framework.immutable.EntityReference;
 
@@ -23,6 +22,13 @@ public interface IPresenceObservability {
          */
         UNAVAILABLE;
     }
+
+    /**
+     * Get the current status of presence regarding this component (e.g services providers).
+     *
+     * @return A status.
+     */
+    public PresenceState currentState();
 
     /**
      * Prepare and publish a presence event (e.g over a collaboration space) allowing to other component(s) to detect presence changes of the observable subject.
