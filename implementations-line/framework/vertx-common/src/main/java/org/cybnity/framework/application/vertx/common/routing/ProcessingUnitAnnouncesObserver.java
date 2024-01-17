@@ -140,10 +140,7 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
                     // but it's possible that another processing unit instance (e.g in case of multiple parallel processors managing events from a same stream endpoint) continue to support the event types previously registered as eligible to forwarding
                     // So don't remove potential declared recipient routing paths
                 }
-            } else {
-                // It's an unknown presence status
-                // So ignore event
-            }
+            } // else It's an unknown presence status; so ignore event
         } else {
             // Invalid type of notification event received into the control channel
             logger.severe("Reception of invalid event type into the control channel (" + observed().name() + ") which shall only receive " + ProcessingUnitPresenceAnnounced.class.getSimpleName() + " supported event!");
