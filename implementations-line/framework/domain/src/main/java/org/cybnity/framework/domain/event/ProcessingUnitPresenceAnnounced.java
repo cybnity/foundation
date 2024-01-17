@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.cybnity.framework.domain.Attribute;
+import org.cybnity.framework.domain.IPresenceObservability;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -34,8 +35,55 @@ public class ProcessingUnitPresenceAnnounced extends ConcreteDomainChangeEvent {
         /**
          * Attribute regarding a state of an announced presence.
          */
-        PRESENCE_STATUS
-        ;
+        PRESENCE_STATUS;
+    }
+
+    /**
+     * Add a specification relative to the service name which is subject of the announced presence statue.
+     *
+     * @param name A service name. Ignored when null.
+     */
+    public void setServiceName(String name) {
+        if (name != null) {
+            appendSpecification(new Attribute(SpecificationAttribute.SERVICE_NAME.name(), name));
+        }
+    }
+
+    /**
+     * Get the service name which is considered as presence subject.
+     *
+     * @return A service name or null.
+     */
+    public Attribute serviceName() {
+        if (this.specification != null) {
+            // Search optionally and previously defined value
+            return EventSpecification.findSpecificationByName(SpecificationAttribute.SERVICE_NAME.name(), this.specification);
+        }
+        return null;
+    }
+
+    /**
+     * Add a specification relative to the state of the announced presence.
+     *
+     * @param status A status of presence. Ignored when null.
+     */
+    public void setPresenceStatus(IPresenceObservability.PresenceState status) {
+        if (status != null) {
+            appendSpecification(new Attribute(SpecificationAttribute.PRESENCE_STATUS.name(), status.name()));
+        }
+    }
+
+    /**
+     * Get the presence status which is announced.
+     *
+     * @return A state or null.
+     */
+    public Attribute presenceStatus() {
+        if (this.specification != null) {
+            // Search optionally and previously defined value
+            return EventSpecification.findSpecificationByName(SpecificationAttribute.PRESENCE_STATUS.name(), this.specification);
+        }
+        return null;
     }
 
     @JsonIgnore

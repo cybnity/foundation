@@ -100,6 +100,7 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
     public void notify(IDescribed event) {
         if (event instanceof ProcessingUnitPresenceAnnounced) {
             ProcessingUnitPresenceAnnounced puEvent = (ProcessingUnitPresenceAnnounced) event;
+
             // It's an event promoted by a processing unit regarding its presence and availability for delegation of event treatment
             Collection<Attribute> eventsRoutingPathsCollection = puEvent.eventsRoutingPaths();
 
