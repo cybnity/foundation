@@ -38,4 +38,10 @@ public interface IPresenceObservability {
      * @throws Exception When problem during the event preparation or publication.
      */
     public void announcePresence(PresenceState currentStatus, EntityReference priorEventRef) throws Exception;
+
+    /**
+     * Manage an acknowledge event regarding a presence declared.
+     * @param event Result notification of presence declaration.
+     */
+    public void manageDeclaredPresenceAcknowledge(IDescribed event);
 }

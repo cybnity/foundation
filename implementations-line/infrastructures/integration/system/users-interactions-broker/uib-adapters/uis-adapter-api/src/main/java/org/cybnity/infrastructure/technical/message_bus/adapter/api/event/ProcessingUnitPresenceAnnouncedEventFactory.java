@@ -56,11 +56,11 @@ public class ProcessingUnitPresenceAnnouncedEventFactory {
         }
 
         // Add announced presence status
-        announced.appendSpecification(new Attribute(ProcessingUnitPresenceAnnounced.SpecificationAttribute.PRESENCE_STATUS.name(), currentStatus.name()));
+        announced.setPresenceStatus(currentStatus);
 
         // Add optional name of processing unit notifier of the change
         if (puServiceName != null && !puServiceName.isEmpty())
-            announced.appendSpecification(new Attribute(ProcessingUnitPresenceAnnounced.SpecificationAttribute.SERVICE_NAME.name(), puServiceName));
+            announced.setServiceName(puServiceName);
 
         // Generate a correlation identifier about the announced presence, that can be reused by PU's presence observers and referenced in case of child event promoted (e.g about presence registration realized as delegate processing unit)
         announced.appendSpecification(new Attribute(Command.CORRELATION_ID, CorrelationIdFactory.generate(uidValue /* event uid as salt */)));
