@@ -2,6 +2,7 @@ package org.cybnity.infrastructure.technical.message_bus.adapter.api.event;
 
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
+import org.cybnity.framework.domain.IPresenceObservability;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.event.CollaborationEventType;
 import org.cybnity.framework.domain.event.CorrelationIdFactory;
@@ -25,12 +26,14 @@ public class ProcessingUnitPresenceAnnouncedEventFactory {
      *
      * @param supportedEventTypesToRoutingPath Mandatory set of routing map regarding supported event types by PU, and entrypoint channel paths.
      * @param puServiceName                    Optional logical name of the processing unit that is able to treat the announced event types.
+     * @param currentStatus                    Mandatory current status of presence which is defined by the built announce.
      * @return A prepared instance of change event.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      */
-    public ProcessingUnitPresenceAnnounced create(Map<IEventType, ICapabilityChannel> supportedEventTypesToRoutingPath, String puServiceName, EntityReference priorEventRef) throws IllegalArgumentException {
+    public ProcessingUnitPresenceAnnounced create(Map<IEventType, ICapabilityChannel> supportedEventTypesToRoutingPath, String puServiceName, EntityReference priorEventRef, IPresenceObservability.PresenceState currentStatus) throws IllegalArgumentException {
         if (supportedEventTypesToRoutingPath == null || supportedEventTypesToRoutingPath.isEmpty())
             throw new IllegalArgumentException("supportedEventTypesToRoutingPath parameter is required and shall not be empty!");
+        if (currentStatus == null) throw new IllegalArgumentException("currentStatus parameter is required!");
 
         // Create new event identity
         String uidValue = UUID.randomUUID().toString();
@@ -52,9 +55,12 @@ public class ProcessingUnitPresenceAnnouncedEventFactory {
             announced.setChangeCommandRef(priorEventRef);
         }
 
+        // Add announced presence status
+        announced.appendSpecification(new Attribute(ProcessingUnitPresenceAnnounced.SpecificationAttribute.PRESENCE_STATUS.name(), currentStatus.name()));
+
         // Add optional name of processing unit notifier of the change
         if (puServiceName != null && !puServiceName.isEmpty())
-            announced.appendSpecification(new Attribute(ProcessingUnitPresenceAnnounced.SpecificationAttribute.ServiceName.name(), puServiceName));
+            announced.appendSpecification(new Attribute(ProcessingUnitPresenceAnnounced.SpecificationAttribute.SERVICE_NAME.name(), puServiceName));
 
         // Generate a correlation identifier about the announced presence, that can be reused by PU's presence observers and referenced in case of child event promoted (e.g about presence registration realized as delegate processing unit)
         announced.appendSpecification(new Attribute(Command.CORRELATION_ID, CorrelationIdFactory.generate(uidValue /* event uid as salt */)));
