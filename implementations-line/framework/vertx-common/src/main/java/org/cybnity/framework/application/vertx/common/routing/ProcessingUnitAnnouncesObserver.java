@@ -2,14 +2,16 @@ package org.cybnity.framework.application.vertx.common.routing;
 
 import org.cybnity.framework.application.vertx.common.event.AttributeName;
 import org.cybnity.framework.domain.*;
-import org.cybnity.framework.domain.event.*;
+import org.cybnity.framework.domain.event.CollaborationEventType;
+import org.cybnity.framework.domain.event.DomainEventFactory;
+import org.cybnity.framework.domain.event.EventSpecification;
+import org.cybnity.framework.domain.event.ProcessingUnitPresenceAnnounced;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.Channel;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.ChannelObserver;
-import org.cybnity.infrastructure.technical.message_bus.adapter.api.MappingException;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.UISAdapter;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.MessageMapperFactory;
 
@@ -195,9 +197,8 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
      * Define common specification criteria as Attribute into a specification of event.
      *
      * @param specification The updated specification attributes list (added AttributeName.ServiceName.name() and AttributeName.SourceChannelName.name()).
-     * @return
      */
-    private Collection<Attribute> updateWithDefaultSpecificationCriteria(Collection<Attribute> specification) {
+    private void updateWithDefaultSpecificationCriteria(Collection<Attribute> specification) {
         if (specification != null) {
             if (this.dynamicRoutingServiceName != null && !this.dynamicRoutingServiceName.isEmpty())
                 // Owner of the dynamic routing service
@@ -206,7 +207,6 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
             // Original path of received registration request
             EventSpecification.appendSpecification(new Attribute(AttributeName.SourceChannelName.name(), dynamicRoutersControlChannel.name()), specification);
         }
-        return specification;
     }
 
     @Override
@@ -214,26 +214,4 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
         return delegatesDestinationMap;
     }
 
-    /**
-     * Publish a request to processing units which are observing the routing path channel regarding a new of current presence update.
-     * This method allow at any time (e.g in case of reboot of this observer) to notify the providers of routing paths (e.g feature modules) that recipients list need to be re-built from their current supported routes.
-     *
-     * @throws MappingException When problem regarding the build of event to publish.
-     */
-    public void requestPresenceAnnouncesRenewal() throws MappingException {
-        // Define optional descriptions relative to the gateway notifying the processing units
-        Collection<Attribute> specification = new ArrayList<>();
-        updateWithDefaultSpecificationCriteria(specification);
-
-        if (!registeredRoutingPathChange.isEmpty()) {
-            LinkedHashSet<Identifier> childEventIdentifiers = new LinkedHashSet<>();
-            // Define a unique identifier of the new event
-            childEventIdentifiers.add(new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), UUID.randomUUID().toString()));
-            DomainEntity identifiedBy = new DomainEntity(childEventIdentifiers);
-
-            Command puRegisteredNotification = CommandFactory.create(CollaborationEventType.PROCESSING_UNIT_PRESENCE_ANNOUNCE_REQUESTED.name(), identifiedBy, specification, /* priorCommandRef */ null, null /* domain changedModelElementRef */);
-            // Generate a renewal presence declarations to observers
-            uisClient.publish(puRegisteredNotification, registeredRoutingPathChange, new MessageMapperFactory().getMapper(IDescribed.class, String.class));
-        }
-    }
 }
