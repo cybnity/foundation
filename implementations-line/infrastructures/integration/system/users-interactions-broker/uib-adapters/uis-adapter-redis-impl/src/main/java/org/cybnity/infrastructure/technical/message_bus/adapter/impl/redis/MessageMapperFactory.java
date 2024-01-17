@@ -2,12 +2,10 @@ package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
 import io.lettuce.core.StreamMessage;
 import org.cybnity.framework.domain.IDescribed;
+import org.cybnity.framework.domain.event.ProcessingUnitPresenceAnnounced;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.IMessageMapperProvider;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.IDescribedToJSONMessageTransformer;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.IDescribedToStreamMessageTransformer;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.JSONMessageToIDescribedTransformer;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.StreamMessageToIDescribedTransformer;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.*;
 
 /**
  * Utility class allowing to transform an object manageable by the space according to a type of data structure supported by Redis.
@@ -31,12 +29,16 @@ public class MessageMapperFactory implements IMessageMapperProvider {
                 }
             } else if (StreamMessage.class.isAssignableFrom(transformable)) {
                 // Select the mapper allowing transformation to targeted type
-                if (IDescribed.class.isAssignableFrom(transformableAs)) {
+                if (ProcessingUnitPresenceAnnounced.class.isAssignableFrom(transformableAs)) {
+                    return new StreamMessageToProcessingUnitPresenceAnnouncedTransformer();
+                } else if (IDescribed.class.isAssignableFrom(transformableAs)) {
                     return new StreamMessageToIDescribedTransformer();
                 }
             } else if (String.class.isAssignableFrom(transformable)) {
                 // Select the mapper allowing transformation to targeted type
-                if (IDescribed.class.isAssignableFrom(transformableAs)) {
+                if (ProcessingUnitPresenceAnnounced.class.isAssignableFrom(transformableAs)) {
+                    return new JSONMessageToProcessingUnitPresenceAnnouncedTransformer();
+                } else if (IDescribed.class.isAssignableFrom(transformableAs)) {
                     return new JSONMessageToIDescribedTransformer();
                 }
             }
