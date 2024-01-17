@@ -96,34 +96,54 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
         return null;
     }
 
+    /**
+     * Interpret only ProcessingUnitPresenceAnnounced even type including a defined presence status.
+     * When notified presence is about unavailable processing unit (e.g stopped processing unit which does not continue to deliver services), it's possible that another processing unit instance (e.g in case of multiple parallel processors managing events from a same stream endpoint) continue to support the event types previously registered as eligible to forwarding.
+     * In this supported case, this implementation does not remove potential previously declared recipient routing paths.
+     *
+     * @param event Treated event. When presence status is not defined by the ProcessingUnitPresenceAnnounced event received, the event is ignored.
+     */
     @Override
     public void notify(IDescribed event) {
         if (event instanceof ProcessingUnitPresenceAnnounced) {
             ProcessingUnitPresenceAnnounced puEvent = (ProcessingUnitPresenceAnnounced) event;
+            Attribute presenceState = puEvent.presenceStatus();
 
-            // It's an event promoted by a processing unit regarding its presence and availability for delegation of event treatment
-            Collection<Attribute> eventsRoutingPathsCollection = puEvent.eventsRoutingPaths();
+            if (presenceState != null) {
+                IPresenceObservability.PresenceState declaredPresence = IPresenceObservability.PresenceState.valueOf(presenceState.value());
+                if (IPresenceObservability.PresenceState.AVAILABLE == declaredPresence) {
+                    // It's an event promoted by a processing unit regarding its presence and availability for delegation of event treatment
+                    Collection<Attribute> eventsRoutingPathsCollection = puEvent.eventsRoutingPaths();
 
-            // Register the paths per supported event type into the dynamic controlled recipients list
-            String recipientPath;
-            String supportedEventTypeName;
-            boolean changedRecipientsContainer = false;
-            for (Attribute routeDefinition : eventsRoutingPathsCollection) {
-                supportedEventTypeName = routeDefinition.name();
-                recipientPath = routeDefinition.value();
-                if (supportedEventTypeName != null && !supportedEventTypeName.isEmpty()) {
-                    // Update the dynamic recipient list regarding event type definition
-                    // (add of new path, upgrade of existing path, deletion of previous path)
-                    if (delegatesDestinationMap.addRoute(supportedEventTypeName.trim(), recipientPath)) {
-                        changedRecipientsContainer = true;
+                    // Register the paths per supported event type into the dynamic controlled recipients list
+                    String recipientPath;
+                    String supportedEventTypeName;
+                    boolean changedRecipientsContainer = false;
+                    for (Attribute routeDefinition : eventsRoutingPathsCollection) {
+                        supportedEventTypeName = routeDefinition.name();
+                        recipientPath = routeDefinition.value();
+                        if (supportedEventTypeName != null && !supportedEventTypeName.isEmpty()) {
+                            // Update the dynamic recipient list regarding event type definition
+                            // (add of new path, upgrade of existing path, deletion of previous path)
+                            if (delegatesDestinationMap.addRoute(supportedEventTypeName.trim(), recipientPath)) {
+                                changedRecipientsContainer = true;
+                            }
+                        }
                     }
-                }
-            }
 
-            // Notify confirmed dynamic recipients list changes
-            // when promotion channel is defined
-            if (changedRecipientsContainer && !registeredRoutingPathChange.isEmpty())
-                notifyDynamicRecipientListChanged(puEvent, uisClient);
+                    // Notify confirmed dynamic recipients list changes
+                    // when promotion channel is defined
+                    if (changedRecipientsContainer && !registeredRoutingPathChange.isEmpty())
+                        notifyDynamicRecipientListChanged(puEvent, uisClient);
+                } else if (IPresenceObservability.PresenceState.UNAVAILABLE == declaredPresence) {
+                    // It's notified presence as unavailable (e.g stopped processing unit which does not continue to deliver services)
+                    // but it's possible that another processing unit instance (e.g in case of multiple parallel processors managing events from a same stream endpoint) continue to support the event types previously registered as eligible to forwarding
+                    // So don't remove potential declared recipient routing paths
+                }
+            } else {
+                // It's an unknown presence status
+                // So ignore event
+            }
         } else {
             // Invalid type of notification event received into the control channel
             logger.severe("Reception of invalid event type into the control channel (" + observed().name() + ") which shall only receive " + ProcessingUnitPresenceAnnounced.class.getSimpleName() + " supported event!");
@@ -176,6 +196,7 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
 
     /**
      * Define common specification criteria as Attribute into a specification of event.
+     *
      * @param specification The updated specification attributes list (added AttributeName.ServiceName.name() and AttributeName.SourceChannelName.name()).
      * @return
      */
