@@ -23,69 +23,6 @@ import java.util.Collections;
 @JsonTypeName("ProcessingUnitPresenceAnnounced")
 public class ProcessingUnitPresenceAnnounced extends ConcreteDomainChangeEvent {
 
-    /**
-     * Supported attributes set by a presence announce.
-     */
-    public enum SpecificationAttribute implements IAttribute {
-        /**
-         * Attribute regarding the logical identification name of a services provider (e.g UI capability processing unit which ensure domain event treatments).
-         */
-        SERVICE_NAME,
-
-        /**
-         * Attribute regarding a state of an announced presence.
-         */
-        PRESENCE_STATUS;
-    }
-
-    /**
-     * Add a specification relative to the service name which is subject of the announced presence statue.
-     *
-     * @param name A service name. Ignored when null.
-     */
-    public void setServiceName(String name) {
-        if (name != null) {
-            appendSpecification(new Attribute(SpecificationAttribute.SERVICE_NAME.name(), name));
-        }
-    }
-
-    /**
-     * Get the service name which is considered as presence subject.
-     *
-     * @return A service name or null.
-     */
-    public Attribute serviceName() {
-        if (this.specification != null) {
-            // Search optionally and previously defined value
-            return EventSpecification.findSpecificationByName(SpecificationAttribute.SERVICE_NAME.name(), this.specification);
-        }
-        return null;
-    }
-
-    /**
-     * Add a specification relative to the state of the announced presence.
-     *
-     * @param status A status of presence. Ignored when null.
-     */
-    public void setPresenceStatus(IPresenceObservability.PresenceState status) {
-        if (status != null) {
-            appendSpecification(new Attribute(SpecificationAttribute.PRESENCE_STATUS.name(), status.name()));
-        }
-    }
-
-    /**
-     * Get the presence status which is announced.
-     *
-     * @return A state or null.
-     */
-    public Attribute presenceStatus() {
-        if (this.specification != null) {
-            // Search optionally and previously defined value
-            return EventSpecification.findSpecificationByName(SpecificationAttribute.PRESENCE_STATUS.name(), this.specification);
-        }
-        return null;
-    }
-
     @JsonIgnore
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(ProcessingUnitPresenceAnnounced.class).hashCode();
@@ -133,6 +70,9 @@ public class ProcessingUnitPresenceAnnounced extends ConcreteDomainChangeEvent {
         if (this.specification != null && !this.specification.isEmpty()) {
             instance.specification = this.specification();
         }
+        if (this.eventsRoutingPaths != null && !this.eventsRoutingPaths.isEmpty()) {
+            instance.eventsRoutingPaths = this.eventsRoutingPaths();
+        }
         return instance;
     }
 
@@ -179,4 +119,73 @@ public class ProcessingUnitPresenceAnnounced extends ConcreteDomainChangeEvent {
         }
         return null;
     }
+
+
+    /**
+     * Supported attributes set by a presence announce.
+     */
+    public enum SpecificationAttribute implements IAttribute {
+        /**
+         * Attribute regarding the logical identification name of a services provider (e.g UI capability processing unit which ensure domain event treatments).
+         */
+        SERVICE_NAME,
+
+        /**
+         * Attribute regarding a state of an announced presence.
+         */
+        PRESENCE_STATUS;
+    }
+
+    /**
+     * Add a specification relative to the service name which is subject of the announced presence statue.
+     *
+     * @param name A service name. Ignored when null.
+     */
+    @JsonIgnore
+    public void setServiceName(String name) {
+        if (name != null) {
+            appendSpecification(new Attribute(SpecificationAttribute.SERVICE_NAME.name(), name));
+        }
+    }
+
+    /**
+     * Get the service name which is considered as presence subject.
+     *
+     * @return A service name or null.
+     */
+    @JsonIgnore
+    public Attribute serviceName() {
+        if (this.specification != null) {
+            // Search optionally and previously defined value
+            return EventSpecification.findSpecificationByName(SpecificationAttribute.SERVICE_NAME.name(), this.specification);
+        }
+        return null;
+    }
+
+    /**
+     * Add a specification relative to the state of the announced presence.
+     *
+     * @param status A status of presence. Ignored when null.
+     */
+    @JsonIgnore
+    public void setPresenceStatus(IPresenceObservability.PresenceState status) {
+        if (status != null) {
+            appendSpecification(new Attribute(SpecificationAttribute.PRESENCE_STATUS.name(), status.name()));
+        }
+    }
+
+    /**
+     * Get the presence status which is announced.
+     *
+     * @return A state or null.
+     */
+    @JsonIgnore
+    public Attribute presenceStatus() {
+        if (this.specification != null) {
+            // Search optionally and previously defined value
+            return EventSpecification.findSpecificationByName(SpecificationAttribute.PRESENCE_STATUS.name(), this.specification);
+        }
+        return null;
+    }
+
 }
