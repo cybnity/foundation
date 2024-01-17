@@ -29,7 +29,13 @@ public class ProcessingUnitPresenceAnnounced extends ConcreteDomainChangeEvent {
         /**
          * Attribute regarding the logical identification name of a services provider (e.g UI capability processing unit which ensure domain event treatments).
          */
-        ServiceName;
+        SERVICE_NAME,
+
+        /**
+         * Attribute regarding a state of an announced presence.
+         */
+        PRESENCE_STATUS
+        ;
     }
 
     @JsonIgnore
@@ -41,7 +47,6 @@ public class ProcessingUnitPresenceAnnounced extends ConcreteDomainChangeEvent {
      */
     @JsonProperty
     protected Collection<Attribute> eventsRoutingPaths;
-
 
     @JsonCreator
     public ProcessingUnitPresenceAnnounced() {
