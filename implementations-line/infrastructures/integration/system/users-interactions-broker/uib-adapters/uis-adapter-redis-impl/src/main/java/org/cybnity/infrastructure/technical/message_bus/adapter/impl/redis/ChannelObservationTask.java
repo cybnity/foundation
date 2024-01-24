@@ -144,28 +144,28 @@ public class ChannelObservationTask implements Callable<Void> {
 
             @Override
             public void subscribed(String channel, long count) {
-                logger.info(
+                logger.fine(
                         "Observation task is waiting for new message from channel (" + channel + ")"
                 );
             }
 
             @Override
             public void psubscribed(String pattern, long count) {
-                logger.info(
+                logger.fine(
                         "Observation task is waiting for new message from channel pattern (" + pattern + ")"
                 );
             }
 
             @Override
             public void unsubscribed(String channel, long count) {
-                logger.info(
+                logger.fine(
                         "Observation task is stopped regarding channel (" + channel + ")"
                 );
             }
 
             @Override
             public void punsubscribed(String pattern, long count) {
-                logger.info(
+                logger.fine(
                         "Observation task is stopped regarding channel pattern (" + pattern + ")"
                 );
             }

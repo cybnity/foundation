@@ -95,7 +95,7 @@ public class WorkersManagementCapability {
                         notifiableStartPromise.complete();
                 }).onFailure(error -> {
                     if (logger != null)
-                        logger.info(((loggedProcessUnitName != null) ? loggedProcessUnitName : "") + " server start failure: " + error.toString());
+                        logger.severe(((loggedProcessUnitName != null) ? loggedProcessUnitName : "") + " server start failure: " + error.toString());
                     if (notifiableStartPromise != null)
                         notifiableStartPromise.fail(error);
                 });

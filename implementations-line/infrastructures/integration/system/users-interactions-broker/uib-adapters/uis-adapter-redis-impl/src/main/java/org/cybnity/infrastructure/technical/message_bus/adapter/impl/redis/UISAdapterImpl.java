@@ -180,7 +180,7 @@ public class UISAdapterImpl implements UISAdapter {
                             thread.cancel(true);
                             // Clean container of threads regarding the previous instance reference
                             currentStreamObserversThreads.remove(item.getKey());
-                            logger.info("Observer of stream (" + listener.observed().name() + ") is stopped");
+                            logger.fine("Observer of stream (" + listener.observed().name() + ") is stopped");
                         }
                     }
                 }
@@ -202,7 +202,7 @@ public class UISAdapterImpl implements UISAdapter {
                             thread.cancel(true);
                             // Clean container of threads regarding the previous instance reference
                             currentChannelObserversThreads.remove(item.getKey());
-                            logger.info("Observer of channel (" + listener.observed().name() + ") is stopped");
+                            logger.fine("Observer of channel (" + listener.observed().name() + ") is stopped");
                         }
                     }
                 }

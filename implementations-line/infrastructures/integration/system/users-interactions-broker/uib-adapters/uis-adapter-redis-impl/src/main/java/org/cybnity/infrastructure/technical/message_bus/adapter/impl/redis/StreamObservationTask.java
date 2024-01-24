@@ -80,7 +80,7 @@ public class StreamObservationTask implements Callable<Void> {
                 String observationPattern = this.delegate.observationPattern();
                 syncCommands.xgroupCreate(XReadArgs.StreamOffset.from(streamPathName, (observationPattern != null && !observationPattern.isEmpty()) ? observationPattern : StreamObserver.DEFAULT_OBSERVATION_PATTERN), consumersGroupName, XGroupCreateArgs.Builder.mkstream(true));
             } catch (Exception redisBusyException) {
-                logger.info(String.format("Group '%s' already exists", consumersGroupName));
+                logger.fine(String.format("Group '%s' already exists", consumersGroupName));
             }
         } else {
             throw new Exception("A consumers group name need to be defined by the delegate as mandatory for stream messages observation!");
@@ -88,7 +88,7 @@ public class StreamObservationTask implements Callable<Void> {
 
         // Define a technical name of the consumer instance
         String consumerInstanceName = CorrelationIdFactory.generate(String.valueOf(this.delegate.hashCode()));
-        this.logger.info(
+        this.logger.fine(
                 "Observation task (consumer name: " + consumerInstanceName +
                         ", consumer group: " + consumersGroupName + ") is waiting for new message from stream (" + streamPathName + ")"
         );
