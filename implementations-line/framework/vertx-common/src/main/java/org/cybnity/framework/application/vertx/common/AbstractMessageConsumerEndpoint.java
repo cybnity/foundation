@@ -22,13 +22,15 @@ public abstract class AbstractMessageConsumerEndpoint extends AbstractVerticle i
     }
 
     /**
-     * Resource freedom (e.g undeploy of all consumers instances).
+     * Resource freedom (e.g undeploy of all consumers instances) regarding started consumers and specific dependent clients (call to cleanConsumersResources() method).
      */
     @Override
     public void stop() {
         // Stop the consumers listening
         stopStreamConsumers();
         stopChannelConsumers();
+        // clean allowed dedicated resources
+        cleanConsumersResources();
     }
 
     /**
@@ -51,4 +53,8 @@ public abstract class AbstractMessageConsumerEndpoint extends AbstractVerticle i
      */
     abstract protected void stopChannelConsumers();
 
+    /**
+     * Clean all resources (e.g interaction middleware clients) used specifically by the consumers.
+     */
+    abstract void cleanConsumersResources();
 }

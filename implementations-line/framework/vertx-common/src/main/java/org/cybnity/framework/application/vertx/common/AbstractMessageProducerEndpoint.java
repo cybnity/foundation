@@ -21,12 +21,14 @@ public abstract class AbstractMessageProducerEndpoint extends AbstractVerticle {
     }
 
     /**
-     * Resource freedom (e.g undeploy of all event producer instances).
+     * Resource freedom (e.g undeploy of all event producer instances) and dependent activated resources (call to cleanProducersResources() method).
      */
     @Override
     public void stop() {
         // Stop the messages producers
         stopMessageProducers();
+        // clean resources
+        cleanProducersResources();
     }
 
     /**
@@ -45,4 +47,9 @@ public abstract class AbstractMessageProducerEndpoint extends AbstractVerticle {
      * @return A message mapper provider supporting custom and/or common event types of fact and messages.
      */
     abstract protected IMessageMapperProvider getMessageMapperProvider();
+
+    /**
+     * Clean all resources (e.g interaction middleware clients) used specifically by the producers.
+     */
+    abstract void cleanProducersResources();
 }
