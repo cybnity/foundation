@@ -64,16 +64,16 @@ public class UISAdapterImpl implements UISAdapter {
     private final ExecutorService currentChannelObserversPool = Executors.newCachedThreadPool();
 
     /**
-     * Started future regarding registered stream observations.
+     * Concurrent accessible set of started futures regarding registered stream observations.
      * Key = stream path name, Value = started thread.
      */
-    private final Map<StreamObserver, Future<Void>> currentStreamObserversThreads = new HashMap<>();
+    private final Map<StreamObserver, Future<Void>> currentStreamObserversThreads = new Hashtable<>();
 
     /**
-     * Started future regarding registered channel observations.
+     * Concurrent accessible set of started futures regarding registered channel observations.
      * Key = channel path name, Value = started thread.
      */
-    private final Map<ChannelObserver, Future<Void>> currentChannelObserversThreads = new HashMap<>();
+    private final Map<ChannelObserver, Future<Void>> currentChannelObserversThreads = new Hashtable<>();
 
     /**
      * Default constructor of the adapter ready to manage interactions with the
