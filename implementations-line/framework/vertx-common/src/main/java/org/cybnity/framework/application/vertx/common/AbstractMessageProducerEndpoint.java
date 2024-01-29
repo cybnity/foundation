@@ -51,5 +51,5 @@ public abstract class AbstractMessageProducerEndpoint extends AbstractVerticle {
     /**
      * Clean all resources (e.g interaction middleware clients) used specifically by the producers.
      */
-    abstract void cleanProducersResources();
+    abstract protected void cleanProducersResources();
 }

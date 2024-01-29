@@ -56,5 +56,5 @@ public abstract class AbstractMessageConsumerEndpoint extends AbstractVerticle i
     /**
      * Clean all resources (e.g interaction middleware clients) used specifically by the consumers.
      */
-    abstract void cleanConsumersResources();
+    abstract protected void cleanConsumersResources();
 }
