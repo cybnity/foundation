@@ -7,6 +7,7 @@ import org.cybnity.framework.domain.event.DomainEventFactory;
 import org.cybnity.framework.domain.event.ProcessingUnitPresenceAnnounced;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -24,6 +25,14 @@ import java.util.logging.Logger;
 public class UISChannelLettuceAdapterUseCaseTestManual extends ContextualizedRedisActiveTestContainer {
 
     private final Logger logger = Logger.getLogger(UISChannelLettuceAdapterUseCaseTestManual.class.getName());
+
+    private UISAdapter adapter;
+
+    @AfterEach
+    public void removeResources() {
+        if (adapter != null)
+            adapter.freeUpResources();
+    }
 
     /**
      * This test try to publish a domain event into a dedicated topic via adapter, and check that event is promoted by Redis.
@@ -81,7 +90,7 @@ public class UISChannelLettuceAdapterUseCaseTestManual extends ContextualizedRed
         CountDownLatch waiter = new CountDownLatch(requestEvents.size() /* Quantity of message to wait about processing end confirmation */);
 
         // Initialize an adapter connected to contextualized Redis server (Users Interactions Space)
-        final UISAdapter adapter = new UISAdapterImpl(getContext());
+        adapter = new UISAdapterImpl(getContext());
 
         Thread second = new Thread(() -> {
             // Simulate autonomous events push in topic

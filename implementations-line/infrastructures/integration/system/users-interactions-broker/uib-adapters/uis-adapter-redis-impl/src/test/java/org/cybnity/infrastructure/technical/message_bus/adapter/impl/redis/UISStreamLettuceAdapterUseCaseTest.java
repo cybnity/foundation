@@ -6,6 +6,7 @@ import org.cybnity.framework.domain.event.CommandFactory;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -22,6 +23,14 @@ import java.util.logging.Logger;
 public class UISStreamLettuceAdapterUseCaseTest extends ContextualizedRedisActiveTestContainer {
 
     private final Logger logger = Logger.getLogger(UISStreamLettuceAdapterUseCaseTest.class.getName());
+
+    private UISAdapter adapter;
+
+    @AfterEach
+    public void removeResources() {
+        if (adapter != null)
+            adapter.freeUpResources();
+    }
 
     /**
      * This test try to push a command event into a dedicated stream via adapter, and check that event is stored by Redis.
@@ -73,7 +82,7 @@ public class UISStreamLettuceAdapterUseCaseTest extends ContextualizedRedisActiv
         CountDownLatch waiter = new CountDownLatch(requestEvents.size() /* Quantity of message to wait about processing end confirmation */);
 
         // Initialize an adapter connected to contextualized Redis server (Users Interactions Space)
-        final UISAdapter adapter = new UISAdapterImpl(getContext());
+        adapter = new UISAdapterImpl(getContext());
 
         Thread first = new Thread(() -> {
             // Simulate parallel consumers registration and stream observations
@@ -187,7 +196,7 @@ public class UISStreamLettuceAdapterUseCaseTest extends ContextualizedRedisActiv
         Stream recipient = new Stream(/* Example of global entrypoint of Access Control capability domain */ "ac" + NamingConventions.STREAM_NAME_SEPARATOR + getClass().getSimpleName().toLowerCase());
 
         // Initialize an adapter connected to contextualized Redis server (Users Interactions Space)
-        final UISAdapter adapter = new UISAdapterImpl(getContext());
+        adapter = new UISAdapterImpl(getContext());
 
         // Execute command via adapter (WITH AUTO-DETECTION OF STREAM RECIPIENT FROM REQUEST EVENT)
         MessageMapper mapper = new MessageMapperFactory().getMapper(IDescribed.class, StreamMessage.class);
