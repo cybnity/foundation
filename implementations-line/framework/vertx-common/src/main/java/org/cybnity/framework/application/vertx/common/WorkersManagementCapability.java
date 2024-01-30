@@ -111,8 +111,9 @@ public class WorkersManagementCapability {
      * @param logger                Optional log system for traces creation about success or failed HTTP listening stop.
      * @param notifiableStopPromise Optional promise to update (complete or fail call) according to the HTTP server stop state.
      * @param loggedProcessUnitName Optional name of the processing unit which can be used in the logs.
+     * @throws IllegalArgumentException When mandatory parameter is missing.
      */
-    public void stopHttpServer(Logger logger, Promise<Void> notifiableStopPromise, String loggedProcessUnitName) {
+    public void stopHttpServer(Logger logger, Promise<Void> notifiableStopPromise, String loggedProcessUnitName) throws IllegalArgumentException {
         if (this.httpService != null) {
             // Stop the http service
             int existingListenedPort = this.httpService.actualPort();
