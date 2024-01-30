@@ -1,4 +1,4 @@
-package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
+package org.cybnity.infrastructure.technical.message_bus.adapter.impl;
 
 import org.cybnity.framework.domain.*;
 import org.cybnity.framework.domain.event.CollaborationEventType;
@@ -7,6 +7,10 @@ import org.cybnity.framework.domain.event.DomainEventFactory;
 import org.cybnity.framework.domain.event.ProcessingUnitPresenceAnnounced;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.ChannelObserverImpl;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.ContextualizedRedisActiveTestContainer;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.MessageMapperFactory;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.UISAdapterImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
