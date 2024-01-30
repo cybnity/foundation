@@ -1,18 +1,10 @@
 package org.cybnity.application.ui.system.backend.routing;
 
-import java.net.http.HttpResponse;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
-import io.vertx.core.json.JsonObject;
 import io.vertx.core.shareddata.SharedData;
-import io.vertx.ext.bridge.PermittedOptions;
 import io.vertx.ext.web.AllowForwardHeaders;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
@@ -23,6 +15,11 @@ import io.vertx.ext.web.handler.sockjs.SockJSHandlerOptions;
 import io.vertx.ext.web.impl.RouterImpl;
 import org.cybnity.application.ui.system.backend.AppConfigurationVariable;
 import org.cybnity.framework.IContext;
+
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Router implementation which define the list of routes supported by a UI
