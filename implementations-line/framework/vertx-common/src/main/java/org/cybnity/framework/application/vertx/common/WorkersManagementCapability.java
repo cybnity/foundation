@@ -3,6 +3,7 @@ package org.cybnity.framework.application.vertx.common;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import org.cybnity.framework.Context;
 import org.cybnity.framework.IContext;
@@ -28,6 +29,11 @@ public class WorkersManagementCapability {
      * Current context of adapter runtime.
      */
     public final IContext context = new Context();
+
+    /**
+     * Optionally started HTTP server.
+     */
+    private HttpServer httpService;
 
     /**
      * Default constructor.
@@ -76,14 +82,10 @@ public class WorkersManagementCapability {
      */
     public void createHttpServer(Vertx vertx, Logger logger, Promise<Void> notifiableStartPromise, String loggedProcessUnitName) throws IllegalArgumentException {
         if (vertx == null) throw new IllegalArgumentException("vertx parameter is required!");
-        // HTTP specific request handler
-        // Create a Router initialized to health supervision routes
-        Router router = HealthControllableRouter.httpHealthRouter(vertx);
-
-        // Create the HTTP server supporting supervision
+        // Create an HTTP server supporting supervision
         vertx.createHttpServer()
                 // Handle every request using the router
-                .requestHandler(router)
+                .requestHandler(/* Create a Router initialized to health supervision routes as HTTP specific request handler */HealthControllableRouter.httpHealthRouter(vertx))
                 // Start HTTP listening according to the application settings
                 .listen(Integer
                         .parseInt(context.get(AppConfigurationVariable.ENDPOINT_HTTP_SERVER_PORT)))
@@ -91,6 +93,8 @@ public class WorkersManagementCapability {
                 .onSuccess(server -> {
                     if (logger != null)
                         logger.info(((loggedProcessUnitName != null) ? loggedProcessUnitName : "") + " server started (port: " + server.actualPort() + ")");
+                    // Keep reference to started server allowing future stop
+                    httpService = server;
                     if (notifiableStartPromise != null)
                         notifiableStartPromise.complete();
                 }).onFailure(error -> {
@@ -99,6 +103,31 @@ public class WorkersManagementCapability {
                     if (notifiableStartPromise != null)
                         notifiableStartPromise.fail(error);
                 });
+    }
+
+    /**
+     * Stop HTTP server if existing.
+     *
+     * @param logger                Optional log system for traces creation about success or failed HTTP listening stop.
+     * @param notifiableStopPromise Optional promise to update (complete or fail call) according to the HTTP server stop state.
+     * @param loggedProcessUnitName Optional name of the processing unit which can be used in the logs.
+     */
+    public void stopHttpServer(Logger logger, Promise<Void> notifiableStopPromise, String loggedProcessUnitName) {
+        if (this.httpService != null) {
+            // Stop the http service
+            int existingListenedPort = this.httpService.actualPort();
+            this.httpService.close().onSuccess(res -> {
+                if (logger != null)
+                    logger.info(((loggedProcessUnitName != null) ? loggedProcessUnitName : "") + " server stopped (port: " + existingListenedPort + ")");
+                if (notifiableStopPromise != null)
+                    notifiableStopPromise.complete();
+            }).onFailure(error -> {
+                if (logger != null)
+                    logger.severe(((loggedProcessUnitName != null) ? loggedProcessUnitName : "") + " server stop failure: " + error.toString());
+                if (notifiableStopPromise != null)
+                    notifiableStopPromise.fail(error);
+            });
+        }
     }
 
     /**
