@@ -171,16 +171,19 @@ public class UISAdapterImpl implements UISAdapter {
         if (observers != null) {
             for (StreamObserver listener : observers) {
                 // Find previously registered observation tasks registry based on logical equals
-                for (Map.Entry<StreamObserver, Future<Void>> item : currentStreamObserversThreads.entrySet()) {
+                Map<StreamObserver, Future<Void>> copy = new HashMap<>(currentStreamObserversThreads);
+
+                for (Map.Entry<StreamObserver, Future<Void>> item : copy.entrySet()) {
                     if (item.getKey().equals(listener)) {
                         // Existing equals observer reference which can be interrupted
                         Future<Void> thread = item.getValue();
                         if (thread != null) {
                             // Interrupt the task
-                            thread.cancel(true);
-                            // Clean container of threads regarding the previous instance reference
-                            currentStreamObserversThreads.remove(item.getKey());
-                            logger.fine("Observer of stream (" + listener.observed().name() + ") is stopped");
+                            if(thread.cancel(true)) {
+                                // Clean container of thread regarding the previous instance
+                                currentStreamObserversThreads.remove(item.getKey());
+                                logger.fine("Observer of stream (" + listener.observed().name() + ") is stopped");
+                            }
                         }
                     }
                 }
@@ -193,16 +196,19 @@ public class UISAdapterImpl implements UISAdapter {
         if (observers != null) {
             for (ChannelObserver listener : observers) {
                 // Find previously registered observation tasks registry based on logical equals
-                for (Map.Entry<ChannelObserver, Future<Void>> item : currentChannelObserversThreads.entrySet()) {
+                Map<ChannelObserver, Future<Void>> copy = new HashMap<>(currentChannelObserversThreads);
+
+                for (Map.Entry<ChannelObserver, Future<Void>> item : copy.entrySet()) {
                     if (item.getKey().equals(listener)) {
                         // Existing equals observer reference which can be interrupted
                         Future<Void> thread = item.getValue();
                         if (thread != null) {
                             // Interrupt the task
-                            thread.cancel(true);
-                            // Clean container of threads regarding the previous instance reference
-                            currentChannelObserversThreads.remove(item.getKey());
-                            logger.fine("Observer of channel (" + listener.observed().name() + ") is stopped");
+                            if(thread.cancel(true)) {
+                                // Clean container of thread regarding the previous instance
+                                currentChannelObserversThreads.remove(item.getKey());
+                                logger.fine("Observer of channel (" + listener.observed().name() + ") is stopped");
+                            }
                         }
                     }
                 }
