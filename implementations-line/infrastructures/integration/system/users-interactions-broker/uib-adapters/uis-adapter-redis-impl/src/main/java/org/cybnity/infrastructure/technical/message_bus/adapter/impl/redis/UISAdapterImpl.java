@@ -68,6 +68,7 @@ public class UISAdapterImpl implements UISAdapter {
      * Concurrent accessible set of started futures regarding registered stream observations.
      * Key = stream path name, Value = started thread.
      * Concurrent access shall be supported regarding map read and upgrade of managed threads.
+     * Several threads can acquire locks on different map segments, so multiple threads can access the Map at the same time.
      */
     private final Map<StreamObserver, Future<Void>> currentStreamObserversThreads = new ConcurrentHashMap<>();
 
@@ -75,6 +76,7 @@ public class UISAdapterImpl implements UISAdapter {
      * Concurrent accessible set of started futures regarding registered channel observations.
      * Key = channel path name, Value = started thread.
      * Concurrent access shall be supported regarding map read and upgrade of managed threads.
+     * Several threads can acquire locks on different map segments, so multiple threads can access the Map at the same time.
      */
     private final Map<ChannelObserver, Future<Void>> currentChannelObserversThreads = new ConcurrentHashMap<>();
 

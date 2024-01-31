@@ -21,14 +21,12 @@ public abstract class AbstractMessageProducerEndpoint extends AbstractVerticle {
     }
 
     /**
-     * Resource freedom (e.g undeploy of all event producer instances) and dependent activated resources (call to cleanProducersResources() method).
+     * Undeploy of all message producer instances regarding started producers.
      */
     @Override
     public void stop() {
         // Stop the messages producers
         stopMessageProducers();
-        // clean resources
-        cleanProducersResources();
     }
 
     /**

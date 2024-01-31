@@ -46,7 +46,7 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
     /**
      * Map of announced processing units.
      * Identify existing path (e.g UIS stream recipient) to the remote service components which are eligible as delegate for event treatment
-     * based on RecipientList pattern implementation according to the fact event type name
+     * based on RecipientList pattern implementation according to the fact event type name.
      */
     private final UISRecipientList delegatesDestinationMap = new UISRecipientList();
 
