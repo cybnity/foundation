@@ -133,7 +133,7 @@ public class UISAdapterImpl implements UISAdapter {
 
                 // Disconnect client from space
                 getClient().shutdown();
-                // remove singleton instance which is not usable
+                // Remove singleton instance which is not usable (to force potential singleton re-instantiation in case of getClient() future call)
                 this.client = null;
             }
         } catch (UnoperationalStateException e) {
