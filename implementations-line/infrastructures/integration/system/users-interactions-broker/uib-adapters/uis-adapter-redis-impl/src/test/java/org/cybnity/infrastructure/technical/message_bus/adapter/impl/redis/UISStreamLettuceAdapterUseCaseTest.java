@@ -44,8 +44,10 @@ public class UISStreamLettuceAdapterUseCaseTest extends ContextualizedRedisActiv
         // Define the registry of messages correlation identifiers to treat
         final Collection<String> messagesToProcess = new LinkedList<>();
 
+        // Specific custom name for test avoiding collision with potential any other test parallel execution
+        String testSpecificName = "-givenAnonymousCommandIncludeDomainEntryPoint_whenPushedToSpaceWithoutRecipientDefined_thenStoredInStreamDetectedFromCommand";
         // Prepare command event sample
-        final String entrypointName = "ac" + NamingConventions.STREAM_NAME_SEPARATOR + getClass().getSimpleName().toLowerCase();
+        final String entrypointName = "ac" + NamingConventions.STREAM_NAME_SEPARATOR + getClass().getSimpleName().toLowerCase()+testSpecificName;
 
         // Build sample command events relative to capability to execute (e.g capability domain supported feature)
         List<Command> requestEvents = new LinkedList<>();

@@ -50,7 +50,7 @@ public class UISAdapterImpl implements UISAdapter {
     /**
      * Client proxy instance to the space.
      */
-    private final RedisClient client;
+    private RedisClient client;
 
     private Duration connectionTimeout;
 
@@ -99,25 +99,43 @@ public class UISAdapterImpl implements UISAdapter {
         // Check the minimum required data allowing connection to the targeted Redis
         // server
         checkHealthyState();
-        try {
-            // Prepare the Redis option allowing discussions with the Users Interactions Space
-            RedisURI writeModelURI = RedisURIFactory.createUISWriteModelURI(this.context);
-            // Create Redis Lettuce client
-            client = RedisClient.create(writeModelURI);
-        } catch (SecurityException s) {
-            throw new UnoperationalStateException(s);
+    }
+
+    /**
+     * Get a singleton instance of client.
+     * When previous and initial instance have been removed (e.g over freeUpResources() call), this method re-instantiate a singleton instance and return it.
+     *
+     * @return A singleton instance of Redis client.
+     * @throws UnoperationalStateException When system access via uri is in failure.
+     */
+    private RedisClient getClient() throws UnoperationalStateException {
+        if (this.client == null) {
+            // Initialize new singleton instance
+            try {
+                // Prepare the Redis option allowing discussions with the Users Interactions Space
+                RedisURI writeModelURI = RedisURIFactory.createUISWriteModelURI(this.context);
+                // Create Redis Lettuce client
+                this.client = RedisClient.create(writeModelURI);
+            } catch (SecurityException s) {
+                throw new UnoperationalStateException(s);
+            }
         }
+        return this.client;
     }
 
     @Override
     public void freeUpResources() {
-        if (client != null) {
-            // Remove any existing listeners managed by this client
-            unregister(currentStreamObserversThreads.keySet());
-            unsubscribe(currentChannelObserversThreads.keySet());
+        try {
+            if (getClient() != null) {
+                // Remove any existing listeners managed by this client
+                unregister(currentStreamObserversThreads.keySet());
+                unsubscribe(currentChannelObserversThreads.keySet());
 
-            // Disconnect client from space
-            client.shutdown();
+                // Disconnect client from space
+                getClient().shutdown();
+            }
+        } catch (UnoperationalStateException e) {
+            logger.severe(e.getMessage());
         }
     }
 
@@ -130,7 +148,7 @@ public class UISAdapterImpl implements UISAdapter {
     }
 
     @Override
-    public void register(Collection<StreamObserver> observers, MessageMapper eventMapper) throws IllegalArgumentException {
+    public void register(Collection<StreamObserver> observers, MessageMapper eventMapper) throws IllegalArgumentException, UnoperationalStateException {
         if (observers != null && !observers.isEmpty()) {
             for (StreamObserver listener : observers) {
                 // Verify that a same observer is not already existing for listening of the same topic (avoiding multiple registration of a same observer)
@@ -142,7 +160,7 @@ public class UISAdapterImpl implements UISAdapter {
                     }
                 }
                 if (!alreadyObservedStreamOverEqualsPattern) {
-                    Future<Void> f = currentStreamObserversPool.submit(new StreamObservationTask(client, listener, eventMapper));
+                    Future<Void> f = currentStreamObserversPool.submit(new StreamObservationTask(getClient(), listener, eventMapper));
                     // Get handle to the started thread for potential future stop
                     currentStreamObserversThreads.put(listener, f);
                 }
@@ -151,7 +169,7 @@ public class UISAdapterImpl implements UISAdapter {
     }
 
     @Override
-    public void subscribe(Collection<ChannelObserver> observers, MessageMapper eventMapper) throws IllegalArgumentException {
+    public void subscribe(Collection<ChannelObserver> observers, MessageMapper eventMapper) throws IllegalArgumentException, UnoperationalStateException {
         if (observers != null && !observers.isEmpty()) {
             for (ChannelObserver listener : observers) {
                 // Verify that a same observer is not already existing for listening of the same topic (avoiding multiple registration of a same observer)
@@ -163,7 +181,7 @@ public class UISAdapterImpl implements UISAdapter {
                     }
                 }
                 if (!alreadyObservedChannelOverEqualsPattern) {
-                    Future<Void> f = currentChannelObserversPool.submit(new ChannelObservationTask(client, listener, eventMapper));
+                    Future<Void> f = currentChannelObserversPool.submit(new ChannelObservationTask(getClient(), listener, eventMapper));
                     // Get handle to the started thread for potential future stop
                     currentChannelObserversThreads.put(listener, f);
                 }
@@ -184,7 +202,7 @@ public class UISAdapterImpl implements UISAdapter {
                         Future<Void> thread = item.getValue();
                         if (thread != null) {
                             // Interrupt the task
-                            if(thread.cancel(true)) {
+                            if (thread.cancel(true)) {
                                 // Clean container of thread regarding the previous instance
                                 currentStreamObserversThreads.remove(item.getKey());
                                 logger.fine("Observer of stream (" + listener.observed().name() + ") is stopped");
@@ -209,7 +227,7 @@ public class UISAdapterImpl implements UISAdapter {
                         Future<Void> thread = item.getValue();
                         if (thread != null) {
                             // Interrupt the task
-                            if(thread.cancel(true)) {
+                            if (thread.cancel(true)) {
                                 // Clean container of thread regarding the previous instance
                                 currentChannelObserversThreads.remove(item.getKey());
                                 logger.fine("Observer of channel (" + listener.observed().name() + ") is stopped");
@@ -227,7 +245,7 @@ public class UISAdapterImpl implements UISAdapter {
     }
 
     @Override
-    public List<String> append(IDescribed event, List<Stream> recipients, MessageMapper eventMapper) throws IllegalArgumentException, MappingException {
+    public List<String> append(IDescribed event, List<Stream> recipients, MessageMapper eventMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException {
         if (event == null) throw new IllegalArgumentException("Event parameter is required!");
         if (eventMapper == null) throw new IllegalArgumentException("Event mapper parameter is required!");
         if (recipients == null) throw new IllegalArgumentException("Recipients parameter is required!");
@@ -242,7 +260,7 @@ public class UISAdapterImpl implements UISAdapter {
     }
 
     @Override
-    public String append(IDescribed factEvent, Stream recipient, MessageMapper eventMapper) throws IllegalArgumentException, MappingException {
+    public String append(IDescribed factEvent, Stream recipient, MessageMapper eventMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException {
         if (factEvent == null) throw new IllegalArgumentException("factEvent parameter is required!");
         if (eventMapper == null) throw new IllegalArgumentException("Event mapper parameter is required!");
         String recipientPathName = null;
@@ -267,7 +285,7 @@ public class UISAdapterImpl implements UISAdapter {
             Map<String, String> messageBody = (Map<String, String>) eventMapper.getResult();
 
             // Send event to identified stream recipient
-            connection = client.connect();
+            connection = getClient().connect();
             RedisCommands<String, String> syncCommands = connection.sync();
             messageId = syncCommands.xadd(/* recipient name to feed */ recipientPathName, /* fact record transformed */ messageBody);
         } catch (ClassCastException cce) {
@@ -282,7 +300,7 @@ public class UISAdapterImpl implements UISAdapter {
     }
 
     @Override
-    public void publish(IDescribed event, Channel recipient, MessageMapper eventMapper) throws IllegalArgumentException, MappingException {
+    public void publish(IDescribed event, Channel recipient, MessageMapper eventMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException {
         if (event == null) throw new IllegalArgumentException("Event parameter is required!");
         if (eventMapper == null) throw new IllegalArgumentException("Event mapper parameter is required!");
         String recipientPathName = null;
@@ -308,10 +326,10 @@ public class UISAdapterImpl implements UISAdapter {
             String messageBody = (String) eventMapper.getResult();
 
             // Send event to identified channel recipient
-            connection = client.connectPubSub();
+            connection = getClient().connectPubSub();
             RedisPubSubAsyncCommands<String, String> asyncCommands = connection.async();
             asyncCommands.publish(/* recipient name to feed */ recipientPathName, /* fact record transformed */ messageBody);
-        } catch (Exception cce) {
+        } catch (ClassCastException cce) {
             // result cast problem
             throw new MappingException(cce);
         } finally {
@@ -322,7 +340,7 @@ public class UISAdapterImpl implements UISAdapter {
     }
 
     @Override
-    public void publish(IDescribed event, Collection<Channel> recipients, MessageMapper eventMapper) throws IllegalArgumentException, MappingException {
+    public void publish(IDescribed event, Collection<Channel> recipients, MessageMapper eventMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException {
         if (event == null) throw new IllegalArgumentException("Event parameter is required!");
         if (eventMapper == null) throw new IllegalArgumentException("Event mapper parameter is required!");
         if (recipients == null) throw new IllegalArgumentException("Recipients parameter is required!");

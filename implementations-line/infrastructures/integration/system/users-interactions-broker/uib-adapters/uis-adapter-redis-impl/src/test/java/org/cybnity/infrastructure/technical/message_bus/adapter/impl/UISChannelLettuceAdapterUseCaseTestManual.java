@@ -3,7 +3,6 @@ package org.cybnity.infrastructure.technical.message_bus.adapter.impl;
 import org.cybnity.framework.domain.*;
 import org.cybnity.framework.domain.event.CollaborationEventType;
 import org.cybnity.framework.domain.event.CorrelationIdFactory;
-import org.cybnity.framework.domain.event.DomainEventFactory;
 import org.cybnity.framework.domain.event.ProcessingUnitPresenceAnnounced;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
@@ -49,8 +48,11 @@ public class UISChannelLettuceAdapterUseCaseTestManual extends ContextualizedRed
         // Define the registry of messages correlation identifiers to treat
         final Collection<String> messagesToProcess = new LinkedList<>();
 
+        // Specific custom name for test avoiding collision with potential any other test parallel execution
+        String testSpecificName = "-givenDomainEvent_whenPushedToSpaceDefinedRecipient_thenStoredInChannel";
+
         // Prepare domain event sample
-        final String outputChannelName = "ac" + NamingConventions.CHANNEL_NAME_SEPARATOR + getClass().getSimpleName().toLowerCase();
+        final String outputChannelName = "ac" + NamingConventions.CHANNEL_NAME_SEPARATOR + getClass().getSimpleName().toLowerCase() + testSpecificName;
 
         // Build sample domain events relative to capability to execute (e.g capability domain supported feature)
         List<DomainEvent> requestEvents = new LinkedList<>();
@@ -72,11 +74,6 @@ public class UISChannelLettuceAdapterUseCaseTestManual extends ContextualizedRed
             definition.add(new Attribute("ProcessingUnitName", "CYBNITY_PU_" + i));
             // Auto-assign correlation identifier allowing finalized transaction check
             definition.add(new Attribute(Command.CORRELATION_ID, CorrelationIdFactory.generate(/* event uid as salt */"CYBNITY_PU_" + i)));
-
-            DomainEvent evt = DomainEventFactory.create("PROCESSING_UNIT_PRESENCE_ANNOUNCED",
-                    identifiedBy, definition,
-                    /* none prior event to reference*/ null,
-                    /* None pre-identified domain event because new creation */ null);
 
             // Prepare announcing event
             ProcessingUnitPresenceAnnounced promotedEvent = new ProcessingUnitPresenceAnnounced(identifiedBy, CollaborationEventType.PROCESSING_UNIT_PRESENCE_ANNOUNCED);
@@ -129,7 +126,7 @@ public class UISChannelLettuceAdapterUseCaseTestManual extends ContextualizedRed
 
                     @Override
                     public void notify(IDescribed event) {
-                        String correlationId = (DomainEvent.class.isAssignableFrom(event.getClass())) ? ((DomainEvent) event).correlationId().value() : (Command.class.isAssignableFrom(event.getClass()) ? ((Command) event).correlationId().value() : null);
+                        String correlationId = (ProcessingUnitPresenceAnnounced.class.isAssignableFrom(event.getClass())) ? ((ProcessingUnitPresenceAnnounced) event).correlationId().value() : (DomainEvent.class.isAssignableFrom(event.getClass()) ? ((DomainEvent) event).correlationId().value() : null);
                         Assertions.assertNotNull(correlationId, "Shall exist regarding the original event collected!");
                         Assertions.assertFalse(correlationId.isEmpty(), "Correlation id value shall be originally defined!");
                         referenceProcessedMessageCorrelationId(correlationId);
@@ -163,7 +160,7 @@ public class UISChannelLettuceAdapterUseCaseTestManual extends ContextualizedRed
         second.join();
 
         // Wait for give time to message to be processed
-        Assertions.assertTrue(waiter.await(180 /* large wait time is required when test executed on low-performant build worker on CI environment */, TimeUnit.SECONDS), "Timeout reached before messages treated! Sufficient waiting time to check (in case of required increasing according to the test computer performance)");// Wait confirmation of processed message before timeout
+        Assertions.assertTrue(waiter.await(80 /* large wait time is required when test executed on low-performant build worker on CI environment */, TimeUnit.SECONDS), "Timeout reached before messages treated! Sufficient waiting time to check (in case of required increasing according to the test computer performance)");// Wait confirmation of processed message before timeout
 
         // Check that all published messages (qtyOfMessageToProcess) had been treated by observers
         // messagesToProcess shall be empty (all prepared message correlation identifiers shall have been removed as processed with success by observer)
