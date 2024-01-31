@@ -14,6 +14,7 @@ import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
 
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -66,14 +67,16 @@ public class UISAdapterImpl implements UISAdapter {
     /**
      * Concurrent accessible set of started futures regarding registered stream observations.
      * Key = stream path name, Value = started thread.
+     * Concurrent access shall be supported regarding map read and upgrade of managed threads.
      */
-    private final Map<StreamObserver, Future<Void>> currentStreamObserversThreads = new Hashtable<>();
+    private final Map<StreamObserver, Future<Void>> currentStreamObserversThreads = new ConcurrentHashMap<>();
 
     /**
      * Concurrent accessible set of started futures regarding registered channel observations.
      * Key = channel path name, Value = started thread.
+     * Concurrent access shall be supported regarding map read and upgrade of managed threads.
      */
-    private final Map<ChannelObserver, Future<Void>> currentChannelObserversThreads = new Hashtable<>();
+    private final Map<ChannelObserver, Future<Void>> currentChannelObserversThreads = new ConcurrentHashMap<>();
 
     /**
      * Default constructor of the adapter ready to manage interactions with the

@@ -41,7 +41,7 @@ public class TenantUseCaseTest {
 				 */ null, /* Simulate unknown original activity state */ null);
 
 		// Define attributes of tenant owner
-		HashMap<String, Object> organisationAttr = new HashMap<String, Object>();
+		HashMap<String, Object> organisationAttr = new HashMap<>();
 		organisationAttr.put(PropertyAttributeKey.Name.name(), namedOrganization);
 		organization = new OrganizationDescriptor(tenant.parent(), organisationAttr, HistoryState.COMMITTED);
 		tenant.setOrganization(organization);

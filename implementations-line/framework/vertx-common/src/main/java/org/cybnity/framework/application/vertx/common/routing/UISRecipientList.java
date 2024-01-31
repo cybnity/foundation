@@ -1,6 +1,10 @@
 package org.cybnity.framework.application.vertx.common.routing;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Identify the correct recipient based on an event's content.
@@ -25,7 +29,8 @@ public class UISRecipientList {
     public UISRecipientList() {
         // Initialize the routing destination tables that link an event bus channel with
         // a redis channel
-        routingMap = new HashMap<>();
+        // Concurrent access and upgrade shall be supported
+        routingMap = new ConcurrentHashMap<>();
     }
 
     /**
