@@ -21,7 +21,7 @@ public interface ConfigurablePipeline {
 
     /**
      * Get the channel where this pipeline can be announced as available and ready to process events.
-     * @return A channel.
+     * @return A channel or null.
      */
     public Channel proxyAnnouncingChannel();
 
