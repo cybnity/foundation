@@ -79,7 +79,9 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
             announcePresence(currentState(), /* None previous origin event because it's the first start of this component start or restart */ null);
         } catch (Exception me) {
             // Normally shall never arrive; so notify implementation code issue
-            logger().log(Level.SEVERE, me.getMessage(), me);
+            Logger logger = logger();
+            if (logger != null)
+                logger.log(Level.SEVERE, me.getMessage(), me);
         }
     }
 
@@ -97,7 +99,9 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
             announcePresence(currentState(), null);
         } catch (Exception me) {
             // Normally shall never arrive; so notify implementation code issue
-            logger().log(Level.SEVERE, me.getMessage(), me);
+            Logger logger = logger();
+            if (logger != null)
+                logger.log(Level.SEVERE, me.getMessage(), me);
         }
 
         // Execute by default the stop operations relative to channels and streams previously observed
@@ -144,13 +148,15 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
             // Listening of acknowledges (announced presence confirmed registration) able to dynamically manage the eventual need retry to perform about the feature unit registration into the gateway's recipients list
             GatewayRecipientsManagerObserver recipientsManagerOutputsObserver = new GatewayRecipientsManagerObserver(recipientsManagerOutputsNotifiedOver, this);
             topicsConsumers.add(recipientsManagerOutputsObserver);
-
+            Logger logger = logger();
             try {
                 // Register observers on space
                 uisClient.subscribe(topicsConsumers, getMessageMapperProvider().getMapper(String.class, IDescribed.class));
-                logger().fine(featureModuleLogicalName() + " channel consumers started with success by worker (workerDeploymentId: " + this.deploymentID() + ")");
+                if (logger != null)
+                    logger.fine(featureModuleLogicalName() + " channel consumers started with success by worker (workerDeploymentId: " + this.deploymentID() + ")");
             } catch (UnoperationalStateException e) {
-                logger().severe(e.getMessage());
+                if (logger != null)
+                    logger.severe(e.getMessage());
             }
         }
     }
@@ -165,13 +171,16 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
 
         // Define usable mapper supporting the read of stream message received from the Users Interactions Space and translated into domain event types
         MessageMapper eventMapper = getMessageMapperProvider().getMapper(StreamMessage.class, IDescribed.class);
+        Logger logger = logger();
 
         try {
             // Register all consumers of observed channels
             uisClient.register(entryPointStreamConsumers, eventMapper);
-            logger().fine(featureModuleLogicalName() + " entrypoint stream consumers started with success by worker (workerDeploymentId: " + this.deploymentID() + ")");
+            if (logger != null)
+                logger.fine(featureModuleLogicalName() + " entrypoint stream consumers started with success by worker (workerDeploymentId: " + this.deploymentID() + ")");
         } catch (UnoperationalStateException e) {
-            logger().severe(e.getMessage());
+            if (logger != null)
+                logger.severe(e.getMessage());
         }
     }
 
@@ -179,7 +188,9 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
     protected void stopStreamConsumers() {
         // Stop each entrypoint stream previously observed by this worker
         uisClient.unregister(entryPointStreamConsumers);
-        logger().fine(featureModuleLogicalName() + " entrypoint stream consumers un-registered with success by worker (workerDeploymentId: " + this.deploymentID() + ")");
+        Logger logger = logger();
+        if (logger != null)
+            logger.fine(featureModuleLogicalName() + " entrypoint stream consumers un-registered with success by worker (workerDeploymentId: " + this.deploymentID() + ")");
     }
 
     /**
@@ -189,7 +200,9 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
     protected void stopChannelConsumers() {
         // Stop each observed channel by this worker
         uisClient.unsubscribe(topicsConsumers);
-        logger().fine(featureModuleLogicalName() + " consumers unsubscribed with success by worker (workerDeploymentId: " + this.deploymentID() + ")");
+        Logger logger = logger();
+        if (logger != null)
+            logger.fine(featureModuleLogicalName() + " consumers unsubscribed with success by worker (workerDeploymentId: " + this.deploymentID() + ")");
     }
 
     /**
@@ -215,7 +228,9 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
                 pipe.handle(event);
         } catch (Exception e) {
             // UnoperationalStateException or IllegalArgumentException thrown by responsibility chain members
-            logger().log(Level.SEVERE, e.getMessage());
+            Logger logger = logger();
+            if (logger != null)
+                logger.log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -237,7 +252,7 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
         // Read the supported event type per channel type
         Map<IEventType, ICapabilityChannel> supportedEventTypesToRoutingPath = supportedEventTypesToRoutingPath();
 
-        if (supportedEventTypesToRoutingPath!=null && !supportedEventTypesToRoutingPath.isEmpty()) {
+        if (supportedEventTypesToRoutingPath != null && !supportedEventTypesToRoutingPath.isEmpty()) {
             // Prepare event to presence announcing channel
             ProcessingUnitPresenceAnnounced presenceAnnounce = new ProcessingUnitPresenceAnnouncedEventFactory().create(supportedEventTypesToRoutingPath, featureServiceName(), priorEventRef, presenceState);
             Channel domainIOGateway = proxyAnnouncingChannel();
