@@ -4,7 +4,7 @@ import io.lettuce.core.StreamMessage;
 import org.cybnity.framework.Context;
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.application.vertx.common.AbstractMessageConsumerEndpoint;
-import org.cybnity.framework.application.vertx.common.routing.DomainIOGatewayRecipientsManagerObserver;
+import org.cybnity.framework.application.vertx.common.routing.GatewayRecipientsManagerObserver;
 import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.framework.domain.IPresenceObservability;
 import org.cybnity.framework.domain.event.IEventType;
@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 /**
  * Common generic pipeline implementation class supporting all standard functions relative to common pipeline behaviors.
  */
-public abstract class AbstractFeaturePipelineImpl extends AbstractMessageConsumerEndpoint implements StreamObserver, IPresenceObservability, ConfigurableFeature {
+public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsumerEndpoint implements StreamObserver, IPresenceObservability, ConfigurablePipeline {
 
     /**
      * Functional status based on the operational state of all consumers started and active.
@@ -50,7 +50,7 @@ public abstract class AbstractFeaturePipelineImpl extends AbstractMessageConsume
      *
      * @throws UnoperationalStateException When problem of context configuration (e.g missing environment variable defined to join the UIS or DIS).
      */
-    public AbstractFeaturePipelineImpl() throws UnoperationalStateException {
+    public AbstractEndpointPipelineImpl() throws UnoperationalStateException {
         try {
             // Prepare client configured for interactions with the UIS
             // according to the defined environment variables (autonomous connection from worker to UIS)
@@ -137,12 +137,12 @@ public abstract class AbstractFeaturePipelineImpl extends AbstractMessageConsume
      */
     @Override
     protected void startChannelConsumers() {
-        Channel recipientsManagerOutputsNotifiedOver = featureGatewayRoutingPlanChangesChannel();
+        Channel recipientsManagerOutputsNotifiedOver = proxyRoutingPlanChangesChannel();
         if (recipientsManagerOutputsNotifiedOver != null) {
             // Listen the confirmation of routes registered by the domain gateway (as CollaborationEventType.PROCESSING_UNIT_ROUTING_PATHS_REGISTERED.name() event)
             // From the gateway's managed topic
             // Listening of acknowledges (announced presence confirmed registration) able to dynamically manage the eventual need retry to perform about the feature unit registration into the gateway's recipients list
-            DomainIOGatewayRecipientsManagerObserver recipientsManagerOutputsObserver = new DomainIOGatewayRecipientsManagerObserver(recipientsManagerOutputsNotifiedOver, this);
+            GatewayRecipientsManagerObserver recipientsManagerOutputsObserver = new GatewayRecipientsManagerObserver(recipientsManagerOutputsNotifiedOver, this);
             topicsConsumers.add(recipientsManagerOutputsObserver);
 
             try {
@@ -209,8 +209,10 @@ public abstract class AbstractFeaturePipelineImpl extends AbstractMessageConsume
     @Override
     public void notify(IDescribed event) {
         try {
-            // Execute the feature execution process/pipeline according to the received event type
-            pipelinedProcess().handle(event);
+            FactBaseHandler pipe = pipelinedProcess();
+            if (pipe != null)
+                // Execute the feature execution process/pipeline according to the received event type
+                pipe.handle(event);
         } catch (Exception e) {
             // UnoperationalStateException or IllegalArgumentException thrown by responsibility chain members
             logger().log(Level.SEVERE, e.getMessage());
@@ -218,8 +220,8 @@ public abstract class AbstractFeaturePipelineImpl extends AbstractMessageConsume
     }
 
     /**
-     * Prepare and publish a feature processing unit presence event over the Users Interactions Space allowing to other components to collaborate with the feature pipeline (e.g Gateway forwarding command events).
-     * This method announces the supported entry point event types when domain IO Gateway is defined. Else announce is not published.
+     * Prepare and publish a feature processing unit presence event over the Users Interactions Space allowing to other components to collaborate with the capability pipeline (e.g gateway forwarding command events).
+     * This method announces the supported entry point event types when a proxy and routing paths are defined. Else announce is not published.
      *
      * @param presenceState Optional presence current status to announce. When null, this pipeline instance's current status of presence is assigned as default value equals to PresenceState.AVAILABLE.
      * @param priorEventRef Optional origin event (e.g request of announce renewal received from domain IO Gateway) that was prior to new event to generate and to publish.
@@ -235,18 +237,20 @@ public abstract class AbstractFeaturePipelineImpl extends AbstractMessageConsume
         // Read the supported event type per channel type
         Map<IEventType, ICapabilityChannel> supportedEventTypesToRoutingPath = supportedEventTypesToRoutingPath();
 
-        // Prepare event to presence announcing channel
-        ProcessingUnitPresenceAnnounced presenceAnnounce = new ProcessingUnitPresenceAnnouncedEventFactory().create(supportedEventTypesToRoutingPath, featureServiceName(), priorEventRef, presenceState);
-        Channel domainIOGateway = featureGatewayAnnouncingChannel();
-        if (domainIOGateway != null)
-            // Publish event to channel
-            uisClient.publish(presenceAnnounce, domainIOGateway, getMessageMapperProvider().getMapper(presenceAnnounce.getClass(), String.class));
+        if (supportedEventTypesToRoutingPath!=null && !supportedEventTypesToRoutingPath.isEmpty()) {
+            // Prepare event to presence announcing channel
+            ProcessingUnitPresenceAnnounced presenceAnnounce = new ProcessingUnitPresenceAnnouncedEventFactory().create(supportedEventTypesToRoutingPath, featureServiceName(), priorEventRef, presenceState);
+            Channel domainIOGateway = proxyAnnouncingChannel();
+            if (domainIOGateway != null)
+                // Publish event to channel
+                uisClient.publish(presenceAnnounce, domainIOGateway, getMessageMapperProvider().getMapper(presenceAnnounce.getClass(), String.class));
+        }
     }
 
     /**
      * Get the event types supported by channels which can be announced by this pipeline as routable events.
      *
-     * @return A set of routing path defined per event type.
+     * @return A set of routing path defined per event type. Null or empty list when none events and entry point channels are exposed by this pipeline.
      */
     protected abstract Map<IEventType, ICapabilityChannel> supportedEventTypesToRoutingPath();
 }

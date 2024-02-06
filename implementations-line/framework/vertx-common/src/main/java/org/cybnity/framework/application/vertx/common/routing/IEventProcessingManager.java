@@ -10,5 +10,5 @@ public interface IEventProcessingManager {
      *
      * @return A map.
      */
-    public UISRecipientList delegateDestinations();
+    public RouteRecipientList delegateDestinations();
 }

@@ -10,9 +10,9 @@ import org.cybnity.infrastructure.technical.message_bus.adapter.api.Channel;
 import java.util.logging.Level;
 
 /**
- * Listening implementation class of a domain IO Gateway allowing collaboration synchronization about routing paths.
+ * Listening implementation class of a gateway (e.g domain IO gateway) allowing collaboration synchronization about routing paths.
  */
-public class DomainIOGatewayRecipientsManagerObserver extends ProcessingUnitRecipientsManagerObserver {
+public class GatewayRecipientsManagerObserver extends ProcessingUnitRecipientsManagerObserver {
 
     /**
      * Owner of this observation service.
@@ -26,7 +26,7 @@ public class DomainIOGatewayRecipientsManagerObserver extends ProcessingUnitReci
      * @param observationOwner                     Mandatory owner of this observer instance, that can be contributor of presence status detection (e.g in case of presence renewal requested by a recipients manager).
      * @throws IllegalArgumentException When a mandatory parameter is missing.
      */
-    public DomainIOGatewayRecipientsManagerObserver(Channel recipientsManagerOutputsNotifiedOver, IPresenceObservability observationOwner) throws IllegalArgumentException {
+    public GatewayRecipientsManagerObserver(Channel recipientsManagerOutputsNotifiedOver, IPresenceObservability observationOwner) throws IllegalArgumentException {
         super(recipientsManagerOutputsNotifiedOver);
         if (observationOwner == null) throw new IllegalArgumentException("Observation owner parameter is required!");
         this.observationOwner = observationOwner;

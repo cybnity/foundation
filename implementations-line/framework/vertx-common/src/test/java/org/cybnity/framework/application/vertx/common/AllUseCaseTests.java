@@ -1,6 +1,6 @@
 package org.cybnity.framework.application.vertx.common;
 
-import org.cybnity.framework.application.vertx.common.routing.UISRecipientListUseCaseTest;
+import org.cybnity.framework.application.vertx.common.routing.RouteRecipientListUseCaseTest;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 
@@ -11,6 +11,6 @@ import org.junit.platform.suite.api.Suite;
  * @author olivier
  */
 @Suite
-@SelectClasses({UISRecipientListUseCaseTest.class})
+@SelectClasses({RouteRecipientListUseCaseTest.class})
 public class AllUseCaseTests {
 }

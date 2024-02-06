@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * It's an implementation of architectural pattern named "Recipient List".
  * Generally, one common recipient channel (e.g Redis entrypoint materializing domain capability IO) is supporting several event types.
  */
-public class UISRecipientList {
+public class RouteRecipientList {
 
     /**
      * Referential of routes dedicated to specific event types which can be managed by Users Interactions Space's channels.
@@ -26,7 +26,7 @@ public class UISRecipientList {
     /**
      * Default constructor initializing the routing table.
      */
-    public UISRecipientList() {
+    public RouteRecipientList() {
         // Initialize the routing destination tables that link an event bus channel with
         // a redis channel
         // Concurrent access and upgrade shall be supported

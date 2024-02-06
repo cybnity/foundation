@@ -10,13 +10,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test of recipient list behaviors for management of routing plan.
  */
-public class UISRecipientListUseCaseTest {
+public class RouteRecipientListUseCaseTest {
 
-    private UISRecipientList routingMap;
+    private RouteRecipientList routingMap;
 
     @BeforeEach
     void init() {
-        routingMap = new UISRecipientList();
+        routingMap = new RouteRecipientList();
     }
 
     @AfterEach
