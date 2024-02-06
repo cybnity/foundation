@@ -43,7 +43,7 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
     /**
      * Collection of fact event consumers of pub/sub topics listened by this worker.
      */
-    private final Collection<ChannelObserver> topicsConsumers = new ArrayList<>();
+    protected final Collection<ChannelObserver> topicsConsumers = new ArrayList<>();
 
     /**
      * Default constructor.
@@ -136,6 +136,16 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
     }
 
     /**
+     * Add an observer to the collection of consumers.
+     * @param observer Consumer. Ignored when null.
+     */
+    protected void addTopicConsumer(ChannelObserver observer) {
+        if (observer!=null) {
+            topicsConsumers.add(observer);
+        }
+    }
+
+    /**
      * Subscribe to observed channels, and send announce to domain gateway as feature presence start allowing to dynamically register routing path of event type supported by this feature implementation component.
      * Do nothing when none channel is returned by the featureGatewayRoutingPlanChangesChannel() call.
      */
@@ -147,7 +157,7 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
             // From the gateway's managed topic
             // Listening of acknowledges (announced presence confirmed registration) able to dynamically manage the eventual need retry to perform about the feature unit registration into the gateway's recipients list
             GatewayRecipientsManagerObserver recipientsManagerOutputsObserver = new GatewayRecipientsManagerObserver(recipientsManagerOutputsNotifiedOver, this);
-            topicsConsumers.add(recipientsManagerOutputsObserver);
+            addTopicConsumer(recipientsManagerOutputsObserver);
             Logger logger = logger();
             try {
                 // Register observers on space
