@@ -7,7 +7,6 @@ import org.cybnity.framework.domain.ConformityViolation;
 import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.Stream;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 
@@ -16,7 +15,7 @@ import java.util.logging.Level;
  * This verification service identify the public or reserved (e.g secure capability with SSO check required and based on credentials provided into the fact event to process) state of capability to execute and apply the security controls when required via verification of the fact embedded credential.
  * It's a detection of need security checks to apply for an entrypoint received entries.
  */
-public abstract class AccessControlChecker extends FactBaseHandler {
+public class AccessControlChecker extends FactBaseHandler {
 
     /**
      * Entrypoint name under optional access control check.
@@ -37,33 +36,22 @@ public abstract class AccessControlChecker extends FactBaseHandler {
     /**
      * Default constructor.
      *
-     * @param receivedFrom Mandatory entrypoint of collecting events to filter.
+     * @param receivedFrom                     Mandatory entrypoint of collecting events to filter.
+     * @param eventTypeNamesUnderAccessControl Optional list of event types under access control. It's static referential of command or domain event types that require security check.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      */
-    public AccessControlChecker(Stream receivedFrom) throws IllegalArgumentException {
+    public AccessControlChecker(Stream receivedFrom, Collection<String> eventTypeNamesUnderAccessControl) throws IllegalArgumentException {
         super();
         if (receivedFrom == null) throw new IllegalArgumentException("ReceivedFrom parameter is required!");
         this.receivedFrom = receivedFrom;
-        this.eventTypeNamesUnderAccessControl = eventTypeNamesUnderAccessControlCheck();
-        if (this.eventTypeNamesUnderAccessControl == null) {
-            // Initialize as none filtered event types regarding access control requirements
-            this.eventTypeNamesUnderAccessControl = new ArrayList<>();
-        }
+        this.eventTypeNamesUnderAccessControl = eventTypeNamesUnderAccessControl;
     }
-
-    /**
-     * Get a static referential of command or domain event types that require security check.
-     * This method defines the referential facts under security check (e.g equals to secured UI capabilities) and return it.
-     *
-     * @return Mandatory list of event type names, or empty list.
-     */
-    abstract protected Collection<String> eventTypeNamesUnderAccessControlCheck();
 
     @Override
     public boolean process(IDescribed fact) {
         if (canHandle(fact)) {
             // Identify if the detected event type name shall be treated according to access control verification
-            if (this.eventTypeNamesUnderAccessControl.contains(detectedFactEventTypeName)) {
+            if (this.eventTypeNamesUnderAccessControl != null && this.eventTypeNamesUnderAccessControl.contains(detectedFactEventTypeName)) {
                 // --- THE CAPABILITY TO PERFORM IS UNDER SECURED ACCESS ---
                 // Access control credential identification for security check
                 String credentialValue = null;
