@@ -17,14 +17,16 @@ public abstract class AbstractServiceActivator extends FactBaseHandler {
      * When cause of non processing is problem of message entry condition (e.g quality, conformity issue, message that make no sense), the activator invalidate the message and move if into a dedicated Invalid Message Channel (pattern realization).
      *
      * @param unprocessedEvent Source event not processed with success.
+     * @param cause Optional cause of invalidity.
      */
-    abstract protected void moveToInvalidMessageChannel(IDescribed unprocessedEvent);
+    abstract protected void moveToInvalidMessageChannel(IDescribed unprocessedEvent, String cause);
 
     /**
      * Callable during the processing step (implemented into the process() method) when this activator cannot process the message successfully.
      * When cause of non processing is an execution problem (e.g technical failure; impossible delivery to another system/features), the activator invalidate the message and move it into a Dead Letter Channel (pattern realization).
      *
      * @param unprocessedEvent Source event not processed with success.
+     * @param cause Optional cause of error.
      */
-    abstract protected void moveToDeadLetterChannel(IDescribed unprocessedEvent);
+    abstract protected void moveToDeadLetterChannel(IDescribed unprocessedEvent, String cause);
 }
