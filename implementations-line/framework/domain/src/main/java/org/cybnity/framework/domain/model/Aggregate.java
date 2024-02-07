@@ -11,7 +11,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 import java.util.LinkedHashSet;
 
 /**
- * Represents a scope of informations providing attributes and/or capabilities
+ * Represents a scope of information providing attributes and/or capabilities
  * as a complex domain object.
  * <p>
  * An aggregate root of the process entity domain is defined via immutable
@@ -21,7 +21,7 @@ import java.util.LinkedHashSet;
  * <p>
  * An aggregate root instance can be persistent (e.g saving a state of mutable
  * properties as a version of a scope relative to value objects in a relation
- * that make sense for a domain topic) and referenceable (e.g EntityReference
+ * that make sense for a domain topic) and referencable (e.g EntityReference
  * provided), or can be only a dynamic scope of current version of immutable
  * value objects without need of state save (e.g temporary aggregate root is
  * only generated on-fly to maintain capability to be recontacted during use,
