@@ -34,8 +34,7 @@ public class Tenant extends CommonChildFactImpl {
             .hashCode();
 
     /**
-     * Logical organization representing this tenant (e.g business name of a
-     * company) that facilitate to resolve queries.
+     * Logical organization representing this tenant (e.g business name of a company) that facilitate to resolve queries.
      */
     private MutableProperty organization;
 

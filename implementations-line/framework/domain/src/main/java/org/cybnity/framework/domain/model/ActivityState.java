@@ -28,7 +28,7 @@ public class ActivityState extends MutableProperty {
 	 * each change need to be versioned/treated as a single atomic fact.
 	 */
 	public enum PropertyAttributeKey {
-		/** Boolean active/deactive state **/
+		/** Boolean active/de-active state **/
 		StateValue;
 	}
 

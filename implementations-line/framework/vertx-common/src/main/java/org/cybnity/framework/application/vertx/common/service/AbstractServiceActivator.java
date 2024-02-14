@@ -1,6 +1,7 @@
 package org.cybnity.framework.application.vertx.common.service;
 
 import org.cybnity.framework.domain.IDescribed;
+import org.cybnity.framework.immutable.utility.ExecutableComponentChecker;
 
 /**
  * Service activator can be one-way (request only) or two-way (Request-Reply).
@@ -17,7 +18,7 @@ public abstract class AbstractServiceActivator extends FactBaseHandler {
      * When cause of non processing is problem of message entry condition (e.g quality, conformity issue, message that make no sense), the activator invalidate the message and move if into a dedicated Invalid Message Channel (pattern realization).
      *
      * @param unprocessedEvent Source event not processed with success.
-     * @param cause Optional cause of invalidity (e.g ConformityViolation.UNIDENTIFIED_EVENT_TYPE.name()).
+     * @param cause            Optional cause of invalidity (e.g ConformityViolation.UNIDENTIFIED_EVENT_TYPE.name()).
      */
     abstract protected void moveToInvalidMessageChannel(IDescribed unprocessedEvent, String cause);
 
@@ -26,7 +27,14 @@ public abstract class AbstractServiceActivator extends FactBaseHandler {
      * When cause of non processing is an execution problem (e.g technical failure; impossible delivery to another system/features), the activator invalidate the message and move it into a Dead Letter Channel (pattern realization).
      *
      * @param unprocessedEvent Source event not processed with success.
-     * @param cause Optional cause of error.
+     * @param cause            Optional cause of error.
      */
     abstract protected void moveToDeadLetterChannel(IDescribed unprocessedEvent, String cause);
+
+    /**
+     * Get the checking capability of the service able to verify its health conditions.
+     *
+     * @return A check helper or null.
+     */
+    abstract public ExecutableComponentChecker healthyOperableComponentChecker();
 }
