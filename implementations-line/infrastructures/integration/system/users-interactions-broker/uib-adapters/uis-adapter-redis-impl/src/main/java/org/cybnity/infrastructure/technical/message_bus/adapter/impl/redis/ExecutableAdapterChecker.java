@@ -37,7 +37,7 @@ public class ExecutableAdapterChecker extends ExecutableComponentChecker {
     }
 
     @Override
-    protected Set<IReadableConfiguration> requiredEnvironmentVariables() {
+    public Set<IReadableConfiguration> requiredEnvironmentVariables() {
         // Define the mandatory environment variable for adapter running
         Set<IReadableConfiguration> required = new HashSet<>();
 
