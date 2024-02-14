@@ -1,7 +1,6 @@
 package org.cybnity.framework.application.vertx.common.service;
 
 import org.cybnity.framework.domain.IDescribed;
-import org.cybnity.framework.immutable.utility.ExecutableComponentChecker;
 
 /**
  * Service activator can be one-way (request only) or two-way (Request-Reply).
@@ -31,10 +30,4 @@ public abstract class AbstractServiceActivator extends FactBaseHandler {
      */
     abstract protected void moveToDeadLetterChannel(IDescribed unprocessedEvent, String cause);
 
-    /**
-     * Get the checking capability of the service able to verify its health conditions.
-     *
-     * @return A check helper or null.
-     */
-    abstract public ExecutableComponentChecker healthyOperableComponentChecker();
 }
