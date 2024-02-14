@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.cybnity.framework.domain.event.RandomUUIDFactory;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -104,6 +105,16 @@ public class IdentifierStringBased extends ValueObject<String> implements Identi
         // Return combined identifier
         return new IdentifierStringBased((uniqueNameFound) ? uniqueIdName : BaseConstants.IDENTIFIER_ID.name(),
                 combinedId.toString());
+    }
+
+    /**
+     * Generator of standard identifier based on technical value automatically generated.
+     *
+     * @param salt Optional value to include into the identifier value auto-generated.
+     * @return Generated identifier instance.
+     */
+    public static Identifier generate(String salt) {
+        return new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), RandomUUIDFactory.generate(salt));
     }
 
 }
