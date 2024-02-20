@@ -34,9 +34,9 @@ public class Tenant extends CommonChildFactImpl {
             .hashCode();
 
     /**
-     * Logical organization representing this tenant (e.g business name of a company) that facilitate to resolve queries.
+     * Logical label naming this tenant (e.g business name of a company) that facilitate to resolve queries.
      */
-    private MutableProperty organization;
+    private TenantDescriptor label;
 
     /**
      * Current mutable status of activity regarding this tenant.
@@ -159,43 +159,42 @@ public class Tenant extends CommonChildFactImpl {
     }
 
     /**
-     * Define a logical organization regarding this tenant when none previously
-     * defined. When existing previous organization about this tenant, this method
-     * make a change on the previous defined organization (changes history is saved)
-     * to defined the new one as current.
+     * Define a logical name regarding this tenant when none previously
+     * defined. When existing previous label about this tenant, this method
+     * make a change on the previous defined name (changes history is saved)
+     * to define the new one as current.
      *
-     * @param tenantRepresentedBy An organization (e.g social entity, physical
-     *                            entity).
+     * @param tenantRepresentedBy A specification.
      */
-    public void setOrganization(MutableProperty tenantRepresentedBy) {
-        if (this.organization != null) {
+    public void setLabel(TenantDescriptor tenantRepresentedBy) {
+        if (this.label != null) {
             // Check if history shall be maintained
-            if (!tenantRepresentedBy.changesHistory().contains(this.organization)) {
-                // Update the current organization of this tenant with the new version enhanced
-                // with auto-saving of the previous name into the new organization's versions history
-                this.organization = this.organization.enhanceHistoryOf(tenantRepresentedBy,
+            if (!tenantRepresentedBy.changesHistory().contains(this.label)) {
+                // Update the current label of this tenant with the new version enhanced
+                // with auto-saving of the previous name into the new name's versions history
+                this.label = (TenantDescriptor) this.label.enhanceHistoryOf(tenantRepresentedBy,
                         /* Don't manage the already defined history state */ null);
             } else {
                 // new version is already instantiated with prior versions defined
-                // No need to enhance, but only to replace this current organization
-                this.organization = tenantRepresentedBy;
+                // No need to enhance, but only to replace this current label
+                this.label = tenantRepresentedBy;
             }
         } else {
             // Initialize the first defined name of this tenant
-            this.organization = tenantRepresentedBy;
+            this.label = tenantRepresentedBy;
         }
     }
 
     /**
-     * Get the representative organization of this tenant.
+     * Get the representative label of this tenant.
      *
-     * @return An organization or null if unknown.
+     * @return A name or null if unknown.
      * @throws ImmutabilityException When problem of immutable version
      *                               instantiation.
      */
-    public MutableProperty organization() throws ImmutabilityException {
-        if (this.organization != null)
-            return (MutableProperty) this.organization.immutable();
+    public TenantDescriptor label() throws ImmutabilityException {
+        if (this.label != null)
+            return (TenantDescriptor) this.label.immutable();
         return null;
     }
 
@@ -204,7 +203,7 @@ public class Tenant extends CommonChildFactImpl {
         LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
         Tenant tenant = new Tenant(parent(), ids);
         tenant.createdAt = this.occurredAt();
-        tenant.organization = this.organization();
+        tenant.label = this.label();
         tenant.activityStatus = this.status();
         return tenant;
     }

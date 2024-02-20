@@ -29,7 +29,7 @@ public interface IFactRepository<T> {
     /**
      * Find a historical fact identified.
      * 
-     * @param aFactId A identifier of fact to search.
+     * @param aFactId An identifier of fact to search.
      * @return Found fact or null.
      */
     public T factOfId(Identifier aFactId);
@@ -39,7 +39,7 @@ public interface IFactRepository<T> {
      * 
      * @param fact Instance to remove.
      * @return True if previous existent item was found and was removed from this
-     *         repository. Fals if none previous fact found and removed.
+     *         repository. False if none previous fact found and removed.
      */
     public boolean remove(T fact);
 
