@@ -1,14 +1,5 @@
 package org.cybnity.feature.security_activity_orchestration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.cybnity.feature.security_activity_orchestration.domain.model.ProcessDescriptor;
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.IdentifierStringBased;
@@ -20,6 +11,13 @@ import org.cybnity.framework.immutable.Identifier;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test of process descriptor behaviors regarding its supported

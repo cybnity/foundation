@@ -1,10 +1,5 @@
 package org.cybnity.feature.security_activity_orchestration.domain.model.sample.writemodel;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
-
 import org.cybnity.feature.security_activity_orchestration.domain.model.ProcessDescriptor;
 import org.cybnity.feature.security_activity_orchestration.domain.model.Staging;
 import org.cybnity.feature.security_activity_orchestration.domain.model.Staging.PropertyAttributeKey;
@@ -15,6 +10,11 @@ import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.ImmutabilityException;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Factory of domain object samples usable for unit test.

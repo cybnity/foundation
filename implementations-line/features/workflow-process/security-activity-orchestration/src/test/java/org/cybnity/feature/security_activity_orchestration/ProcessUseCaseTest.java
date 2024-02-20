@@ -1,17 +1,14 @@
 package org.cybnity.feature.security_activity_orchestration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.HashMap;
-
 import org.cybnity.feature.security_activity_orchestration.domain.model.Process;
 import org.cybnity.feature.security_activity_orchestration.domain.model.ProcessDescriptor;
 import org.cybnity.feature.security_activity_orchestration.domain.model.sample.writemodel.TestSampleFactory;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test of Process behaviors regarding its instantiation and supported

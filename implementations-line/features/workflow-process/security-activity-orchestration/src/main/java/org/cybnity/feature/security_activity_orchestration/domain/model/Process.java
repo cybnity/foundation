@@ -1,10 +1,5 @@
 package org.cybnity.feature.security_activity_orchestration.domain.model;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.cybnity.feature.security_activity_orchestration.ChainCommandHandler;
 import org.cybnity.feature.security_activity_orchestration.IWorkflowCommandHandler;
 import org.cybnity.framework.IContext;
@@ -19,6 +14,11 @@ import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Represent a workflow based on steps (e.g risk management process) realizable

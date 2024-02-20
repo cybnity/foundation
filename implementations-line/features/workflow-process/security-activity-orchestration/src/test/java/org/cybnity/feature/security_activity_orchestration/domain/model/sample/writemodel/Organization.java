@@ -1,9 +1,9 @@
 package org.cybnity.feature.security_activity_orchestration.domain.model.sample.writemodel;
 
-import java.util.LinkedHashSet;
-
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.Identifier;
+
+import java.util.LinkedHashSet;
 
 /**
  * Example of domain entity relative to a company identity.
