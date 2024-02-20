@@ -1,7 +1,6 @@
 package org.cybnity.framework.domain.model;
 
 import org.cybnity.framework.domain.IdentifierStringBased;
-import org.cybnity.framework.domain.model.TenantDescriptor.PropertyAttributeKey;
 import org.cybnity.framework.domain.model.sample.DomainEntityImpl;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.HistoryState;
@@ -40,7 +39,7 @@ public class TenantUseCaseTest {
 
         // Define attributes of tenant owner
         HashMap<String, Object> organisationAttr = new HashMap<>();
-        organisationAttr.put(PropertyAttributeKey.LABEL.name(), namedOrganization);
+        organisationAttr.put(TenantDescriptor.PropertyAttributeKey.LABEL.name(), namedOrganization);
         organization = new TenantDescriptor(tenant.parent(), organisationAttr, HistoryState.COMMITTED);
         tenant.setLabel(organization);
     }
@@ -68,7 +67,7 @@ public class TenantUseCaseTest {
         // change)
         String renamedAs = "CYBNITY Corp";
         HashMap<String, Object> attr = new HashMap<String, Object>();
-        attr.put(PropertyAttributeKey.LABEL.name(), renamedAs);
+        attr.put(TenantDescriptor.PropertyAttributeKey.LABEL.name(), renamedAs);
 
         TenantDescriptor renamed1 = new TenantDescriptor(tenant.parent(), attr, HistoryState.COMMITTED,
                 /*
