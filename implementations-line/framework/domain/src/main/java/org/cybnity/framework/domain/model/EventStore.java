@@ -20,7 +20,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * that has ever been executed on the model (e.g helpful tracking system as
  * audit logs for debugging).
  * 
- * The event store is used to reconstitue each Aggregate instance when it is
+ * The event store is used to reconstitute each Aggregate instance when it is
  * retrieved from its repository, implementing the concept of Event Sourcing. To
  * do that, the store apply to an Aggregate instance all previously stored
  * Events in chronological order. Production of snapshots of any number of store

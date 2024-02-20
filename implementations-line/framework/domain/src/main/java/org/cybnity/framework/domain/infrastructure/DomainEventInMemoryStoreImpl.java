@@ -1,9 +1,9 @@
-package org.cybnity.framework.domain.model.sample.writemodel;
+package org.cybnity.framework.domain.infrastructure;
 
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IdentifierStringBased;
+import org.cybnity.framework.domain.event.EventStoreRecordCommitted;
 import org.cybnity.framework.domain.model.*;
-import org.cybnity.framework.domain.model.sample.EventStoreRecordCommitted;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -15,11 +15,11 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Example of simple in-memory store of events.
+ * Simple in-memory store of events.
  *
  * @author olivier
  */
-public class DomainEventsStoreImpl extends EventStore {
+public class DomainEventInMemoryStoreImpl extends EventStore {
 
     /**
      * Registries per type of stored event (key=class type, value=history of events)
@@ -31,7 +31,7 @@ public class DomainEventsStoreImpl extends EventStore {
      */
     private final DomainEventPublisher promotionManager;
 
-    private DomainEventsStoreImpl() {
+    private DomainEventInMemoryStoreImpl() {
         super();
         // Initialize a delegate for promotion of events changes (e.g to read model's
         // repository)
@@ -44,32 +44,32 @@ public class DomainEventsStoreImpl extends EventStore {
      * @return An instance ensuring the persistence of events.
      */
     public static EventStore instance() {
-        return new DomainEventsStoreImpl();
+        return new DomainEventInMemoryStoreImpl();
     }
 
     @Override
     public void append(DomainEvent event) throws IllegalArgumentException, ImmutabilityException {
         // Serialize the event to store into the storage system (generally according to
         // a serializer supported by the persistence system as JSON, table structure's
-        // fiedl...)
+        // field...)
         EventRecord storedEvent = new EventRecord(event);
         // Find existing history regarding the event type, or initialize empty dataset
         // for the type
         LinkedList<EventRecord> eventTypeDataset = this.registries
-                .getOrDefault(storedEvent.factTypeVersion().factType().name(), new LinkedList<EventRecord>());
+                .getOrDefault(storedEvent.factTypeVersion().factType().name(), new LinkedList<>());
         // Add the event to the end of history column regarding all the same event types
         eventTypeDataset.add(storedEvent);
-        // Save in registry regarding fact type version
 
+        // Save in registry regarding fact type version
         registries.put(event.getClass().getName(), eventTypeDataset);
 
-        // Build event child based on the created account (parent of immutable story)
+        // Build event child based on the created event (parent of immutable story)
         CommonChildFactImpl persistedEvent = new CommonChildFactImpl(event.getIdentifiedBy(),
                 new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(),
                         /* identifier as performed transaction number */ UUID.randomUUID().toString()));
         EventStoreRecordCommitted committed = new EventStoreRecordCommitted(persistedEvent.parent());
-        committed.originCommandRef = event.reference();
-        committed.storedEvent = event.reference();
+        committed.setChangeCommandRef(event.reference());
+        committed.setChangedModelElementRef(event.reference());
 
         // Notify listeners of this store
         this.promotionManager.publish(committed);

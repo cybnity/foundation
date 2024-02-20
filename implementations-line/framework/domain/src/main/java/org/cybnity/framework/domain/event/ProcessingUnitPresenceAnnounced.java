@@ -120,7 +120,6 @@ public class ProcessingUnitPresenceAnnounced extends ConcreteDomainChangeEvent {
         return null;
     }
 
-
     /**
      * Supported attributes set by a presence announce.
      */

@@ -2,7 +2,7 @@ package org.cybnity.framework.domain.model;
 
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IdentifierStringBased;
-import org.cybnity.framework.domain.model.sample.writemodel.DomainEventsStoreImpl;
+import org.cybnity.framework.domain.infrastructure.DomainEventInMemoryStoreImpl;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountChanged;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
 import org.cybnity.framework.immutable.BaseConstants;
@@ -22,11 +22,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 public class EventStoreUseCaseTest {
 
-    private DomainEventsStoreImpl persistenceOrientedStore;
+    private DomainEventInMemoryStoreImpl persistenceOrientedStore;
 
     @BeforeEach
     public void initStore() {
-        this.persistenceOrientedStore = (DomainEventsStoreImpl) DomainEventsStoreImpl.instance();
+        this.persistenceOrientedStore = (DomainEventInMemoryStoreImpl) DomainEventInMemoryStoreImpl.instance();
     }
 
     @AfterEach

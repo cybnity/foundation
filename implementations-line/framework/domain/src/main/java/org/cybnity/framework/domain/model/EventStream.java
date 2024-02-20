@@ -15,18 +15,17 @@ import java.util.List;
  * Represents a stream of domain events in order of occurrence that guarantee the
  * reason for each change to an Aggregate instance will not be lost (as defined
  * by the Aggregates and Event Sourcing pattern A+ES).
- * 
+ * <p>
  * The append-only nature of Event Streams supports an array of data
  * replications options.
- * 
+ * <p>
  * An Event stream can be completed by events published (as unit of work) to an
  * event store allowing to persist the state of the Aggregate. The events
  * history can be reloaded from an event stream regarding an Aggregate state.
- * 
+ * <p>
  * Event streams are considered to be immutable by nature.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 public class EventStream implements Unmodifiable, Serializable {
 
@@ -34,7 +33,7 @@ public class EventStream implements Unmodifiable, Serializable {
      * Class specification version.
      */
     private static final long serialVersionUID = new VersionConcreteStrategy()
-	    .composeCanonicalVersionHash(EventStream.class).hashCode();
+            .composeCanonicalVersionHash(EventStream.class).hashCode();
 
     /**
      * Version of the event stream.
@@ -50,39 +49,39 @@ public class EventStream implements Unmodifiable, Serializable {
     }
 
     public EventStream(int version, DomainEvent... history) {
-	if (history != null && history.length > 0)
-	    // save optional known origin facts
-	    events = Arrays.asList(history);
-	this.version = version;
+        if (history != null && history.length > 0)
+            // save optional known origin facts
+            events = Arrays.asList(history);
+        this.version = version;
     }
 
     public int getVersion() {
-	return this.version;
+        return this.version;
     }
 
     public void setVersion(int version) {
-	this.version = version;
+        this.version = version;
     }
 
     public List<DomainEvent> getEvents() {
-	return this.events;
+        return this.events;
     }
 
     public void setEvents(List<DomainEvent> events) {
-	this.events = events;
+        this.events = events;
     }
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	List<DomainEvent> origins = new ArrayList<>();
-	if (this.events != null) {
-	    // Get an immutable version of facts
-	    for (DomainEvent historicalFact : this.events) {
-		if (historicalFact != null)
-		    origins.add((DomainEvent) historicalFact.immutable());
-	    }
-	}
-	return new EventStream(this.version, origins.toArray(new DomainEvent[origins.size()]));
+        List<DomainEvent> origins = new ArrayList<>();
+        if (this.events != null) {
+            // Get an immutable version of facts
+            for (DomainEvent historicalFact : this.events) {
+                if (historicalFact != null)
+                    origins.add((DomainEvent) historicalFact.immutable());
+            }
+        }
+        return new EventStream(this.version, origins.toArray(new DomainEvent[origins.size()]));
     }
 
 }
