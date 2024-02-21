@@ -5,7 +5,7 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Persistence system of events that return the stream of events associated
+ * Persistence system of implementing Event Sourcing pattern that return the stream of events associated
  * which an aggregate instance allowing to reply the events to recreate the
  * state of the aggregate.
  * <p>
