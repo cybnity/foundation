@@ -167,7 +167,7 @@ public class ConcreteQueryEvent extends Command {
     @JsonIgnore
     @Override
     public String versionHash() {
-        return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+        return String.valueOf(serialVersionUID);
     }
 
     @JsonIgnore

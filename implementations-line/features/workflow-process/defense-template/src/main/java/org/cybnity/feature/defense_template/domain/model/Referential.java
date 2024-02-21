@@ -1,7 +1,5 @@
 package org.cybnity.feature.defense_template.domain.model;
 
-import java.io.Serializable;
-
 import org.cybnity.feature.defense_template.IReferential;
 import org.cybnity.framework.domain.ValueObject;
 import org.cybnity.framework.immutable.IVersionable;
@@ -9,6 +7,8 @@ import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.io.Serializable;
 
 /**
  * Represent a implementation class regarding a referential.

@@ -15,16 +15,16 @@ import java.util.LinkedHashSet;
  *
  * @author olivier
  */
-public class UserAccountIdentityCreation extends DomainEntity {
+public class UserAccountIdentity extends DomainEntity {
 
     private static final long serialVersionUID = new VersionConcreteStrategy()
-            .composeCanonicalVersionHash(UserAccountIdentityCreation.class).hashCode();
+            .composeCanonicalVersionHash(UserAccountIdentity.class).hashCode();
 
-    public UserAccountIdentityCreation(Identifier id) throws IllegalArgumentException {
+    public UserAccountIdentity(Identifier id) throws IllegalArgumentException {
         super(id);
     }
 
-    public UserAccountIdentityCreation(LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
+    public UserAccountIdentity(LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
         super(identifiers);
     }
 
@@ -41,7 +41,7 @@ public class UserAccountIdentityCreation extends DomainEntity {
     @Override
     public Serializable immutable() throws ImmutabilityException {
         LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
-        return new UserAccountIdentityCreation(ids);
+        return new UserAccountIdentity(ids);
     }
 
     /**
@@ -50,6 +50,6 @@ public class UserAccountIdentityCreation extends DomainEntity {
      */
     @Override
     public String versionHash() {
-        return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+        return Long.toString(serialVersionUID);
     }
 }

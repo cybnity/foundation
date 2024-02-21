@@ -1,11 +1,5 @@
 package org.cybnity.feature.defense_template.service;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.io.InputStream;
-import java.util.LinkedHashSet;
-import java.util.UUID;
-
 import org.cybnity.feature.defense_template.domain.model.sample.writemodel.Organization;
 import org.cybnity.feature.security_activity_orchestration.domain.model.Process;
 import org.cybnity.feature.security_activity_orchestration.domain.model.ProcessBuilder;
@@ -15,6 +9,12 @@ import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Identifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.InputStream;
+import java.util.LinkedHashSet;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ProcessTemplateXMLParserUseCaseTest {
 

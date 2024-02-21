@@ -13,13 +13,12 @@ import java.io.Serializable;
 /**
  * Represent a recorded fact relative to an event which is manageable by a store
  * (e.g as history of facts serialized and tracked).
- * 
+ * <p>
  * Each recorded fact include the original version of event tracked, and
- * extracted informations allowing to store/retrieve it (e.g during specific
- * steps of a process, for hydratation of a messaging system).
- * 
- * @author olivier
+ * extracted information allowing to store/retrieve it (e.g during specific
+ * steps of a process, for hydration of a messaging system).
  *
+ * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Robusteness, reqId = "REQ_ROB_3")
 public class EventRecord extends FactRecord {
@@ -28,34 +27,31 @@ public class EventRecord extends FactRecord {
      * Version of this class type.
      */
     private static final long serialVersionUID = new VersionConcreteStrategy()
-	    .composeCanonicalVersionHash(EventRecord.class).hashCode();
+            .composeCanonicalVersionHash(EventRecord.class).hashCode();
 
     /**
      * Default constructor of a fact record based on a domain event.
-     * 
+     *
      * @param event Mandatory event that is subject of recording.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      * @throws ImmutabilityException    When problem of read regarding immutable
      *                                  contents sourced from the event.
      */
     public EventRecord(DomainEvent event) throws IllegalArgumentException, ImmutabilityException {
-	super(event);
-	if (event == null) {
-	    throw new IllegalArgumentException("Event parameter is required!");
-	}
-	Identifier id = event.identified();
-	if (id == null || id.value() == null) {
-	    throw new IllegalArgumentException("Only identifiable event is eligible to store. Identifier is required!");
-	}
+        super(event);
+        Identifier id = event.identified();
+        if (id == null || id.value() == null) {
+            throw new IllegalArgumentException("Only identifiable event is eligible to store. Identifier is required!");
+        }
     }
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	try {
-	    return (EventRecord) this.clone();
-	} catch (Exception e) {
-	    throw new ImmutabilityException(e);
-	}
+        try {
+            return (EventRecord) this.clone();
+        } catch (Exception e) {
+            throw new ImmutabilityException(e);
+        }
     }
 
     /**
@@ -64,7 +60,7 @@ public class EventRecord extends FactRecord {
      */
     @Override
     public String versionHash() {
-	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+        return String.valueOf(serialVersionUID);
     }
 
 }

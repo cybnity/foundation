@@ -1,5 +1,6 @@
 package org.cybnity.framework.domain.model;
 
+import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.Identifier;
@@ -9,6 +10,7 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  * Represents a scope of information providing attributes and/or capabilities
@@ -39,7 +41,7 @@ import java.util.LinkedHashSet;
  * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
-public abstract class Aggregate extends CommonChildFactImpl implements IAggregate {
+public abstract class Aggregate extends CommonChildFactImpl implements IAggregate, HydrationCapability {
 
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(Aggregate.class).hashCode();
@@ -78,6 +80,37 @@ public abstract class Aggregate extends CommonChildFactImpl implements IAggregat
         super(predecessor, identifiers);
     }
 
+    /**
+     * This method implementation does not make any change on this instance, and shall be redefined by extended class to apply a change on this instance's attributes according to the type of change event detected.
+     * A "When" handling approach (e.g call to each when(...) method supported by this instance type) based on change type identified, can be developed as strategy pattern of update to the targeted attribute by the change operation.
+     *
+     * @param change Mandatory change to apply on subject according to the change type (e.g attribute add, upgrade, delete operation).
+     * @throws IllegalArgumentException When missing required parameter.
+     */
+    @Override
+    public void mutateWhen(DomainEvent change) throws IllegalArgumentException {
+        if (change == null) throw new IllegalArgumentException("change parameter is required!");
+        // Do nothing
+    }
+
+    /**
+     * Read the domain events provided by the stream as known history of changes relative to this fact, and call the mutateWhen(...) method responsible to replay the change on this instance when event is supported.
+     * Remember that the instance state is mutated from the point of the latest snapshot forward when a partial event stream range is submitted.
+     *
+     * @param history Events which shall be re-executed as committed changes on this instance. Do nothing when null or including empty events list.
+     */
+    @Override
+    public void replayEvents(EventStream history) {
+        if (history != null) {
+            List<DomainEvent> events = history.getEvents();
+            if (events != null) {
+                for (DomainEvent evt : events) {
+                    this.mutateWhen(evt);
+                }
+            }
+        }
+    }
+
     @Override
     public EntityReference root() throws ImmutabilityException {
         // Read the identity of this root aggregate domain object
@@ -97,9 +130,8 @@ public abstract class Aggregate extends CommonChildFactImpl implements IAggregat
      * @return A domain entity identity instance based on current identifier of the
      * aggregate root. Null when not identifier defined regarding this
      * aggregate.
-     * @throws ImmutabilityException
      */
-    protected DomainEntity rootEntity() throws ImmutabilityException {
+    protected DomainEntity rootEntity() {
         // Read the identity of this root aggregate domain object
         Identifier id = this.identified();
         DomainEntity aggregateRootEntity = null;

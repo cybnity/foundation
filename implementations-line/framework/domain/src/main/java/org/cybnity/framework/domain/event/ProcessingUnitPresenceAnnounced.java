@@ -54,6 +54,17 @@ public class ProcessingUnitPresenceAnnounced extends ConcreteDomainChangeEvent {
         super(identifiedBy, eventType);
     }
 
+
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
+    @JsonIgnore
+    @Override
+    public String versionHash() {
+        return String.valueOf(serialVersionUID);
+    }
+
     @JsonIgnore
     @Override
     public Serializable immutable() throws ImmutabilityException {

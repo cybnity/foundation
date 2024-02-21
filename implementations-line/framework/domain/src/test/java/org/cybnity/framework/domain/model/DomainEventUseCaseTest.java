@@ -2,7 +2,7 @@ package org.cybnity.framework.domain.model;
 
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountChanged;
-import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
+import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentity;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
@@ -31,7 +31,7 @@ public class DomainEventUseCaseTest {
     public void givenIdentifiedEvent_whenConstructor_thenIdentifierAttached() throws Exception {
 	// Create an identifiable event
 	Identifier id = new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), "KJGF8765");
-	Entity identity = new UserAccountIdentityCreation(id);
+	Entity identity = new UserAccountIdentity(id);
 
 	UserAccountChanged event = new UserAccountChanged(identity);
 	// Verify that identity is maintained

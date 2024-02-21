@@ -21,7 +21,7 @@ import java.util.Collections;
  * @author olivier
  */
 @JsonTypeName("ConcreteDomainChangeEvent")
-@JsonSubTypes({@JsonSubTypes.Type(value = EventStoreRecordCommitted.class, name = "EventStoreRecordCommitted"), @JsonSubTypes.Type(value = ProcessingUnitPresenceAnnounced.class, name = "ProcessingUnitPresenceAnnounced")})
+@JsonSubTypes({@JsonSubTypes.Type(value = ProcessingUnitPresenceAnnounced.class, name = "ProcessingUnitPresenceAnnounced")})
 public class ConcreteDomainChangeEvent extends DomainEvent {
 
     @JsonIgnore
@@ -169,7 +169,7 @@ public class ConcreteDomainChangeEvent extends DomainEvent {
     @JsonIgnore
     @Override
     public String versionHash() {
-        return new VersionConcreteStrategy().composeCanonicalVersionHash(this.getClass());
+        return String.valueOf(serialVersionUID);
     }
 
     @JsonIgnore

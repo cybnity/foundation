@@ -10,7 +10,7 @@ import org.cybnity.framework.domain.model.sample.DomainEntityImpl;
 import org.cybnity.framework.domain.model.sample.readmodel.ApplicativeRoleDTO;
 import org.cybnity.framework.domain.model.sample.readmodel.DenormalizedEntityImpl;
 import org.cybnity.framework.domain.model.sample.readmodel.UserAccountRepository;
-import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
+import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentity;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStore;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStoreImpl;
 import org.cybnity.framework.immutable.*;
@@ -90,7 +90,7 @@ public class UserAccountAggregateUseCaseTest {
         // Create a user account
         UserAccountAggregate account = new UserAccountAggregate(accountId, accountOwner);
         // Create an event simulating an original command of user account creation
-        DomainEntity eventId = new UserAccountIdentityCreation(accountId);
+        DomainEntity eventId = new UserAccountIdentity(accountId);
         UserAccountCreateCommand event = new UserAccountCreateCommand(eventId);
         event.accountUID = (String) accountId.value();
 

@@ -1,12 +1,5 @@
 package org.cybnity.feature.defense_template.service;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.MissingResourceException;
-
 import org.cybnity.feature.security_activity_orchestration.domain.model.Process;
 import org.cybnity.feature.security_activity_orchestration.domain.model.ProcessBuilder;
 import org.cybnity.feature.security_activity_orchestration.domain.model.Staging;
@@ -15,13 +8,11 @@ import org.cybnity.feature.security_activity_orchestration.domain.model.Step;
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.model.ActivityState;
 import org.cybnity.framework.domain.model.CompletionState;
-import org.cybnity.framework.immutable.Entity;
-import org.cybnity.framework.immutable.EntityReference;
-import org.cybnity.framework.immutable.HistoryState;
-import org.cybnity.framework.immutable.Identifier;
-import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.util.*;
 
 /**
  * Builder implementation class creating a process instance that is based on an

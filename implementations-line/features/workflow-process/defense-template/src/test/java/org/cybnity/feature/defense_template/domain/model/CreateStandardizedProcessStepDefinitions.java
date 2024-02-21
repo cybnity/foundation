@@ -1,17 +1,10 @@
 package org.cybnity.feature.defense_template.domain.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.InputStream;
-import java.util.Hashtable;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
+import io.cucumber.java.PendingException;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.cybnity.feature.defense_template.domain.model.sample.writemodel.Organization;
 import org.cybnity.feature.defense_template.domain.model.sample.writemodel.TestSampleFactory;
 import org.cybnity.feature.defense_template.service.XMLProcessProcessBuilder;
@@ -25,11 +18,10 @@ import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
-import io.cucumber.java.PendingException;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import java.io.InputStream;
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Behavior test regarding the {@code ProcessBuildDirector} feature responsible

@@ -18,7 +18,7 @@ import java.util.LinkedHashSet;
  *
  */
 @Requirement(reqType = RequirementCategory.Security, reqId = "REQ_SEC_3")
-public abstract class SocialEntity extends CommonChildFactImpl {
+public abstract class SocialEntity extends Aggregate {
 
 	/**
 	 * Version of this class structure.

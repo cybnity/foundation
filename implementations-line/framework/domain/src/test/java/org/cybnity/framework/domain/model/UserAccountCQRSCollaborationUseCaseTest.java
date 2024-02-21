@@ -7,7 +7,7 @@ import org.cybnity.framework.domain.model.sample.DomainEntityImpl;
 import org.cybnity.framework.domain.model.sample.readmodel.ApplicativeRoleDTO;
 import org.cybnity.framework.domain.model.sample.readmodel.UserAccountDTO;
 import org.cybnity.framework.domain.model.sample.readmodel.UserAccountRepository;
-import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
+import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentity;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStore;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStoreImpl;
 import org.cybnity.framework.immutable.BaseConstants;
@@ -92,7 +92,7 @@ public class UserAccountCQRSCollaborationUseCaseTest {
 	public void givenWriteModelStore_whenDomainObjectChanged_thenReadModelUpdatedViaSubscribers() throws Exception {
 		// Create a domain event requested to create a new user account aggregate object
 		UserAccountAggregate account = new UserAccountAggregate(accountId, accountOwner);
-		DomainEntity eventId = new UserAccountIdentityCreation(accountId);
+		DomainEntity eventId = new UserAccountIdentity(accountId);
 		UserAccountCreateCommand event = new UserAccountCreateCommand(eventId);
 		event.accountUID = (String) accountId.value();
 		event.userIdentity = accountOwner.reference();
@@ -112,7 +112,7 @@ public class UserAccountCQRSCollaborationUseCaseTest {
 		ProcessManager processManager = new UserAccountManagementProcessesImpl(domainContext);
 
 		// Create a domain event requested to create a new user account aggregate object
-		DomainEntity eventId = new UserAccountIdentityCreation(accountId);
+		DomainEntity eventId = new UserAccountIdentity(accountId);
 		UserAccountCreateCommand event = new UserAccountCreateCommand(eventId);
 		event.accountUID = (String) accountId.value();
 		event.userIdentity = accountOwner.reference();

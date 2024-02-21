@@ -38,28 +38,28 @@ public class EventStream implements Unmodifiable, Serializable {
     /**
      * Version of the event stream.
      */
-    private int version;
+    private long version;
 
     /**
-     * All events in the stream.
+     * All events historized as a stream.
      */
     private List<DomainEvent> events = new LinkedList<>();
 
     public EventStream() {
     }
 
-    public EventStream(int version, DomainEvent... history) {
+    public EventStream(long version, DomainEvent... history) {
         if (history != null && history.length > 0)
             // save optional known origin facts
             events = Arrays.asList(history);
         this.version = version;
     }
 
-    public int getVersion() {
+    public long getVersion() {
         return this.version;
     }
 
-    public void setVersion(int version) {
+    public void setVersion(long version) {
         this.version = version;
     }
 
@@ -75,13 +75,13 @@ public class EventStream implements Unmodifiable, Serializable {
     public Serializable immutable() throws ImmutabilityException {
         List<DomainEvent> origins = new ArrayList<>();
         if (this.events != null) {
-            // Get an immutable version of facts
+            // Get an immutable version of facts maintaining the ordered history
             for (DomainEvent historicalFact : this.events) {
                 if (historicalFact != null)
                     origins.add((DomainEvent) historicalFact.immutable());
             }
         }
-        return new EventStream(this.version, origins.toArray(new DomainEvent[origins.size()]));
+        return new EventStream(this.version, origins.toArray(new DomainEvent[0]));
     }
 
 }

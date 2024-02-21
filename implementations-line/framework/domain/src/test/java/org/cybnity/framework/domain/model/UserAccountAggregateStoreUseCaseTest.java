@@ -4,7 +4,7 @@ import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.application.sample.UserAccountAggregate;
 import org.cybnity.framework.domain.application.sample.UserAccountCreateCommand;
 import org.cybnity.framework.domain.model.sample.DomainEntityImpl;
-import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
+import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentity;
 import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStoreImpl;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
@@ -68,7 +68,7 @@ public class UserAccountAggregateStoreUseCaseTest {
 		UserAccountAggregate account = new UserAccountAggregate(accountId, accountOwner);
 
 		// Create an event simulating an original command of user account creation
-		DomainEntity eventId = new UserAccountIdentityCreation(accountId);
+		DomainEntity eventId = new UserAccountIdentity(accountId);
 		UserAccountCreateCommand event = new UserAccountCreateCommand(eventId);
 		event.accountUID = (String) accountId.value();
 

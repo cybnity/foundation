@@ -20,7 +20,7 @@ import java.util.Set;
  * <p>
  * Each recorded fact include the original version of fact tracked, and
  * extracted information allowing to store/retrieve it (e.g during specific
- * steps of a process, for hydratation of a messaging system).
+ * steps of a process, for hydration of a messaging system).
  *
  * @author olivier
  */
@@ -33,11 +33,11 @@ public class FactRecord implements IHistoricalFact, IUniqueness {
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(FactRecord.class).hashCode();
 
-    private Serializable body;
-    private OffsetDateTime factOccurredAt;
-    private OffsetDateTime recordedAt;
-    private int bodyHash;
-    private TypeVersion factTypeVersion;
+    private final Serializable body;
+    private final OffsetDateTime factOccurredAt;
+    private final OffsetDateTime recordedAt;
+    private final int bodyHash;
+    private final TypeVersion factTypeVersion;
 
     /**
      * Unique identifier of this record (equals to the original identifier hash code
