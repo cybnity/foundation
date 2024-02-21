@@ -54,7 +54,7 @@ public abstract class Repository implements ISubscribable {
         // Initialize a delegate for promotion of events changes
         this.promotionManager = DomainEventPublisher.instance();
     }
-    
+
     /**
      * Get the promotion manager managing the notification of registered subscribers regarding any change performed by the store.
      *

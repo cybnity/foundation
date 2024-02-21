@@ -28,7 +28,7 @@ public class DomainEventInMemoryStoreImpl extends EventStore {
     /**
      * Default constructor.
      */
-    private DomainEventInMemoryStoreImpl() {
+    protected DomainEventInMemoryStoreImpl() {
         super();
     }
 
