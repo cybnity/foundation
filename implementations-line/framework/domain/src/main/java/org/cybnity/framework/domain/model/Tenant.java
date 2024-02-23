@@ -1,5 +1,8 @@
 package org.cybnity.framework.domain.model;
 
+import org.cybnity.framework.IContext;
+import org.cybnity.framework.domain.Command;
+import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
@@ -7,6 +10,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 
 import java.io.Serializable;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Represent an organization subscription that allow to define a scope of
@@ -25,7 +30,7 @@ import java.util.LinkedHashSet;
  * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Security, reqId = "REQ_SEC_3")
-public class Tenant extends CommonChildFactImpl {
+public class Tenant extends Aggregate {
 
     /**
      * Version of this class
@@ -42,6 +47,42 @@ public class Tenant extends CommonChildFactImpl {
      * Current mutable status of activity regarding this tenant.
      */
     private ActivityState activityStatus;
+
+    @Override
+    public Tenant instanceOf(Identifier instanceId, List<Hydration> changesHistory) throws IllegalArgumentException, ImmutabilityException {
+        if (instanceId == null) throw new IllegalArgumentException("instanceId parameter is required!");
+        if (changesHistory == null || changesHistory.isEmpty())
+            throw new IllegalArgumentException("changesHistory parameter is required and shall be not empty!");
+        Tenant fact = null;
+        // Get first element as origin creation event (more old event)
+        Hydration event = changesHistory.get(0);
+        if (event == null) throw new IllegalArgumentException("First history item shall be not null!");
+        // Check if the event allow identification of predecessor
+        Entity predecessor = event.predecessor();
+        if (predecessor != null) {
+            // Recreate instance
+            fact = new Tenant(predecessor, instanceId);
+            // Rehydrate its status for events history
+            fact.mutate(changesHistory);// Re-hydrate instance
+        }
+        return fact;
+    }
+
+    /**
+     * Default constructor.
+     *
+     * @param predecessor Mandatory parent of this tenant root aggregate entity.
+     * @param id          Optional identifier of this tenant.
+     * @throws IllegalArgumentException When any mandatory parameter is missing.
+     *                                       When id parameter's name is not equals to
+     *                                        BaseConstants.IDENTIFIER_ID. When a problem
+     *                                        of immutability is occurred. When
+     *                                        predecessor mandatory parameter is not
+     *                                        defined or without defined identifier.
+     */
+    public Tenant(Entity predecessor, Identifier id) throws IllegalArgumentException {
+        super(predecessor, id);
+    }
 
     /**
      * Default constructor.
@@ -89,6 +130,28 @@ public class Tenant extends CommonChildFactImpl {
     }
 
     /**
+     * Specific and redefined implementation of change re-hydration.
+     *
+     * @param change Mandatory change to apply on subject according to the change type (e.g attribute add, upgrade, delete operation).
+     * @throws IllegalArgumentException When missing required parameter.
+     */
+    @Override
+    public void mutateWhen(DomainEvent change) throws IllegalArgumentException {
+        super.mutateWhen(change);// Execute potential re-hydration of super class
+        // Apply local change
+        // TODO according to change supported and attribute type/value detected
+    }
+
+    @Override
+    public void handle(Command command, IContext ctx) throws IllegalArgumentException {
+        throw new IllegalArgumentException("not implemented!");
+    }
+
+    @Override
+    public Set<String> handledCommandTypeVersions() {
+        return null;
+    }
+    /**
      * Get the current state of activity regarding this tenant.
      *
      * @return A status or null when unknown.
@@ -125,6 +188,8 @@ public class Tenant extends CommonChildFactImpl {
             }
             // Replace current version of mutable state of this tenant
             this.activityStatus = status;
+            // TODO ajouter un event en history
+            //this.addChangeEvent();
         }
     }
 
@@ -167,6 +232,7 @@ public class Tenant extends CommonChildFactImpl {
      * @param tenantRepresentedBy A specification.
      */
     public void setLabel(TenantDescriptor tenantRepresentedBy) {
+        boolean changed = false;
         if (this.label != null) {
             // Check if history shall be maintained
             if (!tenantRepresentedBy.changesHistory().contains(this.label)) {
@@ -174,14 +240,22 @@ public class Tenant extends CommonChildFactImpl {
                 // with auto-saving of the previous name into the new name's versions history
                 this.label = (TenantDescriptor) this.label.enhanceHistoryOf(tenantRepresentedBy,
                         /* Don't manage the already defined history state */ null);
+                changed = true;
             } else {
                 // new version is already instantiated with prior versions defined
                 // No need to enhance, but only to replace this current label
                 this.label = tenantRepresentedBy;
+                changed = true;
             }
         } else {
             // Initialize the first defined name of this tenant
             this.label = tenantRepresentedBy;
+            changed = true;
+        }
+        if (changed) {
+
+            // TODO ajouter un event en history
+            //this.addChangeEvent();
         }
     }
 

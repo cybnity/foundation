@@ -9,6 +9,7 @@ import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  * Sample of child entity following (as aggregate) a parent other entity.
@@ -20,7 +21,12 @@ public class ChildAggregate extends ChildFact {
 
     private static final long serialVersionUID = 1L;
 
-    public ChildAggregate(Entity predecessor, Identifier id) throws IllegalArgumentException {
+	@Override
+	public ChildFact instanceOf(Identifier instanceId, List<Hydration> changesHistory) throws IllegalArgumentException, ImmutabilityException {
+		return null;
+	}
+
+	public ChildAggregate(Entity predecessor, Identifier id) throws IllegalArgumentException {
 	super(predecessor, id);
     }
 

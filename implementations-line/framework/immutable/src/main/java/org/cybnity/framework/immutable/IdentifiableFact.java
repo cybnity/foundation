@@ -26,7 +26,7 @@ public interface IdentifiableFact {
      * This method has the same contract as valueEquality() method in that all
      * values that are functionally equal also produce equal hash code value. This
      * method is called by default hashCode() method of this ValueObject instance
-     * and shall provide the list of values contributing to define the unicity of
+     * and shall provide the list of values contributing to define the unit of
      * this instance (e.g also used for valueEquality() comparison).
      * 
      * @return The unique functional values used to identify uniquely this instance.

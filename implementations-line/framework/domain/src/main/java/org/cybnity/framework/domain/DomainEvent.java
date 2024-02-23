@@ -21,12 +21,12 @@ import java.time.OffsetDateTime;
  * By convention, a domain event is named according to <<EventType>><<Fact
  * State>> (e.g OrderConfirmed).
  * <p>
- * An event can be used to read one or several informations of a system, to
+ * An event can be used to read one or many data of a system, to
  * change a status of a domain model or to be informed of a changed status
  * detected from an element of a bounded context (e.g data object property).
  * <p>
- * Related patterns: Segregation principle between events that are responsible
- * of write actions (e.g CommandEvent) and others that are responsible of read
+ * Related patterns: Segregation principle between events that have responsibility
+ * of write actions (e.g CommandEvent) and others that are in charge of read
  * requests (e.g Query) via Command and Query Responsibility Segregation (CQRS)
  * pattern.
  *
