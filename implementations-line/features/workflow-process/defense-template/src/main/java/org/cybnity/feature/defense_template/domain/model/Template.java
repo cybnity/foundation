@@ -4,7 +4,6 @@ import org.cybnity.feature.defense_template.DomainObjectType;
 import org.cybnity.feature.defense_template.IReferential;
 import org.cybnity.feature.defense_template.ITemplate;
 import org.cybnity.framework.IContext;
-import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.MutableAttribute;
 import org.cybnity.framework.domain.model.Aggregate;
@@ -70,14 +69,14 @@ public class Template extends Aggregate implements ITemplate {
         super(predecessor, id);
         if (modelOf == null)
             throw new IllegalArgumentException("templateType parameter is required!");
-        if (name == null || "".equals(name))
+        if (name == null || name.isEmpty())
             throw new IllegalArgumentException("Name  parameter is required!");
         if (id == null)
             throw new IllegalArgumentException("Id parameter is required!");
 
         // Create mutable name attached to predecessor
         // that is this template
-        this.name = new MutableAttribute(this.rootEntity(), new Attribute("name", name), HistoryState.COMMITTED);
+        this.name = new MutableAttribute(this.rootEntity(), new org.cybnity.framework.domain.Attribute("name", name), HistoryState.COMMITTED);
 
         this.modelOf = modelOf;
         this.originReferential = originReferential;
@@ -110,7 +109,7 @@ public class Template extends Aggregate implements ITemplate {
             throw new IllegalArgumentException("Identifiers parameter is required!");
         // Create mutable name attached to predecessor
         // that is this template
-        this.name = new MutableAttribute(this.rootEntity(), new Attribute("name", name), HistoryState.COMMITTED);
+        this.name = new MutableAttribute(this.rootEntity(), new org.cybnity.framework.domain.Attribute("name", name), HistoryState.COMMITTED);
         this.modelOf = modelOf;
         this.originReferential = originReferential;
     }

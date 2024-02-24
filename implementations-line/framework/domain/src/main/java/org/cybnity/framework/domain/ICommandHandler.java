@@ -15,11 +15,8 @@ import java.util.Set;
  * instance), and invokes the appropriate method on the aggregate instance,
  * passing in any parameters from the command; and it persists the new state of
  * the aggregate to a persistence system.
- * 
  * Typically, the command handlers are organized into a class (see
- * {@link org.cybnity.framework.domain.model.CommandHandlingService}) that contains
- * all of the handlers for a specific aggregate type.
- * 
+ * {@link org.cybnity.framework.domain.model.CommandHandlingService}) that contains all handlers for a specific aggregate type.
  * Commands should be processed once, by a single recipient. The messaging
  * infrastructure should ensure that it delivers just a single copy of a command
  * to single command handler.

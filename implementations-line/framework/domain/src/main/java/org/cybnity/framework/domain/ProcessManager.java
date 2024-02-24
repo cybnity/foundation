@@ -30,8 +30,7 @@ public abstract class ProcessManager implements ICommandHandler {
      * Managed handlers which are specific to the aggregate type, and that can be
      * selected for processing of specific commands. The Key is equals to a Command
      * name (that should be unique per command) which is a supported command by the
-     * aggregate, and the value if the mandatory handler instance which is
-     * responsible of the treatment for this type of command.
+     * aggregate, and the value if the mandatory handler instance which is responsible of the treatment for this type of command.
      */
     private ConcurrentHashMap<String, ICommandHandler> mediated;
 

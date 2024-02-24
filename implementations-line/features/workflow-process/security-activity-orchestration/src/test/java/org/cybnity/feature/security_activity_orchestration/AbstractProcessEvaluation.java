@@ -2,7 +2,6 @@ package org.cybnity.feature.security_activity_orchestration;
 
 import org.cybnity.feature.security_activity_orchestration.domain.model.ProcessDescriptor;
 import org.cybnity.feature.security_activity_orchestration.domain.model.sample.writemodel.Organization;
-import org.cybnity.feature.security_activity_orchestration.domain.model.sample.writemodel.OrganizationDescriptor.PropertyAttributeKey;
 import org.cybnity.feature.security_activity_orchestration.domain.model.sample.writemodel.TestSampleFactory;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.model.DomainEntity;
@@ -45,7 +44,7 @@ public class AbstractProcessEvaluation {
 										 */ null, Boolean.TRUE /* active tenant */);
 
 		HashMap<String, Object> organisationAttr = new HashMap<String, Object>();
-		organisationAttr.put(PropertyAttributeKey.Name.name(), "CYBNITY France");
+		organisationAttr.put(TenantDescriptor.PropertyAttributeKey.LABEL.name(), "CYBNITY France");
 		organizationDesc = new TenantDescriptor(company, organisationAttr, HistoryState.COMMITTED);
 		tenant.setLabel(organizationDesc);
 		processIdentity = TestSampleFactory.createIdentity();
