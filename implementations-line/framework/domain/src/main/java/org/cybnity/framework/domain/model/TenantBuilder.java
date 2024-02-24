@@ -37,7 +37,7 @@ public class TenantBuilder {
         this.isActivityStatus = isActivityStatus;
     }
 
-    public void buildInstance() throws Exception {
+    public void buildInstance() throws ImmutabilityException {
         prepareTenantId();
         createInstance();
         prepareTenantDescription();
@@ -65,7 +65,7 @@ public class TenantBuilder {
     /**
      * Prepare builder of unique identified based on natural key (unique tenant naming)
      */
-    private void prepareTenantId() throws Exception {
+    private void prepareTenantId() {
         // Like tenant description is mutable information, a tenant identify can't be based on a natural key relative to the original tenant label
         // So technical identifier shall be used for uui of tenant generation
         tenantId = IdentifierStringBased.generate(tenantLabel);
