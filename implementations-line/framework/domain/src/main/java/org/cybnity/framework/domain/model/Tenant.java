@@ -310,4 +310,12 @@ public class Tenant extends Aggregate {
         return tenant;
     }
 
+    /**
+     * Implement the generation of version hash regarding this class type.
+     */
+    @Override
+    public String versionHash() {
+        return String.valueOf(serialVersionUID);
+    }
+
 }
