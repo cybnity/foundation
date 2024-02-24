@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Standard and common child fact implementation class.
@@ -25,6 +26,11 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
 
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(CommonChildFactImpl.class).hashCode();
+
+    /**
+     * Logger singleton.
+     */
+    private Logger logger;
 
     /**
      * Stream of changes relative to this instance.
@@ -48,6 +54,48 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
             fact.mutate(changesHistory);// Re-hydrate instance
         }
         return fact;
+    }
+
+    /**
+     * Default constructor.
+     *
+     * @param predecessor Mandatory parent of this child entity.
+     * @param id          Unique and optional identifier of this entity.
+     * @throws IllegalArgumentException When any mandatory parameter is missing.
+     *                                  When a problem of immutability is occurred.
+     *                                  When predecessor mandatory parameter is not
+     *                                  defined or without defined identifier.
+     */
+    public CommonChildFactImpl(Entity predecessor, Identifier id) throws IllegalArgumentException {
+        super(predecessor, id);
+    }
+
+    /**
+     * Specific partial constructor.
+     *
+     * @param predecessor Mandatory parent of this child entity.
+     * @param identifiers Optional set of identifiers of this entity, that contains
+     *                    non-duplicable elements.
+     * @throws IllegalArgumentException When identifiers parameter is null or each
+     *                                  item does not include name and value. When
+     *                                  predecessor mandatory parameter is not
+     *                                  defined or without defined identifier.
+     */
+    public CommonChildFactImpl(Entity predecessor, LinkedHashSet<Identifier> identifiers)
+            throws IllegalArgumentException {
+        super(predecessor, identifiers);
+    }
+
+    /**
+     * Get logger regarding this instance type.
+     *
+     * @return A logger singleton.
+     */
+    protected Logger logger() {
+        if (logger == null) {
+            this.logger = Logger.getLogger(this.getClass().getName());
+        }
+        return logger;
     }
 
     /**
@@ -97,7 +145,7 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
      * @param changesHistory Events which shall be re-executed as committed changes on this instance. Do nothing when null or including empty events list.
      */
     final protected void mutate(List<Hydration> changesHistory) {
-        if (changesHistory!=null) {
+        if (changesHistory != null) {
             // Rehydrate its status for events history
             IdentifiableFact changeFact;
             DomainEvent changeEvt;
@@ -110,36 +158,6 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
                 }
             }
         }
-    }
-
-    /**
-     * Default constructor.
-     *
-     * @param predecessor Mandatory parent of this child entity.
-     * @param id          Unique and optional identifier of this entity.
-     * @throws IllegalArgumentException When any mandatory parameter is missing.
-     *                                  When a problem of immutability is occurred.
-     *                                  When predecessor mandatory parameter is not
-     *                                  defined or without defined identifier.
-     */
-    public CommonChildFactImpl(Entity predecessor, Identifier id) throws IllegalArgumentException {
-        super(predecessor, id);
-    }
-
-    /**
-     * Specific partial constructor.
-     *
-     * @param predecessor Mandatory parent of this child entity.
-     * @param identifiers Optional set of identifiers of this entity, that contains
-     *                    non-duplicable elements.
-     * @throws IllegalArgumentException When identifiers parameter is null or each
-     *                                  item does not include name and value. When
-     *                                  predecessor mandatory parameter is not
-     *                                  defined or without defined identifier.
-     */
-    public CommonChildFactImpl(Entity predecessor, LinkedHashSet<Identifier> identifiers)
-            throws IllegalArgumentException {
-        super(predecessor, identifiers);
     }
 
     /**

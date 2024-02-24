@@ -10,7 +10,7 @@ import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import java.io.Serializable;
 
 /**
- * Represent a characteristic which can be added to a topic (e.g an technical
+ * Represent a characteristic which can be added to a topic (e.g a technical
  * named attribute which is defined on-fly on an existing object, including a
  * value). It's more or less like a generic property assignable to any topic or
  * object (e.g property on a workflow step instance).

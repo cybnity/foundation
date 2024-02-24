@@ -14,5 +14,10 @@ public enum AttributeName {
     /**
      * Type of processing result cause.
      */
-    OUTPUT_CAUSE_TYPE;
+    OUTPUT_CAUSE_TYPE,
+
+    /**
+     * Identifier of a Tenant.
+     */
+    TENANT_ID;
 }

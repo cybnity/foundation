@@ -7,13 +7,12 @@ import org.cybnity.framework.domain.model.Aggregate;
 import org.cybnity.framework.domain.model.CommonChildFactImpl;
 import org.cybnity.framework.domain.model.DomainEventPublisher;
 import org.cybnity.framework.domain.model.sample.ApplicativeRole;
-import org.cybnity.framework.domain.model.sample.DomainEntityImpl;
 import org.cybnity.framework.domain.model.sample.UserAccountApplicativeRoleAssigned;
 import org.cybnity.framework.domain.model.sample.readmodel.ApplicativeRoleDTO;
-import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStore;
 import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -29,7 +28,7 @@ import java.util.UUID;
 public class UserAccountAggregate extends Aggregate {
 
     private EntityReference user;
-    private Entity identity;
+
     /**
      * Version of this class
      */
@@ -39,6 +38,10 @@ public class UserAccountAggregate extends Aggregate {
      * Set of roles allowed to this user account.
      */
     private LinkedHashSet<ApplicativeRole> assignedRoles;
+
+    public UserAccountAggregate(Entity predecessor, LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
+        super(predecessor, identifiers);
+    }
 
     /**
      * Default constructor of an account.
@@ -52,7 +55,6 @@ public class UserAccountAggregate extends Aggregate {
     public UserAccountAggregate(Identifier id, Entity userIdentity)
             throws IllegalArgumentException, ImmutabilityException {
         super(userIdentity, id);
-        identity = new DomainEntityImpl(id);
         if (!BaseConstants.IDENTIFIER_ID.name().equals(id.name()))
             throw new IllegalArgumentException(
                     "id parameter is not valid because identifier name shall be equals to only supported value ("
@@ -88,18 +90,10 @@ public class UserAccountAggregate extends Aggregate {
                     // Update the roles assignment according to the requested change
                     addAssignedRole(toAssign.getName(), toAssign.status);
 
-                    // Save the changed state (e.g historization of the entity immutable object's
-                    // version) in a data persistence when existing
-                    UserAccountStore accountStore = (UserAccountStore) ctx.get(UserAccountStore.class.getName());
-                    accountStore.append(this, toProcess);
-
-                    // -------------> SAVE CONFIRMED AS CONSISTENT UNIT OF USERACCOUNTAGGREGATE
-                    // VERSION BY UserAccountChanged event automatically send by the store
-
                     // Creation an event confirming the changed status of the domain object (e.g
                     // assignment of new application roles)
                     // Build event child based on the updated account (parent of immutable story)
-                    CommonChildFactImpl modifiedAccountAssignment = new CommonChildFactImpl(this.identity,
+                    CommonChildFactImpl modifiedAccountAssignment = new CommonChildFactImpl(this.rootEntity(),
                             new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(),
                                     /* identifier as performed transaction number */ UUID.randomUUID().toString()));
 
@@ -107,10 +101,10 @@ public class UserAccountAggregate extends Aggregate {
                     UserAccountApplicativeRoleAssigned modifiedAccount = new UserAccountApplicativeRoleAssigned(
                             modifiedAccountAssignment.parent());
                     modifiedAccount.changeCommandRef = toProcess.reference();
-                    modifiedAccount.changedAccountRef = this.identity.reference();
+                    modifiedAccount.changedAccountRef = this.rootEntity().reference();
 
                     // Notify the changed state to the possible observers
-                    // Publish event occured on the write model regarding the changed user account
+                    // Publish event occurred on the write model regarding the changed user account
                     DomainEventPublisher.instance().publish(modifiedAccount);
                     return;
                 } catch (ImmutabilityException cnse) {
@@ -127,22 +121,13 @@ public class UserAccountAggregate extends Aggregate {
                 "Unsupported type of command by " + UserAccountAggregate.class.getName() + "!");
     }
 
-    @Override
-    public Identifier identified() {
-        StringBuffer combinedId = new StringBuffer();
-        for (Identifier id : this.identity.identifiers()) {
-            combinedId.append(id.value());
-        }
-        // Return combined identifier
-        return new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), combinedId.toString());
+
+    public Serializable immutable() throws ImmutabilityException {
+        LinkedHashSet<Identifier> ids = new
+                LinkedHashSet<>(this.identifiers());
+        return new UserAccountAggregate(this.parent(), ids);
     }
 
-    /*
-     * public Serializable immutable() throws ImmutabilityException {
-     * LinkedHashSet<Identifier> ids = new
-     * LinkedHashSet<>(this.owner.identifiers()); return new
-     * UserAccountAggregate(ids); }
-     */
 
     /**
      * Add an applicative role allowed to this account.
@@ -152,7 +137,7 @@ public class UserAccountAggregate extends Aggregate {
      * @throws ImmutabilityException When problem of role instantiation.
      */
     private void addAssignedRole(String roleName, HistoryState state) throws ImmutabilityException {
-        if (roleName != null && !roleName.equals("")) {
+        if (roleName != null && !roleName.isEmpty()) {
             if (this.assignedRoles == null) {
                 this.assignedRoles = new LinkedHashSet<>();
             }
@@ -224,7 +209,4 @@ public class UserAccountAggregate extends Aggregate {
         }
     }
 
-    public Entity identity() throws ImmutabilityException {
-        return (Entity) this.identity.immutable();
-    }
 }

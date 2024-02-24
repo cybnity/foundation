@@ -3,6 +3,9 @@ package org.cybnity.framework.domain.model;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.DomainEvent;
+import org.cybnity.framework.domain.event.ConcreteDomainChangeEvent;
+import org.cybnity.framework.domain.event.DomainEventType;
+import org.cybnity.framework.domain.event.IAttribute;
 import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
@@ -12,6 +15,7 @@ import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
 /**
  * Represent an organization subscription that allow to define a scope of
@@ -37,6 +41,20 @@ public class Tenant extends Aggregate {
      */
     private static final long serialVersionUID = new VersionConcreteStrategy().composeCanonicalVersionHash(Tenant.class)
             .hashCode();
+
+    /**
+     * Attribute type managed via command event allowing change of an aggregate, and/or allowing notification of information changed via a promoted event type.
+     */
+    public enum Attribute implements IAttribute {
+        /**
+         * Tenant logical label value.
+         */
+        LABEL,
+        /**
+         * True or False value regarding the tenant's activity state.
+         */
+        ACTIVITY_STATUS;
+    }
 
     /**
      * Logical label naming this tenant (e.g business name of a company) that facilitate to resolve queries.
@@ -74,14 +92,14 @@ public class Tenant extends Aggregate {
      * @param predecessor Mandatory parent of this tenant root aggregate entity.
      * @param id          Optional identifier of this tenant.
      * @throws IllegalArgumentException When any mandatory parameter is missing.
-     *                                       When id parameter's name is not equals to
-     *                                        BaseConstants.IDENTIFIER_ID. When a problem
-     *                                        of immutability is occurred. When
-     *                                        predecessor mandatory parameter is not
-     *                                        defined or without defined identifier.
+     *                                  When id parameter's name is not equals to
+     *                                  BaseConstants.IDENTIFIER_ID. When a problem
+     *                                  of immutability is occurred. When
+     *                                  predecessor mandatory parameter is not
+     *                                  defined or without defined identifier.
      */
     public Tenant(Entity predecessor, Identifier id) throws IllegalArgumentException {
-        super(predecessor, id);
+        super(predecessor, id); // Automatic creation event added into history
     }
 
     /**
@@ -99,17 +117,17 @@ public class Tenant extends Aggregate {
      *                                  defined or without defined identifier.
      */
     public Tenant(Entity predecessor, Identifier id, Boolean currentStatus) throws IllegalArgumentException {
-        super(predecessor, id);
+        super(predecessor, id);// Automatic creation event added into history
         if (id != null && !BaseConstants.IDENTIFIER_ID.name().equals(id.name()))
             throw new IllegalArgumentException(
                     "id parameter is not valid because identifier name shall be equals to only supported value ("
                             + BaseConstants.IDENTIFIER_ID.name() + ")!");
         if (currentStatus != null) {
             try {
-                this.activityStatus = new ActivityState(parent().reference(), currentStatus);
+                setStatus(new ActivityState(parent().reference(), currentStatus));
             } catch (ImmutabilityException ie) {
                 // Normally shall never arrive
-                // TODO : add technical log
+                logger().log(Level.SEVERE, ie.getMessage(), ie);
             }
         }
     }
@@ -126,7 +144,7 @@ public class Tenant extends Aggregate {
      *                                  defined or without defined identifier.
      */
     private Tenant(Entity predecessor, LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
-        super(predecessor, identifiers);
+        super(predecessor, identifiers); // Automatic creation event added into history
     }
 
     /**
@@ -139,7 +157,7 @@ public class Tenant extends Aggregate {
     public void mutateWhen(DomainEvent change) throws IllegalArgumentException {
         super.mutateWhen(change);// Execute potential re-hydration of super class
         // Apply local change
-        // TODO according to change supported and attribute type/value detected
+        // TODO implementation of change on Tenant according to change event type (command supported) producing this tenant's attribute value modification
     }
 
     @Override
@@ -151,6 +169,7 @@ public class Tenant extends Aggregate {
     public Set<String> handledCommandTypeVersions() {
         return null;
     }
+
     /**
      * Get the current state of activity regarding this tenant.
      *
@@ -188,8 +207,16 @@ public class Tenant extends Aggregate {
             }
             // Replace current version of mutable state of this tenant
             this.activityStatus = status;
-            // TODO ajouter un event en history
-            //this.addChangeEvent();
+
+            try {
+                // Add a change event into the history regarding modified status
+                ConcreteDomainChangeEvent changeEvt = prepareChangeEventInstance(DomainEventType.TENANT_CHANGED);
+                // Add activity status changed into description of change
+                changeEvt.appendSpecification(new org.cybnity.framework.domain.Attribute(Attribute.ACTIVITY_STATUS.name(), this.activityStatus.isActive().toString()));
+                addChangeEvent(changeEvt); // Add to changes history
+            } catch (ImmutabilityException ie) {
+                logger().log(Level.SEVERE, ie.getMessage(), ie);
+            }
         }
     }
 
@@ -232,7 +259,6 @@ public class Tenant extends Aggregate {
      * @param tenantRepresentedBy A specification.
      */
     public void setLabel(TenantDescriptor tenantRepresentedBy) {
-        boolean changed = false;
         if (this.label != null) {
             // Check if history shall be maintained
             if (!tenantRepresentedBy.changesHistory().contains(this.label)) {
@@ -240,22 +266,24 @@ public class Tenant extends Aggregate {
                 // with auto-saving of the previous name into the new name's versions history
                 this.label = (TenantDescriptor) this.label.enhanceHistoryOf(tenantRepresentedBy,
                         /* Don't manage the already defined history state */ null);
-                changed = true;
             } else {
                 // new version is already instantiated with prior versions defined
                 // No need to enhance, but only to replace this current label
                 this.label = tenantRepresentedBy;
-                changed = true;
             }
         } else {
             // Initialize the first defined name of this tenant
             this.label = tenantRepresentedBy;
-            changed = true;
         }
-        if (changed) {
 
-            // TODO ajouter un event en history
-            //this.addChangeEvent();
+        try {
+            // Add a change event into the history regarding changed label descriptor
+            ConcreteDomainChangeEvent changeEvt = prepareChangeEventInstance(DomainEventType.TENANT_CHANGED);
+            // Add changed label value into description of change
+            changeEvt.appendSpecification(new org.cybnity.framework.domain.Attribute(Attribute.LABEL.name(), this.label.getLabel()));
+            addChangeEvent(changeEvt); // Add to changes history
+        } catch (ImmutabilityException ie) {
+            logger().log(Level.SEVERE, ie.getMessage(), ie);
         }
     }
 

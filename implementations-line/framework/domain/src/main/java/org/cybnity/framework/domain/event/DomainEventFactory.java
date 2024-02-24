@@ -11,6 +11,7 @@ import java.util.Collection;
  * Factory of domain event supported by domain Anti-Corruption Layer API.
  */
 public class DomainEventFactory {
+
     /**
      * Factory of a type of domain event supported by the domain Anti-Corruption Layer API.
      *

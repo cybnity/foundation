@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TenantUseCaseTest {
 
     private Tenant tenant;
-    private String namedOrganization = "CYBNITY France";
+    private final String namedOrganization = "CYBNITY France";
     private TenantDescriptor organization;
     private Identifier id;
 
@@ -216,7 +216,7 @@ public class TenantUseCaseTest {
         // history version in the
         // original state
 
-        // Check good updated unactive state into the changed tenant
+        // Check good updated no active state into the changed tenant
         assertFalse(tenant.status().isActive());
         assertEquals(HistoryState.COMMITTED, tenant.status().historyStatus(), "Invalid default committed history!");
     }

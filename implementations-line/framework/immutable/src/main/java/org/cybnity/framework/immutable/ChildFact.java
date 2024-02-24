@@ -194,7 +194,7 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
      * A fact shall use location-independent identity. It cannot use
      * auto-incremented IDs, URLS, or any other location-dependent identifier.
      *
-     * @return One or multiple identification informations.
+     * @return One or multiple identification information.
      */
     public Collection<Identifier> identifiers() {
         // Return immutable version
@@ -263,7 +263,7 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
         if (fact != null && IdentifiableFact.class.isAssignableFrom(fact.getClass())) {
             try {
                 // Compare equality based on each instance's identifier (unique or based on
-                // identifying informations combination)
+                // identifying information combination)
                 return Evaluations.isIdentifiedEquals(this, (IdentifiableFact) fact);
             } catch (ImmutabilityException ie) {
                 // Impossible identifier instance creation

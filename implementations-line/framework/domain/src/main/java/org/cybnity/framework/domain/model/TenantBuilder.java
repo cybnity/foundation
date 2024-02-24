@@ -32,7 +32,6 @@ public class TenantBuilder {
             throw new IllegalArgumentException("label parameter is required!");
         if (originPredecessorEvent == null)
             throw new IllegalArgumentException("originPredecessorEvent parameter is required!");
-
         this.tenantLabel = label;
         this.originPredecessorEvent = originPredecessorEvent;
         this.isActivityStatus = isActivityStatus;
