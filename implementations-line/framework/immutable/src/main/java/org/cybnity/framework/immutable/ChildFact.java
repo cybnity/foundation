@@ -5,7 +5,10 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 
 /**
  * Historical fact (e.g as an aggregate) referencing a parent as predecessor.
@@ -68,16 +71,6 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
          */
         public IdentifiableFact event();
     }
-
-    /**
-     * Factory of instance from historized facts (e.g fact creation, change, deletion events) allowing the instance rehydration.
-     *
-     * @param instanceId     Mandatory unique identifier of the child fact instance to rehydrate.
-     * @param changesHistory Mandatory not empty history. History order shall be ascending ordered with the last list element equals to the more young creation event relative to this instance to rehydrate.
-     * @throws IllegalArgumentException When mandatory parameter is not valid or empty. When list does not contain identifiable creation event as first list element.
-     * @throws ImmutabilityException    When impossible read of a change event from list.
-     */
-    abstract public ChildFact instanceOf(Identifier instanceId, List<Hydration> changesHistory) throws IllegalArgumentException, ImmutabilityException;
 
     /**
      * Default constructor.

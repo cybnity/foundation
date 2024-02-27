@@ -37,8 +37,14 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
      */
     private final List<DomainEvent> changeHistory = new LinkedList<>();
 
-    @Override
-    public ChildFact instanceOf(Identifier instanceId, List<Hydration> changesHistory) throws IllegalArgumentException, ImmutabilityException {
+    /**
+     * Factory of child fact based on changes history (e.g fact creation, change, deletion events) allowing the instance rehydration.
+     *
+     * @param instanceId     Mandatory unique identifier of the child fact instance to rehydrate.
+     * @param changesHistory Mandatory not empty history. History order shall be ascending ordered with the last list element equals to the more young creation event relative to this instance to rehydrate.
+     * @throws IllegalArgumentException When mandatory parameter is not valid or empty. When list does not contain identifiable creation event as first list element.
+     */
+    public static CommonChildFactImpl instanceOf(Identifier instanceId, List<Hydration> changesHistory) throws IllegalArgumentException {
         if (instanceId == null) throw new IllegalArgumentException("instanceId parameter is required!");
         if (changesHistory == null || changesHistory.isEmpty())
             throw new IllegalArgumentException("changesHistory parameter is required and shall be not empty!");
