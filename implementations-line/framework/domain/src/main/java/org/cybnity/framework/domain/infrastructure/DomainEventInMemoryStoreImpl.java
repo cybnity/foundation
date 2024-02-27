@@ -41,9 +41,18 @@ public class DomainEventInMemoryStoreImpl extends EventStore {
         return new DomainEventInMemoryStoreImpl();
     }
 
+    /**
+     * Get container of record implemented in-memory.
+     *
+     * @return Store's container instance.
+     */
+    protected ConcurrentHashMap<String, LinkedList<EventRecord>> registries() {
+        return this.registries;
+    }
+
     @Override
     public void appendToStream(Identifier domainEventId, long expectedVersion, List<DomainEvent> changes) throws IllegalArgumentException, ImmutabilityException {
-        if (domainEventId ==null) throw new IllegalArgumentException("domainEventId parameter is required!");
+        if (domainEventId == null) throw new IllegalArgumentException("domainEventId parameter is required!");
         if (changes == null) throw new IllegalArgumentException("changes parameter is required!");
         if (changes.isEmpty()) return; // noting to change on domain event
 
