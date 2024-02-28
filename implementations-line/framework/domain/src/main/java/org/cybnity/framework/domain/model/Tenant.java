@@ -123,6 +123,7 @@ public class Tenant extends Aggregate {
      * Default constructor.
      * During the construction, a TENANT_CREATED domain event is automatically added to the lifecycle changes history container.
      * Update event is also added into the change events history regarding assigned status.
+     *
      * @param predecessor   Mandatory parent of this tenant root aggregate instance.
      * @param id            Optional identifier of this tenant.
      * @param currentStatus Optional current status of this tenant subscription (e.g
@@ -225,19 +226,20 @@ public class Tenant extends Aggregate {
      */
     private void setStatus(ActivityState status) {
         if (status != null) {
-            if (this.activityStatus != null) {
-                // Check that status is already included into the history during the add procedure
-
-                // Add the current status as old (prior) regarding the new version of the status
-                // to save
-                status.changesHistory().add(this.activityStatus);
-                // Current status become last historized status in history chain of new status
-                // to save
-            }
-            // Replace current version of mutable state of this tenant
-            this.activityStatus = status;
-
             try {
+                // --- TRANSACTIONAL CHANGES ENSURING INTEGRITY OF INSTANCE ---
+                if (this.activityStatus != null) {
+                    // Check that status is already included into the history during the add procedure
+
+                    // Add the current status as old (prior) regarding the new version of the status
+                    // to save
+                    status.changesHistory().add(this.activityStatus);
+                    // Current status become last historized status in history chain of new status
+                    // to save
+                }
+                // Replace current version of mutable state of this tenant
+                this.activityStatus = status;
+
                 // Add a change event into the history regarding modified status
                 ConcreteDomainChangeEvent changeEvt = prepareChangeEventInstance(DomainEventType.TENANT_CHANGED);
                 // Add activity status changed into description of change
@@ -288,24 +290,24 @@ public class Tenant extends Aggregate {
      * @param tenantRepresentedBy A specification.
      */
     public void setLabel(TenantDescriptor tenantRepresentedBy) {
-        if (this.label != null) {
-            // Check if history shall be maintained
-            if (!tenantRepresentedBy.changesHistory().contains(this.label)) {
-                // Update the current label of this tenant with the new version enhanced
-                // with auto-saving of the previous name into the new name's versions history
-                this.label = (TenantDescriptor) this.label.enhanceHistoryOf(tenantRepresentedBy,
-                        /* Don't manage the already defined history state */ null);
+        try {
+            // --- TRANSACTIONAL CHANGES ENSURING INSTANCE INTEGRITY ---
+            if (this.label != null) {
+                // Check if history shall be maintained
+                if (!tenantRepresentedBy.changesHistory().contains(this.label)) {
+                    // Update the current label of this tenant with the new version enhanced
+                    // with auto-saving of the previous name into the new name's versions history
+                    this.label = (TenantDescriptor) this.label.enhanceHistoryOf(tenantRepresentedBy,
+                            /* Don't manage the already defined history state */ null);
+                } else {
+                    // new version is already instantiated with prior versions defined
+                    // No need to enhance, but only to replace this current label
+                    this.label = tenantRepresentedBy;
+                }
             } else {
-                // new version is already instantiated with prior versions defined
-                // No need to enhance, but only to replace this current label
+                // Initialize the first defined name of this tenant
                 this.label = tenantRepresentedBy;
             }
-        } else {
-            // Initialize the first defined name of this tenant
-            this.label = tenantRepresentedBy;
-        }
-
-        try {
             // Add a change event into the history regarding changed label descriptor
             ConcreteDomainChangeEvent changeEvt = prepareChangeEventInstance(DomainEventType.TENANT_CHANGED);
             // Add changed label value into description of change
