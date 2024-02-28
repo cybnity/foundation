@@ -43,7 +43,7 @@ public class Tenant extends Aggregate {
             .hashCode();
 
     /**
-     * Attribute type managed via command event allowing change of an aggregate, and/or allowing notification of information changed via a promoted event type.
+     * Attribute type managed via command event allowing change of this aggregate, and/or allowing notification of information changed via a promoted event type.
      */
     public enum Attribute implements IAttribute {
         /**
