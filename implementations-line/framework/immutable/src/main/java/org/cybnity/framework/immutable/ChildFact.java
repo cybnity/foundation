@@ -34,7 +34,7 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
     /**
      * Predecessor (as Owner of this child) of this child fact.
      */
-    protected final Entity parent;
+    protected Entity parent;
 
     /**
      * Required identification elements (e.g that can be combined to define a
@@ -51,26 +51,7 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
      * When this fact was created or observed regarding the historized topic. This
      * creation date define among children within the same Owner.
      */
-    protected OffsetDateTime createdAt;
-
-    /**
-     * Hydration contract allowing restoration of an instance from its event sourced history.
-     */
-    public interface Hydration {
-        /**
-         * Get the entity which is predecessor of the child fact.
-         *
-         * @return Entity.
-         */
-        public Entity predecessor();
-
-        /**
-         * Get the fact event representing the change historized.
-         *
-         * @return A fact (e.g creation, deletion, update event relative to the instance).
-         */
-        public IdentifiableFact event();
-    }
+    protected OffsetDateTime occurredAt;
 
     /**
      * Default constructor.
@@ -96,7 +77,7 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
             if (predecessor.identified() == null || predecessorIdentifiers == null || predecessorIdentifiers.isEmpty())
                 throw new IllegalArgumentException("The predecessor identifier(s) shall be existent!");
             // Reference immutable copy of predecessor
-            this.parent = (Entity) predecessor.immutable();
+            this.setParent((Entity) predecessor.immutable());
         } catch (ImmutabilityException cn) {
             throw new IllegalArgumentException(cn);
         }
@@ -111,10 +92,11 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
             throw new IllegalArgumentException("Child identifier based on predecessor shall include name and value!");
         }
         try {
-            identifiedBy = new ArrayList<Identifier>(1);
-            identifiedBy.add((Identifier) parentDependentId.immutable());
+            ArrayList<Identifier> ids = new ArrayList<>(1);
+            ids.add((Identifier) parentDependentId.immutable());
+            this.setIdentifiers(ids);
             // Create immutable time of this fact creation
-            this.createdAt = OffsetDateTime.now();
+            this.setOccurredAt(OffsetDateTime.now());
         } catch (ImmutabilityException ce) {
             throw new IllegalArgumentException(ce);
         }
@@ -141,7 +123,7 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
             if (predecessor.identified() == null || predecessorIdentifiers == null || predecessorIdentifiers.isEmpty())
                 throw new IllegalArgumentException("The parent identifier(s) shall be existent!");
             // Reference immutable copy of predecessor
-            this.parent = (Entity) predecessor.immutable();
+            this.setParent((Entity) predecessor.immutable());
         } catch (ImmutabilityException cn) {
             throw new IllegalArgumentException(cn);
         }
@@ -174,10 +156,11 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
             throw new IllegalArgumentException("Child identifier based on parent shall include name and value!");
         }
         try {
-            identifiedBy = new ArrayList<Identifier>(1);
-            identifiedBy.add((Identifier) parentDependentId.immutable());
+            ArrayList<Identifier> ids = new ArrayList<>(1);
+            ids.add((Identifier) parentDependentId.immutable());
+            this.setIdentifiers(ids);
             // Create immutable time of this fact creation
-            this.createdAt = OffsetDateTime.now();
+            this.setOccurredAt(OffsetDateTime.now());
         } catch (ImmutabilityException ce) {
             throw new IllegalArgumentException(ce);
         }
@@ -195,16 +178,37 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
     }
 
     /**
+     * Change the set of identifiers defining the basic of unique identifier creation regarding this child fact.
+     * @param identifiers Mandatory set of identifiers. Ignored when null.
+     */
+    protected void setIdentifiers(ArrayList<Identifier> identifiers) {
+        if (identifiers!=null) {
+            this.identifiedBy = identifiers;
+        }
+    }
+
+    /**
      * Default implementation of fact date when it was created.
      */
     @Override
     public OffsetDateTime occurredAt() {
         // Return the immutable value of the fact time
-        return this.createdAt;
+        return this.occurredAt;
     }
 
     /**
-     * This method provide the list of values contributing to define the unicity of
+     * Change the creation data of this child fact.
+     *
+     * @param date Mandatory date of creation. Ignored when null.
+     */
+    protected void setOccurredAt(OffsetDateTime date) {
+        if (date != null) {
+            this.occurredAt = date;
+        }
+    }
+
+    /**
+     * This method provide the list of values contributing to define the unit of
      * this instance (e.g also used for hashCode() comparison).
      *
      * @return The unique functional values used to identify uniquely this instance.
@@ -321,6 +325,18 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
     public Entity parent() throws ImmutabilityException {
         // Return unmodifiable instance of predecessor
         return (Entity) this.parent.immutable();
+    }
+
+    /**
+     * Define the parent of this fact.
+     *
+     * @param predecessor Mandatory parent of this child fact. Ignored when null.
+     */
+    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3")
+    protected void setParent(Entity predecessor) {
+        if (predecessor != null) {
+            this.parent = predecessor;
+        }
     }
 
 }

@@ -83,7 +83,7 @@ public class Tenant extends Aggregate {
         Hydration event = changesHistory.get(0);
         if (event == null) throw new IllegalArgumentException("First history item shall be not null!");
         // Check if the event allow identification of predecessor
-        Entity predecessor = event.predecessor();
+        Entity predecessor = event.parent();
         if (predecessor != null) {
             // Recreate instance
             fact = new Tenant(predecessor, instanceId);
@@ -203,14 +203,13 @@ public class Tenant extends Aggregate {
     private void setStatus(ActivityState status) {
         if (status != null) {
             if (this.activityStatus != null) {
-                // Check that status is already included into the history
-                if (!status.changesHistory().contains(this.activityStatus)) {
-                    // Add the current status as old (prior) regarding the new version of the status
-                    // to save
-                    status.changesHistory().add(this.activityStatus);
-                    // Current status become last historized status in history chain of new status
-                    // to save
-                }
+                // Check that status is already included into the history during the add procedure
+
+                // Add the current status as old (prior) regarding the new version of the status
+                // to save
+                status.changesHistory().add(this.activityStatus);
+                // Current status become last historized status in history chain of new status
+                // to save
             }
             // Replace current version of mutable state of this tenant
             this.activityStatus = status;
@@ -311,7 +310,7 @@ public class Tenant extends Aggregate {
     public Serializable immutable() throws ImmutabilityException {
         LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
         Tenant tenant = new Tenant(parent(), ids);
-        tenant.createdAt = this.occurredAt();
+        tenant.occurredAt = this.occurredAt();
         tenant.label = this.label();
         tenant.activityStatus = this.status();
         return tenant;

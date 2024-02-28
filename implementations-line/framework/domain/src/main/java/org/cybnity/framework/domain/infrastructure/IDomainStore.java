@@ -22,9 +22,9 @@ public interface IDomainStore<T> extends IFactStore<T> {
     /**
      * Add a fact into the store.
      *
-     * @param fact To store. Ignored if null.
-     * @param ctx  Optional context of persistence providing elements (e.g tenant
-     *             id) usable for persistence management.
+     * @param fact            To store. Ignored if null.
+     * @param ctx             Optional context of persistence providing elements (e.g tenant
+     *                        id) usable for persistence management.
      */
     public void append(T fact, ISessionContext ctx);
 

@@ -2,6 +2,10 @@ package org.cybnity.framework.domain.model;
 
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IdentifierStringBased;
+import org.cybnity.framework.domain.TransformationUtils;
+import org.cybnity.framework.domain.event.ConcreteDomainChangeEvent;
+import org.cybnity.framework.domain.event.DomainEventType;
+import org.cybnity.framework.domain.event.IAttribute;
 import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
@@ -12,6 +16,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -38,6 +43,26 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
     private final List<DomainEvent> changeHistory = new LinkedList<>();
 
     /**
+     * Attribute type managed via command event allowing change of an aggregate, and/or allowing notification of information changed via a promoted event type.
+     */
+    public enum Attribute implements IAttribute {
+        /**
+         * Identifier value of origin predecessor.
+         */
+        PARENT_REFERENCE_ID,
+
+        /**
+         * Identifiers of the aggregate.
+         */
+        IDENTIFIERS,
+
+        /**
+         * Date of aggregate creation.
+         */
+        OCCURRED_AT;
+    }
+
+    /**
      * Factory of child fact based on changes history (e.g fact creation, change, deletion events) allowing the instance rehydration.
      *
      * @param instanceId     Mandatory unique identifier of the child fact instance to rehydrate.
@@ -53,7 +78,7 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
         Hydration event = changesHistory.get(0);
         if (event == null) throw new IllegalArgumentException("First history item shall be not null!");
         // Check if the event allow identification of predecessor
-        Entity predecessor = event.predecessor();
+        Entity predecessor = event.parent();
         if (predecessor != null) {
             // Recreate instance
             fact = new CommonChildFactImpl(predecessor, instanceId);
@@ -64,6 +89,7 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
 
     /**
      * Default constructor.
+     * During the construction, a TENANT_CREATED domain event is automatically added to the lifecycle changes history container.
      *
      * @param predecessor Mandatory parent of this child entity.
      * @param id          Unique and optional identifier of this entity.
@@ -74,10 +100,21 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
      */
     public CommonChildFactImpl(Entity predecessor, Identifier id) throws IllegalArgumentException {
         super(predecessor, id);
+        try {
+            // Add a change event into the history
+            ConcreteDomainChangeEvent changeEvt = prepareChangeEventInstance(DomainEventType.TENANT_CREATED);
+
+            // Add to changes history
+            addChangeEvent(changeEvt);
+        } catch (ImmutabilityException ie) {
+            // Log potential coding problem relative to immutability support
+            logger().log(Level.SEVERE, ie.getMessage(), ie);
+        }
     }
 
     /**
      * Specific partial constructor.
+     * During the construction, a TENANT_CREATED domain event is automatically added to the lifecycle changes history container.
      *
      * @param predecessor Mandatory parent of this child entity.
      * @param identifiers Optional set of identifiers of this entity, that contains
@@ -90,6 +127,77 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
     public CommonChildFactImpl(Entity predecessor, LinkedHashSet<Identifier> identifiers)
             throws IllegalArgumentException {
         super(predecessor, identifiers);
+        try {
+            // Add a change event into the history
+            ConcreteDomainChangeEvent changeEvt = prepareChangeEventInstance(DomainEventType.TENANT_CREATED);
+
+            // Add to changes history
+            addChangeEvent(changeEvt);
+        } catch (ImmutabilityException ie) {
+            // Log potential coding problem relative to immutability support
+            logger().log(Level.SEVERE, ie.getMessage(), ie);
+        }
+    }
+
+    /**
+     * Prepare a common new instance of change event.
+     *
+     * @param changeType Mandatory type of change.
+     * @return A change event initialized and including changed model element reference (aggregate root entity reference), specification about predecessor entity reference
+     * @throws IllegalArgumentException When mandatory any parameter is missing.
+     * @throws ImmutabilityException    When impossible read of parent reference immutable version.
+     */
+    protected ConcreteDomainChangeEvent prepareChangeEventInstance(DomainEventType changeType) throws IllegalArgumentException, ImmutabilityException {
+        if (changeType == null) throw new IllegalArgumentException("changeType parameter is required!");
+        // Add a change event into the history
+        // Check if change event is about a persistent identifiable aggregated
+        Identifier uid = this.identified();
+        ConcreteDomainChangeEvent changeEvt = new ConcreteDomainChangeEvent( /* new technical identifier of the change event fact */
+                new DomainEntity(IdentifierStringBased.generate(/* this created instance id as salt */ (uid != null) ? String.valueOf(this.identified().value().hashCode()) : null))
+                , /* Type of change committed */ changeType);
+        EntityReference rootRef = this.root();
+        if (rootRef != null)
+            changeEvt.setChangedModelElementRef(rootRef); // Origin model object changed
+
+        // Add mandatory description regarding the fact basic definition attributes
+        changeEvt.appendSpecification(new org.cybnity.framework.domain.Attribute(Attribute.PARENT_REFERENCE_ID.name(), /* Serialized predecessor identifier value */ this.parent().identified().value().toString()));
+        changeEvt.appendSpecification(new org.cybnity.framework.domain.Attribute(Attribute.IDENTIFIERS.name(),/* Set of basic identification values */ TransformationUtils.convert(this.identifiedBy)));
+        changeEvt.appendSpecification(new org.cybnity.framework.domain.Attribute(Attribute.OCCURRED_AT.name(), /* Serialized date of occurrence */ TransformationUtils.convert(this.occurredAt)));
+        return changeEvt;
+    }
+
+    /**
+     * Get the identity of this child fact when existing.
+     *
+     * @return A domain entity identity instance based on current identifier of fact (as an aggregate root). Null when not identifier defined regarding this fact.
+     */
+    protected DomainEntity rootEntity() {
+        // Read the identity of this root aggregate domain object
+        Identifier id = this.identified();
+        DomainEntity aggregateRootEntity = null;
+        if (id != null) {
+            aggregateRootEntity = new DomainEntity(id);
+        } // Else it's an aggregate representing a dynamic domain boundary without
+        // persistence capability
+        return aggregateRootEntity;
+    }
+
+    /**
+     * Get the root entity reference.
+     *
+     * @return Reference to this fact (considered as root entity).
+     * @throws ImmutabilityException When impossible read of copy regarding this domain entity.
+     */
+    protected EntityReference root() throws ImmutabilityException {
+        // Read the identity of this root aggregate domain object
+        DomainEntity aggregateRootEntity = rootEntity();
+        EntityReference ref = null;
+        if (aggregateRootEntity != null) {
+            // Build an identification reference
+            ref = aggregateRootEntity.reference();
+        } // Else it's an aggregate representing a dynamic domain boundary without
+        // persistence capability
+        return ref;
     }
 
     /**
@@ -215,7 +323,7 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
         LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
         CommonChildFactImpl copy = new CommonChildFactImpl(this.parent(), ids);
         // Complete with additional attributes of this complex object
-        copy.createdAt = this.occurredAt();
+        copy.occurredAt = this.occurredAt();
         return copy;
     }
 

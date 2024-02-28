@@ -4,48 +4,49 @@ Presentation of the design view regarding the sub-packages of `org.cybnity.frame
 # DESIGN VIEW
 The technical description regarding behavior and best usage is maintained into the Javadoc of each component.
 
-| Class Type                                   | Motivation                                                                                                       |
-|:---------------------------------------------|:-----------------------------------------------------------------------------------------------------------------|
-| AuditLog                                     |                                                                                                                  |
-| BaseConstants                                |                                                                                                                  |
-| ChildFact                                    |                                                                                                                  |
-| Entity                                       |                                                                                                                  |
-| EntityReference                              |                                                                                                                  |
-| Evaluations                                  |                                                                                                                  |
-| ExecutableComponentChecker                   |                                                                                                                  |
-| FactEdge                                     |                                                                                                                  |
-| FactsProvider                                |                                                                                                                  |
-| FactRecord                                   |                                                                                                                  |
-| FactType                                     |                                                                                                                  |
-| HistoryState                                 |                                                                                                                  |
-| IDeletionFact                                |                                                                                                                  |
-| IdentifiableFact                             |                                                                                                                  |
-| Identifier                                   |                                                                                                                  |
-| IFactRepository                              |                                                                                                                  |
-| IFactStore                                   |                                                                                                                  |
-| IGroup                                       |                                                                                                                  |
-| IHistoricalFact                              |                                                                                                                  |
-| IMember                                      |                                                                                                                  |
-| ImmutabilityException                        |                                                                                                                  |
-| IOwnership                                   |                                                                                                                  |
-| IReferenceable                               |                                                                                                                  |
-| IRestorationFact                             |                                                                                                                  |
-| IUniqueness                                  |                                                                                                                 |
-| IVersionable                                 | Supports multiple versions of a same object type                                                                 |
-| LocationIndependentIdentityNaturalKeyBuilder |                                                                                                                  |
-| Membership                                   |                                                                                                                  |
-| MutableProperty                              |                                                                                                                  |
-| NaturalKeyIdentifierGenerator                |                                                                                                                  |
-| QualitativeDataBuilder                       | Builder pattern implementation of data quality ensuring the application of quality rules on object to intantiate |
-| QualitativeDataGenerator                     | Producer of qualitative data that manage execution of quality rules for instance to build as ACID model          |
-| RelationRole                                 |                                                                                                                  |
-| StringBasedNaturalKeyBuilder                 |                                                                                                                  |
-| StructuralVersionStrategy                    |                                                                                                                  |
-| Transaction                                  |                                                                                                                  |
-| TransactionItem                              |                                                                                                                  |
-| TypeVersion                                  |                                                                                                                  |
-| Unmodifiable                                 |                                                                                                                  |
-| VersionConcreteStrategy                      |                                                                                                                  |
+| Class Type                                   | Motivation                                                                                                                                                  |
+|:---------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| AuditLog                                     |                                                                                                                                                             |
+| BaseConstants                                |                                                                                                                                                             |
+| ChildFact                                    |                                                                                                                                                             |
+| Entity                                       |                                                                                                                                                             |
+| EntityReference                              |                                                                                                                                                             |
+| Evaluations                                  |                                                                                                                                                             |
+| ExecutableComponentChecker                   |                                                                                                                                                             |
+| FactEdge                                     |                                                                                                                                                             |
+| FactsProvider                                |                                                                                                                                                             |
+| FactRecord                                   |                                                                                                                                                             |
+| FactType                                     |                                                                                                                                                             |
+| HistoryState                                 |                                                                                                                                                             |
+| Hydration                                    | Capability allowing re-hydration of an object (e.g by a event sourcing pattern implementation for restoration of it from its event changes sourced history) |
+| IDeletionFact                                |                                                                                                                                                             |
+| IdentifiableFact                             |                                                                                                                                                             |
+| Identifier                                   |                                                                                                                                                             |
+| IFactRepository                              |                                                                                                                                                             |
+| IFactStore                                   |                                                                                                                                                             |
+| IGroup                                       |                                                                                                                                                             |
+| IHistoricalFact                              |                                                                                                                                                             |
+| IMember                                      |                                                                                                                                                             |
+| ImmutabilityException                        |                                                                                                                                                             |
+| IOwnership                                   |                                                                                                                                                             |
+| IReferenceable                               |                                                                                                                                                             |
+| IRestorationFact                             |                                                                                                                                                             |
+| IUniqueness                                  |                                                                                                                                                             |
+| IVersionable                                 | Supports multiple versions of a same object type                                                                                                            |
+| LocationIndependentIdentityNaturalKeyBuilder |                                                                                                                                                             |
+| Membership                                   |                                                                                                                                                             |
+| MutableProperty                              |                                                                                                                                                             |
+| NaturalKeyIdentifierGenerator                |                                                                                                                                                             |
+| QualitativeDataBuilder                       | Builder pattern implementation of data quality ensuring the application of quality rules on object to intantiate                                            |
+| QualitativeDataGenerator                     | Producer of qualitative data that manage execution of quality rules for instance to build as ACID model                                                     |
+| RelationRole                                 |                                                                                                                                                             |
+| StringBasedNaturalKeyBuilder                 |                                                                                                                                                             |
+| StructuralVersionStrategy                    |                                                                                                                                                             |
+| Transaction                                  |                                                                                                                                                             |
+| TransactionItem                              |                                                                                                                                                             |
+| TypeVersion                                  |                                                                                                                                                             |
+| Unmodifiable                                 |                                                                                                                                                             |
+| VersionConcreteStrategy                      |                                                                                                                                                             |
 
 # STRUCTURE MODELS
 Several packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
@@ -183,7 +184,7 @@ classDiagram
         <<abstract>>
         #parent : Entity
         #identifiedBy : ArrayList~Identifier~
-        #createdAt : OffsetDateTime
+        #occurredAt : OffsetDateTime
         +ChildFact(Entity predecessor, Identifier id)
         +ChildFact(Entity predecessor, LinkedHashSet~Identifier~ identifiers)
         +identifiers() Collection~Identifier~
@@ -192,6 +193,9 @@ classDiagram
         +valueHashCodeContributors() String[]
         +hashCode() int
         +equals(Object fact) boolean
+        #setOccurredAt(OffsetDateTime date)
+        #setParent(Entity predecessor)
+        #setIdentifiers(ArrayList<Identifier> identifiers)
         #generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId)$ Identifier
         #generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds)$ Identifier
     }

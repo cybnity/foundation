@@ -1,9 +1,5 @@
 package org.cybnity.framework.domain.model;
 
-import org.cybnity.framework.domain.IdentifierStringBased;
-import org.cybnity.framework.domain.event.ConcreteDomainChangeEvent;
-import org.cybnity.framework.domain.event.DomainEventType;
-import org.cybnity.framework.domain.event.IAttribute;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.Identifier;
@@ -13,7 +9,6 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 import java.util.LinkedHashSet;
-import java.util.logging.Level;
 
 /**
  * Represents a scope of information providing attributes and/or capabilities
@@ -50,16 +45,6 @@ public abstract class Aggregate extends CommonChildFactImpl implements IAggregat
             .composeCanonicalVersionHash(Aggregate.class).hashCode();
 
     /**
-     * Attribute type managed via command event allowing change of an aggregate, and/or allowing notification of information changed via a promoted event type.
-     */
-    public enum Attribute implements IAttribute {
-        /**
-         * Identifier value of origin predecessor.
-         */
-        PREDECESSOR_REFERENCE_ID;
-    }
-
-    /**
      * Default constructor.
      *
      * @param predecessor Mandatory parent of this root aggregate entity.
@@ -74,15 +59,6 @@ public abstract class Aggregate extends CommonChildFactImpl implements IAggregat
      */
     public Aggregate(Entity predecessor, Identifier id) throws IllegalArgumentException {
         super(predecessor, id);
-        try {
-            // Add a change event into the history
-            ConcreteDomainChangeEvent changeEvt = prepareChangeEventInstance(DomainEventType.TENANT_CREATED);
-            // Add to changes history
-            addChangeEvent(changeEvt);
-        } catch (ImmutabilityException ie) {
-            // Log potential coding problem relative to immutability support
-            logger().log(Level.SEVERE, ie.getMessage(), ie);
-        }
     }
 
     /**
@@ -100,70 +76,11 @@ public abstract class Aggregate extends CommonChildFactImpl implements IAggregat
      */
     public Aggregate(Entity predecessor, LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
         super(predecessor, identifiers);
-        try {
-            // Add a change event into the history
-            ConcreteDomainChangeEvent changeEvt = prepareChangeEventInstance(DomainEventType.TENANT_CREATED);
-            // Add to changes history
-            addChangeEvent(changeEvt);
-        } catch (ImmutabilityException ie) {
-            // Log potential coding problem relative to immutability support
-            logger().log(Level.SEVERE, ie.getMessage(), ie);
-        }
     }
-
-    /**
-     * Prepare a new instance of change event.
-     *
-     * @param changeType Mandatory type of change.
-     * @return A change event initialized and including changed model element reference (aggregate root entity reference), specification about predecessor entity reference
-     * @throws IllegalArgumentException When mandatory any parameter is missing.
-     * @throws ImmutabilityException    When impossible read of parent reference immutable version.
-     */
-    protected ConcreteDomainChangeEvent prepareChangeEventInstance(DomainEventType changeType) throws IllegalArgumentException, ImmutabilityException {
-        if (changeType == null) throw new IllegalArgumentException("changeType parameter is required!");
-        // Add a change event into the history
-        // Check if change event is about a persistent identifiable aggregated
-        Identifier uid = this.identified();
-        ConcreteDomainChangeEvent changeEvt = new ConcreteDomainChangeEvent( /* new technical identifier of the change event fact */
-                new DomainEntity(IdentifierStringBased.generate(/* this created instance id as salt */ (uid != null) ? String.valueOf(this.identified().value().hashCode()) : null))
-                , /* Type of change committed */ changeType);
-        EntityReference rootRef = this.root();
-        if (rootRef != null)
-            changeEvt.setChangedModelElementRef(rootRef); // Origin model object changed
-        // Add gap description regarding only changed information
-        changeEvt.appendSpecification(new org.cybnity.framework.domain.Attribute(Attribute.PREDECESSOR_REFERENCE_ID.name(), /* Serialized predecessor identifier value */ this.parent().identified().value().toString()));
-        return changeEvt;
-    }
-
 
     @Override
     public EntityReference root() throws ImmutabilityException {
-        // Read the identity of this root aggregate domain object
-        DomainEntity aggregateRootEntity = rootEntity();
-        EntityReference ref = null;
-        if (aggregateRootEntity != null) {
-            // Build an identification reference
-            ref = aggregateRootEntity.reference();
-        } // Else it's an aggregate representing a dynamic domain boundary without
-        // persistence capability
-        return ref;
+        return super.root();
     }
 
-    /**
-     * Get the identity of this aggregate when existing.
-     *
-     * @return A domain entity identity instance based on current identifier of the
-     * aggregate root. Null when not identifier defined regarding this
-     * aggregate.
-     */
-    protected DomainEntity rootEntity() {
-        // Read the identity of this root aggregate domain object
-        Identifier id = this.identified();
-        DomainEntity aggregateRootEntity = null;
-        if (id != null) {
-            aggregateRootEntity = new DomainEntity(id);
-        } // Else it's an aggregate representing a dynamic domain boundary without
-        // persistence capability
-        return aggregateRootEntity;
-    }
 }

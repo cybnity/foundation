@@ -67,12 +67,12 @@ public class ChildAggregate extends ChildFact {
         String childIdName = null;
         if (childOriginalId != null)
             childIdName = childOriginalId.name(); // Same name of identifier for the child as its parent
-        if (childIdName == null || childIdName.equals("")) {
+        if (childIdName == null || childIdName.isEmpty()) {
             // Define a specific new convention name
             childIdName = "id";
         }
 
-        // Create new identifier from origin concatened with parent identifying
+        // Create new identifier from origin concat with parent identifying
         // information
         return new IdentifierImpl(childIdName, value.toString());
     }

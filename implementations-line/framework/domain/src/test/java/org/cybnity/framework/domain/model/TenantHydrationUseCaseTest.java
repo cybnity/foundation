@@ -83,7 +83,7 @@ public class TenantHydrationUseCaseTest {
         Assertions.assertEquals(originTenant.root(), creationEvt.changedModelElementReference(), "Subject of change shall be origin referenced!");
 
         // Check existing predecessor attribute
-        Attribute predecessorAttr = EventSpecification.findSpecificationByName(Aggregate.Attribute.PREDECESSOR_REFERENCE_ID.name(), changeEvt.specification());
+        Attribute predecessorAttr = EventSpecification.findSpecificationByName(Aggregate.Attribute.PARENT_REFERENCE_ID.name(), changeEvt.specification());
         Assertions.assertNotNull(predecessorAttr);// Existing reference to predecessor
         Assertions.assertEquals(predecessorUUID, predecessorAttr.value(), "Predecessor reference shall exist regarding aggregate parent!");
 
