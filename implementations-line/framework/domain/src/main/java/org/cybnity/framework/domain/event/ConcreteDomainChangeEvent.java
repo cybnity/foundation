@@ -68,6 +68,14 @@ public class ConcreteDomainChangeEvent extends DomainEvent {
         }
     }
 
+    public ConcreteDomainChangeEvent(String eventType) {
+        this();
+        if (eventType != null && !eventType.isEmpty()) {
+            // Add type into specification attributes
+            appendSpecification(new Attribute(TYPE, eventType));
+        }
+    }
+
     public ConcreteDomainChangeEvent(Entity identifiedBy) {
         super(identifiedBy);
     }
@@ -82,7 +90,7 @@ public class ConcreteDomainChangeEvent extends DomainEvent {
 
     public ConcreteDomainChangeEvent(Entity identifiedBy, String eventType) {
         super(identifiedBy);
-        if (!"".equals(eventType)) {
+        if (!eventType.isEmpty()) {
             // Add type into specification attributes
             appendSpecification(new Attribute(TYPE, eventType));
         }

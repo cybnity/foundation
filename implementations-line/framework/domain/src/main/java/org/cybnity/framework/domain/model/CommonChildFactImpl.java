@@ -4,8 +4,8 @@ import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.TransformationUtils;
 import org.cybnity.framework.domain.event.ConcreteDomainChangeEvent;
-import org.cybnity.framework.domain.event.DomainEventType;
 import org.cybnity.framework.domain.event.IAttribute;
+import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
@@ -99,14 +99,14 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
      * @throws IllegalArgumentException When mandatory any parameter is missing.
      * @throws ImmutabilityException    When impossible read of parent reference immutable version.
      */
-    protected ConcreteDomainChangeEvent prepareChangeEventInstance(DomainEventType changeType) throws IllegalArgumentException, ImmutabilityException {
+    protected ConcreteDomainChangeEvent prepareChangeEventInstance(IEventType changeType) throws IllegalArgumentException, ImmutabilityException {
         if (changeType == null) throw new IllegalArgumentException("changeType parameter is required!");
         // Add a change event into the history
         // Check if change event is about a persistent identifiable aggregated
         Identifier uid = this.identified();
         ConcreteDomainChangeEvent changeEvt = new ConcreteDomainChangeEvent( /* new technical identifier of the change event fact */
                 new DomainEntity(IdentifierStringBased.generate(/* this created instance id as salt */ (uid != null) ? String.valueOf(this.identified().value().hashCode()) : null))
-                , /* Type of change committed */ changeType);
+                , /* Type of change committed */ changeType.name());
         EntityReference rootRef = this.root();
         if (rootRef != null)
             changeEvt.setChangedModelElementRef(rootRef); // Origin model object changed
