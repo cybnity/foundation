@@ -62,32 +62,8 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
     }
 
     /**
-     * Factory of child fact based on changes history (e.g fact creation, change, deletion events) allowing the instance rehydration.
-     *
-     * @param instanceId     Mandatory unique identifier of the child fact instance to rehydrate.
-     * @param changesHistory Mandatory not empty history. History order shall be ascending ordered with the last list element equals to the more young creation event relative to this instance to rehydrate.
-     * @throws IllegalArgumentException When mandatory parameter is not valid or empty. When list does not contain identifiable creation event as first list element.
-     */
-    public static CommonChildFactImpl instanceOf(Identifier instanceId, List<Hydration> changesHistory) throws IllegalArgumentException {
-        if (instanceId == null) throw new IllegalArgumentException("instanceId parameter is required!");
-        if (changesHistory == null || changesHistory.isEmpty())
-            throw new IllegalArgumentException("changesHistory parameter is required and shall be not empty!");
-        CommonChildFactImpl fact = null;
-        // Get first element as origin creation event (more old event)
-        Hydration event = changesHistory.get(0);
-        if (event == null) throw new IllegalArgumentException("First history item shall be not null!");
-        // Check if the event allow identification of predecessor
-        Entity predecessor = event.parent();
-        if (predecessor != null) {
-            // Recreate instance
-            fact = new CommonChildFactImpl(predecessor, instanceId);
-            fact.mutate(changesHistory);// Re-hydrate instance
-        }
-        return fact;
-    }
-
-    /**
      * Default constructor.
+     *
      * @param predecessor Mandatory parent of this child entity.
      * @param id          Unique and optional identifier of this entity.
      * @throws IllegalArgumentException When any mandatory parameter is missing.
@@ -101,6 +77,7 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
 
     /**
      * Specific partial constructor.
+     *
      * @param predecessor Mandatory parent of this child entity.
      * @param identifiers Optional set of identifiers of this entity, that contains
      *                    non-duplicable elements.
@@ -272,8 +249,10 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
     }
 
     /**
-     * Implement the generation of version hash regarding this class type according
+     * Implement the generation of version hash regarding the current class type instance, according
      * to a concrete strategy utility service.
+     *
+     * @return String version of this instance class type (based on canonical version hash).
      */
     @Override
     public String versionHash() {
@@ -293,6 +272,12 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
         return id;
     }
 
+    /**
+     * Get immutable version without change events history.
+     *
+     * @return Immutable version without the changes events list potentially existing in this instance lifecycle history.
+     * @throws ImmutabilityException When impossible read of immutable versions copy regarding identifiers of this instance.
+     */
     @Override
     public Serializable immutable() throws ImmutabilityException {
         LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
