@@ -65,8 +65,7 @@ public class Tenant extends Aggregate {
      * Current mutable status of activity regarding this tenant.
      */
     private ActivityState activityStatus;
-
-
+    
     /**
      * Factory of instance from historized facts (e.g fact creation, change, deletion events) allowing the instance rehydration.
      *
@@ -122,7 +121,8 @@ public class Tenant extends Aggregate {
 
     /**
      * Default constructor.
-     *
+     * During the construction, a TENANT_CREATED domain event is automatically added to the lifecycle changes history container.
+     * Update event is also added into the change events history regarding assigned status.
      * @param predecessor   Mandatory parent of this tenant root aggregate instance.
      * @param id            Optional identifier of this tenant.
      * @param currentStatus Optional current status of this tenant subscription (e.g
@@ -215,6 +215,7 @@ public class Tenant extends Aggregate {
 
     /**
      * Update the current activity status of this tenant.
+     * Add DomainEventType.TENANT_CHANGED change event into the changes history.
      *
      * @param status A status. If existent tenant's status is not included already
      *               in this parameter, this method verify it and add the current
