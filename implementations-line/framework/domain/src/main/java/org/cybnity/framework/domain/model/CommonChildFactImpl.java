@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -89,8 +88,6 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
 
     /**
      * Default constructor.
-     * During the construction, a TENANT_CREATED domain event is automatically added to the lifecycle changes history container.
-     *
      * @param predecessor Mandatory parent of this child entity.
      * @param id          Unique and optional identifier of this entity.
      * @throws IllegalArgumentException When any mandatory parameter is missing.
@@ -100,22 +97,10 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
      */
     public CommonChildFactImpl(Entity predecessor, Identifier id) throws IllegalArgumentException {
         super(predecessor, id);
-        try {
-            // Add a change event into the history
-            ConcreteDomainChangeEvent changeEvt = prepareChangeEventInstance(DomainEventType.TENANT_CREATED);
-
-            // Add to changes history
-            addChangeEvent(changeEvt);
-        } catch (ImmutabilityException ie) {
-            // Log potential coding problem relative to immutability support
-            logger().log(Level.SEVERE, ie.getMessage(), ie);
-        }
     }
 
     /**
      * Specific partial constructor.
-     * During the construction, a TENANT_CREATED domain event is automatically added to the lifecycle changes history container.
-     *
      * @param predecessor Mandatory parent of this child entity.
      * @param identifiers Optional set of identifiers of this entity, that contains
      *                    non-duplicable elements.
@@ -127,16 +112,6 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
     public CommonChildFactImpl(Entity predecessor, LinkedHashSet<Identifier> identifiers)
             throws IllegalArgumentException {
         super(predecessor, identifiers);
-        try {
-            // Add a change event into the history
-            ConcreteDomainChangeEvent changeEvt = prepareChangeEventInstance(DomainEventType.TENANT_CREATED);
-
-            // Add to changes history
-            addChangeEvent(changeEvt);
-        } catch (ImmutabilityException ie) {
-            // Log potential coding problem relative to immutability support
-            logger().log(Level.SEVERE, ie.getMessage(), ie);
-        }
     }
 
     /**

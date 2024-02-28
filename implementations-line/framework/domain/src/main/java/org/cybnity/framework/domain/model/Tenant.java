@@ -95,6 +95,7 @@ public class Tenant extends Aggregate {
 
     /**
      * Default constructor.
+     * During the construction, a TENANT_CREATED domain event is automatically added to the lifecycle changes history container.
      *
      * @param predecessor Mandatory parent of this tenant root aggregate entity.
      * @param id          Optional identifier of this tenant.
@@ -107,6 +108,16 @@ public class Tenant extends Aggregate {
      */
     public Tenant(Entity predecessor, Identifier id) throws IllegalArgumentException {
         super(predecessor, id); // Automatic creation event added into history
+        try {
+            // Add a change event into the history
+            ConcreteDomainChangeEvent changeEvt = prepareChangeEventInstance(DomainEventType.TENANT_CREATED);
+
+            // Add to changes history
+            addChangeEvent(changeEvt);
+        } catch (ImmutabilityException ie) {
+            // Log potential coding problem relative to immutability support
+            logger().log(Level.SEVERE, ie.getMessage(), ie);
+        }
     }
 
     /**
@@ -124,7 +135,7 @@ public class Tenant extends Aggregate {
      *                                  defined or without defined identifier.
      */
     public Tenant(Entity predecessor, Identifier id, Boolean currentStatus) throws IllegalArgumentException {
-        super(predecessor, id);// Automatic creation event added into history
+        this(predecessor, id);// Automatic creation event added into history
         if (id != null && !BaseConstants.IDENTIFIER_ID.name().equals(id.name()))
             throw new IllegalArgumentException(
                     "id parameter is not valid because identifier name shall be equals to only supported value ("
@@ -141,6 +152,7 @@ public class Tenant extends Aggregate {
 
     /**
      * Specific partial constructor of an identifiable tenant.
+     * During the construction, a TENANT_CREATED domain event is automatically added to the lifecycle changes history container.
      *
      * @param predecessor Mandatory parent of this child tenant.
      * @param identifiers Optional set of identifiers of this entity, that contains
@@ -152,6 +164,16 @@ public class Tenant extends Aggregate {
      */
     private Tenant(Entity predecessor, LinkedHashSet<Identifier> identifiers) throws IllegalArgumentException {
         super(predecessor, identifiers); // Automatic creation event added into history
+        try {
+            // Add a change event into the history
+            ConcreteDomainChangeEvent changeEvt = prepareChangeEventInstance(DomainEventType.TENANT_CREATED);
+
+            // Add to changes history
+            addChangeEvent(changeEvt);
+        } catch (ImmutabilityException ie) {
+            // Log potential coding problem relative to immutability support
+            logger().log(Level.SEVERE, ie.getMessage(), ie);
+        }
     }
 
     /**
