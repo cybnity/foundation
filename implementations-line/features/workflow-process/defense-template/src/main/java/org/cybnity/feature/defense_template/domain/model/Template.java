@@ -149,7 +149,7 @@ public class Template extends Aggregate implements ITemplate {
         Template copy = new Template(this.parent(), new LinkedHashSet<>(this.identifiers()), this.originReferential(),
                 this.named(), this.type());
         // Complete with additional attributes of this complex aggregate
-        copy.createdAt = this.occurredAt();
+        copy.occurredAt = this.occurredAt();
         return copy;
     }
 
@@ -202,7 +202,7 @@ public class Template extends Aggregate implements ITemplate {
     public IReferential originReferential() throws ImmutabilityException {
         if (this.originReferential != null)
             return (IReferential) this.originReferential.immutable();
-        return this.originReferential;
+        return null;
     }
 
     /**
@@ -254,11 +254,9 @@ public class Template extends Aggregate implements ITemplate {
         if (name != null) {
             if (templateOwner == null)
                 throw new IllegalArgumentException("Template owner parameter is required!");
-            if (templateOwner != null) {
-                // Check that owner of the new attribute is equals to this template identity
-                if (name.owner() == null || !name.owner().equals(templateOwner))
-                    throw new IllegalArgumentException("The owner of the new name shall be equals to this template!");
-            }
+            // Check that owner of the new attribute is equals to this template identity
+            if (name.owner() == null || !name.owner().equals(templateOwner))
+                throw new IllegalArgumentException("The owner of the new name shall be equals to this template!");
         }
     }
 

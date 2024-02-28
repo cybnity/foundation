@@ -230,7 +230,7 @@ public class Process extends Aggregate implements IWorkflowCommandHandler {
 				(ProcessDescriptor) this.description.immutable(), this.activation(), this.completion(), this.staging(),
 				this.commandProcessor);
 		// Complete with additional attributes of this complex aggregate
-		copy.createdAt = this.occurredAt();
+		copy.occurredAt = this.occurredAt();
 		return copy;
 	}
 
@@ -297,7 +297,7 @@ public class Process extends Aggregate implements IWorkflowCommandHandler {
 	/**
 	 * Change the current staging of this process.
 	 * 
-	 * @param staginig Mandatory new version of staging version for replace the
+	 * @param staging Mandatory new version of staging version for replace the
 	 *                 current process's steps definition.
 	 * @throws IllegalArgumentException When mandatory parameter is not defined or
 	 *                                  is not valid in terms of minimum conformity.
