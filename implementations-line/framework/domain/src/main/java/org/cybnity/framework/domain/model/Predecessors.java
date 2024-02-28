@@ -31,15 +31,30 @@ public class Predecessors {
         if (predecessor == null)
             throw new IllegalArgumentException(
                     "Mandatory predecessor parameter is required to generate a child identifier!");
-        StringBuffer value = new StringBuffer();
+        // Read identifier relative to predecessor
+        String parentIdValue = IdentifierStringBased.build(predecessor.identifiers()).value().toString();
+
+        StringBuilder value = new StringBuilder();
+        boolean isParentIdAlreadyIncluded = false;
+        // Manage inclusion of child origin identifier
         if (childOriginalId != null && childOriginalId.value() != null) {
-            value.append(childOriginalId.value().toString());
-            value.append("_");// add logical separator (e.g as convention of multiples identifiers
-            // combination)
+            String originId = childOriginalId.value().toString();
+            value.append(originId);
+
+            // FILTERING : quality control avoiding multiple usage of predecessor id value in the final build value
+            // when already included into the original identifier of child
+            if (!originId.contains(parentIdValue)) {
+                // Add parent identifier extension
+                value.append("_");// add logical separator (e.g as convention of multiples identifiers combination)
+            } else {
+                // parent is already member of child identifier AND SHALL NOT BE ADDING AGAIN (DE-DUPLICATION RULE)
+                isParentIdAlreadyIncluded = true;
+            }
         }
-        // Use predecessor's identifying information(s) and add them to global original
-        // identifier
-        value.append(IdentifierStringBased.build(predecessor.identifiers()).value().toString());
+        if (!isParentIdAlreadyIncluded)
+            // Use predecessor's identifying information(s) and add them to global original
+            // identifier
+            value.append(parentIdValue);
 
         /*
          * for (Identifier parentId : predecessor.identifiers()) {
@@ -50,7 +65,7 @@ public class Predecessors {
         String childIdName = null;
         if (childOriginalId != null)
             childIdName = childOriginalId.name(); // Same name of identifier for the child as its parent
-        if (childIdName == null || childIdName.equals("")) {
+        if (childIdName == null || childIdName.isEmpty()) {
             // Define a specific new convention name
             childIdName = BaseConstants.IDENTIFIER_ID.name();
         }

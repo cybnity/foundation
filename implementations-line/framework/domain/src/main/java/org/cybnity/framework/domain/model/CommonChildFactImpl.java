@@ -2,7 +2,6 @@ package org.cybnity.framework.domain.model;
 
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IdentifierStringBased;
-import org.cybnity.framework.domain.TransformationUtils;
 import org.cybnity.framework.domain.event.ConcreteDomainChangeEvent;
 import org.cybnity.framework.domain.event.IAttribute;
 import org.cybnity.framework.domain.event.IEventType;
@@ -51,9 +50,9 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
         PARENT_REFERENCE_ID,
 
         /**
-         * Identifiers of the aggregate.
+         * Identifier of the aggregate.
          */
-        IDENTIFIERS,
+        IDENTIFIER,
 
         /**
          * Date of aggregate creation.
@@ -112,9 +111,9 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
             changeEvt.setChangedModelElementRef(rootRef); // Origin model object changed
 
         // Add mandatory description regarding the fact basic definition attributes
-        changeEvt.appendSpecification(new org.cybnity.framework.domain.Attribute(Attribute.PARENT_REFERENCE_ID.name(), /* Serialized predecessor identifier value */ this.parent().identified().value().toString()));
-        changeEvt.appendSpecification(new org.cybnity.framework.domain.Attribute(Attribute.IDENTIFIERS.name(),/* Set of basic identification values */ TransformationUtils.convert(this.identifiedBy)));
-        changeEvt.appendSpecification(new org.cybnity.framework.domain.Attribute(Attribute.OCCURRED_AT.name(), /* Serialized date of occurrence */ TransformationUtils.convert(this.occurredAt)));
+        changeEvt.setChangeSourcePredecessorReferenceId(this.parent().identified());
+        changeEvt.setChangeSourceIdentifier(this.identified());
+        changeEvt.setChangeSourceOccurredAt(this.occurredAt);
         return changeEvt;
     }
 
@@ -210,17 +209,13 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
      *
      * @param changesHistory Events which shall be re-executed as committed changes on this instance. Do nothing when null or including empty events list.
      */
-    protected final void mutate(List<Hydration> changesHistory) {
+    protected final void mutate(List<DomainEvent> changesHistory) {
         if (changesHistory != null) {
             // Rehydrate its status for events history
-            IdentifiableFact changeFact;
-            DomainEvent changeEvt;
-            for (Hydration hydration : changesHistory) {
-                changeFact = hydration.event();
-                if (changeFact != null && DomainEvent.class.isAssignableFrom(changeFact.getClass())) {
-                    changeEvt = (DomainEvent) changeFact;
+            for (DomainEvent changeFact : changesHistory) {
+                if (changeFact != null) {
                     // Apply rehydration of all life historized attributes changes on prepared instance
-                    mutateWhen(changeEvt);
+                    mutateWhen(changeFact);
                 }
             }
         }

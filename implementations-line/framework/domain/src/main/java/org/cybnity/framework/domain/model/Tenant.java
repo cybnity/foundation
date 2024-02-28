@@ -3,15 +3,15 @@ package org.cybnity.framework.domain.model;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.DomainEvent;
-import org.cybnity.framework.domain.event.ConcreteDomainChangeEvent;
-import org.cybnity.framework.domain.event.DomainEventType;
-import org.cybnity.framework.domain.event.IAttribute;
+import org.cybnity.framework.domain.event.*;
 import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 import java.io.Serializable;
+import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -71,25 +71,47 @@ public class Tenant extends Aggregate {
      *
      * @param instanceId     Mandatory unique identifier of the child fact instance to rehydrate.
      * @param changesHistory Mandatory not empty history. History order shall be ascending ordered with the last list element equals to the more young creation event relative to this instance to rehydrate.
+     * @return Re-hydrated instance. The source changes history have not been re-established into the hydrated instance.
      * @throws IllegalArgumentException When mandatory parameter is not valid or empty. When list does not contain identifiable creation event as first list element.
      */
-    public static Tenant instanceOf(Identifier instanceId, List<Hydration> changesHistory) throws IllegalArgumentException {
+    public static Tenant instanceOf(Identifier instanceId, List<DomainEvent> changesHistory) throws IllegalArgumentException {
         if (instanceId == null) throw new IllegalArgumentException("instanceId parameter is required!");
         if (changesHistory == null || changesHistory.isEmpty())
             throw new IllegalArgumentException("changesHistory parameter is required and shall be not empty!");
         Tenant fact = null;
         // Get first element as origin creation event (more old event)
-        Hydration event = changesHistory.get(0);
+        DomainEvent event = changesHistory.get(0);
         if (event == null) throw new IllegalArgumentException("First history item shall be not null!");
-        // Check if the event allow identification of predecessor
-        Entity predecessor = event.parent();
-        if (predecessor != null) {
-            // Recreate instance
-            fact = new Tenant(predecessor, instanceId);
-            // Rehydrate its status for events history
-            fact.mutate(changesHistory);// Re-hydrate instance
+
+        // Normally, any event relative to a tenant change shall include specification attributes allowing its instantiation
+        if (HydrationAttributeProvider.class.isAssignableFrom(event.getClass())) {
+            HydrationAttributeProvider hydrationElementsProvider = (HydrationAttributeProvider) event;
+            Identifier tenantId = hydrationElementsProvider.changeSourceIdentifier();
+            OffsetDateTime occurredAt = hydrationElementsProvider.changeSourceOccurredAt();
+            Identifier parentId = hydrationElementsProvider.changeSourcePredecessorReferenceId();
+
+            // Read identification of tenant mandatory predecessor entity reference
+            if (parentId != null && tenantId != null && occurredAt != null) {
+                Entity parent = new DomainEntity(parentId);
+                // Recreate instance
+                fact = new Tenant(parent, tenantId /* re-hydrated domain data identity privileged from event attributes*/);
+
+                // Quality control of normally equals re-hydrated identity of data object
+                if (!fact.identified().equals(instanceId)) {
+                    // Problem of integrity regarding the re-hydrated identification elements from the event
+                    throw new IllegalArgumentException("Non conformity of the identifiers detected into the change event history which shall be equals to the instanceId parameter requested to be re-hydrated!");
+                }
+
+                // Rehydrate its status for events history into the last known state (without lifecycle history storage by the instance)
+                fact.mutate(changesHistory);
+                // Clean the re-hydrated change events potential automatically added during mutation operations
+                fact.changeEvents().clear();
+
+                return fact; // Return re-hydrated instance
+            }
         }
-        return fact;
+
+        throw new IllegalArgumentException("Impossible re-hydration of tenant instance from changes history!");
     }
 
     /**
@@ -186,8 +208,32 @@ public class Tenant extends Aggregate {
     @Override
     public void mutateWhen(DomainEvent change) throws IllegalArgumentException {
         super.mutateWhen(change);// Execute potential re-hydration of super class
-        // Apply local change
-        // TODO implementation of change on Tenant according to change event type (command supported) producing this tenant's attribute value modification
+
+        // Apply local change without feeding of lifecycle history modification
+        // Only about change event (DomainEventType.TENANT_CREATED or DomainEventType.TENANT_DELETED not managed as mutation to apply)
+        if (DomainEventType.TENANT_CHANGED.name().equals(change.type().value())) {
+            try {
+                // Identify which instance's attribute shall be rehydrated
+
+                // --- ACTIVITY STATUS MUTATION ---
+                org.cybnity.framework.domain.Attribute statusChanged = EventSpecification.findSpecificationByName(Attribute.ACTIVITY_STATUS.name(), change.specification());
+                if (statusChanged != null && statusChanged.value() != null && !statusChanged.value().isEmpty()) {
+                    // Re-hydrate activity status
+                    this.setStatus(new ActivityState(this.root(), Boolean.valueOf(statusChanged.value()), this.activityStatus));
+                }
+
+                // --- ATTRIBUTE LABEL MUTATION ---
+                org.cybnity.framework.domain.Attribute labelChanged = EventSpecification.findSpecificationByName(Attribute.LABEL.name(), change.specification());
+                if (labelChanged!=null && labelChanged.value()!=null && !labelChanged.value().isEmpty()) {
+                    // Re-hydrate descriptor label
+                    HashMap<String, Object> propertyCurrentValue = new HashMap<>();
+                    propertyCurrentValue.put(TenantDescriptor.PropertyAttributeKey.LABEL.name(), labelChanged.value());
+                    this.setLabel(new TenantDescriptor(/* owner of description */this.parent, propertyCurrentValue, /* status */HistoryState.COMMITTED));
+                }
+            } catch (ImmutabilityException ie) {
+                throw new IllegalArgumentException(ie);
+            }
+        }
     }
 
     @Override

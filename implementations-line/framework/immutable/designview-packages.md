@@ -18,7 +18,6 @@ The technical description regarding behavior and best usage is maintained into t
 | FactRecord                                   |                                                                                                                                                             |
 | FactType                                     |                                                                                                                                                             |
 | HistoryState                                 |                                                                                                                                                             |
-| Hydration                                    | Capability allowing re-hydration of an object (e.g by a event sourcing pattern implementation for restoration of it from its event changes sourced history) |
 | IDeletionFact                                |                                                                                                                                                             |
 | IdentifiableFact                             |                                                                                                                                                             |
 | Identifier                                   |                                                                                                                                                             |

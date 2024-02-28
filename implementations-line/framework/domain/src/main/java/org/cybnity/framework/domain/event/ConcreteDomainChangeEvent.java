@@ -1,11 +1,16 @@
 package org.cybnity.framework.domain.event;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.DomainEvent;
+import org.cybnity.framework.domain.ObjectMapperBuilder;
+import org.cybnity.framework.domain.model.CommonChildFactImpl;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
+import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
@@ -14,6 +19,8 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Generic event regarding a change occurred on a topic relative to a domain.
@@ -22,11 +29,13 @@ import java.util.Collections;
  */
 @JsonTypeName("ConcreteDomainChangeEvent")
 @JsonSubTypes({@JsonSubTypes.Type(value = ProcessingUnitPresenceAnnounced.class, name = "ProcessingUnitPresenceAnnounced")})
-public class ConcreteDomainChangeEvent extends DomainEvent {
+public class ConcreteDomainChangeEvent extends DomainEvent implements HydrationAttributeProvider {
 
     @JsonIgnore
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(ConcreteDomainChangeEvent.class).hashCode();
+
+    private final Logger logger = Logger.getLogger(ConcreteDomainChangeEvent.class.getName());
 
     /**
      * Standard type of the attribute specifying this event type based on a logical
@@ -229,5 +238,107 @@ public class ConcreteDomainChangeEvent extends DomainEvent {
             return EventSpecification.findSpecificationByName(TYPE, this.specification);
         }
         return null;
+    }
+
+    @Override
+    public Identifier changeSourcePredecessorReferenceId() {
+        Attribute at = EventSpecification.findSpecificationByName(CommonChildFactImpl.Attribute.PARENT_REFERENCE_ID.name(), this.specification());
+        if (at != null) {
+            try {
+                ObjectMapper mapper = new ObjectMapperBuilder()
+                        .enableIndentation()
+                        .dateFormat()
+                        .preserveOrder(true)
+                        .build();
+                return mapper.readValue(at.value(), Identifier.class);
+            } catch (JsonProcessingException jpe) {
+                logger.log(Level.SEVERE, jpe.getMessage(), jpe);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void setChangeSourcePredecessorReferenceId(Identifier id) {
+        if (id != null) {
+            try {
+                ObjectMapper mapper = new ObjectMapperBuilder()
+                        .enableIndentation()
+                        .dateFormat()
+                        .preserveOrder(true)
+                        .build();
+                appendSpecification(new org.cybnity.framework.domain.Attribute(CommonChildFactImpl.Attribute.PARENT_REFERENCE_ID.name(), /* Serialized predecessor identifier value */ mapper.writeValueAsString(id)));
+            } catch (JsonProcessingException jpe) {
+                logger.log(Level.SEVERE, jpe.getMessage(), jpe);
+            }
+        }
+    }
+
+    @Override
+    public Identifier changeSourceIdentifier() {
+        Attribute at = EventSpecification.findSpecificationByName(CommonChildFactImpl.Attribute.IDENTIFIER.name(), this.specification());
+        if (at != null) {
+            try {
+                ObjectMapper mapper = new ObjectMapperBuilder()
+                        .enableIndentation()
+                        .dateFormat()
+                        .preserveOrder(true)
+                        .build();
+                return mapper.readValue(at.value(), Identifier.class);
+            } catch (JsonProcessingException jpe) {
+                logger.log(Level.SEVERE, jpe.getMessage(), jpe);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void setChangeSourceIdentifier(Identifier id) {
+        if (id != null) {
+            try {
+                ObjectMapper mapper = new ObjectMapperBuilder()
+                        .enableIndentation()
+                        .dateFormat()
+                        .preserveOrder(true)
+                        .build();
+                appendSpecification(new org.cybnity.framework.domain.Attribute(CommonChildFactImpl.Attribute.IDENTIFIER.name(), mapper.writeValueAsString(id)));
+            } catch (JsonProcessingException jpe) {
+                logger.log(Level.SEVERE, jpe.getMessage(), jpe);
+            }
+        }
+    }
+
+    @Override
+    public OffsetDateTime changeSourceOccurredAt() {
+        Attribute at = EventSpecification.findSpecificationByName(CommonChildFactImpl.Attribute.OCCURRED_AT.name(), this.specification());
+        if (at != null) {
+            try {
+                ObjectMapper mapper = new ObjectMapperBuilder()
+                        .enableIndentation()
+                        .dateFormat()
+                        .preserveOrder(true)
+                        .build();
+                return mapper.readValue(at.value(), OffsetDateTime.class);
+            } catch (JsonProcessingException jpe) {
+                logger.log(Level.SEVERE, jpe.getMessage(), jpe);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void setChangeSourceOccurredAt(OffsetDateTime date) {
+        if (date != null) {
+            try {
+                ObjectMapper mapper = new ObjectMapperBuilder()
+                        .enableIndentation()
+                        .dateFormat()
+                        .preserveOrder(true)
+                        .build();
+                appendSpecification(new org.cybnity.framework.domain.Attribute(CommonChildFactImpl.Attribute.OCCURRED_AT.name(), mapper.writeValueAsString(date)));
+            } catch (JsonProcessingException jpe) {
+                logger.log(Level.SEVERE, jpe.getMessage(), jpe);
+            }
+        }
     }
 }

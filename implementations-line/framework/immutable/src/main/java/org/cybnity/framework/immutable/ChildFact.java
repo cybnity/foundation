@@ -130,7 +130,7 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
         Collection<Identifier> origins = null;
         if (identifiers != null && !identifiers.isEmpty()) {
             // Control quality of identification contributors
-            origins = new LinkedHashSet<Identifier>(identifiers.size());
+            origins = new LinkedHashSet<>(identifiers.size());
             // Get immutable version of this child's identifiers
             try {
                 for (Identifier id : identifiers) {
@@ -139,8 +139,11 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
                         throw new IllegalArgumentException(
                                 "Any child base identifier parameter's name and value is required!");
                     }
-                    // get a reference copy
-                    origins.add((Identifier) id.immutable());
+                    // EVENTUAL DUPLICATE FILTERING : check that parent identifier is not included
+                    if (!id.value().equals(predecessor.identified())) {
+                        // Get a reference copy only when it's not the same of predecessor id
+                        origins.add((Identifier) id.immutable());
+                    }
                 }
             } catch (ImmutabilityException cn) {
                 throw new IllegalArgumentException(cn);

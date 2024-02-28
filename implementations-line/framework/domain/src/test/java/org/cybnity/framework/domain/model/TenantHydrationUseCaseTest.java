@@ -6,16 +6,54 @@ import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.event.*;
 import org.cybnity.framework.immutable.Entity;
+import org.cybnity.framework.immutable.HistoryState;
+import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Hydration use case test regarding a domain object, and changes event behaviors.
  */
 public class TenantHydrationUseCaseTest {
+
+    /**
+     * Validate that an origin tenant can be rehydrated from its lifecycle change history.
+     */
+    @Test
+    public void givenChangeEventsHistory_whenTenantHydration_thenInstanceRehydrated() throws Exception {
+        // Create new tenant
+        Entity originCreationCommand = new DomainEntity(IdentifierStringBased.generate(null));
+        String tenantLabel = "CYBNITY";
+        TenantBuilder builder = new TenantBuilder(tenantLabel, originCreationCommand, Boolean.TRUE);
+        builder.buildInstance();
+        Tenant originTenantLatestVersion = builder.getResult();
+
+        // Execute some changes feeding the tenant lifecycle history
+        String tenantLabel2 = "CYBNITY2";
+        HashMap<String, Object> propertyCurrentValue = new HashMap<>();
+        propertyCurrentValue.put(TenantDescriptor.PropertyAttributeKey.LABEL.name(), tenantLabel2);
+        TenantDescriptor ownerProperty = new TenantDescriptor(/* owner of description */originTenantLatestVersion.parent(), propertyCurrentValue, /* status */HistoryState.COMMITTED);
+        originTenantLatestVersion.setLabel(ownerProperty); // Change tenant label
+        originTenantLatestVersion.deactivate(); // Change activity status
+
+        // Get the change events history of latest tenant version for simulate a rehydration
+        List<DomainEvent> changesHistory= originTenantLatestVersion.changeEvents();
+        Identifier originId = originTenantLatestVersion.identified();
+
+        // Attempt to re-build hydrated instance from history
+        Tenant rehydrated = Tenant.instanceOf(originId, changesHistory);
+
+        // Check conformity of re-established last status equals to origin latest version
+        Assertions.assertNotNull(rehydrated);
+        Assertions.assertEquals(originTenantLatestVersion, rehydrated, "Shall be compared like equals!");
+        Assertions.assertEquals(tenantLabel2, rehydrated.label().getLabel()); // Verify last version of label included in re-hydrated instance (mutation applied)
+        Assertions.assertEquals(originTenantLatestVersion.status().isActive(), rehydrated.status().isActive()); // Verify mutation applied
+        Assertions.assertTrue(rehydrated.changeEvents().isEmpty(),"Rehydrated instance shall not include changes events!"); // Verify that instantiation events have not been maintained when the rehydration finished
+    }
 
     /**
      * Validate that change events history of a domain object is automatically produced during instance creation.
@@ -83,9 +121,9 @@ public class TenantHydrationUseCaseTest {
         Assertions.assertEquals(originTenant.root(), creationEvt.changedModelElementReference(), "Subject of change shall be origin referenced!");
 
         // Check existing predecessor attribute
-        Attribute predecessorAttr = EventSpecification.findSpecificationByName(Aggregate.Attribute.PARENT_REFERENCE_ID.name(), changeEvt.specification());
-        Assertions.assertNotNull(predecessorAttr);// Existing reference to predecessor
-        Assertions.assertEquals(predecessorUUID, predecessorAttr.value(), "Predecessor reference shall exist regarding aggregate parent!");
-
+        Identifier parentRefId = ((ConcreteDomainChangeEvent) changeEvt).changeSourcePredecessorReferenceId(); // Existing reference to predecessor stored in JSON string value
+        Assertions.assertNotNull(parentRefId);// Existing reference to predecessor stored in JSON string value
+        Assertions.assertEquals(predecessorUUID, parentRefId.value().toString(), "Predecessor reference identifier shall exist in equals value regarding aggregate parent!");
     }
+
 }
