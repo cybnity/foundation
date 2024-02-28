@@ -65,7 +65,7 @@ public class Tenant extends Aggregate {
      * Current mutable status of activity regarding this tenant.
      */
     private ActivityState activityStatus;
-    
+
     /**
      * Factory of instance from historized facts (e.g fact creation, change, deletion events) allowing the instance rehydration.
      *

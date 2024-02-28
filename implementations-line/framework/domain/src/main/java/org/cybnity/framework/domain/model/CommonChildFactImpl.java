@@ -99,7 +99,7 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
      * @throws IllegalArgumentException When mandatory any parameter is missing.
      * @throws ImmutabilityException    When impossible read of parent reference immutable version.
      */
-    protected ConcreteDomainChangeEvent prepareChangeEventInstance(IEventType changeType) throws IllegalArgumentException, ImmutabilityException {
+    protected final ConcreteDomainChangeEvent prepareChangeEventInstance(IEventType changeType) throws IllegalArgumentException, ImmutabilityException {
         if (changeType == null) throw new IllegalArgumentException("changeType parameter is required!");
         // Add a change event into the history
         // Check if change event is about a persistent identifiable aggregated
@@ -123,7 +123,7 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
      *
      * @return A domain entity identity instance based on current identifier of fact (as an aggregate root). Null when not identifier defined regarding this fact.
      */
-    protected DomainEntity rootEntity() {
+    protected final DomainEntity rootEntity() {
         // Read the identity of this root aggregate domain object
         Identifier id = this.identified();
         DomainEntity aggregateRootEntity = null;
@@ -157,7 +157,7 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
      *
      * @return A logger singleton.
      */
-    protected Logger logger() {
+    protected final Logger logger() {
         if (logger == null) {
             this.logger = Logger.getLogger(this.getClass().getName());
         }
@@ -184,7 +184,7 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
      * @param history Events which shall be re-executed as committed changes on this instance. Do nothing when null or including empty events list.
      */
     @Override
-    public void replayEvents(EventStream history) {
+    public final void replayEvents(EventStream history) {
         if (history != null) {
             this.mutateWhen(history.getEvents());
         }
@@ -196,7 +196,7 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
      *
      * @param changes Events which shall be re-executed as committed changes on this instance. Do nothing when null or including empty events list.
      */
-    final protected void mutateWhen(List<DomainEvent> changes) {
+    protected final void mutateWhen(List<DomainEvent> changes) {
         if (changes != null) {
             for (DomainEvent evt : changes) {
                 this.mutateWhen(evt);
@@ -210,7 +210,7 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
      *
      * @param changesHistory Events which shall be re-executed as committed changes on this instance. Do nothing when null or including empty events list.
      */
-    final protected void mutate(List<Hydration> changesHistory) {
+    protected final void mutate(List<Hydration> changesHistory) {
         if (changesHistory != null) {
             // Rehydrate its status for events history
             IdentifiableFact changeFact;
@@ -231,7 +231,7 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
      *
      * @return A list of change or empty list.
      */
-    public List<DomainEvent> changeEvents() {
+    public final List<DomainEvent> changeEvents() {
         return this.changeHistory;
     }
 
@@ -241,7 +241,7 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
      *
      * @param change To add in history. Ignored when null.
      */
-    protected void addChangeEvent(DomainEvent change) {
+    protected final void addChangeEvent(DomainEvent change) {
         if (change != null) {
             // Add in history
             this.changeHistory.add(change);
