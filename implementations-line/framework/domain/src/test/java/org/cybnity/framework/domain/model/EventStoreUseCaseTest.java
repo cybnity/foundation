@@ -52,10 +52,10 @@ public class EventStoreUseCaseTest {
         // Simulate some changes to apply on the entity as original creation event
         UserAccountChanged creationEvt = new UserAccountChanged(new DomainEntity(IdentifierStringBased.generate(null)) /* id of change event*/);
         creationEvt.changedAccountRef = domainObjectState.reference(); // Reference the domain entity source (eligible to serialization into the store's records stream)
-        // Save the fact in store supporting the type of aggregate (UserAccountIdentity)
-        changesStream = new EventStream(Long.parseLong(domainObjectState.versionHash()), creationEvt); // init origin user account creation event as first item of history
+        // Save the fact in store supporting the type of aggregate (UserAccountIdentity) according its origin type version
+        changesStream = new EventStream(null, creationEvt); // init origin user account creation event as first item of history
         // Add creation item into a store as persistent fact record
-        persistenceOrientedStore.appendToStream(domainObjectState.identified() /* domain object unique identifier */, /* version of domain object type */ changesStream.getVersion(), changesStream.getEvents() /*delta of changes to save as new events on lifecycle archived*/);
+        persistenceOrientedStore.appendToStream(domainObjectState.identified() /* domain object unique identifier */, changesStream.getEvents() /*delta of changes to save as new events on lifecycle archived*/);
 
         // --- TEST RETRIEVE CHECK: Search persisted history (events stream dedicated to the aggregate record)
         // Search history stream of the store known business object previous version (created previously)
@@ -74,10 +74,10 @@ public class EventStoreUseCaseTest {
         String BOAttrValue = "sampleLogin";
         updateEvt.appendSpecification(new Attribute(BOAttrName, BOAttrValue));
 
-        // Define new upgrade change event as eligible to the domain object history stream
-        changesStream = new EventStream(Long.parseLong(domainObjectState.versionHash()), updateEvt);
+        // Define new upgrade change event as eligible to the domain object history stream (record version according object origin type version)
+        changesStream = new EventStream(null, updateEvt);
         // Save stream status into the store
-        persistenceOrientedStore.appendToStream(domainObjectState.identified(), changesStream.getVersion() /*equals stream version to enhance*/, changesStream.getEvents() /* Get event to commit additionally to the stream managed in store */);
+        persistenceOrientedStore.appendToStream(domainObjectState.identified(), changesStream.getEvents() /* Get event to commit additionally to the stream managed in store */);
 
         // --- TEST RETRIEVE CHECK: search persisted history including the 2 events (creation + upgrade)
         // Normally the read of last domain object value (merged of the domain object) shall be performed over a read-model's projection

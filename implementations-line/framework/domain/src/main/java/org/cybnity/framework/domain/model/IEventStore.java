@@ -20,16 +20,15 @@ public interface IEventStore {
     /**
      * Add an event into the store stream and commit the list changes.
      *
-     * @param domainEventId   Mandatory identifier of the root domain event which is subject of the changes.
-     * @param expectedVersion Stream version supporting the type of domain event to commit.
-     * @param changes         Mandatory ordered new events to commit at end of the stream managed by the store.
+     * @param domainEventId Mandatory identifier of the root domain event which is subject of the changes.
+     * @param changes       Mandatory ordered new events to commit at end of the stream managed by the store.
      * @throws IllegalArgumentException When event to store is not compatible to be
      *                                  stored (e.g missing mandatory content into
      *                                  the event to store).
      * @throws ImmutabilityException    When problem of immutable version of stored
      *                                  event is occurred.
      */
-    public void appendToStream(Identifier domainEventId, long expectedVersion, List<DomainEvent> changes) throws IllegalArgumentException, ImmutabilityException;
+    public void appendToStream(Identifier domainEventId, List<DomainEvent> changes) throws IllegalArgumentException, ImmutabilityException;
 
     /**
      * Load all the events regarding a stream type.

@@ -1,7 +1,7 @@
 package org.cybnity.framework.immutable.utility;
 
 /**
- * Define a familly of algorithms encapsuling the generation of specific class
+ * Define a family of algorithms encapsulation the generation of specific class
  * type version strategies. It's a Strategy design pattern implementation (e.g
  * helping to generate structural version value per fact type).
  * 

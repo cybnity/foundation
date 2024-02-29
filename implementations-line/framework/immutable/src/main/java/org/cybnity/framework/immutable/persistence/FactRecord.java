@@ -54,13 +54,26 @@ public class FactRecord implements IHistoricalFact, IUniqueness {
      *                                  contents sourced from the event.
      */
     public FactRecord(IHistoricalFact originFact) throws IllegalArgumentException, ImmutabilityException {
+        this(originFact, null);
+    }
+
+    /**
+     * Default constructor of a fact record based on a domain event with potential custom targeted type version of ths record.
+     *
+     * @param originFact      Mandatory fact that is subject of recording.
+     * @param targetedVersion Optional version of the type of fact (e.g different than default type version based on origin fact class).
+     * @throws IllegalArgumentException When mandatory parameter is missing.
+     * @throws ImmutabilityException    When problem of read regarding immutable
+     *                                  contents sourced from the event.
+     */
+    public FactRecord(IHistoricalFact originFact, TypeVersion targetedVersion) throws IllegalArgumentException, ImmutabilityException {
         if (originFact == null) {
             throw new IllegalArgumentException("Event parameter is required!");
         }
         this.body = originFact;
         this.bodyHash = originFact.hashCode();
         this.factOccurredAt = originFact.occurredAt();
-        this.factTypeVersion = new TypeVersion(originFact.getClass());
+        this.factTypeVersion = (targetedVersion != null) ? targetedVersion : new TypeVersion(originFact.getClass());
         if (IdentifiableFact.class.isAssignableFrom(originFact.getClass())) {
             IdentifiableFact identifiedFact = (IdentifiableFact) originFact;
             Identifier id = identifiedFact.identified();
@@ -70,6 +83,7 @@ public class FactRecord implements IHistoricalFact, IUniqueness {
         }
         this.recordedAt = OffsetDateTime.now();
     }
+
 
     @Override
     public Set<Field> basedOn() {

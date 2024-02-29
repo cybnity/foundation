@@ -4,6 +4,8 @@ import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.Unmodifiable;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,7 +40,8 @@ public class EventStream implements Unmodifiable, Serializable {
     /**
      * Version of the event stream.
      */
-    private long version;
+    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_8")
+    private String version;
 
     /**
      * All events historized as a stream.
@@ -48,18 +51,20 @@ public class EventStream implements Unmodifiable, Serializable {
     public EventStream() {
     }
 
-    public EventStream(long version, DomainEvent... history) {
+    public EventStream(@Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_8") String version, DomainEvent... history) {
         if (history != null && history.length > 0)
             // save optional known origin facts
             events = Arrays.asList(history);
         this.version = version;
     }
 
-    public long getVersion() {
+    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_8")
+    public String getVersion() {
         return this.version;
     }
 
-    public void setVersion(long version) {
+    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_8")
+    public void setVersion(String version) {
         this.version = version;
     }
 
