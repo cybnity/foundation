@@ -78,7 +78,7 @@ public class Tenant extends Aggregate {
         if (instanceId == null) throw new IllegalArgumentException("instanceId parameter is required!");
         if (changesHistory == null || changesHistory.isEmpty())
             throw new IllegalArgumentException("changesHistory parameter is required and shall be not empty!");
-        Tenant fact = null;
+
         // Get first element as origin creation event (more old event)
         DomainEvent event = changesHistory.get(0);
         if (event == null) throw new IllegalArgumentException("First history item shall be not null!");
@@ -92,9 +92,12 @@ public class Tenant extends Aggregate {
 
             // Read identification of tenant mandatory predecessor entity reference
             if (parentId != null && tenantId != null && occurredAt != null) {
-                Entity parent = new DomainEntity(parentId);
-                // Recreate instance
-                fact = new Tenant(parent, tenantId /* re-hydrated domain data identity privileged from event attributes*/);
+                DomainEntity parent = new DomainEntity(parentId);
+                parent.setCreatedAt(occurredAt); /* re-hydrate origin creation date */
+
+                // Re-instantiate the fact
+                Tenant fact = new Tenant(parent, tenantId /* re-hydrated domain data identity privileged from event attributes*/);
+                fact.setOccurredAt(occurredAt);
 
                 // Quality control of normally equals re-hydrated identity of data object
                 if (!fact.identified().equals(instanceId)) {
