@@ -8,11 +8,9 @@ import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.domain.model.Tenant;
 import org.cybnity.framework.domain.model.TenantDescriptor;
 import org.cybnity.framework.immutable.BaseConstants;
-import org.cybnity.framework.immutable.HistoryState;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -41,12 +39,8 @@ public class AbstractProcessEvaluation {
 		tenant = new Tenant(company, /*
 										 * Simulate auto-assigned parent identifier without extension of the child id
 										 * generation based on identifiers and minimum quantity of length
-										 */ null, Boolean.TRUE /* active tenant */);
+										 */ null, Boolean.TRUE /* active tenant */, "CYBNITY France");
 
-		HashMap<String, Object> organisationAttr = new HashMap<String, Object>();
-		organisationAttr.put(TenantDescriptor.PropertyAttributeKey.LABEL.name(), "CYBNITY France");
-		organizationDesc = new TenantDescriptor(company, organisationAttr, HistoryState.COMMITTED);
-		tenant.setLabel(organizationDesc);
 		processIdentity = TestSampleFactory.createIdentity();
 		processDesc = TestSampleFactory.createProcessDescription(processIdentity, "NIST RMF");
 	}
