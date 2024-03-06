@@ -7,6 +7,8 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a persistence-oriented repository (also sometimes called Aggregate
@@ -56,8 +58,8 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      * Delete a collection of facts from this repository.
      *
      * @param aFactsCollection Facts list to remove.
-     * @param ctx             Optional context of persistence providing elements
-     *                        (e.g tenant id) usable for persistence management.
+     * @param ctx              Optional context of persistence providing elements
+     *                         (e.g tenant id) usable for persistence management.
      */
     public void removeAll(Collection<T> aFactsCollection, ISessionContext ctx);
 
@@ -81,4 +83,13 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      *                        (e.g tenant id) usable for persistence management.
      */
     public void saveAll(Collection<T> aFactCollection, ISessionContext ctx);
+
+    /**
+     * Find facts from specific parameters.
+     *
+     * @param queryParameters A set of parameters as filtering criteria allowing the isolation of facts to retrieve.
+     * @param ctx             Optional context of persistence layer usage.
+     * @return A list of found result, or null.
+     */
+    public List<T> queryWhere(Map<String, String> queryParameters, ISessionContext ctx);
 }
