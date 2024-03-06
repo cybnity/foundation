@@ -2,11 +2,8 @@ package org.cybnity.framework.domain.model;
 
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.immutable.Entity;
-import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
-
-import java.util.HashMap;
 
 /**
  * Builder pattern implementation ensuring preparation and delivery of Tenant instance.
@@ -49,17 +46,14 @@ public class TenantBuilder {
      * @throws ImmutabilityException When impossible read of tenant instance parent (predecessor identity).
      */
     private void prepareTenantDescription() throws ImmutabilityException {
-        HashMap<String, Object> propertyCurrentValue = new HashMap<>();
-        propertyCurrentValue.put(TenantDescriptor.PropertyAttributeKey.LABEL.name(), tenantLabel);
-        TenantDescriptor ownerProperty = new TenantDescriptor(/* owner of description */tenant.parent(), propertyCurrentValue, /* status */HistoryState.COMMITTED);
-        tenant.setLabel(ownerProperty);
+        tenant.setLabel(tenantLabel);
     }
 
     /**
      * Create the instance of tenant
      */
     private void createInstance() {
-        tenant = new Tenant(/* origin command event as predecessor */originPredecessorEvent, tenantId, isActivityStatus);
+        tenant = new Tenant(/* origin command event as predecessor */originPredecessorEvent, tenantId, isActivityStatus, tenantLabel);
     }
 
     /**

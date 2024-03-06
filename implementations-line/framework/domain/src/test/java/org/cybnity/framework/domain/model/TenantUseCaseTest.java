@@ -156,7 +156,7 @@ public class TenantUseCaseTest {
                 new Tenant(
                         new DomainEntityImpl(new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(),
                                 UUID.randomUUID().toString())),
-                        new IdentifierStringBased("other", UUID.randomUUID().toString()), Boolean.TRUE);
+                        new IdentifierStringBased("other", UUID.randomUUID().toString()), Boolean.TRUE, null);
             }
         });
         // Check null id is not supported
@@ -166,7 +166,7 @@ public class TenantUseCaseTest {
                 // Try instantiation based on none predecessor
                 new Tenant(null,
                         new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), UUID.randomUUID().toString()),
-                        Boolean.TRUE);
+                        Boolean.TRUE, null);
             }
         });
     }

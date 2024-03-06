@@ -96,7 +96,7 @@ public class Tenant extends Aggregate {
                 parent.setCreatedAt(occurredAt); /* re-hydrate origin creation date */
 
                 // Re-instantiate the fact
-                Tenant fact = new Tenant(parent, tenantId /* re-hydrated domain data identity privileged from event attributes*/);
+                Tenant fact = new Tenant(parent, tenantId /* re-hydrated domain data identity privileged from event attributes*/, /* Label managed by next change event auto-generated during origin instance creation*/ null);
                 fact.setOccurredAt(occurredAt);
 
                 // Quality control of normally equals re-hydrated identity of data object
@@ -123,6 +123,7 @@ public class Tenant extends Aggregate {
      *
      * @param predecessor Mandatory parent of this tenant root aggregate entity.
      * @param id          Optional identifier of this tenant.
+     * @param label       Optional logical name of the tenant.
      * @throws IllegalArgumentException When any mandatory parameter is missing.
      *                                  When id parameter's name is not equals to
      *                                  BaseConstants.IDENTIFIER_ID. When a problem
@@ -130,8 +131,16 @@ public class Tenant extends Aggregate {
      *                                  predecessor mandatory parameter is not
      *                                  defined or without defined identifier.
      */
-    public Tenant(Entity predecessor, Identifier id) throws IllegalArgumentException {
+    public Tenant(Entity predecessor, Identifier id, String label) throws IllegalArgumentException {
         super(predecessor, id); // Automatic creation event added into history
+        if (label != null && !label.isEmpty()) {
+            try {
+                // Set label
+                this.setLabel(label);
+            } catch (ImmutabilityException ie) {
+                logger().log(Level.SEVERE, ie.getMessage(), ie);
+            }
+        }
         try {
             // Add a change event into the history
             ConcreteDomainChangeEvent changeEvt = prepareChangeEventInstance(DomainEventType.TENANT_CREATED);
@@ -153,6 +162,7 @@ public class Tenant extends Aggregate {
      * @param id            Optional identifier of this tenant.
      * @param currentStatus Optional current status of this tenant subscription (e.g
      *                      True when active).
+     * @param label         Optional logical name of the tenant.
      * @throws IllegalArgumentException When any mandatory parameter is missing.
      *                                  When id parameter's name is not equals to
      *                                  BaseConstants.IDENTIFIER_ID. When a problem
@@ -160,12 +170,13 @@ public class Tenant extends Aggregate {
      *                                  predecessor mandatory parameter is not
      *                                  defined or without defined identifier.
      */
-    public Tenant(Entity predecessor, Identifier id, Boolean currentStatus) throws IllegalArgumentException {
-        this(predecessor, id);// Automatic creation event added into history
+    public Tenant(Entity predecessor, Identifier id, Boolean currentStatus, String label) throws IllegalArgumentException {
+        this(predecessor, id, label);// Automatic creation event added into history
         if (id != null && !BaseConstants.IDENTIFIER_ID.name().equals(id.name()))
             throw new IllegalArgumentException(
                     "id parameter is not valid because identifier name shall be equals to only supported value ("
                             + BaseConstants.IDENTIFIER_ID.name() + ")!");
+
         if (currentStatus != null) {
             try {
                 setStatus(new ActivityState(parent().reference(), currentStatus));
@@ -227,7 +238,7 @@ public class Tenant extends Aggregate {
 
                 // --- LABEL MUTATION ---
                 org.cybnity.framework.domain.Attribute labelChanged = EventSpecification.findSpecificationByName(Attribute.LABEL.name(), change.specification());
-                if (labelChanged!=null && labelChanged.value()!=null && !labelChanged.value().isEmpty()) {
+                if (labelChanged != null && labelChanged.value() != null && !labelChanged.value().isEmpty()) {
                     // Re-hydrate descriptor label
                     HashMap<String, Object> propertyCurrentValue = new HashMap<>();
                     propertyCurrentValue.put(TenantDescriptor.PropertyAttributeKey.LABEL.name(), labelChanged.value());
@@ -328,6 +339,22 @@ public class Tenant extends Aggregate {
         // Create initial status as inactive
         setStatus(new ActivityState(parent.reference(), Boolean.FALSE, this.activityStatus));
         return status();
+    }
+
+    /**
+     * Build a tenant descriptor supported the tenant naming.
+     *
+     * @param tenantLabel Mandatory label.
+     * @throws ImmutabilityException    When parent instance impossible read.
+     * @throws IllegalArgumentException When mandatory parameter is not defined.
+     */
+    public void setLabel(String tenantLabel) throws ImmutabilityException, IllegalArgumentException {
+        if (tenantLabel == null || tenantLabel.isEmpty())
+            throw new IllegalArgumentException("Tenant label parameter is required!");
+        HashMap<String, Object> propertyCurrentValue = new HashMap<>();
+        propertyCurrentValue.put(TenantDescriptor.PropertyAttributeKey.LABEL.name(), tenantLabel);
+        TenantDescriptor ownerProperty = new TenantDescriptor(/* owner of description */this.parent(), propertyCurrentValue, /* status */HistoryState.COMMITTED);
+        setLabel(ownerProperty);
     }
 
     /**
