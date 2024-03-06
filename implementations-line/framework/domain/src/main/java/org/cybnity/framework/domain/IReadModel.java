@@ -7,7 +7,7 @@ import java.util.Collection;
 
 /**
  * Represent a denormalized read repository (also named Query Model) which
- * subscribe to events on the write model. It's a component of the read side of
+ * can subscribe to events on a write model. It's a component of the read side of
  * an application. Segregation elements of the CQRS pattern, this component is
  * responsible to expose readable different sets of classes to other systems
  * (e.g application user interface).
