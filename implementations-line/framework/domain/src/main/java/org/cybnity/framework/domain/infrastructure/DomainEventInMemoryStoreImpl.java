@@ -58,7 +58,7 @@ public class DomainEventInMemoryStoreImpl extends EventStore {
         if (changes == null) throw new IllegalArgumentException("changes parameter is required!");
         if (changes.isEmpty()) return; // noting to change on domain event
 
-        // PREPARE A CHANGE RECORD PER CHANGE EVENT RELATIVE TO THE SUBJECT IDENTIFIED
+        // --- PREPARE A CHANGE RECORD FOR EACH CHANGE EVENT RELATIVE TO THE SUBJECT IDENTIFIED ---
         LinkedList<EventRecord> changesEligibleToHistoryStorage = new LinkedList<>();
 
         @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_8")

@@ -106,13 +106,14 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
         ConcreteDomainChangeEvent changeEvt = new ConcreteDomainChangeEvent( /* new technical identifier of the change event fact */
                 new DomainEntity(IdentifierStringBased.generate(/* this created instance id as salt */ (uid != null) ? String.valueOf(this.identified().value().hashCode()) : null))
                 , /* Type of change committed */ changeType.name());
+
         EntityReference rootRef = this.root();
         if (rootRef != null)
-            changeEvt.setChangedModelElementRef(rootRef); // Origin model object changed
+            changeEvt.setChangedModelElementRef(rootRef); // Origin domain model object changed
 
         // Add mandatory description regarding the fact basic definition attributes
         changeEvt.setChangeSourcePredecessorReferenceId(this.parent().identified());
-        changeEvt.setChangeSourceIdentifier(this.identified());
+        changeEvt.setChangeSourceIdentifier(this.identified()); // Origin domain model object changed
         changeEvt.setChangeSourceOccurredAt(this.occurredAt);
         return changeEvt;
     }

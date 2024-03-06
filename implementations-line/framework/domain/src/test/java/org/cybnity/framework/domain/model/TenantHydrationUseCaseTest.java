@@ -41,7 +41,7 @@ public class TenantHydrationUseCaseTest {
         originTenantLatestVersion.deactivate(); // Change activity status
 
         // Get the change events history of latest tenant version for simulate a rehydration
-        List<DomainEvent> changesHistory= originTenantLatestVersion.changeEvents();
+        List<DomainEvent> changesHistory = originTenantLatestVersion.changeEvents();
         Identifier originId = originTenantLatestVersion.identified();
 
         // Attempt to re-build hydrated instance from history
@@ -52,7 +52,7 @@ public class TenantHydrationUseCaseTest {
         Assertions.assertEquals(originTenantLatestVersion, rehydrated, "Shall be compared like equals!");
         Assertions.assertEquals(tenantLabel2, rehydrated.label().getLabel()); // Verify last version of label included in re-hydrated instance (mutation applied)
         Assertions.assertEquals(originTenantLatestVersion.status().isActive(), rehydrated.status().isActive()); // Verify mutation applied
-        Assertions.assertTrue(rehydrated.changeEvents().isEmpty(),"Rehydrated instance shall not include changes events!"); // Verify that instantiation events have not been maintained when the rehydration finished
+        Assertions.assertTrue(rehydrated.changeEvents().isEmpty(), "Rehydrated instance shall not include changes events!"); // Verify that instantiation events have not been maintained when the rehydration finished
     }
 
     /**

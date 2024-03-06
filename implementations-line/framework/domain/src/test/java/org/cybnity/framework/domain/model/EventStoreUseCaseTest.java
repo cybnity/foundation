@@ -1,6 +1,7 @@
 package org.cybnity.framework.domain.model;
 
 import org.cybnity.framework.domain.Attribute;
+import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.event.ConcreteDomainChangeEvent;
 import org.cybnity.framework.domain.infrastructure.DomainEventInMemoryStoreImpl;
@@ -11,6 +12,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Unit test of DomainEvent behaviors regarding its supported requirements.
@@ -33,8 +37,6 @@ public class EventStoreUseCaseTest {
 
     /**
      * Test of simple persistence-oriented store write and read capability.
-     *
-     * @throws Exception
      */
     @Test
     public void givenIdentifiedEvent_whenAppendedInPersistenceOrientedStore_thenEntryRetrieved()
@@ -54,8 +56,15 @@ public class EventStoreUseCaseTest {
         creationEvt.changedAccountRef = domainObjectState.reference(); // Reference the domain entity source (eligible to serialization into the store's records stream)
         // Save the fact in store supporting the type of aggregate (UserAccountIdentity) according its origin type version
         changesStream = new EventStream(null, creationEvt); // init origin user account creation event as first item of history
+
+        // --- Add subscriber allowing control of normally promoted change events to read-model during appendToStream execution
+        EventsCheck checker = new EventsCheck(changesStream.getEvents(), UserAccountChanged.class);
+        this.persistenceOrientedStore.subscribe(checker);
         // Add creation item into a store as persistent fact record
         persistenceOrientedStore.appendToStream(domainObjectState.identified() /* domain object unique identifier */, changesStream.getEvents() /*delta of changes to save as new events on lifecycle archived*/);
+
+        // --- CHANGE NOTIFICATION TO READ-MODEL VERIFICATION
+        Assertions.assertTrue(checker.isAllEventsToCheckHaveBeenFound(), checker.notAlreadyChecked.size() + " changes had not been notified to subscriber!");
 
         // --- TEST RETRIEVE CHECK: Search persisted history (events stream dedicated to the aggregate record)
         // Search history stream of the store known business object previous version (created previously)
@@ -76,8 +85,12 @@ public class EventStoreUseCaseTest {
 
         // Define new upgrade change event as eligible to the domain object history stream (record version according object origin type version)
         changesStream = new EventStream(null, updateEvt);
+        checker = new EventsCheck(changesStream.getEvents(), ConcreteDomainChangeEvent.class);
+        this.persistenceOrientedStore.subscribe(checker);
         // Save stream status into the store
         persistenceOrientedStore.appendToStream(domainObjectState.identified(), changesStream.getEvents() /* Get event to commit additionally to the stream managed in store */);
+        // --- CHANGE NOTIFICATION TO READ-MODEL VERIFICATION
+        Assertions.assertTrue(checker.isAllEventsToCheckHaveBeenFound(), checker.notAlreadyChecked.size() + " changes had not been notified to subscriber!");
 
         // --- TEST RETRIEVE CHECK: search persisted history including the 2 events (creation + upgrade)
         // Normally the read of last domain object value (merged of the domain object) shall be performed over a read-model's projection
@@ -87,6 +100,37 @@ public class EventStoreUseCaseTest {
         BOLifecycleStream = persistenceOrientedStore.loadEventStream(domainObjectState.identified() /* first original uui of domain object (user account identity) */);
         // Check ths existing 2 event of its life that are confirmed recorded and maintained by the Store
         Assertions.assertEquals(2, BOLifecycleStream.getEvents().size(), "Invalid qty of store events regarding BO lifecycle history!");
+    }
+
+    private static class EventsCheck extends DomainEventSubscriber<DomainEvent> {
+
+        private final List<DomainEvent> notAlreadyChecked = new LinkedList<>();
+        private Class<?> observedType;
+
+        public EventsCheck(List<DomainEvent> toCheck, Class<?> observedEventType) {
+            super();
+            // Prepare validation container
+            notAlreadyChecked.addAll(toCheck);
+            // Define handled type
+            this.observedType = observedEventType;
+        }
+
+        @Override
+        public void handleEvent(DomainEvent event) {
+            if (event != null) {
+                // Search and remove any existing from the list of origins to check
+                boolean removed = notAlreadyChecked.remove(event);
+            }
+        }
+
+        @Override
+        public Class<?> subscribeToEventType() {
+            return observedType;
+        }
+
+        public boolean isAllEventsToCheckHaveBeenFound() {
+            return this.notAlreadyChecked.isEmpty();
+        }
     }
 
 }

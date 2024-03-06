@@ -15,6 +15,7 @@ import java.util.Collection;
  * For example, manage the domain data (e.g sharded database for a tenant)
  * ensuring isolation of persistent domain model from the other bounded
  * contexts.
+ * A domain repository is optimized for storage and query of domain Read-Model Projections.
  *
  * @author olivier
  */
@@ -54,11 +55,11 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
     /**
      * Delete a collection of facts from this repository.
      *
-     * @param aFactCollection Facts list to remove.
+     * @param aFactsCollection Facts list to remove.
      * @param ctx             Optional context of persistence providing elements
      *                        (e.g tenant id) usable for persistence management.
      */
-    public void removeAll(Collection<T> aFactCollection, ISessionContext ctx);
+    public void removeAll(Collection<T> aFactsCollection, ISessionContext ctx);
 
     /**
      * Save an instance of fact into this repository.

@@ -9,7 +9,7 @@ import java.util.Collection;
 /**
  * Represents a persistence-oriented repository (also sometimes called Aggregate
  * store, or Aggregate-Oriented database) basic contract.
- * 
+ * <p>
  * Explicit save() both new and changed objects into the store, effectively
  * replacing any value previously associated with the given key.
  * 

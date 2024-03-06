@@ -225,7 +225,7 @@ public class Tenant extends Aggregate {
                     this.setStatus(new ActivityState(this.root(), Boolean.valueOf(statusChanged.value()), this.activityStatus));
                 }
 
-                // --- ATTRIBUTE LABEL MUTATION ---
+                // --- LABEL MUTATION ---
                 org.cybnity.framework.domain.Attribute labelChanged = EventSpecification.findSpecificationByName(Attribute.LABEL.name(), change.specification());
                 if (labelChanged!=null && labelChanged.value()!=null && !labelChanged.value().isEmpty()) {
                     // Re-hydrate descriptor label
