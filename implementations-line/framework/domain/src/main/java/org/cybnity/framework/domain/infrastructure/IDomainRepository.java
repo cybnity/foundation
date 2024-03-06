@@ -7,6 +7,7 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Represents a persistence-oriented repository (also sometimes called Aggregate
@@ -40,6 +41,14 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      * @return Found fact or null.
      */
     public T factOfId(Identifier aFactId, ISessionContext ctx);
+
+    /**
+     * Find all fact that have equals value than predicate criteria.
+     * @param predicateCriteriaQuery Filter criteria about value to search in repository facts as equals attributes. Ignored if null.
+     * @param ctx Optional context of query.
+     * @return Found results or null.
+     */
+    public List<T> queryEquals(T predicateCriteriaQuery, ISessionContext ctx);
 
     /**
      * Delete a fact from this repository.
