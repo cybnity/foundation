@@ -37,7 +37,7 @@ public interface IEventStore {
      * @return A found stream in descending ordering (last event is first of list) or null.
      * @throws IllegalArgumentException When missing mandatory parameter.
      */
-    public EventStream loadEventStream(Identifier id) throws IllegalArgumentException;
+    public EventStream loadEventStream(String id) throws IllegalArgumentException;
 
     /**
      * Load a subset of events (as a range) regarding a stream.
@@ -49,6 +49,6 @@ public interface IEventStore {
      * @return A found stream in descending ordering (last event is first of list) or null.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      */
-    public EventStream loadEventStream(Identifier id, int skipEvents, int maxCount) throws IllegalArgumentException;
+    public EventStream loadEventStream(String id, int skipEvents, int maxCount) throws IllegalArgumentException;
 
 }

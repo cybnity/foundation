@@ -88,14 +88,14 @@ public class DomainEventInMemoryStoreImpl extends EventStore {
     }
 
     @Override
-    public EventStream loadEventStream(Identifier id) throws IllegalArgumentException {
-        if (id == null) throw new IllegalArgumentException("id parameter is required!");
+    public EventStream loadEventStream(String id) throws IllegalArgumentException {
+        if (id == null || id.isEmpty()) throw new IllegalArgumentException("id parameter is required!");
         // Search event stream according to all event record versions supported (all columns per event record class version)
         LinkedList<DomainEvent> foundEventDomainHistory = new LinkedList<>();
         EventStream domainObjEventsHistory = new EventStream();
         for (Map.Entry<String, LinkedList<EventRecord>> storeColumn : registries.entrySet()) {
             // For any stream version supported by the registry regarding a domain object
-            if (id.value().toString().equals(storeColumn.getKey())) { // Detected the id of domain object owner of event records colum
+            if (id.equals(storeColumn.getKey())) { // Detected the id of domain object owner of event records colum
                 // Read the existing recorded event relative to domain events
                 LinkedList<EventRecord> storedEventRecordsColumn = storeColumn.getValue();
                 // Select descending order of historized event records regarding an origin domain object's identifier
@@ -119,7 +119,7 @@ public class DomainEventInMemoryStoreImpl extends EventStore {
     }
 
     @Override
-    public EventStream loadEventStream(Identifier id, int skipEvents, int maxCount) throws IllegalArgumentException {
+    public EventStream loadEventStream(String id, int skipEvents, int maxCount) throws IllegalArgumentException {
         throw new IllegalArgumentException("to implement!");
     }
 }

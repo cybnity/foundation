@@ -47,7 +47,7 @@ public class EventStoreUseCaseTest {
         UserAccountIdentity domainObjectState = new UserAccountIdentity(id);
 
         // Load event stream regarding the type of user account version managed with equals identifier
-        EventStream changesStream = persistenceOrientedStore.loadEventStream(domainObjectState.identified());
+        EventStream changesStream = persistenceOrientedStore.loadEventStream(domainObjectState.identified().value().toString());
         // Check no existing previous history about same duplicated identifier of domain object
         Assertions.assertNull(changesStream, "Should be empty of any previous change relative to the new user account entity!");
 
@@ -68,7 +68,7 @@ public class EventStoreUseCaseTest {
 
         // --- TEST RETRIEVE CHECK: Search persisted history (events stream dedicated to the aggregate record)
         // Search history stream of the store known business object previous version (created previously)
-        EventStream BOLifecycleStream = persistenceOrientedStore.loadEventStream(domainObjectState.identified());
+        EventStream BOLifecycleStream = persistenceOrientedStore.loadEventStream(domainObjectState.identified().value().toString());
         // Verify found history
         Assertions.assertNotNull(BOLifecycleStream, "Shall exist since user account original creation event!");
         Assertions.assertFalse(BOLifecycleStream.getEvents().isEmpty(), "Shall contain original creation event!");
@@ -97,7 +97,7 @@ public class EventStoreUseCaseTest {
         // Here we check only the event changes flow allowing capability to rehydrate all the domain object from its lifecycle history (based on event sourcing recorded)
 
         // Search lifecycle stream including all events relative to the domain object
-        BOLifecycleStream = persistenceOrientedStore.loadEventStream(domainObjectState.identified() /* first original uui of domain object (user account identity) */);
+        BOLifecycleStream = persistenceOrientedStore.loadEventStream(domainObjectState.identified().value().toString() /* first original uui of domain object (user account identity) */);
         // Check ths existing 2 event of its life that are confirmed recorded and maintained by the Store
         Assertions.assertEquals(2, BOLifecycleStream.getEvents().size(), "Invalid qty of store events regarding BO lifecycle history!");
     }
