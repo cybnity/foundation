@@ -425,4 +425,12 @@ public class Tenant extends Aggregate {
         return String.valueOf(serialVersionUID);
     }
 
+    /**
+     * Get the serial version UID of this class type.
+     * @return A serial version UID.
+     */
+    public static long serialVersionUID() {
+        return serialVersionUID;
+    }
+
 }

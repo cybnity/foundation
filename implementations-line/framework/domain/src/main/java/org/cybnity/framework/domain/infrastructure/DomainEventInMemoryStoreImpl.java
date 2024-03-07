@@ -106,8 +106,9 @@ public class DomainEventInMemoryStoreImpl extends EventStore {
                     // Compare if equals the record event origin domain event have equals identifier
                     // It's a domain event without consideration of event record container's version used by the storage system
                     foundEventDomainHistory.add((DomainEvent) historizedEvent.body());
-                    // Synchronize the event stream version based on the type of record type version
-                    domainObjEventsHistory.setVersion(historizedEvent.factTypeVersion().id());
+
+                    // Synchronize the event stream version based on the type of record type version hash (aligned with the domain object class serial UID)
+                    domainObjEventsHistory.setVersion(historizedEvent.factTypeVersion().hash());
                 }
             }
         }
