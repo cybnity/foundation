@@ -9,15 +9,17 @@ import org.cybnity.framework.domain.model.HydrationCapability;
  * can reside in an Event Stream as specific versions.
  */
 public interface ISnapshotRepository {
+
     /**
-     * Find a snapshot from a domain object identifier (subject that have been source of snapshot).
+     * Find a snapshot of a domain object identifier (subject that have been source of snapshot).
      *
-     * @param streamedObjectIdentifier Mandatory identifier of the subject that is source of snapshot to find.
-     * @param eventStreamVersion       Optional version of the origin event stream supporting the re-hydratable object version.
+     * @param streamedObjectIdentifier    Mandatory identifier of the subject that is source of latest snapshot to find.
+     * @param eventStreamVersion          Optional version of the origin event stream supporting the re-hydratable object version.
+     * @param beforeChangeEventIdentifier Optional identifier of a change event which shall be considered like a limit of latest snapshot search. When defined, and if existing stream latest snapshot(s) after the identifier parameter, only latest snapshot found before the event id will be returned.
      * @return A full state version of the snapshot. Or null when none found.
      * @throws IllegalArgumentException When any mandatory parameter is not defined.
      */
-    public HydrationCapability getSnapshotById(String streamedObjectIdentifier, String eventStreamVersion) throws IllegalArgumentException;
+    public HydrationCapability getSnapshotById(String streamedObjectIdentifier, String eventStreamVersion, String beforeChangeEventIdentifier) throws IllegalArgumentException;
 
     /**
      * Create and save an object version as snapshot (full state instance) into a persistent layer (e.g into independent cache repository; or into the origin event stream like a additional event appended between change events).
