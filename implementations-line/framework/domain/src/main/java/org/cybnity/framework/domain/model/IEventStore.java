@@ -33,22 +33,32 @@ public interface IEventStore {
     /**
      * Load all the events regarding a stream type.
      *
-     * @param id Mandatory identifier of the stream to load.
+     * @param domainEventId Mandatory identifier of the stream to load.
      * @return A found stream in descending ordering (last event is first of list) or null.
      * @throws IllegalArgumentException When missing mandatory parameter.
      */
-    public EventStream loadEventStream(String id) throws IllegalArgumentException;
+    public EventStream loadEventStream(String domainEventId) throws IllegalArgumentException;
+
+    /**
+     * Load all the events since a snapshot version that was taken.
+     *
+     * @param domainEventId   Mandatory identifier of the stream to load.
+     * @param snapshotVersion Mandatory identifier of the snapshot stored event.
+     * @return A found stream or null.
+     * @throws IllegalArgumentException When missing mandatory parameter.
+     */
+    public EventStream loadEventStreamAfterVersion(String domainEventId, String snapshotVersion) throws IllegalArgumentException;
 
     /**
      * Load a subset of events (as a range) regarding a stream.
      *
-     * @param id         Mandatory identifier of the event stream subset to load.
-     * @param skipEvents How many event items shall be skipped before to load stream..
-     * @param maxCount   How many event instance shall be taken regarding the
-     *                   history flow.
+     * @param domainEventId Mandatory identifier of the event stream subset to load.
+     * @param skipEvents    How many event items shall be skipped before to load stream.
+     * @param maxCount      How many event instance shall be taken regarding the
+     *                      history flow.
      * @return A found stream in descending ordering (last event is first of list) or null.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      */
-    public EventStream loadEventStream(String id, int skipEvents, int maxCount) throws IllegalArgumentException;
+    public EventStream loadEventStream(String domainEventId, int skipEvents, int maxCount) throws IllegalArgumentException;
 
 }

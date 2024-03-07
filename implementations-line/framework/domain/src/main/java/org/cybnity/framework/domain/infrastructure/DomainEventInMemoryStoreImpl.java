@@ -95,12 +95,12 @@ public class DomainEventInMemoryStoreImpl extends EventStore {
         EventStream domainObjEventsHistory = new EventStream();
         for (Map.Entry<String, LinkedList<EventRecord>> storeColumn : registries.entrySet()) {
             // For any stream version supported by the registry regarding a domain object
-            if (id.equals(storeColumn.getKey())) { // Detected the id of domain object owner of event records colum
-                // Read the existing recorded event relative to domain events
+            if (id.equals(storeColumn.getKey())) { // Detected the id of domain object owner of event records column
+                // Read the existing recorded events relative to domain events
                 LinkedList<EventRecord> storedEventRecordsColumn = storeColumn.getValue();
                 // Select descending order of historized event records regarding an origin domain object's identifier
                 Iterator<EventRecord> unfilteredVersions = storedEventRecordsColumn.descendingIterator();
-                while (unfilteredVersions.hasNext()) {
+                while(unfilteredVersions.hasNext()) {
                     // Read recorded event
                     EventRecord historizedEvent = unfilteredVersions.next();
                     // Compare if equals the record event origin domain event have equals identifier
@@ -109,6 +109,40 @@ public class DomainEventInMemoryStoreImpl extends EventStore {
 
                     // Synchronize the event stream version based on the type of record type version hash (aligned with the domain object class serial UID)
                     domainObjEventsHistory.setVersion(historizedEvent.factTypeVersion().hash());
+                }
+            }
+        }
+        if (!foundEventDomainHistory.isEmpty()) {
+            domainObjEventsHistory.setEvents(foundEventDomainHistory);
+            return domainObjEventsHistory;
+        }
+        return null;
+    }
+
+    @Override
+    public EventStream loadEventStreamAfterVersion(String domainEventId, String snapshotVersion) throws IllegalArgumentException {
+        if (domainEventId == null || domainEventId.isEmpty()) throw new IllegalArgumentException("domainEventId parameter is required!");
+        if (snapshotVersion == null || snapshotVersion.isEmpty()) throw new IllegalArgumentException("snapshotVersion parameter is required!");
+        // Search latest event stream supporting event type after the snapshot version requested
+        LinkedList<DomainEvent> foundEventDomainHistory = new LinkedList<>();
+        EventStream domainObjEventsHistory = new EventStream();
+        for (Map.Entry<String, LinkedList<EventRecord>> storeColumn : registries.entrySet()) {
+            // For any stream version supported by the registry regarding a domain object
+            if (domainEventId.equals(storeColumn.getKey())) { // Detected the id of domain object owner of event records column
+                // Read the existing recorded events relative to domain events
+                LinkedList<EventRecord> storedEventRecordsColumn = storeColumn.getValue();
+                // Select historized event records regarding an origin domain object's identifier
+                // Without any change on recorded order
+                for (EventRecord historizedEvent : storedEventRecordsColumn) {
+                    // Read recorded event
+                    // Compare if equals the record event origin domain event have equals identifier
+                    // It's a domain event without consideration of event record container's version used by the storage system
+                    // But check that object version if equals or superior to the filtered snapshot version parameter
+                    if(historizedEvent.factTypeVersion().hash().equals(snapshotVersion) || (historizedEvent.factTypeVersion().hash().compareTo(snapshotVersion) > 0)) {
+                        foundEventDomainHistory.add((DomainEvent) historizedEvent.body());
+                        // Synchronize the event stream version based on the type of record type version hash (aligned with the domain object class serial UID)
+                        domainObjEventsHistory.setVersion(historizedEvent.factTypeVersion().hash());
+                    }
                 }
             }
         }
