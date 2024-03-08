@@ -35,6 +35,7 @@ public class ConcreteDomainChangeEvent extends DomainEvent implements HydrationA
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(ConcreteDomainChangeEvent.class).hashCode();
 
+    @JsonIgnore
     private final Logger logger = Logger.getLogger(ConcreteDomainChangeEvent.class.getName());
 
     /**
