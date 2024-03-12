@@ -233,7 +233,7 @@ public class Tenant extends Aggregate {
                 org.cybnity.framework.domain.Attribute statusChanged = EventSpecification.findSpecificationByName(Attribute.ACTIVITY_STATUS.name(), change.specification());
                 if (statusChanged != null && statusChanged.value() != null && !statusChanged.value().isEmpty()) {
                     // Re-hydrate activity status
-                    this.setStatus(new ActivityState(this.root(), Boolean.valueOf(statusChanged.value()), this.activityStatus));
+                    this.activityStatus = new ActivityState(this.root(), Boolean.valueOf(statusChanged.value()), this.activityStatus);
                 }
 
                 // --- LABEL MUTATION ---
@@ -242,7 +242,7 @@ public class Tenant extends Aggregate {
                     // Re-hydrate descriptor label
                     HashMap<String, Object> propertyCurrentValue = new HashMap<>();
                     propertyCurrentValue.put(TenantDescriptor.PropertyAttributeKey.LABEL.name(), labelChanged.value());
-                    this.setLabel(new TenantDescriptor(/* owner of description */this.parent, propertyCurrentValue, /* status */HistoryState.COMMITTED));
+                    this.label = new TenantDescriptor(/* owner of description */this.parent, propertyCurrentValue, /* status */HistoryState.COMMITTED);
                 }
             } catch (ImmutabilityException ie) {
                 throw new IllegalArgumentException(ie);
@@ -337,7 +337,7 @@ public class Tenant extends Aggregate {
      */
     public MutableProperty deactivate() throws ImmutabilityException {
         // Create initial status as inactive
-        setStatus(new ActivityState(parent.reference(), Boolean.FALSE, this.activityStatus));
+        setStatus(new ActivityState(parent().reference(), Boolean.FALSE, this.activityStatus));
         return status();
     }
 
@@ -427,6 +427,7 @@ public class Tenant extends Aggregate {
 
     /**
      * Get the serial version UID of this class type.
+     *
      * @return A serial version UID.
      */
     public static long serialVersionUID() {
