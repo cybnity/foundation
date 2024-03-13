@@ -111,7 +111,7 @@ public class StreamObservationTask implements Callable<Void> {
                                 // Transmit collected event to the observer
                                 this.delegate.notify(event);
 
-                                // Confirm that the message has been processed using XACK
+                                // Confirm that the message has been read and processed using XACK (remove the message from the pending list of the consumer group)
                                 syncCommands.xack(streamPathName, consumersGroupName, message.getId());
                             } catch (MappingException mape) {
                                 logger.log(Level.SEVERE, "Invalid message type collected from " + this.delegate.observed().name() + " stream!", mape);
