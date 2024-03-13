@@ -1,10 +1,5 @@
 package org.cybnity.feature.security_activity_orchestration.domain.model;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.cybnity.feature.security_activity_orchestration.ChainCommandHandler;
 import org.cybnity.feature.security_activity_orchestration.IWorkflowCommandHandler;
 import org.cybnity.framework.IContext;
@@ -19,6 +14,11 @@ import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Represent a workflow based on steps (e.g risk management process) realizable
@@ -230,7 +230,7 @@ public class Process extends Aggregate implements IWorkflowCommandHandler {
 				(ProcessDescriptor) this.description.immutable(), this.activation(), this.completion(), this.staging(),
 				this.commandProcessor);
 		// Complete with additional attributes of this complex aggregate
-		copy.createdAt = this.occurredAt();
+		copy.occurredAt = this.occurredAt();
 		return copy;
 	}
 
@@ -297,7 +297,7 @@ public class Process extends Aggregate implements IWorkflowCommandHandler {
 	/**
 	 * Change the current staging of this process.
 	 * 
-	 * @param staginig Mandatory new version of staging version for replace the
+	 * @param staging Mandatory new version of staging version for replace the
 	 *                 current process's steps definition.
 	 * @throws IllegalArgumentException When mandatory parameter is not defined or
 	 *                                  is not valid in terms of minimum conformity.

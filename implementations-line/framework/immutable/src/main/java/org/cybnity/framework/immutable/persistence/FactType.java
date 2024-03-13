@@ -1,5 +1,6 @@
 package org.cybnity.framework.immutable.persistence;
 
+import org.cybnity.framework.INaming;
 import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
@@ -17,7 +18,7 @@ import java.util.Set;
  * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Robusteness, reqId = "REQ_ROB_3")
-public class FactType implements Unmodifiable, IVersionable, Serializable, IUniqueness {
+public class FactType implements Unmodifiable, IVersionable, Serializable, IUniqueness, INaming {
 
     /**
      * Version of this class type.
@@ -26,24 +27,26 @@ public class FactType implements Unmodifiable, IVersionable, Serializable, IUniq
             .composeCanonicalVersionHash(FactType.class).hashCode();
 
     /**
-     * Label identifying an unique name regarding a category of fact (e.g name of
+     * Label identifying a unique name regarding a category of fact (e.g name of
      * class regarding a concrete event like <<EventType>><<Fact State>> (e.g
      * OrderConfirmed).
      * <p>
      * Define the uniqueness of this class type instance.
      */
-    private String name;
+    private final String name;
 
     /**
      * Auto-generated identifier of this fact type.
      */
+    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_8")
     private String id;
 
     /**
      * Configuration about the minimum number of characters for identifier
      * generation process.
      */
-    static private int minLetterQty = 50;
+    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_8")
+    static private final int minLetterQty = 88;
 
     /**
      * Default constructor of a fact category.
@@ -56,11 +59,11 @@ public class FactType implements Unmodifiable, IVersionable, Serializable, IUniq
      *                                  null or empty).
      */
     public FactType(String categoryName, String identifier) throws IllegalArgumentException {
-        if (categoryName == null || categoryName.equals(""))
+        if (categoryName == null || categoryName.isEmpty())
             throw new IllegalArgumentException("The categoryName parameter is required!");
         this.name = categoryName;
         this.id = identifier;
-        if (this.id == null || this.id.equals("")) {
+        if (this.id == null || this.id.isEmpty()) {
             try {
                 // Generate automatic location-independent identifier regarding the fact type
                 // label
@@ -107,6 +110,7 @@ public class FactType implements Unmodifiable, IVersionable, Serializable, IUniq
      *
      * @return A label.
      */
+    @Override
     public String name() {
         return this.name;
     }
@@ -116,6 +120,7 @@ public class FactType implements Unmodifiable, IVersionable, Serializable, IUniq
      *
      * @return An identifier.
      */
+    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_8")
     public String id() {
         return this.id;
     }

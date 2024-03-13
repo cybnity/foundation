@@ -15,7 +15,6 @@ import org.junit.platform.suite.api.Suite;
 @SelectClasses({IdentifierStringBasedUseCaseTest.class, ValueObjectUseCaseTest.class, DomainEventUseCaseTest.class,
         NotificationLogUseCaseTest.class, UnidentifiableFactNotificationLogUseCaseTest.class,
         EventStoreUseCaseTest.class, ContextUseCaseTest.class, UserAccountAggregateUseCaseTest.class,
-        UserAccountAggregateStoreUseCaseTest.class, UserAccountCQRSCollaborationUseCaseTest.class,
-        StringBasedNaturalKeyBuilderUseCaseTest.class, TenantUseCaseTest.class, ObjectMapperBuilderUseCaseTest.class, CorrelationIdFactoryUseCaseTest.class})
+        StringBasedNaturalKeyBuilderUseCaseTest.class, TenantUseCaseTest.class, ObjectMapperBuilderUseCaseTest.class, CorrelationIdFactoryUseCaseTest.class, TenantHydrationUseCaseTest.class})
 public class AllTests {
 }

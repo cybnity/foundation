@@ -1,15 +1,13 @@
 package org.cybnity.feature.security_activity_orchestration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.util.HashMap;
-
 import org.cybnity.feature.security_activity_orchestration.domain.model.Process;
 import org.cybnity.feature.security_activity_orchestration.domain.model.Step;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test of Step behaviors regarding its instantiation and supported

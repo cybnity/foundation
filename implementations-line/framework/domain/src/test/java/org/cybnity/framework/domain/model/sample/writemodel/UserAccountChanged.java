@@ -25,14 +25,14 @@ public class UserAccountChanged extends DomainEvent {
             .composeCanonicalVersionHash(UserAccountChanged.class).hashCode();
 
     public EntityReference creationCommandRef;
-    public EntityReference createdAccountRef;
+    public EntityReference changedAccountRef;
 
     public UserAccountChanged() {
         super();
     }
 
-    public UserAccountChanged(Entity identity) {
-        super(identity);
+    public UserAccountChanged(Entity identifiedBy) {
+        super(identifiedBy);
     }
 
     @Override
@@ -42,6 +42,7 @@ public class UserAccountChanged extends DomainEvent {
 
     /**
      * Do nothing
+     *
      * @return Null.
      */
     @Override
@@ -54,9 +55,9 @@ public class UserAccountChanged extends DomainEvent {
         UserAccountChanged instance = new UserAccountChanged(this.getIdentifiedBy());
         instance.occurredOn = this.occurredAt();
         if (this.creationCommandRef != null)
-            instance.createdAccountRef = (EntityReference) this.creationCommandRef.immutable();
-        if (this.createdAccountRef != null)
-            instance.createdAccountRef = (EntityReference) this.createdAccountRef.immutable();
+            instance.creationCommandRef = (EntityReference) this.creationCommandRef.immutable();
+        if (this.changedAccountRef != null)
+            instance.changedAccountRef = (EntityReference) this.changedAccountRef.immutable();
         return instance;
     }
 

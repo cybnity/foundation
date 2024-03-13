@@ -1,10 +1,5 @@
 package org.cybnity.feature.defense_template.domain.model;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.cybnity.feature.defense_template.service.IProcessBuildPreparation;
 import org.cybnity.feature.defense_template.service.NotSupportedTemplateValueException;
 import org.cybnity.feature.defense_template.service.ProcessTemplateXMLParser;
@@ -13,6 +8,10 @@ import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Responsible of coordination regarding the build of several types of

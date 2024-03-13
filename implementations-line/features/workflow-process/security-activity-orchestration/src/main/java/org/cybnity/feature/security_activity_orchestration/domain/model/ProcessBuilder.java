@@ -1,21 +1,17 @@
 package org.cybnity.feature.security_activity_orchestration.domain.model;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-
 import org.cybnity.feature.security_activity_orchestration.IProcessBuilder;
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.model.ActivityState;
 import org.cybnity.framework.domain.model.CompletionState;
 import org.cybnity.framework.domain.model.DomainEntity;
-import org.cybnity.framework.immutable.Entity;
-import org.cybnity.framework.immutable.EntityReference;
-import org.cybnity.framework.immutable.HistoryState;
-import org.cybnity.framework.immutable.Identifier;
-import org.cybnity.framework.immutable.ImmutabilityException;
+import org.cybnity.framework.immutable.*;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 
 /**
  * Factory class implementing the builder design pattern to create a process.

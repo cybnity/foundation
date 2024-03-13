@@ -1,14 +1,14 @@
 package org.cybnity.feature.security_activity_orchestration.domain.model.sample.readmodel;
 
-import java.io.Serializable;
-import java.util.LinkedHashSet;
-
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
+import java.io.Serializable;
+import java.util.LinkedHashSet;
 
 /**
  * Simple identifying information regarding a process creation.

@@ -11,7 +11,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 import java.util.LinkedHashSet;
 
 /**
- * Represents a scope of informations providing attributes and/or capabilities
+ * Represents a scope of information providing attributes and/or capabilities
  * as a complex domain object.
  * <p>
  * An aggregate root of the process entity domain is defined via immutable
@@ -21,7 +21,7 @@ import java.util.LinkedHashSet;
  * <p>
  * An aggregate root instance can be persistent (e.g saving a state of mutable
  * properties as a version of a scope relative to value objects in a relation
- * that make sense for a domain topic) and referenceable (e.g EntityReference
+ * that make sense for a domain topic) and referencable (e.g EntityReference
  * provided), or can be only a dynamic scope of current version of immutable
  * value objects without need of state save (e.g temporary aggregate root is
  * only generated on-fly to maintain capability to be recontacted during use,
@@ -80,33 +80,7 @@ public abstract class Aggregate extends CommonChildFactImpl implements IAggregat
 
     @Override
     public EntityReference root() throws ImmutabilityException {
-        // Read the identity of this root aggregate domain object
-        DomainEntity aggregateRootEntity = rootEntity();
-        EntityReference ref = null;
-        if (aggregateRootEntity != null) {
-            // Build an identification reference
-            ref = aggregateRootEntity.reference();
-        } // Else it's an aggregate representing a dynamic domain boundary without
-        // persistence capability
-        return ref;
+        return super.root();
     }
 
-    /**
-     * Get the identity of this aggregate when existing.
-     *
-     * @return A domain entity identity instance based on current identifier of the
-     * aggregate root. Null when not identifier defined regarding this
-     * aggregate.
-     * @throws ImmutabilityException
-     */
-    protected DomainEntity rootEntity() throws ImmutabilityException {
-        // Read the identity of this root aggregate domain object
-        Identifier id = this.identified();
-        DomainEntity aggregateRootEntity = null;
-        if (id != null) {
-            aggregateRootEntity = new DomainEntity(id);
-        } // Else it's an aggregate representing a dynamic domain boundary without
-        // persistence capability
-        return aggregateRootEntity;
-    }
 }

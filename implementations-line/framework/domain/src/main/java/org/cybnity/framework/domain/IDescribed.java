@@ -31,7 +31,6 @@ public interface IDescribed {
      */
     public boolean appendSpecification(Attribute specificationCriteria);
 
-
     /**
      * Get the type specification of this event.
      *

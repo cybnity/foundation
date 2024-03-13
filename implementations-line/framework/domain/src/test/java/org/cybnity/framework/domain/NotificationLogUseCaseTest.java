@@ -1,7 +1,7 @@
 package org.cybnity.framework.domain;
 
 import org.cybnity.framework.domain.model.NotificationLog;
-import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentityCreation;
+import org.cybnity.framework.domain.model.sample.writemodel.UserAccountIdentity;
 import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.Identifier;
@@ -31,7 +31,7 @@ public class NotificationLogUseCaseTest {
 	@BeforeEach
 	public void initLogOrigin() {
 		originalLogId = new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), "KJHG986754");
-		userAccountCreationFact = new UserAccountIdentityCreation(
+		userAccountCreationFact = new UserAccountIdentity(
 				new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), "98765DFGHJKJHG"));
 	}
 

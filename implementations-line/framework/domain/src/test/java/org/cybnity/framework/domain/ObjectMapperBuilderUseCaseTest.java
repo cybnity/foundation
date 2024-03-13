@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -29,7 +28,7 @@ public class ObjectMapperBuilderUseCaseTest {
         definition.add(tenantNameToRegister);
 
         // Define a command identifier allowing its identification
-        DomainEntity cmdId = new DomainEntity(new IdentifierStringBased("id", UUID.randomUUID().toString()));
+        DomainEntity cmdId = new DomainEntity(IdentifierStringBased.generate(null));
 
         // Create prior command reference
         Command priorCmd = CommandFactory.create("REGISTER_ORGANIZATION_PREVIOUS",
@@ -39,7 +38,7 @@ public class ObjectMapperBuilderUseCaseTest {
                 /* None pre-identified organization because new creation */ null
         );
 
-        cmdId = new DomainEntity(new IdentifierStringBased("id", UUID.randomUUID().toString()));
+        cmdId = new DomainEntity(IdentifierStringBased.generate(null));
         Command event = CommandFactory.create("REGISTER_ORGANIZATION",
                 cmdId,
                 definition,

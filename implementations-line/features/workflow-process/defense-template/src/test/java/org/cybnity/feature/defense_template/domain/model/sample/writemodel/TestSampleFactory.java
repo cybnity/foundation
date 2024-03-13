@@ -1,10 +1,10 @@
 package org.cybnity.feature.defense_template.domain.model.sample.writemodel;
 
-import java.util.UUID;
-
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.BaseConstants;
+
+import java.util.UUID;
 
 /**
  * Factory of domain object samples usable for unit test.

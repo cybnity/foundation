@@ -1,9 +1,9 @@
 package org.cybnity.feature.defense_template.service;
 
+import org.cybnity.framework.domain.Attribute;
+
 import java.util.Collection;
 import java.util.List;
-
-import org.cybnity.framework.domain.Attribute;
 
 /**
  * Represent a observation contract of a template resource read, allowing to

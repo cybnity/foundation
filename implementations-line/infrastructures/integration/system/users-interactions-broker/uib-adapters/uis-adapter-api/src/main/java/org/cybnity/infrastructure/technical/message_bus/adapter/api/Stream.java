@@ -1,12 +1,14 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.api;
 
+import org.cybnity.framework.INaming;
+
 /**
  * A stream is a data structure that acts like an append-only log but also implements several operations to overcome some of the limits of a typical append-only log.
  * Stream can be used to record and simultaneously syndicate event in real time (e.g capability domain feature execution; event sourcing of facts).
  * A stream deliver a guarantee over persistence of managed events.
  * Each stream entry is uniquely identified by an auto-generated identifier. IDs can be used to retrieve their associated entries later or to read and process all subsequent entries in the stream.
  */
-public class Stream {
+public class Stream implements INaming {
 
     /**
      * Type of attribute allowing to define a stream specification.
@@ -47,8 +49,24 @@ public class Stream {
      *
      * @return A name.
      */
+    @Override
     public String name() {
         return this.name;
     }
 
+    /**
+     * Equals implementation based on the stream name.
+     *
+     * @param obj To check.
+     * @return False by default. True when equals stream name.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj instanceof Stream) {
+            Stream other = (Stream) obj;
+            return this.name().equals(other.name());
+        }
+        return false;
+    }
 }

@@ -39,11 +39,11 @@ public class MutableAttribute extends MutableProperty {
 	 * 
 	 * @param propertyOwner        Mandatory entity which is owner of this mutable
 	 *                             property chain.
-	 * @param propertyCurrentValue Mandatory current version of value(s) regarding
+	 * @param currentValue Mandatory current version of value(s) regarding
 	 *                             the property. Support included keys with null
 	 *                             value.
 	 * @param status               Optional state of this property version. If null,
-	 *                             {@link org.cybnity.framework.immutable.HistoryState.Committed}
+	 *                             {@link org.cybnity.framework.immutable.HistoryState.COMMITTED}
 	 *                             is defined as default state.
 	 * @throws IllegalArgumentException When mandatory parameter is missing, or when
 	 *                                  can not be cloned regarding immutable entity

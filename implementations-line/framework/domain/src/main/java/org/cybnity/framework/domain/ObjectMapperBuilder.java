@@ -54,6 +54,8 @@ public class ObjectMapperBuilder {
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
+        mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+
         // Serialization configuration
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.configure(SerializationFeature.INDENT_OUTPUT, this.enableIndentation);

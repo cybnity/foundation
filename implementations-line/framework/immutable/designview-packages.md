@@ -30,7 +30,7 @@ The technical description regarding behavior and best usage is maintained into t
 | IOwnership                                   |                                                                                                                  |
 | IReferenceable                               |                                                                                                                  |
 | IRestorationFact                             |                                                                                                                  |
-| IUniqueness                                  |                                                                                                                 |
+| IUniqueness                                  |                                                                                                                  |
 | IVersionable                                 | Supports multiple versions of a same object type                                                                 |
 | LocationIndependentIdentityNaturalKeyBuilder |                                                                                                                  |
 | Membership                                   |                                                                                                                  |
@@ -43,7 +43,7 @@ The technical description regarding behavior and best usage is maintained into t
 | StructuralVersionStrategy                    |                                                                                                                  |
 | Transaction                                  |                                                                                                                  |
 | TransactionItem                              |                                                                                                                  |
-| TypeVersion                                  |                                                                                                                  |
+| TypeVersion                                  | Represent a structural version of object type (e.g fact class, domain event)                                     |
 | Unmodifiable                                 |                                                                                                                  |
 | VersionConcreteStrategy                      |                                                                                                                  |
 
@@ -183,7 +183,7 @@ classDiagram
         <<abstract>>
         #parent : Entity
         #identifiedBy : ArrayList~Identifier~
-        #createdAt : OffsetDateTime
+        #occurredAt : OffsetDateTime
         +ChildFact(Entity predecessor, Identifier id)
         +ChildFact(Entity predecessor, LinkedHashSet~Identifier~ identifiers)
         +identifiers() Collection~Identifier~
@@ -192,6 +192,9 @@ classDiagram
         +valueHashCodeContributors() String[]
         +hashCode() int
         +equals(Object fact) boolean
+        #setOccurredAt(OffsetDateTime date)
+        #setParent(Entity predecessor)
+        #setIdentifiers(ArrayList<Identifier> identifiers)
         #generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId)$ Identifier
         #generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds)$ Identifier
     }

@@ -1,11 +1,5 @@
 package org.cybnity.feature.security_activity_orchestration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.HashMap;
-
 import org.cybnity.feature.security_activity_orchestration.domain.model.Process;
 import org.cybnity.feature.security_activity_orchestration.domain.model.sample.writemodel.TestSampleFactory;
 import org.cybnity.framework.domain.model.CompletionState;
@@ -13,6 +7,10 @@ import org.cybnity.framework.immutable.ImmutabilityException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test about the change management of versioned process completion state.

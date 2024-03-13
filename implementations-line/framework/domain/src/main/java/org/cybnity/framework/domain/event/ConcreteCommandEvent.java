@@ -51,7 +51,7 @@ public class ConcreteCommandEvent extends Command {
      * unmodifiable attributes.
      */
     @JsonProperty
-    private Collection<Attribute> specification;
+    protected Collection<Attribute> specification;
 
     @JsonCreator
     public ConcreteCommandEvent() {
@@ -167,7 +167,7 @@ public class ConcreteCommandEvent extends Command {
     @JsonIgnore
     @Override
     public String versionHash() {
-        return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+        return String.valueOf(serialVersionUID);
     }
 
     @JsonIgnore

@@ -4,7 +4,7 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Specification that capture all of the relevant domain knowledge from the
+ * Specification which is going to capture all the relevant domains knowledge from the
  * domain experts, to determine the scope that is expressed in source code
  * constantly maintained to reflect evolutionary changes in the domain.
  * 

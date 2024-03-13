@@ -2,6 +2,7 @@ package org.cybnity.framework.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.cybnity.framework.INaming;
 import org.cybnity.framework.immutable.IVersionable;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
@@ -9,14 +10,14 @@ import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import java.io.Serializable;
 
 /**
- * Represent a characteristic which can be added to a topic (e.g an technical
+ * Represent a characteristic which can be added to a topic (e.g a technical
  * named attribute which is defined on-fly on an existing object, including a
  * value). It's more or less like a generic property assignable to any topic or
  * object (e.g property on a workflow step instance).
  *
  * @author olivier
  */
-public class Attribute extends ValueObject<String> implements Serializable, IVersionable {
+public class Attribute extends ValueObject<String> implements Serializable, IVersionable, INaming {
 
     private static final long serialVersionUID = new VersionConcreteStrategy().composeCanonicalVersionHash(Attribute.class).hashCode();
 
@@ -66,6 +67,7 @@ public class Attribute extends ValueObject<String> implements Serializable, IVer
      *
      * @return A name.
      */
+    @Override
     public String name() {
         return name;
     }

@@ -11,6 +11,7 @@ import java.util.Collection;
  * Factory of command event supported by a domain bounded context api.
  */
 public class CommandFactory {
+
     /**
      * Factory of a type of command supported by a domain Anti-Corruption Layer API.
      *

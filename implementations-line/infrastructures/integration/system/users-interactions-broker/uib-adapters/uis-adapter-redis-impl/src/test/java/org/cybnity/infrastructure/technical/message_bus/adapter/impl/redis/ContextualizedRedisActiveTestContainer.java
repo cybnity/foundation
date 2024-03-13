@@ -10,9 +10,6 @@ import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
 import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Auto configuration and start of Redis container usable during a test execution.
  * Each unit test requiring a redis container started shall extend this class.
@@ -50,7 +47,6 @@ public class ContextualizedRedisActiveTestContainer {
      * Default first db number
      */
     static String DATABASE_NUMBER = "1";
-    static Map<String, String> serverEnvironmentVariables = new HashMap<>();
 
     /**
      * Added code to a static code block, so that it runs before the dependencies are injected, and tests are run
@@ -123,13 +119,11 @@ public class ContextualizedRedisActiveTestContainer {
                 //.setting("maxmemory 128M")
                 .build();
         redisServer.start();
-        //System.out.println("Redis test server started");
     }
 
     @AfterEach
     public void cleanValues() {
         redisServer.stop();
-        //System.out.println("Redis test server stopped");
         ctx = null;
     }
 

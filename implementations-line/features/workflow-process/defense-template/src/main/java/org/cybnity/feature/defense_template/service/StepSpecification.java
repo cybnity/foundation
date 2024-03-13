@@ -1,9 +1,9 @@
 package org.cybnity.feature.defense_template.service;
 
+import org.cybnity.framework.domain.Attribute;
+
 import java.util.Collection;
 import java.util.List;
-
-import org.cybnity.framework.domain.Attribute;
 
 /**
  * Specification contents regarding a definition of process step. Container of

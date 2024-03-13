@@ -1,13 +1,13 @@
 package org.cybnity.feature.defense_template;
 
-import java.io.Serializable;
-
 import org.cybnity.framework.domain.ValueObject;
 import org.cybnity.framework.immutable.IVersionable;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.io.Serializable;
 
 /**
  * Represent a type of domain object (e.g template type) which can define a
