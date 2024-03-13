@@ -93,7 +93,7 @@ public class StreamObservationTask implements Callable<Void> {
                         ", consumer group: " + consumersGroupName + ") is waiting for new message from stream (" + streamPathName + ")"
         );
 
-        while (true) {
+        while(true) {
             try {
                 List<StreamMessage<String, String>> messages = syncCommands.xreadgroup(
                         Consumer.from(consumersGroupName, consumerInstanceName),
