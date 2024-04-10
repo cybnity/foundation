@@ -9,7 +9,7 @@ import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.ChannelObserverImpl;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.ContextualizedRedisActiveTestContainer;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.MessageMapperFactory;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.UISAdapterImpl;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.UISAdapterRedisImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -91,7 +91,7 @@ public class UISChannelLettuceAdapterUseCaseTestManual extends ContextualizedRed
         CountDownLatch waiter = new CountDownLatch(requestEvents.size() /* Quantity of message to wait about processing end confirmation */);
 
         // Initialize an adapter connected to contextualized Redis server (Users Interactions Space)
-        adapter = new UISAdapterImpl(getContext());
+        adapter = new UISAdapterRedisImpl(getContext());
 
         Thread second = new Thread(() -> {
             // Simulate autonomous events push in topic
@@ -125,7 +125,7 @@ public class UISChannelLettuceAdapterUseCaseTestManual extends ContextualizedRed
                     }
 
                     @Override
-                    public void notify(IDescribed event) {
+                    public void notify(Object event) {
                         String correlationId = (ProcessingUnitPresenceAnnounced.class.isAssignableFrom(event.getClass())) ? ((ProcessingUnitPresenceAnnounced) event).correlationId().value() : (DomainEvent.class.isAssignableFrom(event.getClass()) ? ((DomainEvent) event).correlationId().value() : null);
                         Assertions.assertNotNull(correlationId, "Shall exist regarding the original event collected!");
                         Assertions.assertFalse(correlationId.isEmpty(), "Correlation id value shall be originally defined!");

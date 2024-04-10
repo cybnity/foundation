@@ -15,30 +15,14 @@
 	<modules>
 		<module>workflow-process</module>
 		<module>domain</module>
-		<!--
 		<module>technical</module>
+		<!--
 		<module>transport</module>
 		<module>operating-system</module>
 		<module>physical</module>
 		<module>integrated-partners</module>-->
 	</modules>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.cybnity.framework</groupId>
-				<artifactId>support</artifactId>
-				<scope>compile</scope>
-				<version>${revision}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cybnity.framework</groupId>
-				<artifactId>domain</artifactId>
-				<version>${revision}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-	
 	<dependencies>
 		<dependency>
 			<groupId>org.cybnity.framework</groupId>

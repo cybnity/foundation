@@ -1,7 +1,5 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.api;
 
-import org.cybnity.framework.domain.IDescribed;
-
 /**
  * Listening of messages published to channel that match one or more patterns.
  */
@@ -28,9 +26,9 @@ public interface ChannelObserver {
     public String observationPattern();
 
     /**
-     * Notify this observer regarding a command or domain event promoted over the observed channel.
+     * Notify this observer regarding a stream entry (e.g command or domain event) promoted over the observed channel.
      *
      * @param event Event. Ignored when null.
      */
-    public void notify(IDescribed event);
+    public void notify(Object event);
 }

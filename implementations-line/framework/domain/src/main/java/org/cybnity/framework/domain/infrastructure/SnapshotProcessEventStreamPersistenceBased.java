@@ -1,12 +1,12 @@
 package org.cybnity.framework.domain.infrastructure;
 
+import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.ISnapshotRepository;
-import org.cybnity.framework.domain.model.EventStream;
-import org.cybnity.framework.domain.model.HydrationCapability;
-import org.cybnity.framework.domain.model.IEventStore;
+import org.cybnity.framework.domain.model.*;
+import org.cybnity.framework.immutable.ImmutabilityException;
 
 /**
- * Implementation class of a snapshot process which produce and manage snapshots over an event stream (e.g origin stream of source subject eligible to snapshot).
+ * Implementation class of a snapshot process which produce and manage snapshots.
  */
 public abstract class SnapshotProcessEventStreamPersistenceBased extends AbstractSnapshotProcess {
 
@@ -35,25 +35,37 @@ public abstract class SnapshotProcessEventStreamPersistenceBased extends Abstrac
         if (snapshotsPersistenceSystem == null)
             throw new IllegalArgumentException("The snapshots persistence system parameter is required!");
         this.snapshotsPersistenceSystem = snapshotsPersistenceSystem;
-
     }
 
     /**
      * Snapshot generation capability callable according to the cycle of creation managed externally.
      *
      * @param streamedObjectIdentifier Mandatory identifier of the source event type that is subject to snapshot.
-     * @throws IllegalArgumentException When mandatory parameter is missing.
+     * @throws IllegalArgumentException    When mandatory parameter is missing. When loaded object from the object identifier, is not supporting the ISnapshot contract and can't be saved in snapshot repository.
+     * @throws UnoperationalStateException When technical problem is occurred regarding this store usage.
      */
     @Override
-    public void generateSnapshot(String streamedObjectIdentifier) throws IllegalArgumentException {
+    public void generateSnapshot(String streamedObjectIdentifier) throws IllegalArgumentException, UnoperationalStateException {
         if (streamedObjectIdentifier == null || streamedObjectIdentifier.isEmpty())
             throw new IllegalArgumentException("Streamed object identifier parameter is required!");
         // Load all events from the source domain object's life history
         EventStream stream = streamStore.loadEventStream(streamedObjectIdentifier);
-        // Get re-hydrated version of instance type based on change events history
-        HydrationCapability hydratedInstance = getRehydratedInstanceFrom(stream);
-        // Save full state version of instance into the stream store
-        snapshotsPersistenceSystem.saveSnapshot(streamedObjectIdentifier, hydratedInstance, stream.getVersion());
+        if (stream != null) {
+            // Get re-hydrated version of instance type based on change events history
+            HydrationCapability hydratedInstance = getRehydratedInstanceFrom(stream);
+            if (Aggregate.class.isAssignableFrom(hydratedInstance.getClass())) {
+                try {
+                    // Save full state version of instance into the stream store
+                    snapshotsPersistenceSystem.saveSnapshot(new ConcreteSnapshot((Aggregate) hydratedInstance), /* namespace of snapshots */ snapshotsNamespace());
+                } catch (ImmutabilityException ie) {
+                    throw new IllegalArgumentException(ie);
+                }
+            } else {
+                throw new IllegalArgumentException("The found original object is not supporting the ISnapshot contract and was not saved!");
+            }
+        } else {
+            throw new IllegalArgumentException("Original object was not found from the stream, and can't be subject of snapshot!");
+        }
     }
 
     /**
@@ -65,4 +77,11 @@ public abstract class SnapshotProcessEventStreamPersistenceBased extends Abstrac
      * @throws IllegalArgumentException When any mandatory parameter is missing.
      */
     protected abstract HydrationCapability getRehydratedInstanceFrom(EventStream history) throws IllegalArgumentException;
+
+    /**
+     * Get a name space where snapshot are stored.
+     *
+     * @return A name.
+     */
+    protected abstract String snapshotsNamespace();
 }

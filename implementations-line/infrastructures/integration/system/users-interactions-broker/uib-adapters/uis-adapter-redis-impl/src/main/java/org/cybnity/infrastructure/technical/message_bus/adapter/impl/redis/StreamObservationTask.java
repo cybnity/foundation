@@ -3,7 +3,6 @@ package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
-import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.framework.domain.event.CorrelationIdFactory;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MappingException;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
@@ -101,15 +100,13 @@ public class StreamObservationTask implements Callable<Void> {
                 );
                 if (!messages.isEmpty()) {
                     // Prepare a mapper supporting messages transformation
-                    IDescribed event;
                     for (StreamMessage<String, String> message : messages) {
                         if (message != null) {
                             try {
                                 // Transform event into supported message type
                                 mapper.transform(message);
-                                event = (IDescribed) mapper.getResult();
                                 // Transmit collected event to the observer
-                                this.delegate.notify(event);
+                                this.delegate.notify(mapper.getResult());
 
                                 // Confirm that the message has been read and processed using XACK (remove the message from the pending list of the consumer group)
                                 syncCommands.xack(streamPathName, consumersGroupName, message.getId());

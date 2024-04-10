@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -25,25 +26,42 @@ import java.util.Set;
  * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Robusteness, reqId = "REQ_ROB_3")
-public class FactRecord implements IHistoricalFact, IUniqueness {
+public class FactRecord implements IHistoricalFact, IUniqueness, Cloneable {
 
     /**
      * Version of this class type.
      */
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(FactRecord.class).hashCode();
-
-    private final Serializable body;
-    private final OffsetDateTime factOccurredAt;
-    private final OffsetDateTime recordedAt;
-    private final int bodyHash;
-    private final TypeVersion factTypeVersion;
-
+    private Serializable body;
+    private OffsetDateTime factOccurredAt;
+    private OffsetDateTime recordedAt;
+    private TypeVersion factTypeVersion;
     /**
      * Unique identifier of this record (equals to the original identifier hash code
      * value of the recorded event).
      */
     private Integer factId;
+    private Integer bodyHash;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FactRecord that = (FactRecord) o;
+        return Objects.equals(factOccurredAt, that.factOccurredAt) && Objects.equals(recordedAt, that.recordedAt) && Objects.equals(factTypeVersion, that.factTypeVersion) && Objects.equals(factId, that.factId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(factOccurredAt, recordedAt, factTypeVersion, factId);
+    }
+
+    /**
+     * Utility constructor of unidentifiable event which can be used by child class (e.g implementing mapping capability).
+     */
+    protected FactRecord() {
+    }
 
     /**
      * Default constructor of a fact record based on a domain event.
@@ -71,7 +89,7 @@ public class FactRecord implements IHistoricalFact, IUniqueness {
             throw new IllegalArgumentException("Event parameter is required!");
         }
         this.body = originFact;
-        this.bodyHash = originFact.hashCode();
+        this.bodyHash = this.body.hashCode();
         this.factOccurredAt = originFact.occurredAt();
         this.factTypeVersion = (targetedVersion != null) ? targetedVersion : new TypeVersion(originFact.getClass());
         if (IdentifiableFact.class.isAssignableFrom(originFact.getClass())) {
@@ -83,7 +101,6 @@ public class FactRecord implements IHistoricalFact, IUniqueness {
         }
         this.recordedAt = OffsetDateTime.now();
     }
-
 
     @Override
     public Set<Field> basedOn() {
@@ -102,11 +119,22 @@ public class FactRecord implements IHistoricalFact, IUniqueness {
      * Get the identifier of this fact that is equals to the value of the original
      * event's identifier value.
      *
-     * @return An identifier as hashcode value; or null when this fact is about an
+     * @return An identifier as hashcode value; or null when this fact is about a
      * no identifiable original event.
      */
     public Integer getFactId() {
         return this.factId;
+    }
+
+    /**
+     * Define the identifier of this fact that is equals to the value of the original
+     * * event's identifier value.
+     *
+     * @param factId An identifier as hashcode value; or null when this fact is about a
+     *               no identifiable original event
+     */
+    protected void setFactId(Integer factId) {
+        this.factId = factId;
     }
 
     /**
@@ -117,7 +145,21 @@ public class FactRecord implements IHistoricalFact, IUniqueness {
      * @return Has value of body content.
      */
     public int bodyHash() {
+        if (this.bodyHash == null) {
+            this.bodyHash = this.body.hashCode();
+        }
         return this.bodyHash;
+    }
+
+    /**
+     * Define the hash value regarding the recorded fact. This value allow unique
+     * search, comparison or equality identification of equals fact recorded without
+     * need to re-instantiation of body content.
+     *
+     * @param hash Has value of body content.
+     */
+    protected void setBodyHash(Integer hash) {
+        this.bodyHash = hash;
     }
 
     /**
@@ -130,6 +172,15 @@ public class FactRecord implements IHistoricalFact, IUniqueness {
     }
 
     /**
+     * Define the body of this record.
+     *
+     * @param body A body.
+     */
+    protected void setBody(Serializable body) {
+        this.body = body;
+    }
+
+    /**
      * Get the version of the type of origin fact.
      *
      * @return A version of fact type.
@@ -139,12 +190,30 @@ public class FactRecord implements IHistoricalFact, IUniqueness {
     }
 
     /**
+     * Define the version of the type of origin fact.
+     *
+     * @param factTypeVersion A version of fact type.
+     */
+    protected void setFactTypeVersion(TypeVersion factTypeVersion) {
+        this.factTypeVersion = factTypeVersion;
+    }
+
+    /**
      * Get the time when this record was instantiated.
      *
      * @return When this record was created.
      */
     public OffsetDateTime recordedAt() {
         return recordedAt;
+    }
+
+    /**
+     * Define a date of fact record.
+     *
+     * @param recordedAt A date.
+     */
+    protected void setRecordedAt(OffsetDateTime recordedAt) {
+        this.recordedAt = recordedAt;
     }
 
     @Override
@@ -166,11 +235,19 @@ public class FactRecord implements IHistoricalFact, IUniqueness {
     }
 
     /**
-     * Get the date when the original fact was occured.
+     * Get the date when the original fact was occurred.
      */
     @Override
     public OffsetDateTime occurredAt() {
         return this.factOccurredAt;
     }
 
+    /**
+     * Define a date of teh fact.
+     *
+     * @param factOccurredAt A date of fact.
+     */
+    protected void setFactOccurredAt(OffsetDateTime factOccurredAt) {
+        this.factOccurredAt = factOccurredAt;
+    }
 }

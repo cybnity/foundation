@@ -47,7 +47,7 @@ public class UISStreamLettuceAdapterUseCaseTest extends ContextualizedRedisActiv
         // Specific custom name for test avoiding collision with potential any other test parallel execution
         String testSpecificName = "-givenAnonymousCommandIncludeDomainEntryPoint_whenPushedToSpaceWithoutRecipientDefined_thenStoredInStreamDetectedFromCommand";
         // Prepare command event sample
-        final String entrypointName = "ac" + NamingConventions.STREAM_NAME_SEPARATOR + getClass().getSimpleName().toLowerCase()+testSpecificName;
+        final String entrypointName = "ac" + NamingConventions.STREAM_NAME_SEPARATOR + getClass().getSimpleName().toLowerCase() + testSpecificName;
 
         // Build sample command events relative to capability to execute (e.g capability domain supported feature)
         List<Command> requestEvents = new LinkedList<>();
@@ -84,7 +84,7 @@ public class UISStreamLettuceAdapterUseCaseTest extends ContextualizedRedisActiv
         CountDownLatch waiter = new CountDownLatch(requestEvents.size() /* Quantity of message to wait about processing end confirmation */);
 
         // Initialize an adapter connected to contextualized Redis server (Users Interactions Space)
-        adapter = new UISAdapterImpl(getContext());
+        adapter = new UISAdapterRedisImpl(getContext());
 
         Thread first = new Thread(() -> {
             // Simulate parallel consumers registration and stream observations
@@ -110,7 +110,7 @@ public class UISStreamLettuceAdapterUseCaseTest extends ContextualizedRedisActiv
                     }
 
                     @Override
-                    public void notify(IDescribed event) {
+                    public void notify(Object event) {
                         String correlationId = (DomainEvent.class.isAssignableFrom(event.getClass())) ? ((DomainEvent) event).correlationId().value() : (Command.class.isAssignableFrom(event.getClass()) ? ((Command) event).correlationId().value() : null);
                         if (correlationId != null)
                             referenceProcessedMessageCorrelationId(correlationId);
@@ -198,7 +198,7 @@ public class UISStreamLettuceAdapterUseCaseTest extends ContextualizedRedisActiv
         Stream recipient = new Stream(/* Example of global entrypoint of Access Control capability domain */ "ac" + NamingConventions.STREAM_NAME_SEPARATOR + getClass().getSimpleName().toLowerCase());
 
         // Initialize an adapter connected to contextualized Redis server (Users Interactions Space)
-        adapter = new UISAdapterImpl(getContext());
+        adapter = new UISAdapterRedisImpl(getContext());
 
         // Execute command via adapter (WITH AUTO-DETECTION OF STREAM RECIPIENT FROM REQUEST EVENT)
         MessageMapper mapper = new MessageMapperFactory().getMapper(IDescribed.class, StreamMessage.class);

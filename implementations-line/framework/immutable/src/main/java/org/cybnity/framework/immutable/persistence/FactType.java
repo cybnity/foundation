@@ -9,6 +9,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -91,6 +92,19 @@ public class FactType implements Unmodifiable, IVersionable, Serializable, IUniq
      */
     public FactType(String categoryName) throws IllegalArgumentException {
         this(categoryName, null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FactType factType = (FactType) o;
+        return Objects.equals(name, factType.name) && Objects.equals(id, factType.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, id);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package org.cybnity.framework.domain;
 
+import java.io.Serializable;
+
 /**
  * Represent a flat structure that contain no business logic but contain only
  * storage, accessors and eventually methods related to serialization or
@@ -22,26 +24,25 @@ package org.cybnity.framework.domain;
  * that can be stored and transferred). It provides a single point of change in
  * the serialization nuances. It also decouples the domain models from the
  * presentation layer, allowing both to change independently.
- * 
- * @author olivier
  *
+ * @author olivier
  */
-public abstract class DataTransferObject {
+public abstract class DataTransferObject implements Serializable {
 
-	/**
-	 * Implement value equality redefined method that ensure the functional
-	 * comparison of the instance about compared types of both objects and then
-	 * their attributes.
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		boolean equalsObject = false;
-		if (obj == this)
-			return true;
-		if (obj != null && this.getClass() == obj.getClass()) {
-			// Compare all the functional contributors, so comparison based on hash code
-			equalsObject = (obj.hashCode() == this.hashCode());
-		}
-		return equalsObject;
-	}
+    /**
+     * Implement value equality redefined method that ensure the functional
+     * comparison of the instance about compared types of both objects and then
+     * their attributes.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        boolean equalsObject = false;
+        if (obj == this)
+            return true;
+        if (obj != null && this.getClass() == obj.getClass()) {
+            // Compare all the functional contributors, so comparison based on hash code
+            equalsObject = (obj.hashCode() == this.hashCode());
+        }
+        return equalsObject;
+    }
 }

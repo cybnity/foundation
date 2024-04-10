@@ -1,6 +1,7 @@
 package org.cybnity.framework.domain;
 
-import org.cybnity.framework.domain.model.HydrationCapability;
+import org.cybnity.framework.UnoperationalStateException;
+import org.cybnity.framework.domain.model.ISnapshot;
 
 /**
  * To reduce (avoiding loading and replaying of a large portion of Event Stream) the loading time (and potential performance decrease) of Aggregates version from large Streams,
@@ -11,22 +12,23 @@ import org.cybnity.framework.domain.model.HydrationCapability;
 public interface ISnapshotRepository {
 
     /**
-     * Find a latest snapshot of a domain object identifier (subject that have been source of snapshot).
+     * Find latest snapshot of a domain object identifier (subject that have been source of snapshot).
      *
-     * @param streamedObjectIdentifier    Mandatory identifier of the subject that is source of latest snapshot to find.
-     * @param eventStreamVersion          Optional version of the origin event stream supporting the re-hydratable object version.
+     * @param originObjectIdentifier Mandatory logical identifier of the subject that is source of snapshot to find.
+     * @param resourceNamespaceName  Optional namespace name of the resource to find.
      * @return A full state version of the snapshot. Or null when none found.
-     * @throws IllegalArgumentException When any mandatory parameter is not defined.
+     * @throws IllegalArgumentException    When any mandatory parameter is not defined.
+     * @throws UnoperationalStateException When system access is in failure.
      */
-    public HydrationCapability getLatestSnapshotById(String streamedObjectIdentifier, String eventStreamVersion) throws IllegalArgumentException;
+    public ISnapshot getLatestSnapshotById(String originObjectIdentifier, String resourceNamespaceName) throws IllegalArgumentException, UnoperationalStateException;
 
     /**
      * Create and save an object version as snapshot (full state instance) into a persistent layer (e.g into independent cache repository; or into the origin event stream like a additional event appended between change events).
      *
-     * @param streamedObjectIdentifier Mandatory identifier of the subject that is source of snapshot to create.
-     * @param snapshot                 Mandatory full state of source object version.
-     * @param eventStreamVersion       Optional version of the origin event stream supporting the re-hydratable object version.
-     * @throws IllegalArgumentException When any mandatory parameter is not defined.
+     * @param snapshot              Mandatory full state of source object version.
+     * @param resourceNamespaceName Optional namespace name of the resource to find.
+     * @throws IllegalArgumentException    When any mandatory parameter is not defined.
+     * @throws UnoperationalStateException When system access is in failure.
      */
-    public void saveSnapshot(String streamedObjectIdentifier, HydrationCapability snapshot, String eventStreamVersion) throws IllegalArgumentException;
+    public void saveSnapshot(ISnapshot snapshot, String resourceNamespaceName) throws IllegalArgumentException, UnoperationalStateException;
 }

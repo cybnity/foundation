@@ -53,6 +53,9 @@ public class ConcreteCommandEvent extends Command {
     @JsonProperty
     protected Collection<Attribute> specification;
 
+    /**
+     * Constructor usable by binding framework allowing mapping of instance.
+     */
     @JsonCreator
     public ConcreteCommandEvent() {
         super();

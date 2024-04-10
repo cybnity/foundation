@@ -5,7 +5,6 @@ import io.lettuce.core.RedisFuture;
 import io.lettuce.core.pubsub.RedisPubSubListener;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
-import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.ChannelObserver;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MappingException;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
@@ -62,7 +61,7 @@ public class ChannelObservationTask implements Callable<Void> {
     @Override
     public Void call() throws Exception {
         // --- LETTUCE DOC ---
-        // User-space Pub/Sub messages (Calling PUBLISH) are broadcasted across the whole cluster regardless of subscriptions to particular channels/patterns. This behavior allows connecting to an arbitrary cluster node and registering a subscription. The client isn’t required to connect to the node where messages were published.
+        // User-space Pub/Sub messages (Calling PUBLISH) are broadcasting across the whole cluster regardless of subscriptions to particular channels/patterns. This behavior allows connecting to an arbitrary cluster node and registering a subscription. The client isn’t required to connect to the node where messages were published.
         // Use Redis Cluster mode for Pub/Sub support
         // See https://github.com/lettuce-io/lettuce-core/wiki/Pub-Sub for more Lettuce client detail
 
@@ -133,10 +132,8 @@ public class ChannelObservationTask implements Callable<Void> {
                 try {
                     // Transform event into supported message type
                     mapper.transform(message);
-                    IDescribed event = (IDescribed) mapper.getResult();
-
                     // Transmit collected event to the observer
-                    delegate.notify(event);
+                    delegate.notify(mapper.getResult());
                 } catch (MappingException mape) {
                     logger.log(Level.SEVERE, "Invalid message type collected from " + delegate.observed().name() + " channel!", mape);
                 }

@@ -74,7 +74,7 @@ public class EventStoreUseCaseTest {
         Assertions.assertFalse(BOLifecycleStream.getEvents().isEmpty(), "Shall contain original creation event!");
 
         // --- TEST DATA ENHANCEMENT OF BUSINESS OBJECT OVER CHANGE EVENT (e.g by application service layer)
-        // Simulate a change about domain object via a change event operation (eg change of on attribute of domain object)
+        // Simulate a change about domain object via a change event operation (eg change of an attribute of domain object)
         // as an application service could perform from a read-model repository to identify which change event shall be stored about the domain object evolution operation
         ConcreteDomainChangeEvent updateEvt = new ConcreteDomainChangeEvent(new DomainEntity(IdentifierStringBased.generate(null)) /* id of new change event*/);
         updateEvt.setChangedModelElementRef(domainObjectState.reference());// Identify the user account which was upgraded by any value that can be also included into the updateEvt instance when committed

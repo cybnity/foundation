@@ -15,6 +15,8 @@ import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.HistoryState;
 import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.persistence.FactType;
+import org.cybnity.framework.immutable.persistence.TypeVersion;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -82,6 +84,12 @@ public class ObjectMapperBuilder {
         module = new SimpleModule();
         module.addSerializer(HistoryState.class, new HistoryStateSerializer());
         mapper.registerModule(module);
+        module = new SimpleModule();
+        module.addSerializer(FactType.class, new FactTypeSerializer());
+        mapper.registerModule(module);
+        module = new SimpleModule();
+        module.addSerializer(TypeVersion.class, new TypeVersionSerializer());
+        mapper.registerModule(module);
 
         // Deserialization configuration
         mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
@@ -103,6 +111,12 @@ public class ObjectMapperBuilder {
         mapper.registerModule(module);
         module = new SimpleModule();
         module.addDeserializer(HistoryState.class, new HistoryStateDeserializer());
+        mapper.registerModule(module);
+        module = new SimpleModule();
+        module.addDeserializer(FactType.class, new FactTypeDeserializer());
+        mapper.registerModule(module);
+        module = new SimpleModule();
+        module.addDeserializer(TypeVersion.class, new TypeVersionDeserializer());
         mapper.registerModule(module);
         return mapper;
     }

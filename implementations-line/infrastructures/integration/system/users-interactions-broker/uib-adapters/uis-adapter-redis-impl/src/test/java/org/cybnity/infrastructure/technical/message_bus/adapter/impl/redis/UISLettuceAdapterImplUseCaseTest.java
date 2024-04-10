@@ -21,8 +21,7 @@ public class UISLettuceAdapterImplUseCaseTest extends ContextualizedRedisActiveT
     public void givenRedisSpaceStarted_whenClientConfigurationDefined_thenAdapterInstantiatedWithSuccess() throws Exception {
         // Try adapter instance creation with automatic configuration of Lettuce client
         // from a valid context settings set
-        UISAdapter adapter = new UISAdapterImpl(getContext());
-
+        UISAdapter adapter = new UISAdapterRedisImpl(getContext());
         adapter.freeUpResources();
     }
 

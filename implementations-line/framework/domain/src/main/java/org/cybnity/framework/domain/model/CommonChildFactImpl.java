@@ -1,5 +1,6 @@
 package org.cybnity.framework.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.event.ConcreteDomainChangeEvent;
@@ -25,6 +26,7 @@ import java.util.logging.Logger;
  * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "@class")
 public class CommonChildFactImpl extends ChildFact implements HydrationCapability {
 
     private static final long serialVersionUID = new VersionConcreteStrategy()
@@ -33,7 +35,7 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
     /**
      * Logger singleton.
      */
-    private Logger logger;
+    private transient Logger logger;
 
     /**
      * Stream of changes relative to this instance.

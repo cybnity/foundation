@@ -19,7 +19,9 @@ import java.util.HashMap;
  */
 public class TenantDescriptor extends MutableProperty {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+            .composeCanonicalVersionHash(TenantDescriptor.class).hashCode();
+
     private OffsetDateTime versionedAt;
 
     /**
@@ -94,6 +96,6 @@ public class TenantDescriptor extends MutableProperty {
      */
     @Override
     public String versionHash() {
-        return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+        return String.valueOf(serialVersionUID);
     }
 }

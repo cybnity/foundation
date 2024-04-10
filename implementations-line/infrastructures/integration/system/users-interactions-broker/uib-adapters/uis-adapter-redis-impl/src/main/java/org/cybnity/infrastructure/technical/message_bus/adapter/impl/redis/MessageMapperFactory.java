@@ -3,6 +3,7 @@ package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 import io.lettuce.core.StreamMessage;
 import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.framework.domain.event.ProcessingUnitPresenceAnnounced;
+import org.cybnity.framework.domain.model.EventRecord;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.IMessageMapperProvider;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.*;
@@ -20,7 +21,14 @@ public class MessageMapperFactory implements IMessageMapperProvider {
     public MessageMapper getMapper(Class<?> transformable, Class<?> transformableAs) {
         if (transformable != null && transformableAs != null) {
             // Select the origin type to be transformed
-            if (IDescribed.class.isAssignableFrom(transformable)) {
+            if (EventRecord.class.isAssignableFrom(transformable)) {
+                // Select the provided mapper allowing transformation to targeted type
+                if (StreamMessage.class.isAssignableFrom(transformableAs)) {
+                    return new EventRecordToStreamMessageTransformer();
+                } else if (String.class.isAssignableFrom(transformableAs)) {
+                    return new EventRecordToJSONMessageTransformer();
+                }
+            } else if (IDescribed.class.isAssignableFrom(transformable)) {
                 // Select the provided mapper allowing transformation to targeted type
                 if (StreamMessage.class.isAssignableFrom(transformableAs)) {
                     return new IDescribedToStreamMessageTransformer();
@@ -33,6 +41,8 @@ public class MessageMapperFactory implements IMessageMapperProvider {
                     return new StreamMessageToProcessingUnitPresenceAnnouncedTransformer();
                 } else if (IDescribed.class.isAssignableFrom(transformableAs)) {
                     return new StreamMessageToIDescribedTransformer();
+                } else if (EventRecord.class.isAssignableFrom(transformableAs)) {
+                    return new StreamMessageToEventRecordTransformer();
                 }
             } else if (String.class.isAssignableFrom(transformable)) {
                 // Select the mapper allowing transformation to targeted type
@@ -40,6 +50,8 @@ public class MessageMapperFactory implements IMessageMapperProvider {
                     return new JSONMessageToProcessingUnitPresenceAnnouncedTransformer();
                 } else if (IDescribed.class.isAssignableFrom(transformableAs)) {
                     return new JSONMessageToIDescribedTransformer();
+                } if (EventRecord.class.isAssignableFrom(transformableAs)) {
+                    return new JSONMessageToEventRecordTransformer();
                 }
             }
         }

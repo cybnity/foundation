@@ -36,7 +36,7 @@ public class ConcreteDomainChangeEvent extends DomainEvent implements HydrationA
             .composeCanonicalVersionHash(ConcreteDomainChangeEvent.class).hashCode();
 
     @JsonIgnore
-    private final Logger logger = Logger.getLogger(ConcreteDomainChangeEvent.class.getName());
+    private transient final Logger logger = Logger.getLogger(ConcreteDomainChangeEvent.class.getName());
 
     /**
      * Standard type of the attribute specifying this event type based on a logical

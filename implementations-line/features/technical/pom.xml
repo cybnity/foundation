@@ -12,4 +12,7 @@
 	<packaging>pom</packaging>
 	<name>Technical features</name>
 
+	<modules>
+		<module>information-persistence-system</module>
+	</modules>
 </project>

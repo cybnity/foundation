@@ -1,5 +1,6 @@
 package org.cybnity.framework.domain.infrastructure;
 
+import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.model.EventRecord;
 import org.cybnity.framework.domain.model.EventStore;
@@ -53,8 +54,12 @@ public class DomainEventInMemoryStoreImpl extends EventStore {
     }
 
     @Override
-    public void appendToStream(Identifier domainEventId, List<DomainEvent> changes) throws IllegalArgumentException, ImmutabilityException {
-        if (domainEventId == null) throw new IllegalArgumentException("domainEventId parameter is required!");
+    public void freeResources() {
+    }
+
+    @Override
+    public void appendToStream(Identifier domainSubjectId, List<DomainEvent> changes) throws IllegalArgumentException, ImmutabilityException, UnoperationalStateException {
+        if (domainSubjectId == null) throw new IllegalArgumentException("domainSubjectId parameter is required!");
         if (changes == null) throw new IllegalArgumentException("changes parameter is required!");
         if (changes.isEmpty()) return; // noting to change on domain event
 
@@ -74,12 +79,12 @@ public class DomainEventInMemoryStoreImpl extends EventStore {
         // for the type (expectedVersion is not based on domain event but is based on event record container version)
         @Requirement(reqType = RequirementCategory.Robusteness, reqId = "REQ_ROB_3")
         LinkedList<EventRecord> eventTypeDataset = registries
-                .getOrDefault(domainEventId.value().toString(), new LinkedList<>());
+                .getOrDefault(domainSubjectId.value().toString(), new LinkedList<>());
         // Add the event records to the end of history column regarding all the same event record type version
         eventTypeDataset.addAll(changesEligibleToHistoryStorage);
 
         // Save all domain event changes into registry stream regarding domain event uid
-        registries.put(domainEventId.value().toString(), eventTypeDataset);
+        registries.put(domainSubjectId.value().toString(), eventTypeDataset);
 
         // Promote to subscribers (e.g read-model repositories) the change events that have been stored
         for (DomainEvent changeEvt : changes) {
@@ -88,19 +93,20 @@ public class DomainEventInMemoryStoreImpl extends EventStore {
     }
 
     @Override
-    public EventStream loadEventStream(String id) throws IllegalArgumentException {
-        if (id == null || id.isEmpty()) throw new IllegalArgumentException("id parameter is required!");
+    public EventStream loadEventStream(String domainSubjectId) throws IllegalArgumentException, UnoperationalStateException {
+        if (domainSubjectId == null || domainSubjectId.isEmpty())
+            throw new IllegalArgumentException("domainSubjectId parameter is required!");
         // Search event stream according to all event record versions supported (all columns per event record class version)
         LinkedList<DomainEvent> foundEventDomainHistory = new LinkedList<>();
         EventStream domainObjEventsHistory = new EventStream();
         for (Map.Entry<String, LinkedList<EventRecord>> storeColumn : registries.entrySet()) {
             // For any stream version supported by the registry regarding a domain object
-            if (id.equals(storeColumn.getKey())) { // Detected the id of domain object owner of event records column
+            if (domainSubjectId.equals(storeColumn.getKey())) { // Detected the identifier of domain object owner of event records column
                 // Read the existing recorded events relative to domain events
                 LinkedList<EventRecord> storedEventRecordsColumn = storeColumn.getValue();
                 // Select descending order of historized event records regarding an origin domain object's identifier
                 Iterator<EventRecord> unfilteredVersions = storedEventRecordsColumn.descendingIterator();
-                while(unfilteredVersions.hasNext()) {
+                while (unfilteredVersions.hasNext()) {
                     // Read recorded event
                     EventRecord historizedEvent = unfilteredVersions.next();
                     // Compare if equals the record event origin domain event have equals identifier
@@ -120,15 +126,17 @@ public class DomainEventInMemoryStoreImpl extends EventStore {
     }
 
     @Override
-    public EventStream loadEventStreamAfterVersion(String domainEventId, String snapshotVersion) throws IllegalArgumentException {
-        if (domainEventId == null || domainEventId.isEmpty()) throw new IllegalArgumentException("domainEventId parameter is required!");
-        if (snapshotVersion == null || snapshotVersion.isEmpty()) throw new IllegalArgumentException("snapshotVersion parameter is required!");
+    public EventStream loadEventStreamAfterVersion(String domainSubjectId, String snapshotExpectedVersion) throws IllegalArgumentException, UnoperationalStateException {
+        if (domainSubjectId == null || domainSubjectId.isEmpty())
+            throw new IllegalArgumentException("domainSubjectId parameter is required!");
+        if (snapshotExpectedVersion == null || snapshotExpectedVersion.isEmpty())
+            throw new IllegalArgumentException("snapshotExpectedVersion parameter is required!");
         // Search latest event stream supporting event type after the snapshot version requested
         LinkedList<DomainEvent> foundEventDomainHistory = new LinkedList<>();
         EventStream domainObjEventsHistory = new EventStream();
         for (Map.Entry<String, LinkedList<EventRecord>> storeColumn : registries.entrySet()) {
             // For any stream version supported by the registry regarding a domain object
-            if (domainEventId.equals(storeColumn.getKey())) { // Detected the id of domain object owner of event records column
+            if (domainSubjectId.equals(storeColumn.getKey())) { // Detected the id of domain object owner of event records column
                 // Read the existing recorded events relative to domain events
                 LinkedList<EventRecord> storedEventRecordsColumn = storeColumn.getValue();
                 // Select historized event records regarding an origin domain object's identifier
@@ -138,7 +146,7 @@ public class DomainEventInMemoryStoreImpl extends EventStore {
                     // Compare if equals the record event origin domain event have equals identifier
                     // It's a domain event without consideration of event record container's version used by the storage system
                     // But check that object version if equals or superior to the filtered snapshot version parameter
-                    if(historizedEvent.factTypeVersion().hash().equals(snapshotVersion) || (historizedEvent.factTypeVersion().hash().compareTo(snapshotVersion) > 0)) {
+                    if (historizedEvent.factTypeVersion().hash().equals(snapshotExpectedVersion) || (historizedEvent.factTypeVersion().hash().compareTo(snapshotExpectedVersion) > 0)) {
                         foundEventDomainHistory.add((DomainEvent) historizedEvent.body());
                         // Synchronize the event stream version based on the type of record type version hash (aligned with the domain object class serial UID)
                         domainObjEventsHistory.setVersion(historizedEvent.factTypeVersion().hash());
@@ -154,7 +162,7 @@ public class DomainEventInMemoryStoreImpl extends EventStore {
     }
 
     @Override
-    public EventStream loadEventStream(String id, int skipEvents, int maxCount) throws IllegalArgumentException {
+    public EventStream loadEventStream(String domainSubjectId, int skipEvents, int maxCount) throws IllegalArgumentException, UnoperationalStateException {
         throw new IllegalArgumentException("to implement!");
     }
 }

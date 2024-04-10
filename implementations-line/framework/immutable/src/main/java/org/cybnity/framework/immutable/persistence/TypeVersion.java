@@ -43,7 +43,26 @@ public class TypeVersion implements Serializable {
     private final FactType factType;
 
     /**
-     * Default constructor of a version.
+     * Constructor of a version relative to an existing fact type and identified version.
+     * This constructor can be used during a deserialization process of a previous existing type version instance that already auto-generated fact type, hash value and identifier via usage of the default constructor.
+     *
+     * @param subject          Mandatory type regarding the subject of versioning.
+     * @param subjectHashValue Mandatory Hash value of an object type as a type version value.
+     * @param identifier       Optional identifier of this version.
+     * @throws IllegalArgumentException When mandatory parameter is missing.
+     */
+    public TypeVersion(FactType subject, String subjectHashValue, String identifier) throws IllegalArgumentException {
+        if (subject == null)
+            throw new IllegalArgumentException("subject parameter is required!");
+        this.factType = subject;
+        if (subjectHashValue == null || subjectHashValue.isEmpty())
+            throw new IllegalArgumentException("subjectHashValue parameter is required!");
+        this.hash = subjectHashValue;
+        this.id = identifier;
+    }
+
+    /**
+     * Default constructor of a version that shall detect and generate a relative fact type based on a subject class.
      *
      * @param subject    Mandatory type regarding the subject of versioning.
      * @param identifier Optional identifier of this version. When not defined, a
@@ -53,8 +72,8 @@ public class TypeVersion implements Serializable {
      */
     public TypeVersion(Class<?> subject, String identifier) throws IllegalArgumentException {
         if (subject == null)
-            throw new IllegalArgumentException("The subject parameter is required!");
-        this.factType = new FactType(subject.getName());
+            throw new IllegalArgumentException("subject parameter is required!");
+        this.factType = new FactType(subject.getSimpleName());
         // Generate hash value regarding the subject
         this.hash = new VersionConcreteStrategy().composeCanonicalVersionHash(subject);
         // Get or generate optional identifier of this version

@@ -56,7 +56,7 @@ public class UnidentifiableFactNotificationLog extends Entity {
     }
 
     /**
-     * Get the list of origin facts that were loggued by this notification.
+     * Get the list of origin facts that were logged by this notification.
      * 
      * @return A set of facts immutable versions or empty list.
      * @throw ImmutabilityException When an immutable version of an origin fact

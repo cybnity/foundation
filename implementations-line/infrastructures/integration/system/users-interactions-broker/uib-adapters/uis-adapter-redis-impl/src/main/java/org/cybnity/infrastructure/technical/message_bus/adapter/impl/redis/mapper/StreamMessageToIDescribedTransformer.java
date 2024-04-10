@@ -32,9 +32,9 @@ public class StreamMessageToIDescribedTransformer implements MessageMapper {
             throw new IllegalArgumentException("Origin parameter type is not supported by this mapper!");
         try {
             StreamMessage message = (StreamMessage) origin;
-
             // Read message body
-            Map messageBody = message.getBody();
+            Map<String, String> messageBody = message.getBody();
+
             // Read map entries regarding unique identifier of fact record (streams partitioning based on keys)
             //String streamEntryID = (String) messageBody.get(Stream.Specification.FACT_RECORD_ID_KEY_NAME.name());
 

@@ -44,6 +44,11 @@
 				<version>${revision}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.cybnity.framework</groupId>
+				<artifactId>domain</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.cybnity.infrastructure.integration.uis.adapters</groupId>
 				<artifactId>api</artifactId>
 				<version>${revision}</version>

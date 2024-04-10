@@ -138,14 +138,14 @@ public abstract class MutableProperty implements IHistoricalFact {
 	 *                             the property. Support included keys with null
 	 *                             value.
 	 * @param status               Optional state of this property version. If null,
-	 *                             {@link org.cybnity.framework.immutable.HistoryState.Committed}
+	 *                             {@link org.cybnity.framework.immutable.HistoryState.COMMITTED}
 	 *                             is defined as default state.
 	 * @param predecessors         Optional original instances (previous versions)
 	 *                             that were to consider in the history chain,
 	 *                             regarding this property and that were identified
 	 *                             as property's original states which had been
 	 *                             changed. It's possible that new instance (e.g in
-	 *                             {@link org.cybnity.framework.immutable.HistoryState.Merged}
+	 *                             {@link org.cybnity.framework.immutable.HistoryState.MERGED}
 	 *                             status) is based on several merged versions of
 	 *                             previous property's states (e.g in case of
 	 *                             concurrently changed version with need of
