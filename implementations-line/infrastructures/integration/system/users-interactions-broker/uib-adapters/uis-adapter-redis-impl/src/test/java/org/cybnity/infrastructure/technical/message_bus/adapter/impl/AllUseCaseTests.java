@@ -17,6 +17,6 @@ import org.junit.platform.suite.api.Suite;
         UISLettuceAdapterImplUseCaseTest.class,
         UISStreamLettuceAdapterUseCaseTest.class,
         UISAdapterResourceStorageUseCaseTest.class,
-        /* Be careful to maintain this unit test latest of suite */ UISChannelLettuceAdapterUseCaseTest.class})
+        /* Be careful to maintain this unit test latest of suite */ UISChannelLettuceAdapterUseCaseTestManual.class})
 public class AllUseCaseTests {
 }
