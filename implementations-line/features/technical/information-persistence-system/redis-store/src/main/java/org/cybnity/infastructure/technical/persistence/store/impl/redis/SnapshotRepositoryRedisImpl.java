@@ -2,19 +2,16 @@ package org.cybnity.infastructure.technical.persistence.store.impl.redis;
 
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
-import org.cybnity.framework.domain.ISnapshotRepository;
 import org.cybnity.framework.domain.SerializedResource;
+import org.cybnity.framework.domain.infrastructure.ISnapshotRepository;
 import org.cybnity.framework.domain.infrastructure.ResourceDescriptor;
 import org.cybnity.framework.domain.model.ISnapshot;
-import org.cybnity.framework.domain.model.TenantDescriptor;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.UISAdapter;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.UISAdapterRedisImpl;
 
 import java.io.ObjectStreamClass;
 import java.io.Serializable;
-import java.time.OffsetDateTime;
-import java.util.Date;
 
 /**
  * Snapshot repository implementation class using Redis in-memory resources as embedded snapshots containers.
@@ -39,8 +36,14 @@ public class SnapshotRepositoryRedisImpl implements ISnapshotRepository {
     }
 
     @Override
+    public void freeResources() {
+        // Freedom of resources allocated by the adapter
+        this.adapter.freeUpResources();
+    }
+
+    @Override
     public ISnapshot getLatestSnapshotById(String originObjectIdentifier, String resourceNamespaceName) throws IllegalArgumentException, UnoperationalStateException {
-        // Load its instance from store according to the snapshot naming convention
+        // Load instance from store where is stored as a SerializedResource
         SerializedResource snapshotContainer = adapter.readSerializedResourceFromID(originObjectIdentifier, resourceNamespaceName);
         if (snapshotContainer != null) {
             // Read origin serialized snapshot instance

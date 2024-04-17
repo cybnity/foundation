@@ -3,6 +3,8 @@ package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
+import io.lettuce.core.api.sync.RedisHashCommands;
+import io.lettuce.core.api.sync.RedisStreamCommands;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
@@ -13,8 +15,11 @@ import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.framework.domain.SerializedResource;
 import org.cybnity.framework.domain.infrastructure.ResourceDescriptor;
+import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.utility.Base64StringConverter;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.filter.MessageSpecificationEqualsFilter;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper.IDescribedToStreamMessageTransformer;
 
 import java.io.Serializable;
 import java.time.Duration;
@@ -292,7 +297,7 @@ public class UISAdapterRedisImpl implements UISAdapter {
                     break; // Stop search
                 }
             }
-        } else {
+        } else if (recipient != null) {
             recipientPathName = recipient.name();
         }
         if (recipientPathName == null || recipientPathName.isEmpty())
@@ -308,7 +313,7 @@ public class UISAdapterRedisImpl implements UISAdapter {
             RedisCommands<String, String> syncCommands = connection.sync();
             messageId = syncCommands.xadd(/* recipient name to feed */ recipientPathName, /* fact record transformed */ messageBody);
         } catch (ClassCastException cce) {
-            // result cast problem
+            // Transformation result cast problem
             throw new MappingException(cce);
         } finally {
             if (connection != null && connection.isOpen()) {
@@ -324,21 +329,31 @@ public class UISAdapterRedisImpl implements UISAdapter {
     }
 
     @Override
-    public List<Object> readAllFrom(Stream stream, MessageMapper itemMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException {
+    public List<Object> readAllFrom(Stream stream, MessageMapper itemMapper, Identifier originSubjectIDFilter) throws IllegalArgumentException, MappingException, UnoperationalStateException {
         if (stream == null) throw new IllegalArgumentException("stream parameter is required!");
         if (itemMapper == null) throw new IllegalArgumentException("itemMapper parameter is required!");
         List<Object> foundEntries = new LinkedList<>(); // empty list returned by default
+        StatefulRedisConnection<String, String> connection = null;
+        try {
+            connection = getClient().connect();
+            RedisCommands<String, String> sync = connection.sync();
+            // Execute synchronous read command (read of all stream's items)
+            List<StreamMessage<String, String>> streamItems = sync.xread(XReadArgs.StreamOffset.from(/* stream path name to read */ stream.name(), /* All history of foundEntries having an ID greater than 0-0 */ StreamObserver.DEFAULT_OBSERVATION_PATTERN));
+            Object retrievedItem;
 
-        RedisCommands<String, String> sync = getClient().connect().sync();
-        // Execute synchronous read command (read of all stream's items)
-        List<StreamMessage<String, String>> streamItems = sync.xread(XReadArgs.StreamOffset.from(/* stream path name to read */ stream.name(), /* All history of foundEntries having an ID greater than 0-0 */ StreamObserver.DEFAULT_OBSERVATION_PATTERN));
-        Object retrievedItem;
-        if (!streamItems.isEmpty()) {
-            for (StreamMessage<String, String> item : streamItems) {
-                if (item != null) {
+            // Apply filtering conditions to select only the items about equals origin subject id
+            MessageSpecificationEqualsFilter filter = new MessageSpecificationEqualsFilter();
+            Map<String, String> selectionCriteria = new HashMap<>();
+            selectionCriteria.put(MessageSpecificationEqualsFilter.FilteringCriteria.ORIGIN_SUBJECT_ID_PARAM_NAME.paramName(), (originSubjectIDFilter != null) ? originSubjectIDFilter.value().toString() : null);
+            // Execute the results reduction
+            List<StreamMessage<String, String>> whereEqualOriginSubjectItems = filter.apply(streamItems, selectionCriteria, null);
+
+            // Get the filtered results to return
+            for (StreamMessage<String, String> equalsOriginSubjectItem : whereEqualOriginSubjectItems) {
+                if (equalsOriginSubjectItem != null) {
                     try {
                         // Try to transform event into supported object type to return
-                        itemMapper.transform(item);
+                        itemMapper.transform(equalsOriginSubjectItem);
                         retrievedItem = itemMapper.getResult();
                         if (retrievedItem != null) {
                             foundEntries.add(retrievedItem);
@@ -346,50 +361,21 @@ public class UISAdapterRedisImpl implements UISAdapter {
                     } catch (MappingException mpe) {
                         // Stream entry (e.g snapshot version) that is not into filtered structure (e.g change event)
                         // For example, entity snapshot record that shall not be retrieved as searched domain events
-                        // So ignore filtered item
+                        // So ignore filtered equalsOriginSubjectItem
                     }
                 }
             }
+            return foundEntries;
+        } finally {
+            if (connection != null && connection.isOpen()) {
+                connection.close();
+            }
         }
-        return foundEntries;
     }
 
     @Override
-    public List<Object> readAllAfterChangeID(Stream stream, String afterChangeEventIdentifier, MessageMapper itemMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException {
-        if (stream == null) throw new IllegalArgumentException("stream parameter is required!");
-        if (itemMapper == null) throw new IllegalArgumentException("itemMapper parameter is required!");
-        if (afterChangeEventIdentifier == null || afterChangeEventIdentifier.isEmpty())
-            throw new IllegalArgumentException("afterChangeEventIdentifier parameter is required!");
-        List<Object> foundEntries = new LinkedList<>(); // empty list returned by default
-
-        Map<String, String> technicalIdFilter = new HashMap<>();
-        // Identify the technical identifier of the last change event from the stream
-        String limitationChangeEventTechnicalId = this.findFactTechnicalID(stream, technicalIdFilter);
-        if (limitationChangeEventTechnicalId != null) {
-            RedisCommands<String, String> sync = getClient().connect().sync();
-            // Execute synchronous read command (read of all stream's items after the technical identifier of the last change event)
-            List<StreamMessage<String, String>> streamItems = sync.xread(XReadArgs.StreamOffset.from(/* stream path name to read */ stream.name(), /* All history of foundEntries having an ID greater than 0-0 */ limitationChangeEventTechnicalId + "-0"));
-            Object retrievedItem;
-            if (!streamItems.isEmpty()) {
-                for (StreamMessage<String, String> item : streamItems) {
-                    if (item != null) {
-                        try {
-                            // Try to transform event into supported object type to return
-                            itemMapper.transform(item);
-                            retrievedItem = itemMapper.getResult();
-                            if (retrievedItem != null) {
-                                foundEntries.add(retrievedItem);
-                            }
-                        } catch (MappingException mpe) {
-                            // Stream entry (e.g snapshot version) that is not into filtered structure (e.g change event)
-                            // For example, entity snapshot record that shall not be retrieved as searched domain events
-                            // So ignore filtered item
-                        }
-                    }
-                }
-            }
-        }
-        return foundEntries;
+    public List<Object> readAllFrom(Stream stream, MessageMapper itemMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException {
+        return this.readAllFrom(stream, itemMapper, null);
     }
 
     /**
@@ -421,12 +407,12 @@ public class UISAdapterRedisImpl implements UISAdapter {
             resourceKeyName.append(resourceUniqueIdentifier);
 
             connection = getClient().connect(resourceKeyCodec());
-            RedisCommands<String, String> sync = connection.sync();
+            RedisHashCommands<String, String> sync = connection.sync();
 
             // Read record type structured as collection of field-value pairs
-            Map<String,String> record = sync.hgetall(resourceKeyName.toString());
+            Map<String, String> record = sync.hgetall(resourceKeyName.toString());
             String originResourceBase64StringConverted = record.get(RESOURCE_VALUE_KEY_NAME); // get origin serialized object previously stored as string
-            if (originResourceBase64StringConverted!=null && !originResourceBase64StringConverted.isEmpty()) {
+            if (originResourceBase64StringConverted != null && !originResourceBase64StringConverted.isEmpty()) {
                 // Rebind the original object
                 Optional<Serializable> convertedOriginResource = Base64StringConverter.convertFrom(originResourceBase64StringConverted);
                 if (convertedOriginResource.isPresent()) {
@@ -460,12 +446,12 @@ public class UISAdapterRedisImpl implements UISAdapter {
 
             // Create String serialized version of the origin resource value
             Serializable value = resource.value();
-            Optional<String> stringConverted = (value != null) ? Base64StringConverter.convertToString(value) : null;
+            Optional<String> stringConverted = (value != null) ? Base64StringConverter.convertToString(value) : Optional.empty();
 
             Long count = null;
-            if (stringConverted!=null && stringConverted.isPresent() && !stringConverted.get().isEmpty()) {
+            if (stringConverted != null && stringConverted.isPresent() && !stringConverted.get().isEmpty()) {
                 connection = getClient().connect(resourceKeyCodec());
-                RedisCommands<String, String> sync = connection.sync();
+                RedisHashCommands<String, String> sync = connection.sync();
 
                 // Build resource key name where to save the resource
                 StringBuilder resourceKeyName = new StringBuilder();
@@ -494,55 +480,84 @@ public class UISAdapterRedisImpl implements UISAdapter {
         }
     }
 
-    public String findFactTechnicalID(Stream stream, Map<String, String> expectedItemAttributes) throws IllegalArgumentException, UnoperationalStateException {
+    @Override
+    public List<Object> readAllAfterChangeID(Stream stream, String afterEventCommittedVersionOfOriginSubject, MessageMapper itemMapper, Identifier originSubjectIDFilter) throws IllegalArgumentException, MappingException, UnoperationalStateException {
         if (stream == null) throw new IllegalArgumentException("stream parameter is required!");
-        if (expectedItemAttributes == null || !expectedItemAttributes.isEmpty())
-            throw new IllegalArgumentException("expectedItemAttributes parameter is required!");
+        if (itemMapper == null) throw new IllegalArgumentException("itemMapper parameter is required!");
+        if (afterEventCommittedVersionOfOriginSubject == null || afterEventCommittedVersionOfOriginSubject.isEmpty())
+            throw new IllegalArgumentException("afterEventCommittedVersionOfOriginSubject parameter is required!");
+        List<Object> foundEntries = new LinkedList<>(); // empty list returned by default
+
+        // Identify the technical identifier of the last change event from the stream
+        String limitationChangeEventTechnicalId = this.findFactTechnicalID(stream, afterEventCommittedVersionOfOriginSubject);
         StatefulRedisConnection<String, String> connection = null;
         try {
             connection = getClient().connect();
-            RedisCommands<String, String> sync = connection.sync();
+            if (limitationChangeEventTechnicalId != null) {
+                RedisStreamCommands<String, String> sync = connection.sync();
+                // Execute synchronous read command (read all items from a stream within a specific Range in reverse order)
+                Range<String> range = Range.create(/* lower id */ limitationChangeEventTechnicalId, /* upper */ "+");
+                List<StreamMessage<String, String>> streamItems = sync.xrange(/* stream path name to read */ stream.name(), /* Last found entry ID -1 as the last element of the list */ range);
+
+                // Apply filtering conditions to select only the items about equals origin subject id
+                MessageSpecificationEqualsFilter filter = new MessageSpecificationEqualsFilter();
+                Map<String, String> selectionCriteria = new HashMap<>();
+                selectionCriteria.put(MessageSpecificationEqualsFilter.FilteringCriteria.ORIGIN_SUBJECT_ID_PARAM_NAME.paramName(), (originSubjectIDFilter != null) ? originSubjectIDFilter.value().toString() : null);
+                // Execute the results reduction
+                List<StreamMessage<String, String>> whereEqualOriginSubjectItems = filter.apply(streamItems, selectionCriteria, null);
+
+                Object retrievedItem;
+                for (StreamMessage<String, String> item : whereEqualOriginSubjectItems) {
+                    if (item != null) {
+                        try {
+                            // Try to transform event into supported object type to return
+                            itemMapper.transform(item);
+                            retrievedItem = itemMapper.getResult();
+                            if (retrievedItem != null) {
+                                foundEntries.add(retrievedItem);
+                            }
+                        } catch (MappingException mpe) {
+                            // Stream entry (e.g snapshot version) that is not into filtered structure (e.g change event)
+                            // For example, entity snapshot record that shall not be retrieved as searched domain events
+                            // So ignore filtered item
+                        }
+                    }
+                }
+            }
+            return foundEntries;
+        } finally {
+            if (connection != null && connection.isOpen()) {
+                connection.close();
+            }
+        }
+    }
+
+    private String findFactTechnicalID(Stream stream, String afterEventCommittedVersionOfOriginSubject) throws IllegalArgumentException, UnoperationalStateException {
+        if (stream == null) throw new IllegalArgumentException("stream parameter is required!");
+        if (afterEventCommittedVersionOfOriginSubject == null || afterEventCommittedVersionOfOriginSubject.isEmpty())
+            throw new IllegalArgumentException("afterEventCommittedVersionOfOriginSubject parameter is required!");
+        StatefulRedisConnection<String, String> connection = null;
+        try {
+            connection = getClient().connect();
+            RedisStreamCommands<String, String> sync = connection.sync();
             // Execute synchronous read command (read all items from a stream within a specific Range in reverse order)
-            Range<String> range = Range.create(/* lower */ "+", /* upper */ "-"); // TODO à verifier s'il ne faut pas inverser le + et le -
+            Range<String> range = Range.create(/* lower */ "-", /* upper */ "+");
             List<StreamMessage<String, String>> streamItems = sync.xrevrange(/* stream path name to read */ stream.name(), /* Last found entry ID -1 as the last element of the list */ range);
 
-            // From latest items stored in stream, search all items which are supporter by mapper
-            if (!streamItems.isEmpty()) {
-                String filterAttributeName, filterAttributeValue;
-                Map<String, String> itemBody;
-                for (StreamMessage<String, String> item : streamItems) {
-                    if (item != null) {
-                        itemBody = item.getBody();
-                        // It's a support item type known as the last stored by the stream
-                        boolean eligible = true;
-                        // Evaluate filtering criteria to determine if item shall be retained
-                        for (Map.Entry<String, String> criteria : expectedItemAttributes.entrySet()) {
-                            filterAttributeName = criteria.getKey();
-                            filterAttributeValue = criteria.getValue();
-                            if (filterAttributeName != null && !filterAttributeName.isEmpty() && filterAttributeValue != null && !filterAttributeValue.isEmpty()) {
-                                // Find attribute (conformity verified to be compared) name into the item
-                                String itemValue = itemBody.get(filterAttributeName);
-                                if (itemValue != null) {
-                                    // Existing attribute describing the stored object
-                                    if (!itemValue.equals(filterAttributeValue)) {
-                                        eligible = false; // A minimum one filter criteria is not satisfied, so stop the evaluation regarding other attributes
-                                        break; // Stop other filter evaluation
-                                    }
-                                } else {
-                                    // The item does not include the filter key
-                                    eligible = false;
-                                    // So it can be compared and verified like "eligible", and shall be ignored (next item shall be evaluated)
-                                    break;  // Stop other filter evaluation
-                                }
-                            } else {
-                                // Invalid and not applicable filter
-                            }
-                        }
-                        // return only item's ID that satisfy all the filtering attributes
-                        if (eligible) {
-                            // Return item's technical identifier as found more young item (latest)
+            // From latest items stored in stream, analyze found items to detect the limit domain event
+            Map<String, String> itemBody;
+            String factRecordAttributeName = IDescribedToStreamMessageTransformer.queryAttributeAboutFactRecordID(); // Attribute in message regarding fact record id (e.g change event id)
+            for (StreamMessage<String, String> item : streamItems) {
+                if (item != null) {
+                    itemBody = item.getBody();
+                    String factRecordID = itemBody.get(factRecordAttributeName); // Detect existing fact record value in message
+                    if (factRecordID != null) {
+                        // Evaluate filtering criteria to determine if item shall be retained because equals to the commit version
+                        if (afterEventCommittedVersionOfOriginSubject.equals(factRecordID)) {
+                            // This persisted message is the limit of event recorded regarding the origin subject
+                            // Read its technical identifier (automatically generated by the Redis stream)
                             return item.getId();
-                        } // else try to evaluate next stream item
+                        }
                     }
                 }
             }

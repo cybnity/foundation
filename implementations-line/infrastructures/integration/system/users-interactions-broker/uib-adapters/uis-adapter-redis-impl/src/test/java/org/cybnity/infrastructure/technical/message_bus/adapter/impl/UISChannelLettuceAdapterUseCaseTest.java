@@ -25,9 +25,9 @@ import java.util.logging.Logger;
  * This test is available for local and manual test from developer workstation because asserts relative to time observation for validation of the async messages receptions can be variant according to the hardware platform performance used during this test run.
  */
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class UISChannelLettuceAdapterUseCaseTestManual extends ContextualizedRedisActiveTestContainer {
+public class UISChannelLettuceAdapterUseCaseTest extends ContextualizedRedisActiveTestContainer {
 
-    private final Logger logger = Logger.getLogger(UISChannelLettuceAdapterUseCaseTestManual.class.getName());
+    private final Logger logger = Logger.getLogger(UISChannelLettuceAdapterUseCaseTest.class.getName());
 
     private UISAdapter adapter;
 

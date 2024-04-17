@@ -12,10 +12,8 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -61,6 +59,11 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
          */
         OCCURRED_AT;
     }
+
+    /**
+     * Commit version of this instance based on the last change identifier.
+     */
+    private String commitVersion;
 
     /**
      * Default constructor.
@@ -167,7 +170,8 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
     }
 
     /**
-     * This method implementation does not make any change on this instance, and shall be redefined by extended class to apply a change on this instance's attributes according to the type of change event detected.
+     * This method implementation only set the commit version of this instance based on the change event's identifier (considered as commit version of this instance state).
+     * It can be redefined by extended class to apply a change on this instance's attributes according to the type of change event detected.
      * A "When" handling approach method is supported by this instance type based on change type identified, that can be developed as strategy pattern of update to the targeted attribute by the change operation.
      *
      * @param change Mandatory change to apply on subject according to the change type (e.g attribute add, upgrade, delete operation).
@@ -176,7 +180,12 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
     @Override
     public void mutateWhen(DomainEvent change) throws IllegalArgumentException {
         if (change == null) throw new IllegalArgumentException("change parameter is required!");
-        // Do nothing
+        try {
+            // Set the commit version of this instance as equals to the latest change
+            setCommitVersion(change);
+        } catch (ImmutabilityException ie) {
+            logger().log(Level.SEVERE, "Impossible mutation of commitVersion attribute when history's change event identifier is unknown!", ie);
+        }
     }
 
     /**
@@ -188,20 +197,21 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
     @Override
     public final void replayEvents(EventStream history) {
         if (history != null) {
-            this.mutateWhen(history.getEvents());
+            mutateWhen(history.getEvents());
         }
     }
 
     /**
      * Read the domain events as known history of changes relative to this fact, and call the mutateWhen(...) method responsible to replay the change on this instance when event is supported.
      * Remember that the instance state is mutated from the point of the latest snapshot forward when a partial changes history range is submitted.
+     * Automatically, this method update the commitVersion of this instance with last change's identifier value (e.g considered like committed id).
      *
      * @param changes Events which shall be re-executed as committed changes on this instance. Do nothing when null or including empty events list.
      */
     protected final void mutateWhen(List<DomainEvent> changes) {
         if (changes != null) {
             for (DomainEvent evt : changes) {
-                this.mutateWhen(evt);
+                mutateWhen(evt);
             }
         }
     }
@@ -209,6 +219,7 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
     /**
      * Read the change events as known history of changes relative to this fact, and call the mutateWhen(...) method responsible to replay the change on this instance when event is supported.
      * Remember that the instance state is mutated from the point of the latest snapshot forward when a partial changes history range is submitted.
+     * Automatically, this method update the commitVersion of this instance with last change's identifier value (e.g considered like committed id).
      *
      * @param changesHistory Events which shall be re-executed as committed changes on this instance. Do nothing when null or including empty events list.
      */
@@ -236,14 +247,43 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
     /**
      * Add a change event into this instance lifecycle history.
      * Make sense to be called by any instance method that modify an attribute that allow to identify the performed change during this instance life.
+     * Automatically, this method update the commitVersion of this instance with the change's identifier value (e.g considered like committed id).
      *
      * @param change To add in history. Ignored when null.
+     * @throws ImmutabilityException When impossible read of the change identifier required to define the commit version to assign on this fact instance.
      */
-    protected final void addChangeEvent(DomainEvent change) {
+    protected final void addChangeEvent(DomainEvent change) throws ImmutabilityException {
         if (change != null) {
             // Add in history
             this.changeHistory.add(change);
+            // Set the commit version of this instance as equals to the latest change
+            setCommitVersion(change);
         }
+    }
+
+    /**
+     * Update the commit version relative to this fact.
+     * This method read the event identifier and store it as commit version when domain event's identifier is known.
+     *
+     * @param basedOn Change event that is considered like generator of commit on this instance.
+     * @throws ImmutabilityException When problem of event read.
+     */
+    protected void setCommitVersion(DomainEvent basedOn) throws ImmutabilityException {
+        if (basedOn != null) {
+            // Set the commit version of this instance as equals to the latest change
+            Identifier id = basedOn.identified();
+            if (id != null)
+                commitVersion = id.value().toString();
+        }
+    }
+
+    /**
+     * Get commit version regarding this instance.
+     *
+     * @return A version identifier equals to the latest change event identifier which modified this instance.
+     */
+    public String getCommitVersion() {
+        return String.valueOf(this.commitVersion);
     }
 
     /**
@@ -282,6 +322,8 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
         CommonChildFactImpl copy = new CommonChildFactImpl(this.parent(), ids);
         // Complete with additional attributes of this complex object
         copy.occurredAt = this.occurredAt();
+        copy.commitVersion = this.getCommitVersion();
+        copy.changeEvents().addAll(Collections.unmodifiableCollection(this.changeEvents()));
         return copy;
     }
 

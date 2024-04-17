@@ -43,6 +43,9 @@ public class StreamMessageToProcessingUnitPresenceAnnouncedTransformer implement
             // Read map entries regarding unique identifier of fact record (streams partitioning based on keys)
             //String streamEntryID = (String) messageBody.get(Stream.Specification.FACT_RECORD_ID_KEY_NAME.name());
 
+            // Read optional subject's unique identifier (e.g domain event identifier, or aggregate identifier)
+            //String originSubjectID = messageBody.get(Stream.Specification.ORIGIN_SUBJECT_ID_KEY_NAME.name());
+
             // Read the payload message equals to fact body in a JSON formatted value
             String sourceEventJSON = messageBody.get(Stream.Specification.MESSAGE_PAYLOAD_KEY_NAME.name());
 

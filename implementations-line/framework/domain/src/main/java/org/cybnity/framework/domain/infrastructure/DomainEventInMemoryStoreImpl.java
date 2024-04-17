@@ -2,6 +2,7 @@ package org.cybnity.framework.domain.infrastructure;
 
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.DomainEvent;
+import org.cybnity.framework.domain.ValueObject;
 import org.cybnity.framework.domain.model.EventRecord;
 import org.cybnity.framework.domain.model.EventStore;
 import org.cybnity.framework.domain.model.EventStream;
@@ -54,7 +55,13 @@ public class DomainEventInMemoryStoreImpl extends EventStore {
     }
 
     @Override
+    public ValueObject<String> snapshotVersionsStorageNamespace() {
+        return null; // Memory space
+    }
+
+    @Override
     public void freeResources() {
+        registries.clear();
     }
 
     @Override

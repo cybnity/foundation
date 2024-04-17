@@ -2,18 +2,16 @@ package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapp
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cybnity.framework.domain.IDescribed;
-import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.ObjectMapperBuilder;
-import org.cybnity.framework.domain.model.CommonChildFactImpl;
-import org.cybnity.framework.immutable.*;
+import org.cybnity.framework.domain.event.HydrationAttributeProvider;
+import org.cybnity.framework.immutable.IdentifiableFact;
+import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MappingException;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.Stream;
 
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Mapper of data structure between event and Map<String, String> type.
@@ -34,7 +32,7 @@ public class IDescribedToStreamMessageTransformer implements MessageMapper {
         if (!IDescribed.class.isAssignableFrom(origin.getClass()))
             throw new IllegalArgumentException("Origin parameter type is not supported by this mapper!");
         try {
-            IDescribed source = (IDescribed) origin;
+            IDescribed source = (IDescribed) origin; // can be a fact entity (e.g command, domain event) or an entity (e.g domain aggregate instance)
             // Delete potential previous prepared result
             result = null;
 
@@ -48,43 +46,65 @@ public class IDescribedToStreamMessageTransformer implements MessageMapper {
             // Create JSON version of the original event including all its internal attributes
             String sourceEventJSON = domainObjectMapper.writeValueAsString(source);
 
+            // Prepare a target type of instance
+            Map<String, String> transformedAs = new HashMap<>();
+
+            // Map entry regarding the payload message equals to fact body in a JSON formatted value
+            transformedAs.put(queryAttributeAboutFactBody(), sourceEventJSON);
+
             // Prepare a fact record structured to manage the persistence state of the origin event
             // with specific defined fact's identifier allowing streams partitioning based on keys
-
-            // Basis identifier allowable to the fact record
-            // Define an entry identifier into the stream (key to distribute the partitions based on specific entry ID for each stream)
-            Identifier streamEntryID = new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(),
-                    /* identifier as performed transaction number */ UUID.randomUUID().toString());
-
-            if (IReferenceable.class.isAssignableFrom(origin.getClass())) {
-                IReferenceable sourceRef = (IReferenceable) source;
-                EntityReference ref = sourceRef.reference();
-                if (ref != null) {
-                    Entity factPredecessorID = ref.getEntity();
-                    if (factPredecessorID != null) {
-                        // Prepare combined identifiers
-                        LinkedHashSet<Identifier> factRecordCombinedIdentificationSources = new LinkedHashSet<>();
-                        // Add technical identifier of the stream entry to combine with the fact record predecessor id
-                        factRecordCombinedIdentificationSources.add(streamEntryID);
-                        // Create a child fact representing a derived event identified by auto-generated combined uid usable by stream partitioning
-                        ChildFact factRecord = new CommonChildFactImpl(/* have origin event predecessor */factPredecessorID, factRecordCombinedIdentificationSources);
-                        streamEntryID = factRecord.identified(); // Combined uid in place of basis fact record id
-                    }
+            if (IdentifiableFact.class.isAssignableFrom(source.getClass())) {
+                IdentifiableFact sourceRef = (IdentifiableFact) source;
+                Identifier refID = sourceRef.identified();
+                if (refID!=null) {
+                    // Map entry regarding unique identifier of fact record (streams partitioning based on keys)
+                    transformedAs.put(queryAttributeAboutFactRecordID(), refID.value().toString());
                 }
             }
 
-            // Prepare a target type of instance
-            Map<String, String> transformedAs = new HashMap<>();
-            // Map entry regarding unique identifier of fact record (streams partitioning based on keys)
-            transformedAs.put(Stream.Specification.FACT_RECORD_ID_KEY_NAME.name(), streamEntryID.value().toString());
-            // Map entry regarding the payload message equals to fact body in a JSON formatted value
-            transformedAs.put(Stream.Specification.MESSAGE_PAYLOAD_KEY_NAME.name(), sourceEventJSON);
+            // Evaluate if it's a fact regarding an origin domain object to reference in prepared result
+            if (HydrationAttributeProvider.class.isAssignableFrom(origin.getClass())) {
+                HydrationAttributeProvider hydrationOriginObjectContainer = (HydrationAttributeProvider) origin;
+                Identifier factOriginSubjectId = hydrationOriginObjectContainer.changeSourceIdentifier();
+                if (factOriginSubjectId != null) {
+                    // Map entry regarding unique identifier of origin subject (e.g domain event identifier, or aggregate identifier)
+                    transformedAs.put(queryAttributeAboutOriginSubjectID(), factOriginSubjectId.value().toString());
+                }
+            }
 
             // Update the prepared result
             result = transformedAs;
         } catch (Exception e) {
             throw new MappingException(e);
         }
+    }
+
+    /**
+     * Get the key name defining a fact record identifier queryable on a IDescribed message mapped version.
+     *
+     * @return A key name.
+     */
+    public static String queryAttributeAboutFactRecordID() {
+        return Stream.Specification.FACT_RECORD_ID_KEY_NAME.name();
+    }
+
+    /**
+     * Get the key name defining a IDescribed object's JSON payload as readable on its message mapped version.
+     *
+     * @return A key name.
+     */
+    public static String queryAttributeAboutFactBody() {
+        return Stream.Specification.MESSAGE_PAYLOAD_KEY_NAME.name();
+    }
+
+    /**
+     * Get the key name defining a IDescribed object's logical identifier as queryable on its message mapped version.
+     *
+     * @return A key name.
+     */
+    public static String queryAttributeAboutOriginSubjectID() {
+        return Stream.Specification.ORIGIN_SUBJECT_ID_KEY_NAME.name();
     }
 
     /**

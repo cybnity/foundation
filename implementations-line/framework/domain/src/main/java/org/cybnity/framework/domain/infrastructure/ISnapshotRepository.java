@@ -1,4 +1,4 @@
-package org.cybnity.framework.domain;
+package org.cybnity.framework.domain.infrastructure;
 
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.model.ISnapshot;
@@ -10,6 +10,11 @@ import org.cybnity.framework.domain.model.ISnapshot;
  * can reside in an Event Stream as specific versions.
  */
 public interface ISnapshotRepository {
+
+    /**
+     * Stop allocated resources specific to this repository (e.g database access...).
+     */
+    public void freeResources();
 
     /**
      * Find latest snapshot of a domain object identifier (subject that have been source of snapshot).

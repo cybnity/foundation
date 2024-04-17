@@ -5,10 +5,14 @@ import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IDescribed;
+import org.cybnity.framework.domain.IdentifierStringBased;
+import org.cybnity.framework.domain.ValueObject;
+import org.cybnity.framework.domain.infrastructure.ISnapshotRepository;
 import org.cybnity.framework.domain.model.EventStore;
 import org.cybnity.framework.domain.model.EventStream;
 import org.cybnity.framework.domain.model.IDomainModel;
 import org.cybnity.framework.domain.model.ISnapshot;
+import org.cybnity.framework.immutable.BaseConstants;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MappingException;
@@ -22,7 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Redis store of events.
+ * Redis store of resources.
  *
  * @author olivier
  */
@@ -34,9 +38,9 @@ public class DomainResourceStoreRedisImpl extends EventStore {
     private final UISAdapter adapter;
 
     /**
-     * Snapshots repository.
+     * Optional activated Snapshots repository.
      */
-    private final SnapshotRepositoryRedisImpl snapshotsRepository;
+    private final ISnapshotRepository snapshotsRepository;
 
     /**
      * Domain which is owner of the persistent object managed by this store.
@@ -49,9 +53,9 @@ public class DomainResourceStoreRedisImpl extends EventStore {
     private final PersistentObjectNamingConvention.NamingConventionApplicability managedObjectCategoryLabel;
 
     /**
-     * Name space where the snapshots are stored
+     * Name space where the snapshots could be stored.
      */
-    private final String snapshotsStorageNameSpace;
+    protected String snapshotsStorageNameSpace;
 
     /**
      * Default constructor.
@@ -59,11 +63,11 @@ public class DomainResourceStoreRedisImpl extends EventStore {
      * @param ctx                   Mandatory context.
      * @param dataOwner             Mandatory domain which is owner of the persisted object types into the store.
      * @param managedObjectCategory Mandatory type of convention applicable for the type of object which is managed by this store.
-     * @param managedObjectType     Mandatory type of object persisted and managed by this store (e.g that can be optionally able to be subject to snapshot version).
+     * @param snapshotsCapability   Optional snapshots repository able to be used by this store helping to optimize events rehydration.
      * @throws UnoperationalStateException When impossible instantiation of UISAdapter based on context parameter.
      * @throws IllegalArgumentException    When any mandatory parameter is missing.
      */
-    protected DomainResourceStoreRedisImpl(IContext ctx, IDomainModel dataOwner, PersistentObjectNamingConvention.NamingConventionApplicability managedObjectCategory, Class<?> managedObjectType) throws UnoperationalStateException, IllegalArgumentException {
+    protected DomainResourceStoreRedisImpl(IContext ctx, IDomainModel dataOwner, PersistentObjectNamingConvention.NamingConventionApplicability managedObjectCategory, ISnapshotRepository snapshotsCapability) throws UnoperationalStateException, IllegalArgumentException {
         super();
         if (ctx == null) throw new IllegalArgumentException("Context parameter is required!");
         this.adapter = new UISAdapterRedisImpl(ctx);
@@ -72,10 +76,11 @@ public class DomainResourceStoreRedisImpl extends EventStore {
         if (managedObjectCategory == null)
             throw new IllegalArgumentException("The naming convention parameter is required!");
         this.managedObjectCategoryLabel = managedObjectCategory;
-        // Prepare a namespace usable for snapshots item storage (for example ac:tenant:snapshots)
-        snapshotsStorageNameSpace = PersistentObjectNamingConvention.buildNamespace(managedObjectCategoryLabel, storeOwner.domainName(), "snapshots"); // Define store input label (e.g stream dedicated to an object resource)
-        // Prepare a snapshots repository for the domain object type
-        this.snapshotsRepository = new SnapshotRepositoryRedisImpl(ctx);
+        // Optional snapshots repository for the domain object type
+        this.snapshotsRepository = snapshotsCapability;
+        if (snapshotsRepository != null)
+            // Prepare a namespace usable for snapshots item storage (for example ac:tenant:snapshots)
+            snapshotsStorageNameSpace = PersistentObjectNamingConvention.buildNamespace(managedObjectCategoryLabel, storeOwner.domainName(), "snapshots"); // Define store input label (e.g stream dedicated to an object resource)
     }
 
     /**
@@ -84,19 +89,37 @@ public class DomainResourceStoreRedisImpl extends EventStore {
      * @param ctx                   Mandatory context.
      * @param dataOwner             Mandatory domain which is owner of the persisted object types into the store.
      * @param managedObjectCategory Mandatory type of convention applicable for the type of object which is managed by this store.
-     * @param managedObjectType     Mandatory type of object persisted and managed by this store.
+     * @param snapshotsCapability   Optional snapshots repository able to be used by this store helping to optimize events rehydration.
      * @return An instance ensuring the persistence of events.
      * @throws UnoperationalStateException When impossible instantiation of adapter to Redis persistence system.
      * @throws IllegalArgumentException    When any mandatory parameter is missing.
      */
-    public static EventStore instance(IContext ctx, IDomainModel dataOwner, PersistentObjectNamingConvention.NamingConventionApplicability managedObjectCategory, Class<?> managedObjectType) throws UnoperationalStateException, IllegalArgumentException {
-        return new DomainResourceStoreRedisImpl(ctx, dataOwner, managedObjectCategory, managedObjectType);
+    public static EventStore instance(IContext ctx, IDomainModel dataOwner, PersistentObjectNamingConvention.NamingConventionApplicability managedObjectCategory, ISnapshotRepository snapshotsCapability) throws UnoperationalStateException, IllegalArgumentException {
+        return new DomainResourceStoreRedisImpl(ctx, dataOwner, managedObjectCategory, snapshotsCapability);
+    }
+
+    @Override
+    public ValueObject<String> snapshotVersionsStorageNamespace() {
+        if (snapshotsRepository != null && snapshotsStorageNameSpace != null) {
+            // Prepare immutable version of the namespace
+            return new SnapshotSpaceName(snapshotsStorageNameSpace);
+        }
+        return null;
     }
 
     @Override
     public void freeResources() {
         // Freedom of resources allocated by the adapter
         this.adapter.freeUpResources();
+    }
+
+    /**
+     * Get snapshots providers when existing to optimize the rehydration of store's items.
+     *
+     * @return Snapshots management provider, or null.
+     */
+    protected ISnapshotRepository snapshotsRepository() {
+        return this.snapshotsRepository;
     }
 
     /**
@@ -125,15 +148,14 @@ public class DomainResourceStoreRedisImpl extends EventStore {
         // Define the mapper supporting the event record serialization
         MessageMapper mapper = getDomainEventSerializationMapper();
 
-        // Define the stream resource dedicated to the domain object
-        Stream persistentStream = this.persistentStream(domainSubjectId.value().toString());
+        // Define the stream resource dedicated to the domain object type
+        Stream persistentStream = this.persistentStream(null);
 
         // --- PREPARE A STREAM ENTRY FOR EACH CHANGE EVENT RELATIVE TO THE SUBJECT IDENTIFIED ---
         for (DomainEvent changeEvt : changes) {
             try {
                 // Add the event records to the end of registry stream
-                // regarding all the same event record type version
-                // and about the same domain object identifier
+                // (regarding all the same event record type version, about the same domain object identifier)
                 adapter.append(changeEvt, persistentStream, mapper);
             } catch (MappingException me) {
                 // Unsupported type of event
@@ -150,28 +172,26 @@ public class DomainResourceStoreRedisImpl extends EventStore {
     /**
      * Get the stream resource used as persistent system by this store.
      *
-     * @param domainSubjectId Mandatory identifier of the dedicated domain object stream identification mean.
+     * @param domainSubjectId Optional identifier of the dedicated domain object stream identification mean.
      * @return A stream (according its identifier, for example ac:tenant:IYUTFGX754FDFGH).
      * @throws IllegalArgumentException When mandatory parameter is missing.
      */
     protected Stream persistentStream(String domainSubjectId) throws IllegalArgumentException {
-        if (domainSubjectId == null || domainSubjectId.isEmpty())
-            throw new IllegalArgumentException("domainSubjectId parameter is required!");
-        // Define the stream resource dedicated to the domain object (according its identifier, for example ac:tenant:IYUTFGX754FDFGH)
+        // Define the stream resource dedicated to the domain object (according its identifier when defined, for example ac:tenant:IYUTFGX754FDFGH)
         // and prepare a label as unique identifier in the store for the event to store
-        return new Stream(PersistentObjectNamingConvention.buildComponentName(managedObjectCategoryLabel, storeOwner.domainName(), domainSubjectId)); // Define store input label (e.g stream dedicated to an object resource)
+        return new Stream(PersistentObjectNamingConvention.buildComponentName(managedObjectCategoryLabel, storeOwner.domainName(), domainSubjectId)); // Define store input label (e.g common stream storing multiple identifiable aggregates; or dedicated stream to an identified aggregate)
     }
 
     @Override
     public EventStream loadEventStream(String domainSubjectId) throws IllegalArgumentException, UnoperationalStateException {
-        // Define the stream resource dedicated to the domain object
-        Stream persistentStream = this.persistentStream(domainSubjectId);
+        // Define the stream resource dedicated to the domain object type
+        Stream persistentStream = this.persistentStream(null);
 
         LinkedList<DomainEvent> foundEventDomainHistory = new LinkedList<>();
         EventStream domainObjEventsHistory = new EventStream();
         try {
             // Search any stream item equals to event type
-            List<Object> foundStreamItems = adapter.readAllFrom(persistentStream,/* mapper supporting the de-serialization*/ getDomainEventDeserializationMapper());
+            List<Object> foundStreamItems = adapter.readAllFrom(persistentStream,/* mapper supporting the de-serialization*/ getDomainEventDeserializationMapper(), new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), domainSubjectId));
             DomainEvent historizedEvent;
             for (Object streamHistoryItem : foundStreamItems) {
                 if (streamHistoryItem != null && DomainEvent.class.isAssignableFrom(streamHistoryItem.getClass())) {
@@ -199,16 +219,16 @@ public class DomainResourceStoreRedisImpl extends EventStore {
         LinkedList<DomainEvent> foundEventDomainHistory = new LinkedList<>();
         EventStream domainObjEventsHistory = new EventStream();
         // Search technical identifier of the latest snapshot usable as limit to search about all domain events relative to the snapshot instance
-        ISnapshot snapshotItem = snapshotsRepository.getLatestSnapshotById(domainSubjectId, /* storage area into the space*/ snapshotsStorageNameSpace);
+        ISnapshot snapshotItem = (snapshotsRepository() != null) ? snapshotsRepository().getLatestSnapshotById(domainSubjectId, /* storage area into the space*/ snapshotsStorageNameSpace) : /* not supported by snapshots provider */ null;
         if (snapshotItem != null) {
             // Identify the identifier of the origin object last change event, known as commit id
             String lastChangeEventId = snapshotItem.commitVersion();
             if (lastChangeEventId != null && !lastChangeEventId.isEmpty()) {
-                // Define the stream resource dedicated to the domain object
-                Stream persistentStream = this.persistentStream(domainSubjectId);
+                // Define the stream resource dedicated to the domain object type
+                Stream persistentStream = this.persistentStream(null);
                 try {
                     // Search all historized change events after the origin's last change event ID
-                    List<Object> foundStreamItems = adapter.readAllAfterChangeID(persistentStream, lastChangeEventId,/* mapper supporting the de-serialization*/ getDomainEventDeserializationMapper());
+                    List<Object> foundStreamItems = adapter.readAllAfterChangeID(persistentStream, lastChangeEventId,/* mapper supporting the de-serialization*/ getDomainEventDeserializationMapper(), new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), domainSubjectId));
 
                     DomainEvent historizedEvent;
                     for (Object streamHistoryItem : foundStreamItems) {
@@ -238,6 +258,5 @@ public class DomainResourceStoreRedisImpl extends EventStore {
     public EventStream loadEventStream(String domainSubjectId, int skipEvents, int maxCount) throws IllegalArgumentException, UnoperationalStateException {
         throw new IllegalArgumentException("to implement!");
     }
-
 
 }

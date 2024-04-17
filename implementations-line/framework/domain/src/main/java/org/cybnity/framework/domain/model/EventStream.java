@@ -76,6 +76,16 @@ public class EventStream implements Unmodifiable, Serializable {
         this.events = events;
     }
 
+    /**
+     * Get the latest event.
+     *
+     * @return An event or null when none events are existing in this stream.
+     */
+    public DomainEvent latest() {
+        // Retrieve the last element via Java 8 stream api
+        return getEvents().stream().reduce((first, second) -> second).orElse(null);
+    }
+
     @Override
     public Serializable immutable() throws ImmutabilityException {
         List<DomainEvent> origins = new ArrayList<>();

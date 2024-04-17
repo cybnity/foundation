@@ -12,6 +12,7 @@ public class Stream implements INaming {
 
     /**
      * Type of attribute allowing to define a stream specification.
+     * A specification can be useful for indexing of stream items.
      */
     public enum Specification {
         /**
@@ -23,6 +24,11 @@ public class Stream implements INaming {
          * Key name regarding the identification of any fact record appended, stored and retrieved by a Stream.
          */
         FACT_RECORD_ID_KEY_NAME,
+
+        /**
+         * Key name regarding the identification of any origin subject (e.g domain aggregate identifier), stored and retrieved by a Stream.
+         */
+        ORIGIN_SUBJECT_ID_KEY_NAME,
 
         /**
          * Key name regarding an information (e.g event payload) regarding any fact record stored, and retrieved by a Stream.

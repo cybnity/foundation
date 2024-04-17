@@ -1,7 +1,6 @@
 package org.cybnity.framework.domain.infrastructure;
 
 import org.cybnity.framework.UnoperationalStateException;
-import org.cybnity.framework.domain.ISnapshotRepository;
 import org.cybnity.framework.domain.model.*;
 import org.cybnity.framework.immutable.ImmutabilityException;
 
@@ -53,10 +52,14 @@ public abstract class SnapshotProcessEventStreamPersistenceBased extends Abstrac
         if (stream != null) {
             // Get re-hydrated version of instance type based on change events history
             HydrationCapability hydratedInstance = getRehydratedInstanceFrom(stream);
+
+            // Detect which type of streamed object is eligible to snapshot support
             if (Aggregate.class.isAssignableFrom(hydratedInstance.getClass())) {
                 try {
-                    // Save full state version of instance into the stream store
-                    snapshotsPersistenceSystem.saveSnapshot(new ConcreteSnapshot((Aggregate) hydratedInstance), /* namespace of snapshots */ snapshotsNamespace());
+                    Aggregate agr = (Aggregate) hydratedInstance;
+                    if (agr.getCommitVersion() != null)
+                        // Save full state version of instance into the stream store
+                        snapshotsPersistenceSystem.saveSnapshot(new ConcreteSnapshot(agr), /* namespace of snapshots */ snapshotsNamespace());
                 } catch (ImmutabilityException ie) {
                     throw new IllegalArgumentException(ie);
                 }

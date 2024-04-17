@@ -1,10 +1,11 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.ObjectMapperBuilder;
 import org.cybnity.framework.domain.model.EventRecord;
-import org.cybnity.framework.immutable.BaseConstants;
+import org.cybnity.framework.immutable.Entity;
+import org.cybnity.framework.immutable.EntityReference;
+import org.cybnity.framework.immutable.IReferenceable;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MappingException;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.MessageMapper;
@@ -12,7 +13,6 @@ import org.cybnity.infrastructure.technical.message_bus.adapter.api.Stream;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Mapper of data structure between event and Map<String, String> type.
@@ -47,20 +47,30 @@ public class EventRecordToStreamMessageTransformer implements MessageMapper {
             // Create JSON version of the original event including all its internal attributes
             String sourceEventJSON = domainObjectMapper.writeValueAsString(source);
 
-            // Prepare a fact record structured to manage the persistence state of the origin event
-            // with specific defined fact's identifier allowing streams partitioning based on keys
-
-            // Basis identifier allowable to the fact record
-            // Define an entry identifier into the stream (key to distribute the partitions based on specific entry ID for each stream)
-            Identifier streamEntryID = new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(),
-                    /* identifier as performed transaction number */ UUID.randomUUID().toString());
-
             // Prepare a target type of instance
             Map<String, String> transformedAs = new HashMap<>();
-            // Map entry regarding unique identifier of fact record (streams partitioning based on keys)
-            transformedAs.put(Stream.Specification.FACT_RECORD_ID_KEY_NAME.name(), streamEntryID.value().toString());
             // Map entry regarding the payload message equals to fact body in a JSON formatted value
             transformedAs.put(Stream.Specification.MESSAGE_PAYLOAD_KEY_NAME.name(), sourceEventJSON);
+
+            Identifier originSubjectId = null;
+            if (source.body() != null && IReferenceable.class.isAssignableFrom(source.body().getClass())) {
+                IReferenceable originSubjectOfFactRef = (IReferenceable) source.body();
+                EntityReference ref = originSubjectOfFactRef.reference();
+                if (ref != null) {
+                    Entity factBodyOriginObjectID = ref.getEntity();
+                    if (factBodyOriginObjectID != null) {
+                        // Read identifier of origin subject
+                        originSubjectId = factBodyOriginObjectID.identified();
+                        // Map entry regarding unique identifier of subject (e.g domain event identifier, or aggregate identifier)
+                        transformedAs.put(Stream.Specification.ORIGIN_SUBJECT_ID_KEY_NAME.name(), originSubjectId.value().toString());
+                    }
+                }
+            }
+
+            // Basis identifier allowable to the fact record
+            if (source.getFactId() != null)
+                // Map entry regarding unique identifier of fact record (streams partitioning based on keys)
+                transformedAs.put(Stream.Specification.FACT_RECORD_ID_KEY_NAME.name(), source.getFactId().toString());
 
             // Update the prepared result
             result = transformedAs;

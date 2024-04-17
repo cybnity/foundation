@@ -2,6 +2,7 @@ package org.cybnity.framework.domain.model;
 
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.DomainEvent;
+import org.cybnity.framework.domain.ValueObject;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.support.annotation.Requirement;
@@ -17,6 +18,13 @@ import java.util.List;
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
 public interface IEventStore {
+
+    /**
+     * Get a resource name regarding the storage space where snapshot versions are managed by this store.
+     *
+     * @return A name space or null (when none snapshot capability is activated).
+     */
+    public ValueObject<String> snapshotVersionsStorageNamespace();
 
     /**
      * Stop allocated resources specific to this store (e.g listener of stream, database access...).

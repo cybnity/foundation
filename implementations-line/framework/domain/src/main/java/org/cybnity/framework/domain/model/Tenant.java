@@ -11,10 +11,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -410,11 +407,18 @@ public class Tenant extends Aggregate {
     @Override
     public Serializable immutable() throws ImmutabilityException {
         LinkedHashSet<Identifier> ids = new LinkedHashSet<>(this.identifiers());
-        Tenant tenant = new Tenant(parent(), ids);
-        tenant.occurredAt = this.occurredAt();
-        tenant.label = this.label();
-        tenant.activityStatus = this.status();
-        return tenant;
+        Tenant copy = new Tenant(parent(), ids);
+        copy.occurredAt = this.occurredAt();
+        List<DomainEvent> history = this.changeEvents();
+        copy.changeEvents().addAll(Collections.unmodifiableCollection(history));
+
+        DomainEvent latestChange = history.stream().reduce((first, second) -> second).orElse(null);
+        if (latestChange != null)
+            copy.setCommitVersion(latestChange);
+
+        copy.label = this.label();
+        copy.activityStatus = this.status();
+        return copy;
     }
 
     /**

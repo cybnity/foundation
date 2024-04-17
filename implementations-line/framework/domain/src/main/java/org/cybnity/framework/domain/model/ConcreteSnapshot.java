@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.persistence.FactRecord;
@@ -15,7 +14,6 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.time.OffsetDateTime;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -42,7 +40,14 @@ public class ConcreteSnapshot extends FactRecord implements ISnapshot {
     /**
      * Commit identifier equals to the last change id applied to the source object.
      */
+    @JsonProperty
     private String commitVersion;
+
+    /**
+     * Identifier of the origin source object (e.g aggregate identifier) which is subject of the snapshot fact.
+     */
+    @JsonProperty
+    private String versionedObjectUID;
 
     /**
      * Constructor usable by binding framework allowing mapping of instance.
@@ -67,12 +72,13 @@ public class ConcreteSnapshot extends FactRecord implements ISnapshot {
         if (id == null || id.value() == null) {
             throw new IllegalArgumentException("Only identifiable originFullStateObject is eligible to snapshot. Identifier is required!");
         }
-        // Define the commit version of the snapshot based on last change of the orign object
-        List<DomainEvent> lastChanges = originFullStateObject.changeEvents();
-        if (lastChanges.isEmpty())
-            throw new IllegalArgumentException("A minimum one change event is required to identify the commit version of the aggregate!");
-        DomainEvent originObjLastChange = lastChanges.get(lastChanges.size() - 1); // Read the last change event
-        commitVersion = originObjLastChange.identified().value().toString();
+        // Define the snapshot subject identifier
+        this.versionedObjectUID = id.value().toString();
+
+        // Define the commit version of the snapshot based on last change of the origin object
+        commitVersion = originFullStateObject.getCommitVersion();
+        if (commitVersion == null || commitVersion.isEmpty())
+            throw new IllegalArgumentException("An aggregate's commit version is required to identify the commit version of the aggregate snapshot!");
     }
 
     @Override
@@ -113,10 +119,8 @@ public class ConcreteSnapshot extends FactRecord implements ISnapshot {
     @JsonIgnore
     @Override
     public String versionedObjectUID() {
-        Integer factUID = super.getFactId();
-        if (factUID != null)
-            return super.getFactId().toString();
-        return null;
+        // Read the origin object identifier which is subject of this snapshot
+        return this.versionedObjectUID;
     }
 
     /**
@@ -198,4 +202,5 @@ public class ConcreteSnapshot extends FactRecord implements ISnapshot {
     protected void setFactOccurredAt(OffsetDateTime factOccurredAt) {
         super.setFactOccurredAt(factOccurredAt);
     }
+
 }

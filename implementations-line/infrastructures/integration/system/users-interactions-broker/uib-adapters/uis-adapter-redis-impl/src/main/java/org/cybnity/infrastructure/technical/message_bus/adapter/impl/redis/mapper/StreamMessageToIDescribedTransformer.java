@@ -38,8 +38,11 @@ public class StreamMessageToIDescribedTransformer implements MessageMapper {
             // Read map entries regarding unique identifier of fact record (streams partitioning based on keys)
             //String streamEntryID = (String) messageBody.get(Stream.Specification.FACT_RECORD_ID_KEY_NAME.name());
 
+            // Read optional subject's unique identifier (e.g domain event identifier, or aggregate identifier)
+            //String originSubjectID = messageBody.get(Stream.Specification.ORIGIN_SUBJECT_ID_KEY_NAME.name());
+
             // Read the payload message equals to fact body in a JSON formatted value
-            String sourceEventJSON = (String) messageBody.get(Stream.Specification.MESSAGE_PAYLOAD_KEY_NAME.name());
+            String sourceEventJSON = messageBody.get(Stream.Specification.MESSAGE_PAYLOAD_KEY_NAME.name());
 
             // Select JSON transformation mapper allowing JSON deserialization of message payload
             ObjectMapper mapper = new ObjectMapperBuilder()

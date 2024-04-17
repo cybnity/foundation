@@ -3,6 +3,7 @@ package org.cybnity.infrastructure.technical.message_bus.adapter.api;
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.IDescribed;
 import org.cybnity.framework.domain.SerializedResource;
+import org.cybnity.framework.immutable.Identifier;
 
 import java.util.Collection;
 import java.util.List;
@@ -135,25 +136,37 @@ public interface UISAdapter {
     public List<Object> readAllFrom(Stream stream, MessageMapper itemMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException;
 
     /**
+     * Read all arriving items from one stream identified by its name.
+     *
+     * @param stream                Mandatory definition of stream to read.
+     * @param itemMapper            Mandatory mapper regarding the items supported by the caller that shall be transformed for each item type read from stream.
+     * @param originSubjectIDFilter Optional identifier of origin subject that shall be filtered regarding the items to return.
+     * @return A list of items existing from stream, or empty list.
+     * @throws IllegalArgumentException    When any mandatory parameter is missing.
+     * @throws MappingException            When event transformation for data structure supported by the recipient is failed.
+     * @throws UnoperationalStateException When system access via adapter is in failure.
+     */
+    public List<Object> readAllFrom(Stream stream, MessageMapper itemMapper, Identifier originSubjectIDFilter) throws IllegalArgumentException, MappingException, UnoperationalStateException;
+
+    /**
      * Read the items from one stream identified by its name.
      *
-     * @param stream                 Mandatory definition of stream to read.
-     * @param afterChangeEventIdentifier Mandatory identifier of a change event (e.g ID of DomainEvent relative to a last modification performed onto an Aggregate) which limit the load of anterior events.
-     * @param itemMapper Mandatory mapper regarding the items supported by the caller that shall be transformed for each item type read from stream.
+     * @param stream                     Mandatory definition of stream to read.
+     * @param afterEventCommittedVersionOfOriginSubject Mandatory identifier of a change event (e.g ID of DomainEvent relative to a modification performed onto an Aggregate) which limit the load of anterior events.
+     * @param itemMapper                 Mandatory mapper regarding the items supported by the caller that shall be transformed for each item type read from stream.
+     * @param originSubjectIDFilter      Optional identifier of origin subject that shall be filtered regarding the items to return.
      * @return Found items or empty list.
      * @throws IllegalArgumentException    When any mandatory parameter is missing.
      * @throws MappingException            When event transformation for data structure supported by the recipient is failed.
      * @throws UnoperationalStateException When system access via adapter is in failure.
      */
-    public List<Object> readAllAfterChangeID(Stream stream, String afterChangeEventIdentifier, MessageMapper itemMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException;
-
-    //public Object readSnapshotByID(Stream stream, String snapshotTechnicalIdentifier) throws IllegalArgumentException, UnoperationalStateException;
+    public List<Object> readAllAfterChangeID(Stream stream, String afterEventCommittedVersionOfOriginSubject, MessageMapper itemMapper, Identifier originSubjectIDFilter) throws IllegalArgumentException, MappingException, UnoperationalStateException;
 
     /**
      * Find a serialized resource from the space according to its unique logical identifier.
      *
      * @param resourceUniqueIdentifier Mandatory logical identifier (e.g business object UID as resource key) to find.
-     * @param resourceNamespaceLabel    Optional namespace of the resource to find.
+     * @param resourceNamespaceLabel   Optional namespace of the resource to find.
      * @return A found resource or null.
      * @throws IllegalArgumentException    When any mandatory parameter is missing.
      * @throws UnoperationalStateException When system access via adapter is in failure.
@@ -163,8 +176,8 @@ public interface UISAdapter {
     /**
      * Store a serialized resource identified.
      *
-     * @param resource                 Mandatory resource to save including mandatory identifier.
-     * @param resourceNamespaceLabel    Optional namespace of the resource to find.
+     * @param resource               Mandatory resource to save including mandatory identifier.
+     * @param resourceNamespaceLabel Optional namespace of the resource to find.
      * @throws IllegalArgumentException    When any mandatory parameter is missing.
      * @throws UnoperationalStateException When system access via adapter is in failure.
      */
