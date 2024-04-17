@@ -51,19 +51,22 @@ public abstract class ProcessingUnitRecipientsManagerObserver implements Channel
      * @param event To treat.
      */
     @Override
-    public void notify(IDescribed event) {
-        if (event != null && event.type() != null) {
-            // Identify the type of supported event
-            String factEventTypeName = (event.type().value() != null && !event.type().value().isEmpty()) ? event.type().value() : null;
-            if (factEventTypeName != null) {
-                if (CollaborationEventType.PROCESSING_UNIT_PRESENCE_ANNOUNCE_REQUESTED.name().equals(factEventTypeName)) {
-                    // Observed routing path manager is requesting a renewal of routes declarations
-                    // Announce the routes supported
-                    announcePresence(event);
-                } else if (CollaborationEventType.PROCESSING_UNIT_ROUTING_PATHS_REGISTERED.name().equals(factEventTypeName)) {
-                    // A previous routing path declaration have been registered by the recipients manager (e.g domain IO Gateway)
-                    // It can be the routes declaration by this or by other feature components
-                    acknowledgedRoutingPath(event);
+    public void notify(Object event) {
+        if (event != null && IDescribed.class.isAssignableFrom(event.getClass())) {
+            IDescribed evt = (IDescribed) event;
+            if (evt.type() != null) {
+                // Identify the type of supported event
+                String factEventTypeName = (evt.type().value() != null && !evt.type().value().isEmpty()) ? evt.type().value() : null;
+                if (factEventTypeName != null) {
+                    if (CollaborationEventType.PROCESSING_UNIT_PRESENCE_ANNOUNCE_REQUESTED.name().equals(factEventTypeName)) {
+                        // Observed routing path manager is requesting a renewal of routes declarations
+                        // Announce the routes supported
+                        announcePresence(evt);
+                    } else if (CollaborationEventType.PROCESSING_UNIT_ROUTING_PATHS_REGISTERED.name().equals(factEventTypeName)) {
+                        // A previous routing path declaration have been registered by the recipients manager (e.g domain IO Gateway)
+                        // It can be the routes declaration by this or by other feature components
+                        acknowledgedRoutingPath(evt);
+                    }
                 }
             }
         }

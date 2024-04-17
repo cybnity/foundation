@@ -106,7 +106,7 @@ public class ProcessingUnitAnnouncesObserver implements ChannelObserver, IEventP
      * @param event Treated event. When presence status is not defined by the ProcessingUnitPresenceAnnounced event received, the event is ignored.
      */
     @Override
-    public void notify(IDescribed event) {
+    public void notify(Object event) {
         if (event instanceof ProcessingUnitPresenceAnnounced) {
             ProcessingUnitPresenceAnnounced puEvent = (ProcessingUnitPresenceAnnounced) event;
             Attribute presenceState = puEvent.presenceStatus();

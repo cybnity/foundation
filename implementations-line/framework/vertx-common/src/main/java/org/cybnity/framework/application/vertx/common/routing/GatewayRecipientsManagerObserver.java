@@ -78,4 +78,8 @@ public class GatewayRecipientsManagerObserver extends ProcessingUnitRecipientsMa
         }
     }
 
+    @Override
+    public void notify(Object o) {
+
+    }
 }

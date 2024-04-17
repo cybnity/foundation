@@ -12,7 +12,7 @@ import org.cybnity.framework.domain.event.ProcessingUnitPresenceAnnounced;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.event.ProcessingUnitPresenceAnnouncedEventFactory;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.UISAdapterImpl;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.UISAdapterRedisImpl;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,7 +55,7 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
             // Prepare client configured for interactions with the UIS
             // according to the defined environment variables (autonomous connection from worker to UIS)
             // defined on the runtime server executing this worker
-            uisClient = new UISAdapterImpl(new Context() /* Current context of adapter runtime*/);
+            uisClient = new UISAdapterRedisImpl(new Context() /* Current context of adapter runtime*/);
         } catch (IllegalArgumentException iae) {
             // Problem of context read
             throw new UnoperationalStateException(iae);
@@ -137,10 +137,11 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
 
     /**
      * Add an observer to the collection of consumers.
+     *
      * @param observer Consumer. Ignored when null.
      */
     protected void addTopicConsumer(ChannelObserver observer) {
-        if (observer!=null) {
+        if (observer != null) {
             topicsConsumers.add(observer);
         }
     }
@@ -230,12 +231,14 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
      * @param event To process.
      */
     @Override
-    public void notify(IDescribed event) {
+    public void notify(Object event) {
         try {
             FactBaseHandler pipe = pipelinedProcess();
-            if (pipe != null)
-                // Execute the feature execution process/pipeline according to the received event type
-                pipe.handle(event);
+            if (pipe != null) {
+                if (IDescribed.class.isAssignableFrom(event.getClass()))
+                    // Execute the feature execution process/pipeline according to the received event type
+                    pipe.handle((IDescribed) event);
+            }
         } catch (Exception e) {
             // UnoperationalStateException or IllegalArgumentException thrown by responsibility chain members
             Logger logger = logger();
