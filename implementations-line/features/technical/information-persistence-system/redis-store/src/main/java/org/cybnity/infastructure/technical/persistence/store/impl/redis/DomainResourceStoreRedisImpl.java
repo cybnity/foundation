@@ -83,21 +83,6 @@ public class DomainResourceStoreRedisImpl extends EventStore {
             snapshotsStorageNameSpace = PersistentObjectNamingConvention.buildNamespace(managedObjectCategoryLabel, storeOwner.domainName(), "snapshots"); // Define store input label (e.g stream dedicated to an object resource)
     }
 
-    /**
-     * Get an instance of the event store, ready for operating (e.g configured).
-     *
-     * @param ctx                   Mandatory context.
-     * @param dataOwner             Mandatory domain which is owner of the persisted object types into the store.
-     * @param managedObjectCategory Mandatory type of convention applicable for the type of object which is managed by this store.
-     * @param snapshotsCapability   Optional snapshots repository able to be used by this store helping to optimize events rehydration.
-     * @return An instance ensuring the persistence of events.
-     * @throws UnoperationalStateException When impossible instantiation of adapter to Redis persistence system.
-     * @throws IllegalArgumentException    When any mandatory parameter is missing.
-     */
-    public static EventStore instance(IContext ctx, IDomainModel dataOwner, PersistentObjectNamingConvention.NamingConventionApplicability managedObjectCategory, ISnapshotRepository snapshotsCapability) throws UnoperationalStateException, IllegalArgumentException {
-        return new DomainResourceStoreRedisImpl(ctx, dataOwner, managedObjectCategory, snapshotsCapability);
-    }
-
     @Override
     public ValueObject<String> snapshotVersionsStorageNamespace() {
         if (snapshotsRepository != null && snapshotsStorageNameSpace != null) {

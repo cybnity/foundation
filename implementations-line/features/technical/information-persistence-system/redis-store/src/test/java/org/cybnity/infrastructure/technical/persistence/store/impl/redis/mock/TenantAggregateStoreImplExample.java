@@ -38,17 +38,17 @@ public class TenantAggregateStoreImplExample extends DomainResourceStoreRedisImp
     }
 
     /**
-     * Get a store instance.
+     * Get an instance of the event store, ready for operating (e.g configured).
      *
      * @param ctx                   Mandatory context.
      * @param dataOwner             Mandatory domain which is owner of the persisted object types into the store.
      * @param managedObjectCategory Mandatory type of convention applicable for the type of object which is managed by this store.
      * @param snapshotsCapability   Optional snapshots repository able to be used by this store helping to optimize events rehydration.
-     * @return A singleton instance.
-     * @throws UnoperationalStateException When impossible instantiation of UISAdapter based on context parameter.
+     * @return An instance ensuring the persistence of events.
+     * @throws UnoperationalStateException When impossible instantiation of adapter to Redis persistence system.
      * @throws IllegalArgumentException    When any mandatory parameter is missing.
      */
-    public static TenantAggregateStoreImplExample instance(IContext ctx, IDomainModel dataOwner, PersistentObjectNamingConvention.NamingConventionApplicability managedObjectCategory, ISnapshotRepository snapshotsCapability) throws UnoperationalStateException, IllegalArgumentException {
+    public static IDomainStore<Tenant> instance(IContext ctx, IDomainModel dataOwner, PersistentObjectNamingConvention.NamingConventionApplicability managedObjectCategory, ISnapshotRepository snapshotsCapability) throws UnoperationalStateException, IllegalArgumentException {
         if (singleton == null) {
             // Initializes singleton instance
             singleton = new TenantAggregateStoreImplExample(ctx, dataOwner, managedObjectCategory, snapshotsCapability);
