@@ -64,6 +64,16 @@ public class Tenant extends Aggregate {
     private ActivityState activityStatus;
 
     /**
+     * Factory of this type of aggregate ensuring the mutation process.
+     */
+    public static class MutedTenantFactory implements MutedAggregateFactory {
+        @Override
+        public Aggregate instanceOf(Identifier instanceId, List<DomainEvent> changesHistory) throws IllegalArgumentException {
+            return Tenant.instanceOf(instanceId, changesHistory);
+        }
+    }
+
+    /**
      * Factory of instance from historized facts (e.g fact creation, change, deletion events) allowing the instance rehydration.
      *
      * @param instanceId     Mandatory unique identifier of the child fact instance to rehydrate.

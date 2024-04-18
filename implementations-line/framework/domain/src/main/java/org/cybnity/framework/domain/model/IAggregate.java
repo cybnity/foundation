@@ -39,5 +39,4 @@ public interface IAggregate extends ICommandHandler {
 	 * @exception ImmutabilityException When impossible reference generation.
 	 */
 	public EntityReference root() throws ImmutabilityException;
-
 }
