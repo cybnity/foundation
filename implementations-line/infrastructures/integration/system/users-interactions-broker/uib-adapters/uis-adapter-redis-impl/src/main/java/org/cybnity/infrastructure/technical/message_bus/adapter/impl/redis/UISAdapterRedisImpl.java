@@ -387,6 +387,22 @@ public class UISAdapterRedisImpl implements UISAdapter {
         return StringCodec.UTF8;
     }
 
+    /**
+     * Prepare a full path to storage area of a resource.
+     * @param resourceNamespaceLabel Optional label designing a resource path.
+     * @return A full path name.
+     */
+    private StringBuilder buildResourceFullPath(String resourceNamespaceLabel)  {
+        StringBuilder resourceKeyName = new StringBuilder();
+        if (resourceNamespaceLabel != null && !resourceNamespaceLabel.isEmpty()) {
+            // Add namespace prefix
+            resourceKeyName.append(resourceNamespaceLabel);
+            // Add separator
+            resourceKeyName.append(NamingConventions.KEY_NAME_SEPARATOR);
+        }
+        return resourceKeyName;
+    }
+
     @Override
     public SerializedResource readSerializedResourceFromID(String resourceUniqueIdentifier, String resourceNamespaceLabel) throws IllegalArgumentException, UnoperationalStateException {
         if (resourceUniqueIdentifier == null || resourceUniqueIdentifier.isEmpty())
@@ -398,10 +414,7 @@ public class UISAdapterRedisImpl implements UISAdapter {
             // Build resource key name where to save the resource
             StringBuilder resourceKeyName = new StringBuilder();
             if (resourceNamespaceLabel != null && !resourceNamespaceLabel.isEmpty()) {
-                // Add namespace prefix
-                resourceKeyName.append(resourceNamespaceLabel);
-                // Add separator
-                resourceKeyName.append(NamingConventions.KEY_NAME_SEPARATOR);
+                resourceKeyName.append(buildResourceFullPath(resourceNamespaceLabel));
             }
             // Add resource UID
             resourceKeyName.append(resourceUniqueIdentifier);
@@ -456,10 +469,7 @@ public class UISAdapterRedisImpl implements UISAdapter {
                 // Build resource key name where to save the resource
                 StringBuilder resourceKeyName = new StringBuilder();
                 if (resourceNamespaceLabel != null && !resourceNamespaceLabel.isEmpty()) {
-                    // Add namespace prefix
-                    resourceKeyName.append(resourceNamespaceLabel);
-                    // Add separator
-                    resourceKeyName.append(NamingConventions.KEY_NAME_SEPARATOR);
+                    resourceKeyName.append(buildResourceFullPath(resourceNamespaceLabel));
                 }
                 // Add resource UID
                 resourceKeyName.append(resource.description().resourceId());

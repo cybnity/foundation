@@ -151,10 +151,10 @@ public interface UISAdapter {
     /**
      * Read the items from one stream identified by its name.
      *
-     * @param stream                     Mandatory definition of stream to read.
+     * @param stream                                    Mandatory definition of stream to read.
      * @param afterEventCommittedVersionOfOriginSubject Mandatory identifier of a change event (e.g ID of DomainEvent relative to a modification performed onto an Aggregate) which limit the load of anterior events.
-     * @param itemMapper                 Mandatory mapper regarding the items supported by the caller that shall be transformed for each item type read from stream.
-     * @param originSubjectIDFilter      Optional identifier of origin subject that shall be filtered regarding the items to return.
+     * @param itemMapper                                Mandatory mapper regarding the items supported by the caller that shall be transformed for each item type read from stream.
+     * @param originSubjectIDFilter                     Optional identifier of origin subject that shall be filtered regarding the items to return.
      * @return Found items or empty list.
      * @throws IllegalArgumentException    When any mandatory parameter is missing.
      * @throws MappingException            When event transformation for data structure supported by the recipient is failed.
