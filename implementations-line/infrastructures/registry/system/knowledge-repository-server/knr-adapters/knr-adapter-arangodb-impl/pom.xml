@@ -24,8 +24,6 @@
 		<dependency>
 			<groupId>com.arangodb</groupId>
 			<artifactId>arangodb-java-driver</artifactId>
-			<version>7.6.0</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.netty</groupId>
