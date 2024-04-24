@@ -8,14 +8,18 @@ A docker orchestrator should be started previously to execute any docker command
 
 ``` shell
 # Create a minikube profile (allowed memory and cpu are defined PER NODE)
-minikube start --driver=hyperkit --container-runtime=docker --profile local-dev --nodes 4 --cpus 2 --disk-size '7g' --memory '4g'
+minikube start --driver=hyperkit --container-runtime=docker --profile local-dev --nodes 4 --cpus 2 --disk-size '7g' --memory '1g'
 
 # WHEN CLUSTER INCLUDING ONLY ONE UNIQUE NODE : Export docker host and Docker daemon into the shell context variables
-  minikube docker-env
-# Set docker env
-  eval $(minikube docker-env)
+minikube docker-env
 
-# Start a cluster profiled
+# Set docker env
+eval $(minikube docker-env)
+
+# Optionally, change active profile by default
+minikube profile local-dev
+
+# Start a cluster profiled (or without -p option for start of default active profile)
 minikube start -p local-dev
 
 # Add CYBNITY deployment labels regarding each node according to the CYBNITY cluster areas

@@ -118,7 +118,8 @@ Several categories of infrastructure technologies are managed in terms of implem
   - [Users Interactions Space adapter](infrastructures/integration/system/users-interactions-broker/uib-adapters) to brokers cluster
   - [Domains Interactions Space adapter](infrastructures/integration/system/domains-interactions-broker/dib-adapters) to brokers cluster
 - [monitoring](infrastructures/monitoring): clients to systems of monitoring (e.g alerting, data visualization, event logging)
-- [registry](infrastructures/registry): clients to registration systems (e.g contents indexing system)
+- [registry](infrastructures/registry): clients of integration with registry systems (e.g ArangoDB database system) allowing to index and query domain's data models (e.g read-model projections)
+  - [Knowledge Repository adapter](infrastructure/registry/system/knowledge-repository-server/knr-adapters) to database server
 - [security](infrastructures/security): clients to systems providing security services (e.g Single-Sign-On server, IAM server)
   - [Access Control & SSO server](infrastructures/security/system/access-control-sso)
   - [Identities & Access Management server](infrastructures/security/system/identities-access-management)

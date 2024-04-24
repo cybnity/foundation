@@ -1,17 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>registry</artifactId>
-		<groupId>org.cybnity.infrastructure</groupId>
+		<groupId>org.cybnity.infrastructure.registry.system</groupId>
+		<artifactId>domains-knowledge-server</artifactId>
 		<version>${revision}</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<groupId>org.cybnity.infrastructure.registry</groupId>
-	<artifactId>systems</artifactId>
-	<version>${revision}</version>
+
+	<groupId>org.cybnity.infrastructure.registry.knr</groupId>
+	<artifactId>adapters</artifactId>
 	<packaging>pom</packaging>
-	<name>- Registry systems infrastructure</name>
+	<name>--- Knowledge Repository adapters</name>
 	<modules>
-		<module>knowledge-repository-server</module>
+		<module>knr-adapter-api</module>
+		<module>knr-adapter-arangodb-impl</module>
 	</modules>
 </project>

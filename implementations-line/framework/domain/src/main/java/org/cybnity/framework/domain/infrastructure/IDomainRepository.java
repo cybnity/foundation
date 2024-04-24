@@ -25,6 +25,11 @@ import java.util.Map;
 public interface IDomainRepository<T> extends IFactRepository<T> {
 
     /**
+     * Stop allocated resources specific to this repository (e.g database access...).
+     */
+    public void freeResources();
+
+    /**
      * Get a next technical identity manageable by this repository.
      *
      * @param ctx Mandatory context of persistence providing elements (e.g tenant

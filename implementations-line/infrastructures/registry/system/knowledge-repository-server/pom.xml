@@ -7,9 +7,11 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>org.cybnity.infrastructure.registry.system</groupId>
-	<artifactId>contents-indexing-search</artifactId>
+	<artifactId>domains-knowledge-server</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Contents indexing infrastructure implementation module</name>
-
+	<name>-- DOMAINS KNOWLEDGE SERVERS</name>
+	<modules>
+		<module>knr-adapters</module>
+	</modules>
 </project>

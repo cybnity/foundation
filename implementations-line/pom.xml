@@ -58,6 +58,16 @@
 				<artifactId>redis-impl</artifactId>
 				<version>${revision}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.cybnity.infrastructure.registry.knr.adapters</groupId>
+				<artifactId>api</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.cybnity.infrastructure.registry.knr.adapters</groupId>
+				<artifactId>arangodb-impl</artifactId>
+				<version>${revision}</version>
+			</dependency>
             <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
