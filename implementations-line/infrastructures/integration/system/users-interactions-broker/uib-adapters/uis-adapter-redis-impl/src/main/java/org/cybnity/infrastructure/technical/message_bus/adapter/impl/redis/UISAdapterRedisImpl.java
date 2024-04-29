@@ -4,6 +4,7 @@ import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.api.sync.RedisHashCommands;
+import io.lettuce.core.api.sync.RedisKeyCommands;
 import io.lettuce.core.api.sync.RedisStreamCommands;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
@@ -447,7 +448,7 @@ public class UISAdapterRedisImpl implements UISAdapter {
     }
 
     @Override
-    public void saveResource(SerializedResource resource, String resourceNamespaceLabel) throws IllegalArgumentException, UnoperationalStateException {
+    public void saveResource(SerializedResource resource, String resourceNamespaceLabel, Long expireIn) throws IllegalArgumentException, UnoperationalStateException {
         if (resource == null) throw new IllegalArgumentException("Resource parameter is required!");
         if (resource.description() == null) throw new IllegalArgumentException("Resource description is required!");
         if (resource.description().resourceId() == null || resource.description().resourceId().isEmpty())
@@ -480,6 +481,12 @@ public class UISAdapterRedisImpl implements UISAdapter {
 
                 // Use record types structured as collections of field-value pairs
                 count = sync.hset(/* resource key */ resourceKeyName.toString(), /* serialized resource */ record);
+
+                // Apply optional  expiration rule when defined on key resource
+                if (expireIn!=null && expireIn >0) {
+                    RedisKeyCommands<String, String> sync2 = connection.sync();
+                    sync2.expire(resourceKeyName.toString(), expireIn); // Set the expiration time for the saved resource
+                }
             }
             if (count != null && count.intValue() >= 1) return;
             throw new UnoperationalStateException("Impossible serialization of the resource to store!");

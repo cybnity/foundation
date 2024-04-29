@@ -178,10 +178,11 @@ public interface UISAdapter {
      *
      * @param resource               Mandatory resource to save including mandatory identifier.
      * @param resourceNamespaceLabel Optional namespace of the resource to find.
+     * @param expireIn Optional quantity of seconds before the saved resource shall expire.
      * @throws IllegalArgumentException    When any mandatory parameter is missing.
      * @throws UnoperationalStateException When system access via adapter is in failure.
      */
-    public void saveResource(SerializedResource resource, String resourceNamespaceLabel) throws IllegalArgumentException, UnoperationalStateException;
+    public void saveResource(SerializedResource resource, String resourceNamespaceLabel, Long expireIn) throws IllegalArgumentException, UnoperationalStateException;
 
     /**
      * Publish an event to be processed into a space entrypoint without persistence and treatment guarantee (e.g if none channel subscriber are active).

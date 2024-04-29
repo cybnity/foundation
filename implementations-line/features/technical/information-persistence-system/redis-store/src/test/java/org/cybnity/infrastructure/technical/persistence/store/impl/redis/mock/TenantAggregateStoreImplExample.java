@@ -74,7 +74,7 @@ public class TenantAggregateStoreImplExample extends DomainResourceStoreRedisImp
             if (snapRepo != null) {
                 final Identifier id = tenant.identified();
                 // Create and save a snapshot version into snapshots repository
-                SnapshotProcessEventStreamPersistenceBased snapshotProcess = new SnapshotProcessEventStreamPersistenceBased(/* streamedEventsProvider*/ this, /* snapshotsPersistenceSystem */ snapRepo, new Tenant.MutedTenantFactory()) {
+                SnapshotProcessEventStreamPersistenceBased snapshotProcess = new SnapshotProcessEventStreamPersistenceBased(/* streamedEventsProvider*/ this, /* snapshotsPersistenceSystem */ snapRepo, new Tenant.MutedTenantFactory(), /* Expiration time */ null) {
                     @Override
                     protected HydrationCapability getRehydratedInstanceFrom(EventStream eventStream, MutedAggregateFactory mutedInstanceFactory) throws IllegalArgumentException {
                         // Re-hydrate events from stream

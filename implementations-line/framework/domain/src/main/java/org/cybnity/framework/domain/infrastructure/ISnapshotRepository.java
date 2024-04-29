@@ -32,8 +32,9 @@ public interface ISnapshotRepository {
      *
      * @param snapshot              Mandatory full state of source object version.
      * @param resourceNamespaceName Optional namespace name of the resource to find.
+     * @param expireIn              Optional duration in seconds that snapshot resource shall be persistent before to expire (becoming unavailable).
      * @throws IllegalArgumentException    When any mandatory parameter is not defined.
      * @throws UnoperationalStateException When system access is in failure.
      */
-    public void saveSnapshot(ISnapshot snapshot, String resourceNamespaceName) throws IllegalArgumentException, UnoperationalStateException;
+    public void saveSnapshot(ISnapshot snapshot, String resourceNamespaceName, Long expireIn) throws IllegalArgumentException, UnoperationalStateException;
 }

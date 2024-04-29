@@ -56,7 +56,7 @@ public class SnapshotRepositoryRedisImpl implements ISnapshotRepository {
     }
 
     @Override
-    public void saveSnapshot(ISnapshot snapshot, String resourceNamespaceName) throws IllegalArgumentException, UnoperationalStateException {
+    public void saveSnapshot(ISnapshot snapshot, String resourceNamespaceName, Long expireIn) throws IllegalArgumentException, UnoperationalStateException {
         if (snapshot == null) throw new IllegalArgumentException("snapshot parameter is required!");
         try {
             // Prepare container of snapshot resource description
@@ -73,7 +73,7 @@ public class SnapshotRepositoryRedisImpl implements ISnapshotRepository {
             // Define the snapshot resource to save
             SerializedResource resource = new SerializedResource(snapshot.immutable(), description);
 
-            adapter.saveResource(resource, resourceNamespaceName);
+            adapter.saveResource(resource, resourceNamespaceName, expireIn);
         } catch (ImmutabilityException e) {
             throw new IllegalArgumentException(e);
         }

@@ -26,6 +26,7 @@ public class UISAdapterResourceStorageUseCaseTest extends ContextualizedRedisAct
 
     private Tenant tenant;
     private ConcreteSnapshot snapshot;
+    private Long expirationTime;
 
     @BeforeEach
     public void definedSamples() throws Exception {
@@ -33,6 +34,7 @@ public class UISAdapterResourceStorageUseCaseTest extends ContextualizedRedisAct
         this.snapshot = new ConcreteSnapshot(tenant);
         Assertions.assertNotNull(snapshot.commitVersion());
         adapter = new UISAdapterRedisImpl(getContext());
+        expirationTime = 80L;
     }
 
     @AfterEach
@@ -42,6 +44,7 @@ public class UISAdapterResourceStorageUseCaseTest extends ContextualizedRedisAct
         adapter = null;
         this.snapshot = null;
         this.tenant = null;
+        expirationTime = null;
     }
 
     /**
@@ -83,7 +86,7 @@ public class UISAdapterResourceStorageUseCaseTest extends ContextualizedRedisAct
         String originObjectIdentifier = originResource.description().resourceId();
 
         // Save in Redis store as persistent allowing future retrieving
-        adapter.saveResource(originResource, namespace);
+        adapter.saveResource(originResource, namespace, expirationTime);
 
         // Attempt to re-load snapshot from store
         SerializedResource reloadedResource = adapter.readSerializedResourceFromID(originObjectIdentifier, namespace);
