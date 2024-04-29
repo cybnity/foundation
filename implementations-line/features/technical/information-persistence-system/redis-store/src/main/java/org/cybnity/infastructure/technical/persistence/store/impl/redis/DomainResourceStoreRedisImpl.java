@@ -58,6 +58,11 @@ public class DomainResourceStoreRedisImpl extends EventStore {
     protected String snapshotsStorageNameSpace;
 
     /**
+     * Current context.
+     */
+    private IContext context;
+
+    /**
      * Default constructor.
      *
      * @param ctx                   Mandatory context.
@@ -70,7 +75,8 @@ public class DomainResourceStoreRedisImpl extends EventStore {
     protected DomainResourceStoreRedisImpl(IContext ctx, IDomainModel dataOwner, PersistentObjectNamingConvention.NamingConventionApplicability managedObjectCategory, ISnapshotRepository snapshotsCapability) throws UnoperationalStateException, IllegalArgumentException {
         super();
         if (ctx == null) throw new IllegalArgumentException("Context parameter is required!");
-        this.adapter = new UISAdapterRedisImpl(ctx);
+        this.context = ctx;
+        this.adapter = new UISAdapterRedisImpl(this.context);
         if (dataOwner == null) throw new IllegalArgumentException("Data owner parameter is required!");
         this.storeOwner = dataOwner;
         if (managedObjectCategory == null)
@@ -81,6 +87,14 @@ public class DomainResourceStoreRedisImpl extends EventStore {
         if (snapshotsRepository != null)
             // Prepare a namespace usable for snapshots item storage (for example ac:tenant:snapshots)
             snapshotsStorageNameSpace = PersistentObjectNamingConvention.buildNamespace(managedObjectCategoryLabel, storeOwner.domainName(), "snapshots"); // Define store input label (e.g stream dedicated to an object resource)
+    }
+
+    /**
+     * Get current context.
+     * @return A context.
+     */
+    protected IContext context() {
+        return this.context;
     }
 
     @Override
