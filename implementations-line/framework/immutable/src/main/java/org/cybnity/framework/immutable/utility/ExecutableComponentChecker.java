@@ -81,7 +81,7 @@ public abstract class ExecutableComponentChecker extends HealthyOperableComponen
                     // Verify the existent defined value for this environment variable into the
                     // current runtime process
                     value = ctx.get(aVar);
-                    if (value == null || "".equals(value)) {
+                    if (value == null || value.isEmpty()) {
                         throw new MissingConfigurationException("Required environment variable (" + aVar.getName()
                                 + ") value is not defined by the system!");
                     }
