@@ -8,7 +8,7 @@ A docker orchestrator should be started previously to execute any docker command
 
 ``` shell
 # Create a minikube profile (allowed memory and cpu are defined PER NODE)
-minikube start --driver=hyperkit --container-runtime=docker --profile local-dev --nodes 4 --cpus 2 --disk-size '7g' --memory '1g'
+minikube start --driver=hyperkit --container-runtime=docker --profile local-dev --nodes 4 --cpus 2 --disk-size '7g' --memory '2g'
 
 # WHEN CLUSTER INCLUDING ONLY ONE UNIQUE NODE : Export docker host and Docker daemon into the shell context variables
 minikube docker-env
@@ -35,6 +35,8 @@ kubectl get nodes --show-labels
 # Start web dashboard of a profile (and included nodes)
 minikube dashboard -p local-dev
 
+# Delete profile
+minikube delete -p local-dev
 
 ```
 
