@@ -1,7 +1,0 @@
-apiVersion: "database.arangodb.com/v1"
-kind: "ArangoDeployment"
-# To deploy an ArangoDB single server
-metadata:
-  name: "single-server"
-spec:
-  mode: Single
