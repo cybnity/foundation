@@ -4,6 +4,9 @@ Presentation of the assistance documentation regarding the usage of Helm tool (e
 # HELM USAGE
 Several Helm command lines are available to be executed from the `charts directory`. The Kubernetes instance should be started and active (e.g Minikube started).
 
+## Helm Installation
+Use Helm 3.15+ version to ensure compatibility with CYBNITY helmified projects.
+
 ## Charts Management
 <details><summary>Pull a chart</summary>
 <p>
