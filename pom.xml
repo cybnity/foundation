@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.cybnity</groupId>
 		<artifactId>techstack</artifactId>
-		<version>0.27.0</version>
+		<version>0.28.0</version>
 	</parent>
 
 	<artifactId>defense-platform</artifactId>
@@ -77,29 +77,6 @@
 			<layout>default</layout>
 		</pluginRepository>-->
 	</pluginRepositories>
-
-	<!-- Foundation project specific additional dependency versions -->
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>uk.org.webcompere</groupId>
-				<artifactId>system-stubs-jupiter</artifactId>
-				<version>[2.0.2,)</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<!-- io.netty.resolver.dns.DnsServerAddressStreamProviders ignored about 'io.netty:netty-resolver-dns-native-macos" AVERTISSEMENT on Mac -->
-				<groupId>io.netty</groupId>
-				<artifactId>netty-all</artifactId>
-				<version>4.1.106.Final</version>
-				<scope>test</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
-	<!-- Foundation sub-projects transversal dependencies -->
-	<dependencies>
-	</dependencies>
 
 	<!-- List of advice about project -->
 	<mailingLists>

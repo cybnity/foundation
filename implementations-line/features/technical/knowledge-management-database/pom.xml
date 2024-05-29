@@ -13,6 +13,6 @@
 	<name>Information knowledge database infrastructure features</name>
 
 	<modules>
-		<module>arangodb-repository</module>
+		<module>janusgraph-repository</module>
 	</modules>
 </project>

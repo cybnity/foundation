@@ -13,6 +13,6 @@
 	<name>--- Knowledge Repository adapters</name>
 	<modules>
 		<module>knr-adapter-api</module>
-		<module>knr-adapter-arangodb-impl</module>
+		<module>knr-adapter-janusgraph-impl</module>
 	</modules>
 </project>
