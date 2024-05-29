@@ -17,7 +17,6 @@
 			<artifactId>api</artifactId>
 			<version>${revision}</version>
 		</dependency>
-		<!-- JanusGraph and Gremlin client connector approach -->
 		<dependency>
 			<groupId>org.janusgraph</groupId>
 			<artifactId>janusgraph-driver</artifactId>
