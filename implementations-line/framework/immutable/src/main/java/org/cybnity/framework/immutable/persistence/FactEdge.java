@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represent a link between two fact record constituing an existent predecessos
+ * Represent a link between two fact record defining an existent predecessors
  * relationship between two facts records. This aggregation object allow to
  * attach successors with predecessors facts similar to relations between saved
  * events in each fact record.
@@ -56,7 +56,7 @@ public class FactEdge implements Unmodifiable, IVersionable, IUniqueness, Serial
      * @param successorFactIdentifier   Mandatory reference identifier of the fact which is
      *                                  successor to the preceding fact.
      * @param predecessorFactIdentifier Mandatory reference identifier of the fact which is
-     *                                  predecessor of the sucessor fact.
+     *                                  predecessor of the successor fact.
      * @param factsRelationType         Mandatory type of relation regarding this
      *                                  edge.
      * @throws IllegalArgumentException When any mandatory parameter is missing.

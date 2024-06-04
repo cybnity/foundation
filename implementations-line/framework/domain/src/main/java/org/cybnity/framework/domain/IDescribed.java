@@ -14,25 +14,25 @@ import java.util.Collection;
 public interface IDescribed {
 
     /**
-     * Get attributes set representing a definition of this event.
+     * Get attributes set representing a definition of the subject.
      *
      * @return Attributes immutable collection or null.
      */
     public Collection<Attribute> specification();
 
     /**
-     * Add an attribute contributing to the definition of this event.
+     * Add an attribute contributing to the definition of the subject.
      *
      * @param specificationCriteria A valid description attribute.
-     * @return True when criteria have been added on this event description. Else
+     * @return True when criteria have been added on the subject description. Else
      * return false (e.g if same named attribute is already existing and
      * can't be modified by the new version. Return false when parameter is
-     * null.
+     * null).
      */
     public boolean appendSpecification(Attribute specificationCriteria);
 
     /**
-     * Get the type specification of this event.
+     * Get the type specification of the subject.
      *
      * @return A type or null.
      */

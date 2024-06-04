@@ -80,7 +80,7 @@ public class TenantDescriptor extends MutableProperty {
     }
 
     /**
-     * Who is the owner of this property
+     * Who is the owner of this property.
      *
      * @return The owner
      * @throws ImmutabilityException If impossible creation of immutable version of
