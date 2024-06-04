@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.cybnity.infrastructure.technical.registry.adapter.impl.janusgraph.sample;
+package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample;
 
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.cybnity.framework.IContext;
+import org.cybnity.framework.UnoperationalStateException;
+import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.AbstractDomainGraphImpl;
 import org.janusgraph.core.JanusGraphFactory;
 import org.janusgraph.core.attribute.Geoshape;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,19 +33,23 @@ import java.util.Optional;
  * Abstract class that defines a basic structure for a graph application. It contains methods for configuring a graph instance, defining a graph schema, creating a graph structure, and querying a graph.
  * Sample graph application defining a graph of sample objects.
  */
-public class GraphApp {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GraphApp.class);
-
-    protected Graph graph;
-    protected GraphTraversalSource g;
-    protected boolean supportsTransactions;
-    protected boolean supportsSchema;
-    protected boolean supportsGeoshape;
+public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
 
     /**
      * Constructs a graph app using the given properties.
      */
-    public GraphApp() {
+    public GraphAppSampleAbstractImpl(IContext ctx) throws UnoperationalStateException, IllegalArgumentException {
+        super(ctx);
+    }
+
+    @Override
+    public void dropGraph() throws UnoperationalStateException {
+
+    }
+
+    @Override
+    public void createSchema() {
+
     }
 
     /**
@@ -53,41 +57,12 @@ public class GraphApp {
      * graph instance is initialized.
      */
     public GraphTraversalSource openGraph() throws ConfigurationException, IOException {
-        LOGGER.info("opening graph");
+        logger().info("opening graph");
         graph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
         g = graph.traversal();
         return g;
     }
-
-    /**
-     * Closes the graph instance.
-     */
-    public void closeGraph() throws Exception {
-        LOGGER.info("closing graph");
-        try {
-            if (g != null) {
-                g.close();
-            }
-            if (graph != null) {
-                graph.close();
-            }
-        } finally {
-            g = null;
-            graph = null;
-        }
-    }
-
-    /**
-     * Drops the graph instance. The default implementation does nothing.
-     */
-    public void dropGraph() throws Exception {
-    }
-
-    /**
-     * Creates the graph schema. The default implementation does nothing.
-     */
-    public void createSchema() {
-    }
+    
 
     /**
      * Adds the vertices, edges, and properties to the graph.
@@ -101,7 +76,7 @@ public class GraphApp {
                 }
                 return;
             }
-            LOGGER.info("creating elements");
+            logger().info("creating elements");
 
             // see GraphOfTheGodsFactory.java
 
@@ -158,18 +133,11 @@ public class GraphApp {
             }
 
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger().error(e.getMessage(), e);
             if (supportsTransactions) {
                 g.tx().rollback();
             }
         }
-    }
-
-    /**
-     * Returns the geographical coordinates as a float array.
-     */
-    protected float[] getGeoFloatArray(final float lat, final float lon) {
-        return new float[]{lat, lon};
     }
 
     /**
@@ -181,40 +149,40 @@ public class GraphApp {
                 return;
             }
 
-            LOGGER.info("reading elements");
+            logger().info("reading elements");
 
             // look up vertex by name can use a composite index in JanusGraph
             final Optional<Map<Object, Object>> v = g.V().has("name", "jupiter").valueMap().tryNext();
             if (v.isPresent()) {
-                LOGGER.info(v.get().toString());
+                logger().info(v.get().toString());
             } else {
-                LOGGER.warn("jupiter not found");
+                logger().warn("jupiter not found");
             }
 
             // look up an incident edge
             final Optional<Map<Object, Object>> edge = g.V().has("name", "hercules").outE("battled").as("e").inV()
                     .has("name", "hydra").select("e").valueMap().tryNext();
             if (edge.isPresent()) {
-                LOGGER.info(edge.get().toString());
+                logger().info(edge.get().toString());
             } else {
-                LOGGER.warn("hercules battled hydra not found");
+                logger().warn("hercules battled hydra not found");
             }
 
             // numerical range query can use a mixed index in JanusGraph
             final List<Object> list = g.V().has("age", P.gte(5000)).values("age").toList();
-            LOGGER.info(list.toString());
+            logger().info(list.toString());
 
             // pluto might be deleted
             final boolean plutoExists = g.V().has("name", "pluto").hasNext();
             if (plutoExists) {
-                LOGGER.info("pluto exists");
+                logger().info("pluto exists");
             } else {
-                LOGGER.warn("pluto not found");
+                logger().warn("pluto not found");
             }
 
             // look up jupiter's brothers
             final List<Object> brothers = g.V().has("name", "jupiter").both("brother").values("name").dedup().toList();
-            LOGGER.info("jupiter's brothers: " + brothers.toString());
+            logger().info("jupiter's brothers: " + brothers.toString());
 
         } finally {
             // the default behavior automatically starts a transaction for
@@ -235,14 +203,14 @@ public class GraphApp {
             if (g == null) {
                 return;
             }
-            LOGGER.info("updating elements");
+            logger().info("updating elements");
             final long ts = System.currentTimeMillis();
             g.V().has("name", "jupiter").property("ts", ts).iterate();
             if (supportsTransactions) {
                 g.tx().commit();
             }
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger().error(e.getMessage(), e);
             if (supportsTransactions) {
                 g.tx().rollback();
             }
@@ -258,14 +226,14 @@ public class GraphApp {
             if (g == null) {
                 return;
             }
-            LOGGER.info("deleting elements");
+            logger().info("deleting elements");
             // note that this will succeed whether or not pluto exists
             g.V().has("name", "pluto").drop().iterate();
             if (supportsTransactions) {
                 g.tx().commit();
             }
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger().error(e.getMessage(), e);
             if (supportsTransactions) {
                 g.tx().rollback();
             }
@@ -300,7 +268,7 @@ public class GraphApp {
                 try {
                     Thread.sleep((long) (Math.random() * 500) + 500);
                 } catch (InterruptedException e) {
-                    LOGGER.error(e.getMessage(), e);
+                    logger().error(e.getMessage(), e);
                 }
                 // update some graph elements with changes
                 updateElements();
@@ -316,7 +284,7 @@ public class GraphApp {
             // close the graph
             closeGraph();
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger().error(e.getMessage(), e);
         }
     }
 

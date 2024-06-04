@@ -11,11 +11,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package org.cybnity.infrastructure.technical.registry.adapter.impl.janusgraph;
+package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph;
 
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.cybnity.infrastructure.technical.registry.adapter.impl.janusgraph.sample.GraphApp;
+import org.cybnity.framework.UnoperationalStateException;
+import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.GraphAppSampleAbstractImpl;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
@@ -27,13 +28,13 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test of graph sample of objects.
  */
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class GraphElementsManagementUseCaseTest extends ContextualizedJanusGraphActiveTestContainer{
-    protected static GraphApp app;
+public class GraphElementsManagementUseCaseTest extends ContextualizedJanusGraphActiveTestContainer {
+    protected static GraphAppSampleAbstractImpl app;
     protected static GraphTraversalSource g;
 
     @BeforeAll
-    public static void setUpClass() throws ConfigurationException, IOException {
-        app = new GraphApp();
+    public static void setUpClass() throws ConfigurationException, IOException, UnoperationalStateException {
+        app = new GraphAppSampleAbstractImpl(getContextInstance());
         g = app.openGraph();
     }
 

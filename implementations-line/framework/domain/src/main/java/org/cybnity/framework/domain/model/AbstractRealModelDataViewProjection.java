@@ -28,9 +28,9 @@ public abstract class AbstractRealModelDataViewProjection implements IReadModelP
      * Prepare expected description of this read-model projection.
      * Called during the instance creation.
      *
-     * @param label
-     * @param ownership
-     * @throws IllegalArgumentException
+     * @param label     Mandatory logical label regarding this projection.
+     * @param ownership Mandatory domain which is owner of this projection.
+     * @throws IllegalArgumentException When any mandatory parameter is missing.
      */
     protected void prepareDescription(String label, IDomainModel ownership) throws IllegalArgumentException {
         // Create description instance of this projection

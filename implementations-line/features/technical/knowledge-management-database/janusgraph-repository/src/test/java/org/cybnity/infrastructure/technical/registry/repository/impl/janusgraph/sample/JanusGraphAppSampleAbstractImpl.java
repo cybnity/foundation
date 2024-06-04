@@ -13,11 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.cybnity.infrastructure.technical.registry.adapter.impl.janusgraph.sample;
+package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample;
 
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.cybnity.framework.IContext;
+import org.cybnity.framework.UnoperationalStateException;
+import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.ContextualizedJanusGraphActiveTestContainer;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
 import org.janusgraph.core.Multiplicity;
@@ -32,8 +35,8 @@ import java.io.IOException;
 /**
  * Specialized GraphApp using JanusGraph-specific methods to create the schema.
  */
-public class JanusGraphApp extends GraphApp {
-    private static final Logger LOGGER = LoggerFactory.getLogger(JanusGraphApp.class);
+public class JanusGraphAppSampleAbstractImpl extends GraphAppSampleAbstractImpl {
+    private static final Logger LOGGER = LoggerFactory.getLogger(JanusGraphAppSampleAbstractImpl.class);
 
     protected static final String APP_NAME = "jgex";
     protected static final String MIXED_INDEX_CONFIG_NAME = "jgex";
@@ -54,10 +57,9 @@ public class JanusGraphApp extends GraphApp {
 
     /**
      * Constructs a graph app using the given properties.
-     *
      */
-    public JanusGraphApp() {
-        super();
+    public JanusGraphAppSampleAbstractImpl(IContext ctx) throws UnoperationalStateException, IllegalArgumentException {
+        super(ctx);
         this.supportsSchema = true;
         this.supportsTransactions = true;
         this.supportsGeoshape = true;
@@ -70,9 +72,13 @@ public class JanusGraphApp extends GraphApp {
     }
 
     @Override
-    public void dropGraph() throws Exception {
+    public void dropGraph() throws UnoperationalStateException {
         if (graph != null) {
-            JanusGraphFactory.drop(getJanusGraph());
+            try {
+                JanusGraphFactory.drop(getJanusGraph());
+            } catch (Exception e) {
+                throw new UnoperationalStateException(e);
+            }
         }
     }
 
@@ -206,7 +212,7 @@ public class JanusGraphApp extends GraphApp {
     public static void main(String[] args) throws Exception {
         final String fileName = (args != null && args.length > 0) ? args[0] : null;
         final boolean drop = (args != null && args.length > 1) && "drop".equalsIgnoreCase(args[1]);
-        final JanusGraphApp app = new JanusGraphApp();
+        final JanusGraphAppSampleAbstractImpl app = new JanusGraphAppSampleAbstractImpl(ContextualizedJanusGraphActiveTestContainer.getContextInstance());
         if (drop) {
             app.openGraph();
             app.dropGraph();

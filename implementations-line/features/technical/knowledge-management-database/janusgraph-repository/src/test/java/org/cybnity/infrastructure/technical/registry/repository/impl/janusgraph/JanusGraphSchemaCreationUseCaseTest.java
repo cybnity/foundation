@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.cybnity.infrastructure.technical.registry.adapter.impl.janusgraph;
+package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph;
 
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.cybnity.infrastructure.technical.registry.adapter.impl.janusgraph.sample.JanusGraphApp;
+import org.cybnity.framework.UnoperationalStateException;
+import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.JanusGraphAppSampleAbstractImpl;
 import org.janusgraph.core.*;
 import org.janusgraph.core.attribute.Geoshape;
 import org.janusgraph.core.schema.JanusGraphIndex;
@@ -39,8 +40,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class JanusGraphSchemaCreationUseCaseTest extends ContextualizedJanusGraphActiveTestContainer {
 
     @Test
-    public void createSchema() throws ConfigurationException, IOException {
-        final JanusGraphApp app = new JanusGraphApp();
+    public void createSchema() throws ConfigurationException, IOException, UnoperationalStateException {
+        final JanusGraphAppSampleAbstractImpl app = new JanusGraphAppSampleAbstractImpl(this.getContext());
         final GraphTraversalSource g = app.openGraph();
         app.createSchema();
         final JanusGraph janusGraph = (JanusGraph) g.getGraph();

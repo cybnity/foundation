@@ -1,7 +1,5 @@
 package org.cybnity.infrastructure.technical.registry.adapter.impl;
 
-import org.cybnity.infrastructure.technical.registry.adapter.impl.janusgraph.GraphElementsManagementUseCaseTest;
-import org.cybnity.infrastructure.technical.registry.adapter.impl.janusgraph.JanusGraphSchemaCreationUseCaseTest;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 
@@ -12,6 +10,6 @@ import org.junit.platform.suite.api.Suite;
  * @author olivier
  */
 @Suite
-@SelectClasses({GraphElementsManagementUseCaseTest.class, JanusGraphSchemaCreationUseCaseTest.class})
+@SelectClasses({})
 public class AllUseCaseTests {
 }

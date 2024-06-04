@@ -1,5 +1,6 @@
 package org.cybnity.framework.domain;
 
+import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.model.ReadModelProjectionDescriptor;
 
 /**
@@ -25,4 +26,18 @@ public interface IReadModelProjection {
      * @return A description providing specification element regarding this projection (e.g label, ownership, categorization elements).
      */
     public ReadModelProjectionDescriptor description();
+
+    /**
+     * Make active the projection (e.g create or sync the graph schema aligned and supporting this projection).
+     *
+     * @throws UnoperationalStateException When problem during the projection activation.
+     */
+    public void activate() throws UnoperationalStateException;
+
+    /**
+     * Delete or deactivate the projection (e.g drop a graph instance aligned and supporting this projection).
+     *
+     * @throws UnoperationalStateException When problem during the projection activation.
+     */
+    public void deactivate() throws UnoperationalStateException;
 }
