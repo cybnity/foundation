@@ -2,8 +2,6 @@ package org.cybnity.framework.domain.model;
 
 import org.cybnity.framework.domain.IReadModelProjection;
 
-import java.util.HashMap;
-
 /**
  * Stereotype of implementation class defining a read-model projection.
  */
@@ -26,12 +24,17 @@ public abstract class AbstractRealModelDataViewProjection implements IReadModelP
         prepareDescription(label, ownership);
     }
 
-    private void prepareDescription(String label, IDomainModel ownership) throws IllegalArgumentException {
+    /**
+     * Prepare expected description of this read-model projection.
+     * Called during the instance creation.
+     *
+     * @param label
+     * @param ownership
+     * @throws IllegalArgumentException
+     */
+    protected void prepareDescription(String label, IDomainModel ownership) throws IllegalArgumentException {
         // Create description instance of this projection
-        HashMap<String, Object> propertyCurrentValue = new HashMap<>();
-        propertyCurrentValue.put(ReadModelProjectionDescriptor.PropertyAttributeKey.LABEL.name(), label);
-        propertyCurrentValue.put(ReadModelProjectionDescriptor.PropertyAttributeKey.OWNERSHIP.name(), ownership);
-        this.description = new ReadModelProjectionDescriptor(propertyCurrentValue);
+        this.description = ReadModelProjectionDescriptor.instanceOf(label, ownership);
     }
 
     @Override
