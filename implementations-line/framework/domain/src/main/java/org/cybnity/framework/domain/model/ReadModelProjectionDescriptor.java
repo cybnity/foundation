@@ -32,6 +32,12 @@ public class ReadModelProjectionDescriptor implements Unmodifiable, Serializable
         LABEL, OWNERSHIP;
     }
 
+    /**
+     * Default constructor.
+     *
+     * @param propertyCurrentValue Mandatory set of properties including minimum expected.
+     * @throws IllegalArgumentException When any mandatory parameter is missing, or when minimum expected properties and values are missing.
+     */
     public ReadModelProjectionDescriptor(HashMap<String, Object> propertyCurrentValue) throws IllegalArgumentException {
         if (propertyCurrentValue == null)
             throw new IllegalArgumentException("Property current value parameter is required!");
@@ -40,6 +46,21 @@ public class ReadModelProjectionDescriptor implements Unmodifiable, Serializable
         // Check presence of minimum values
         checkMinimumRequiredProperties(propertyCurrentValue);
         this.value = propertyCurrentValue;
+    }
+
+    /**
+     * Factory of descriptor instance.
+     *
+     * @param label     Mandatory label defining the projection to create (e.g read-model projection unique name in the domain).
+     * @param ownership Mandatory domain that is owner of the read-model projection to create.
+     * @return A created instance including properties.
+     * @throws IllegalArgumentException When any mandatory parameter is missing.
+     */
+    public static ReadModelProjectionDescriptor instanceOf(String label, IDomainModel ownership) throws IllegalArgumentException {
+        HashMap<String, Object> properties = new HashMap<>();
+        properties.put(PropertyAttributeKey.LABEL.name(), label);
+        properties.put(PropertyAttributeKey.OWNERSHIP.name(), ownership);
+        return new ReadModelProjectionDescriptor(properties);
     }
 
     /**
@@ -139,7 +160,7 @@ public class ReadModelProjectionDescriptor implements Unmodifiable, Serializable
             Object ownership = this.properties.getOrDefault(PropertyAttributeKey.OWNERSHIP.name(), null);
 
             // Verify that minimum required properties are defined with existing values
-            completeness = (label != null && !label.toString().isEmpty() && ownership != null);
+            completeness = (label != null && ownership != null);
         }
 
         @Override
@@ -150,8 +171,31 @@ public class ReadModelProjectionDescriptor implements Unmodifiable, Serializable
 
         @Override
         public void makeConformity() {
-            // is following the set of standard data definitions like data type, size and format?
-            conformity = true;
+            // Is following the set of standard data definitions like data type, size and format?
+
+            // Verify that label is not empty string
+            String labelValue = null;
+            try {
+                Object label = this.properties.getOrDefault(PropertyAttributeKey.LABEL.name(), null);
+                labelValue = (String) label;
+                if (labelValue.isEmpty()) labelValue = null; // Not acceptable empty value
+            } catch (Exception e) {
+                // Invalid type
+            }
+
+            // Check that an ownership property value
+            IDomainModel ownerType = null;
+            // Verify that ownership is a domain model
+            try {
+                Object ownership = this.properties.getOrDefault(PropertyAttributeKey.OWNERSHIP.name(), null);
+                ownerType = (IDomainModel) ownership;
+                if (ownerType.domainName() == null || ownerType.domainName().isEmpty())
+                    ownerType = null; // Not acceptable non named domain
+            } catch (Exception e) {
+                // Invalid type
+            }
+
+            conformity = (labelValue != null && ownerType != null);
         }
 
         @Override
