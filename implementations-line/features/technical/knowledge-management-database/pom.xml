@@ -10,7 +10,7 @@
 	<artifactId>knowledge-management-database</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Information knowledge database infrastructure features</name>
+	<name>Knowledge infrastructure features</name>
 
 	<modules>
 		<module>janusgraph-repository</module>
