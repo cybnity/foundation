@@ -10,6 +10,14 @@
 	<version>${revision}</version>
 	<packaging>pom</packaging>
 	<name>CYBNITY defense platform</name>
+	<description>Open source cybersecurity governance solution helping security activities (e.g NIST deployment, security KPI monitoring, security activities management)</description>
+	<url>http://github.com/cybnity/foundation</url>
+	<licenses>
+		<license>
+		<name>The Apache Software License, Version 2.0</name>
+		<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
 
 	<properties>
 		<!-- CYBNITY project default revision -->
@@ -25,6 +33,12 @@
 		<name>CYBNITY</name>
 		<url>http://www.cybnity.org</url>
 	</organization>
+
+	<scm>
+		<connection>scm:git:git://github.com/cybnity/foundation.git</connection>
+		<developerConnection>scm:git:https://github.com:cybnity/foundation.git</developerConnection>
+		<url>http://github.com/cybnity/foundation/tree/main</url>
+	</scm>
 
 	<distributionManagement>
 		<!-- GitHub Packages development artifacts distribution
