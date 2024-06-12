@@ -37,7 +37,7 @@ jobs:
           ref: ${{ inputs.config-path }}
 
       - name: Set up Java for publishing to CYBNITY Maven Repository
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '11'
           distribution: 'temurin'
@@ -45,6 +45,7 @@ jobs:
           server-id: space-cybnity-open-source
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
+          GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
 
       - name: GitHub Environment Variables Action
         if: ${{ env.ARTIFACT_VERSION == '' }}
