@@ -22,6 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: write
     env:
       ARTIFACT_VERSION: ${{ inputs.package_release_name }}
       DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_ACCESS_ACCOUNT }}
@@ -49,7 +50,7 @@ jobs:
 
       - name: GitHub Environment Variables Action
         if: ${{ env.ARTIFACT_VERSION == '' }}
-        uses: FranzDiebold/github-env-vars-action@v2.7.0
+        uses: FranzDiebold/github-env-vars-action@v2.8.0
       - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>.<<commit time>>)
         if: ${{ env.ARTIFACT_VERSION == '' }}
         run: |

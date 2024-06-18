@@ -49,7 +49,7 @@ jobs:
       # Build specific release name because none tag is existing on GitHub project
       - name: Identify reusable environment variables about current commit
         if: ${{ env.TAG_VERSION == '' }}
-        uses: FranzDiebold/github-env-vars-action@v2.7.0
+        uses: FranzDiebold/github-env-vars-action@v2.8.0
 
       # Build name based on a potential included tag (e.g staging0.0.7-reviewed, staging-alpha, staging)
       - name: Define a latest revision name regarding integrated development version

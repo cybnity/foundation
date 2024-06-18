@@ -82,7 +82,7 @@ jobs:
       # Build specific release name because none tag is existing on GitHub project
       - name: Define reusable environment variables about current commit
         if: ${{ env.TAG_VERSION == '' }}
-        uses: FranzDiebold/github-env-vars-action@v2.7.0
+        uses: FranzDiebold/github-env-vars-action@v2.8.0
 
       - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>) regarding development release
         if: ${{ env.TAG_VERSION == '' }}
