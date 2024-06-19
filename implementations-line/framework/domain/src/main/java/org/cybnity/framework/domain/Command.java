@@ -85,6 +85,7 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, IRef
      * Get an immutable copy of the original entity of this event.
      *
      * @return Identity of this event, or null.
+     * @throws ImmutabilityException When impossible creation of entity immutable version.
      */
     public Entity getIdentifiedBy() throws ImmutabilityException {
         if (this.identifiedBy != null) {

@@ -21,6 +21,7 @@ public interface IVersionable {
     /**
      * Get the manageable version of this type of event structure allowing multiple
      * versions of a fact operated concurrently by a system.
+     * @return Value for hash.
      */
-    public String versionHash();
+    String versionHash();
 }

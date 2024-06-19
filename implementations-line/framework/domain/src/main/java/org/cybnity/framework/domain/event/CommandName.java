@@ -19,5 +19,5 @@ public enum CommandName implements IEventType {
     /**
      * Delete an existing tenant.
      */
-    DELETE_TENANT;
+    DELETE_TENANT
 }

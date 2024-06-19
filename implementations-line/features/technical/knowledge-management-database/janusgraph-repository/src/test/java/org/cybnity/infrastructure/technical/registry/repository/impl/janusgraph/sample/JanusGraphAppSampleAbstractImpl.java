@@ -169,44 +169,41 @@ public class JanusGraphAppSampleAbstractImpl extends GraphAppSampleAbstractImpl 
      * server.
      */
     protected String createSchemaRequest() {
-        final StringBuilder s = new StringBuilder();
 
-        s.append("JanusGraphManagement management = graph.openManagement(); ");
-        s.append("boolean created = false; ");
+        String s = "JanusGraphManagement management = graph.openManagement(); " +
+                "boolean created = false; " +
 
-        // naive check if the schema was previously created
-        s.append(
-                "if (management.getRelationTypes(RelationType.class).iterator().hasNext()) { management.rollback(); created = false; } else { ");
+                // naive check if the schema was previously created
+                "if (management.getRelationTypes(RelationType.class).iterator().hasNext()) { management.rollback(); created = false; } else { " +
 
-        // properties
-        s.append("PropertyKey name = management.makePropertyKey(\"name\").dataType(String.class).make(); ");
-        s.append("PropertyKey age = management.makePropertyKey(\"age\").dataType(Integer.class).make(); ");
-        s.append("PropertyKey time = management.makePropertyKey(\"time\").dataType(Integer.class).make(); ");
-        s.append("PropertyKey reason = management.makePropertyKey(\"reason\").dataType(String.class).make(); ");
-        s.append("PropertyKey place = management.makePropertyKey(\"place\").dataType(Geoshape.class).make(); ");
+                // properties
+                "PropertyKey name = management.makePropertyKey(\"name\").dataType(String.class).make(); " +
+                "PropertyKey age = management.makePropertyKey(\"age\").dataType(Integer.class).make(); " +
+                "PropertyKey time = management.makePropertyKey(\"time\").dataType(Integer.class).make(); " +
+                "PropertyKey reason = management.makePropertyKey(\"reason\").dataType(String.class).make(); " +
+                "PropertyKey place = management.makePropertyKey(\"place\").dataType(Geoshape.class).make(); " +
 
-        // vertex labels
-        s.append("management.makeVertexLabel(\"titan\").make(); ");
-        s.append("management.makeVertexLabel(\"location\").make(); ");
-        s.append("management.makeVertexLabel(\"god\").make(); ");
-        s.append("management.makeVertexLabel(\"demigod\").make(); ");
-        s.append("management.makeVertexLabel(\"human\").make(); ");
-        s.append("management.makeVertexLabel(\"monster\").make(); ");
+                // vertex labels
+                "management.makeVertexLabel(\"titan\").make(); " +
+                "management.makeVertexLabel(\"location\").make(); " +
+                "management.makeVertexLabel(\"god\").make(); " +
+                "management.makeVertexLabel(\"demigod\").make(); " +
+                "management.makeVertexLabel(\"human\").make(); " +
+                "management.makeVertexLabel(\"monster\").make(); " +
 
-        // edge labels
-        s.append("management.makeEdgeLabel(\"father\").multiplicity(Multiplicity.MANY2ONE).make(); ");
-        s.append("management.makeEdgeLabel(\"mother\").multiplicity(Multiplicity.MANY2ONE).make(); ");
-        s.append("management.makeEdgeLabel(\"lives\").signature(reason).make(); ");
-        s.append("management.makeEdgeLabel(\"pet\").make(); ");
-        s.append("management.makeEdgeLabel(\"brother\").make(); ");
-        s.append("management.makeEdgeLabel(\"battled\").make(); ");
+                // edge labels
+                "management.makeEdgeLabel(\"father\").multiplicity(Multiplicity.MANY2ONE).make(); " +
+                "management.makeEdgeLabel(\"mother\").multiplicity(Multiplicity.MANY2ONE).make(); " +
+                "management.makeEdgeLabel(\"lives\").signature(reason).make(); " +
+                "management.makeEdgeLabel(\"pet\").make(); " +
+                "management.makeEdgeLabel(\"brother\").make(); " +
+                "management.makeEdgeLabel(\"battled\").make(); " +
 
-        // composite indexes
-        s.append("management.buildIndex(\"nameIndex\", Vertex.class).addKey(name).buildCompositeIndex(); ");
+                // composite indexes
+                "management.buildIndex(\"nameIndex\", Vertex.class).addKey(name).buildCompositeIndex(); " +
+                "management.commit(); created = true; }";
 
-        s.append("management.commit(); created = true; }");
-
-        return s.toString();
+        return s;
     }
 
     public static void main(String[] args) throws Exception {

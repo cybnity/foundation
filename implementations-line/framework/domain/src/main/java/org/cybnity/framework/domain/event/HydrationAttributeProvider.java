@@ -15,40 +15,40 @@ public interface HydrationAttributeProvider {
      *
      * @return Identifier or child fact's parent or null.
      */
-    public Identifier changeSourcePredecessorReferenceId();
+    Identifier changeSourcePredecessorReferenceId();
 
     /**
      * Set the identifier regarding a predecessor entity of the object which is eligible to re-hydration.
      *
      * @param id An identifier.
      */
-    public void setChangeSourcePredecessorReferenceId(Identifier id);
+    void setChangeSourcePredecessorReferenceId(Identifier id);
 
     /**
      * Get an identifier defining the object that is eligible to re-hydration.
      *
      * @return Identifier or null.
      */
-    public Identifier changeSourceIdentifier();
+    Identifier changeSourceIdentifier();
 
     /**
      * Set the identifier defining the object that is eligible to re-hydration.
      *
      * @param id Identifier.
      */
-    public void setChangeSourceIdentifier(Identifier id);
+    void setChangeSourceIdentifier(Identifier id);
 
     /**
      * Origin date of creation of object that is eligible to re-hydration.
      *
      * @return A date.
      */
-    public OffsetDateTime changeSourceOccurredAt();
+    OffsetDateTime changeSourceOccurredAt();
 
     /**
      * Set the origin date of the object that is eligible to re-hydration.
      *
      * @param date A date (e.g origin creation date).
      */
-    public void setChangeSourceOccurredAt(OffsetDateTime date);
+    void setChangeSourceOccurredAt(OffsetDateTime date);
 }

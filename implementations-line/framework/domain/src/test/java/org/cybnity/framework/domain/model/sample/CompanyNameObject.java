@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 public class CompanyNameObject extends ValueObject<String> implements Serializable {
 
-	private String name;
+	private final String name;
 
 	public CompanyNameObject(String name) {
 		this.name = name;

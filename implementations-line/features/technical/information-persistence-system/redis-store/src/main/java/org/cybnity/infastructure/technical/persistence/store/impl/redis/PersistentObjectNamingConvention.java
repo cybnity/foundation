@@ -10,7 +10,7 @@ public class PersistentObjectNamingConvention {
     /**
      * Category of naming convention supported and relative to specific type of element which shall be logically named according to a convention.
      * In a Redis implementation store, the pattern applied is explained at <a href="https://redis.io/docs/data-types/streams/#streams-basics">Redis Stream basics</a> regarding each stream entry key.
-     * The standardized naming pattern for each type of persistent object is "<domain name>:<type of domain object>:<Domain object's unique identifier>".
+     * The standardized naming pattern for each type of persistent object is "domain name:type of domain object:Domain object's unique identifier".
      * Unique identifier can be natural or technical based according to the logical identification specific to an aggregate.
      */
     public enum NamingConventionApplicability {
@@ -22,7 +22,7 @@ public class PersistentObjectNamingConvention {
 
         private final String label;
 
-        private NamingConventionApplicability(String standardLabel) {
+        NamingConventionApplicability(String standardLabel) {
             this.label = standardLabel;
         }
 

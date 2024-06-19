@@ -20,7 +20,7 @@ public enum BasicConfigurationVariable implements IReadableConfiguration {
     /**
      * Name of this environment variable currently hosted by the system environment.
      */
-    private String name;
+    private final String name;
 
     /**
      * Default constructor of a configuration variable that is readable from the
@@ -31,7 +31,7 @@ public enum BasicConfigurationVariable implements IReadableConfiguration {
      *              container or operating system).
      * @throws IllegalArgumentException When mandatory parameter is not defined.
      */
-    private BasicConfigurationVariable(String aName) throws IllegalArgumentException {
+    BasicConfigurationVariable(String aName) throws IllegalArgumentException {
 	if (aName == null || "".equalsIgnoreCase(aName))
 	    throw new IllegalArgumentException("The name of this variable shall be defined!");
 	this.name = aName;

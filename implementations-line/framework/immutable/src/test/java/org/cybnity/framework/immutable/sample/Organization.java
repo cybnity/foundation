@@ -36,7 +36,7 @@ public class Organization extends EntityImpl implements INaming {
      */
     @Override
     public String name() {
-        return new String(this.unmodifiableOrganizationName);
+        return this.unmodifiableOrganizationName;
     }
 
     @Override

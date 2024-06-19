@@ -105,7 +105,7 @@ public class EventStoreUseCaseTest {
     private static class EventsCheck extends DomainEventSubscriber<DomainEvent> {
 
         private final List<DomainEvent> notAlreadyChecked = new LinkedList<>();
-        private Class<?> observedType;
+        private final Class<?> observedType;
 
         public EventsCheck(List<DomainEvent> toCheck, Class<?> observedEventType) {
             super();

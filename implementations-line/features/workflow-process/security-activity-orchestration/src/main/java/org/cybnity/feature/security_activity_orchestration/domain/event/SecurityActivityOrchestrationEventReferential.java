@@ -420,6 +420,6 @@ public enum SecurityActivityOrchestrationEventReferential {
 	 * Event regarding system disposal strategy implementation that have been
 	 * finalized.
 	 */
-	SystemDisposalStrategyImplemented;
+	SystemDisposalStrategyImplemented
 
 }

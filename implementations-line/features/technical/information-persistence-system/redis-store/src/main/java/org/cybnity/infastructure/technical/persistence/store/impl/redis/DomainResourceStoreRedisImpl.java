@@ -60,7 +60,7 @@ public class DomainResourceStoreRedisImpl extends EventStore {
     /**
      * Current context.
      */
-    private IContext context;
+    private final IContext context;
 
     /**
      * Default constructor.
@@ -124,7 +124,7 @@ public class DomainResourceStoreRedisImpl extends EventStore {
     /**
      * Get mapper supporting the serialization of domain event type managed as store's items.
      *
-     * @return A mapper (IDescribed > StreamMessage).
+     * @return A mapper (IDescribed to StreamMessage).
      */
     protected MessageMapper getDomainEventSerializationMapper() {
         return new MessageMapperFactory().getMapper(IDescribed.class, StreamMessage.class);
@@ -133,7 +133,7 @@ public class DomainResourceStoreRedisImpl extends EventStore {
     /**
      * Get mapper supporting the deserialization of domain event type managed as store's items.
      *
-     * @return A mapper (StreamMessage > IDescribed).
+     * @return A mapper (StreamMessage to IDescribed).
      */
     protected MessageMapper getDomainEventDeserializationMapper() {
         return new MessageMapperFactory().getMapper(StreamMessage.class, IDescribed.class);

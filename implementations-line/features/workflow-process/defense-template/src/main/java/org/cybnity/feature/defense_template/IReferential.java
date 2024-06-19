@@ -20,12 +20,12 @@ public interface IReferential extends Unmodifiable {
 	 * 
 	 * @return An acronym (e.g NIST).
 	 */
-	public String acronym();
+    String acronym();
 
 	/**
 	 * Get the label naming this referential.
 	 * 
 	 * @return A label (e.g National Institute of Standards and Technology).
 	 */
-	public String label();
+    String label();
 }

@@ -27,7 +27,7 @@ public class Channel implements INaming {
         /**
          * Key name regarding an information (e.g event payload) regarding any fact record published, and retrieved by a Channel.
          */
-        MESSAGE_PAYLOAD_KEY_NAME;
+        MESSAGE_PAYLOAD_KEY_NAME
     }
 
     private final String name;

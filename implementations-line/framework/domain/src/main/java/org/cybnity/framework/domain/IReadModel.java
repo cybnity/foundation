@@ -30,5 +30,5 @@ public interface IReadModel {
      *
      * @return A collection of projections relative several types of queryable domain layer's entities and/or value objects exposed by the bounded context.
      */
-    public Collection<IReadModelProjection> projections();
+    Collection<IReadModelProjection> projections();
 }

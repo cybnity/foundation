@@ -27,10 +27,10 @@ public abstract class HealthyOperableComponentChecker {
     /**
      * Process managing the verification of each type of required content (e.g
      * configuration variables, files, permissions) and runtime conditions that
-     * allow to identify the current healthly and operational status of this
+     * allow to identify the current health and operational status of this
      * component.
      * 
-     * @throws UnoperationalStateException
+     * @throws UnoperationalStateException When impossible check execution.
      */
     public void checkOperableState() throws UnoperationalStateException {
 	checkConfigurationVariables();

@@ -30,7 +30,7 @@ public class TenantDescriptor extends MutableProperty {
      * atomic fact.
      */
     public enum PropertyAttributeKey {
-        LABEL;
+        LABEL
     }
 
     public TenantDescriptor(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue,

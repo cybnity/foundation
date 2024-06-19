@@ -43,7 +43,7 @@ public class ResourceDescriptor extends HashMap<String, String> {
         /**
          * Serial version UID (e.g Java class version UID) regarding the resource when it's a serializable custom object type.
          */
-        RESOURCE_TYPE_SERIAL_VERSION_UID;
+        RESOURCE_TYPE_SERIAL_VERSION_UID
     }
 
     /**
@@ -64,6 +64,7 @@ public class ResourceDescriptor extends HashMap<String, String> {
     /**
      * Implement the generation of version hash regarding this class type according
      * to a concrete strategy utility service.
+     * @return Hash value.
      */
     public String versionHash() {
         return String.valueOf(serialVersionUID);

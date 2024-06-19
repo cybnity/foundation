@@ -46,7 +46,7 @@ public class StringBasedNaturalKeyBuilderUseCaseTest {
 	int asciiTo = 255;// including special characters codes
 	StringBuffer b = new StringBuffer();
 	for (int asciiCode = asciiFrom; asciiCode <= asciiTo; asciiCode++) {
-	    b.append(Character.toString((char) asciiCode));
+	    b.append((char) asciiCode);
 	}
 	// Use a natural key including punctuation marks
 	StringBasedNaturalKeyBuilder builder = new StringBasedNaturalKeyBuilder(b.toString(), 10);
@@ -115,7 +115,7 @@ public class StringBasedNaturalKeyBuilderUseCaseTest {
 	builder.generateMinimumCharactersQuantity();
 	String result = builder.getResult();
 	// Check minimum characters length are generated
-	assertTrue(result.length() == 30, "Invalid quantity of char in transformed text!");
+        assertEquals(30, result.length(), "Invalid quantity of char in transformed text!");
     }
 
     /**

@@ -13,5 +13,4 @@ public enum MessageHeader {
      * Header regarding a transaction identifier considered as unique correlation id.
      */
     CORRELATION_ID
-    ;
 }

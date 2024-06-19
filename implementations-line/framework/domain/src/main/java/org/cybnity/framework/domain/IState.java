@@ -23,7 +23,7 @@ public interface IState {
 	 * 
 	 * @return A set of properties or null.
 	 */
-	public Collection<Attribute> properties();
+    Collection<Attribute> properties();
 
 	/**
 	 * Get existing sub-states defining a more detailed life cycle of this state.
@@ -31,5 +31,5 @@ public interface IState {
 	 * @return A list of ordered sub-states included into this state life cycle. Or
 	 *         null by default.
 	 */
-	public List<IState> subStates();
+    List<IState> subStates();
 }

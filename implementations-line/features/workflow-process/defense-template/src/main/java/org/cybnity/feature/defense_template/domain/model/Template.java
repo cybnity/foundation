@@ -37,7 +37,7 @@ public class Template extends Aggregate implements ITemplate {
     /**
      * Optional origin of this template.
      */
-    private IReferential originReferential;
+    private final IReferential originReferential;
 
     /**
      * Mandatory name of this template.
@@ -47,7 +47,7 @@ public class Template extends Aggregate implements ITemplate {
     /**
      * Represent a mandatory type of domain object that is modeled as a template.
      */
-    private DomainObjectType modelOf;
+    private final DomainObjectType modelOf;
 
     /**
      * Default constructor.
@@ -229,7 +229,7 @@ public class Template extends Aggregate implements ITemplate {
      *                                  is not valid in terms of minimum conformity.
      *                                  When name parameter is not regarding same
      *                                  template identity.
-     * @throws ImmutabilityException
+     * @throws ImmutabilityException When impossible read of template owner.
      */
     public void changeName(MutableAttribute name) throws IllegalArgumentException, ImmutabilityException {
         if (name == null)

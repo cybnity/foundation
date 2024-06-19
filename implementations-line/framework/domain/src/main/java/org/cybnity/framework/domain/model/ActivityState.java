@@ -29,8 +29,8 @@ public class ActivityState extends MutableProperty {
 	 */
 	public enum PropertyAttributeKey {
 		/** Boolean active/de-active state **/
-		StateValue;
-	}
+		StateValue
+    }
 
 	/**
 	 * Default constructor.
@@ -82,7 +82,7 @@ public class ActivityState extends MutableProperty {
 	 *                             value.
 	 * @param status               Optional history state of this property version.
 	 *                             If null,
-	 *                             {@link org.cybnity.framework.immutable.HistoryState.Committed}
+	 *                             org.cybnity.framework.immutable.HistoryState.COMMITTED
 	 *                             is defined as default state.
 	 * @param predecessors         Optional prior states.
 	 * @throws IllegalArgumentException When mandatory parameter is missing, or when

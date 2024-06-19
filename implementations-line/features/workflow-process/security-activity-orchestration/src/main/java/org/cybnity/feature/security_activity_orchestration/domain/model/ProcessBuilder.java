@@ -53,8 +53,9 @@ public class ProcessBuilder implements IProcessBuilder {
 	/**
 	 * Get a builder instance allowing preparation of a process instantiation.
 	 * 
-	 * @param processIdentity Mandatory identity of the process to build.
+	 * @param processIdentifiers Mandatory identity of the process to build.
 	 * @param processParent   Mandatory predecessor of the process to build.
+	 * @return Builder instance.
 	 * @throws IllegalArgumentException When missing mandatory parameter.
 	 */
 	public static ProcessBuilder instance(LinkedHashSet<Identifier> processIdentifiers, Entity processParent)
@@ -87,11 +88,12 @@ public class ProcessBuilder implements IProcessBuilder {
 	/**
 	 * Get a builder instance allowing preparation of a process instantiation.
 	 * 
-	 * @param processIdentity Mandatory identity of the process to build.
+	 * @param processIdentifiers Mandatory identity of the process to build.
 	 * @param processParent   Mandatory predecessor of the process to build.
 	 * @param processName     Mandatory name of the process to build. It can be
 	 *                        valued as the name property key when a i18N locale is
 	 *                        defined.
+	 * @return Builder instance.
 	 * @throws IllegalArgumentException When missing mandatory parameter.
 	 */
 	public static ProcessBuilder instance(LinkedHashSet<Identifier> processIdentifiers, Entity processParent,

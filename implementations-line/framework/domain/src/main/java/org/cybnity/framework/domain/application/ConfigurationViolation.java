@@ -11,5 +11,4 @@ public enum ConfigurationViolation {
      */
     MISSING_DEPENDENCY_ARTIFACT
 
-    ;
 }

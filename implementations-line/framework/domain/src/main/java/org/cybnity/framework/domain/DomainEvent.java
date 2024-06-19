@@ -18,8 +18,7 @@ import java.time.OffsetDateTime;
  * interactions between the components of a domain and users are allowed via
  * immutable events.
  * <p>
- * By convention, a domain event is named according to <<EventType>><<Fact
- * State>> (e.g OrderConfirmed).
+ * By convention, a domain event is named according to EventTypeFactState (e.g OrderConfirmed).
  * <p>
  * An event can be used to read one or many data of a system, to
  * change a status of a domain model or to be informed of a changed status
@@ -78,6 +77,7 @@ public abstract class DomainEvent implements IHistoricalFact, IdentifiableFact, 
      * Get an immutable copy of the original entity of this event.
      *
      * @return Identity of this event, or null.
+     * @throws ImmutabilityException when impossible creation of immutable version of identifier.
      */
     public Entity getIdentifiedBy() throws ImmutabilityException {
         if (this.identifiedBy != null) {

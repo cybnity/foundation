@@ -38,5 +38,5 @@ public interface IAggregate extends ICommandHandler {
 	 *         aggregate representing a domain boundary of capabilities only).
 	 * @exception ImmutabilityException When impossible reference generation.
 	 */
-	public EntityReference root() throws ImmutabilityException;
+    EntityReference root() throws ImmutabilityException;
 }

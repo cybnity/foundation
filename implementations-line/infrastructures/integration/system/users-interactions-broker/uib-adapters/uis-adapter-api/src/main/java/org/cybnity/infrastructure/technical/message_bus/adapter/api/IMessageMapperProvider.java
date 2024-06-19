@@ -14,5 +14,5 @@ public interface IMessageMapperProvider {
      * @param transformableAs Targeted type to generate.
      * @return A mapper, or null when none supported mapping capability between the origin and targeted type.
      */
-    public MessageMapper getMapper(Class<?> transformable, Class<?> transformableAs);
+    MessageMapper getMapper(Class<?> transformable, Class<?> transformableAs);
 }

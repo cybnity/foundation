@@ -19,5 +19,5 @@ public enum AttributeName {
     /**
      * Identifier of a Tenant.
      */
-    TENANT_ID;
+    TENANT_ID
 }

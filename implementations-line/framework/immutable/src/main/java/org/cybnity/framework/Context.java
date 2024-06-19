@@ -20,7 +20,7 @@ public class Context implements IContext {
     /**
      * Container of resources instances provided via resource item containers.
      */
-    private ConcurrentHashMap<String, ResourceItem> resources;
+    private final ConcurrentHashMap<String, ResourceItem> resources;
 
     /**
      * Default constructor.
@@ -112,7 +112,7 @@ public class Context implements IContext {
     protected class ResourceItem {
 
 	private Object sourcedInstance;
-	private Class<?> resourceType;
+	private final Class<?> resourceType;
 
 	/**
 	 * Default constructor.

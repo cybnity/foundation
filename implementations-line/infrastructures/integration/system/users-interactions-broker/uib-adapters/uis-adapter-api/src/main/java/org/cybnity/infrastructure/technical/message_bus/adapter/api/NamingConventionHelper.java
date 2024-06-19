@@ -30,7 +30,7 @@ public class NamingConventionHelper {
 
         private final String label;
 
-        private NamingConventionApplicability(String standardLabel) {
+        NamingConventionApplicability(String standardLabel) {
             this.label = standardLabel;
         }
 

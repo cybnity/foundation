@@ -32,7 +32,7 @@ import java.util.List;
 @Requirement(reqType = RequirementCategory.Functional, reqId = "REQ_FCT_73")
 public class ProcessTemplateXMLParser {
 
-	private DocumentBuilderFactory dbf;
+	private final DocumentBuilderFactory dbf;
 
 	/**
 	 * Name of node supported by the parser regarding the specification of a process
@@ -41,16 +41,16 @@ public class ProcessTemplateXMLParser {
 	 */
 	public enum NodeNameSpecification {
 		Process, Description, Activation, Completion, Properties, Attribute, Staging, Step, Name, SubStates,
-		ActivationIncomingConditions;
-	}
+		ActivationIncomingConditions
+    }
 
 	/**
 	 * Name of node attribute supported by the parser regarding the specification of
 	 * a process defined into a valid XML document.
 	 */
 	public enum NodeAttributeNameSpecification {
-		name, isActiveStatus, percentage, referential;
-	}
+		name, isActiveStatus, percentage, referential
+    }
 
 	/**
 	 * Default constructor.

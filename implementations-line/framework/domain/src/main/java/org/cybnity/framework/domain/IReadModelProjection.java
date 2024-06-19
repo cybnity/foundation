@@ -18,26 +18,26 @@ public interface IReadModelProjection {
      *
      * @param evt Notified change regarding a subject potentially presenting an interest for this Read Model projection (e.g event store stream change).
      */
-    public void when(DomainEvent evt);
+    void when(DomainEvent evt);
 
     /**
      * Get description of this read-model projection.
      *
      * @return A description providing specification element regarding this projection (e.g label, ownership, categorization elements).
      */
-    public ReadModelProjectionDescriptor description();
+    ReadModelProjectionDescriptor description();
 
     /**
      * Make active the projection (e.g create or sync the graph schema aligned and supporting this projection).
      *
      * @throws UnoperationalStateException When problem during the projection activation.
      */
-    public void activate() throws UnoperationalStateException;
+    void activate() throws UnoperationalStateException;
 
     /**
      * Delete or deactivate the projection (e.g drop a graph instance aligned and supporting this projection).
      *
      * @throws UnoperationalStateException When problem during the projection activation.
      */
-    public void deactivate() throws UnoperationalStateException;
+    void deactivate() throws UnoperationalStateException;
 }

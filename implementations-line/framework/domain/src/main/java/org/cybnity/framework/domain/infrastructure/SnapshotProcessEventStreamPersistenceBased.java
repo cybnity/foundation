@@ -92,6 +92,7 @@ public abstract class SnapshotProcessEventStreamPersistenceBased extends Abstrac
      * The method ensure the instantiation of new object according to the supported class type, and ensure its rehydration before to return it.
      *
      * @param history Mandatory stream hosting the event type changes history, that shall be used for re-hydration execution.
+     * @param mutedInstanceFactory Mandatory factory of specialized aggregate instances.
      * @return Re-hydrated instance eligible to snapshot. The applied re-hydration have been guarantee by this method execution from the history stream provided.
      * @throws IllegalArgumentException When any mandatory parameter is missing.
      */

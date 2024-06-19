@@ -26,5 +26,4 @@ public enum ConformityViolation {
      */
     UNPROCESSABLE_EVENT_TYPE,
 
-    ;
 }

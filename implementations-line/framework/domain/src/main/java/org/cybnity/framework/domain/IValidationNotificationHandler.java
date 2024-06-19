@@ -12,7 +12,7 @@ public interface IValidationNotificationHandler {
     /**
      * Notify a problem observed during the validation executed.
      * 
-     * @param message
+     * @param message Message text to diffuse.
      */
-    public void handleError(String message);
+    void handleError(String message);
 }

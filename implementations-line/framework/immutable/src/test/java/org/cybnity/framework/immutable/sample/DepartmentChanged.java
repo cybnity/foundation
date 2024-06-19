@@ -19,9 +19,9 @@ public class DepartmentChanged implements IHistoricalFact, IdentifiableFact, IVe
      */
     private static final long serialVersionUID = new VersionConcreteStrategy()
 	    .composeCanonicalVersionHash(DepartmentChanged.class).hashCode();
-    private Entity identifiedBy;
+    private final Entity identifiedBy;
     private OffsetDateTime occuredAt;
-    private Department updatedVersion;
+    private final Department updatedVersion;
 
     public DepartmentChanged(Entity identity, Department changed) {
 	this.identifiedBy = identity;

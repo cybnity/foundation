@@ -19,14 +19,14 @@ public class ApplicativeRole extends MutableProperty {
 
     private static final long serialVersionUID = 1L;
 
-    private OffsetDateTime versionedAt;
+    private final OffsetDateTime versionedAt;
 
     /**
      * Example of keys set regarding the multiple attribute defining this role, and
      * that each change need to be versioned/treated as a single atomic fact.
      */
     public enum PropertyAttributeKey {
-	RoleName, OwnerRef, VersionedAt;
+	RoleName, OwnerRef, VersionedAt
     }
 
     /**

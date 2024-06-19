@@ -37,18 +37,18 @@ public class FactEdge implements Unmodifiable, IVersionable, IUniqueness, Serial
     /**
      * Edge point of the relation with the succeeding fact.
      */
-    private String successorId;
+    private final String successorId;
     /**
      * Edge point of the relation with the preceding fact.
      */
-    private String predecessorId;
+    private final String predecessorId;
 
     /**
      * Role defining the relation typ between the successor and the predecessor. It
-     * is a classification (e.g of common naming for graph edges "to->from" vs
-     * "in->out" vs "source->target") of this edge (relation type and naming).
+     * is a classification (e.g of common naming for graph edges "to-from" vs
+     * "in-out" vs "source-target") of this edge (relation type and naming).
      */
-    private RelationRole factsRelationType;
+    private final RelationRole factsRelationType;
 
     /**
      * Default constructor of a relation between facts.

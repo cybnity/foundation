@@ -32,7 +32,7 @@ public abstract class ChainCommandHandler {
 	 * defined.
 	 */
 	private Collection<ChainCommandHandler> next;
-	private List<ChainCommandHandler> subTasks;
+	private final List<ChainCommandHandler> subTasks;
 
 	/**
 	 * Default constructor.

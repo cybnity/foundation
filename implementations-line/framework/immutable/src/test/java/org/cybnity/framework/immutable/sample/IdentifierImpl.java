@@ -14,8 +14,8 @@ import java.io.Serializable;
 public class IdentifierImpl implements Identifier {
 
     private static final long serialVersionUID = 1L;
-    private String value;
-    private String name;
+    private final String value;
+    private final String name;
 
     public IdentifierImpl(String name, String value) {
 	this.name = name;
@@ -24,7 +24,7 @@ public class IdentifierImpl implements Identifier {
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	return new IdentifierImpl(name.toString(), value.toString());
+	return new IdentifierImpl(name, value);
     }
 
     @Override

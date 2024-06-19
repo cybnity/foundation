@@ -31,5 +31,5 @@ public interface IWriteModel {
      *                                  cause of command invalidity (e.g missing
      *                                  required contents).
      */
-    public void handle(Command command) throws IllegalArgumentException;
+    void handle(Command command) throws IllegalArgumentException;
 }

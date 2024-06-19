@@ -1,6 +1,5 @@
 package org.cybnity.framework.domain.model;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -25,7 +24,7 @@ public class DomainEntityDeserializer extends StdDeserializer<DomainEntity> {
     }
 
     @Override
-    public DomainEntity deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public DomainEntity deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
         // Read array of identifiers defining identity of entity
         LinkedHashSet<Identifier> identifiers = new LinkedHashSet<>();

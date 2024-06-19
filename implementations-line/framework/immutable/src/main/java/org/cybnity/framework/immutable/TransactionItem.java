@@ -12,12 +12,12 @@ public class TransactionItem {
     /**
      * The entity which is subject of a property value change.
      */
-    private Entity itemContext;
+    private final Entity itemContext;
 
     /**
      * Version of property changed regarding the parent entity context.
      */
-    private MutableProperty propertyState;
+    private final MutableProperty propertyState;
 
     public TransactionItem(Entity childEntityContext, MutableProperty childPropertyVersion)
 	    throws IllegalArgumentException {

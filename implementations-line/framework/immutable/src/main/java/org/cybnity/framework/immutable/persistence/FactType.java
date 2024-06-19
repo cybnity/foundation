@@ -29,8 +29,7 @@ public class FactType implements Unmodifiable, IVersionable, Serializable, IUniq
 
     /**
      * Label identifying a unique name regarding a category of fact (e.g name of
-     * class regarding a concrete event like <<EventType>><<Fact State>> (e.g
-     * OrderConfirmed).
+     * class regarding a concrete event (e.g OrderConfirmed).
      * <p>
      * Define the uniqueness of this class type instance.
      */

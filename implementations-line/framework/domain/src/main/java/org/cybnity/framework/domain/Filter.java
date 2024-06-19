@@ -17,5 +17,5 @@ public interface Filter<T> {
      * @param ctx               Optional context.
      * @return Filtered result(s) or null.
      */
-    public T apply(T toEvaluate, Map<String, String> selectionCriteria, ISessionContext ctx);
+    T apply(T toEvaluate, Map<String, String> selectionCriteria, ISessionContext ctx);
 }

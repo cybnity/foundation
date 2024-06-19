@@ -23,5 +23,5 @@ public interface IDomainModel {
      *
      * @return A name.
      */
-    public String domainName();
+    String domainName();
 }

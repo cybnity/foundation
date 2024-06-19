@@ -26,5 +26,5 @@ public interface ISessionContext extends IContext {
      * 
      * @return A tenant or null.
      */
-    public Tenant tenant();
+    Tenant tenant();
 }

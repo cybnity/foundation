@@ -17,13 +17,15 @@ public interface ISubscribable {
      * Add a listener as interested to be notified about facts.
      * 
      * @param aSubscriber The mandatory subscriber to inform about changes.
+     * @param <T> Specialized subscriber type.
      */
-    public <T> void subscribe(DomainEventSubscriber<T> aSubscriber);
+    <T> void subscribe(DomainEventSubscriber<T> aSubscriber);
 
     /**
      * Remove a subscriber of the register if existing.
      * 
      * @param aSubscriber The mandatory subscriber to remove from register.
+     * @param <T> Specialized subscriber type.
      */
-    public <T> void remove(DomainEventSubscriber<T> aSubscriber);
+    <T> void remove(DomainEventSubscriber<T> aSubscriber);
 }

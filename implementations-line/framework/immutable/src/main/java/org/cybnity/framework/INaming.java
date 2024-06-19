@@ -10,5 +10,5 @@ public interface INaming {
      *
      * @return A logical name.
      */
-    public String name();
+    String name();
 }

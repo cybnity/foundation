@@ -24,7 +24,7 @@ public interface IFactStore<T> {
      * @throws ImmutabilityException       When problem of immutable version of stored event is occurred.
      * @throws UnoperationalStateException When technical problem is occurred regarding this store usage.
      */
-    public void append(T fact) throws IllegalArgumentException, ImmutabilityException, UnoperationalStateException;
+    void append(T fact) throws IllegalArgumentException, ImmutabilityException, UnoperationalStateException;
 
     /**
      * Search a fact from store.
@@ -34,6 +34,6 @@ public interface IFactStore<T> {
      * @throws IllegalArgumentException    When missing mandatory parameter.
      * @throws UnoperationalStateException When technical problem is occurred regarding this store usage.
      */
-    public T findEventFrom(Identifier uid) throws IllegalArgumentException, UnoperationalStateException;
+    T findEventFrom(Identifier uid) throws IllegalArgumentException, UnoperationalStateException;
 
 }

@@ -27,7 +27,7 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
     /**
      * Stop allocated resources specific to this repository (e.g database access...).
      */
-    public void freeResources();
+    void freeResources();
 
     /**
      * Get a next technical identity manageable by this repository.
@@ -36,7 +36,7 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      *            id) usable for persistence management.
      * @return A technical identifier.
      */
-    public T nextIdentity(ISessionContext ctx);
+    T nextIdentity(ISessionContext ctx);
 
     /**
      * Find a historical fact identified.
@@ -46,7 +46,7 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      *                tenant id) usable for persistence management.
      * @return Found fact or null.
      */
-    public T factOfId(Identifier aFactId, ISessionContext ctx);
+    T factOfId(Identifier aFactId, ISessionContext ctx);
 
     /**
      * Delete a fact from this repository.
@@ -57,7 +57,7 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      * @return True if previous existent item was found and was removed from this
      * repository. False if none previous fact found and removed.
      */
-    public boolean remove(T fact, ISessionContext ctx);
+    boolean remove(T fact, ISessionContext ctx);
 
     /**
      * Delete a collection of facts from this repository.
@@ -66,7 +66,7 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      * @param ctx              Optional context of persistence providing elements
      *                         (e.g tenant id) usable for persistence management.
      */
-    public void removeAll(Collection<T> aFactsCollection, ISessionContext ctx);
+    void removeAll(Collection<T> aFactsCollection, ISessionContext ctx);
 
     /**
      * Save an instance of fact into this repository.
@@ -78,7 +78,7 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      * auto-generated if new one created for the saved instance). Null if no
      * saved fact.
      */
-    public T save(T aFact, ISessionContext ctx);
+    T save(T aFact, ISessionContext ctx);
 
     /**
      * Save a collection of facts into this repository.
@@ -87,7 +87,7 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      * @param ctx             Optional context of persistence providing elements
      *                        (e.g tenant id) usable for persistence management.
      */
-    public void saveAll(Collection<T> aFactCollection, ISessionContext ctx);
+    void saveAll(Collection<T> aFactCollection, ISessionContext ctx);
 
     /**
      * Find facts from specific parameters.
@@ -96,5 +96,5 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      * @param ctx             Optional context of persistence layer usage.
      * @return A list of found result, or null.
      */
-    public List<T> queryWhere(Map<String, String> queryParameters, ISessionContext ctx);
+    List<T> queryWhere(Map<String, String> queryParameters, ISessionContext ctx);
 }

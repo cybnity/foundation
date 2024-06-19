@@ -30,6 +30,6 @@ public interface IRestorationFact extends IHistoricalFact {
      * 
      * @return Predecessor deletion fact that could be restored.
      */
-    public IDeletionFact deletion();
+    IDeletionFact deletion();
 
 }

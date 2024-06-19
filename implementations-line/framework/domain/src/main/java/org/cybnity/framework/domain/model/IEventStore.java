@@ -24,12 +24,12 @@ public interface IEventStore {
      *
      * @return A name space or null (when none snapshot capability is activated).
      */
-    public ValueObject<String> snapshotVersionsStorageNamespace();
+    ValueObject<String> snapshotVersionsStorageNamespace();
 
     /**
      * Stop allocated resources specific to this store (e.g listener of stream, database access...).
      */
-    public void freeResources();
+    void freeResources();
 
     /**
      * Add an event into the store stream and commit the list changes.
@@ -43,7 +43,7 @@ public interface IEventStore {
      *                                     event is occurred.
      * @throws UnoperationalStateException When technical problem is occurred regarding this store usage.
      */
-    public void appendToStream(Identifier domainSubjectId, List<DomainEvent> changes) throws IllegalArgumentException, ImmutabilityException, UnoperationalStateException;
+    void appendToStream(Identifier domainSubjectId, List<DomainEvent> changes) throws IllegalArgumentException, ImmutabilityException, UnoperationalStateException;
 
     /**
      * Load all the events regarding a stored subject .
@@ -53,7 +53,7 @@ public interface IEventStore {
      * @throws IllegalArgumentException    When missing mandatory parameter.
      * @throws UnoperationalStateException When technical problem is occurred regarding this store usage.
      */
-    public EventStream loadEventStream(String domainSubjectId) throws IllegalArgumentException, UnoperationalStateException;
+    EventStream loadEventStream(String domainSubjectId) throws IllegalArgumentException, UnoperationalStateException;
 
     /**
      * Load all the events since a snapshot version that was taken.
@@ -64,7 +64,7 @@ public interface IEventStore {
      * @throws IllegalArgumentException    When missing mandatory parameter.
      * @throws UnoperationalStateException When technical problem is occurred regarding this store usage.
      */
-    public EventStream loadEventStreamAfterVersion(String domainSubjectId, String snapshotExpectedVersion) throws IllegalArgumentException, UnoperationalStateException;
+    EventStream loadEventStreamAfterVersion(String domainSubjectId, String snapshotExpectedVersion) throws IllegalArgumentException, UnoperationalStateException;
 
     /**
      * Load a subset of events (as a range) regarding a stream subject.
@@ -77,6 +77,6 @@ public interface IEventStore {
      * @throws IllegalArgumentException    When mandatory parameter is missing.
      * @throws UnoperationalStateException When technical problem is occurred regarding this store usage.
      */
-    public EventStream loadEventStream(String domainSubjectId, int skipEvents, int maxCount) throws IllegalArgumentException, UnoperationalStateException;
+    EventStream loadEventStream(String domainSubjectId, int skipEvents, int maxCount) throws IllegalArgumentException, UnoperationalStateException;
 
 }
