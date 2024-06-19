@@ -1,6 +1,9 @@
 package org.cybnity.framework.domain.model.sample;
 
 import org.cybnity.framework.domain.ValueObject;
+import org.cybnity.framework.immutable.ImmutabilityException;
+
+import java.io.Serializable;
 
 /**
  * Example of value object defining a name of company.
@@ -8,26 +11,22 @@ import org.cybnity.framework.domain.ValueObject;
  * @author olivier
  *
  */
-public class CompanyNameObject extends ValueObject<String> {
+public class CompanyNameObject extends ValueObject<String> implements Serializable {
 
-    private String name;
+	private final String name;
 
-    public CompanyNameObject(String name) {
-	this.name = name;
-    }
-
-    @Override
-    public String[] valueHashCodeContributors() {
-	return new String[] { this.name };
-    }
-
-    @Override
-    protected boolean valueEquality(ValueObject<String> obj) {
-	boolean isEquals = false;
-	if (obj != null && obj instanceof CompanyNameObject) {
-	    isEquals = ((CompanyNameObject) obj).name.equals(this.name);
+	public CompanyNameObject(String name) {
+		this.name = name;
 	}
-	return isEquals;
-    }
+
+	@Override
+	public String[] valueHashCodeContributors() {
+		return new String[] { this.name };
+	}
+
+	@Override
+	public Serializable immutable() throws ImmutabilityException {
+		return new CompanyNameObject(this.name);
+	}
 
 }

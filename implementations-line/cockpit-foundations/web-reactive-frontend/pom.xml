@@ -47,7 +47,7 @@
 										<artifactId>${project.artifactId}</artifactId>
 									</labels>
 									<env>
-										<!-- defined 'develoment', or 'production' running type -->
+										<!-- defined 'development', or 'production' running type -->
 										<NODE_ENV>production</NODE_ENV>
 									</env>
 									<healthCheck>

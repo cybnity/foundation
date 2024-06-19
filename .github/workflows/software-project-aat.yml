@@ -49,7 +49,7 @@ jobs:
       # Build specific release name because none tag is existing on GitHub project
       - name: Identify reusable environment variables about current commit
         if: ${{ env.TAG_VERSION == '' }}
-        uses: FranzDiebold/github-env-vars-action@v2.7.0
+        uses: FranzDiebold/github-env-vars-action@v2
 
       # Build name based on a potential included tag (e.g staging0.0.7-reviewed, staging-alpha, staging)
       - name: Define a latest revision name regarding integrated development version
@@ -77,7 +77,6 @@ jobs:
     name: Latest version publishing
     # Publish not tagged snapshot version but as a common name equals to latest version of staging branch available for other domain application projects managed in other repositories
     if: ${{ success()
-          && github.event_name == 'push'
           && needs.define_project_release_name.outputs.is_snapshot == 'true'
           && needs.define_project_release_name.outputs.release_name != ''
           }}

@@ -1,17 +1,14 @@
 package org.cybnity.framework.domain;
 
+import org.cybnity.framework.immutable.*;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.cybnity.framework.immutable.Entity;
-import org.cybnity.framework.immutable.IHistoricalFact;
-import org.cybnity.framework.immutable.Identifier;
-import org.cybnity.framework.immutable.ImmutabilityException;
-import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
-import org.cybnity.framework.support.annotation.Requirement;
-import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Log event regarding a fact not previously identified (e.g system or context
@@ -26,12 +23,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
 public class UnidentifiableFactNotificationLog extends Entity {
 
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * Name of this type of identifier.
-     */
-    public static String IDENTIFIER_NAME = "log_uid";
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(UnidentifiableFactNotificationLog.class).hashCode();
 
     /**
      * Set of original facts that were origins of this log.
@@ -49,12 +42,12 @@ public class UnidentifiableFactNotificationLog extends Entity {
      *                                  defined or without defined identifier. When
      *                                  logEventId is using an identifier name that
      *                                  is not equals to
-     *                                  NotificationLog.IDENTIFIER_NAME.
+     *                                  BaseConstants.IDENTIFIER_ID.name().
      */
     public UnidentifiableFactNotificationLog(Identifier logEventId, IHistoricalFact... loggedFacts)
 	    throws IllegalArgumentException {
 	super(logEventId);
-	if (!IDENTIFIER_NAME.equals(logEventId.name()))
+	if (!BaseConstants.IDENTIFIER_ID.name().equals(logEventId.name()))
 	    throw new IllegalArgumentException(
 		    "The identifier name of the logEventId parameter is not valid! Should be equals to NotificationLog.IDENTIFIER_NAME value");
 	if (loggedFacts != null && loggedFacts.length > 0)
@@ -63,10 +56,10 @@ public class UnidentifiableFactNotificationLog extends Entity {
     }
 
     /**
-     * Get the list of origin facts that were loggued by this notification.
+     * Get the list of origin facts that were logged by this notification.
      * 
      * @return A set of facts immutable versions or empty list.
-     * @throw ImmutabilityException When an immutable version of an origin fact
+     * @throws ImmutabilityException When an immutable version of an origin fact
      *        can't be returned.
      */
     public List<IHistoricalFact> originFacts() throws ImmutabilityException {
@@ -106,7 +99,7 @@ public class UnidentifiableFactNotificationLog extends Entity {
 	}
 	// Return combined identifier normally only based on unique value found in
 	// identifiers list
-	return new IdentifierStringBased(IDENTIFIER_NAME, combinedId.toString());
+	return new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), combinedId.toString());
     }
 
 }

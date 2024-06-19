@@ -1,17 +1,11 @@
 package org.cybnity.framework.domain.model.sample;
 
+import org.cybnity.framework.immutable.*;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-import org.cybnity.framework.immutable.Entity;
-import org.cybnity.framework.immutable.EntityReference;
-import org.cybnity.framework.immutable.HistoryState;
-import org.cybnity.framework.immutable.ImmutabilityException;
-import org.cybnity.framework.immutable.MutableProperty;
-import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Sample regarding an applicative role managed by a domain (e.g that could be
@@ -25,14 +19,14 @@ public class ApplicativeRole extends MutableProperty {
 
     private static final long serialVersionUID = 1L;
 
-    private OffsetDateTime versionedAt;
+    private final OffsetDateTime versionedAt;
 
     /**
      * Example of keys set regarding the multiple attribute defining this role, and
      * that each change need to be versioned/treated as a single atomic fact.
      */
     public enum PropertyAttributeKey {
-	RoleName, OwnerRef, VersionedAt;
+	RoleName, OwnerRef, VersionedAt
     }
 
     /**
@@ -104,39 +98,6 @@ public class ApplicativeRole extends MutableProperty {
     }
 
     /**
-     * Get the history chain of previous versions of this property including
-     * previous changed values states.
-     * 
-     * @return A changes history. Empty list by default.
-     */
-    public Set<ApplicativeRole> changesHistory() {
-	// Read previous changes history (not including the current version)
-	LinkedHashSet<ApplicativeRole> history = new LinkedHashSet<>();
-	for (MutableProperty previousChangedProperty : this.prior) {
-	    history.add((ApplicativeRole) previousChangedProperty);
-	}
-	return history;
-    }
-
-    /**
-     * Update the history of this role.
-     * 
-     * @param roles To set as new version of this role history. Ignore if null or
-     *              empty.
-     */
-    public void updateChangesHistory(Set<ApplicativeRole> roles) {
-	if (roles != null && !roles.isEmpty()) {
-	    // Update the story at end of previous versions
-	    LinkedHashSet<MutableProperty> history = new LinkedHashSet<>();
-	    for (ApplicativeRole aRole : roles) {
-		history.add(aRole);
-	    }
-	    // Replace current history
-	    this.prior = history;
-	}
-    }
-
-    /**
      * Implement the generation of version hash regarding this class type according
      * to a concrete strategy utility service.
      */
@@ -153,7 +114,7 @@ public class ApplicativeRole extends MutableProperty {
      *                               instance
      */
     public Entity owner() throws ImmutabilityException {
-	return (Entity) this.entity.immutable();
+	return (Entity) this.owner.immutable();
     }
 
     /**
@@ -205,9 +166,7 @@ public class ApplicativeRole extends MutableProperty {
 		    // Check if same status
 		    if (compared.historyStatus() == this.historyStatus()) {
 			// Check if same role versioned
-			if (compared.versionedAt().equals(this.versionedAt)) {
-			    isEquals = true;
-			}
+			isEquals = Evaluations.isEpochSecondEquals(compared.versionedAt, this.versionedAt);
 		    }
 		}
 	    } catch (Exception e) {

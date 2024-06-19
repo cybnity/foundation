@@ -1,10 +1,10 @@
 package org.cybnity.framework;
 
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Utility class providing generic features to manage properties and resources
@@ -20,7 +20,7 @@ public class Context implements IContext {
     /**
      * Container of resources instances provided via resource item containers.
      */
-    private ConcurrentHashMap<String, ResourceItem> resources;
+    private final ConcurrentHashMap<String, ResourceItem> resources;
 
     /**
      * Default constructor.
@@ -108,12 +108,11 @@ public class Context implements IContext {
      * Represent a container of resource description (e.g additional metadata
      * allowed on the usage stats or attributes helping to categorization or search
      * of instance).
-     * 
      */
     protected class ResourceItem {
 
 	private Object sourcedInstance;
-	private Class<?> resourceType;
+	private final Class<?> resourceType;
 
 	/**
 	 * Default constructor.

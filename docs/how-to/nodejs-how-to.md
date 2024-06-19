@@ -3,7 +3,54 @@ Tools and commands allowing to manage the Node.js web application supported by R
 
 # NODEJS USAGE
 
+## NODEJS VERSION MANAGEMENT
+<details><summary>Prepare development stack</summary>
+<p>
+
+From project directory, update Node version to the latest version
+
+```shell
+#From Mac
+node -v
+  
+# Install Node version manager
+# - N manager installed via NPM
+npm install -g n
+# or installed via brew
+brew install n
+
+# Install N packages manager of Node via
+sudo n latest
+
+# check node version updated
+node -v
+# check npm version updated
+npm -v
+```
+
+</p>
+</details>
+
 ## NPM RUN
+<details><summary>Reinstall project modules</summary>
+<p>
+
+Remove all node_modules sub-folders, the package-lock.json file, and clear the npm cache
+
+```shell
+rm -rf node_modules
+rm -f package-lock.json
+npm cache clean --force
+```
+
+Execute from the web project folder:
+
+```shell
+npm install
+```
+
+</p>
+</details>
 <details><summary>Run application</summary>
 <p>
 
@@ -74,6 +121,16 @@ npm run eject
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+</p>
+</details>
+<details><summary>Maintain ReactJS script on latest version</summary>
+<p>   
+From project folder, update all dependencies required by the reactjs application with react-script
+
+```shell
+npm install react-scripts@latest
+```
 
 </p>
 </details>

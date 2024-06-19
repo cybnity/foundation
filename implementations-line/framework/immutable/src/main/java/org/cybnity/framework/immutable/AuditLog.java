@@ -1,5 +1,7 @@
 package org.cybnity.framework.immutable;
 
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
 import java.io.Serializable;
 
 /**
@@ -12,7 +14,8 @@ import java.io.Serializable;
  */
 public class AuditLog implements Unmodifiable, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(AuditLog.class).hashCode();
 
     public AuditLog() {
     }

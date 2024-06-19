@@ -1,15 +1,20 @@
 package org.cybnity.framework.domain.application.sample;
 
+import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.immutable.Entity;
+import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.EntityReference;
+import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Example of command creating a new user account into a system.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 public class UserAccountCreateCommand extends Command {
 
@@ -18,11 +23,36 @@ public class UserAccountCreateCommand extends Command {
     public EntityReference userIdentity;
 
     public UserAccountCreateCommand() {
-	super();
+        super();
     }
 
-    public UserAccountCreateCommand(Entity identifiedBy) {
-	super(identifiedBy);
+    public UserAccountCreateCommand(DomainEntity identifiedBy) {
+        super(identifiedBy);
+    }
+
+    /**
+     * This implementation do nothing
+     *
+     * @param eventIdentifier Mandatory defined identifier. None assignment when not defined or empty parameter.
+     */
+    @Override
+    public void assignCorrelationId(String eventIdentifier) {
+
+    }
+
+    /**
+     * Do nothing.
+     *
+     * @return Null.
+     */
+    @Override
+    public Attribute type() {
+        return null;
+    }
+
+    @Override
+    public Attribute correlationId() {
+        return null;
     }
 
     /**
@@ -31,7 +61,21 @@ public class UserAccountCreateCommand extends Command {
      */
     @Override
     public String versionHash() {
-	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+        return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 
+    @Override
+    public Serializable immutable() throws ImmutabilityException {
+        return null;
+    }
+
+    @Override
+    public Collection<Attribute> specification() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public boolean appendSpecification(Attribute specificationCriteria) {
+        return false;
+    }
 }

@@ -1,15 +1,15 @@
 package org.cybnity.framework.immutable.persistence;
 
-import java.util.Collection;
-
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
+import java.util.Collection;
+
 /**
  * Represents a persistence-oriented repository (also sometimes called Aggregate
  * store, or Aggregate-Oriented database) basic contract.
- * 
+ * <p>
  * Explicit save() both new and changed objects into the store, effectively
  * replacing any value previously associated with the given key.
  * 
@@ -24,31 +24,31 @@ public interface IFactRepository<T> {
      * 
      * @return A technical identifier.
      */
-    public T nexIdentity();
+    T nextIdentity();
 
     /**
      * Find a historical fact identified.
      * 
-     * @param aFactId A identifier of fact to search.
+     * @param aFactId An identifier of fact to search.
      * @return Found fact or null.
      */
-    public T factOfId(Identifier aFactId);
+    T factOfId(Identifier aFactId);
 
     /**
      * Delete a fact from this repository.
      * 
      * @param fact Instance to remove.
      * @return True if previous existent item was found and was removed from this
-     *         repository. Fals if none previous fact found and removed.
+     *         repository. False if none previous fact found and removed.
      */
-    public boolean remove(T fact);
+    boolean remove(T fact);
 
     /**
      * Delete a collection of facts from this repository.
      * 
-     * @param aFactCollection Facts list to remove.
+     * @param aFactsCollection Facts list to remove.
      */
-    public void removeAll(Collection<T> aFactCollection);
+    void removeAll(Collection<T> aFactsCollection);
 
     /**
      * Save an instance of fact into this repository.
@@ -58,12 +58,12 @@ public interface IFactRepository<T> {
      *         auto-generated if new one created for the saved instance). Null if no
      *         saved fact.
      */
-    public T save(T aFact);
+    T save(T aFact);
 
     /**
      * Save a collection of facts into this repository.
      * 
-     * @param aFactCollection Facts to save.
+     * @param aFactsCollection Facts to save.
      */
-    public void saveAll(Collection<T> aFactCollection);
+    void saveAll(Collection<T> aFactsCollection);
 }

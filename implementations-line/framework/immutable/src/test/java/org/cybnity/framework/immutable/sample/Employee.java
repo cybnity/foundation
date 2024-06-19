@@ -1,12 +1,12 @@
 package org.cybnity.framework.immutable.sample;
 
-import java.io.Serializable;
-import java.time.OffsetDateTime;
-
 import org.cybnity.framework.immutable.IMember;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
+import java.io.Serializable;
+import java.time.OffsetDateTime;
 
 /**
  * Example of member type regarding an organization.
@@ -17,8 +17,8 @@ import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 public class Employee implements IMember {
 
     private static final long serialVersionUID = 1L;
-    private String name;
-    private Identifier id;
+    private final String name;
+    private final Identifier id;
     private OffsetDateTime at;
 
     public Employee(String name, Identifier id) {
@@ -29,7 +29,7 @@ public class Employee implements IMember {
 
     @Override
     public Identifier identified() {
-	return new IdentifierImpl(new String(id.name()), new String(id.value().toString()));
+	return new IdentifierImpl(id.name(), id.value().toString());
     }
 
     @Override

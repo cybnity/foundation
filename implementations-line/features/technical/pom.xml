@@ -12,4 +12,8 @@
 	<packaging>pom</packaging>
 	<name>Technical features</name>
 
+	<modules>
+		<module>information-persistence-system</module>
+		<module>knowledge-management-database</module>
+	</modules>
 </project>

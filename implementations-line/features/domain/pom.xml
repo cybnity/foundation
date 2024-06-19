@@ -13,6 +13,7 @@
 	<name>Security domain features libraries</name>
 	<modules>
 		<module>feature-framework</module>
+		<module>risk</module>
 		<module>agreement-commitment</module>
 		<!--
 		<module>alert</module>
@@ -44,7 +45,6 @@
 		<module>procedure</module>
 		<module>remediation-tactic</module>
 		<module>report</module>
-		<module>risk</module>
 		<module>security-event</module>
 		<module>security-measure</module>
 		<module>security-policy</module>

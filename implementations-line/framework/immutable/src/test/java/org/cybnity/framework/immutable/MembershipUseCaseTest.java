@@ -1,9 +1,5 @@
 package org.cybnity.framework.immutable;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.UUID;
-
 import org.cybnity.framework.immutable.sample.Department;
 import org.cybnity.framework.immutable.sample.Employee;
 import org.cybnity.framework.immutable.sample.IdentifierImpl;
@@ -11,6 +7,10 @@ import org.cybnity.framework.immutable.sample.MemberImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test of MemberShip behaviors regarding its immutability supported

@@ -3,14 +3,43 @@
 	<parent>
 		<groupId>org.cybnity</groupId>
 		<artifactId>techstack</artifactId>
-		<version>0.17.0</version>
+		<version>0.32.0</version>
 	</parent>
 
-	<groupId>org.cybnity</groupId>
 	<artifactId>defense-platform</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
 	<name>CYBNITY defense platform</name>
+
+	<!-- Required informations for Maven Central Repository publishing -->
+	<description>Open source cybersecurity governance solution helping security activities (e.g NIST deployment, security KPI monitoring, security activities management)</description>
+	<url>http://github.com/cybnity/foundation</url>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>o.lemee</id>
+			<name>Olivier Lemee</name>
+			<email>olivier@cybnity.org</email>
+			<organization>AG Net</organization>
+			<organizationUrl>http://corp.agnet.fr</organizationUrl>
+			<timezone>FR</timezone>
+			<roles>
+				<role>Product Owner</role>
+				<role>Software Architect</role>
+				<role>Release Manager</role>
+			</roles>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:git:git://github.com/cybnity/foundation.git</connection>
+		<developerConnection>scm:git:https://github.com:cybnity/foundation.git</developerConnection>
+		<url>http://github.com/cybnity/foundation/tree/main</url>
+	</scm>
 
 	<properties>
 		<!-- CYBNITY project default revision -->
@@ -35,20 +64,41 @@
       			<uniqueVersion>true</uniqueVersion>
 	      		<url>https://maven.pkg.github.com/cybnity/foundation</url>
 	      	</snapshotRepository> -->
-		<!-- CYBNITY Open Source releases distribution -->
-		<repository>
-			<id>space-cybnity-open-source</id>
-			<name>CYBNITY OS Releases</name>
+
+		<!-- CYBNITY Open Source distributions -->
+		<snapshotRepository>
+			<id>agnet</id>
+			<name>AG Net snapshots repository</name>
 			<uniqueVersion>false</uniqueVersion>
-				<url>https://maven.pkg.jetbrains.space/cybnity/p/cybnity-os/cybnity-open-source</url>
-			<layout>default</layout>
+			<url>https://nexus.agnet.fr/repository/cybnity-snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>agnet</id>
+			<name>AG Net releases repository</name>
+			<uniqueVersion>true</uniqueVersion>
+			<url>https://nexus.agnet.fr/repository/cybnity-releases</url>
 		</repository>
 	</distributionManagement>
 
 	<repositories>
 		<repository>
-			<id>space-cybnity-open-source</id>
-			<url>https://maven.pkg.jetbrains.space/cybnity/p/cybnity-os/cybnity-open-source</url>
+			<id>agnet-snapshots</id>
+			<!-- CYBNITY artefact snapshot versions provided -->
+			<name>AG Net snapshots repository</name>
+			<url>https://nexus.agnet.fr/repository/cybnity-snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+
+		<repository>
+			<id>agnet-releases</id>
+			<!-- CYBNITY artefact release versions provided -->
+			<name>AG Net releases repository</name>
+			<url>https://nexus.agnet.fr/repository/cybnity-releases</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
@@ -56,6 +106,8 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
+
+		<!--
 		<repository>
 			<id>github</id>
 			<name>GitHub Packages</name>
@@ -66,36 +118,13 @@
 			<releases>
 				<enabled>true</enabled>
 			</releases>
-		</repository>
+		</repository>-->
 	</repositories>
 
 	<pluginRepositories>
-		<!--
-		<pluginRepository>
-			<id>maven2-repository.dev.java.net</id>
-			<name>Java.net repository for Maven</name>
-			<url>http://download.java.net/maven/2</url>
-			<layout>default</layout>
-		</pluginRepository>-->
 	</pluginRepositories>
 
-	<!-- Foundation project specific additional dependency versions -->
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>uk.org.webcompere</groupId>
-				<artifactId>system-stubs-jupiter</artifactId>
-				<version>[2.0.2,)</version>
-				<scope>test</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
-	<!-- Foundation sub-projects transversal dependencies -->
-	<dependencies>
-	</dependencies>
-
-	<!-- Lits of advise about project -->
+	<!-- List of advice about project -->
 	<mailingLists>
 		<mailingList>
 			<name>${project.name} developers list</name>
@@ -107,24 +136,6 @@
 			<name>${project.name} users list</name>
 		</mailingList>
 	</mailingLists>
-
-	<!-- Contributors -->
-	<developers>
-		<developer>
-			<id>o.lemee</id>
-			<name>Olivier Lemee</name>
-			<email>olivier@cybnity.org</email>
-			<organization>AG Net</organization>
-			<organizationUrl>http://corp.agnet.fr</organizationUrl>
-			<timezone>FR</timezone>
-			<roles>
-				<role>Product Owner</role>
-				<role>Software Architect</role>
-				<role>Release Manager</role>
-			</roles>
-		</developer>
-	</developers>
-
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/cybnity/foundation/issues/</url>

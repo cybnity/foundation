@@ -5,7 +5,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Represent a Builder pattern implementation of data quality regarding an
- * object to instanciate.
+ * object to instantiate.
  * 
  * Several quality rules ensuring the delivery of a data including completeness,
  * consistency, conformity, accuracy, integrity, timeliness.
@@ -20,7 +20,7 @@ public abstract class QualitativeDataBuilder {
      * Completeness is defined as expected comprehensiveness. Data can be complete
      * even if optional data is missing. As long as the data meets the expectations
      * then the data is considered complete.
-     * 
+     *
      * For example, a customer’s first name and last name are mandatory but middle
      * name is optional; so a record can be considered complete even if a middle
      * name is not available.
@@ -35,7 +35,7 @@ public abstract class QualitativeDataBuilder {
 
     /**
      * Consistency means data across all systems reflects the same information and
-     * are in synch with each other across the enterprise. Examples:
+     * are in sync with each other across the enterprise. Examples:
      * 
      * A business unit status is closed but there are sales for that business unit.
      * 

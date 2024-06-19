@@ -1,56 +1,56 @@
 package org.cybnity.framework.immutable;
 
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+import org.cybnity.framework.support.annotation.Requirement;
+import org.cybnity.framework.support.annotation.RequirementCategory;
+
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
-import org.cybnity.framework.support.annotation.Requirement;
-import org.cybnity.framework.support.annotation.RequirementCategory;
-
 /**
  * Capture a known state of an entity to perform an atomic unit of work.
- * 
- * When no additional itms can be added and no properties can be modified
+ * <br>
+ * When no additional items can be added and no properties can be modified
  * regarding a change request (e.g Command regarding an entity), the Transaction
  * pattern takes advantage of immutability for business processing.
- * 
- * It records the informatiopn about a request for work in such a way that it
+ * <br>
+ * It records the information about a request for work in such a way that it
  * cannot be modified after work begins.
- * 
+ * <br>
  * A Transaction identifies as a predecessor an entity that it is acting upon.
- * Whereas that entity was originally a strating point for children, mutable
+ * Whereas that entity was originally a starting point for children, mutable
  * properties, and other successors, the transaction seeks to lock it down by
  * inverting the predecessor/successor relationship.
- * 
- * Where Ownership placed the paretn as a predecessor of its children,
+ * <br>
+ * Where Ownership placed the parent as a predecessor of its children,
  * Transaction makes children predecessors of parents. Successors can be added
  * over time, but predecessors are immutable. Recording children as predecessors
  * prevents further creation of deletion.
- * 
+ * <br>
  * The transaction also identifies the specific versions of Mutable Properties,
- * thaht become direct or indirect predecessors of the the transaction. Again,
+ * that become direct or indirect predecessors of the transaction. Again,
  * the relationship is inverted so that any further modifications to those
  * properties do not affect the transaction.
- * 
- * When a user submit a transaction, it lock down its current state. No further
+ * <br>
+ * When a user submit a transaction, it locks down its current state. No further
  * changes to the transaction can be made.
- * 
+ * <br>
  * Once a transaction is recorded, subsequent changes to the entities or
- * properties will have no effect. All of the information in this transaction is
+ * properties will have no effect. All the information in this transaction is
  * recorded in predecessor relationships (predecessors are immutable, so this
  * transaction if locked down). Any difference in predecessors such as
  * transaction items or property versions would necessarily result in different
  * facts.
- * 
+ * <br>
  * A transaction if processed atomically (according to ACID model with
  * Atomicity, Consistency, Isolation and Durability) and processing begins with
  * a query for this transaction, not an item. Items will remain dorman until the
  * subsequent transaction arrives, at which time all items will take effect
  * simultaneously.
- * 
+ * <br>
  * All necessary information shall be in tha transitive closure of this
  * transaction. Starting at the transaction fact, follow all predecessors. From
  * those facts, recursively follow their predecessors. The transitive closure is
@@ -62,7 +62,8 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public class Transaction implements IHistoricalFact {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = new VersionConcreteStrategy()
+	    .composeCanonicalVersionHash(Transaction.class).hashCode();
 
     /**
      * Predecessor entity of this transaction.
@@ -84,7 +85,7 @@ public class Transaction implements IHistoricalFact {
     /**
      * Optional identifier of this transaction.
      */
-    private Identifier transactionId;
+    private final Identifier transactionId;
 
     /**
      * Default constructor.

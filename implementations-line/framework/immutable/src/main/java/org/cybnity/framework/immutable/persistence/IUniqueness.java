@@ -1,10 +1,10 @@
 package org.cybnity.framework.immutable.persistence;
 
-import java.lang.reflect.Field;
-import java.util.Set;
-
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.lang.reflect.Field;
+import java.util.Set;
 
 /**
  * Represent a means to determine how the uniqueness of a subject (e.g a fact)
@@ -27,5 +27,5 @@ public interface IUniqueness {
      * @return A set of fields combination representing the unique version of this
      *         object.
      */
-    public Set<Field> basedOn();
+    Set<Field> basedOn();
 }

@@ -9,5 +9,5 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
 public enum BaseConstants {
     /** Default name of a technical identifier **/
-    IDENTIFIER_ID;
+    IDENTIFIER_ID
 }
