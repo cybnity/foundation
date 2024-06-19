@@ -10,8 +10,8 @@
 	<artifactId>systems</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Registry systems infrastructure</name>
+	<name>- Registry systems infrastructure</name>
 	<modules>
-		<module>contents-indexing-search</module>
+		<module>knowledge-repository-server</module>
 	</modules>
 </project>

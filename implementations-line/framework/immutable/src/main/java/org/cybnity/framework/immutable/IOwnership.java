@@ -1,9 +1,9 @@
 package org.cybnity.framework.immutable;
 
-import java.util.Collection;
-
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.util.Collection;
 
 /**
  * In historical model, it's not strictly necessary to identify one predecessor
@@ -32,6 +32,6 @@ public interface IOwnership {
      * @return List of child facts (all successors that have an equals parent
      *         identifier), or null.
      */
-    public Collection<ChildFact> childrenOfParent(IHistoricalFact parent);
+    Collection<ChildFact> childrenOfParent(IHistoricalFact parent);
 
 }

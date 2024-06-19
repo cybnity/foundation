@@ -1,9 +1,9 @@
 package org.cybnity.framework.immutable.sample;
 
-import java.io.Serializable;
-
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
+
+import java.io.Serializable;
 
 /**
  * Sample of identifier implementation type only based on a single text chain.
@@ -14,8 +14,8 @@ import org.cybnity.framework.immutable.ImmutabilityException;
 public class IdentifierImpl implements Identifier {
 
     private static final long serialVersionUID = 1L;
-    private String value;
-    private String name;
+    private final String value;
+    private final String name;
 
     public IdentifierImpl(String name, String value) {
 	this.name = name;
@@ -24,7 +24,7 @@ public class IdentifierImpl implements Identifier {
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	return new IdentifierImpl(name.toString(), value.toString());
+	return new IdentifierImpl(name, value);
     }
 
     @Override

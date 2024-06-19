@@ -1,15 +1,15 @@
 package org.cybnity.framework.immutable;
 
-import java.io.Serializable;
-
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
+import java.io.Serializable;
+
 /**
- * Identifying information (e.g natural key, GUID, timestamp, or some
+ * Identifying information (e.g natural key, GUID, time stamp, or some
  * combination of those and other location-independent identifiers).
  * 
- * A location-independent identity can be generated fron any system node, is
+ * A location-independent identity can be generated from any system node, is
  * immutable and can be compared.
  * 
  * @author olivier
@@ -27,14 +27,14 @@ public interface Identifier extends Unmodifiable, Serializable {
      *         regarding a number. For example equals to "sku" regarding a stock
      *         keeping unit.
      */
-    public String name();
+    String name();
 
     /**
      * The value regarding this identity.
      * 
      * @return A identification value.
      */
-    public Serializable value();
+    Serializable value();
 
     /**
      * This method has the same contract as valueEquality() method in that all
@@ -43,8 +43,8 @@ public interface Identifier extends Unmodifiable, Serializable {
      * and shall provide the list of values contributing to define the unicity of
      * this instance (e.g also used for valueEquality() comparison).
      * 
-     * @return The unique functional values used to idenfity uniquely this instance.
+     * @return The unique functional values used to identify uniquely this instance.
      *         Or empty array.
      */
-    public String[] valueHashCodeContributors();
+    String[] valueHashCodeContributors();
 }

@@ -10,7 +10,7 @@
 	<artifactId>actions-scheduling</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Mission actions and commitments scheduling capability</name>
+	<name>Mission actions and commitments scheduling</name>
 
 	<modules>
 		<!-- Domain application components projects (e.g dedicated process module, internal feature module) -->

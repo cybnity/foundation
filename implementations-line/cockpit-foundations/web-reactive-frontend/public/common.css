@@ -1,0 +1,8 @@
+@font-face {
+  font-family: GothamThin;
+  src: url(fonts/Gotham/Gotham-Thin.otf);
+}
+@font-face {
+  font-family: GothamMedium;
+  src: url(fonts/Gotham/GothamMedium.ttf) format('truetype');
+}

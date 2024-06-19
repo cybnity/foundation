@@ -15,8 +15,8 @@
 
 	<modules>
 		<module>integration</module>
-		<!--
 		<module>registry</module>
+		<!--
 		<module>continuity</module>
 		<module>security</module>
 		<module>monitoring</module>-->

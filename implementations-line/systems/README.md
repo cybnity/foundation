@@ -11,6 +11,8 @@ To avoid risks (e.g large modules are slow, insecure, difficult to understand/te
 
 Several assembly projects are managed regarding the packaging of modular and deployable systems relative to independent and autonomous containerized systems of security features, and/or integrated applicative modules (e.g aggregation of CYBNITY domain's features).
 
+See the [production-grade infrastructure checklist](production-grade-infrastructure-checklist.md) that define "what are the requirements for going to production?".
+
 ### DEPLOYMENT VIEW
 See the [deployment view documentation](/docs/uml/README.md#deployment-view-systems--applications) for more detail on the design requirements that describe the environments, infrastructures and operating conditions required to install, activate and operate the systems safely.
 
@@ -28,19 +30,6 @@ Perimeter: the deployable application components (e.g Java autonomous applicatio
 Project type: Maven or Node.js implementation structures; dockerization auto-generated (e.g Dockerfile generation, image template tagging, push to Docker repository) via Maven plugin.
 
 Description: each java application project contains a configuration of its containerization (e.g docker plugin activation into its `pom.xml` file, and a `src\main\docker\xxx-assembly.xml` defining specific jar and files assembled into the application system generated as Docker image). Each application system generated is an extended JRE-TEE docker image, ready for start as an autonomous system. Help documentation about the used maven plugin is available [here](https://dmp.fabric8.io/#introduction).
-- [reactive-messaging-gateway](charts/reactive-messaging-gateway): provisioning project of [containerized web backend server](../cockpit-foundations/reactive-messaging-gateway).
-- [web-reactive-frontend](charts/web-reactive-frontend): provisioning project of [containerized web frontend server](../cockpit-foundations/web-reactive-frontend).
-
-## REUSABLE PROVISIONING SYSTEM PROJECTS
-Perimeter: some infrastructure third-party software (e.g Zookeeper application) are available on the market as template of provisioning helping to quickly customize the runtime (provisioning of pre-configured Docker image) into a Kubernetes platform. Some infrastructure components are reused by CYBNITY as infrastructure systems with customization of the prepared templates of their images helmization.
-
-Project type: Helm implementation structures.
-
-Description: several generic infrastructure projects required by the CYBNITY implementation architecture are managed.
-- [users-interactions-space](charts/users-interactions-space): bitnami Helm project of Redis image provisioning, customized for the CYBNITY needs (e.g implementation of collaboration space in UI area). This provisioning project is deployable and is supported by a `bitnami/redis` version including `7.0.8-debian-11-r0` operating system libraries. This implementatio (hosted on [ArtifactHUB](https://artifacthub.io/packages/helm/goauthentik/redis)) is currently used to reduce the maintenance effort of a dedicated Helm project based on the `infrastructure\integration\system\users-interactions-broker` docker image project.
-- [domains-interactions-space](charts/domains-interactions-space): bitnami Helm project of Kafka image provisioning, customized for the CYBNITY needs (e.g implementation of collaboration space in Domains I/O area). This provisioning project is deployable and is supported by a `bitnami/kafka` version including `3.3.2-debian-11-r0` operating system libraries. This implementatio (hosted on [ArtifactHUB](https://artifacthub.io/packages/helm/bitnami/kafka)) is currently used to reduce the maintenance effort of a dedicated Helm project based on the `infrastructure\integration\system\domains-interactions-broker` docker image project.
-   - [dis-brokers-registry-system](charts/domains-interactions-space/charts/zookeeper): included sub-project of Zookeeper image provisioning, customized for the CYBNITY needs (e.g included as implementation of Kafka brokers registry). This provisioning project is deployable and is supported by a `bitnami/zookeeper` version including a `3.8.0-debian-11-r74` operating system libraries. This implementation (hosted on [ArtifactHUB](https://artifacthub.io/packages/helm/riftbit/zookeeper)) is currently used to reduce the maintenance effort of a dedicated Helm project based on the `framework\services-registry-container` docker image project.
-- [ui-apis-gateway](charts/ui-apis-gateway): bitnami Helm project of NGINX and Ingress controller image provisioning, csutomized for the CYBNITY needs.
 
 ### STANDARD STRUCTURE OF A CONTAINERIZED JAVA APPLICATION
 Example of a `reactive-messaging-gateway` application system project structure:
@@ -67,124 +56,6 @@ reactive-messaging-gateway
     └── ...
 ```
 
-## PROVISIONED SYSTEMS ARCHITECTURE
-
-```mermaid
-%%{
-  init: {
-    'theme': 'base',
-    'themeVariables': {
-        'background': '#ffffff',
-        'fontFamily': 'arial',
-        'fontSize': '12px',
-        'primaryColor': '#fff',
-        'primaryTextColor': '#0e2a43',
-        'primaryBorderColor': '#0e2a43',
-        'secondaryColor': '#fff',
-        'secondaryTextColor': '#fff',
-        'secondaryBorderColor': '#fff',
-        'tertiaryColor': '#fff',
-        'tertiaryTextColor': '#fff',
-        'tertiaryBorderColor': '#fff',
-        'lineColor': '#0e2a43',
-        'titleColor': '#fff',
-        'textColor': '#fff',
-        'lineColor': '#0e2a43',
-        'nodeTextColor': '#fff',
-        'nodeBorder': '#0e2a43',
-        'noteTextColor': '#fff',
-        'noteBorderColor': '#fff'
-    },
-    'flowchart': { 'curve': 'monotoneY' }
-  }
-}%%
-flowchart LR
-  subgraph cluster["Local-Env Cluster"]
-     direction LR
-     subgraph tunnel["Tunnel"]
-     end
-     subgraph controlplane["Control Plane"]
-     end
-     subgraph ui[" #60;#60;Node#62;#62; User Interfaces Area "]
-       direction LR
-       subgraph uilayer1[" "]
-         direction TB
-         subgraph service8["\n #60;#60;LoadBalancer Service#62;#62; \n ui-apis-gateway-system-haproxy "]
-            podproxy1["POD"]
-         end
-         subgraph service1[" #60;#60;Service#62;#62; \n web-reactive-frontend-system "]
-            clusterip1["ClusterIP"]
-            pod1["POD"]
-         end
-         subgraph service2[" #32;#60;#60;Service#62;#62; \n reactive-backend-system#32; "]
-            clusterip4["ClusterIP"]
-            pod2["POD"]
-         end
-         subgraph service3[" #60;#60;LoadBalancer Service#62;#62; \n access-control-sso-system "]
-            clusterip7["ClusterIP"]
-            pod3["POD"]
-         end
-         subgraph service4[" #60;#60;Service#62;#62; \n access-control-sso-system-postgresql "]
-            clusterip2["ClusterIP"]
-         end
-         subgraph service7[" #60;#60;Service#62;#62; \n uis-system-redis "]
-            clusterip3["ClusterIP"]
-         end
-       end
-     end
-     subgraph di[" #60;#60;Node#62;#62; Domains I/O Area"]
-         direction LR
-         subgraph applayer1[" "]
-            subgraph service5[" #60;#60;Service#62;#62; \n dis-system-kafka "]
-               clusterip5["ClusterIP"]
-            end
-            subgraph service6[" #60;#60;Service#62;#62; \n dis-brokers-registry-system "]
-               clusterip6["ClusterIP"]
-            end
-         end
-     end
-     subgraph da[" #60;#60;Node#62;#62; Domains Area "]
-         %% direction LR
-         %% subgraph applayer2[" "]
-         %% end
-     end
-     subgraph is[" #60;#60;Node#62;#62; Infrastructure Services Area "]
-         %% direction LR
-         %% subgraph inflayer1[" "]
-         %% end
-     end
-  end
-  tunnel -- "route x.y.y.y/z" --> controlplane
-  controlplane -. "tcp:80" .-> clusterip1 -.-> pod1
-  podproxy1 -- "80:80" --> service1
-  podproxy1 -- "80:80" --> service2
-  controlplane -. "tcp:80" .-> clusterip4 -.-> pod2
-  controlplane -. "tcp:80" .-> clusterip7 -.-> pod3
-  controlplane -- "ExternalIP/tcp:80 (temporary for admin)" --> service3
-  podproxy1 -- "80:80" --> service3
-  controlplane -. "tcp:5432" .-> clusterip2
-  controlplane -. "tcp:6379" .-> clusterip3
-  controlplane -- "ExternalIP/http:80" --> service8
-  controlplane -- "ExternalIP/http:443" --> service8
-  controlplane -. "tcp:9092" .-> clusterip5
-  controlplane -. "tcp:2181" .-> clusterip6
-  controlplane -. "tcp:2888" .-> clusterip6
-  controlplane -. "tcp:3888" .-> clusterip6
-  
-  classDef red fill:#e5302a, stroke:#e5302a, color:#fff, stroke-width:3px
-  classDef medium fill:#fff, stroke:#3a5572, color:#3a5572
-  classDef mediumfill fill:#3a5572, stroke:#3a5572, color:#fff
-  classDef mediumdot fill:#fff, stroke:#3a5572, color:#3a5572, stroke-dasharray: 5 5
-  classDef reddot fill:#fff, stroke:#e5302a, color:#e5302a, stroke-dasharray: 5 5, stroke-width:3px
-  classDef dark fill:#0e2a43, stroke:#fff, color:#fff
-  classDef internalconfig fill:#0e2a43, stroke:#fff, color:#fff
-  class service1,service2,service3,service4,service5,service6,service7 mediumfill;
-  class ui,di,da,is medium;
-  class pod1,pod2,pod3,podproxy1,clusterip1,clusterip2,clusterip3,clusterip4,clusterip5,clusterip6,clusterip7 dark;
-  class tunnel,service8 red;
-  class controlplane reddot;
-
-```
 # INFRASTRUCTURE PROJECTS
 The infrastructure projects governs the provisioning management at the Kubernetes level as an Infrastructure-As-Code implementation.
 

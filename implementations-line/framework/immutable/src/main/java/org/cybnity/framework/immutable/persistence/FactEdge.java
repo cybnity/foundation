@@ -1,10 +1,5 @@
 package org.cybnity.framework.immutable.persistence;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.cybnity.framework.immutable.IVersionable;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.Unmodifiable;
@@ -12,8 +7,13 @@ import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
- * Represent a link between two fact record constituing an existent predecessos
+ * Represent a link between two fact record defining an existent predecessors
  * relationship between two facts records. This aggregation object allow to
  * attach successors with predecessors facts similar to relations between saved
  * events in each fact record.
@@ -37,18 +37,18 @@ public class FactEdge implements Unmodifiable, IVersionable, IUniqueness, Serial
     /**
      * Edge point of the relation with the succeeding fact.
      */
-    private String successorId;
+    private final String successorId;
     /**
      * Edge point of the relation with the preceding fact.
      */
-    private String predecessorId;
+    private final String predecessorId;
 
     /**
      * Role defining the relation typ between the successor and the predecessor. It
-     * is a classification (e.g of common naming for graph edges "to->from" vs
-     * "in->out" vs "source->target") of this edge (relation type and naming).
+     * is a classification (e.g of common naming for graph edges "to-from" vs
+     * "in-out" vs "source-target") of this edge (relation type and naming).
      */
-    private RelationRole factsRelationType;
+    private final RelationRole factsRelationType;
 
     /**
      * Default constructor of a relation between facts.
@@ -56,7 +56,7 @@ public class FactEdge implements Unmodifiable, IVersionable, IUniqueness, Serial
      * @param successorFactIdentifier   Mandatory reference identifier of the fact which is
      *                                  successor to the preceding fact.
      * @param predecessorFactIdentifier Mandatory reference identifier of the fact which is
-     *                                  predecessor of the sucessor fact.
+     *                                  predecessor of the successor fact.
      * @param factsRelationType         Mandatory type of relation regarding this
      *                                  edge.
      * @throws IllegalArgumentException When any mandatory parameter is missing.

@@ -1,8 +1,7 @@
 package org.cybnity.application.ui.system.backend;
 
-import org.cybnity.framework.UnoperationalStateException;
-
 import io.vertx.core.AbstractVerticle;
+import org.cybnity.framework.UnoperationalStateException;
 
 public abstract class SockJSServer extends AbstractVerticle {
 

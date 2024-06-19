@@ -1,8 +1,8 @@
 package org.cybnity.framework.immutable;
 
-import java.io.Serializable;
-
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
+import java.io.Serializable;
 
 /**
  * Represent a record providing documentary evidence of specific events (see

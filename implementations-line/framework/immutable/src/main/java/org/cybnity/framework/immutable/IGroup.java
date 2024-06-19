@@ -19,8 +19,8 @@ public interface IGroup extends IHistoricalFact {
      * Location-independent unique identifier of this fact.
      * 
      * @return Unique based identifier, or derived identifier based on the multiple
-     *         identification informations combined from {@link#identifiers()}.
+     *         identification information combined from identifiers() method.
      */
-    public Identifier identified();
+    Identifier identified();
 
 }

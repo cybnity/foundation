@@ -1,6 +1,8 @@
 package org.cybnity.framework.immutable.persistence;
 
+import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -18,15 +20,20 @@ public interface IFactStore<T> {
      * Add a fact into the store.
      * 
      * @param fact To store.Ignored if null.
+     * @throws IllegalArgumentException    When fact to store is not compatible to be stored.
+     * @throws ImmutabilityException       When problem of immutable version of stored event is occurred.
+     * @throws UnoperationalStateException When technical problem is occurred regarding this store usage.
      */
-    public void append(T fact);
+    void append(T fact) throws IllegalArgumentException, ImmutabilityException, UnoperationalStateException;
 
     /**
      * Search a fact from store.
      * 
      * @param uid Identifier of the fact to find.
      * @return Found fact or null.
+     * @throws IllegalArgumentException    When missing mandatory parameter.
+     * @throws UnoperationalStateException When technical problem is occurred regarding this store usage.
      */
-    public T findEventFrom(Identifier uid);
+    T findEventFrom(Identifier uid) throws IllegalArgumentException, UnoperationalStateException;
 
 }

@@ -1,15 +1,10 @@
 package org.cybnity.framework.immutable.sample;
 
+import org.cybnity.framework.immutable.*;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-
-import org.cybnity.framework.immutable.Entity;
-import org.cybnity.framework.immutable.IHistoricalFact;
-import org.cybnity.framework.immutable.IVersionable;
-import org.cybnity.framework.immutable.IdentifiableFact;
-import org.cybnity.framework.immutable.Identifier;
-import org.cybnity.framework.immutable.ImmutabilityException;
-import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Example of command regarding a department creation request.
@@ -24,9 +19,9 @@ public class CreateDepartment implements IHistoricalFact, IdentifiableFact, IVer
      */
     private static final long serialVersionUID = new VersionConcreteStrategy()
 	    .composeCanonicalVersionHash(CreateDepartment.class).hashCode();
-    private Entity identifiedBy;
+    private final Entity identifiedBy;
     private OffsetDateTime occuredAt;
-    private Department updatedVersion;
+    private final Department updatedVersion;
 
     public CreateDepartment(Entity identity, Department changed) {
 	this.identifiedBy = identity;

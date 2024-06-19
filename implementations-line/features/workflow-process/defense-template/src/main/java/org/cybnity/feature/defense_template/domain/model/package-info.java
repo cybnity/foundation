@@ -1,0 +1,1 @@
+package org.cybnity.feature.defense_template.domain.model;

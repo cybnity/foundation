@@ -16,21 +16,21 @@ public interface IdentifiableFact {
      * Location-independent unique identifier of this fact.
      * 
      * @return Unique based identifier, or derived identifier based on the multiple
-     *         identification informations combined from {@link#identifiers()}.
+     *         identification information combined.
      * @throws ImmutabilityException When problem to create immutable copy of this
      *                               fact.
      */
-    public Identifier identified() throws ImmutabilityException;
+    Identifier identified() throws ImmutabilityException;
 
     /**
      * This method has the same contract as valueEquality() method in that all
      * values that are functionally equal also produce equal hash code value. This
      * method is called by default hashCode() method of this ValueObject instance
-     * and shall provide the list of values contributing to define the unicity of
+     * and shall provide the list of values contributing to define the unit of
      * this instance (e.g also used for valueEquality() comparison).
      * 
-     * @return The unique functional values used to idenfity uniquely this instance.
+     * @return The unique functional values used to identify uniquely this instance.
      *         Or empty array.
      */
-    public String[] valueHashCodeContributors();
+    String[] valueHashCodeContributors();
 }

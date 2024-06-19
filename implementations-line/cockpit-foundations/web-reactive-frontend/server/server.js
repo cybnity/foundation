@@ -10,6 +10,13 @@ const app = express();
 const port = process.env.PORT || 80;
 const serverOrigin = "http://localhost:" + port;
 
+function authServerURL() {
+  // Read eventually defined environment variable regarding URL of Keycloak server
+  if (process.env.AUTH_SERVER_URL) return process.env.AUTH_SERVER_URL;
+  // Return default localhost url
+  return serverOrigin + "/auth/";
+}
+
 app.use(cors({
     origin: serverOrigin, // use your actual domain name (or localhost), using * is not recommended
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
@@ -21,7 +28,7 @@ app.use(cors({
 const router = express.Router();
 
 // Use secure cookies in production, but allowing for testing in development based on NODE_ENV in express
-if (process.env.NODE_ENV === 'production') {
+if (process.env.DEPLOYMENT === 'production') {
   /* Configure cookie secure (Set-Cookie) for Keycloak integration.
   Please note that secure: true is a recommended option. However, it requires an https-enabled website, i.e., HTTPS is necessary for secure cookies. If secure is set, and you access your site over HTTP, the cookie will not be set. If you have your node.js behind a proxy and are using secure: true, you need to set "trust proxy" in express */
   app.set('trust proxy', true); // Set trust proxy in express
@@ -64,7 +71,7 @@ const memoryStore = new session.MemoryStore();
 
 var keycloakConfig = {
   "realm": "CYBNITY",
-  "auth-server-url": "http://10.101.238.65:80/auth/",
+  "auth-server-url": authServerURL(),
   "ssl-required": "external",
   "resource": "web-reactive-frontend-system",
   "public-client": true,
@@ -104,7 +111,7 @@ app.use('/request-type', (req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('Server is up');
+  res.send('Server is up collaborating with authentication server (at ' + authServerURL() + ')');
   // Allow forward of Keycloak cookie (AUTH_SESSION_ID_LEGACY cookie used during rediction after login success to login-actions/authenticate keycloak page) to browser that ahev default protection to tracking systems
   //res.cookie('cookieName', 'cookieValue', { sameSite: 'none', secure: true})
 });
@@ -131,5 +138,5 @@ app.get('/secure/tenant', keycloak.protect('tenant-user'), function(req, res) {
 });
 
 // This displays message that the server running and listening to specified port
-app.listen(port, () => console.log(`Web server is listening on http port ${port}`));
+app.listen(port, () => console.log('Web server is listening on http port ' + port));
 

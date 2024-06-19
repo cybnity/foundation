@@ -1,16 +1,11 @@
 package org.cybnity.framework.domain.model.sample;
 
+import org.cybnity.framework.immutable.*;
+import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
+
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
-
-import org.cybnity.framework.immutable.Entity;
-import org.cybnity.framework.immutable.EntityReference;
-import org.cybnity.framework.immutable.Evaluations;
-import org.cybnity.framework.immutable.HistoryState;
-import org.cybnity.framework.immutable.ImmutabilityException;
-import org.cybnity.framework.immutable.MutableProperty;
-import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 /**
  * Sample regarding an applicative role managed by a domain (e.g that could be
@@ -24,14 +19,14 @@ public class ApplicativeRole extends MutableProperty {
 
     private static final long serialVersionUID = 1L;
 
-    private OffsetDateTime versionedAt;
+    private final OffsetDateTime versionedAt;
 
     /**
      * Example of keys set regarding the multiple attribute defining this role, and
      * that each change need to be versioned/treated as a single atomic fact.
      */
     public enum PropertyAttributeKey {
-	RoleName, OwnerRef, VersionedAt;
+	RoleName, OwnerRef, VersionedAt
     }
 
     /**

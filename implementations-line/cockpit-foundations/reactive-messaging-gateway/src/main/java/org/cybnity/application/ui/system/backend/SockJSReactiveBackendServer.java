@@ -1,13 +1,12 @@
 package org.cybnity.application.ui.system.backend;
 
+import io.vertx.core.Promise;
+import io.vertx.core.Vertx;
+import io.vertx.ext.web.Router;
 import org.cybnity.application.ui.system.backend.routing.CapabilityRouter;
 import org.cybnity.framework.Context;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
-
-import io.vertx.core.Promise;
-import io.vertx.core.Vertx;
-import io.vertx.ext.web.Router;
 
 public class SockJSReactiveBackendServer extends SockJSServer {
     /**
@@ -26,42 +25,42 @@ public class SockJSReactiveBackendServer extends SockJSServer {
      * @param args None pre-required.
      */
     public static void main(String[] args) {
-	Vertx vertx = Vertx.vertx();
-	vertx.deployVerticle(new SockJSReactiveBackendServer());
+        Vertx vertx = Vertx.vertx();
+        vertx.deployVerticle(new SockJSReactiveBackendServer());
     }
 
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
-	// Check the minimum required data allowing operating
-	checkHealthyState();
+        // Check the minimum required data allowing operating
+        checkHealthyState();
 
-	// Route event bus's events to spe­cific re­quest han­dlers
+        // Route event bus's events to specific request handlers
 
-	// Create a Router initialized to support capability routes
-	Router router = CapabilityRouter.sockjsRouter(vertx);
+        // Create a Router initialized to support capability routes
+        Router router = CapabilityRouter.sockjsRouter(vertx, context);
 
-	// Create the HTTP server
-	getVertx().createHttpServer()
-		// Handle every request using the router
-		.requestHandler(router)
-		// Start HTTP listening according to the application settings
-		.listen(Integer
-			.valueOf(context.get(AppConfigurationVariable.REACTIVE_BACKEND_ENDPOINT_HTTP_SERVER_PORT)))
-		// Print the port
-		.onSuccess(server -> {
-		    System.out.println("SockJS backend server started (port: " + server.actualPort() + ")");
-		    startPromise.complete();
-		}).onFailure(error -> {
-		    System.out.println("SockJS backend server start failure: " + error.getCause());
-		    startPromise.fail(error.getCause());
-		});
+        // Create the HTTP server
+        getVertx().createHttpServer()
+                // Handle every request using the router
+                .requestHandler(router)
+                // Start HTTP listening according to the application settings
+                .listen(Integer
+                        .parseInt(context.get(AppConfigurationVariable.REACTIVE_BACKEND_ENDPOINT_HTTP_SERVER_PORT)))
+                // Print the port
+                .onSuccess(server -> {
+                    System.out.println("SockJS backend server started (port: " + server.actualPort() + ")");
+                    startPromise.complete();
+                }).onFailure(error -> {
+                    System.out.println("SockJS backend server start failure: " + error.getCause());
+                    startPromise.fail(error.getCause());
+                });
     }
 
     @Override
     public void checkHealthyState() throws UnoperationalStateException {
-	if (healthyChecker == null)
-	    healthyChecker = new ExecutableBackendChecker(context);
-	// execution the health check
-	healthyChecker.checkOperableState();
+        if (healthyChecker == null)
+            healthyChecker = new ExecutableBackendChecker(context);
+        // execution the health check
+        healthyChecker.checkOperableState();
     }
 }

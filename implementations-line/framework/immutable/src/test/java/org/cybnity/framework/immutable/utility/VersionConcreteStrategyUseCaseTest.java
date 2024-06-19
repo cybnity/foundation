@@ -1,11 +1,11 @@
 package org.cybnity.framework.immutable.utility;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import org.cybnity.framework.immutable.sample.ChildAggregate;
 import org.cybnity.framework.immutable.sample.Employee;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Unit test of VersionConcreteStrategy behaviors regarding its immutability

@@ -10,6 +10,8 @@
 	<artifactId>risk</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Risk feature component</name>
-
+	<name>Risk feature components</name>
+	<modules>
+		<module>api</module>
+	</modules>
 </project>

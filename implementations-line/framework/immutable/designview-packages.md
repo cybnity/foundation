@@ -4,54 +4,55 @@ Presentation of the design view regarding the sub-packages of `org.cybnity.frame
 # DESIGN VIEW
 The technical description regarding behavior and best usage is maintained into the Javadoc of each component.
 
-|Class Type|Motivation|
-| :-- | :-- |
-|AuditLog| |
-|BaseConstants| |
-|ChildFact| |
-|Entity| |
-|EntityReference| |
-|Evaluations| |
-|ExecutableComponentChecker| |
-|FactEdge| |
-|FactsProvider| |
-|FactRecord| |
-|FactType| |
-|HistoryState| |
-|IDeletionFact| |
-|IdentifiableFact| |
-|Identifier| |
-|IFactRepository| |
-|IFactStore| |
-|IGroup| |
-|IHistoricalFact| |
-|IMember| |
-|ImmutabilityException| |
-|IOwnership| |
-|IReferenceable| |
-|IRestorationFact| |
-|IUniqueness| |
-|IVersionable| |
-|LocationIndependentIdentityNaturalKeyBuilder| |
-|Membership| |
-|MutableProperty| |
-|NaturalKeyIdentifierGenerator| |
-|QualitativeDataBuilder|Builder pattern implementation of data quality ensuring the application of quality rules on object to intantiate|
-|QualitativeDataGenerator|Producer of qualitative data that manage execution of quality rules for instance to build as ACID model|
-|RelationRole| |
-|StringBasedNaturalKeyBuilder| |
-|StructuralVersionStrategy| |
-|Transaction| |
-|TransactionItem| |
-|TypeVersion| |
-|Unmodifiable| |
-|VersionConcreteStrategy| |
+| Class Type                                   | Motivation                                                                                                        |
+|:---------------------------------------------|:------------------------------------------------------------------------------------------------------------------|
+| AuditLog                                     |                                                                                                                   |
+| BaseConstants                                |                                                                                                                   |
+| Base64StringConverter                        |                                                                                                                   |
+| ChildFact                                    |                                                                                                                   |
+| Entity                                       |                                                                                                                   |
+| EntityReference                              |                                                                                                                   |
+| Evaluations                                  |                                                                                                                   |
+| ExecutableComponentChecker                   |                                                                                                                   |
+| FactEdge                                     |                                                                                                                   |
+| FactsProvider                                |                                                                                                                   |
+| FactRecord                                   |                                                                                                                   |
+| FactType                                     |                                                                                                                   |
+| HistoryState                                 |                                                                                                                   |
+| IDeletionFact                                |                                                                                                                   |
+| IdentifiableFact                             |                                                                                                                   |
+| Identifier                                   |                                                                                                                   |
+| IFactRepository                              |                                                                                                                   |
+| IFactStore                                   |                                                                                                                   |
+| IGroup                                       |                                                                                                                   |
+| IHistoricalFact                              |                                                                                                                   |
+| IMember                                      |                                                                                                                   |
+| ImmutabilityException                        |                                                                                                                   |
+| IOwnership                                   |                                                                                                                   |
+| IReferenceable                               |                                                                                                                   |
+| IRestorationFact                             |                                                                                                                   |
+| IUniqueness                                  |                                                                                                                   |
+| IVersionable                                 | Supports multiple versions of a same object type                                                                  |
+| LocationIndependentIdentityNaturalKeyBuilder |                                                                                                                   |
+| Membership                                   |                                                                                                                   |
+| MutableProperty                              |                                                                                                                   |
+| NaturalKeyIdentifierGenerator                |                                                                                                                   |
+| QualitativeDataBuilder                       | Builder pattern implementation of data quality ensuring the application of quality rules on object to instantiate |
+| QualitativeDataGenerator                     | Producer of qualitative data that manage execution of quality rules for instance to build as ACID model           |
+| RelationRole                                 |                                                                                                                   |
+| StringBasedNaturalKeyBuilder                 |                                                                                                                   |
+| StructuralVersionStrategy                    |                                                                                                                   |
+| Transaction                                  |                                                                                                                   |
+| TransactionItem                              |                                                                                                                   |
+| TypeVersion                                  | Represent a structural version of object type (e.g fact class, domain event)                                      |
+| Unmodifiable                                 |                                                                                                                   |
+| VersionConcreteStrategy                      |                                                                                                                   |
 
 # STRUCTURE MODELS
-Several packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
+Several packages are implemented to organize the components (e.g specification elements, implementation components) additionally to these provided by this package.
 
 # IMMUTABLE
-Main project's package regarding the immutability capabilities, this package include severel sub-packages additionnaly to these components.
+Main project's package regarding the immutability capabilities, this package include several sub-packages additionally to these components.
 
 ```mermaid
 %%{
@@ -183,7 +184,7 @@ classDiagram
         <<abstract>>
         #parent : Entity
         #identifiedBy : ArrayList~Identifier~
-        #createdAt : OffsetDateTime
+        #occurredAt : OffsetDateTime
         +ChildFact(Entity predecessor, Identifier id)
         +ChildFact(Entity predecessor, LinkedHashSet~Identifier~ identifiers)
         +identifiers() Collection~Identifier~
@@ -192,6 +193,9 @@ classDiagram
         +valueHashCodeContributors() String[]
         +hashCode() int
         +equals(Object fact) boolean
+        #setOccurredAt(OffsetDateTime date)
+        #setParent(Entity predecessor)
+        #setIdentifiers(ArrayList<Identifier> identifiers)
         #generateIdentifierPredecessorBased(Entity predecessor, Identifier childOriginalId)$ Identifier
         #generateIdentifierPredecessorBased(Entity predecessor, Collection~Identifier~ childOriginalIds)$ Identifier
     }
@@ -350,7 +354,7 @@ classDiagram
 ```
 
 ## PERSISTENCE SUB-PACKAGE
-Include types of generic facts usable by logs store (e.g traceability implementation regarding facts occured on a write model or on a read model).
+Include types of generic facts usable by logs store (e.g traceability implementation regarding facts occurred on a write model or on a read model).
 
 ```mermaid
 %%{

@@ -1,10 +1,10 @@
 package org.cybnity.framework.immutable;
 
-import java.io.Serializable;
-import java.time.OffsetDateTime;
-
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
+
+import java.io.Serializable;
+import java.time.OffsetDateTime;
 
 /**
  * A historical fact that can contain only identifying information(s) or that is
@@ -21,6 +21,6 @@ public interface IHistoricalFact extends Unmodifiable, IVersionable, Serializabl
      * 
      * @return An immutable time.
      */
-    public OffsetDateTime occurredAt();
+    OffsetDateTime occurredAt();
 
 }

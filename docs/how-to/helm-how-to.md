@@ -4,6 +4,9 @@ Presentation of the assistance documentation regarding the usage of Helm tool (e
 # HELM USAGE
 Several Helm command lines are available to be executed from the `charts directory`. The Kubernetes instance should be started and active (e.g Minikube started).
 
+## Helm Installation
+Use Helm 3.15+ version to ensure compatibility with CYBNITY helmified projects.
+
 ## Charts Management
 <details><summary>Pull a chart</summary>
 <p>
@@ -15,13 +18,22 @@ helm pull "bitnami/xxx" --untar
 
 </p>
 </details>
+<details><summary>Test chart</summary>
+<p>
+Using `--dry-run` will make it easier to test your chart code, but it won't ensure that Kubernetes itself will accept the templates you generate.
+
+```shell
+helm install --debug --dry-run goodly-guppy ./reactive-backend-system
+```
+</p>
+</details>
 <details><summary>Install a chart</summary>
 <p>
 Install a defined chart into the Kubernetes cluster:
 
 ```shell
 # Install local templates from charts directory
-helm install reactive-backend-system ./reactive-messaging-gateway/ --values ./reactive-messaging-gateway/values.yaml
+helm install reactive-backend-system ./reactive-backend-system/ --values ./reactive-backend-system/values.yaml
 # Install repository template (e.g hosted by a third-party's repository server) with specific values.yaml to apply
 helm install access-control-sso-system -f ./access-control-sso-system/values.yaml bitnami/keycloak
 ```
@@ -33,7 +45,7 @@ helm install access-control-sso-system -f ./access-control-sso-system/values.yam
 Upgrade a release to a specified or current version of a chart or configuration into the Kubernetes cluster:
 
 ```shell
-helm upgrade reactive-backend-system ./reactive-messaging-gateway
+helm upgrade reactive-backend-system ./reactive-backend-system
 ```
 
 </p>
@@ -114,12 +126,47 @@ kubectl get svc
 ## Charts Distribution
 Helm is usable to package, publish, and fetch Kubernetes applications as Chart archives.
 
+<details><summary>Add CYBNITY helm repo on local repo catalog</summary>
+<p>
+
+```shell
+helm repo add cybnity https://cybnity.github.io/iac-helm-charts
+```
+
+</p>
+</details>
+
 <details><summary>Package chart</summary>
 <p>
-Create a versioned archive file of charts to be able to distribute them:
+Create a versioned archive file of charts to be able to distribute them (e.g to Helm charts repository):
 
 ```shell
 helm package ./reactive-messaging-gateway
+```
+
+An option also exist to sign the chart archive if need.
+</p>
+</details>
+
+<details><summary>Publish chart package repository</summary>
+<p>
+1. From the Dockerhub platform profile page, create a Personal Access Token (PAT) from the Profile > Security section with a name (e.g `olivier-pat-token`).
+
+- Save the PAT password value into an environment variable allowing reuse from workstation and/or system that publish the helm charts
+
+```shell
+echo $REG_PAT | helm registry login registry-1.docker.io -u cybnity --password-stdin
+```
+
+2. From local directory where a packaged chart is ready for publish
+
+- Push a packaged chart to Dokerhub repository:
+
+```shell
+# Login with a Dockerhub account and password, according to the context where PAT can be used (e.g cybnity organization)
+helm registry login registry-1.docker.io -u cybnity
+
+helm push reactive-messaging-gateway-0.1.0.tgz  oci://registry-1.docker.io/cybnity
 ```
 
 An option also exist to sign the chart archive if need.

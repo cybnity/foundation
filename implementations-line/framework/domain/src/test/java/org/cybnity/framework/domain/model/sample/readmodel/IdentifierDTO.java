@@ -9,7 +9,8 @@ package org.cybnity.framework.domain.model.sample.readmodel;
  */
 public class IdentifierDTO {
 
-    private String name, value;
+    private final String name;
+    private final String value;
 
     public IdentifierDTO(String name, String value) {
 	this.name = name;

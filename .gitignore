@@ -11,10 +11,16 @@ buildNumber.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 # Eclipse project workarea
-#.project
-#.classpath
-#.settings/
+**/.project
+**/.classpath
+**/.settings
+# IntelliJ IDEA project files
+**/.idea
 **/.flattened-pom.xml
 .flattened-pom.xml
 **/package-lock.json
 implementations-line/cockpit-foundations/actions-scheduling/acsc-ui-modules/acsc-frontend/package-lock.json
+*.tgz
+*.hcl
+implementations-line/systems/modules/local-env/cluster/defense-platform-cluster/.terraform/providers/registry.terraform.io/hashicorp/kubernetes/2.22.0/darwin_amd64/terraform-provider-kubernetes_v2.22.0_x5
+implementations-line/systems/modules/local-env/cluster/defense-platform-cluster/terraform.tfstate.backup
