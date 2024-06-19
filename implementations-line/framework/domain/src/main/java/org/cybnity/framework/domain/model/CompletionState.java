@@ -34,8 +34,8 @@ public class CompletionState extends MutableProperty {
 		 **/
 		StateName,
 		/** Current percentage of completion **/
-		Percentage;
-	}
+		Percentage
+    }
 
 	/**
 	 * Default constructor.
@@ -96,7 +96,7 @@ public class CompletionState extends MutableProperty {
 	 *                             value.
 	 * @param status               Optional history state of this property version.
 	 *                             If null,
-	 *                             {@link org.cybnity.framework.immutable.HistoryState.Committed}
+	 *                             org.cybnity.framework.immutable.HistoryState.COMMITTED
 	 *                             is defined as default state.
 	 * @param predecessors         Optional prior states.
 	 * @throws IllegalArgumentException When mandatory parameter is missing, or when

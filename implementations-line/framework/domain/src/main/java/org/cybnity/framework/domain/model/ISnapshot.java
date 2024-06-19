@@ -15,17 +15,18 @@ public interface ISnapshot extends Unmodifiable {
      *
      * @return A date.
      */
-    public Date taken();
+    Date taken();
 
     /**
      * Identifier that represents the snapshot version based on last change event of the origin object that is subject of this snapshot.
+     * @return Value defining unique version.
      */
-    public String commitVersion();
+    String commitVersion();
 
     /**
      * Unique identifier of the origin object which is subject of this snapshot.
      *
      * @return An identifier (e.g aggregate identifier) or null.
      */
-    public String versionedObjectUID();
+    String versionedObjectUID();
 }

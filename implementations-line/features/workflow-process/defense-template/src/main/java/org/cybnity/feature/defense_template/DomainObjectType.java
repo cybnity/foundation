@@ -26,8 +26,8 @@ public class DomainObjectType extends ValueObject<String> implements Serializabl
 	private static final long serialVersionUID = new VersionConcreteStrategy()
 			.composeCanonicalVersionHash(DomainObjectType.class).hashCode();
 
-	private String description;
-	private String name;
+	private final String description;
+	private final String name;
 
 	/**
 	 * Default constructor.

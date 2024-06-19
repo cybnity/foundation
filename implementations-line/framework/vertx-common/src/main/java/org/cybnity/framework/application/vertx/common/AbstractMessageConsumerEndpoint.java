@@ -4,7 +4,7 @@ import io.vertx.core.AbstractVerticle;
 
 /**
  * Verticle supporting channel message (e.g event) consumption as an entry point (e.g channels observed from a Users Interactions Space).
- * This abstract class can be redefined by subclass providing tasks with automatic control check (e.g security control, event conformity & value check, transport metadata check) on received messages (e.g as filter, processor type...).
+ * This abstract class can be redefined by subclass providing tasks with automatic control check (e.g security control, event conformity and value check, transport metadata check) on received messages (e.g as filter, processor type...).
  * It's an implementation of consumer endpoint type that consumes messages from stream(s) and/or channel(s) monitored, and that execute treatment (e.g filtering, dispatching, processing) on it according to a specific domain feature realization (e.g domain application layer entry point) depending on a set of conditions.
  * It's a specialized Channel Adapter pattern that has been custom developed for and integrated into its application.
  */

@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Mapper of data structure between event and Map<String, String> type.
+ * Mapper of data structure between event and Map type.
  */
 public class IDescribedToStreamMessageTransformer implements MessageMapper {
 
@@ -108,9 +108,9 @@ public class IDescribedToStreamMessageTransformer implements MessageMapper {
     }
 
     /**
-     * Get transformed object as Map<String, String>.
+     * Get transformed object as Map.
      *
-     * @return A Map<String, String> instance including Stream.Specification.FACT_RECORD_ID_KEY_NAME.name() and Stream.Specification.MESSAGE_PAYLOAD_KEY_NAME.name() as key informations.
+     * @return A String, String map instance including Stream.Specification.FACT_RECORD_ID_KEY_NAME.name() and Stream.Specification.MESSAGE_PAYLOAD_KEY_NAME.name() as key information.
      */
     @Override
     public Object getResult() {

@@ -27,14 +27,14 @@ public interface Identifier extends Unmodifiable, Serializable {
      *         regarding a number. For example equals to "sku" regarding a stock
      *         keeping unit.
      */
-    public String name();
+    String name();
 
     /**
      * The value regarding this identity.
      * 
      * @return A identification value.
      */
-    public Serializable value();
+    Serializable value();
 
     /**
      * This method has the same contract as valueEquality() method in that all
@@ -46,5 +46,5 @@ public interface Identifier extends Unmodifiable, Serializable {
      * @return The unique functional values used to identify uniquely this instance.
      *         Or empty array.
      */
-    public String[] valueHashCodeContributors();
+    String[] valueHashCodeContributors();
 }

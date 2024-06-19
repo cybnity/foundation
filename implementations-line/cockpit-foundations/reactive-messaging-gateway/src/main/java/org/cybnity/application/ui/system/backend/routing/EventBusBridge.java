@@ -13,8 +13,8 @@ import io.vertx.ext.web.handler.sockjs.BridgeEvent;
  * interaction layer with backend as integration layer.
  */
 public abstract class EventBusBridge implements Handler<BridgeEvent> {
-	private EventBus bus;
-	private SharedData sessionStore;
+	private final EventBus bus;
+	private final SharedData sessionStore;
 
 	public EventBusBridge(EventBus eventBus, SharedData sessionStore) {
 		this.bus = eventBus;

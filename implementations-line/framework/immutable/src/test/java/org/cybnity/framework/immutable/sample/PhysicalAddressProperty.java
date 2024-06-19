@@ -27,7 +27,7 @@ import java.util.Map;
 public class PhysicalAddressProperty extends MutableProperty {
 
 	private static final long serialVersionUID = 1L;
-	private OffsetDateTime versionedAt;
+	private final OffsetDateTime versionedAt;
 
 	/**
 	 * Example of keys set regarding the multiple attribute defining this complex
@@ -35,8 +35,8 @@ public class PhysicalAddressProperty extends MutableProperty {
 	 * single atomic fact.
 	 */
 	public enum PropertyAttributeKey {
-		Street, City, Country, State;
-	}
+		Street, City, Country, State
+    }
 
 	public PhysicalAddressProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue,
 			HistoryState status) throws IllegalArgumentException {

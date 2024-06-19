@@ -18,7 +18,7 @@ public interface ITemplate {
 	 * 
 	 * @return A template name or null.
 	 */
-	public String name();
+    String name();
 
 	/**
 	 * Get the description about the type of this template.
@@ -28,5 +28,5 @@ public interface ITemplate {
 	 * @throws ImmutabilityException When problem of immutable version
 	 *                               instantiation.
 	 */
-	public DomainObjectType type() throws ImmutabilityException;
+    DomainObjectType type() throws ImmutabilityException;
 }

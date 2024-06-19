@@ -20,7 +20,7 @@ public interface IdentifiableFact {
      * @throws ImmutabilityException When problem to create immutable copy of this
      *                               fact.
      */
-    public Identifier identified() throws ImmutabilityException;
+    Identifier identified() throws ImmutabilityException;
 
     /**
      * This method has the same contract as valueEquality() method in that all
@@ -32,5 +32,5 @@ public interface IdentifiableFact {
      * @return The unique functional values used to identify uniquely this instance.
      *         Or empty array.
      */
-    public String[] valueHashCodeContributors();
+    String[] valueHashCodeContributors();
 }

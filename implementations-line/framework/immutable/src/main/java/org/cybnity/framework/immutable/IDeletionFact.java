@@ -13,7 +13,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * timestamp are added.
  * It represents the deletion of an entity.
  * By convention, the name of the deletion fact is Deletion appended to the name
- * of the entity (e.g <<EntityName>>Deletion).
+ * of the entity.
  * Related pattern: when deletion should be reversible, consider using the
  * Restore pattern.
  * 
@@ -28,5 +28,5 @@ public interface IDeletionFact extends IHistoricalFact {
      * 
      * @return Predecessor fact deleted.
      */
-    public Entity deleted();
+    Entity deleted();
 }

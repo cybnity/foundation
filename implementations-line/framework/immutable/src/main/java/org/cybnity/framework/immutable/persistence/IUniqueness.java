@@ -27,5 +27,5 @@ public interface IUniqueness {
      * @return A set of fields combination representing the unique version of this
      *         object.
      */
-    public Set<Field> basedOn();
+    Set<Field> basedOn();
 }

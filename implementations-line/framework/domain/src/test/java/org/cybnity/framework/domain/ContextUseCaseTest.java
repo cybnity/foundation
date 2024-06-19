@@ -29,27 +29,24 @@ public class ContextUseCaseTest {
 
 	// Check that returned instance reference is the same pointer than the
 	// original resource reference initially stored
-	assertTrue(instanceSafeRef == propertyInstance,
-		"Safe reference shall be equals with original pointer before changed to other memore space!");
-	assertEquals(propertyInstance, (String) instanceSafeRef,
+        assertSame(instanceSafeRef, propertyInstance, "Safe reference shall be equals with original pointer before changed to other memore space!");
+	assertEquals(propertyInstance, instanceSafeRef,
 		"Referenced value in memory space shall be the same pointed by the 2 references!");
 
 	// Change the external reference (simulate a remove by user of the context, that
 	// shall not generate impact on the references managed by the context's bundle)
-	instanceSafeRef = new String("original resource violation");
+	instanceSafeRef = "original resource violation";
 	// Verify changed link to the memory space by extenal reference
 	assertNotEquals(propertyInstance, instanceSafeRef,
 		"Values shall be in different memory location pointed by references!");
-	assertFalse(instanceSafeRef == propertyInstance,
-		"Safe reference shall had been changed to the new memory space of new value!");
+        assertNotSame(instanceSafeRef, propertyInstance, "Safe reference shall had been changed to the new memory space of new value!");
 
 	// Simulate eligible to garbage collector with null
 	instanceSafeRef = null;
 	// Check original value managed by context is always not changed
-	Object otherRefToOriginalResource = ctx.get(new String(resourceName));
-	assertTrue(otherRefToOriginalResource == propertyInstance,
-		"Original reference shall had been maintained by context!");
-	assertEquals(propertyInstance, (String) otherRefToOriginalResource,
+	Object otherRefToOriginalResource = ctx.get(resourceName);
+        assertSame(otherRefToOriginalResource, propertyInstance, "Original reference shall had been maintained by context!");
+	assertEquals(propertyInstance, otherRefToOriginalResource,
 		"Referenced value in memory space shall be the same pointed by the 2 references!");
     }
 }

@@ -58,8 +58,8 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 		 * Event types that are supported as cause of auto-activation of this step (e.g
 		 * handle for automatic change activityState to active)
 		 **/
-		ActivationEventTypes;
-	}
+		ActivationEventTypes
+    }
 
 	/**
 	 * Default constructor.
@@ -117,7 +117,7 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 	 *                                is automatically assigned to this step.
 	 * @param status                  Optional state of this property version. If
 	 *                                null,
-	 *                                {@link org.cybnity.framework.immutable.HistoryState.Committed}
+	 *                                org.cybnity.framework.immutable.HistoryState.COMMITTED
 	 *                                is defined as default state.
 	 * @param commandHandlingDelegate Optional processor allowing the step to
 	 *                                interpret the commands handling relative to
@@ -164,7 +164,7 @@ public class Step extends MutableProperty implements IWorkflowCommandHandler, IS
 	 *                                is automatically assigned to this step.
 	 * @param status                  Optional history state of this property
 	 *                                version. If null,
-	 *                                {@link org.cybnity.framework.immutable.HistoryState.Committed}
+	 *                                org.cybnity.framework.immutable.HistoryState.COMMITTED
 	 *                                is defined as default state.
 	 * @param commandHandlingDelegate Optional processor allowing the step to
 	 *                                interpret the commands handling relative to

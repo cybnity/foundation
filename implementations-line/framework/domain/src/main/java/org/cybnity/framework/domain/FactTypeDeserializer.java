@@ -1,6 +1,5 @@
 package org.cybnity.framework.domain;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -22,7 +21,7 @@ public class FactTypeDeserializer extends StdDeserializer<FactType> {
     }
 
     @Override
-    public FactType deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public FactType deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         try {
             JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 

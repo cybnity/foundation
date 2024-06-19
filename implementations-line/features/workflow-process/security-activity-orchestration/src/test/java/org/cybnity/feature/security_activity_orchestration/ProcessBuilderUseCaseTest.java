@@ -107,7 +107,7 @@ public class ProcessBuilderUseCaseTest extends AbstractProcessEvaluation {
 			// Check that unknown name is refused
 			ProcessBuilder.instance(processIds,
 					/* predecessor of the process is the existing tenant domain entity */ company,
-					/* Undefined process name */ (String) null);
+					/* Undefined process name */ null);
 		});
 	}
 

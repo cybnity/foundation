@@ -91,7 +91,7 @@ public class UserAccountAggregateUseCaseTest {
         // Add the role to the aggregate account
         account.handle(roleAssignmentCommand, this.domainContext);
 
-        assertTrue(account.assignedRoles().size() == 1, "ISO role shall have been saved!");
+        assertEquals(1, account.assignedRoles().size(), "ISO role shall have been saved!");
         // Verify that role have not predecessor version (it's the initial version)
         for (ApplicativeRole assignedRole : account.assignedRoles()) {
             // Check that's the good role name
@@ -112,8 +112,7 @@ public class UserAccountAggregateUseCaseTest {
         // Update the role (history graph) to the aggregate account regarding a removed
         // role
         account.handle(roleAssignmentCommand, this.domainContext);
-        assertTrue(account.assignedRoles().size() == 1,
-                "Modified existent ISO role shall have been maintained!");
+        assertEquals(1, account.assignedRoles().size(), "Modified existent ISO role shall have been maintained!");
 
         // Verify that role have one predecessor version (it's the initial version
         // before it's cancelled version)

@@ -21,5 +21,5 @@ public interface MutedAggregateFactory {
      *                                  When there is not a minimum one change event into the changes history parameter.
      *                                  When any change event of the history is not about the same aggregate identifier which is rehydrated.
      */
-    public Aggregate instanceOf(Identifier instanceId, List<DomainEvent> changesHistory) throws IllegalArgumentException;
+    Aggregate instanceOf(Identifier instanceId, List<DomainEvent> changesHistory) throws IllegalArgumentException;
 }

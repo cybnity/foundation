@@ -14,12 +14,12 @@ public interface HydrationCapability {
      * @param change Mandatory change to apply on subject according to the change type (e.g attribute add, upgrade, delete operation).
      * @throws IllegalArgumentException When any mandatory parameter is not defined.
      */
-    public void mutateWhen(DomainEvent change) throws IllegalArgumentException;
+    void mutateWhen(DomainEvent change) throws IllegalArgumentException;
 
     /**
      * Bring this instance state up-to-date with the events that occurred since the latest snapshot.
      *
      * @param history Events which shall be re-executed as committed changes on this instance. Do nothing when null or including empty events list.
      */
-    public void replayEvents(EventStream history);
+    void replayEvents(EventStream history);
 }

@@ -20,6 +20,6 @@ public interface IReferenceable {
 	 *                               by serialization or instance cloning problem).
 	 */
 	@Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-	public EntityReference reference() throws ImmutabilityException;
+    EntityReference reference() throws ImmutabilityException;
 
 }

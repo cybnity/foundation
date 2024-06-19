@@ -34,6 +34,7 @@ public class Base64StringConverter {
      * Transform Base64 encoded string into an instance.
      *
      * @param objectAsString Mandatory object string version to deserialize.
+     * @param <T> Specific output type.
      * @return Deserialized instance.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      */

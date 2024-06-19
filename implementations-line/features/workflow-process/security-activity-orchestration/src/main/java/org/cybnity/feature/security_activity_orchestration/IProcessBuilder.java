@@ -24,7 +24,7 @@ public interface IProcessBuilder {
 	 *                                  the build process and shall be completed
 	 *                                  before to call this method.
 	 */
-	public void build() throws ImmutabilityException, IllegalArgumentException;
+    void build() throws ImmutabilityException, IllegalArgumentException;
 
 	/**
 	 * Get the built instance.
@@ -32,5 +32,5 @@ public interface IProcessBuilder {
 	 * @return A built instance if build() method previously executed. Else return
 	 *         null.
 	 */
-	public Process getResult();
+    Process getResult();
 }

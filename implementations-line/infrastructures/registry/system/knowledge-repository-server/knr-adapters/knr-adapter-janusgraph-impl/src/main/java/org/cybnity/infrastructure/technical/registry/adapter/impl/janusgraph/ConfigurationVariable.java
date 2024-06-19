@@ -172,7 +172,7 @@ public enum ConfigurationVariable implements IReadableConfiguration {
      *              container or operating system).
      * @throws IllegalArgumentException When mandatory parameter is not defined.
      */
-    private ConfigurationVariable(String aName) throws IllegalArgumentException {
+    ConfigurationVariable(String aName) throws IllegalArgumentException {
         if (aName == null || "".equalsIgnoreCase(aName))
             throw new IllegalArgumentException("The name of this variable shall be defined!");
         this.name = aName;

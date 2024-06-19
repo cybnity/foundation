@@ -18,7 +18,7 @@ public interface IDescribed {
      *
      * @return Attributes immutable collection or null.
      */
-    public Collection<Attribute> specification();
+    Collection<Attribute> specification();
 
     /**
      * Add an attribute contributing to the definition of the subject.
@@ -29,13 +29,13 @@ public interface IDescribed {
      * can't be modified by the new version. Return false when parameter is
      * null).
      */
-    public boolean appendSpecification(Attribute specificationCriteria);
+    boolean appendSpecification(Attribute specificationCriteria);
 
     /**
      * Get the type specification of the subject.
      *
      * @return A type or null.
      */
-    public abstract Attribute type();
+    Attribute type();
 
 }

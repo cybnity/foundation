@@ -27,6 +27,6 @@ public interface IService {
      *                                  cause of invalidity (e.g missing
      *                                  required contents).
      */
-    public void handle(IDescribed factEvent, IContext ctx) throws IllegalArgumentException;
+    void handle(IDescribed factEvent, IContext ctx) throws IllegalArgumentException;
 
 }

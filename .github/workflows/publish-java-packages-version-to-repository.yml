@@ -27,8 +27,10 @@ jobs:
       ARTIFACT_VERSION: ${{ inputs.package_release_name }}
       DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_ACCESS_ACCOUNT }}
       DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_ACCESS_TOKEN }}
-      MAVEN_USERNAME: ${{ secrets.SPACE_CYBNITY_OS_REPO_USERNAME }}
-      MAVEN_PASSWORD: ${{ secrets.SPACE_CYBNITY_OS_REPO_PASSWORD }}
+      MAVEN_USERNAME: ${{ secrets.AGNET_REPO_USERNAME }}
+      MAVEN_PASSWORD: ${{ secrets.AGNET_REPO_PASSWORD }}
+      MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+      GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
     steps:
       - name: Checkout source codes from branch to publish
         uses: actions/checkout@v4
@@ -37,26 +39,29 @@ jobs:
           token: ${{ github.token }}
           ref: ${{ inputs.config-path }}
 
-      - name: Set up Java for publishing to CYBNITY Maven Repository
+      - name: Settings.xml definition for publishing to AGNet repository
         uses: actions/setup-java@v4
-        with:
+        with: # running setup-java again overwrites the settings.xml
           java-version: '11'
           distribution: 'temurin'
           cache: maven
-          server-id: space-cybnity-open-source
-          server-username: MAVEN_USERNAME
-          server-password: MAVEN_PASSWORD
-          GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
+          server-id: agnet # Value of the distributionManagement/repository/id filed of the pom.xml
+          server-username: MAVEN_USERNAME # env variable for username in deploy
+          server-password: MAVEN_PASSWORD # env variable for token in deploy
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }} # Value (without an modification than exported by the gpg --export-secret-keys command) of the GPG private key (33105BFD367D25B3) to import
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
 
       - name: GitHub Environment Variables Action
         if: ${{ env.ARTIFACT_VERSION == '' }}
-        uses: FranzDiebold/github-env-vars-action@v2.8.0
+        uses: FranzDiebold/github-env-vars-action@v2
+
       - name: Define an unique revision name (pattern <<feature branch name>>.<<commit id abbrev>>.<<commit time>>)
         if: ${{ env.ARTIFACT_VERSION == '' }}
         run: |
             echo "Git commit revision $CI_SHA_SHORT abbreviation based on 7 characters (default) maximum (origin based: $CI_SHA)"
             echo "commit_id=$CI_SHA_SHORT" >> $GITHUB_ENV
             echo "feature_name=$CI_ACTION_REF_NAME_SLUG" >> $GITHUB_ENV
+
       - name: Identify the origin release name of the projects
         if: ${{ env.ARTIFACT_VERSION == '' }}
         # Define a static version name because not received from input parameter
@@ -80,8 +85,8 @@ jobs:
             echo "Set the project artifacts version in pom.xml files"
             echo "mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.current_artifacts_revision_id }}"
 
-      - name: Build and publish ${{ env.current_artifacts_revision_id }} version of java packages to remote repositories (Maven, Docker) via Maven (phases validate, compile, test, package, verify, install, deploy)
-        run: mvn --batch-mode --update-snapshots --show-version -Dstage=technical-quality -Drevision=${{ env.current_artifacts_revision_id }} -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} -Ddocker.cleanup=none --file pom.xml -DcreateChecksum=true deploy -Dmaven.test.skip=true
+      - name: Build and deploy ${{ env.current_artifacts_revision_id }} version of java packages to AGnet repository (Maven, Docker)
+        run: mvn --batch-mode --update-snapshots --show-version -Dstage=technical-quality -Drevision=${{ env.current_artifacts_revision_id }} -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} -Ddocker.cleanup=none --file pom.xml -DcreateChecksum=true -Denvironment=dev-deploy deploy -Dmaven.test.skip=true
 
       # Optional: Uploads the full dependency graph to GitHub (output variable) to improve the quality of Dependabot alerts this repository can receive
       #- name: Update dependency graph

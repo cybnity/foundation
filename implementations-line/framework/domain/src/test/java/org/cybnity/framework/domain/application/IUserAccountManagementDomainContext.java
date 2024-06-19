@@ -17,5 +17,5 @@ public interface IUserAccountManagementDomainContext extends IBoundedContext {
      * 
      * @return A store instance.
      */
-    public UserAccountStore getWriteModelStore();
+    UserAccountStore getWriteModelStore();
 }

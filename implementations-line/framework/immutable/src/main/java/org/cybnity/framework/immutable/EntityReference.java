@@ -68,7 +68,7 @@ public class EntityReference implements IHistoricalFact {
     /**
      * Identify this reference value had been confirmed (e.g during a merging
      * conflict resolution act decided by a user) as official current version.
-     * {@link org.cybnity.framework.immutable.HistoryState.COMMITTED} by default for
+     * org.cybnity.framework.immutable.HistoryState.COMMITTED by default for
      * any new instance of new instantiated property.
      */
     private HistoryState historyStatus = HistoryState.COMMITTED;
@@ -85,7 +85,7 @@ public class EntityReference implements IHistoricalFact {
      * @param referenceOwner Mandatory entity which is subject of reference.
      * @param inRelationWith Optional other entity pointed by this reference owner.
      * @param status         Optional state of this property version. If null,
-     *                       {@link org.cybnity.framework.immutable.HistoryState.COMMITTED}
+     *                       org.cybnity.framework.immutable.HistoryState.COMMITTED
      *                       is defined as default state.
      * @param createdAt      Optional date of creation. When null, this reference creation date is initialized to now.
      * @throws IllegalArgumentException When mandatory parameter is missing, or when
@@ -117,7 +117,7 @@ public class EntityReference implements IHistoricalFact {
      * @param referenceOwner Mandatory entity which is subject of reference.
      * @param inRelationWith Optional other entity pointed by this reference owner.
      * @param status         Optional state of this property version. If null,
-     *                       {@link org.cybnity.framework.immutable.HistoryState.COMMITTED}
+     *                       org.cybnity.framework.immutable.HistoryState.COMMITTED
      *                       is defined as default state.
      * @param createdAt      Optional date of creation. When null, this reference creation date is initialized to now.
      * @param predecessors   Optional original instances (previous versions) that
@@ -125,7 +125,7 @@ public class EntityReference implements IHistoricalFact {
      *                       reference and that were identified as reference's
      *                       original states which had been changed. It's possible
      *                       that new instance (e.g in
-     *                       {@link org.cybnity.framework.immutable.HistoryState.MERGED}
+     *                       org.cybnity.framework.immutable.HistoryState.MERGED
      *                       status) is based on several merged versions of previous
      *                       reference's states (e.g in case of concurrently changed
      *                       version with need of conflict resolution). Ignored if
@@ -156,9 +156,7 @@ public class EntityReference implements IHistoricalFact {
      * predecessor values requiring merging of new status to fix the new value of
      * this one) regarding its anterior versions.
      *
-     * @return Official version of this property.
-     * {@link org.cybnity.framework.immutable.HistoryState.COMMITTED} by
-     * default.
+     * @return Official version of this property. org.cybnity.framework.immutable.HistoryState.COMMITTED by default.
      */
     public HistoryState historyStatus() {
         return historyStatus;

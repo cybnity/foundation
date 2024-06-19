@@ -29,7 +29,7 @@ public class ReadModelProjectionDescriptor implements Unmodifiable, Serializable
      * atomic fact.
      */
     public enum PropertyAttributeKey {
-        LABEL, OWNERSHIP;
+        LABEL, OWNERSHIP
     }
 
     /**

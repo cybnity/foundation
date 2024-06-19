@@ -10,5 +10,5 @@ public interface ICapabilityChannel {
      *
      * @return An acronym or null.
      */
-    public String shortName();
+    String shortName();
 }

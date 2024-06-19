@@ -21,7 +21,7 @@ public interface IContext {
      *                     which implement this interface contract.
      * @return The found resource instance or null.
      */
-    public Object get(Class<?> typeOfResult);
+    Object get(Class<?> typeOfResult);
 
     /**
      * Get an instance of a resource that is identified by a logical name.
@@ -30,7 +30,7 @@ public interface IContext {
      *                     search (e.g class type name, property.name).
      * @return The found resource instance or null.
      */
-    public Object get(String resourceName);
+    Object get(String resourceName);
 
     /**
      * Read a configuration variable from this context. During the call of a
@@ -50,7 +50,7 @@ public interface IContext {
      *                                  checkPermission} method doesn't allow access
      *                                  to the environment variable.
      */
-    public String get(IReadableConfiguration config) throws IllegalArgumentException, SecurityException;
+    String get(IReadableConfiguration config) throws IllegalArgumentException, SecurityException;
 
     /**
      * Add a resource instance into this context.
@@ -68,7 +68,7 @@ public interface IContext {
      *         forceReplace parameter is defined as False.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      */
-    public boolean addResource(final Object instance, String resourceName, boolean forceReplace)
+    boolean addResource(final Object instance, String resourceName, boolean forceReplace)
 	    throws IllegalArgumentException;
 
     /**
@@ -79,6 +79,6 @@ public interface IContext {
      * @return True when a resource previously managed by this context had been
      *         found and was removed. Else return False.
      */
-    public boolean remove(String resourceName);
+    boolean remove(String resourceName);
 
 }

@@ -46,8 +46,9 @@ public class XMLProcessProcessBuilder extends ProcessBuilder implements IProcess
 	/**
 	 * Get a builder instance allowing preparation of a process instantiation.
 	 * 
-	 * @param processIdentity Mandatory identity of the process to build.
+	 * @param processIdentifiers Mandatory identity of the process to build.
 	 * @param processParent   Mandatory predecessor of the process to build.
+	 * @return Builder instance.
 	 * @throws IllegalArgumentException When missing mandatory parameter.
 	 */
 	public static XMLProcessProcessBuilder instance(LinkedHashSet<Identifier> processIdentifiers, Entity processParent)

@@ -14,7 +14,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Robusteness, reqId = "REQ_ROB_2")
 public class NaturalKeyIdentifierGenerator {
 
-    private LocationIndependentIdentityNaturalKeyBuilder builder;
+    private final LocationIndependentIdentityNaturalKeyBuilder builder;
 
     /**
      * Default constructor of generator managing the build of an Identifier based on

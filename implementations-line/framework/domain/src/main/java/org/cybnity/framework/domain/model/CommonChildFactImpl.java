@@ -57,7 +57,7 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
         /**
          * Date of aggregate creation.
          */
-        OCCURRED_AT;
+        OCCURRED_AT
     }
 
     /**

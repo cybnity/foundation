@@ -50,7 +50,7 @@ public class Tenant extends Aggregate {
         /**
          * True or False value regarding the tenant's activity state.
          */
-        ACTIVITY_STATUS;
+        ACTIVITY_STATUS
     }
 
     /**

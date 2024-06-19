@@ -122,8 +122,8 @@ public abstract class ProcessManager implements ICommandHandler {
      * value are not null, no duplicated handler for same type of command).
      *
      * @return A set of handlers. Each item shall be no null. Key is equals to name
-     * of Command supported (e.g <<CommandType>>.getClass().getName() or
-     * <<CommandType>>.getClass().getSimpleName()), by the Handler value.
+     * of Command supported (e.g CommandType.getClass().getName() or
+     * CommandType.getClass().getSimpleName()), by the Handler value.
      */
     protected abstract HashMap<String, ICommandHandler> managedHandlers();
 }

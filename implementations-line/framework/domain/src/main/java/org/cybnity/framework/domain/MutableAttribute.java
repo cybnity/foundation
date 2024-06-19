@@ -31,8 +31,8 @@ public class MutableAttribute extends MutableProperty {
 	 * and that each change need to be versioned/treated as a single atomic fact.
 	 */
 	private enum PropertyAttributeKey {
-		Value;
-	}
+		Value
+    }
 
 	/**
 	 * Default constructor.
@@ -43,7 +43,7 @@ public class MutableAttribute extends MutableProperty {
 	 *                             the property. Support included keys with null
 	 *                             value.
 	 * @param status               Optional state of this property version. If null,
-	 *                             {@link org.cybnity.framework.immutable.HistoryState.COMMITTED}
+	 *                             org.cybnity.framework.immutable.HistoryState.COMMITTED
 	 *                             is defined as default state.
 	 * @throws IllegalArgumentException When mandatory parameter is missing, or when
 	 *                                  can not be cloned regarding immutable entity

@@ -22,12 +22,12 @@ public interface IWorkflowCommandHandler {
 	 * @param next Handler to add into the next parallel handlers which shall be
 	 *             called for each handled command. Ignored when null parameter.
 	 */
-	public void addParallelNextHandler(ChainCommandHandler next);
+    void addParallelNextHandler(ChainCommandHandler next);
 
 	/**
 	 * Handle and execute a command.
 	 * 
 	 * @param request The command to execute.
 	 */
-	public void handle(Command request);
+    void handle(Command request);
 }

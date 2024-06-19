@@ -12,23 +12,19 @@ import java.util.Set;
 
 /**
  * This represents values that change on a property (simple or complex).
- * 
  * Mutable Property pattern represents changes to properties over time using
  * only immutable facts. It is desirable in a distributed system for nodes to be
  * able to act in isolation, to have the autonomy to change a property without
  * requiring a connection to any other node (e.g on a smartphone that is
  * temporarily disconnected from the server).
- * 
  * It is represented as a fact having the entity as a predecessor and the value
  * as a field. To keep track of changes overtime, it records prior versions in a
  * predecessor set. By convention, the name of the fact appends the property
- * name to the entity name (e.g <<EntityNamePropertyName>>). The set of prior
+ * name to the entity name (e.g EntityNamePropertyName). The set of prior
  * versions is conventionally called prior. This set is empty for the initial
  * value.
- * 
  * As a user changes the property, the prior set captures only the most recent
  * version.
- * 
  * Related pattern: if the mutable property represents a relationship with
  * another entity, the pattern becomes an
  * ({@link org.cybnity.framework.immutable.EntityReference}).
@@ -86,7 +82,7 @@ public abstract class MutableProperty implements IHistoricalFact {
 	/**
 	 * Identify this property value had been confirmed (e.g during a merging
 	 * conflict resolution act decided by a user) as official current version.
-	 * {@link org.cybnity.framework.immutable.HistoryState.Committed} by default for
+	 * org.cybnity.framework.immutable.HistoryState.COMMITTED by default for
 	 * any new instance of new instantiated property.
 	 */
 	protected HistoryState historyStatus = HistoryState.COMMITTED;
@@ -101,7 +97,7 @@ public abstract class MutableProperty implements IHistoricalFact {
 	 *                             the property. Support included keys with null
 	 *                             value.
 	 * @param status               Optional state of this property version. If null,
-	 *                             {@link org.cybnity.framework.immutable.HistoryState.Committed}
+	 *                             org.cybnity.framework.immutable.HistoryState.COMMITTED
 	 *                             is defined as default state.
 	 * @throws IllegalArgumentException When mandatory parameter is missing, or when
 	 *                                  can not be cloned regarding immutable entity
@@ -138,14 +134,14 @@ public abstract class MutableProperty implements IHistoricalFact {
 	 *                             the property. Support included keys with null
 	 *                             value.
 	 * @param status               Optional state of this property version. If null,
-	 *                             {@link org.cybnity.framework.immutable.HistoryState.COMMITTED}
+	 *                             org.cybnity.framework.immutable.HistoryState.COMMITTED
 	 *                             is defined as default state.
 	 * @param predecessors         Optional original instances (previous versions)
 	 *                             that were to consider in the history chain,
 	 *                             regarding this property and that were identified
 	 *                             as property's original states which had been
 	 *                             changed. It's possible that new instance (e.g in
-	 *                             {@link org.cybnity.framework.immutable.HistoryState.MERGED}
+	 *                             org.cybnity.framework.immutable.HistoryState.MERGED
 	 *                             status) is based on several merged versions of
 	 *                             previous property's states (e.g in case of
 	 *                             concurrently changed version with need of
@@ -249,7 +245,7 @@ public abstract class MutableProperty implements IHistoricalFact {
 	 * this one) regarding its anterior versions.
 	 * 
 	 * @return Official version of this property.
-	 *         {@link org.cybnity.framework.immutable.HistoryState.Committed} by
+	 *         org.cybnity.framework.immutable.HistoryState.COMMITTED by
 	 *         default.
 	 */
 	public HistoryState historyStatus() {

@@ -25,5 +25,5 @@ public interface IReadableConfiguration {
      * 
      * @return A value.
      */
-    public String getName();
+    String getName();
 }

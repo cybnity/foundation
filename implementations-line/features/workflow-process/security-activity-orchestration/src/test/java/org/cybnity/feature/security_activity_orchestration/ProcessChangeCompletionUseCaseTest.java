@@ -91,7 +91,7 @@ public class ProcessChangeCompletionUseCaseTest extends AbstractProcessEvaluatio
 		CompletionState lastState = validProcess.completion();
 		assertTrue(lastState.changesHistory().size() > 0);
 		// Check value upgrade regarding the completion rate
-		assertTrue(v1.compareTo(lastState.percentage()) == 0);
+        assertEquals(0, v1.compareTo(lastState.percentage()));
 
 		// Update to new version with positive percentage
 		Float v2 = Float.valueOf(0.6f);// 60% of completed progress
@@ -101,7 +101,7 @@ public class ProcessChangeCompletionUseCaseTest extends AbstractProcessEvaluatio
 		lastState = validProcess.completion();
 		assertTrue(lastState.changesHistory().size() > 0);
 		// Check that new version is positive
-		assertTrue(v2.compareTo(lastState.percentage()) == 0);
+        assertEquals(0, v2.compareTo(lastState.percentage()));
 
 		// Check previous version
 		CompletionState previousV1 = (CompletionState) lastState.changesHistory().iterator().next();

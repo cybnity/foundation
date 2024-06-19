@@ -48,7 +48,7 @@ public class StringBasedNaturalKeyBuilder extends LocationIndependentIdentityNat
     public StringBasedNaturalKeyBuilder(String aNaturalKey, int minLetterQty) throws IllegalArgumentException {
         if (aNaturalKey == null || aNaturalKey.isEmpty())
             throw new IllegalArgumentException("Natural key parameter is required!");
-        this.transformationResult = aNaturalKey.toString();
+        this.transformationResult = aNaturalKey;
         this.minCharacters = minLetterQty;
     }
 
@@ -78,7 +78,7 @@ public class StringBasedNaturalKeyBuilder extends LocationIndependentIdentityNat
                 // It's a special character, so ignore it
             } else {
                 // Retain
-                buffer.append(Character.toString(c));
+                buffer.append(c);
             }
         }
         this.transformationResult = buffer.toString();
@@ -105,7 +105,7 @@ public class StringBasedNaturalKeyBuilder extends LocationIndependentIdentityNat
             buffer.append(this.transformationResult);
             while (buffer.length() < this.minCharacters) {
                 // Generate complementary random char and add to end of current transformed text
-                buffer.append(UUID.randomUUID().toString());
+                buffer.append(UUID.randomUUID());
             }
             // Reduce final result to the minimum characters quantity required
             this.transformationResult = buffer.substring(0, this.minCharacters);

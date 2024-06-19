@@ -20,5 +20,5 @@ public interface Unmodifiable {
      * @return An unmodifiable version of this instance.
      * @throws ImmutabilityException When impossible creation of immutable version.
      */
-    public Serializable immutable() throws ImmutabilityException;
+    Serializable immutable() throws ImmutabilityException;
 }

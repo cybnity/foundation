@@ -31,8 +31,8 @@ public class Staging extends MutableProperty {
 	 */
 	public enum PropertyAttributeKey {
 		/** Steps definition **/
-		Steps;
-	}
+		Steps
+    }
 
 	public Staging(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status)
 			throws IllegalArgumentException, ImmutabilityException {

@@ -39,8 +39,8 @@ public class ProcessDescriptor extends MutableProperty {
 		 * Template reference (EntityReference) that was source of structure regarding a
 		 * process
 		 **/
-		TemplateEntityRef;
-	}
+		TemplateEntityRef
+    }
 
 	public ProcessDescriptor(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue, HistoryState status)
 			throws IllegalArgumentException {

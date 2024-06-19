@@ -33,7 +33,7 @@ public interface IDomainStore<T> extends IFactStore<T> {
      *                                     event is occurred.
      * @throws UnoperationalStateException When technical problem is occurred regarding this store usage.
      */
-    public void append(T fact, ISessionContext ctx) throws IllegalArgumentException, ImmutabilityException, UnoperationalStateException;
+    void append(T fact, ISessionContext ctx) throws IllegalArgumentException, ImmutabilityException, UnoperationalStateException;
 
     /**
      * Search a fact from store.
@@ -45,6 +45,6 @@ public interface IDomainStore<T> extends IFactStore<T> {
      * @throws IllegalArgumentException    When missing mandatory parameter.
      * @throws UnoperationalStateException When technical problem is occurred regarding this store usage.
      */
-    public T findEventFrom(Identifier uid, ISessionContext ctx) throws IllegalArgumentException, UnoperationalStateException;
+    T findEventFrom(Identifier uid, ISessionContext ctx) throws IllegalArgumentException, UnoperationalStateException;
 
 }

@@ -19,6 +19,6 @@ public enum DomainEventType implements IEventType {
     /**
      * Event about a tenant deleted from the domain layer.
      */
-    TENANT_DELETED;
+    TENANT_DELETED
 
 }

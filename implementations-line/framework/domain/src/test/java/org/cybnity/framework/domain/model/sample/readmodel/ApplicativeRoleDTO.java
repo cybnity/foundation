@@ -10,7 +10,7 @@ import org.cybnity.framework.immutable.HistoryState;
  */
 public class ApplicativeRoleDTO {
 
-    private String name;
+    private final String name;
     
     /**
      * Default defined as Committed.

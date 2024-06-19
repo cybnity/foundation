@@ -21,6 +21,6 @@ public interface IHistoricalFact extends Unmodifiable, IVersionable, Serializabl
      * 
      * @return An immutable time.
      */
-    public OffsetDateTime occurredAt();
+    OffsetDateTime occurredAt();
 
 }

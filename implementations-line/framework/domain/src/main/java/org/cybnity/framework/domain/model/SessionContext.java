@@ -20,7 +20,7 @@ public class SessionContext extends Context implements ISessionContext {
      */
     private enum ResourceName {
 	TENANT
-    };
+    }
 
     /**
      * Default constructor of context relative to a tenant.

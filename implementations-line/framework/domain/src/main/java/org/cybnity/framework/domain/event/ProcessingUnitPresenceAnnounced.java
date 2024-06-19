@@ -143,7 +143,7 @@ public class ProcessingUnitPresenceAnnounced extends ConcreteDomainChangeEvent {
         /**
          * Attribute regarding a state of an announced presence.
          */
-        PRESENCE_STATUS;
+        PRESENCE_STATUS
     }
 
     /**

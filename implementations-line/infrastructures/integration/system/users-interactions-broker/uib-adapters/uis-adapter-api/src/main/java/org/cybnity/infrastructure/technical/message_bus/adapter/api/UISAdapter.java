@@ -19,7 +19,7 @@ public interface UISAdapter {
     /**
      * For example, disconnect the adapter from the Users Interactions Space.
      */
-    public void freeUpResources();
+    void freeUpResources();
 
     /**
      * Verify the current status of the adapter as healthy and operable for
@@ -27,7 +27,7 @@ public interface UISAdapter {
      *
      * @throws UnoperationalStateException When adapter status problem detected.
      */
-    public void checkHealthyState() throws UnoperationalStateException;
+    void checkHealthyState() throws UnoperationalStateException;
 
     /**
      * Register observers of streams regarding messages published (e.g domain event, command execution status).
@@ -37,7 +37,7 @@ public interface UISAdapter {
      * @throws IllegalArgumentException    When any listener's mandatory content is detected.
      * @throws UnoperationalStateException When system access via adapter is in failure.
      */
-    public void register(Collection<StreamObserver> listeners, MessageMapper eventMapper) throws IllegalArgumentException, UnoperationalStateException;
+    void register(Collection<StreamObserver> listeners, MessageMapper eventMapper) throws IllegalArgumentException, UnoperationalStateException;
 
     /**
      * Register observers of channels regarding messages published (e.g domain event, command execution status).
@@ -47,21 +47,21 @@ public interface UISAdapter {
      * @throws IllegalArgumentException    When any listener's mandatory content is detected.
      * @throws UnoperationalStateException When system access via adapter is in failure.
      */
-    public void subscribe(Collection<ChannelObserver> listeners, MessageMapper eventMapper) throws IllegalArgumentException, UnoperationalStateException;
+    void subscribe(Collection<ChannelObserver> listeners, MessageMapper eventMapper) throws IllegalArgumentException, UnoperationalStateException;
 
     /**
      * Stop listening of messages published to streams that match on or more patterns by observers.
      *
      * @param observers Observers to remove from subscribers of streams.
      */
-    public void unregister(Collection<StreamObserver> observers);
+    void unregister(Collection<StreamObserver> observers);
 
     /**
      * Stop listening of messages published to channels that match on or more patterns by observers.
      *
      * @param observers Observers to remove from subscribers of channels.
      */
-    public void unsubscribe(Collection<ChannelObserver> observers);
+    void unsubscribe(Collection<ChannelObserver> observers);
 
     /**
      * Get the current active channels of the space.
@@ -69,7 +69,7 @@ public interface UISAdapter {
      * @param namingFilter Optional pattern (e.g specific domain or subdomain context owner of channels to select) regarding active channels to find. When null, all active channels managed by the space are returned.
      * @return A collection of channels or empty list.
      */
-    public Collection<Channel> activeChannels(String namingFilter);
+    Collection<Channel> activeChannels(String namingFilter);
 
     /**
      * Add an event to be processed into a space entrypoint with persistence guarantee.
@@ -82,7 +82,7 @@ public interface UISAdapter {
      * @throws MappingException            When factEvent transformation for data structure supported by the recipient is failed.
      * @throws UnoperationalStateException When system access via adapter is in failure.
      */
-    public String append(IDescribed factEvent, Stream recipient, MessageMapper eventMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException;
+    String append(IDescribed factEvent, Stream recipient, MessageMapper eventMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException;
 
     /**
      * Add a fact to be processed into a space entrypoint with persistence guarantee.
@@ -95,7 +95,7 @@ public interface UISAdapter {
      * @throws MappingException            When factEvent transformation for data structure supported by the recipient is failed.
      * @throws UnoperationalStateException When system access via adapter is in failure.
      */
-    public String append(Object fact, Stream recipient, MessageMapper eventMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException;
+    String append(Object fact, Stream recipient, MessageMapper eventMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException;
 
     /**
      * Add an event into a space entrypoint with persistence guarantee.
@@ -108,7 +108,7 @@ public interface UISAdapter {
      * @throws MappingException            When event transformation for data structure supported by the recipients is failed.
      * @throws UnoperationalStateException When system access via adapter is in failure.
      */
-    public List<String> append(IDescribed event, List<Stream> recipients, MessageMapper eventMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException;
+    List<String> append(IDescribed event, List<Stream> recipients, MessageMapper eventMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException;
 
     /**
      * Add a fact into a space entrypoint with persistence guarantee.
@@ -121,7 +121,7 @@ public interface UISAdapter {
      * @throws MappingException            When event transformation for data structure supported by the recipients is failed.
      * @throws UnoperationalStateException When system access via adapter is in failure.
      */
-    public List<String> append(Object fact, List<Stream> recipients, MessageMapper eventMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException;
+    List<String> append(Object fact, List<Stream> recipients, MessageMapper eventMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException;
 
     /**
      * Read all arriving items from one stream identified by its name.
@@ -133,7 +133,7 @@ public interface UISAdapter {
      * @throws MappingException            When event transformation for data structure supported by the recipient is failed.
      * @throws UnoperationalStateException When system access via adapter is in failure.
      */
-    public List<Object> readAllFrom(Stream stream, MessageMapper itemMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException;
+    List<Object> readAllFrom(Stream stream, MessageMapper itemMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException;
 
     /**
      * Read all arriving items from one stream identified by its name.
@@ -146,7 +146,7 @@ public interface UISAdapter {
      * @throws MappingException            When event transformation for data structure supported by the recipient is failed.
      * @throws UnoperationalStateException When system access via adapter is in failure.
      */
-    public List<Object> readAllFrom(Stream stream, MessageMapper itemMapper, Identifier originSubjectIDFilter) throws IllegalArgumentException, MappingException, UnoperationalStateException;
+    List<Object> readAllFrom(Stream stream, MessageMapper itemMapper, Identifier originSubjectIDFilter) throws IllegalArgumentException, MappingException, UnoperationalStateException;
 
     /**
      * Read the items from one stream identified by its name.
@@ -160,7 +160,7 @@ public interface UISAdapter {
      * @throws MappingException            When event transformation for data structure supported by the recipient is failed.
      * @throws UnoperationalStateException When system access via adapter is in failure.
      */
-    public List<Object> readAllAfterChangeID(Stream stream, String afterEventCommittedVersionOfOriginSubject, MessageMapper itemMapper, Identifier originSubjectIDFilter) throws IllegalArgumentException, MappingException, UnoperationalStateException;
+    List<Object> readAllAfterChangeID(Stream stream, String afterEventCommittedVersionOfOriginSubject, MessageMapper itemMapper, Identifier originSubjectIDFilter) throws IllegalArgumentException, MappingException, UnoperationalStateException;
 
     /**
      * Find a serialized resource from the space according to its unique logical identifier.
@@ -171,7 +171,7 @@ public interface UISAdapter {
      * @throws IllegalArgumentException    When any mandatory parameter is missing.
      * @throws UnoperationalStateException When system access via adapter is in failure.
      */
-    public SerializedResource readSerializedResourceFromID(String resourceUniqueIdentifier, String resourceNamespaceLabel) throws IllegalArgumentException, UnoperationalStateException;
+    SerializedResource readSerializedResourceFromID(String resourceUniqueIdentifier, String resourceNamespaceLabel) throws IllegalArgumentException, UnoperationalStateException;
 
     /**
      * Store a serialized resource identified.
@@ -182,7 +182,7 @@ public interface UISAdapter {
      * @throws IllegalArgumentException    When any mandatory parameter is missing.
      * @throws UnoperationalStateException When system access via adapter is in failure.
      */
-    public void saveResource(SerializedResource resource, String resourceNamespaceLabel, Long expireIn) throws IllegalArgumentException, UnoperationalStateException;
+    void saveResource(SerializedResource resource, String resourceNamespaceLabel, Long expireIn) throws IllegalArgumentException, UnoperationalStateException;
 
     /**
      * Publish an event to be processed into a space entrypoint without persistence and treatment guarantee (e.g if none channel subscriber are active).
@@ -194,7 +194,7 @@ public interface UISAdapter {
      * @throws MappingException            When command transformation for data structure supported by the recipient is failed.
      * @throws UnoperationalStateException When system access via adapter is in failure.
      */
-    public void publish(IDescribed event, Channel recipient, MessageMapper eventMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException;
+    void publish(IDescribed event, Channel recipient, MessageMapper eventMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException;
 
     /**
      * Notify an event into the space that is need to be promoted to eventual observers.
@@ -206,6 +206,6 @@ public interface UISAdapter {
      * @throws MappingException            When command transformation for data structure supported by the recipient is failed.
      * @throws UnoperationalStateException When system access via adapter is in failure.
      */
-    public void publish(IDescribed event, Collection<Channel> recipients, MessageMapper eventMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException;
+    void publish(IDescribed event, Collection<Channel> recipients, MessageMapper eventMapper) throws IllegalArgumentException, MappingException, UnoperationalStateException;
 
 }

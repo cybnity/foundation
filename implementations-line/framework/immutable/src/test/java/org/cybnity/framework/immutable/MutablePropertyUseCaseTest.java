@@ -27,7 +27,9 @@ public class MutablePropertyUseCaseTest {
 	private Identifier id;
 	private String organizationName;
 	private HashMap<String, Object> address;
-	private String city = "Los Angeles", state = "California", street = "-- Confidential :) --";
+	private final String city = "Los Angeles";
+    private final String state = "California";
+    private final String street = "-- Confidential :) --";
 
 	@BeforeEach
 	public void initOrganizationSample() throws Exception {

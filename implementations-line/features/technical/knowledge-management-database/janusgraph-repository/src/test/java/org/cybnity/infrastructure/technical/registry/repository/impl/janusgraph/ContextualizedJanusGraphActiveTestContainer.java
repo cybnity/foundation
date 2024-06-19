@@ -73,7 +73,6 @@ public class ContextualizedJanusGraphActiveTestContainer {
     public static IContext getContextInstance() {
         ContextualizedJanusGraphActiveTestContainer c = new ContextualizedJanusGraphActiveTestContainer();
         c.initJanusGraphConnectionChainValues();
-        ;
         return c.getContext();
     }
 

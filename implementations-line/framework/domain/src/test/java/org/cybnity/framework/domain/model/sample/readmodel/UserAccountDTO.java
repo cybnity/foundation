@@ -14,9 +14,9 @@ import java.util.Set;
  */
 public class UserAccountDTO {
 
-    private Entity userAccountEntityIdentifier;
-    private OffsetDateTime versionOf;
-    private Set<ApplicativeRoleDTO> roles;
+    private final Entity userAccountEntityIdentifier;
+    private final OffsetDateTime versionOf;
+    private final Set<ApplicativeRoleDTO> roles;
 
     public UserAccountDTO(Entity accountId, OffsetDateTime versionOf, Set<ApplicativeRoleDTO> assignedRoles) {
 	this.userAccountEntityIdentifier = accountId;

@@ -82,7 +82,7 @@ public class UserAccountAggregate extends Aggregate {
             String userAccountId = toProcess.userAccountIdentifier;
             // Security check regarding a modification requested for this user account
             // entity
-            if (toAssign != null && userAccountId != null && userAccountId.equals((String) this.identified().value())) {
+            if (toAssign != null && userAccountId != null && userAccountId.equals(this.identified().value())) {
                 try {
                     // Identify the property to change in the domain object (e.g user permission
                     // regarding a role supported by this account)

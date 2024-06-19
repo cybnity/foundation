@@ -38,7 +38,7 @@ public interface ICommandHandler {
      *                                  cause of command invalidity (e.g missing
      *                                  required contents).
      */
-    public void handle(Command command, IContext ctx) throws IllegalArgumentException;
+    void handle(Command command, IContext ctx) throws IllegalArgumentException;
 
     /**
      * Get the version number regarding the types of Command which are supported by
@@ -48,5 +48,5 @@ public interface ICommandHandler {
      *         specific versions of a same type of command). Null or empty set when
      *         any type of Command can be treated by this handler.
      */
-    public Set<String> handledCommandTypeVersions();
+    Set<String> handledCommandTypeVersions();
 }

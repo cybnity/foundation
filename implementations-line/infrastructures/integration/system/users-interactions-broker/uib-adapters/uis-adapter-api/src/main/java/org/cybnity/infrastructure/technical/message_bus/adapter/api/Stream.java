@@ -33,7 +33,7 @@ public class Stream implements INaming {
         /**
          * Key name regarding an information (e.g event payload) regarding any fact record stored, and retrieved by a Stream.
          */
-        MESSAGE_PAYLOAD_KEY_NAME;
+        MESSAGE_PAYLOAD_KEY_NAME
     }
 
     private final String name;

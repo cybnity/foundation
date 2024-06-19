@@ -16,8 +16,8 @@ import java.time.OffsetDateTime;
  */
 public class Department implements IGroup {
     private static final long serialVersionUID = 1L;
-    private String label;
-    private Identifier id;
+    private final String label;
+    private final Identifier id;
     private OffsetDateTime at;
 
     public Department(String label, Identifier id) {
@@ -28,7 +28,7 @@ public class Department implements IGroup {
 
     @Override
     public Identifier identified() {
-	return new IdentifierImpl(new String(id.name()), new String(id.value().toString()));
+	return new IdentifierImpl(id.name(), id.value().toString());
     }
 
     @Override

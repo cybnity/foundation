@@ -85,7 +85,7 @@ public class Transaction implements IHistoricalFact {
     /**
      * Optional identifier of this transaction.
      */
-    private Identifier transactionId;
+    private final Identifier transactionId;
 
     /**
      * Default constructor.

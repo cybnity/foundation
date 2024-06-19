@@ -22,8 +22,8 @@ public class Referential extends ValueObject<String> implements Serializable, IV
 	private static final long serialVersionUID = new VersionConcreteStrategy()
 			.composeCanonicalVersionHash(Referential.class).hashCode();
 
-	private String acronym;
-	private String label;
+	private final String acronym;
+	private final String label;
 
 	/**
 	 * Default constructor.

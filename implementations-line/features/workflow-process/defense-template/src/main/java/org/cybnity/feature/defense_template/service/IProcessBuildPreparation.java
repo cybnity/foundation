@@ -19,21 +19,21 @@ public interface IProcessBuildPreparation {
 	 * 
 	 * @param name A name regarding a process.
 	 */
-	public void processNamedAs(String name);
+    void processNamedAs(String name);
 
 	/**
 	 * Set attributes regarding the process description.
 	 * 
 	 * @param attributes A collection of attributes.
 	 */
-	public void processDescriptionProperties(Collection<Attribute> attributes);
+    void processDescriptionProperties(Collection<Attribute> attributes);
 
 	/**
 	 * Set status of process activation.
 	 * 
 	 * @param isActive An activation state.
 	 */
-	public void processActivation(Boolean isActive);
+    void processActivation(Boolean isActive);
 
 	/**
 	 * Set status of process completion.
@@ -41,12 +41,12 @@ public interface IProcessBuildPreparation {
 	 * @param completionName                A named completion.
 	 * @param currentPercentageOfCompletion A current percentage of completion.
 	 */
-	public void processCompletion(String completionName, Float currentPercentageOfCompletion);
+    void processCompletion(String completionName, Float currentPercentageOfCompletion);
 
 	/**
 	 * Set staging of process with possible included sub-steps.
 	 * 
 	 * @param steps A list of steps.
 	 */
-	public void processStaging(List<StepSpecification> steps);
+    void processStaging(List<StepSpecification> steps);
 }

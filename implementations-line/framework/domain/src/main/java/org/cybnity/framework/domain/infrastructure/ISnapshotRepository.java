@@ -14,7 +14,7 @@ public interface ISnapshotRepository {
     /**
      * Stop allocated resources specific to this repository (e.g database access...).
      */
-    public void freeResources();
+    void freeResources();
 
     /**
      * Find latest snapshot of a domain object identifier (subject that have been source of snapshot).
@@ -25,7 +25,7 @@ public interface ISnapshotRepository {
      * @throws IllegalArgumentException    When any mandatory parameter is not defined.
      * @throws UnoperationalStateException When system access is in failure.
      */
-    public ISnapshot getLatestSnapshotById(String originObjectIdentifier, String resourceNamespaceName) throws IllegalArgumentException, UnoperationalStateException;
+    ISnapshot getLatestSnapshotById(String originObjectIdentifier, String resourceNamespaceName) throws IllegalArgumentException, UnoperationalStateException;
 
     /**
      * Create and save an object version as snapshot (full state instance) into a persistent layer (e.g into independent cache repository; or into the origin event stream like a additional event appended between change events).
@@ -36,5 +36,5 @@ public interface ISnapshotRepository {
      * @throws IllegalArgumentException    When any mandatory parameter is not defined.
      * @throws UnoperationalStateException When system access is in failure.
      */
-    public void saveSnapshot(ISnapshot snapshot, String resourceNamespaceName, Long expireIn) throws IllegalArgumentException, UnoperationalStateException;
+    void saveSnapshot(ISnapshot snapshot, String resourceNamespaceName, Long expireIn) throws IllegalArgumentException, UnoperationalStateException;
 }

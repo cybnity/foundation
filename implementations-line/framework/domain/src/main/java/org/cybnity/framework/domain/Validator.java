@@ -15,7 +15,7 @@ package org.cybnity.framework.domain;
  *
  */
 public abstract class Validator {
-	private IValidationNotificationHandler notificationHandler;
+	private final IValidationNotificationHandler notificationHandler;
 
 	/**
 	 * Default constructor.

@@ -10,7 +10,7 @@ public interface KNRAdapter {
     /**
      * For example, disconnect the adapter from the Knowledge Repository.
      */
-    public void freeUpResources();
+    void freeUpResources();
 
     /**
      * Verify the current status of the adapter as healthy and operable for
@@ -18,5 +18,5 @@ public interface KNRAdapter {
      *
      * @throws UnoperationalStateException When adapter status problem detected.
      */
-    public void checkHealthyState() throws UnoperationalStateException;
+    void checkHealthyState() throws UnoperationalStateException;
 }

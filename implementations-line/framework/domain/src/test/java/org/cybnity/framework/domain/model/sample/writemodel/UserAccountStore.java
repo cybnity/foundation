@@ -27,7 +27,7 @@ public interface UserAccountStore extends ISubscribable {
      * @throws ImmutabilityException    When problem of immutable version of stored
      *                                  object is occurred.
      */
-    public void append(UserAccountAggregate version, Command transactionOrder)
+    void append(UserAccountAggregate version, Command transactionOrder)
 	    throws IllegalArgumentException, ImmutabilityException;
 
     /**
@@ -36,6 +36,6 @@ public interface UserAccountStore extends ISubscribable {
      * @param uid Mandatory identifier of the object to find.
      * @return Found last version of object, or null.
      */
-    public UserAccountAggregate findFrom(String uid);
+    UserAccountAggregate findFrom(String uid);
 
 }

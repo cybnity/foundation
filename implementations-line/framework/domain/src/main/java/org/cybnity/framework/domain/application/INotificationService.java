@@ -24,7 +24,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
 public interface INotificationService {
 
-    public NotificationLog currentNotificationLog();
+    NotificationLog currentNotificationLog();
 
     /**
      * Find a notification log from an identifier.
@@ -34,12 +34,12 @@ public interface INotificationService {
      * @return A found log. Or null if not found.
      * @throws IllegalArgumentException When mandatory log parameter is not defined.
      */
-    public NotificationLog findNotificationLog(Identifier aNotificationlogId, EventStore eventStore)
+    NotificationLog findNotificationLog(Identifier aNotificationlogId, EventStore eventStore)
 	    throws IllegalArgumentException;
 
     /**
      * Publish unpublished notification event instances over a messaging mechanism.
      */
-    public void publishNotifications();
+    void publishNotifications();
 
 }

@@ -85,6 +85,7 @@ public class DomainEventPublisher implements ISubscribable {
      * event.
      *
      * @param aDomainEvent Event to promote to interested subscribers.
+     * @param <T> Type of event.
      */
     public <T> void publish(final T aDomainEvent) {
         if (publishing.get()) {

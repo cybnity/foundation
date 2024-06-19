@@ -1,6 +1,5 @@
 package org.cybnity.framework.domain;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -25,7 +24,7 @@ public class EntityReferenceDeserializer extends StdDeserializer<EntityReference
     }
 
     @Override
-    public EntityReference deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public EntityReference deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
         // Read owner identity
         JsonNode entity = node.get("entity");
