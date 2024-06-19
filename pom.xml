@@ -121,9 +121,6 @@
 		</repository>-->
 	</repositories>
 
-	<pluginRepositories>
-	</pluginRepositories>
-
 	<!-- List of advice about project -->
 	<mailingLists>
 		<mailingList>
@@ -136,6 +133,7 @@
 			<name>${project.name} users list</name>
 		</mailingList>
 	</mailingLists>
+
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/cybnity/foundation/issues/</url>
