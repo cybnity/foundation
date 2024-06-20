@@ -1,6 +1,6 @@
 # Automated archiving of source codes repository to Bitbucket remote backup instance
-name: Source Codes Archiving
-run-name: MIRRORING - Source codes backup
+name: Project Assets Archiving
+run-name: ARCHIVING - Source codes backup refre
 on:
   push:
     # execution when ...
