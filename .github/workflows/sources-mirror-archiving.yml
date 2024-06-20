@@ -1,6 +1,6 @@
 # Automated archiving of source codes repository to Bitbucket remote backup instance
 name: Project Assets Archiving
-run-name: ARCHIVING - Source codes backup refre
+run-name: ARCHIVING - Source codes backup refresh
 on:
   push:
     # execution when ...
@@ -25,7 +25,9 @@ jobs:
     permissions:
       contents: read
     env:
-      GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
+      #GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
+      # Setting an environment variable with the value of a configuration variable
+      env_var: ${{ vars.ENV_CONTEXT_VAR }}
     steps:
       - name: Checkout source codes from branch
         id: checkout_step
@@ -36,10 +38,12 @@ jobs:
           ref: ${{ inputs.branch_name }}
           fetch-depth: 0 # <-- clone with complete history
 
-      - name: Push contents to Bitbucket repository
+      - name: Push contents of ${{ env.release_name }} or $REPOSITORY_NAME to Bitbucket repository
         uses: heussd/mirror-to-bitbucket-github-action@v2
         with:
             username: olivier_lemee
             spacename: agnet
             repository: foundation
             password: ${{ secrets.BITBUCKET_APP_PASSWORD }}
+        env:
+            REPOSITORY_NAME: ${{ vars.REPOSITORY_VAR }}
