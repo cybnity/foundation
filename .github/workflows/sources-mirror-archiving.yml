@@ -21,6 +21,7 @@ on:
 jobs:
   mirror_repository_contents:
     name: Backup repository contents to Bitbucket
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     env:
