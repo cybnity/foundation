@@ -1,0 +1,48 @@
+# Automated archiving of source codes repository to Bitbucket remote backup instance
+name: Project Assets Archiving
+run-name: ARCHIVING - Source codes backup refresh
+on:
+  push:
+    # execution when ...
+    branches:
+      - 'feature*'
+      - 'main'
+      - 'integration'
+      - 'staging'
+  delete:
+    # execution when ...
+    branches:
+      - 'feature*'
+      - 'main'
+      - 'integration'
+      - 'staging'
+
+# The archiging stage workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  mirror_repository_contents:
+    name: Backup repository contents to Bitbucket
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Read reusable environment variables about current project
+        if: ${{ env.TAG_VERSION == '' }}
+        uses: FranzDiebold/github-env-vars-action@v2
+
+      - name: Checkout source codes from branch
+        id: checkout_step
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          token: ${{ github.token }}
+          ref: ${{ inputs.branch_name }}
+          fetch-depth: 0 # <-- clone with complete history
+
+      - name: "Push contents of $CI_REPOSITORY_NAME project to Bitbucket repository"
+        uses: heussd/mirror-to-bitbucket-github-action@v2
+        with:
+            username: ${{ secrets.BITBUCKET_USERNAME }}
+            spacename: ${{ secrets.BITBUCKET_WORKSPACE_NAME }}
+            repository: $CI_REPOSITORY_NAME
+            password: ${{ secrets.BITBUCKET_APP_PASSWORD }}
