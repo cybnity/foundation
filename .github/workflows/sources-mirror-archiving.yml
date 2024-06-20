@@ -28,17 +28,18 @@ jobs:
       #GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
       # Setting an environment variable with the value of a configuration variable
       env_var: ${{ vars.ENV_CONTEXT_VAR }}
+
     steps:
-        - name: Use variables
-          run: |
-            echo "repository variable : $REPOSITORY_VAR"
-            echo "organization variable : $ORGANIZATION_VAR"
-            echo "overridden variable : $OVERRIDE_VAR"
-            echo "variable from shell environment : $env_var"
-          env:
-            REPOSITORY_VAR: ${{ vars.REPOSITORY_VAR }}
-            ORGANIZATION_VAR: ${{ vars.ORGANIZATION_VAR }}
-            OVERRIDE_VAR: ${{ vars.OVERRIDE_VAR }}
+      - name: Use variables
+        run: |
+          echo "repository variable : $REPOSITORY_VAR"
+          echo "organization variable : $ORGANIZATION_VAR"
+          echo "overridden variable : $OVERRIDE_VAR"
+          echo "variable from shell environment : $env_var"
+        env:
+          REPOSITORY_VAR: ${{ vars.REPOSITORY_VAR }}
+          ORGANIZATION_VAR: ${{ vars.ORGANIZATION_VAR }}
+          OVERRIDE_VAR: ${{ vars.OVERRIDE_VAR }}
 
       - name: Checkout source codes from branch
         id: checkout_step
