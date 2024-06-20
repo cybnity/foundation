@@ -26,10 +26,17 @@ jobs:
       contents: read
 
     steps:
+      - name: Read reusable environment variables about current project
+        if: ${{ env.TAG_VERSION == '' }}
+        uses: FranzDiebold/github-env-vars-action@v2
+
       - name: Use variables
         run: |
-          echo "repository variable : $REPOSITORY_VAR"
-          echo "organization variable : $ORGANIZATION_VAR"
+          echo "REPOSITORY_NAME=$CI_REPOSITORY_NAME" >> $GITHUB_ENV
+          echo "Repository full name: $REPOSITORY_VAR"
+          echo "Repository name: $CI_REPOSITORY_NAME"
+          echo "Repository owner: $ORGANIZATION_VAR"
+          echo "Repository isolated name: $REPOSITORY_NAME"
         env:
           REPOSITORY_VAR: ${{ github.repository }}
           ORGANIZATION_VAR: ${{ github.repository_owner }}
