@@ -30,10 +30,6 @@ jobs:
         if: ${{ env.TAG_VERSION == '' }}
         uses: FranzDiebold/github-env-vars-action@v2
 
-      - name: Set environment variables
-        run: |
-          echo "REPOSITORY_NAME=$CI_REPOSITORY_NAME" >> $GITHUB_ENV
-
       - name: Checkout source codes from branch
         id: checkout_step
         uses: actions/checkout@v4
@@ -43,10 +39,10 @@ jobs:
           ref: ${{ inputs.branch_name }}
           fetch-depth: 0 # <-- clone with complete history
 
-      - name: Push contents of $CI_REPOSITORY_NAME project to Bitbucket repository
+      - name: "Push contents of $CI_REPOSITORY_NAME project to Bitbucket repository"
         uses: heussd/mirror-to-bitbucket-github-action@v2
         with:
-            username: olivier_lemee
-            spacename: agnet
+            username: ${{ secrets.BITBUCKET_USERNAME }}
+            spacename: ${{ secrets.BITBUCKET_WORKSPACE_NAME }}
             repository: $CI_REPOSITORY_NAME
             password: ${{ secrets.BITBUCKET_APP_PASSWORD }}
