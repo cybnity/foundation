@@ -4,7 +4,7 @@
 #
 # TARGET INFRASTRUCTURE PLATFORM (usage: centralized applications development)
 # Nodes: 1 (see https://learnk8s.io/kubernetes-node-size for help about unique vs multiples nodes)
-# RAM: 12 (50% of real available vCPUs capacity)
+# CPUs: 12 (50% of real available vCPUs capacity)
 # RAM: 64Go (50% allocated to virtualized platform according to the real available physical memory)
 # Storage: 100Go (according to available free storage)
 
