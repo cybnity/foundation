@@ -14,7 +14,9 @@ Several assembly projects are managed regarding the packaging of modular and dep
 See the [production-grade infrastructure checklist](production-grade-infrastructure-checklist.md) that define "what are the requirements for going to production?".
 
 ### DEPLOYMENT VIEW
-See the [deployment view documentation](/docs/uml/README.md#deployment-view-systems--applications) for more detail on the design requirements that describe the environments, infrastructures and operating conditions required to install, activate and operate the systems safely.
+See the [logical deployment view documentation](/docs/uml/README.md#deployment-view-systems--applications) for more detail on the design requirements that describe the environments, infrastructures and operating conditions required to install, activate and operate the systems safely.
+
+See [technical deployment view documentation](systems-and-tools-prerequisites.md) for detail about the resources prerequisites relative to the tools and systems used for delivery and/or operating of CYBNITY solutions.
 
 # SYSTEM PROJECTS
 The CYBNITY systems are application components (e.g web backend app, standalone executable java app) that are containerized as __deployable and executable Systems__.
