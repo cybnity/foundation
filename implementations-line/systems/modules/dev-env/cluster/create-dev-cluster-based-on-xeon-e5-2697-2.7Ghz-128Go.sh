@@ -9,10 +9,17 @@
 # Storage: 100Go (according to available free storage)
 
 # Create a minikube profile (allowed memory and cpu are defined PER NODE)
-minikube start --driver=hyperkit --container-runtime=docker --profile dev --nodes 1 --cpus 12 --disk-size '100g' --memory '64g' &&
+minikube start --driver=hyperkit --container-runtime=docker --profile dev --nodes 2 --cpus 12 --disk-size '100g' --memory '64g' &&
+
+# Activate optionnal modules
+minikube -p dev addons enable ingress
+minikube -p dev addons enable metrics-server
 
 # WHEN CLUSTER INCLUDING ONLY ONE NODE : Export docker host and Docker daemon into the shell context variables
 minikube docker-env
+
+# Define new created profile as default
+minikube profile dev
 
 # BE CAREFULL, MINIKUBE LOST LABELS ON NODES WHEN RESTARTED
 echo "Add labels to the cluster" &&
@@ -25,7 +32,16 @@ kubectl label nodes dev cybnity.io/domains-area=true &&
 
 kubectl label nodes dev cybnity.io/infrastructure-services-area=true &&
 
+# define specific label to TOOLING node
+kubectl label nodes dev-m02 cybnity.io/support-tooling-infrastructure-area=yes &&
+
 kubectl get nodes --show-labels &&
+
+# Update version of kubectl
+minikube kubectl -- get pods -A
 
 # Installation of CustomResourceDefinition resources is recommended by kubectl and not from Helm chart avoiding an automatic CRDs instances deletion when CYBNITY Platform environment is upgraded or deleted from Helm CLI
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.1/cert-manager.crds.yaml
+
+# Monitor the progress of started system pods for the kube-system namespace
+kubectl get pods --namespace=kube-system
