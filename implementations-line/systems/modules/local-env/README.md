@@ -26,7 +26,7 @@ Contain each module managing connectivity and/or traffic (e.g a loab balancing m
 One sub-directory is defined per reusable module name.
 
 The networking folder include utility scripts simplifying the developers specific needs like:
-- port forwarding and exposure out-of a started cluster, that allow unit tests of specific systems
+- port forwarding and exposure out-of a started cluster, that allow unit tests of specific systems.
 
 # SERVICES MODULES
 Contain each module specifically for deploying the CYBNITY containerized application component.

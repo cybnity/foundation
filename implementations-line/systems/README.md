@@ -16,7 +16,7 @@ See the [production-grade infrastructure checklist](production-grade-infrastruct
 ### DEPLOYMENT VIEW
 See the [logical deployment view documentation](/docs/uml/README.md#deployment-view-systems--applications) for more detail on the design requirements that describe the environments, infrastructures and operating conditions required to install, activate and operate the systems safely.
 
-See [technical deployment view documentation](systems-and-tools-prerequisites.md) for detail about the resources prerequisites relative to the tools and systems used for delivery and/or operating of CYBNITY solutions.
+See [systems and tooles prerequisites documentation](systems-and-tools-prerequisites.md) for detail about the resources requirements relative to the tools and systems used for delivery and/or operating of CYBNITY environments.
 
 # SYSTEM PROJECTS
 The CYBNITY systems are application components (e.g web backend app, standalone executable java app) that are containerized as __deployable and executable Systems__.
