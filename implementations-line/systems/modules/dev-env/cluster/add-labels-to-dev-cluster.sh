@@ -11,4 +11,7 @@ kubectl label nodes dev cybnity.io/domains-area=true --overwrite &&
 
 kubectl label nodes dev cybnity.io/infrastructure-services-area=true --overwrite &&
 
+# define specific label to TOOLING node
+kubectl label nodes dev-m02 cybnity.io/support-tooling-infrastructure-area=yes --overwrite &&
+
 kubectl get nodes --show-labels
