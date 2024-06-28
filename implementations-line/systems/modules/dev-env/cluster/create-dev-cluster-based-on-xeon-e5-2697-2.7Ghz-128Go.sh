@@ -24,16 +24,14 @@ minikube profile dev
 # BE CAREFULL, MINIKUBE LOST LABELS ON NODES WHEN RESTARTED
 echo "Add labels to the cluster" &&
 
+# Define application node labels
 kubectl label nodes dev cybnity.io/user-interfaces-area=true &&
-
 kubectl label nodes dev cybnity.io/domains-io-area=true &&
-
 kubectl label nodes dev cybnity.io/domains-area=true &&
-
 kubectl label nodes dev cybnity.io/infrastructure-services-area=true &&
 
-# define specific label to TOOLING node
-kubectl label nodes dev-m02 cybnity.io/support-tooling-infrastructure-area=yes &&
+# Define TOOLING node labels
+kubectl label nodes dev-m02 cybnity.io/support-tooling-infrastructure-area=true &&
 
 kubectl get nodes --show-labels &&
 
