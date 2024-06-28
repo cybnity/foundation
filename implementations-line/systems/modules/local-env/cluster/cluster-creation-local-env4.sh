@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # Create a minikube profile (allowed memory and cpu are defined PER NODE)
-minikube start --driver=hyperkit --container-runtime=docker --profile local-env4 --nodes 4 --cpus 3 --disk-size '100g' --memory '16g' &&
+minikube start --driver=hyperkit --container-runtime=docker --profile local-env4 --nodes 4 --cpus 4 --disk-size '100g' --memory '16g' &&
 
 # WHEN CLUSTER INCLUDING ONLY ONE UNIQUE NODE : Export docker host and Docker daemon into the shell context variables
 #minikube docker-env
