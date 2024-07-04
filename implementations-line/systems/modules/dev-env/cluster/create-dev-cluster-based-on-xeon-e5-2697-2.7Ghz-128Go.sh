@@ -9,7 +9,7 @@
 # Storage: 100Go (according to available free storage)
 
 # Create a minikube profile (allowed memory and cpu are defined PER NODE)
-minikube start --driver=hyperkit --container-runtime=docker --profile dev --nodes 2 --cpus 12 --disk-size '200g' --memory '64g' &&
+minikube start --driver=hyperkit --container-runtime=docker --profile dev --nodes 1 --cpus 12 --disk-size '200g' --memory '64g' &&
 
 # Activate optionnal modules
 minikube -p dev addons enable ingress
@@ -22,16 +22,13 @@ minikube docker-env
 minikube profile dev
 
 # BE CAREFULL, MINIKUBE LOST LABELS ON NODES WHEN RESTARTED
-cho "Add labels to a cluster based 2 nodes" &&
+cho "Add labels to cluster unique node" &&
 
 # Define application node labels
 kubectl label nodes dev cybnity.io/user-interfaces-area=true &&
 kubectl label nodes dev cybnity.io/domains-io-area=true &&
 kubectl label nodes dev cybnity.io/domains-area=true &&
 kubectl label nodes dev cybnity.io/infrastructure-services-area=true &&
-
-# Define TOOLING node labels
-kubectl label nodes dev-m02 cybnity.io/support-tooling-infrastructure-area=true &&
 
 kubectl get nodes --show-labels &&
 

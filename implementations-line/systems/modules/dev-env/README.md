@@ -18,14 +18,12 @@ Cluster folder includes shell scripts that help to create minikube cluster accor
 
 Several types of clusters can be build over command lines executions:
 - Cluster of 4 nodes dedicated to receive only CYBNITY application systems deployed by the global Helm project relative to cybnity-platform (see IAC Helm Charts repository);
-- Cluster of 2 nodes where one node is dedicated for installation of any CYBNITY application systems (unit or group of application systems without all systems deployed), and other node reserved for installation of development tools (e.g Continuous Delivery system).
+- Cluster of 1 node dedicated for installation of any CYBNITY application systems.
 
 ## Prerequisites
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
-|Halyard|VM (Ubuntu 18.04+, Debian 10+), or Docker|RAM: 12GB| |
-|Spinnaker|__K8S cluster (tools node)__:<br>- vCPU: 4 cores<br>- RAM: 16GB+| ||
-|Minikube|MacOS, Linux, or Windows|__dev (1 app node, 1 tools node)__:<br>- RAM: 128Go<br>- Storage: 200Go<br>__dev-env4 (4 app nodes)__:<br>- RAM: 128Go<br>- Storage: 200Go|[cluster folder](cluster)|
+|Minikube|MacOS, Linux, or Windows|__dev (1 node)__:<br>- RAM: 128Go<br>- Storage: 200Go<br>__dev-env4 (4 app nodes)__:<br>- RAM: 128Go<br>- Storage: 200Go|[cluster folder](cluster)|
 
 ## Usages
 
