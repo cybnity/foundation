@@ -21,7 +21,7 @@ In case of cluster stop and restart on Minikube, the assigned labels (per node) 
 Use the xxxx-labels.add.sh script dedicated to the used cluster for automatically re-assign the labels to cluster nodes.
 
 # NETWORKING MODULES
-Contain each module managing connectivity and/or traffic (e.g a loab balancing module) as reusable and standalone deployable module.
+Contain each module managing connectivity and/or traffic (e.g a load balancing module) as reusable and standalone deployable module.
 
 One sub-directory is defined per reusable module name.
 
