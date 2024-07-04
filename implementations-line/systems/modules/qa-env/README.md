@@ -16,7 +16,7 @@ Optional additional resources can be required for simulation activities supporti
 ## Usages
 
 # NETWORKING MODULES
-Contain each module managing connectivity and/or traffic (e.g a loab balancing module) as reusable and standalone deployable module.
+Contain each module managing connectivity and/or traffic (e.g a load balancing module) as reusable and standalone deployable module.
 
 One sub-directory is defined per reusable module name.
 
