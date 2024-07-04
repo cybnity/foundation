@@ -9,10 +9,7 @@
 # Storage: 100Go (according to available free storage)
 
 # Create a minikube profile (allowed memory and cpu are defined PER NODE)
-minikube start --driver=hyperkit --container-runtime=docker --profile dev-env4 --nodes 4 --cpus 12 --disk-size '100g' --memory '16g' &&
-
-# Define new created profile as default
-minikube profile dev-env4
+minikube start --driver=hyperkit --container-runtime=docker --profile dev-env4 --nodes 4 --cpus 12 --disk-size '200g' --memory '32g' &&
 
 # Activate optionnal modules
 minikube -p dev-env4 addons enable ingress
@@ -20,6 +17,9 @@ minikube -p dev-env4 addons enable metrics-server
 
 # WHEN CLUSTER INCLUDING ONLY ONE NODE : Export docker host and Docker daemon into the shell context variables
 minikube docker-env
+
+# Define new created profile as default
+minikube profile dev-env4
 
 # BE CAREFULL, MINIKUBE LOST LABELS ON NODES WHEN RESTARTED
 echo "Add labels to a cluster based on 4 nodes" &&
