@@ -21,7 +21,7 @@ One sub-directory is defined per deploying capability of a technical or applicat
 ## Usages
 
 # NETWORKING MODULES
-Contain each module managing connectivity and/or traffic (e.g a loab balancing module) as reusable and standalone deployable module.
+Contain each module managing connectivity and/or traffic (e.g a load balancing module) as reusable and standalone deployable module.
 
 One sub-directory is defined per reusable module name.
 
