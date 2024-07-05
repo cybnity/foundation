@@ -1,7 +1,7 @@
 #! /bin/bash
 
-# BE CAREFULL, MINIKUBE LOST LABELS ON NODES WHEN RESTARTED
-echo "Add labels to the cluster nodes" &&
+# BE CAREFULL, MINIKUBE LOST LABELS ON NODE WHEN RESTARTED
+echo "Add labels to the cluster node" &&
 
 kubectl label nodes local-dev cybnity.io/user-interfaces-area=true --overwrite &&
 
