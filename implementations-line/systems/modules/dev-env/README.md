@@ -26,6 +26,13 @@ Several types of clusters can be build over command lines executions:
 |Minikube|MacOS, Linux, or Windows|__dev (1 node)__:<br>- RAM: 128Go<br>- Storage: 200Go<br>__dev-env4 (4 app nodes)__:<br>- RAM: 128Go<br>- Storage: 200Go|[cluster folder](cluster)|
 
 ## Usages
+The cluster folder include scripts simplifying creation of K8S cluster (e.g Minikube cluster) according several types:
+- dev: medium resources allocation for developer workstation based on only 1 node defined into a K8S cluster;
+- dev-env4: medium resources alloncation for integration test server based on 4 nodes (similar to production target isolated area where systems are deployed) defined into a K8S cluster.
+
+In case of cluster stop and restart on Minikube, the assigned labels (per node) are lost by default Minikube configuration.
+
+Use the add-labels-to-xxxx-cluster.sh script dedicated to the used cluster for automatically re-assign the labels to cluster nodes.
 
 # NETWORKING MODULES
 Contain each module managing connectivity and/or traffic (e.g a load balancing module) as reusable and standalone deployable module.
