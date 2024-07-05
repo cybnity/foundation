@@ -7,10 +7,10 @@
 # Nodes: 1 (see https://learnk8s.io/kubernetes-node-size for help about unique vs multiples nodes)
 # CPUs: 2 (50% of real available vCPUs capacity)
 # RAM: 8Go (50% allocated to virtualized platform according to the real available physical memory)
-# Storage: 30Go (according to available free storage)
+# Storage: 20Go (according to available free storage)
 
 # Create a minikube profile (allowed memory and cpu are defined PER NODE)
-minikube start --driver=hyperkit --container-runtime=docker --profile local-dev --nodes 1 --cpus 2 --disk-size '30g' --memory '8g' &&
+minikube start --driver=hyperkit --container-runtime=docker --profile local-dev --nodes 1 --cpus 2 --disk-size '20g' --memory '8g' &&
 
 # Activate optionnal modules
 minikube -p local-dev addons enable ingress
