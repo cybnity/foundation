@@ -20,10 +20,10 @@ minikube -p local-dev addons enable metrics-server
 minikube docker-env
 
 # Define new created profile as default
-minikube profile dev
+minikube profile local-dev
 
 # BE CAREFULL, MINIKUBE LOST LABELS ON NODES WHEN RESTARTED
-cho "Add labels to cluster unique node" &&
+echo "Add labels to cluster unique node" &&
 
 # Define application node labels
 kubectl label nodes local-dev cybnity.io/user-interfaces-area=true &&

@@ -23,10 +23,14 @@ These prerequisites are about technologies and/or systems (e.g open source datab
 
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
-|Redis||||
-|Kafka||||
+|HAProxy|Debian 9+|- CPU: 2 cores (minimum)<br>- RAM: 1GB (minimum), 2GB (typical)<br>- Storage: 20GB (minimum)||
+|NodeJS||||
+|Keycloak|Java 8, Docker (JVM memory limited heap size 750MB to 2GB max)|- RAM: 512M-1000MB<br>- Storage: 1GB+|[Resources sizing](https://www.keycloak.org/high-availability/concepts-memory-and-cpu-sizing); [Container installation](https://www.keycloak.org/server/containers)|
+|PostgreSQL|Linux|- CPU: 1GHz dual core<br>- RAM: 2GB<br>- Storage: 2GB||
+|Redis||__Development__:<br>- RAM (per node): 4GB (minimum), 10GB+ (recommended)<br>- Storage (per node): 10GB (minimum), 20GB+ (recommended)<br>__Production__:<br>- CPU (cores per node): 4 (minimum), 8+ (recommended)<br>- RAM (per node): 15GB (minimum), 30GB+ (recommended)<br>- Ephemeral RAM storage: RAMx2 (minimum), >= RAMx4 (recommended)<br>- Snapshots persistent storage: RAMx3 (minimum), >= RAMx6 (recommended)<br>- Network: multiple NICs (>100Mbps) per node: 1G (minimum), 10G+ (recommended)|[Redis enterprise HW requirements](https://redis.io/docs/latest/operate/rs/installing-upgrading/install/plan-deployment/hardware-requirements/)|
+|Kafka|Java 11|__Minimum__:<br>- CPU: multiple cores<br>- RAM: 32Go<br>__Production__:<br>- CPU: 24 cores<br>- RAM: 64Go|[Kafka in production](https://docs.confluent.io/platform/current/kafka/deployment.html)|
 |Janusgraph||||
-|Cassandra||||
+|Cassandra|Debian 8-9, Java 11|__Production__:<br>- CPU: 2 cores (minimum), 8+ cores (typical)<br>- RAM: 8Go (minimum), 32GB (typical)<br>- Storage: SSDs|[Hardware choices](https://cassandra.apache.org/doc/stable/cassandra/operating/hardware.html)|
 
 # PREREQUISITES PER MODULARIZED ENVIRONMENT
 - [LOCAL-ENV](modules/local-env/README.md): standalone or sandboxed environment used for projects development.
