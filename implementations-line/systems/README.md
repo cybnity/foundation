@@ -156,7 +156,7 @@ examples
 └── local-env
 ```
 
-# INFRASTRUCTURE RESOURCES
+# RESOURCES INFRASTRUCTURE
 Several support resources are installed and provided by CYBNITY for allow deployment of environment modules during the build activities.
 
 See the __example of harware and virtualized systems__ as [support infrastructure implemented by CYBNITY project](technical-infrastructure/README.md), that can be considerated like an example for companies which would like to create a resources infrastructure supporting development of CYBNITY extension, or test/optimization of CYBNITY software suite versions, and/or providing of production environment to final users (e.g a company's security team; or a provider of managed platform as SaaS offer to other companies' security teams).

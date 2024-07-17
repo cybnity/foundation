@@ -1,6 +1,6 @@
 ## PURPOSE
 Some infrastructure technical systems are deployed by CYBNITY project as dedicated to "Build activities" relative to CYBNITY software suite, and can be see as a template of support resources which shall be installed by any company that would like:
-- to develop/extends in an autonomous way on their servers
+- to develop or to extend CYBNITY software suite in an autonomous way onto their servers
 - to test the CYBNITY software modules allowing to customize or optimized their performances according to a company's needs
 - to provide a production environment to final user (e.g a company's security team) in a SaaS approach or into a on-premise infrastructure
 
