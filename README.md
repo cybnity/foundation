@@ -78,7 +78,7 @@ The idea creation process implemented by the project (for definition of more rel
   - Testable prototypes documentation
   - [Implementation components and models documentation](implementations-line/README.md)
   - Deployable and modular systems documentation
-    - [Systems line](systems-line/README.md)
+    - [System testing modules](systems-line/modules/test/README.md)
   - Operable production systems documentation
 
 # OTHER RESOURCES
