@@ -9,5 +9,7 @@ See here the model of physical resources installed by CYBNITY to support the pro
 
 ![image](CYBNITY_build_and_delivery_infrastructures.png)
 
+For more detail about technical and resources pre-requisites to support by this type of resources infrastructure, consult the [system and tools prerequisites documentation](../systems-and-tools-prerequisites.md).
+
 #
 [Back To Home](../README.md)
