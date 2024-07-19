@@ -22,18 +22,7 @@
 			<artifactId>janusgraph-driver</artifactId>
 			<scope>compile</scope>
 		</dependency>
-
 		<!-- Test cycle dependencies -->
-		<dependency>
-			<groupId>org.janusgraph</groupId>
-			<artifactId>janusgraph-inmemory</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.janusgraph</groupId>
-			<artifactId>janusgraph-test</artifactId>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
