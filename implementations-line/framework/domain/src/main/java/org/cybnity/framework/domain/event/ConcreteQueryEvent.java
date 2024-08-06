@@ -234,5 +234,4 @@ public class ConcreteQueryEvent extends Command {
         return null;
     }
 
-
 }

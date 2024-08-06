@@ -10,6 +10,6 @@ import org.junit.platform.suite.api.Suite;
  * @author olivier
  */
 @Suite
-@SelectClasses({GraphElementsManagementUseCaseTest.class, JanusGraphSchemaCreationUseCaseTest.class})
+@SelectClasses({GraphElementsManagementUseCaseTest.class, JanusGraphSchemaCreationUseCaseTest.class, ActivateGraphUseCaseTest.class})
 public class AllUseCaseTests {
 }

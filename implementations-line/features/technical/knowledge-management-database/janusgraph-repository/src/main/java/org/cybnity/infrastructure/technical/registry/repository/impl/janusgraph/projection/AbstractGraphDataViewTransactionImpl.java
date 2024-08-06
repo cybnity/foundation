@@ -1,8 +1,10 @@
 package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.projection;
 
 import org.cybnity.framework.UnoperationalStateException;
+import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.model.AbstractRealModelDataViewProjection;
 import org.cybnity.framework.domain.model.IDomainModel;
+import org.cybnity.framework.domain.model.ITransactionStateObserver;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.AbstractDomainGraphImpl;
 
 /**
@@ -23,10 +25,11 @@ public abstract class AbstractGraphDataViewTransactionImpl extends AbstractRealM
      * @param label     Mandatory logical definition (e.g query name, projection finality unique name) of this projection that can be used for projections equals validation.
      * @param ownership Mandatory domain which is owner of the projection (as in its scope of responsibility).
      * @param dataModel Mandatory database model that can be manipulated by this transaction about its data view(s).
+     * @param observer  Optional observer of the transaction state evolution (e.g to be notified about progress or end of performed transaction).
      * @throws IllegalArgumentException When any mandatory parameter is missing.
      */
-    public AbstractGraphDataViewTransactionImpl(String label, IDomainModel ownership, AbstractDomainGraphImpl dataModel) throws IllegalArgumentException {
-        super(label, ownership);
+    public AbstractGraphDataViewTransactionImpl(String label, IDomainModel ownership, AbstractDomainGraphImpl dataModel, ITransactionStateObserver observer) throws IllegalArgumentException {
+        super(label, ownership, observer);
         if (dataModel == null) throw new IllegalArgumentException("dataModel parameter is required!");
         this.graphModel = dataModel;
     }
@@ -38,6 +41,15 @@ public abstract class AbstractGraphDataViewTransactionImpl extends AbstractRealM
      */
     protected AbstractDomainGraphImpl graphModel() {
         return this.graphModel;
+    }
+
+    @Override
+    public void notifyTransactionState(DomainEvent domainEvent) {
+        if (domainEvent != null) {
+            ITransactionStateObserver notifiable = getObserver();
+            if (notifiable != null)
+                notifiable.notifyTransactionState(domainEvent);
+        }
     }
 
     /**
@@ -61,6 +73,6 @@ public abstract class AbstractGraphDataViewTransactionImpl extends AbstractRealM
     public void deactivate() throws UnoperationalStateException {
         if (graphModel != null)
             // Delete the graph schema supporting this data view projection
-            graphModel.dropGraph();
+            graphModel.drop();
     }
 }

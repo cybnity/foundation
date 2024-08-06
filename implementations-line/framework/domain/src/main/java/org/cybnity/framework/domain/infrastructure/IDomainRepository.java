@@ -13,12 +13,12 @@ import java.util.Map;
 /**
  * Represents a persistence-oriented repository (also sometimes called Aggregate
  * store, or Aggregate-Oriented database) basic contract for a bounded context.
- * <p>
+ * <br>
  * For example, manage the domain data (e.g sharded database for a tenant)
  * ensuring isolation of persistent domain model from the other bounded
  * contexts.
- * A domain repository is optimized for storage and query of domain Read-Model Projections.
- *
+ * <br>
+ * A domain repository is optimized for management and query of domain Read-Model Projections.
  * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Robusteness, reqId = "REQ_ROB_3")

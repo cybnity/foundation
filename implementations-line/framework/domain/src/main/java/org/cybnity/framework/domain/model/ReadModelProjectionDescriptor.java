@@ -29,7 +29,14 @@ public class ReadModelProjectionDescriptor implements Unmodifiable, Serializable
      * atomic fact.
      */
     public enum PropertyAttributeKey {
-        LABEL, OWNERSHIP
+        /**
+         * Logical label attribute defining a name of a projection.
+         */
+        LABEL,
+        /**
+         * Logical name of perimeter (e.g specific domain name) that is owner of a projection.
+         */
+        OWNERSHIP
     }
 
     /**
@@ -93,7 +100,7 @@ public class ReadModelProjectionDescriptor implements Unmodifiable, Serializable
     /**
      * Get the domain that is owner of read-model projection.
      *
-     * @return A functional responsible of the projection.
+     * @return A functional responsible for the projection.
      */
     public IDomainModel ownership() {
         return (IDomainModel) this.currentValue().getOrDefault(PropertyAttributeKey.OWNERSHIP.name(), null);
@@ -183,7 +190,7 @@ public class ReadModelProjectionDescriptor implements Unmodifiable, Serializable
                 // Invalid type
             }
 
-            // Check that an ownership property value
+            // Check ownership property value
             IDomainModel ownerType = null;
             // Verify that ownership is a domain model
             try {

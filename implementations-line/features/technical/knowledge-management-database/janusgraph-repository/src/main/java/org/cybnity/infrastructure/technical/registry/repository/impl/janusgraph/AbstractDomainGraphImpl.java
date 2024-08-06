@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Represent a graph of domain elements and implementation capabilities regarding schema manipulation, graph data update, and graph queries via the selected query framework (e.g Tinkerpop).
+ * Represent a graph of domain elements (e.g structure of data views relative to a domain scope) and implementation capabilities regarding schema manipulation, graph data update, and graph queries via the selected query framework (e.g Tinkerpop).
  */
 public abstract class AbstractDomainGraphImpl {
 
@@ -30,11 +30,6 @@ public abstract class AbstractDomainGraphImpl {
      * Source of this graph.
      */
     protected Graph graph;
-
-    /**
-     * Traversal version of this graph.
-     */
-    protected GraphTraversalSource traversal;
 
     /**
      * Is transactions are supported by this graph.
@@ -69,6 +64,18 @@ public abstract class AbstractDomainGraphImpl {
         logger = LoggerFactory.getLogger(this.getClass());
     }
 
+    public boolean isSupportsTransactions() {
+        return supportsTransactions;
+    }
+
+    public boolean isSupportsSchema() {
+        return supportsSchema;
+    }
+
+    public boolean isSupportsGeoshape() {
+        return supportsGeoshape;
+    }
+
     /**
      * Get the original context defined during the instantiation of this domain graph.
      *
@@ -88,22 +95,17 @@ public abstract class AbstractDomainGraphImpl {
     }
 
     /**
-     * Get the traversal of the graph instance.
-     *
-     * @return An instance or null.
-     */
-    public GraphTraversalSource getTraversal() {
-        return traversal;
-    }
-
-    /**
      * Opens the graph instance.
      * If the graph instance does not exist, a new graph instance is initialized.
+     * If this graph previously already opened with success (and close() method not called), return previously same opened traversal source.
      *
+     * @return Graph traversal source instance.
      * @throws ConfigurationException When problem is occurred regarding the graph configuration elements to use for instance creation.
      * @throws IOException            When error of graph file elements access.
      */
-    public GraphTraversalSource openGraph() throws ConfigurationException, IOException {
+    public GraphTraversalSource open() throws ConfigurationException, IOException {
+        if (graph != null) return graph.traversal(); // Return already opened graph instance
+
         logger().info("Opening graph (" + graphName() + ")");
         // Read the storage backend configuration settings
         Map<ReadModelConfigurationVariable, String> storageBackendConfigVariables = storageBackendConfiguration();
@@ -115,7 +117,7 @@ public abstract class AbstractDomainGraphImpl {
                 // Read current
                 refConfigName = property.getKey().getReferenceConfigurationName();
                 configValue = property.getValue();
-                if (!configValue.isEmpty()) {
+                if (configValue != null && !configValue.isEmpty()) {
                     // Set configuration on factory
                     factory.set(refConfigName, configValue);
                 }
@@ -127,9 +129,7 @@ public abstract class AbstractDomainGraphImpl {
 
         // Open the graph database instance
         graph = factory.open();
-        // Set the traversal onto the graph
-        traversal = graph.traversal();
-        return traversal;
+        return graph.traversal();
     }
 
     /**
@@ -137,12 +137,12 @@ public abstract class AbstractDomainGraphImpl {
      *
      * @throws UnoperationalStateException Problem occurred during the attempt to close the graph connection.
      */
-    public final void closeGraph() throws UnoperationalStateException {
+    public final void close() throws UnoperationalStateException {
         logger().info("Closing graph (" + graphName() + ")");
         try {
-            if (getTraversal() != null) {
+            if (graph != null) {
                 try {
-                    getTraversal().close();
+                    graph.traversal().close();
                 } catch (Exception e) {
                     throw new UnoperationalStateException(e);
                 }
@@ -155,7 +155,6 @@ public abstract class AbstractDomainGraphImpl {
                 }
             }
         } finally {
-            traversal = null;
             graph = null;
         }
     }
@@ -170,11 +169,20 @@ public abstract class AbstractDomainGraphImpl {
     }
 
     /**
+     * Get the graph instance.
+     *
+     * @return JanusGraph instance.
+     */
+    public Graph graph() {
+        return graph;
+    }
+
+    /**
      * Drops the graph instance. The default implementation does nothing.
      *
      * @throws UnoperationalStateException Problem occurred during the attempt to close the graph deletion.
      */
-    public void dropGraph() throws UnoperationalStateException {
+    public void drop() throws UnoperationalStateException {
         JanusGraph toDrop = janusGraph();
         if (toDrop != null) {
             try {
@@ -186,7 +194,9 @@ public abstract class AbstractDomainGraphImpl {
     }
 
     /**
-     * Creates the graph schema.
+     * Creates explicitly defined schema of this graph.
+     * See <a href="https://docs.janusgraph.org/v0.4/basics/schema/">JanusGraph Schema and data modeling documentation</a> for help.
+     * <br>
      * This method is managing the call to each schema modification method in a global transaction like:
      * - createProperties(management)
      * - createVertexLabels(management)
@@ -196,7 +206,7 @@ public abstract class AbstractDomainGraphImpl {
      *
      * @throws UnoperationalStateException Problem occurred during the attempt to modify the graph.
      */
-    public void createSchema() throws UnoperationalStateException {
+    public final void createSchema() throws UnoperationalStateException {
         JanusGraph db = janusGraph();
         if (db != null) {
             final JanusGraphManagement management = db.openManagement();

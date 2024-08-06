@@ -4,6 +4,8 @@ import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.IReadModel;
 import org.cybnity.framework.domain.IReadModelProjection;
+import org.cybnity.framework.domain.event.IEventType;
+import org.cybnity.framework.domain.model.ReadModelProjectionDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +18,7 @@ import java.util.LinkedHashSet;
  * It's the data layer's set of graph manipulation capabilities.
  * This read-model management component is responsible to select and maintain up-to-date the data views projections compatible with a domain graph perimeter.
  */
-public class AbstractReadModelProjectionsSet implements IReadModel {
+public abstract class AbstractReadModelProjectionsSet implements IReadModel {
 
     /**
      * Repository logger.
@@ -72,7 +74,7 @@ public class AbstractReadModelProjectionsSet implements IReadModel {
      * @throws IllegalArgumentException    When mandatory parameter is missing.
      * @throws UnoperationalStateException When problem during the projection activation. New projection have not been added into the projections list currently managed by this repository.
      */
-    protected boolean addProjection(IReadModelProjection dataViewModelProjection) throws IllegalArgumentException, UnoperationalStateException {
+    protected final boolean addProjection(IReadModelProjection dataViewModelProjection) throws IllegalArgumentException, UnoperationalStateException {
         if (dataViewModelProjection == null)
             throw new IllegalArgumentException("Data view model projection parameter is required!");
         boolean added = false;
@@ -89,4 +91,30 @@ public class AbstractReadModelProjectionsSet implements IReadModel {
         return added;
     }
 
+    @Override
+    public final IReadModelProjection findBy(ReadModelProjectionDescriptor projectionIdentity) throws IllegalArgumentException {
+        if (projectionIdentity == null)
+            throw new IllegalArgumentException("Projection identity parameter is required!");
+        // Search identity from current read-model's managed projections
+        ReadModelProjectionDescriptor desc;
+        for (IReadModelProjection managed : projections()) {
+            desc = managed.description();
+            if (desc.equals(projectionIdentity)) {
+                return managed;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public final IReadModelProjection findBySupportedQuery(IEventType aQueryType) throws IllegalArgumentException {
+        if (aQueryType == null)
+            throw new IllegalArgumentException("Query type parameter is required!");
+        // Search in each managed projection, which one is supporting a query with equals naming
+        ReadModelProjectionDescriptor desc;
+        for (IReadModelProjection managed : projections()) {
+            if (managed.isSupportedQuery(aQueryType)) return managed;
+        }
+        return null;
+    }
 }

@@ -108,7 +108,6 @@ public class JanusGraphAppSampleAbstractImpl extends GraphAppSampleAbstractImpl 
      * server.
      */
     protected String createSchemaRequest() {
-
         String s = "JanusGraphManagement management = graph.openManagement(); " +
                 "boolean created = false; " +
 
@@ -150,8 +149,8 @@ public class JanusGraphAppSampleAbstractImpl extends GraphAppSampleAbstractImpl 
         final boolean drop = (args != null && args.length > 1) && "drop".equalsIgnoreCase(args[1]);
         final JanusGraphAppSampleAbstractImpl app = new JanusGraphAppSampleAbstractImpl(ContextualizedJanusGraphActiveTestContainer.getContextInstance());
         if (drop) {
-            app.openGraph();
-            app.dropGraph();
+            app.open();
+            app.drop();
         } else {
             app.runApp();
         }

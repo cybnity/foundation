@@ -15,6 +15,7 @@
 package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample;
 
 import org.apache.tinkerpop.gremlin.process.traversal.P;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
@@ -90,6 +91,7 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
      * Adds the vertices, edges, and properties to the graph.
      */
     public void createElements() {
+        GraphTraversalSource traversal = graph.traversal();
         try {
             // naive check if the graph was previously created
             if (traversal.V().has("name", "saturn").hasNext()) {
@@ -166,6 +168,7 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
      * Runs some traversal queries to get data from the graph.
      */
     public void readElements() {
+        GraphTraversalSource traversal = graph.traversal();
         try {
             if (traversal == null) {
                 return;
@@ -221,6 +224,7 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
      * new vertices or edges.
      */
     public void updateElements() {
+        GraphTraversalSource traversal = graph.traversal();
         try {
             if (traversal == null) {
                 return;
@@ -244,8 +248,9 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
      * its incident edges are also deleted.
      */
     public void deleteElements() {
+        GraphTraversalSource traversal = graph.traversal();
         try {
-            if (traversal == null) {
+            if (graph == null) {
                 return;
             }
             logger().info("deleting elements");
@@ -274,7 +279,7 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
     public void runApp() {
         try {
             // open and initialize the graph
-            openGraph();
+            open();
 
             // define the schema before loading data
             if (supportsSchema) {
@@ -304,7 +309,7 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
             readElements();
 
             // close the graph
-            closeGraph();
+            close();
         } catch (Exception e) {
             logger().error(e.getMessage(), e);
         }

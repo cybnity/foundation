@@ -102,7 +102,7 @@ public class EventStoreUseCaseTest {
         Assertions.assertEquals(2, BOLifecycleStream.getEvents().size(), "Invalid qty of store events regarding BO lifecycle history!");
     }
 
-    private static class EventsCheck extends DomainEventSubscriber<DomainEvent> {
+    private static class EventsCheck implements IDomainEventSubscriber<DomainEvent> {
 
         private final List<DomainEvent> notAlreadyChecked = new LinkedList<>();
         private final Class<?> observedType;

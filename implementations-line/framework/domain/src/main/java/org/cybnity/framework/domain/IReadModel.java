@@ -1,5 +1,7 @@
 package org.cybnity.framework.domain;
 
+import org.cybnity.framework.domain.event.IEventType;
+import org.cybnity.framework.domain.model.ReadModelProjectionDescriptor;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -30,5 +32,23 @@ public interface IReadModel {
      *
      * @return A collection of projections relative several types of queryable domain layer's entities and/or value objects exposed by the bounded context.
      */
-    Collection<IReadModelProjection> projections();
+    public Collection<IReadModelProjection> projections();
+
+    /**
+     * Find a projection that is managed by this read model according to its identification means (e.g from logical name and/or ownership).
+     *
+     * @param projectionIdentity Mandatory identification of the projection to search from this read-model.
+     * @return Found projection. Else return null when none projection is managed by this read-model with equals name and/or ownership.
+     * @throws IllegalArgumentException When mandatory parameter is missing.
+     */
+    public IReadModelProjection findBy(ReadModelProjectionDescriptor projectionIdentity) throws IllegalArgumentException;
+
+    /**
+     * Find a projection that support a specific query identified by an event name.
+     *
+     * @param aQueryEvent Mandatory query event to search as supportable by projection of this read-model.
+     * @return A projection or null.
+     * @throws IllegalArgumentException When mandatory parameter is not defined.
+     */
+    public IReadModelProjection findBySupportedQuery(IEventType aQueryEvent) throws IllegalArgumentException;
 }

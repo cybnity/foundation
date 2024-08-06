@@ -46,15 +46,15 @@ public class DomainEventPublisher implements ISubscribable {
      * @param aSubscriber The mandatory subscriber to add into the registry.
      */
     @Override
-    public <T> void subscribe(DomainEventSubscriber<T> aSubscriber) {
+    public <T> void subscribe(IDomainEventSubscriber<T> aSubscriber) {
         if (aSubscriber != null) {
             if (publishing.get()) {
                 return;
             }
             @SuppressWarnings("unchecked")
-            List<DomainEventSubscriber<T>> registeredSubscribers = subscribers.get();
+            List<IDomainEventSubscriber<T>> registeredSubscribers = subscribers.get();
             if (registeredSubscribers == null) {
-                registeredSubscribers = new ArrayList<DomainEventSubscriber<T>>();
+                registeredSubscribers = new ArrayList<IDomainEventSubscriber<T>>();
                 subscribers.set(registeredSubscribers);
             }
             registeredSubscribers.add(aSubscriber);
@@ -67,13 +67,13 @@ public class DomainEventPublisher implements ISubscribable {
      * @param aSubscriber The mandatory subscriber to remove from register.
      */
     @Override
-    public <T> void remove(DomainEventSubscriber<T> aSubscriber) {
+    public <T> void remove(IDomainEventSubscriber<T> aSubscriber) {
         if (aSubscriber != null) {
             if (publishing.get()) {
                 return;
             }
             @SuppressWarnings("unchecked")
-            List<DomainEventSubscriber<T>> registeredSubscribers = subscribers.get();
+            List<IDomainEventSubscriber<T>> registeredSubscribers = subscribers.get();
             if (registeredSubscribers != null) {
                 registeredSubscribers.remove(aSubscriber);
             }
@@ -85,7 +85,7 @@ public class DomainEventPublisher implements ISubscribable {
      * event.
      *
      * @param aDomainEvent Event to promote to interested subscribers.
-     * @param <T> Type of event.
+     * @param <T>          Type of event.
      */
     public <T> void publish(final T aDomainEvent) {
         if (publishing.get()) {
@@ -96,14 +96,14 @@ public class DomainEventPublisher implements ISubscribable {
             publishing.set(Boolean.TRUE);
             // Identify the potential interested subscribers about the published event
             @SuppressWarnings("unchecked")
-            List<DomainEventSubscriber<T>> registeredSubscribers = subscribers.get();
+            List<IDomainEventSubscriber<T>> registeredSubscribers = subscribers.get();
 
             if (registeredSubscribers != null) {
                 Class<?> eventType = aDomainEvent.getClass();
-                for (DomainEventSubscriber<T> subscriber : registeredSubscribers) {
+                for (IDomainEventSubscriber<T> subscriber : registeredSubscribers) {
                     Class<?> subscribedTo = subscriber.subscribeToEventType();
                     // Check interest of the subscriber regarding the type of event published
-                    if (subscribedTo == eventType || subscribedTo == DomainEvent.class) {
+                    if (/* Any event type interest */ subscribedTo == null || subscribedTo == eventType || subscribedTo == DomainEvent.class) {
                         // Notify subscriber about published event
                         subscriber.handleEvent(aDomainEvent);
                     }

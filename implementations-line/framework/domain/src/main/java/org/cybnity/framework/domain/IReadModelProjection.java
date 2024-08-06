@@ -1,6 +1,7 @@
 package org.cybnity.framework.domain;
 
 import org.cybnity.framework.UnoperationalStateException;
+import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.framework.domain.model.ReadModelProjectionDescriptor;
 
 import java.util.concurrent.CompletableFuture;
@@ -28,27 +29,44 @@ public interface IReadModelProjection {
      *
      * @param directive Change or Query command (CQRS pattern's input element) relative to the projection that can be performed.
      */
-    void when(CompletableFuture<Command> directive);
+    public void when(Command directive);
 
+    /**
+     * Perform query on this projection to read the current status of the data-view managed scope.
+     *
+     * @param request        Mandatory query command (CQRS pattern's input element) relative to the projection that shall be performed.
+     * @param resultObserver Optional provider of data-view status collected as request results.
+     * @throws IllegalArgumentException      When any mandatory parameter is missing.
+     * @throws UnsupportedOperationException When request execution generated an issue (e.g query not supported by this projection; or error of request parameter types).
+     */
+    public void when(Command request, CompletableFuture<IQueryResponse> resultObserver) throws IllegalArgumentException, UnsupportedOperationException;
 
     /**
      * Get description of this read-model projection.
      *
      * @return A description providing specification element regarding this projection (e.g label, ownership, categorization elements).
      */
-    ReadModelProjectionDescriptor description();
+    public ReadModelProjectionDescriptor description();
 
     /**
      * Make active the projection (e.g create or sync the graph schema aligned and supporting this projection; create/update the indexes managed).
      *
      * @throws UnoperationalStateException When problem during the projection activation.
      */
-    void activate() throws UnoperationalStateException;
+    public void activate() throws UnoperationalStateException;
 
     /**
      * Delete or deactivate the projection (e.g drop a graph instance aligned and supporting this projection).
      *
      * @throws UnoperationalStateException When problem during the projection activation.
      */
-    void deactivate() throws UnoperationalStateException;
+    public void deactivate() throws UnoperationalStateException;
+
+    /**
+     * Confirm if the read-model support a type of query command.
+     *
+     * @param queryCommand Query type to evaluate as supported by this read-model projection.
+     * @return True when the query is declared like supported by the read-model. Else return false and when the query command parameter is not defined.
+     */
+    public boolean isSupportedQuery(IEventType queryCommand);
 }
