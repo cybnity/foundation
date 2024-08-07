@@ -3,7 +3,6 @@ package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.*;
 import org.cybnity.framework.domain.event.ConcreteDomainChangeEvent;
-import org.cybnity.framework.domain.event.ConcreteQueryEvent;
 import org.cybnity.framework.domain.event.EventSpecification;
 import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.framework.domain.model.IDomainModel;
@@ -18,7 +17,6 @@ import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Example of domain aggregate view (domain object data view projected) supporting a SampleDataView vertex type's lifecycle (e.g creation, upgrade/refresh, enhancement, remove) via transactions onto a graph.

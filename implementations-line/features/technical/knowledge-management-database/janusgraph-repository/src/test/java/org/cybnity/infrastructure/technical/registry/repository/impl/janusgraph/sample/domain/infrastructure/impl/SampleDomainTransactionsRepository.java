@@ -1,10 +1,8 @@
 package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.infrastructure.impl;
 
-import org.apache.tinkerpop.gremlin.structure.T;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.*;
-import org.cybnity.framework.domain.event.CommandFactory;
 import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.framework.domain.event.QueryFactory;
 import org.cybnity.framework.domain.model.DomainEntity;
@@ -19,8 +17,6 @@ import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Supplier;
 
 /**
  * Example of domain repository managing transactions relative to an object type (e.g supported by one or several read-model projections representing it and its relations scope) or to a domain or to a subdomain.

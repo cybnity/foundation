@@ -1,7 +1,7 @@
 package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.infrastructure.impl.projections.read;
 
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.*;
@@ -12,9 +12,7 @@ import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.event.SampleDomainQueryEventType;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.model.SampleDataView;
 
-import java.util.Date;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Example of utility class implementing the Query Language supported by the graph model (e.g Gremlin with TinkerPop) for execution of a query directive.
@@ -69,14 +67,21 @@ public class FindSampleDataViewVersionByEqualsLabel extends AbstractDataViewVers
             if (dataViewType == null || dataViewType.value() == null || dataViewType.value().isEmpty())
                 throw new IllegalArgumentException("Missing mandatory parameter (SampleDataView.PropertyAttributeKey.DATAVIEW_TYPE.name() is required and shall be defined)!");
 
-            // Prepare GraphQL transaction
             try {
                 // Type of node can be statically defined by the implementation language (like here) or dynamically known by the requester (in case, use sampleDataViewType value)
                 String domainNodeType = (dataViewType.value() != null && !dataViewType.value().isEmpty()) ? dataViewType.value() : SampleDataView.class.getSimpleName();
-
                 GraphTraversalSource traversal = graph.open();
+                GraphTraversalSource gtx = traversal.tx().begin();
+                gtx.tx().rollback();// Force refresh of transaction state about potential parallel changes executed on data-view to search
+
                 // Execute query
-                Vertex foundEqualsLabelNode = traversal.V().has(domainNodeType /* vertex node type only consulted */,/* Name property */"name", /* filtered label */ sampleDataViewNameLabelFilter).next();
+                Map<Object, Object> searchFilter = new HashMap<>();
+                searchFilter.put("name", sampleDataViewNameLabelFilter);
+                searchFilter.put(/* vertex nature label*/ T.label, domainNodeType);
+
+                //Vertex foundEqualsLabelNode = traversal.V().has(domainNodeType /* vertex node type only consulted */,/* Name property */"name", /* filtered label */ sampleDataViewNameLabelFilter).next();
+                Vertex foundEqualsLabelNode = gtx.mergeV(searchFilter).next();
+
                 if (foundEqualsLabelNode != null) {
                     String dataViewId = foundEqualsLabelNode.value(SampleDataView.PropertyAttributeKey.IDENTIFIED_BY.name());
                     Date createdAt = foundEqualsLabelNode.value(SampleDataView.PropertyAttributeKey.CREATED.name());

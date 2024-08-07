@@ -64,6 +64,7 @@ public class CreateSampleDataViewVersion extends AbstractDataViewVersionTransact
                 try {
                     // Open a traversal allowing graph manipulation
                     GraphTraversalSource source = graph.open();
+
                     // Initialize transaction
                     tx = source.tx();
                     GraphTraversalSource gtx = tx.begin();
@@ -77,14 +78,14 @@ public class CreateSampleDataViewVersion extends AbstractDataViewVersionTransact
                     DateFormat formatter = new SimpleDateFormat(SerializationFormat.DATE_FORMAT_PATTERN);
 
                     // Execute the transaction creating a new graph vertex
-                    final Vertex dataViewVertex = gtx.addV(/* Vertex nature */domainNodeType)
+                    final Vertex dataViewVertex = gtx.addV(/* Vertex label nature */domainNodeType)
                             .property(/* Name property */"name", dataViewName.value())
                             .property(SampleDataView.PropertyAttributeKey.IDENTIFIED_BY.name(), dataViewId.value())
                             .property(SampleDataView.PropertyAttributeKey.CREATED.name(), formatter.parse(dataViewCreatedAt.value()))
                             .property(SampleDataView.PropertyAttributeKey.LAST_UPDATED_AT.name(), Date.from(Instant.now()))
                             .property(SampleDataView.PropertyAttributeKey.COMMIT_VERSION.name(), commitVersion.value())
                             .next();
-                    tx.commit(); // commit creation
+                    tx.commit(); // commit execution
 
                     // Notify the changed graph status
                     // TODO create a transaction end notification about execution finalized (e.g identified data-view changed, version...) with/without result

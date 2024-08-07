@@ -16,7 +16,6 @@ package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.*;
 import org.cybnity.framework.domain.event.ConcreteDomainChangeEvent;
-import org.cybnity.framework.domain.event.ConcreteQueryEvent;
 import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.Identifier;
@@ -39,7 +38,7 @@ import java.util.concurrent.CompletableFuture;
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class DomainTransactionsRepositoryUseCaseTest extends ContextualizedJanusGraphActiveTestContainer {
 
-    private SampleDomainTransactionsRepository repo;
+    private static SampleDomainTransactionsRepository repo;
 
     @BeforeEach
     public void initRepository() throws UnoperationalStateException {
@@ -48,9 +47,9 @@ public class DomainTransactionsRepositoryUseCaseTest extends ContextualizedJanus
     }
 
     @AfterEach
-    public void cleanResources() {
+    public void cleanResources() throws UnoperationalStateException {
+        repo.graphModel().drop();//delete previous created schema and records
         repo.freeResources();
-        ;
         repo = null;
     }
 
