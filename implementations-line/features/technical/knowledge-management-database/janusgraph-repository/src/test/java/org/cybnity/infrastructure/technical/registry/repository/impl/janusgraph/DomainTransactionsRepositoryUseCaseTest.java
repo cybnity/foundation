@@ -138,7 +138,7 @@ public class DomainTransactionsRepositoryUseCaseTest extends ContextualizedJanus
     private Map<String, String> prepareQueryBasedOnLabel(String label, String domainNodeType, IEventType queryType) {
         Map<String, String> queryParameters = new HashMap<>();
         // Explicit query name to perform
-        queryParameters.put(ConcreteQueryEvent.TYPE, queryType.name());
+        queryParameters.put(Command.TYPE, queryType.name());
         // Query filtering criteria definition
         queryParameters.put(SampleDataView.PropertyAttributeKey.NAME.name(), label); // Search vertex (data-view) node with equals name
         queryParameters.put(SampleDataView.PropertyAttributeKey.DATAVIEW_TYPE.name(), domainNodeType); // type of vertex (node type in graph model)

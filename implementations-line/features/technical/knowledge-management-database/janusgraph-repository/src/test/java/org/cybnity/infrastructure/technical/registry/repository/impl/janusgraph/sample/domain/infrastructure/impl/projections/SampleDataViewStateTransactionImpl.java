@@ -1,5 +1,6 @@
 package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.infrastructure.impl.projections;
 
+import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.*;
 import org.cybnity.framework.domain.event.ConcreteDomainChangeEvent;
 import org.cybnity.framework.domain.event.ConcreteQueryEvent;
@@ -101,50 +102,36 @@ public class SampleDataViewStateTransactionImpl extends AbstractGraphDataViewTra
     }
 
     /**
-     * Execute change transaction according to the detected command type.
+     * This method execution is based on any explicit call which is not based on an automatic write-model change detection.
+     * Execute the explicit and requested command (e.g data view creation, change or procedure execution with or without collect of results).
      *
-     * @param directive To perform.
-     */
-    @Override
-    public void when(Command directive) {
-        // Execute the explicit and requested command (e.g data view creation, change or procedure execution without collect of results)
-        // This method execution is based on any explicit call which is not based on an automatic write-model change detection
-
-        // Identify the supported change transaction to execute
-// TODO lire les transaction et executer l'une trouvée
-
-        // When none found, try to execute query command
-        when(directive, null); // call treatment forwarding to query transactions
-    }
-
-    /**
-     * Execute query according to the detected command type.
-     *
-     * @param command        Mandatory query to execute.
-     * @param resultObserver Optional results listener.
+     * @param command Mandatory change or query command (CQRS pattern's input element) relative to the projection that can be performed.
+     * @return Provider of optional data-view status collected as request results.
      * @throws IllegalArgumentException      When any mandatory parameter is missing.
      * @throws UnsupportedOperationException When request execution generated an issue (e.g query not supported by this projection; or error of request parameter types).
+     * @throws UnoperationalStateException When query execution technical problem occurred.
      */
     @Override
-    public void when(Command command, CompletableFuture<IQueryResponse> resultObserver) throws IllegalArgumentException, UnsupportedOperationException {
+    public IQueryResponse when(Command command) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException {
         if (command == null) throw new IllegalArgumentException("Command parameter is required!");
         try {
             // Identify the type of event which should be source of interest (or not) regarding this projection managed perimeter
             // Normally interpretation of event can be based on its specific domain type (e.g concrete domain event type), or based on specific specification attribute read from event, to detect the source of interest
             // Here, for example, this implementation check the type of attribute relative to the type of origin domain object concerned by the domain command
             IProjectionRead op;
-            Attribute at = EventSpecification.findSpecificationByName(ConcreteQueryEvent.TYPE, command.specification());
-            if (at!=null) {
+            Attribute at = EventSpecification.findSpecificationByName(Command.TYPE, command.specification());
+            if (at != null) {
                 // Identify existing operation to execute about query type
                 op = supportedQueries.get(at.value());
                 if (op != null) {
                     // Execute the query operation that is interested in the monitored event
-                    op.when(command, resultObserver);
+                    return op.when(command);
                 }
             }
         } catch (Exception e) {
             throw new UnsupportedOperationException(e); // query execution problem
         }
+        return Optional::empty; // Default answer
     }
 
     @Override
@@ -155,7 +142,7 @@ public class SampleDataViewStateTransactionImpl extends AbstractGraphDataViewTra
             // Here, for example, this implementation check the type of attribute relative to the type of origin domain object concerned by the domain event
             IProjectionTransaction tx;
             Attribute at = EventSpecification.findSpecificationByName(ConcreteDomainChangeEvent.TYPE, evt.specification());
-            if (at!=null) {
+            if (at != null) {
                 // Identify existing transaction to execute about event type
                 tx = supportedTransactions.get(at.value());
                 if (tx != null) {

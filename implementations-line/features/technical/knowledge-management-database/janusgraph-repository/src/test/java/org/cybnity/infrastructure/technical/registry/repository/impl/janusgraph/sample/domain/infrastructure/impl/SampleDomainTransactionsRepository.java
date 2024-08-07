@@ -1,11 +1,13 @@
 package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.infrastructure.impl;
 
+import org.apache.tinkerpop.gremlin.structure.T;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
-import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.domain.IReadModelProjection;
-import org.cybnity.framework.domain.ISessionContext;
+import org.cybnity.framework.domain.*;
+import org.cybnity.framework.domain.event.CommandFactory;
 import org.cybnity.framework.domain.event.IEventType;
+import org.cybnity.framework.domain.event.QueryFactory;
+import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.domain.model.IDomainModel;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.AbstractReadModelRepository;
@@ -15,9 +17,10 @@ import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.SampleDomain;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.model.SampleDataView;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Supplier;
 
 /**
  * Example of domain repository managing transactions relative to an object type (e.g supported by one or several read-model projections representing it and its relations scope) or to a domain or to a subdomain.
@@ -94,27 +97,80 @@ public class SampleDomainTransactionsRepository extends AbstractReadModelReposit
     }
 
     @Override
-    public List<SampleDataView> queryWhere(Map<String, String> searchCriteria, ISessionContext ctx) {
-        List<SampleDataView> results = null;
+    public List<SampleDataView> queryWhere(Map<String, String> searchCriteria, ISessionContext ctx) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException {
         if (searchCriteria != null) {
-            // Identify the projection name to query (projection that support the query parameters and specific data path/structure) from the query type name requested
+            // Identify the query name based on query type (projection that support the query parameters and specific data path/structure)
             String queryName = searchCriteria.get(Command.TYPE);
-            // Identify query event type from domain's referential of queries supported
-            IEventType queryType = Enum.valueOf(SampleDomainQueryEventType.class, queryName);
+            if (queryName != null && !queryName.isEmpty()) {
+                // Identify query event type from domain's referential of queries supported
+                IEventType queryType = Enum.valueOf(/* Referential catalog of query types supported by the repository domain */ SampleDomainQueryEventType.class, queryName);
 
-            // Search the projection that is declared like supporting the query type (from its descriptor)
-            IReadModelProjection managedProjection = this.findBySupportedQuery(queryType);
-            if (managedProjection!=null) {
-                // Execute the query via delegation to the found projection (owner of data structure and supported parameter types)
+                // Search a projection that is declared supporting the requested query type
+                IReadModelProjection managedProjection = this.findBySupportedQuery(queryType);
+                if (managedProjection != null) {
+                    // Prepare query command attributes set based on search criteria submitted
+                    Collection<Attribute> queryParameters = new HashSet<>();
+                    for (Map.Entry<String, String> param : searchCriteria.entrySet()) {
+                        // attribute name equals to search criteria label
+                        String paramName = param.getKey();
+                        // attribute value equals to search criteria value
+                        String paramValue = param.getValue();
+                        if (paramName != null && !paramName.isEmpty()) {
+                            if (paramValue != null && !paramValue.isEmpty()) {
+                                // Submit only search criteria with name AND value defined
+                                queryParameters.add(new Attribute(paramName, paramValue));// Add valid query parameter submitted
+                            }
+                        }
+                    }
 
-                // TODO préparer la query command é exécuter et instancier listener de réponse
+                    // Prepare instance of query command event to submit on found projection
+                    Command queryToPerform = QueryFactory.create(/* Name of query type */ queryName, /* query command UUID */ new DomainEntity(IdentifierStringBased.generate(null)), queryParameters,/* None prior command managed during this explicit query call */ null);
 
-                //Command queryToExecute = ConcreteQueryEvent
-                //managedProjection.when();
-            } // else unknown query name or not supported by the read-model under responsibility of this repository, which make impossible to perform the query with potential result finding
+                    // Execute the query via delegation to the found projection (owner of data structure and supported parameter types)
+                    // See https://www.callicoder.com/java-8-completablefuture-tutorial/ for help and possible implementation approaches for sync/async execution of query
+                    CompletableFuture<Optional<DataTransferObject>> executionResulting = CompletableFuture.supplyAsync(() -> {
+                        // Execute the query onto the projection and deliver the optional results
+                        try {
+                            return managedProjection.when(queryToPerform);
+                        } catch (UnoperationalStateException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }).thenApply(IQueryResponse::value);
 
+                    try {
+                        // Read results when available via CompletableFuture.get() blocking method invoked on IQueryResponse,
+                        // that waits until the Future is completed (return result after its completion)
+                        Optional<DataTransferObject> dto = executionResulting.get();
+                        if (dto.isPresent()) {
+                            // Build domain data view results to return
+                            List<SampleDataView> results = null;
+                            DataTransferObject resultProvider = dto.get();
+                            if (SampleDataView.class.isAssignableFrom(resultProvider.getClass())) {
+                                // Valid type of collected data view object managed by this repository
+                                // that can be returned as unique result
+                                results = new LinkedList<>();
+                                results.add((SampleDataView) resultProvider);
+                                return results;
+                            } else if (List.class.isAssignableFrom(resultProvider.getClass())) {
+                                // Potentially collected list of sample data view as results container
+                                return (List<SampleDataView>) resultProvider;
+                            }
+                        }
+                        return null; // Confirm that none results are provided from the executed query
+                    } catch (Exception e) {
+                        throw new UnsupportedOperationException(e);
+                    }
+                } else {
+                    // else unknown query name or not supported by the read-model under responsibility of this repository,
+                    // which make impossible to perform the query with potential result finding
+                    throw new UnsupportedOperationException("The requested query is not supported by any projection of this repository. Only SampleDomainQueryEventType values are supported as query name!");
+                }
+            } else {
+                // else unknown query name to search on repository
+                throw new IllegalArgumentException("A defined query name is required from search criteria (Command.TYPE criteria with defined value)!");
+            }
         }
-        return results; // Null results returned by default
+        throw new IllegalArgumentException("Search criteria parameter is required!");
     }
 
     @Override

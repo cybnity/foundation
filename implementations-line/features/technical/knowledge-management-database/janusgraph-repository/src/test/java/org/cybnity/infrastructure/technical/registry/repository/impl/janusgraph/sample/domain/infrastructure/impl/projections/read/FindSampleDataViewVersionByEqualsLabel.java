@@ -1,16 +1,20 @@
 package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.infrastructure.impl.projections.read;
 
-import org.cybnity.framework.domain.AbstractDataViewVersionTransactionImpl;
-import org.cybnity.framework.domain.Command;
-import org.cybnity.framework.domain.IProjectionRead;
-import org.cybnity.framework.domain.IQueryResponse;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.cybnity.framework.UnoperationalStateException;
+import org.cybnity.framework.domain.*;
+import org.cybnity.framework.domain.event.EventSpecification;
 import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.AbstractDomainGraphImpl;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.projection.AbstractGraphDataViewTransactionImpl;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.event.SampleDomainQueryEventType;
+import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.model.SampleDataView;
 
+import java.util.Date;
+import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Example of utility class implementing the Query Language supported by the graph model (e.g Gremlin with TinkerPop) for execution of a query directive.
@@ -47,10 +51,51 @@ public class FindSampleDataViewVersionByEqualsLabel extends AbstractDataViewVers
     }
 
     @Override
-    public void when(Command command, CompletableFuture<IQueryResponse> completableFuture) throws IllegalArgumentException, UnsupportedOperationException {
-        if (command != null) {
-            // TODO implement the graph data view read
+    public IQueryResponse when(Command command) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException {
+        if (command == null) throw new IllegalArgumentException("Command parameter is required!");
+        // Check valid query type definition which can be processed by this projection read function
+        Attribute queryType = EventSpecification.findSpecificationByName(Command.TYPE, command.specification());
+        // Verify if event type supported by this transaction
+        if (observerOf().contains(Enum.valueOf(SampleDomainQueryEventType.class, queryType.value()))) {
+            // Read query parameters
+            Attribute labelFilter = EventSpecification.findSpecificationByName(SampleDataView.PropertyAttributeKey.NAME.name(), command.specification());
+            // Check mandatory search parameter provided
+            if (labelFilter == null || labelFilter.value() == null || labelFilter.value().isEmpty())
+                throw new IllegalArgumentException("Invalid transaction parameter (SampleDataView.PropertyAttributeKey.NAME.name() is required)!");
+            String sampleDataViewNameLabelFilter = labelFilter.value();
 
+            Attribute dataViewType = EventSpecification.findSpecificationByName(SampleDataView.PropertyAttributeKey.DATAVIEW_TYPE.name(), command.specification());
+            // Check mandatory domain object type (data view) to filter
+            if (dataViewType == null || dataViewType.value() == null || dataViewType.value().isEmpty())
+                throw new IllegalArgumentException("Missing mandatory parameter (SampleDataView.PropertyAttributeKey.DATAVIEW_TYPE.name() is required and shall be defined)!");
+
+            // Prepare GraphQL transaction
+            try {
+                // Type of node can be statically defined by the implementation language (like here) or dynamically known by the requester (in case, use sampleDataViewType value)
+                String domainNodeType = (dataViewType.value() != null && !dataViewType.value().isEmpty()) ? dataViewType.value() : SampleDataView.class.getSimpleName();
+
+                GraphTraversalSource traversal = graph.open();
+                // Execute query
+                Vertex foundEqualsLabelNode = traversal.V().has(domainNodeType /* vertex node type only consulted */,/* Name property */"name", /* filtered label */ sampleDataViewNameLabelFilter).next();
+                if (foundEqualsLabelNode != null) {
+                    String dataViewId = foundEqualsLabelNode.value(SampleDataView.PropertyAttributeKey.IDENTIFIED_BY.name());
+                    Date createdAt = foundEqualsLabelNode.value(SampleDataView.PropertyAttributeKey.CREATED.name());
+                    Date updatedAt = foundEqualsLabelNode.value(SampleDataView.PropertyAttributeKey.LAST_UPDATED_AT.name());
+                    String commitVersion = foundEqualsLabelNode.value(SampleDataView.PropertyAttributeKey.COMMIT_VERSION.name());
+                    // Prepare result response
+                    return () -> {
+                        SampleDataView view = new SampleDataView(dataViewId, sampleDataViewNameLabelFilter, createdAt, commitVersion, updatedAt);
+                        return Optional.of(view);
+                    };
+                }
+            } catch (Exception e) {
+                throw new UnoperationalStateException(e);
+            }
+
+            // Confirm none found result
+            return Optional::empty; // Default answer
+        } else {
+            throw new UnsupportedOperationException("Not supported command type!");
         }
     }
 

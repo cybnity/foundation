@@ -18,28 +18,13 @@ public class DomainEventFactory {
      * @param type                   Mandatory type of domain event to instantiate.
      * @param identifiedBy           Optional event identity that shall identify the concrete event instance to create.
      * @param definition             Collection of attributes defining the event.
-     * @param priorCommandRef        Optional original event reference that was previous source of this event
-     *                               publication
+     * @param priorCommandRef        Optional original event reference that was previous source of this event publication.
      * @param changedModelElementRef Optional Identify the element of the domain model which was subject of domain event.
      * @return Instance of concrete event including all the attributes and standard additional elements.
-     * @throws IllegalArgumentException When any mandatory parameter is missing;
+     * @throws IllegalArgumentException When any mandatory parameter is missing.
      */
     static public DomainEvent create(String type, DomainEntity identifiedBy, Collection<Attribute> definition, EntityReference priorCommandRef, EntityReference changedModelElementRef) throws IllegalArgumentException {
-        if (type == null || type.isEmpty()) throw new IllegalArgumentException("Type parameter is required!");
-        ConcreteDomainChangeEvent event = new ConcreteDomainChangeEvent(identifiedBy, type);
-        if (definition != null) {
-            // Add change event attributes
-            for (Attribute at : definition) {
-                event.appendSpecification(at);
-            }
-        }
-        if (priorCommandRef != null) {
-            event.setChangeCommandRef(priorCommandRef);
-        }
-        if (changedModelElementRef != null) {
-            event.setChangedModelElementRef(changedModelElementRef);
-        }
-        return event;
+        return ConcreteDomainChangeEvent.create(type, identifiedBy, definition, priorCommandRef, changedModelElementRef);
     }
 
 }

@@ -1,5 +1,6 @@
 package org.cybnity.framework.domain.infrastructure;
 
+import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.ISessionContext;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.persistence.IFactRepository;
@@ -19,6 +20,7 @@ import java.util.Map;
  * contexts.
  * <br>
  * A domain repository is optimized for management and query of domain Read-Model Projections.
+ *
  * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Robusteness, reqId = "REQ_ROB_3")
@@ -92,9 +94,12 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
     /**
      * Find facts from specific parameters.
      *
-     * @param queryParameters A set of parameters as filtering criteria allowing the isolation of facts to retrieve.
+     * @param queryParameters A set of parameters (e.g type of query to execute; parameters with values) as filtering criteria allowing the isolation of facts to retrieve.
      * @param ctx             Optional context of persistence layer usage.
-     * @return A list of found result, or null.
+     * @return A list of found result(s), or null.
+     * @throws IllegalArgumentException      When any mandatory parameter (e.g unknown query name not provided by parameters list); when a required parameter's value is missing or is not valid (e.g not supported by the real query executed regarding a database data structure).
+     * @throws UnsupportedOperationException When impossible execution of requested query.
+     * @throws UnoperationalStateException When query execution technical problem occurred.
      */
-    List<T> queryWhere(Map<String, String> queryParameters, ISessionContext ctx);
+    List<T> queryWhere(Map<String, String> queryParameters, ISessionContext ctx) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException;
 }

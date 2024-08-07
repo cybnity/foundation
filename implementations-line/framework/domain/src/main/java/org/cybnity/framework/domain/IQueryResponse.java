@@ -14,7 +14,7 @@ public interface IQueryResponse {
     /**
      * Get a data-view status including specific values.
      *
-     * @return A data-view object.
+     * @return A container of one or several data-view status.
      */
     public Optional<DataTransferObject> value();
 }

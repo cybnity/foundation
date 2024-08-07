@@ -79,11 +79,11 @@ public class SampleDataView extends DataTransferObject {
      * Get the value of the attribute.
      *
      * @param prop Mandatory key of property to read.
-     * @return Value of this DTO attribute.
+     * @return Value of this DTO attribute or null.
      */
     public String valueOfProperty(PropertyAttributeKey prop) {
         List<Attribute> values = attributes.stream().filter(attr -> attr.name().equals(prop.name())).collect(Collectors.toList());
-        return values.get(0).value();
+        return (!values.isEmpty()) ? values.get(0).value():null;
     }
 
     public boolean equals(Object obj) {

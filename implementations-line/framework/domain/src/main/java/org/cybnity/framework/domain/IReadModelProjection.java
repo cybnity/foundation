@@ -4,8 +4,6 @@ import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.framework.domain.model.ReadModelProjectionDescriptor;
 
-import java.util.concurrent.CompletableFuture;
-
 /**
  * Represents an optimized read-model projection allowing query and read of denormalized version of domain layer object (e.g status and value of a domain object version at a moment of life).
  * This interface contract is covering a perimeter of read-model projection based on a type of denormalized domain object view.
@@ -27,19 +25,13 @@ public interface IReadModelProjection {
      * - Identify if the type of event captured to evaluate if is it valuable for a refresh of data view in relation with this projection
      * - Call the creation or update method(s) provided by the graphModel which include the specific implementation code that know how to manipulate the graph according to its technological language (e.g TinkerPop).
      *
-     * @param directive Change or Query command (CQRS pattern's input element) relative to the projection that can be performed.
-     */
-    public void when(Command directive);
-
-    /**
-     * Perform query on this projection to read the current status of the data-view managed scope.
-     *
-     * @param request        Mandatory query command (CQRS pattern's input element) relative to the projection that shall be performed.
-     * @param resultObserver Optional provider of data-view status collected as request results.
+     * @param request Mandatory change or query command (CQRS pattern's input element) relative to the projection that can be performed.
+     * @return Provider of optional data-view status collected as request results.
      * @throws IllegalArgumentException      When any mandatory parameter is missing.
      * @throws UnsupportedOperationException When request execution generated an issue (e.g query not supported by this projection; or error of request parameter types).
+     * @throws UnoperationalStateException When query execution technical problem occurred.
      */
-    public void when(Command request, CompletableFuture<IQueryResponse> resultObserver) throws IllegalArgumentException, UnsupportedOperationException;
+    public IQueryResponse when(Command request) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException;
 
     /**
      * Get description of this read-model projection.

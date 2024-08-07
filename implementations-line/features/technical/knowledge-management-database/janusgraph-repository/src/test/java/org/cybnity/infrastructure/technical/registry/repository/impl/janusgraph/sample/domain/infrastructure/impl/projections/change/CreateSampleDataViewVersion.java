@@ -12,8 +12,10 @@ import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.event.SampleDomainEventType;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.model.SampleDataView;
 
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Set;
 
 /**
@@ -71,6 +73,7 @@ public class CreateSampleDataViewVersion extends AbstractDataViewVersionTransact
                     Attribute dataViewName = EventSpecification.findSpecificationByName(SampleDataView.PropertyAttributeKey.NAME.name(), event.specification());
                     Attribute dataViewId = EventSpecification.findSpecificationByName(SampleDataView.PropertyAttributeKey.IDENTIFIED_BY.name(), event.specification());
                     Attribute dataViewCreatedAt = EventSpecification.findSpecificationByName(SampleDataView.PropertyAttributeKey.CREATED.name(), event.specification());
+                    Attribute commitVersion = EventSpecification.findSpecificationByName(SampleDataView.PropertyAttributeKey.COMMIT_VERSION.name(), event.specification());
                     DateFormat formatter = new SimpleDateFormat(SerializationFormat.DATE_FORMAT_PATTERN);
 
                     // Execute the transaction creating a new graph vertex
@@ -78,6 +81,8 @@ public class CreateSampleDataViewVersion extends AbstractDataViewVersionTransact
                             .property(/* Name property */"name", dataViewName.value())
                             .property(SampleDataView.PropertyAttributeKey.IDENTIFIED_BY.name(), dataViewId.value())
                             .property(SampleDataView.PropertyAttributeKey.CREATED.name(), formatter.parse(dataViewCreatedAt.value()))
+                            .property(SampleDataView.PropertyAttributeKey.LAST_UPDATED_AT.name(), Date.from(Instant.now()))
+                            .property(SampleDataView.PropertyAttributeKey.COMMIT_VERSION.name(), commitVersion.value())
                             .next();
                     tx.commit(); // commit creation
 
