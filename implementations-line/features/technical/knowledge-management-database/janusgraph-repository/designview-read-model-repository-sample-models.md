@@ -7,6 +7,13 @@ The sample classes developed as example are available into the `test/java/org/cy
 The `test/java/org/cybnity/infrastructure/technical/registry/repository/impl/janusgraph/DomainTransactionsRepositoryUseCaseTest.java` test component includes a unit test validating the good behavior of the example of domain repository.
 
 ### Key Components
+The key implemented components are:
+- A domain repository (e.g SampleDomainTransactionsRepository)
+- A read-model perimeter (e.g SampleDomainReadModelImpl) as set of data-view projections managed by a domain repository (that can manage one or multiple read-models over several graph models)
+- A set of transaction components (e.g SampleDataViewStateTransactionImpl) implementing specific operations and queries relative to a Domain Aggregate (e.g aggregate object managed in a store by an application that need to expose a read-model version of its denormalized data views)
+    - 2 data view transactions (CreateSampleDataViewVersion, UpgradeSampleDataViewVersion) ensuring specific modifications of a data-view status of a read-model projection state, according to evolution of an aggregate detected from its change events notifications
+    - 1 data view query transaction (FindSampleDataViewVersionByEqualsLabel) providing read capability (from explicit Query command) of the read-model projection into JanusGraph and Gremlin traversal query language
+
 For more detail, the technical description regarding behavior and best usage is maintained into the Javadoc of each component.
 
 | Class Type                              | Motivation                                                            |

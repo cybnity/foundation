@@ -2,7 +2,7 @@ package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph
 
 
 /**
- * Utility class helping to define standardized logical names regarding the persistent data view manageable by repository.
+ * Utility class helping to define standardized logical names regarding the persistent data view manageable by a repository.
  */
 public class GraphDataViewNamingConvention {
 
