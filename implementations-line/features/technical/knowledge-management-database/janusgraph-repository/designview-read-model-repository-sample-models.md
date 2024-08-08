@@ -89,6 +89,8 @@ classDiagram
     SampleDomainTransactionsRepository *-- "1" SampleDomainReadModelImpl : managedProjections
     SampleDomainTransactionsRepository *-- "1" SampleDomainGraphImpl : graphModel
     SampleDomainReadModelImpl *-- "1" SampleDataViewStateTransactionImpl
+    note for CreateSampleDataViewVersion "Interpret creation event notified by domain write-model, and add data-view version into the manipulated graph"
+    
     SampleDataViewStateTransactionImpl ..> CreateSampleDataViewVersion : supportedTransactions item
     SampleDataViewStateTransactionImpl ..> UpgradeSampleDataViewVersion : supportedTransactions item
     SampleDataViewStateTransactionImpl ..> FindSampleDataViewVersionByEqualsLabel : supportedQueries item
@@ -101,7 +103,6 @@ classDiagram
     note for SampleDomainReadModelImpl "Read-model projections perimeter specialized per application domain (or per domain's Aggregate). Define all usable projections as delegated actor of repository for a defined read-model scope"
     note for SampleDomainGraphImpl "Define JanusGraph storage backend configuration and manage all graph specific structure elements (Vertex, Edges, Indexes, Labels, Properties) that are static (e.g long-time structural constraints)"
     note for SampleDataViewStateTransactionImpl "Detect and interpret explicit query requests or domain event (e.g write-model change event handled), and ensure dispatching to the good transaction ensuring the graph change (read of state; change for alignment with domain aggregate last version state as data-view up-to-date)"
-    note for CreateSampleDataViewVersion "Interpret creation event notified by domain write-model, and add data-view version into the manipulated graph"
     note for UpgradeSampleDataViewVersion "Interpret any change event relative to the domain aggregate write-model, and update/refresh existing data-view projection with new value as last data-view version queryable"
     note for FindSampleDataViewVersionByEqualsLabel "Interpret and read query parameters of request about the aggregate data-view projection state, and return optimized data-view DTO version"
     
@@ -128,7 +129,7 @@ classDiagram
     }
     class SampleDomainGraphImpl {
         <<AbstractDomainGraphImpl>>
-        -GRAPH_NAME String$
+        -GRAPH_NAME : String$
     }
     class CreateSampleDataViewVersion {
         <<AbstractDataViewVersionTransactionImpl>>
