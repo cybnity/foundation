@@ -106,7 +106,7 @@ classDiagram
     note for FindSampleDataViewVersionByEqualsLabel "Interpret and read query parameters of request about the aggregate data-view projection state, and return optimized data-view DTO version"
     
     class SampleDomainTransactionsRepository {
-        $READ_MODEL_OWNERSHIP : SampleDomain
+        SampleDomain READ_MODEL_OWNERSHIP$
         +queryWhere(Map~String, String~ searchCriteria, ISessionContext ctx) List~SampleDataView~
     }
     class SampleDomainReadModelImpl {
@@ -128,7 +128,7 @@ classDiagram
     }
     class SampleDomainGraphImpl {
         <<AbstractDomainGraphImpl>>
-        $GRAPH_NAME : String
+        String GRAPH_NAME$
     }
     class CreateSampleDataViewVersion {
         <<AbstractDataViewVersionTransactionImpl>>
