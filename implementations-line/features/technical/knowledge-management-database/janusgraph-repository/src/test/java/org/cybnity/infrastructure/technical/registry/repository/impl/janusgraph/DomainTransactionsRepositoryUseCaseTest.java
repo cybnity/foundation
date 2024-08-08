@@ -18,6 +18,7 @@ import org.cybnity.framework.domain.*;
 import org.cybnity.framework.domain.event.ConcreteDomainChangeEvent;
 import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.framework.domain.model.DomainEntity;
+import org.cybnity.framework.domain.model.IDomainEventSubscriber;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.event.SampleDomainEventType;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.event.SampleDomainQueryEventType;
@@ -62,6 +63,14 @@ public class DomainTransactionsRepositoryUseCaseTest extends ContextualizedJanus
      */
     @Test
     public void givenChangedDomainObject_whenNotifyWriteModelChangeToRepository_thenReadModelDataViewCreated() throws Exception {
+        // --- Prepare subscriber allowing control of normally promoted data-view projection change events regarding the manipulated read-model
+        List<String> toDetect = new LinkedList<>();
+        // Declare interest for sample data-view versions
+        toDetect.add(SampleDomainEventType.SAMPLE_DATAVIEW_CREATED.name());
+        toDetect.add(SampleDomainEventType.SAMPLE_DATAVIEW_REFRESHED.name());
+        EventsCheck checker = new EventsCheck(toDetect);
+        repo.subscribe(checker); // Register subscriber
+
         // Simulate a confirmation domain event relative to a changed domain aggregate (e.g by event store)
         Identifier originAggregateId = IdentifierStringBased.generate(null);
         Identifier creationSourcePredecessorReferenceId = IdentifierStringBased.generate(null);
@@ -125,6 +134,10 @@ public class DomainTransactionsRepositoryUseCaseTest extends ContextualizedJanus
         SampleDataView recordedDataViewState = results.get(0);
         Assertions.assertEquals(commitVersion, recordedDataViewState.valueOfProperty(SampleDataView.PropertyAttributeKey.COMMIT_VERSION), "Invalid data view commit version that shall have been modified during refresh!");
         Assertions.assertEquals(originAggregateId.value().toString(), recordedDataViewState.valueOfProperty(SampleDataView.PropertyAttributeKey.IDENTIFIED_BY), "Identifier of data view shall be the same than existing aggregate previous vertex!");
+
+        // --- CHANGE NOTIFICATION TO READ-MODEL VERIFICATION ---
+        // Verify that each data view change performed on the read-model by the repository, have been notified via change events that were handled by checker
+        Assertions.assertTrue(checker.isAllEventsToCheckHaveBeenFound(), checker.notAlreadyChecked.size() + " data view changes had not been notified to subscriber!");
     }
 
     /**
@@ -171,4 +184,37 @@ public class DomainTransactionsRepositoryUseCaseTest extends ContextualizedJanus
         return changeEvt;
     }
 
+    /**
+     * Utility class ensuring handling of data-view changes notified by any projection.
+     */
+    private static class EventsCheck implements IDomainEventSubscriber<DomainEvent> {
+
+        /**
+         * List of event type names to detect
+         */
+        private final List<String> notAlreadyChecked = new LinkedList<>();
+
+        public EventsCheck(List<String> toCheck) {
+            super();
+            // Prepare validation container
+            notAlreadyChecked.addAll(toCheck);
+        }
+
+        @Override
+        public void handleEvent(DomainEvent event) {
+            if (event != null) {
+                // Search and remove any existing from the list of origins to check
+                notAlreadyChecked.remove(event.type().value());
+            }
+        }
+
+        @Override
+        public Class<?> subscribeToEventType() {
+            return DomainEvent.class;
+        }
+
+        public boolean isAllEventsToCheckHaveBeenFound() {
+            return this.notAlreadyChecked.isEmpty();
+        }
+    }
 }

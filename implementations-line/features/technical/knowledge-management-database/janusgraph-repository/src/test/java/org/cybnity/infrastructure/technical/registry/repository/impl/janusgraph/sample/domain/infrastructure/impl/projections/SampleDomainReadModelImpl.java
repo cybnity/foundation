@@ -43,4 +43,5 @@ public class SampleDomainReadModelImpl extends AbstractReadModelProjectionsSet {
 
         // ... other projections relative to other objects type and/or relations managed by this read-model perimeter
     }
+
 }

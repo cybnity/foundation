@@ -33,6 +33,11 @@ public abstract class AbstractReadModelProjectionsSet implements IReadModel {
     private LinkedHashSet<IReadModelProjection> domainProjections;
 
     /**
+     * Current context.
+     */
+    private final IContext context;
+
+    /**
      * Default constructor.
      *
      * @param ctx Mandatory context.
@@ -41,7 +46,16 @@ public abstract class AbstractReadModelProjectionsSet implements IReadModel {
      */
     public AbstractReadModelProjectionsSet(IContext ctx) throws UnoperationalStateException, IllegalArgumentException {
         if (ctx == null) throw new IllegalArgumentException("Context parameter is required!");
+        this.context = ctx;
         logger = LoggerFactory.getLogger(this.getClass());
+    }
+
+    /**
+     * Get current context.
+     * @return A context.
+     */
+    protected IContext context() {
+        return this.context;
     }
 
     /**

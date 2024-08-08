@@ -8,7 +8,8 @@ import org.cybnity.framework.domain.event.IEventType;
 public enum SampleDomainEventType implements IEventType  {
     SAMPLE_AGGREGATE_CREATED,
     SAMPLE_AGGREGATE_CHANGED,
-    SAMPLE_AGGREGATE_DELETED
+    SAMPLE_DATAVIEW_CREATED,
+    SAMPLE_DATAVIEW_REFRESHED
     ;
 
     private SampleDomainEventType() {

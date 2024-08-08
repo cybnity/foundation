@@ -5,8 +5,7 @@ import org.cybnity.framework.domain.ISubscribable;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Represent a publishing service from a domain model. Repository service for
@@ -18,14 +17,9 @@ import java.util.List;
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
 public class DomainEventPublisher implements ISubscribable {
 
-    @SuppressWarnings("rawtypes")
-    private static final ThreadLocal<List> subscribers = new ThreadLocal<List>();
+    private ConcurrentLinkedQueue<IDomainEventSubscriber> subscribers;
 
-    private static final ThreadLocal<Boolean> publishing = new ThreadLocal<Boolean>() {
-        protected Boolean initialValue() {
-            return Boolean.FALSE;
-        }
-    };
+    private static final ThreadLocal<Boolean> publishing = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
     /**
      * Get an instance of the domain event publisher.
@@ -48,16 +42,10 @@ public class DomainEventPublisher implements ISubscribable {
     @Override
     public <T> void subscribe(IDomainEventSubscriber<T> aSubscriber) {
         if (aSubscriber != null) {
-            if (publishing.get()) {
-                return;
+            if (subscribers == null) {
+                subscribers = new ConcurrentLinkedQueue<>();
             }
-            @SuppressWarnings("unchecked")
-            List<IDomainEventSubscriber<T>> registeredSubscribers = subscribers.get();
-            if (registeredSubscribers == null) {
-                registeredSubscribers = new ArrayList<IDomainEventSubscriber<T>>();
-                subscribers.set(registeredSubscribers);
-            }
-            registeredSubscribers.add(aSubscriber);
+            subscribers.add(aSubscriber);
         }
     }
 
@@ -69,38 +57,27 @@ public class DomainEventPublisher implements ISubscribable {
     @Override
     public <T> void remove(IDomainEventSubscriber<T> aSubscriber) {
         if (aSubscriber != null) {
-            if (publishing.get()) {
-                return;
-            }
-            @SuppressWarnings("unchecked")
-            List<IDomainEventSubscriber<T>> registeredSubscribers = subscribers.get();
-            if (registeredSubscribers != null) {
-                registeredSubscribers.remove(aSubscriber);
+            if (subscribers != null) {
+                subscribers.remove(aSubscriber);
             }
         }
     }
 
     /**
-     * Notify an event to all the subscribers registered as interested by a type of
+     * Notify an event to all the subscribers registered as interested on a type of
      * event.
      *
      * @param aDomainEvent Event to promote to interested subscribers.
      * @param <T>          Type of event.
      */
     public <T> void publish(final T aDomainEvent) {
-        if (publishing.get()) {
-            return;
-        }
         try {
             // Indicate a current start of publishing status
             publishing.set(Boolean.TRUE);
             // Identify the potential interested subscribers about the published event
-            @SuppressWarnings("unchecked")
-            List<IDomainEventSubscriber<T>> registeredSubscribers = subscribers.get();
-
-            if (registeredSubscribers != null) {
+            if (subscribers != null) {
                 Class<?> eventType = aDomainEvent.getClass();
-                for (IDomainEventSubscriber<T> subscriber : registeredSubscribers) {
+                for (IDomainEventSubscriber subscriber : subscribers) {
                     Class<?> subscribedTo = subscriber.subscribeToEventType();
                     // Check interest of the subscriber regarding the type of event published
                     if (/* Any event type interest */ subscribedTo == null || subscribedTo == eventType || subscribedTo == DomainEvent.class) {
@@ -109,7 +86,6 @@ public class DomainEventPublisher implements ISubscribable {
                     }
                 }
             }
-
         } finally {
             // Notify finalized publishing status
             publishing.set(Boolean.FALSE);
@@ -127,7 +103,7 @@ public class DomainEventPublisher implements ISubscribable {
     public DomainEventPublisher reset() {
         // Clean only when none publishing action is in progress
         if (!publishing.get()) {
-            subscribers.set(null);
+            subscribers.remove();
         }
         return this;
     }
