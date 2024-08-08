@@ -128,7 +128,7 @@ classDiagram
     }
     class SampleDomainGraphImpl {
         <<AbstractDomainGraphImpl>>
-        String GRAPH_NAME$
+        -GRAPH_NAME String$
     }
     class CreateSampleDataViewVersion {
         <<AbstractDataViewVersionTransactionImpl>>
