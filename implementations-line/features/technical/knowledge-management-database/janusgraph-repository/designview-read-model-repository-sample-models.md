@@ -150,7 +150,7 @@ classDiagram
         <<AbstractDataViewVersionTransactionImpl>>
     }
     class SampleDataViewMapper {
-        <<AbstractDTOMapper~SampleDataView~>>
+        <<AbstractDTOMapper>>
         +convertTo(Object source) SampleDataView
     }
 ```
