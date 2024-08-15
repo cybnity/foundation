@@ -129,8 +129,6 @@ classDiagram
     }
     class SampleDataViewStateTransactionImpl {
         <<AbstractGraphDataViewTransactionImpl>>
-        -supportedTransactions : Map~String, IProjectionTransaction~
-        -supportedQueries : Map~String, IProjectionRead~
         -initSupportedTransactions()
         -initSupportedQueries()
         +handleEvent(DomainEvent evt)
