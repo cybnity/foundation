@@ -103,7 +103,7 @@ classDiagram
     SampleDataViewStateTransactionImpl ..> UpgradeSampleDataViewVersion : supportedTransactions item
     SampleDataViewStateTransactionImpl ..> FindSampleDataViewVersionByEqualsLabel : supportedQueries item
     CreateSampleDataViewVersion --> SampleDomainGraphImpl : graph
-    CreateSampleDataViewVersion .. use ..> SampleDataViewMapper
+    CreateSampleDataViewVersion ..> SampleDataViewMapper : use
     UpgradeSampleDataViewVersion --> SampleDomainGraphImpl : graph
     FindSampleDataViewVersionByEqualsLabel --> SampleDomainGraphImpl : graph
     
