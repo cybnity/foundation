@@ -14,8 +14,6 @@ import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.infrastructure.impl.projections.read.FindSampleDataViewVersionByEqualsLabel;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.model.SampleDataView;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -30,16 +28,6 @@ public class SampleDataViewStateTransactionImpl extends AbstractGraphDataViewTra
     public static final String LABEL = SampleDataView.class.getSimpleName();
 
     /**
-     * Set of actionable transaction around the changes detected as source of interest justifying a transaction execution on the domain aggregate view.
-     */
-    private Map<String, IProjectionTransaction> supportedTransactions;
-
-    /**
-     * Set of actionable queries as source of interest for data-model read justifying an operation execution on the domain aggregate view.
-     */
-    private Map<String, IProjectionRead> supportedQueries;
-
-    /**
      * Default constructor regarding a graph read model projection.
      *
      * @param ownership Mandatory domain which is owner of the projection (as in its scope of responsibility).
@@ -49,47 +37,28 @@ public class SampleDataViewStateTransactionImpl extends AbstractGraphDataViewTra
      */
     public SampleDataViewStateTransactionImpl(IDomainModel ownership, AbstractDomainGraphImpl dataModel, ITransactionStateObserver observer) throws IllegalArgumentException {
         super(LABEL, ownership, dataModel, observer); // Define graph manipulable
-        initSupportedQueries();// Initialization of eligible delegated queries
-        initSupportedTransactions(); // Initialization of eligible delegated transactions
     }
 
-    /**
-     * Define the set of transactions allowing management of the data views perimeter changes (e.g states refresh).
-     * The defined transactions are responsible for state change of the data view.
-     */
-    private void initSupportedTransactions() {
+    @Override
+    protected void initSupportedTransactions() {
         // Define the transaction supporting the global view perimeter
-        supportedTransactions = new HashMap<>();
         IProjectionTransaction tx = new CreateSampleDataViewVersion(this, this.graphModel());
         for (IEventType type : tx.observerOf()) {
-            supportedTransactions.put(/* supported event type as condition of transaction execution */ type.name(), /* transaction to execute */ tx);
+            supportedTransactions().put(/* supported event type as condition of transaction execution */ type.name(), /* transaction to execute */ tx);
         }
         tx = new UpgradeSampleDataViewVersion(this, this.graphModel());
         for (IEventType type : tx.observerOf()) {
-            supportedTransactions.put(/* supported event type as condition of transaction execution */ type.name(), /* transaction to execute */ tx);
-        }
-    }
-
-    /**
-     * Define the set of queries allowing read of data-view states.
-     * The defined queries are responsible for state access of the data view.
-     */
-    private void initSupportedQueries() {
-        // Define the read operation supporting the global view perimeter
-        supportedQueries = new HashMap<>();
-        IProjectionRead op = new FindSampleDataViewVersionByEqualsLabel(this, this.graphModel());
-        for (IEventType type : op.observerOf()) {
-            supportedQueries.put(/* supported query type as condition of operation execution */ type.name(),/* operation to execute */op);
+            supportedTransactions().put(/* supported event type as condition of transaction execution */ type.name(), /* transaction to execute */ tx);
         }
     }
 
     @Override
-    public boolean isSupportedQuery(IEventType queryType) {
-        if (queryType != null) {
-            // Check all event types supported by the queries perimeter
-            return supportedQueries.containsKey(queryType.name());
+    protected void initSupportedQueries() {
+        // Define the read operation supporting the global view perimeter
+        IProjectionRead op = new FindSampleDataViewVersionByEqualsLabel(this, this.graphModel());
+        for (IEventType type : op.observerOf()) {
+            supportedQueries().put(/* supported query type as condition of operation execution */ type.name(),/* operation to execute */op);
         }
-        return false;
     }
 
     @Override
@@ -120,7 +89,7 @@ public class SampleDataViewStateTransactionImpl extends AbstractGraphDataViewTra
             Attribute at = EventSpecification.findSpecificationByName(Command.TYPE, command.specification());
             if (at != null) {
                 // Identify existing operation to execute about query type
-                op = supportedQueries.get(at.value());
+                op = supportedQueries().get(at.value());
                 if (op != null) {
                     // Execute the query operation that is interested in the monitored event
                     return op.when(command);
@@ -142,7 +111,7 @@ public class SampleDataViewStateTransactionImpl extends AbstractGraphDataViewTra
             Attribute at = EventSpecification.findSpecificationByName(ConcreteDomainChangeEvent.TYPE, evt.specification());
             if (at != null) {
                 // Identify existing transaction to execute about event type
-                tx = supportedTransactions.get(at.value());
+                tx = supportedTransactions().get(at.value());
                 if (tx != null) {
                     // Execute the transaction that is interested in the monitored event
                     tx.when(evt);

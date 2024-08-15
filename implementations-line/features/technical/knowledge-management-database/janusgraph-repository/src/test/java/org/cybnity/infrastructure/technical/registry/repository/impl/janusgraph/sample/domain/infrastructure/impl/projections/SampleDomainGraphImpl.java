@@ -7,14 +7,14 @@ import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.
 import org.janusgraph.core.schema.JanusGraphManagement;
 
 /**
- * Example of graph covering the Access Control domain and scope of Vertex types managed in this area (e.g Tenants, in relation with other subdomains).
+ * Example of graph covering the Sample domain and scope of Vertex types managed in this area (e.g objects in relation with other subdomains).
  */
 public class SampleDomainGraphImpl extends AbstractDomainGraphImpl {
 
     /**
      * Example of graph label.
      */
-    private static final String GRAPH_NAME = "Security subdomain";
+    private static final String GRAPH_NAME = "Sample subdomain";
 
     /**
      * Default constructor.
@@ -33,29 +33,29 @@ public class SampleDomainGraphImpl extends AbstractDomainGraphImpl {
 
     @Override
     protected void createProperties(JanusGraphManagement management) throws IllegalArgumentException {
-        if (management == null) throw new IllegalArgumentException("management parameter is require!");
+        if (management == null) throw new IllegalArgumentException("management parameter is required!");
     }
 
     @Override
     protected void createVertexLabels(JanusGraphManagement management) throws IllegalArgumentException {
-        if (management == null) throw new IllegalArgumentException("management parameter is require!");
+        if (management == null) throw new IllegalArgumentException("management parameter is required!");
         // Define specification of each data-view (e.g vertex) manipulable into this graph (e.g relative to domain perimeter)
         management.makeVertexLabel(SampleDataView.class.getSimpleName()).make(); // Domain object data-view (type of vertex)
     }
 
     @Override
     protected void createEdgeLabels(JanusGraphManagement management) throws IllegalArgumentException {
-        if (management == null) throw new IllegalArgumentException("management parameter is require!");
+        if (management == null) throw new IllegalArgumentException("management parameter is required!");
     }
 
     @Override
     protected void createCompositeIndexes(JanusGraphManagement management) throws IllegalArgumentException {
-        if (management == null) throw new IllegalArgumentException("management parameter is require!");
+        if (management == null) throw new IllegalArgumentException("management parameter is required!");
     }
 
     @Override
     protected void createMixedIndexes(JanusGraphManagement management) throws IllegalArgumentException {
-        if (management == null) throw new IllegalArgumentException("management parameter is require!");
+        if (management == null) throw new IllegalArgumentException("management parameter is required!");
     }
 
     @Override

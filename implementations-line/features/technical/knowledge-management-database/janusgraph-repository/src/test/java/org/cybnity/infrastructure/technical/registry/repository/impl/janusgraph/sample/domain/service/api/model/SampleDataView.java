@@ -47,7 +47,7 @@ public class SampleDataView extends DataTransferObject {
          */
         COMMIT_VERSION,
         /**
-         * Data of last refresh regarding the sample domain object.
+         * Date of last refresh regarding the sample domain object.
          */
         LAST_UPDATED_AT;
     }

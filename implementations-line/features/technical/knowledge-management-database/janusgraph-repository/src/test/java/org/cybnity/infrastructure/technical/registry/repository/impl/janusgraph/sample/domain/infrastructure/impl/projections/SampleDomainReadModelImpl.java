@@ -18,7 +18,7 @@ public class SampleDomainReadModelImpl extends AbstractReadModelProjectionsSet {
      * @param ctx                     Mandatory context.
      * @param rootGraph               Mandatory origin graph that is manipulated by this read-model projections.
      * @param readModelOwnership      Mandatory owner of the perimeter of this read-model in terms of data-view responsibility scope.
-     * @param readModelChangeObserver Optional observer of changes occurred onto the real-model projection (e.g at end of data view transaction) execution).
+     * @param readModelChangeObserver Optional observer of changes occurred onto the real-model projection (e.g at end of data view transaction execution).
      * @throws UnoperationalStateException When problem during context usage.
      * @throws IllegalArgumentException    When any mandatory parameter is missing.
      */
