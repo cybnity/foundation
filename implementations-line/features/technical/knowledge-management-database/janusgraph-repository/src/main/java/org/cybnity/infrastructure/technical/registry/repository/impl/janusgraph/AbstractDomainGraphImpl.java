@@ -13,7 +13,8 @@ import org.janusgraph.core.schema.JanusGraphManagement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -101,14 +102,13 @@ public abstract class AbstractDomainGraphImpl {
      *
      * @return Graph traversal source instance.
      * @throws ConfigurationException When problem is occurred regarding the graph configuration elements to use for instance creation.
-     * @throws IOException            When error of graph file elements access.
      */
-    public GraphTraversalSource open() throws ConfigurationException, IOException {
+    public GraphTraversalSource open() throws ConfigurationException {
         if (graph != null) return graph.traversal(); // Return already opened graph instance
 
         logger().info("Opening graph (" + graphName() + ")");
         // Read the storage backend configuration settings
-        Map<ReadModelConfigurationVariable, String> storageBackendConfigVariables = storageBackendConfiguration();
+        Map<ReadModelConfigurationVariable, String> storageBackendConfigVariables = graphConfiguration();
         JanusGraphFactory.Builder factory = JanusGraphFactory.build();
         try {
             // Add configuration settings
@@ -282,10 +282,28 @@ public abstract class AbstractDomainGraphImpl {
     /**
      * Get the map configuration of JanusGraph settings values.
      * For example, the map can be generated from current static context, properties file, or operating system's current environment variables dynamically read.
+     * This default implementation is reading org.cybnity.infrastructure.technical.registry.adapter.impl.janusgraph.ReadModelConfigurationVariable variables from current environment's variables to build and return the found values.
+     * This default implementation can be redefined by subclass which could require the collect of graph configuration values from another type fo resource provider (e.g configuration server, external files...).
      *
-     * @return A map of configuration values relative to the storage backend of this graph.
+     * @return A map of configuration values relative to this graph, or empty set when none configuration value have been found as defined via environment's variables.
      */
-    abstract protected Map<ReadModelConfigurationVariable, String> storageBackendConfiguration();
+    protected Map<ReadModelConfigurationVariable, String> graphConfiguration() {
+        Map<ReadModelConfigurationVariable, String> config = new HashMap<>();
+
+        // --- READ FROM CONTEXT EACH DEFINED SETTING AS CONFIGURATION FOR GRAPH MANAGEMENT/USING ---
+        EnumSet<ReadModelConfigurationVariable> graphConfigurationProperties = EnumSet.allOf(ReadModelConfigurationVariable.class);
+        IContext ctx = this.context();
+
+        for (ReadModelConfigurationVariable prop : graphConfigurationProperties) {
+            // Search in context if a graph configuration value is defined in environment as usable setting
+            String propValue = ctx.get(prop); // Not null when defined by environment
+            if (propValue != null && !propValue.isEmpty()) {
+                // Add found configuration value into storage backend configuration to return
+                config.put(prop, propValue);
+            }
+        }
+        return config;
+    }
 
     /**
      * Find geographical coordinates version

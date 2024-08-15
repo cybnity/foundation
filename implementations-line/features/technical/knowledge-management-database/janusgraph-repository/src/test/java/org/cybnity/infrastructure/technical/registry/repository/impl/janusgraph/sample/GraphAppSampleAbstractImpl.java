@@ -80,7 +80,7 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
     }
 
     @Override
-    protected Map<ReadModelConfigurationVariable, String> storageBackendConfiguration() {
+    protected Map<ReadModelConfigurationVariable, String> graphConfiguration() {
         Map<ReadModelConfigurationVariable, String> config = new HashMap<>();
         // Add only mandatory backend type (normally based on simulated environment variable equals to "inmemory" because defined without test container start)
         config.put(ReadModelConfigurationVariable.JANUSGRAPH_STORAGE_BACKEND, ContextualizedJanusGraphActiveTestContainer.STORAGE_BACKEND_TYPE);

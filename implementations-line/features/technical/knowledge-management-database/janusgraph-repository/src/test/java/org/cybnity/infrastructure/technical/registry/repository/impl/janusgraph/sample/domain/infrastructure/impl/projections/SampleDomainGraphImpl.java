@@ -2,14 +2,9 @@ package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph
 
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
-import org.cybnity.infrastructure.technical.registry.adapter.impl.janusgraph.ReadModelConfigurationVariable;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.AbstractDomainGraphImpl;
-import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.ContextualizedJanusGraphActiveTestContainer;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.model.SampleDataView;
 import org.janusgraph.core.schema.JanusGraphManagement;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Example of graph covering the Access Control domain and scope of Vertex types managed in this area (e.g Tenants, in relation with other subdomains).
@@ -68,11 +63,4 @@ public class SampleDomainGraphImpl extends AbstractDomainGraphImpl {
         return GRAPH_NAME;
     }
 
-    @Override
-    protected Map<ReadModelConfigurationVariable, String> storageBackendConfiguration() {
-        Map<ReadModelConfigurationVariable, String> config = new HashMap<>();
-        // Add only mandatory backend type (normally based on simulated environment variable equals to "inmemory" because defined by the test container)
-        config.put(ReadModelConfigurationVariable.JANUSGRAPH_STORAGE_BACKEND, ContextualizedJanusGraphActiveTestContainer.STORAGE_BACKEND_TYPE);
-        return config;
-    }
 }
