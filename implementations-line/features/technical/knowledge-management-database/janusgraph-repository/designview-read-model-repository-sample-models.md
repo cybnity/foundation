@@ -25,13 +25,6 @@ Presentation of the design view of the `org.cybnity.infrastructure.technical.reg
 
 The dissemination of implementation classes is respecting a standard distribution defined by CYBNITY domain framework guideline relative to organization of source codes.
 
-### Adapter.api.event sub-package
-
-| Class Type                 | Motivation                                                  |
-|:---------------------------|:------------------------------------------------------------|
-| SampleDomainEventType      | Example of event type supported by the SampleDomain         |
-| SampleDomainQueryEventType | Example of query command type supported by the SampleDomain |
-
 ### Infrastructure.impl sub-package
 
 | Class Type                         | Motivation                                                                                                                                                                                                      |
@@ -72,6 +65,13 @@ The dissemination of implementation classes is respecting a standard distributio
 | Class Type     | Motivation                                                                          |
 |:---------------|:------------------------------------------------------------------------------------|
 | SampleDataView | Example of data view representing a transaction managed by a read model of a domain |
+
+### Service.api.event sub-package
+
+| Class Type                 | Motivation                                                  |
+|:---------------------------|:------------------------------------------------------------|
+| SampleDomainEventType      | Example of event type supported by the SampleDomain         |
+| SampleDomainQueryEventType | Example of query command type supported by the SampleDomain |
 
 ```mermaid
 %%{
