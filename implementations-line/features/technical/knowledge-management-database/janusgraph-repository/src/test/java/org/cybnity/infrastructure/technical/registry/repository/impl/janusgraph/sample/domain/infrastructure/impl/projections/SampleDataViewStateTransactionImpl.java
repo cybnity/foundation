@@ -5,6 +5,7 @@ import org.cybnity.framework.domain.*;
 import org.cybnity.framework.domain.event.ConcreteDomainChangeEvent;
 import org.cybnity.framework.domain.event.EventSpecification;
 import org.cybnity.framework.domain.event.IEventType;
+import org.cybnity.framework.domain.infrastructure.IDomainRepository;
 import org.cybnity.framework.domain.model.IDomainModel;
 import org.cybnity.framework.domain.model.ITransactionStateObserver;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.AbstractDomainGraphImpl;
@@ -86,7 +87,13 @@ public class SampleDataViewStateTransactionImpl extends AbstractGraphDataViewTra
             // Normally interpretation of event can be based on its specific domain type (e.g concrete domain event type), or based on specific specification attribute read from event, to detect the source of interest
             // Here, for example, this implementation check the type of attribute relative to the type of origin domain object concerned by the domain command
             IProjectionRead op;
-            Attribute at = EventSpecification.findSpecificationByName(Command.TYPE, command.specification());
+            ITransactionStateObserver observer = getObserver();
+            String queryNameBasedOn = Command.TYPE; // default query name of attribute
+            if (observer!=null && IDomainRepository.class.isAssignableFrom(observer.getClass())) {
+                queryNameBasedOn = ((IDomainRepository<?>)observer).queryNameBasedOn();
+            }
+
+            Attribute at = EventSpecification.findSpecificationByName(queryNameBasedOn, command.specification());
             if (at != null) {
                 // Identify existing operation to execute about query type
                 op = supportedQueries().get(at.value());

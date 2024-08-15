@@ -155,14 +155,6 @@ public abstract class AbstractReadModelRepository extends Repository implements 
     }
 
     /**
-     * Get the name of the search criteria that can be evaluated to identify a query.
-     * This information (e.g Command.TYPE) is generally added into each query parameters set that allow repository to identify query event types from domain's referential of queries supported.
-     *
-     * @return A query name based on query type (projection that support the query parameters and specific data path/structure).
-     */
-    protected abstract String queryNameBaseOn();
-
-    /**
      * Build a set of attributes usable ad query command's parameter (e.g usable during a query execution).
      * @param searchCriteria Search criteria (e.g provided by a Command event received to execute a query on a repository) to read and to translate into attributes collection.
      * @return Build attributes collection including all defined search criteria (named, and valued). Empty collection when searchCriteria parameter is not defined or is empty.

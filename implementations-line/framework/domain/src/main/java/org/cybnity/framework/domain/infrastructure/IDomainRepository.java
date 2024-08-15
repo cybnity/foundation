@@ -29,7 +29,7 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
     /**
      * Stop allocated resources specific to this repository (e.g database access...).
      */
-    void freeResources();
+    public void freeResources();
 
     /**
      * Get a next technical identity manageable by this repository.
@@ -38,7 +38,7 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      *            id) usable for persistence management.
      * @return A technical identifier.
      */
-    T nextIdentity(ISessionContext ctx);
+    public T nextIdentity(ISessionContext ctx);
 
     /**
      * Find a historical fact identified.
@@ -48,7 +48,7 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      *                tenant id) usable for persistence management.
      * @return Found fact or null.
      */
-    T factOfId(Identifier aFactId, ISessionContext ctx);
+    public T factOfId(Identifier aFactId, ISessionContext ctx);
 
     /**
      * Delete a fact from this repository.
@@ -59,7 +59,7 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      * @return True if previous existent item was found and was removed from this
      * repository. False if none previous fact found and removed.
      */
-    boolean remove(T fact, ISessionContext ctx);
+    public boolean remove(T fact, ISessionContext ctx);
 
     /**
      * Delete a collection of facts from this repository.
@@ -68,7 +68,7 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      * @param ctx              Optional context of persistence providing elements
      *                         (e.g tenant id) usable for persistence management.
      */
-    void removeAll(Collection<T> aFactsCollection, ISessionContext ctx);
+    public void removeAll(Collection<T> aFactsCollection, ISessionContext ctx);
 
     /**
      * Save an instance of fact into this repository.
@@ -80,7 +80,7 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      * auto-generated if new one created for the saved instance). Null if no
      * saved fact.
      */
-    T save(T aFact, ISessionContext ctx);
+    public T save(T aFact, ISessionContext ctx);
 
     /**
      * Save a collection of facts into this repository.
@@ -89,7 +89,7 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      * @param ctx             Optional context of persistence providing elements
      *                        (e.g tenant id) usable for persistence management.
      */
-    void saveAll(Collection<T> aFactCollection, ISessionContext ctx);
+    public void saveAll(Collection<T> aFactCollection, ISessionContext ctx);
 
     /**
      * Find facts from specific parameters.
@@ -101,5 +101,13 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      * @throws UnsupportedOperationException When impossible execution of requested query.
      * @throws UnoperationalStateException When query execution technical problem occurred.
      */
-    List<T> queryWhere(Map<String, String> queryParameters, ISessionContext ctx) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException;
+    public List<T> queryWhere(Map<String, String> queryParameters, ISessionContext ctx) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException;
+
+    /**
+     * Get the name of the search criteria that can be evaluated to identify a query.
+     * This information (e.g Command.TYPE) is generally added into each query parameters set that allow repository to identify query event types from domain's referential of queries supported.
+     *
+     * @return A query name based on query type (projection that support the query parameters and specific data path/structure).
+     */
+    public String queryNameBasedOn();
 }

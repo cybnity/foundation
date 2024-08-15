@@ -423,6 +423,7 @@ classDiagram
         +removeAll(Collection~T~ aFactCollection, ISessionContext ctx)
         +save(T aFact, ISessionContext ctx) T
         +saveAll(Collection~T~ aFactCollection, ISessionContext ctx)
+        +queryNameBasedOn() String
     }
     class IDomainStore~T~ {
         <<interface>>

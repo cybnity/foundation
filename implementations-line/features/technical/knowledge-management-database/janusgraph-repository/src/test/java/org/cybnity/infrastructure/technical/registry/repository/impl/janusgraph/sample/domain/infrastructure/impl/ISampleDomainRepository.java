@@ -7,4 +7,5 @@ import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.
  * Example of repository read-model perimeter providing business methods.
  */
 public interface ISampleDomainRepository extends IDomainRepository<SampleDataView> {
+
 }

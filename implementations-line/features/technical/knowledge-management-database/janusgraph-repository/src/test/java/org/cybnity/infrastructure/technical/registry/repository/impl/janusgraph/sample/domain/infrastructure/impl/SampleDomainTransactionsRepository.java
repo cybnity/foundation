@@ -9,10 +9,10 @@ import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.domain.model.IDomainModel;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.AbstractReadModelRepository;
-import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.event.SampleDomainQueryEventType;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.infrastructure.impl.projections.SampleDomainGraphImpl;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.infrastructure.impl.projections.SampleDomainReadModelImpl;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.SampleDomain;
+import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.event.SampleDomainQueryEventType;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.model.SampleDataView;
 
 import java.util.*;
@@ -93,7 +93,7 @@ public class SampleDomainTransactionsRepository extends AbstractReadModelReposit
     }
 
     @Override
-    protected String queryNameBaseOn() {
+    public String queryNameBasedOn() {
         return Command.TYPE;
     }
 
@@ -101,7 +101,7 @@ public class SampleDomainTransactionsRepository extends AbstractReadModelReposit
     public List<SampleDataView> queryWhere(Map<String, String> searchCriteria, ISessionContext ctx) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException {
         if (searchCriteria != null) {
             // Identify the query name based on query type (projection that support the query parameters and specific data path/structure)
-            String queryName = searchCriteria.get(queryNameBaseOn());
+            String queryName = searchCriteria.get(queryNameBasedOn());
             if (queryName != null && !queryName.isEmpty()) {
                 // Identify query event type from domain's referential of queries supported
                 IEventType queryType = Enum.valueOf(/* Referential catalog of query types supported by the repository domain */ SampleDomainQueryEventType.class, queryName);
