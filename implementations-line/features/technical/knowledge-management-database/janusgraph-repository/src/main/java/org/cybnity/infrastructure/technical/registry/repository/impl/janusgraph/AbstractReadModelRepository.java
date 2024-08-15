@@ -1,5 +1,6 @@
 package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph;
 
+import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IReadModelProjection;
 import org.cybnity.framework.domain.event.IEventType;
@@ -8,12 +9,15 @@ import org.cybnity.framework.domain.model.IDomainEventSubscriber;
 import org.cybnity.framework.domain.model.ITransactionStateObserver;
 import org.cybnity.framework.domain.model.Repository;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
  * Read-Model repository of data view managed regarding a scope.
  */
-public class AbstractReadModelRepository extends Repository implements IDomainEventSubscriber<DomainEvent>, ITransactionStateObserver {
+public abstract class AbstractReadModelRepository extends Repository implements IDomainEventSubscriber<DomainEvent>, ITransactionStateObserver {
 
     /**
      * Perimeter of projections that are under responsibility and status management by this repository.
@@ -148,5 +152,38 @@ public class AbstractReadModelRepository extends Repository implements IDomainEv
         if (notification != null)
             // Dispatch the notification about the repository read-model changes (e.g data view refreshed) to any existing observers of the perimeter
             subscribersManager().publish(notification);
+    }
+
+    /**
+     * Get the name of the search criteria that can be evaluated to identify a query.
+     * This information (e.g Command.TYPE) is generally added into each query parameters set that allow repository to identify query event types from domain's referential of queries supported.
+     *
+     * @return A query name based on query type (projection that support the query parameters and specific data path/structure).
+     */
+    protected abstract String queryNameBaseOn();
+
+    /**
+     * Build a set of attributes usable ad query command's parameter (e.g usable during a query execution).
+     * @param searchCriteria Search criteria (e.g provided by a Command event received to execute a query on a repository) to read and to translate into attributes collection.
+     * @return Build attributes collection including all defined search criteria (named, and valued). Empty collection when searchCriteria parameter is not defined or is empty.
+     */
+    protected Collection<Attribute> prepareQueryParameters(Map<String, String> searchCriteria) {
+        // Prepare query command attributes set based on search criteria submitted
+        Collection<Attribute> queryParameters = new HashSet<>();
+        if (searchCriteria != null) {
+            for (Map.Entry<String, String> param : searchCriteria.entrySet()) {
+                // attribute name equals to search criteria label
+                String paramName = param.getKey();
+                // attribute value equals to search criteria value
+                String paramValue = param.getValue();
+                if (paramName != null && !paramName.isEmpty()) {
+                    if (paramValue != null && !paramValue.isEmpty()) {
+                        // Submit only search criteria with name AND value defined
+                        queryParameters.add(new Attribute(paramName, paramValue));// Add valid query parameter submitted
+                    }
+                }
+            }
+        }
+        return queryParameters;
     }
 }

@@ -93,10 +93,15 @@ public class SampleDomainTransactionsRepository extends AbstractReadModelReposit
     }
 
     @Override
+    protected String queryNameBaseOn() {
+        return Command.TYPE;
+    }
+
+    @Override
     public List<SampleDataView> queryWhere(Map<String, String> searchCriteria, ISessionContext ctx) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException {
         if (searchCriteria != null) {
             // Identify the query name based on query type (projection that support the query parameters and specific data path/structure)
-            String queryName = searchCriteria.get(Command.TYPE);
+            String queryName = searchCriteria.get(queryNameBaseOn());
             if (queryName != null && !queryName.isEmpty()) {
                 // Identify query event type from domain's referential of queries supported
                 IEventType queryType = Enum.valueOf(/* Referential catalog of query types supported by the repository domain */ SampleDomainQueryEventType.class, queryName);
@@ -104,23 +109,11 @@ public class SampleDomainTransactionsRepository extends AbstractReadModelReposit
                 // Search a projection that is declared supporting the requested query type
                 IReadModelProjection managedProjection = this.findBySupportedQuery(queryType);
                 if (managedProjection != null) {
-                    // Prepare query command attributes set based on search criteria submitted
-                    Collection<Attribute> queryParameters = new HashSet<>();
-                    for (Map.Entry<String, String> param : searchCriteria.entrySet()) {
-                        // attribute name equals to search criteria label
-                        String paramName = param.getKey();
-                        // attribute value equals to search criteria value
-                        String paramValue = param.getValue();
-                        if (paramName != null && !paramName.isEmpty()) {
-                            if (paramValue != null && !paramValue.isEmpty()) {
-                                // Submit only search criteria with name AND value defined
-                                queryParameters.add(new Attribute(paramName, paramValue));// Add valid query parameter submitted
-                            }
-                        }
-                    }
-
                     // Prepare instance of query command event to submit on found projection
-                    Command queryToPerform = QueryFactory.create(/* Name of query type */ queryName, /* query command UUID */ new DomainEntity(IdentifierStringBased.generate(null)), queryParameters,/* None prior command managed during this explicit query call */ null);
+                    final Command queryToPerform = QueryFactory.create(/* Name of query type */ queryName, /* query command UUID */
+                            new DomainEntity(IdentifierStringBased.generate(null)),
+                            /* Prepare query command attributes set based on search criteria submitted */ this.prepareQueryParameters(searchCriteria),
+                            /* None prior command managed during this explicit query call */ null);
 
                     // Execute the query via delegation to the found projection (owner of data structure and supported parameter types)
                     // See https://www.callicoder.com/java-8-completablefuture-tutorial/ for help and possible implementation approaches for sync/async execution of query
@@ -139,7 +132,7 @@ public class SampleDomainTransactionsRepository extends AbstractReadModelReposit
                         Optional<DataTransferObject> dto = executionResulting.get();
                         if (dto.isPresent()) {
                             // Build domain data view results to return
-                            List<SampleDataView> results = null;
+                            List<SampleDataView> results;
                             DataTransferObject resultProvider = dto.get();
                             if (SampleDataView.class.isAssignableFrom(resultProvider.getClass())) {
                                 // Valid type of collected data view object managed by this repository
@@ -154,7 +147,7 @@ public class SampleDomainTransactionsRepository extends AbstractReadModelReposit
                         }
                         return null; // Confirm that none results are provided from the executed query
                     } catch (Exception e) {
-                        throw new UnsupportedOperationException(e);
+                        throw new UnoperationalStateException(e);
                     }
                 } else {
                     // else unknown query name or not supported by the read-model under responsibility of this repository,

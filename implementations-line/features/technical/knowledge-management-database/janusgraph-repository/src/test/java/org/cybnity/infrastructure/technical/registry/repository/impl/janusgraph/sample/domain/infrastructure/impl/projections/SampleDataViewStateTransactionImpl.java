@@ -82,7 +82,7 @@ public class SampleDataViewStateTransactionImpl extends AbstractGraphDataViewTra
     public IQueryResponse when(Command command) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException {
         if (command == null) throw new IllegalArgumentException("Command parameter is required!");
         try {
-            // Identify the type of event which should be source of interest (or not) regarding this projection managed perimeter
+            // Identify the type of event which should be source of interest (or not) regarding this projections managed perimeter
             // Normally interpretation of event can be based on its specific domain type (e.g concrete domain event type), or based on specific specification attribute read from event, to detect the source of interest
             // Here, for example, this implementation check the type of attribute relative to the type of origin domain object concerned by the domain command
             IProjectionRead op;
@@ -104,7 +104,7 @@ public class SampleDataViewStateTransactionImpl extends AbstractGraphDataViewTra
     @Override
     public void handleEvent(DomainEvent evt) {
         if (evt != null) {
-            // Identify the type of event which should be source of interest (or not) regarding this projection managed perimeter
+            // Identify the type of event which should be source of interest (or not) regarding this projections managed perimeter
             // Normally interpretation of event can be based on its specific domain type (e.g concrete domain event type), or based on specific specification attribute read from event, to detect the source of interest
             // Here, for example, this implementation check the type of attribute relative to the type of origin domain object concerned by the domain event
             IProjectionTransaction tx;
