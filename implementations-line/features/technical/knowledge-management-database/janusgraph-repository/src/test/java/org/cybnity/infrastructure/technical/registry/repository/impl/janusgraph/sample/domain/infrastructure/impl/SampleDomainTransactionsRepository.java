@@ -107,7 +107,7 @@ public class SampleDomainTransactionsRepository extends AbstractReadModelReposit
                 IEventType queryType = Enum.valueOf(/* Referential catalog of query types supported by the repository domain */ SampleDomainQueryEventType.class, queryName);
 
                 // Search a projection that is declared supporting the requested query type
-                IReadModelProjection managedProjection = this.findBySupportedQuery(queryType);
+                final IReadModelProjection managedProjection = this.findBySupportedQuery(queryType);
                 if (managedProjection != null) {
                     // Prepare instance of query command event to submit on found projection
                     final Command queryToPerform = QueryFactory.create(/* Name of query type */ queryName, /* query command UUID */
