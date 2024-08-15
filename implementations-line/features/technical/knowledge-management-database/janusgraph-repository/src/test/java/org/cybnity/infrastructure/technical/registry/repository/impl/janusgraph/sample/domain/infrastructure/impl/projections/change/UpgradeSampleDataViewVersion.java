@@ -13,7 +13,7 @@ import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.AbstractDomainGraphImpl;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.projection.AbstractGraphDataViewTransactionImpl;
-import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.event.SampleDomainEventType;
+import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.adapter.api.event.SampleDomainEventType;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.model.SampleDataView;
 
 import java.sql.Date;

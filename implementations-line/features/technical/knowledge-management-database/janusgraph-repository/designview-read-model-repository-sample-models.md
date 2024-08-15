@@ -25,7 +25,7 @@ Presentation of the design view of the `org.cybnity.infrastructure.technical.reg
 
 The dissemination of implementation classes is respecting a standard distribution defined by CYBNITY domain framework guideline relative to organization of source codes.
 
-### Event sub-package
+### Adapter.api.event sub-package
 
 | Class Type                 | Motivation                                                  |
 |:---------------------------|:------------------------------------------------------------|

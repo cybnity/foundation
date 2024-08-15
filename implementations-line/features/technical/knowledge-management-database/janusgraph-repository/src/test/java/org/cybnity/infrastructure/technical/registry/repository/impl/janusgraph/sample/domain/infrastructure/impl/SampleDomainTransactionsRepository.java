@@ -9,7 +9,7 @@ import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.domain.model.IDomainModel;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.AbstractReadModelRepository;
-import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.event.SampleDomainQueryEventType;
+import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.adapter.api.event.SampleDomainQueryEventType;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.infrastructure.impl.projections.SampleDomainGraphImpl;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.infrastructure.impl.projections.SampleDomainReadModelImpl;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.SampleDomain;

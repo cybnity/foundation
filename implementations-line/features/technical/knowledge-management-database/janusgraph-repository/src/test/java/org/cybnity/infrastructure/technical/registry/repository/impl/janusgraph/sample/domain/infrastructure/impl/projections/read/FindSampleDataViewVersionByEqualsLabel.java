@@ -9,7 +9,7 @@ import org.cybnity.framework.domain.event.EventSpecification;
 import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.AbstractDomainGraphImpl;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.projection.AbstractGraphDataViewTransactionImpl;
-import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.event.SampleDomainQueryEventType;
+import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.adapter.api.event.SampleDomainQueryEventType;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.model.SampleDataView;
 
 import java.util.*;
@@ -45,7 +45,7 @@ public class FindSampleDataViewVersionByEqualsLabel extends AbstractDataViewVers
      */
     @Override
     public Set<IEventType> observerOf() {
-        return Set.of(SampleDomainQueryEventType.SAMPLE_AGGREGATE_FIND_BY_LABEL);
+        return Set.of(SampleDomainQueryEventType.SAMPLE_DATAVIEW_FIND_BY_LABEL);
     }
 
     @Override

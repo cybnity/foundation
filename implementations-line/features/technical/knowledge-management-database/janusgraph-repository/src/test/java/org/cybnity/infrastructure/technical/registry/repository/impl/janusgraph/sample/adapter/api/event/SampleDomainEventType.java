@@ -1,4 +1,4 @@
-package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.event;
+package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.adapter.api.event;
 
 import org.cybnity.framework.domain.event.IEventType;
 

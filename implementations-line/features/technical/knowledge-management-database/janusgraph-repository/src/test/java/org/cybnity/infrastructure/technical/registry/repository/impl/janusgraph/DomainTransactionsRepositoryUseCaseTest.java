@@ -20,8 +20,8 @@ import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.domain.model.IDomainEventSubscriber;
 import org.cybnity.framework.immutable.Identifier;
-import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.event.SampleDomainEventType;
-import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.event.SampleDomainQueryEventType;
+import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.adapter.api.event.SampleDomainEventType;
+import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.adapter.api.event.SampleDomainQueryEventType;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.infrastructure.impl.SampleDomainTransactionsRepository;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.model.SampleDataView;
 import org.junit.jupiter.api.*;
@@ -95,7 +95,7 @@ public class DomainTransactionsRepositoryUseCaseTest extends ContextualizedJanus
 
         if (committed.get()) {
             // Execute query based on label filtering
-            Map<String, String> queryParameters = prepareQueryBasedOnLabel(aggregateLabel, SampleDataView.class.getSimpleName(), SampleDomainQueryEventType.SAMPLE_AGGREGATE_FIND_BY_LABEL);
+            Map<String, String> queryParameters = prepareQueryBasedOnLabel(aggregateLabel, SampleDataView.class.getSimpleName(), SampleDomainQueryEventType.SAMPLE_DATAVIEW_FIND_BY_LABEL);
             List<SampleDataView> results = repo.queryWhere(queryParameters, sessionCtx);
 
             // Verify if a first version of the data view (projection view relative to the aggregate) have been created into the graph model
@@ -124,7 +124,7 @@ public class DomainTransactionsRepositoryUseCaseTest extends ContextualizedJanus
         repo.handleEvent(createChangeEvent(/* type of origin object change */ SampleDomainEventType.SAMPLE_AGGREGATE_CHANGED, changeSourcePredecessorReferenceId, originAggregateId, modifiedAt, changeSpecification));
 
         // Execute query based on label filtering to find new updated data-view
-        Map<String, String> queryParameters = prepareQueryBasedOnLabel(aggregateLabel, SampleDataView.class.getSimpleName(), SampleDomainQueryEventType.SAMPLE_AGGREGATE_FIND_BY_LABEL);
+        Map<String, String> queryParameters = prepareQueryBasedOnLabel(aggregateLabel, SampleDataView.class.getSimpleName(), SampleDomainQueryEventType.SAMPLE_DATAVIEW_FIND_BY_LABEL);
         List<SampleDataView> results = repo.queryWhere(queryParameters, sessionCtx);
 
         // Verify if a only one version of the data view type (projection view relative to the aggregate) have been retrieved from the graph model
