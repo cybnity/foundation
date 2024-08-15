@@ -211,11 +211,11 @@ classDiagram
     class IViewModelGenerator {
         <<interface>>
     }
-    class IDataTransferObjectMapping~T extends DataTransferObject~ {
+    class IDataTransferObjectMapping {
         <<interface>>
         +convertTo(Object source) T
     }
-    class AbstractDTOMapper~T extends DataTransferObject~ {
+    class AbstractDTOMapper {
         <<abstract>>
     }
 
