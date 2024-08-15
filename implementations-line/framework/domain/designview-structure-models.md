@@ -180,8 +180,8 @@ classDiagram
     ICommandHandler <|.. ProcessManager
     Identifier <|.. IdentifierStringBased
     IDataTransferObjectMapping <|.. AbstractDTOMapper
-    IDataTransferObjectMapping ..> DataTransferObject mappingTo
-    AbstractDTOMapper ..> DataTransferObject realizeConversionTo
+    IDataTransferObjectMapping ..> DataTransferObject : mappingTo
+    AbstractDTOMapper ..> DataTransferObject : realizeConversionTo
     
     class ICommandHandler {
         <<interface>>
