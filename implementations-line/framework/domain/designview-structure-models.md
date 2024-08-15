@@ -179,7 +179,8 @@ classDiagram
 classDiagram
     ICommandHandler <|.. ProcessManager
     Identifier <|.. IdentifierStringBased
-
+    IDataTransferObjectMapping <|.. AbstractDTOMapper
+    
     class ICommandHandler {
         <<interface>>
         +handle(Command command, IContext ctx)
@@ -209,6 +210,13 @@ classDiagram
     }
     class IViewModelGenerator {
         <<interface>>
+    }
+    class IDataTransferObjectMapping~T extends DataTransferObject~ {
+        <<interface>>
+        +convertTo(Object source) T
+    }
+    class AbstractDTOMapper~T extends DataTransferObject~ {
+        <<abstract>>
     }
 
 ```
