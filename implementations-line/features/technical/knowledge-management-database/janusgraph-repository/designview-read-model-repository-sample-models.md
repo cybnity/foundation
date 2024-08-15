@@ -52,6 +52,7 @@ The dissemination of implementation classes is respecting a standard distributio
 | Class Type                   | Motivation                                                                                                                                                                                                                                  |
 |:-----------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | CreateSampleDataViewVersion  | Example of utility class implementing the Query Language supported by the graph model (e.g Gremlin with TinkerPop) for execution of a change directive.<br>Implementation about DomainEventType.SAMPLE_AGGREGATE_CREATED domain event type  |
+| SampleDataViewMapper         | Example of DTO mapping implementation class ensuring the preparation of a data view version                                                                                                                                                 |
 | UpgradeSampleDataViewVersion | Example of utility class implementing the Query Language supported by the graph model (e.g Gremlin with TinkerPop) for execution of a change directive.<br>>Implementation about DomainEventType.SAMPLE_AGGREGATE_CHANGED domain event type |
 
 ### Infrastructure.impl.projections.read sub-package
@@ -102,6 +103,7 @@ classDiagram
     SampleDataViewStateTransactionImpl ..> UpgradeSampleDataViewVersion : supportedTransactions item
     SampleDataViewStateTransactionImpl ..> FindSampleDataViewVersionByEqualsLabel : supportedQueries item
     CreateSampleDataViewVersion --> SampleDomainGraphImpl : graph
+    CreateSampleDataViewVersion .. use ..> SampleDataViewMapper
     UpgradeSampleDataViewVersion --> SampleDomainGraphImpl : graph
     FindSampleDataViewVersionByEqualsLabel --> SampleDomainGraphImpl : graph
     
@@ -146,6 +148,10 @@ classDiagram
     }
     class FindSampleDataViewVersionByEqualsLabel {
         <<AbstractDataViewVersionTransactionImpl>>
+    }
+    class SampleDataViewMapper {
+        <<AbstractDTOMapper~SampleDataView~>>
+        +convertTo(Object source) SampleDataView
     }
 ```
 
