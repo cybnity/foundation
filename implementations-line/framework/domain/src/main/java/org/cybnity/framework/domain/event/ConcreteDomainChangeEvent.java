@@ -117,7 +117,7 @@ public class ConcreteDomainChangeEvent extends DomainEvent implements HydrationA
      *                               publication
      * @param changedModelElementRef Optional Identify the element of the domain model which was subject of domain event.
      * @return Instance of concrete event including all the attributes and standard additional elements.
-     * @throws IllegalArgumentException When any mandatory parameter is missing;
+     * @throws IllegalArgumentException When any mandatory parameter is missing.
      */
     static public ConcreteDomainChangeEvent create(String type, DomainEntity identifiedBy, Collection<Attribute> definition, EntityReference priorCommandRef, EntityReference changedModelElementRef) throws IllegalArgumentException {
         if (type == null || type.isEmpty()) throw new IllegalArgumentException("Type parameter is required!");

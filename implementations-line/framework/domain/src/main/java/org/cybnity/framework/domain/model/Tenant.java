@@ -151,6 +151,11 @@ public class Tenant extends Aggregate {
         try {
             // Add a change event into the history
             ConcreteDomainChangeEvent changeEvt = prepareChangeEventInstance(DomainEventType.TENANT_CREATED);
+            TenantDescriptor labelDesc = this.label();
+            if (labelDesc != null) {
+                // Optional tenant defined/up-to-date label shall be added into any change event when existing
+                changeEvt.appendSpecification(new org.cybnity.framework.domain.Attribute(Attribute.LABEL.name(), labelDesc.getLabel()));
+            }
 
             // Add to changes history
             addChangeEvent(changeEvt);
@@ -231,7 +236,7 @@ public class Tenant extends Aggregate {
         super.mutateWhen(change);// Execute potential re-hydration of super class
 
         // Apply local change without feeding of lifecycle history modification
-        // Only about change event (DomainEventType.TENANT_CREATED or DomainEventType.TENANT_DELETED not managed as mutation to apply)
+        // Only about change event (DomainEventType.TENANT_CREATED or DomainEventType.TENANT_DELETED are not managed as mutation to apply)
         if (DomainEventType.TENANT_CHANGED.name().equals(change.type().value())) {
             try {
                 // Identify which instance's attribute shall be rehydrated
