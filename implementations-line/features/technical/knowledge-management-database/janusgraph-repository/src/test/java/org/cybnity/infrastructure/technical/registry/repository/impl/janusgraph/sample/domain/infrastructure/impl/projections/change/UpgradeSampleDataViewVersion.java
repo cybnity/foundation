@@ -11,6 +11,7 @@ import org.cybnity.framework.domain.event.DomainEventFactory;
 import org.cybnity.framework.domain.event.EventSpecification;
 import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.framework.domain.model.DomainEntity;
+import org.cybnity.infrastructure.technical.registry.adapter.api.DateConvention;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.AbstractDomainGraphImpl;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.projection.AbstractGraphDataViewTransactionImpl;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.event.SampleDomainEventType;
@@ -18,7 +19,6 @@ import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.
 
 import java.sql.Date;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.*;
 
@@ -77,7 +77,7 @@ public class UpgradeSampleDataViewVersion extends AbstractDataViewVersionTransac
                     String domainNodeType = SampleDataView.class.getSimpleName();
                     Attribute sourceDomainObjectIdCorrelatedAsDataViewUUID = EventSpecification.findSpecificationByName(SampleDataView.PropertyAttributeKey.IDENTIFIED_BY.name(), event.specification());
                     if (sourceDomainObjectIdCorrelatedAsDataViewUUID != null) {
-                        DateFormat formatter = new SimpleDateFormat(SerializationFormat.DATE_FORMAT_PATTERN);
+                        DateFormat formatter = DateConvention.dateFormatter();
 
                         Map<Object, Object> searchFilter = new HashMap<>();
                         searchFilter.put(SampleDataView.PropertyAttributeKey.IDENTIFIED_BY.name(), sourceDomainObjectIdCorrelatedAsDataViewUUID.value());

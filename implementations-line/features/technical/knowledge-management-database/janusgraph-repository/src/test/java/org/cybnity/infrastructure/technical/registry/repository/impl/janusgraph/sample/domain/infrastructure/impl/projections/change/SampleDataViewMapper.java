@@ -3,13 +3,12 @@ package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph
 import org.cybnity.framework.domain.AbstractDTOMapper;
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.DomainEvent;
-import org.cybnity.framework.domain.SerializationFormat;
 import org.cybnity.framework.domain.event.EventSpecification;
+import org.cybnity.infrastructure.technical.registry.adapter.api.DateConvention;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.event.SampleDomainEventType;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.model.SampleDataView;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 
@@ -37,7 +36,7 @@ public class SampleDataViewMapper extends AbstractDTOMapper<SampleDataView> {
                 throw new IllegalArgumentException("Invalid expected type (" + SampleDomainEventType.SAMPLE_AGGREGATE_CREATED.name() + ") when event type value have been read!");
 
             // Read source data values
-            DateFormat formatter = new SimpleDateFormat(SerializationFormat.DATE_FORMAT_PATTERN);
+            DateFormat formatter = DateConvention.dateFormatter();
             Attribute dataViewName = EventSpecification.findSpecificationByName(SampleDataView.PropertyAttributeKey.NAME.name(), event.specification());
             String label = (dataViewName!=null)?dataViewName.value():null;
 

@@ -9,12 +9,12 @@ import org.cybnity.framework.domain.event.DomainEventFactory;
 import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.domain.model.ITransactionStateObserver;
+import org.cybnity.infrastructure.technical.registry.adapter.api.DateConvention;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.AbstractDomainGraphImpl;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.event.SampleDomainEventType;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.model.SampleDataView;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -71,7 +71,7 @@ public class CreateSampleDataViewVersion extends AbstractDataViewVersionTransact
 
                     // Define vertex description to create
                     String domainNodeType = SampleDataView.class.getSimpleName();
-                    DateFormat formatter = new SimpleDateFormat(SerializationFormat.DATE_FORMAT_PATTERN);
+                    DateFormat formatter = DateConvention.dateFormatter();
 
                     // Map origin domain object attributes from event to targeted (and normally satisfying completeness) data view type
                     SampleDataView expectedView = new SampleDataViewMapper().convertTo(event);

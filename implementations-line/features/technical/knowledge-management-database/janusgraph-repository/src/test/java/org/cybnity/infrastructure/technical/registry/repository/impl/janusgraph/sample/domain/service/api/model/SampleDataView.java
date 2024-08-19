@@ -2,11 +2,10 @@ package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph
 
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.DataTransferObject;
-import org.cybnity.framework.domain.SerializationFormat;
 import org.cybnity.framework.domain.event.IAttribute;
+import org.cybnity.infrastructure.technical.registry.adapter.api.DateConvention;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -63,7 +62,7 @@ public class SampleDataView extends DataTransferObject {
         s.add(new Attribute(PropertyAttributeKey.IDENTIFIED_BY.name(), identifier));
         s.add(new Attribute(PropertyAttributeKey.NAME.name(), label));
 
-        DateFormat formatter = new SimpleDateFormat(SerializationFormat.DATE_FORMAT_PATTERN);
+        DateFormat formatter = DateConvention.dateFormatter();
         s.add(new Attribute(PropertyAttributeKey.CREATED.name(), formatter.format(Objects.requireNonNullElseGet(createdAt, () -> Date.from(OffsetDateTime.now().toInstant())))));
         if (updatedAt != null) {
             s.add(new Attribute(PropertyAttributeKey.LAST_UPDATED_AT.name(), formatter.format(Objects.requireNonNullElseGet(updatedAt, () -> Date.from(OffsetDateTime.now().toInstant())))));

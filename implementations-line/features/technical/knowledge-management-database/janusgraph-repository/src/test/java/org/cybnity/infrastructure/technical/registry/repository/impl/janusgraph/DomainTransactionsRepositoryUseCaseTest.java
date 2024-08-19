@@ -14,12 +14,16 @@
 package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph;
 
 import org.cybnity.framework.UnoperationalStateException;
-import org.cybnity.framework.domain.*;
+import org.cybnity.framework.domain.Attribute;
+import org.cybnity.framework.domain.Command;
+import org.cybnity.framework.domain.DomainEvent;
+import org.cybnity.framework.domain.IdentifierStringBased;
 import org.cybnity.framework.domain.event.ConcreteDomainChangeEvent;
 import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.domain.model.IDomainEventSubscriber;
 import org.cybnity.framework.immutable.Identifier;
+import org.cybnity.infrastructure.technical.registry.adapter.api.DateConvention;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.infrastructure.impl.SampleDomainTransactionsRepository;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.event.SampleDomainEventType;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.event.SampleDomainQueryEventType;
@@ -27,7 +31,6 @@ import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.
 import org.junit.jupiter.api.*;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -81,7 +84,7 @@ public class DomainTransactionsRepositoryUseCaseTest extends ContextualizedJanus
         changeSpecification.add(new Attribute(SampleDataView.PropertyAttributeKey.IDENTIFIED_BY.name(), originAggregateId.value().toString())); // aggregate identifier value
         String aggregateLabel = "Stark Industries";
         changeSpecification.add(new Attribute(SampleDataView.PropertyAttributeKey.NAME.name(), aggregateLabel)); // Label of the aggregate (e.g like a tenant name which shall be unique in graph model)
-        DateFormat formatter = new SimpleDateFormat(SerializationFormat.DATE_FORMAT_PATTERN);
+        DateFormat formatter = DateConvention.dateFormatter();
         changeSpecification.add(new Attribute(SampleDataView.PropertyAttributeKey.CREATED.name(), formatter.format(Date.from(createdAt.toInstant()))));
         String commitVersion = "ab1"; // Simulate an unique commit version of change fact
         changeSpecification.add(new Attribute(SampleDataView.PropertyAttributeKey.COMMIT_VERSION.name(), commitVersion));
