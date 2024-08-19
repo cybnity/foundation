@@ -4,7 +4,7 @@ import org.cybnity.framework.domain.AbstractDTOMapper;
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.event.EventSpecification;
-import org.cybnity.infrastructure.technical.registry.adapter.api.DateConvention;
+import org.cybnity.framework.domain.infrastructure.util.DateConvention;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.event.SampleDomainEventType;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.model.SampleDataView;
 

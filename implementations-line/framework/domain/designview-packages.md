@@ -326,7 +326,7 @@ classDiagram
 
 ```
 
-## APPLICATION
+## APPLICATION PACKAGE
 
 | Class Type             | Motivation                                                           |
 |:-----------------------|:---------------------------------------------------------------------|
@@ -375,7 +375,7 @@ classDiagram
 
 ```
 
-## INFRASTRUCTURE
+## INFRASTRUCTURE PACKAGE
 
 | Class Type                                 | Motivation                                                                                                                                                                                                                                                                                                          |
 |:-------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -435,6 +435,14 @@ classDiagram
     }
 
 ```
+
+### Infrastructure.util sub-package
+Utility classes supporting the infrastructure components.
+
+| Class Type                 | Motivation                                                                                                                                                                                                                                       |
+|:---------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| AbstractDataViewConvention | Convention reference relative to an element managed into a data view (e.g pattern of date) and/or read-model of views.<br>This type of convention is helping to standardize shared elements between systems which are using data views' elements |
+| DateConvention             | Convention relative to the translation of a date into or from a string version managed into the infrastructure layer                                                                                                                             |
 
 #
 [Back To Home](README.md)

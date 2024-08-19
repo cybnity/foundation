@@ -1,4 +1,4 @@
-package org.cybnity.infrastructure.technical.registry.adapter.api;
+package org.cybnity.framework.domain.infrastructure.util;
 
 import org.cybnity.framework.domain.SerializationFormat;
 
@@ -6,9 +6,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 /**
- * Convention relative to the translation of a date into or from a string version.
+ * Convention relative to the translation of a date into or from a string version managed into the infrastructure layer.
  */
-public class DateConvention extends DataViewConvention {
+public class DateConvention extends AbstractDataViewConvention {
 
     /**
      * Get a standard date converter supporting a standard data format pattern supported by the registry's element.

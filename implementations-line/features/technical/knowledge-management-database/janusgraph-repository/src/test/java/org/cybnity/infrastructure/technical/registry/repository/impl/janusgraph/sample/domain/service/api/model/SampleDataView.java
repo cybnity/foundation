@@ -3,7 +3,7 @@ package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.DataTransferObject;
 import org.cybnity.framework.domain.event.IAttribute;
-import org.cybnity.infrastructure.technical.registry.adapter.api.DateConvention;
+import org.cybnity.framework.domain.infrastructure.util.DateConvention;
 
 import java.text.DateFormat;
 import java.time.OffsetDateTime;
