@@ -52,8 +52,8 @@ public class DomainTransactionsRepositoryUseCaseTest extends ContextualizedJanus
 
     @AfterEach
     public void cleanResources() throws UnoperationalStateException {
-        repo.graphModel().drop();//delete previous created schema and records
         repo.freeResources();
+        repo.drop();//delete previous created schema and records
         repo = null;
     }
 

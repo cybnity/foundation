@@ -319,7 +319,8 @@ public abstract class AbstractDomainGraphImpl {
     /**
      * Stop allocated resources specific to this domain graph.
      */
-    public void freeResources() {
+    public void freeResources() throws UnoperationalStateException {
+        close();
     }
 
 }

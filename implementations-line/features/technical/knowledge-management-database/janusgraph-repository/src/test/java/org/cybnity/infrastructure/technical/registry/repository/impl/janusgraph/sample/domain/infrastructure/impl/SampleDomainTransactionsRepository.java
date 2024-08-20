@@ -61,8 +61,16 @@ public class SampleDomainTransactionsRepository extends AbstractReadModelReposit
         return SINGLETON;
     }
 
+    /**
+     * Close the graph model.
+     */
     @Override
     public void freeResources() {
+        try {
+            this.graphModel().freeResources();
+        } catch (UnoperationalStateException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -195,4 +203,8 @@ public class SampleDomainTransactionsRepository extends AbstractReadModelReposit
 
     }
 
+    @Override
+    public void drop() throws UnoperationalStateException {
+        this.graphModel().drop();
+    }
 }
