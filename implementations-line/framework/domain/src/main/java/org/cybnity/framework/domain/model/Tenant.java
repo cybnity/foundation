@@ -149,14 +149,14 @@ public class Tenant extends Aggregate {
             }
         }
         try {
-            // Add a change event into the history
+            // Prepare a change event for the history
             ConcreteDomainChangeEvent changeEvt = prepareChangeEventInstance(DomainEventType.TENANT_CREATED);
             if (this.label != null) {
                 // Optional tenant defined/up-to-date label shall be added into any change event when existing
                 changeEvt.appendSpecification(new org.cybnity.framework.domain.Attribute(Attribute.LABEL.name(), this.label.getLabel()));
             }
 
-            // Add to changes history
+            // Add to changes history (before change event to generate regarding the defined label)
             addChangeEvent(changeEvt);
             if (this.label != null)
                 // Add label change to history
