@@ -26,5 +26,10 @@ public enum DataViewAttributeName {
     /**
      * A specific property defining a unique logical name assigned to a node instance.
      */
-    DATAVIEW_NODE_NAME
+    DATAVIEW_NODE_NAME,
+
+    /**
+     * Date of data view refresh or creation.
+     */
+    DATAVIEW_DATE
 }
