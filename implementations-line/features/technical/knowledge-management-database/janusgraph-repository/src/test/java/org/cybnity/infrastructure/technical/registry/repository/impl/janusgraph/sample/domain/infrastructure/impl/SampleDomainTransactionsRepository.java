@@ -203,6 +203,11 @@ public class SampleDomainTransactionsRepository extends AbstractReadModelReposit
 
     }
 
+    /**
+     * Drop graph model schema and data.
+     *
+     * @throws UnoperationalStateException When problem during graph model drop.
+     */
     @Override
     public void drop() throws UnoperationalStateException {
         this.graphModel().drop();
