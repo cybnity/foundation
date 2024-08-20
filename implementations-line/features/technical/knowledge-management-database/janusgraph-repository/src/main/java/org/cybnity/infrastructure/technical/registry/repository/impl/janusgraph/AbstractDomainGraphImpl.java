@@ -318,6 +318,8 @@ public abstract class AbstractDomainGraphImpl {
 
     /**
      * Stop allocated resources specific to this domain graph.
+     *
+     * @throws UnoperationalStateException When problem during graph model close() operation.
      */
     public void freeResources() throws UnoperationalStateException {
         close();
