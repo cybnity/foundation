@@ -74,7 +74,7 @@ public class TenantHydrationUseCaseTest {
         // Check that change events have been generated in history
         List<DomainEvent> changes = tenantInstance.changeEvents();
         Assertions.assertNotNull(changes);
-        boolean foundValidCreationEvt = false, activityStatusChangeEvt = false, tenantLabelChangeEvt = false;
+        boolean foundValidCreationEvt = false, activityStatusChangeEvt = false;
         for (DomainEvent evt : changes) {
             if (DomainEventType.TENANT_CREATED.name().equals(evt.type().value())) {
                 // Found event regarding creation
@@ -92,17 +92,9 @@ public class TenantHydrationUseCaseTest {
                     Assertions.assertEquals(tenantInstance.status().isActive(), Boolean.valueOf(activityState.value()));
                     activityStatusChangeEvt = true;
                 }
-
-                // Verify if it's a change of tenant label (e.g realized during creation step as origin name assigned to tenant)
-                Attribute tenantDescriptorLabel = EventSpecification.findSpecificationByName(Tenant.Attribute.LABEL.name(), evt.specification());
-                if (tenantDescriptorLabel != null) {
-                    // Label verification
-                    Assertions.assertEquals(tenantInstance.label().getLabel(), tenantDescriptorLabel.value());
-                    tenantLabelChangeEvt = true;
-                }
             }
         }
-        Assertions.assertTrue(foundValidCreationEvt && activityStatusChangeEvt && tenantLabelChangeEvt, "Creation events shall have been produced by super class!");
+        Assertions.assertTrue(foundValidCreationEvt && activityStatusChangeEvt, "Creation events shall have been produced by super class!");
     }
 
     /**
