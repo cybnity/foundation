@@ -5,6 +5,7 @@ import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.*;
 import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.framework.domain.event.QueryFactory;
+import org.cybnity.framework.domain.infrastructure.IDomainStore;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.domain.model.IDomainModel;
 import org.cybnity.framework.immutable.Identifier;
@@ -33,27 +34,29 @@ public class SampleDomainTransactionsRepository extends AbstractReadModelReposit
     /**
      * Reserved constructor that initialize the graph instance under responsibility of this repository, with preparation of its read-model scope (set of projections supported).
      *
-     * @param ctx Mandatory context.
+     * @param ctx                         Mandatory context.
+     * @param domainObjectWriteModelStore Mandatory rehydration responsible for domain objects. Can be reused by initialized transactions and queries when monitoring of store's domain objects is need.
      * @throws UnoperationalStateException When impossible connection and initialization of the graph model manipulated by this repository.
      * @throws IllegalArgumentException    When mandatory parameter is missing.
      */
-    private SampleDomainTransactionsRepository(IContext ctx) throws UnoperationalStateException, IllegalArgumentException {
+    private SampleDomainTransactionsRepository(IContext ctx, IDomainStore<?> domainObjectWriteModelStore) throws UnoperationalStateException, IllegalArgumentException {
         super(new SampleDomainGraphImpl(ctx));
         // Define set of projections identifying the read-model scope that can manipulate the graph
-        this.setManagedProjections(new SampleDomainReadModelImpl(ctx, new SampleDomainGraphImpl(ctx), READ_MODEL_OWNERSHIP, this));
+        this.setManagedProjections(new SampleDomainReadModelImpl(ctx, new SampleDomainGraphImpl(ctx), READ_MODEL_OWNERSHIP, this, domainObjectWriteModelStore));
     }
 
     /**
      * Get a repository instance.
      *
+     * @param domainObjectWriteModelStore Mandatory rehydration responsible for domain objects. Can be reused by initialized transactions and queries when monitoring of store's domain objects is need.
      * @return A singleton instance.
      * @throws UnoperationalStateException When impossible connection and initialization of the graph model manipulated by this repository.
      * @throws IllegalArgumentException    When mandatory parameter is missing.
      */
-    public static SampleDomainTransactionsRepository instance(IContext ctx) throws UnoperationalStateException, IllegalArgumentException {
+    public static SampleDomainTransactionsRepository instance(IContext ctx, IDomainStore<?> domainObjectWriteModelStore) throws UnoperationalStateException, IllegalArgumentException {
         if (SINGLETON == null) {
             // Initializes singleton instance
-            SINGLETON = new SampleDomainTransactionsRepository(ctx);
+            SINGLETON = new SampleDomainTransactionsRepository(ctx, domainObjectWriteModelStore);
         }
         return SINGLETON;
     }

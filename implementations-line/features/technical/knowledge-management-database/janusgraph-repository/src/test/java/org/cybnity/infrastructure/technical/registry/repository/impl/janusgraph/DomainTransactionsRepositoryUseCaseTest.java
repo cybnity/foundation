@@ -47,7 +47,7 @@ public class DomainTransactionsRepositoryUseCaseTest extends ContextualizedJanus
     @BeforeEach
     public void initRepository() throws UnoperationalStateException {
         // Prepare a repository of a sample domain managing a read-model projections perimeter
-        repo = SampleDomainTransactionsRepository.instance(getContext());
+        repo = SampleDomainTransactionsRepository.instance(getContext(), null /* None observed domain objects store */);
     }
 
     @AfterEach
@@ -66,7 +66,7 @@ public class DomainTransactionsRepositoryUseCaseTest extends ContextualizedJanus
      */
     @Test
     public void givenChangedDomainObject_whenNotifyWriteModelChangeToRepository_thenReadModelDataViewCreated() throws Exception {
-        // --- Prepare subscriber allowing control of normally promoted data-view projection change events regarding the manipulated read-model
+        // --- Prepare subscriber allowing control of normally promoted data-view projection change events regarding the manipulated read-model ---
         List<String> toDetect = new LinkedList<>();
         // Declare interest for sample data-view versions
         toDetect.add(SampleDomainEventType.SAMPLE_DATAVIEW_CREATED.name());

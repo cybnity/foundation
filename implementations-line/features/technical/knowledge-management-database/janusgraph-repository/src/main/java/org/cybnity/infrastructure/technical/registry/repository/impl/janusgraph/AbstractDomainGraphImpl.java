@@ -178,7 +178,7 @@ public abstract class AbstractDomainGraphImpl {
     }
 
     /**
-     * Drops the graph instance. The default implementation does nothing.
+     * Drops the graph instance.
      *
      * @throws UnoperationalStateException Problem occurred during the attempt to close the graph deletion.
      */

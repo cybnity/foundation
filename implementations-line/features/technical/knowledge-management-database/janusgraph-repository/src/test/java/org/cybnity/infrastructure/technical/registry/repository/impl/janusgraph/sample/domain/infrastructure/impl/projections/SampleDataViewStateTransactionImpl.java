@@ -6,6 +6,7 @@ import org.cybnity.framework.domain.event.ConcreteDomainChangeEvent;
 import org.cybnity.framework.domain.event.EventSpecification;
 import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.framework.domain.infrastructure.IDomainRepository;
+import org.cybnity.framework.domain.infrastructure.IDomainStore;
 import org.cybnity.framework.domain.model.IDomainModel;
 import org.cybnity.framework.domain.model.ITransactionStateObserver;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.AbstractDomainGraphImpl;
@@ -31,13 +32,14 @@ public class SampleDataViewStateTransactionImpl extends AbstractGraphDataViewTra
     /**
      * Default constructor regarding a graph read model projection.
      *
-     * @param ownership Mandatory domain which is owner of the projection (as in its scope of responsibility).
-     * @param dataModel Mandatory database model that can be manipulated by this transaction about its data view(s).
-     * @param observer  Optional observer of the transaction state evolution (e.g to be notified about progress or end of performed transaction).
+     * @param ownership                   Mandatory domain which is owner of the projection (as in its scope of responsibility).
+     * @param dataModel                   Mandatory database model that can be manipulated by this transaction about its data view(s).
+     * @param observer                    Optional observer of the transaction state evolution (e.g to be notified about progress or end of performed transaction).
+     * @param domainObjectWriteModelStore Mandatory rehydration responsible for domain objects. Can be reused by initialized transactions and queries when monitoring of store's domain objects is need.
      * @throws IllegalArgumentException When any mandatory parameter is missing.
      */
-    public SampleDataViewStateTransactionImpl(IDomainModel ownership, AbstractDomainGraphImpl dataModel, ITransactionStateObserver observer) throws IllegalArgumentException {
-        super(LABEL, ownership, dataModel, observer); // Define graph manipulable
+    public SampleDataViewStateTransactionImpl(IDomainModel ownership, AbstractDomainGraphImpl dataModel, ITransactionStateObserver observer, IDomainStore<?> domainObjectWriteModelStore) throws IllegalArgumentException {
+        super(LABEL, ownership, dataModel, observer, domainObjectWriteModelStore); // Define graph manipulable
     }
 
     @Override
@@ -77,7 +79,7 @@ public class SampleDataViewStateTransactionImpl extends AbstractGraphDataViewTra
      * @return Provider of optional data-view status collected as request results.
      * @throws IllegalArgumentException      When any mandatory parameter is missing.
      * @throws UnsupportedOperationException When request execution generated an issue (e.g query not supported by this projection; or error of request parameter types).
-     * @throws UnoperationalStateException When query execution technical problem occurred.
+     * @throws UnoperationalStateException   When query execution technical problem occurred.
      */
     @Override
     public IQueryResponse when(Command command) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException {
@@ -89,8 +91,8 @@ public class SampleDataViewStateTransactionImpl extends AbstractGraphDataViewTra
             IProjectionRead op;
             ITransactionStateObserver observer = getObserver();
             String queryNameBasedOn = Command.TYPE; // default query name of attribute
-            if (observer!=null && IDomainRepository.class.isAssignableFrom(observer.getClass())) {
-                queryNameBasedOn = ((IDomainRepository<?>)observer).queryNameBasedOn();
+            if (observer != null && IDomainRepository.class.isAssignableFrom(observer.getClass())) {
+                queryNameBasedOn = ((IDomainRepository<?>) observer).queryNameBasedOn();
             }
 
             Attribute at = EventSpecification.findSpecificationByName(queryNameBasedOn, command.specification());

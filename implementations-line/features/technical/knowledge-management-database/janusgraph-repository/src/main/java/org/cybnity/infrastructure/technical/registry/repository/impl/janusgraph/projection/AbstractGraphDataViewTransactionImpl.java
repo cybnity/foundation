@@ -5,6 +5,7 @@ import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.IProjectionRead;
 import org.cybnity.framework.domain.IProjectionTransaction;
 import org.cybnity.framework.domain.event.IEventType;
+import org.cybnity.framework.domain.infrastructure.IDomainStore;
 import org.cybnity.framework.domain.model.AbstractRealModelDataViewProjection;
 import org.cybnity.framework.domain.model.IDomainModel;
 import org.cybnity.framework.domain.model.ITransactionStateObserver;
@@ -36,19 +37,25 @@ public abstract class AbstractGraphDataViewTransactionImpl extends AbstractRealM
     private final Map<String, IProjectionRead> supportedQueries;
 
     /**
+     * Optional store that can manage rehydration of domain object.
+     */
+    private final IDomainStore<?> writeModelStore;
+
+    /**
      * Default constructor regarding a graph read model projection.
      * Automatically initialize the supported queries and transactions.
      *
-     * @param label     Mandatory logical definition (e.g query name, projection finality unique name) of this projection that can be used for projections equals validation.
-     * @param ownership Mandatory domain which is owner of the projection (as in its scope of responsibility).
-     * @param dataModel Mandatory database model that can be manipulated by this transaction about its data view(s).
-     * @param observer  Optional observer of the transaction state evolution (e.g to be notified about progress or end of performed transaction).
+     * @param label           Mandatory logical definition (e.g query name, projection finality unique name) of this projection that can be used for projections equals validation.
+     * @param ownership       Mandatory domain which is owner of the projection (as in its scope of responsibility).
+     * @param dataModel       Mandatory database model that can be manipulated by this transaction about its data view(s).
+     * @param observer        Optional observer of the transaction state evolution (e.g to be notified about progress or end of performed transaction).
+     * @param writeModelStore Optional rehydration responsible for domain objects. Can be observed (e.g for detection of change into a write-model monitored by a projection) by any supported transactions or query which is initialized during this instance construction.
      * @throws IllegalArgumentException When any mandatory parameter is missing.
      */
-    public AbstractGraphDataViewTransactionImpl(String label, IDomainModel ownership, AbstractDomainGraphImpl dataModel, ITransactionStateObserver observer) throws IllegalArgumentException {
+    public AbstractGraphDataViewTransactionImpl(String label, IDomainModel ownership, AbstractDomainGraphImpl dataModel, ITransactionStateObserver observer, IDomainStore<?> writeModelStore) throws IllegalArgumentException {
         super(label, ownership, observer);
         if (dataModel == null) throw new IllegalArgumentException("dataModel parameter is required!");
-
+        this.writeModelStore = writeModelStore; // Can be usable
         // Initialize containers of projections
         supportedTransactions = new HashMap<>();
         supportedQueries = new HashMap<>();
@@ -58,6 +65,16 @@ public abstract class AbstractGraphDataViewTransactionImpl extends AbstractRealM
         initSupportedQueries();// Initialization of eligible delegated queries
         initSupportedTransactions(); // Initialization of eligible delegated transactions
     }
+
+    /**
+     * Get write model store optionally defined.
+     *
+     * @return An observable store or null.
+     */
+    protected IDomainStore<?> getWriteModelStore() {
+        return this.writeModelStore;
+    }
+
     /**
      * Define the set of transactions allowing management of the data views perimeter changes (e.g states refresh).
      * The defined transactions are responsible for state change of the data view.
@@ -74,6 +91,7 @@ public abstract class AbstractGraphDataViewTransactionImpl extends AbstractRealM
 
     /**
      * Get set of actionable transaction around the changes detected as source of interest justifying a transaction execution on the domain aggregate view.
+     *
      * @return A container of transactions.
      */
     protected Map<String, IProjectionTransaction> supportedTransactions() {
@@ -82,6 +100,7 @@ public abstract class AbstractGraphDataViewTransactionImpl extends AbstractRealM
 
     /**
      * get Set of actionable queries as source of interest for data-model read justifying an operation execution on the domain aggregate view.
+     *
      * @return A container of queries.
      */
     protected Map<String, IProjectionRead> supportedQueries() {
@@ -90,6 +109,7 @@ public abstract class AbstractGraphDataViewTransactionImpl extends AbstractRealM
 
     /**
      * Default implementation which check the supported queries container regarding the query type name.
+     *
      * @param queryType A query type to evaluate as supported.
      * @return False when not supported or when queryType parameter is null. True when supported query confirmed.
      */
