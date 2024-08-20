@@ -1,5 +1,6 @@
 package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.infrastructure.impl.projections.read;
 
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -12,7 +13,10 @@ import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.event.SampleDomainQueryEventType;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample.domain.service.api.model.SampleDataView;
 
-import java.util.*;
+import java.util.Date;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Example of utility class implementing the Query Language supported by the graph model (e.g Gremlin with TinkerPop) for execution of a query directive.
@@ -75,24 +79,18 @@ public class FindSampleDataViewVersionByEqualsLabel extends AbstractDataViewVers
                 gtx.tx().rollback();// Force refresh of transaction state about potential parallel changes executed on data-view to search
 
                 // Execute query
-                Map<Object, Object> searchFilter = new HashMap<>();
-                searchFilter.put("name", sampleDataViewNameLabelFilter);
-                searchFilter.put(/* vertex nature label*/ T.label, domainNodeType);
-
-                //Vertex foundEqualsLabelNode = traversal.V().has(domainNodeType /* vertex node type only consulted */,/* Name property */"name", /* filtered label */ sampleDataViewNameLabelFilter).next();
-                Vertex foundEqualsLabelNode = gtx.mergeV(searchFilter).next();
-
-                if (foundEqualsLabelNode != null) {
-                    String dataViewId = foundEqualsLabelNode.value(SampleDataView.PropertyAttributeKey.IDENTIFIED_BY.name());
-                    Date createdAt = foundEqualsLabelNode.value(SampleDataView.PropertyAttributeKey.CREATED.name());
-                    Date updatedAt = foundEqualsLabelNode.value(SampleDataView.PropertyAttributeKey.LAST_UPDATED_AT.name());
-                    String commitVersion = foundEqualsLabelNode.value(SampleDataView.PropertyAttributeKey.COMMIT_VERSION.name());
-                    // Prepare result response
-                    return () -> {
-                        SampleDataView view = new SampleDataView(dataViewId, sampleDataViewNameLabelFilter, createdAt, commitVersion, updatedAt);
-                        return Optional.of(view);
-                    };
-                }
+                Vertex foundEqualsLabelNode = gtx.V().has(T.label, domainNodeType /* vertex node type only consulted */).has("name", sampleDataViewNameLabelFilter).next();
+                String dataViewId = foundEqualsLabelNode.value(SampleDataView.PropertyAttributeKey.IDENTIFIED_BY.name());
+                Date createdAt = foundEqualsLabelNode.value(SampleDataView.PropertyAttributeKey.CREATED.name());
+                Date updatedAt = foundEqualsLabelNode.value(SampleDataView.PropertyAttributeKey.LAST_UPDATED_AT.name());
+                String commitVersion = foundEqualsLabelNode.value(SampleDataView.PropertyAttributeKey.COMMIT_VERSION.name());
+                // Prepare result response
+                return () -> {
+                    SampleDataView view = new SampleDataView(dataViewId, sampleDataViewNameLabelFilter, createdAt, commitVersion, updatedAt);
+                    return Optional.of(view);
+                };
+            } catch (NoSuchElementException nse) {
+                // None found query result
             } catch (Exception e) {
                 throw new UnoperationalStateException(e);
             }
