@@ -151,14 +151,16 @@ public class Tenant extends Aggregate {
         try {
             // Add a change event into the history
             ConcreteDomainChangeEvent changeEvt = prepareChangeEventInstance(DomainEventType.TENANT_CREATED);
-            TenantDescriptor labelDesc = this.label();
-            if (labelDesc != null) {
+            if (this.label != null) {
                 // Optional tenant defined/up-to-date label shall be added into any change event when existing
-                changeEvt.appendSpecification(new org.cybnity.framework.domain.Attribute(Attribute.LABEL.name(), labelDesc.getLabel()));
+                changeEvt.appendSpecification(new org.cybnity.framework.domain.Attribute(Attribute.LABEL.name(), this.label.getLabel()));
             }
 
             // Add to changes history
             addChangeEvent(changeEvt);
+            if (this.label != null)
+                // Add label change to history
+                setLabel(label);
         } catch (ImmutabilityException ie) {
             // Log potential coding problem relative to immutability support
             logger().log(Level.SEVERE, ie.getMessage(), ie);
