@@ -39,16 +39,21 @@ The build and delivery of the CYBNITY systems' features is performed through sev
 
 ![image](CYBNITY-software-artifacts-factory.png)
 
+### Resources Infrastructure
+CYBNITY project is managing a resources infrastructure of servers dedicated to open source project development, which can serve as example for other companies in terms of hardware and/or virtualized resources supporting the deployment of CYBNITY environment modules:
+- [CYBNITY project's virtualized and hyperconvergence resources infrastructure](../implementations-line/systems/technical-infrastructure/README.md)
+
 ### Support and How-To
 - [Developers How-To](how-to/developer-how-to.md): guides about tools, tasks organization and other assistance documentations helping a developper to contribute.
 
-## SYSTEMS & INFRASTRUCTURES DELIVERY
-![image](CYBNITY_Software_Systems_Production_Chain.png)
+## SYSTEMS & ENVIRONMENTS DELIVERY
 
 ### Systems Deployment Standards
 Supported by industrialization platform including several factory tools, several CYBNITY standards and guidelines are applied as Continuous Delivery (CD) protocol via pipeline models:
 - Releasing Pipeline Model
 - Deployment Pipeline Model
+
+![image](CYBNITY_Software_Systems_Production_Chain.png)
 
 ### Systems Configuration
 The branching strategy including the practices and usage rules that should be followed by the developers are presented in detail on [CYBNITY software configuration and integration management model](https://cybnity.notion.site/BAI03-05-CYBNITY-Software-Configuration-Integration-Management-Model-89b9e65d8b2043a0845b2c8216b0c38a)

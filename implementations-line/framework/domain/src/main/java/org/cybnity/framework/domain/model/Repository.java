@@ -65,14 +65,14 @@ public abstract class Repository implements ISubscribable {
     }
 
     @Override
-    public <T> void subscribe(DomainEventSubscriber<T> aSubscriber) {
+    public <T> void subscribe(IDomainEventSubscriber<T> aSubscriber) {
         if (aSubscriber != null)
             // Add listener interested by stored events
             subscribersManager().subscribe(aSubscriber);
     }
 
     @Override
-    public <T> void remove(DomainEventSubscriber<T> aSubscriber) {
+    public <T> void remove(IDomainEventSubscriber<T> aSubscriber) {
         if (aSubscriber != null)
             subscribersManager().remove(aSubscriber);
     }

@@ -8,6 +8,7 @@ import org.cybnity.framework.domain.Command;
 import org.cybnity.framework.domain.DomainEvent;
 import org.cybnity.framework.domain.ObjectMapperBuilder;
 import org.cybnity.framework.domain.model.CommonChildFactImpl;
+import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.Identifier;
@@ -104,6 +105,36 @@ public class ConcreteDomainChangeEvent extends DomainEvent implements HydrationA
             // Add type into specification attributes
             appendSpecification(new Attribute(TYPE, eventType));
         }
+    }
+
+    /**
+     * Factory of a type of domain event supported by the domain Anti-Corruption Layer API.
+     *
+     * @param type                   Mandatory type of domain event to instantiate.
+     * @param identifiedBy           Optional event identity that shall identify the concrete event instance to create.
+     * @param definition             Collection of attributes defining the event.
+     * @param priorCommandRef        Optional original event reference that was previous source of this event
+     *                               publication
+     * @param changedModelElementRef Optional Identify the element of the domain model which was subject of domain event.
+     * @return Instance of concrete event including all the attributes and standard additional elements.
+     * @throws IllegalArgumentException When any mandatory parameter is missing.
+     */
+    static public ConcreteDomainChangeEvent create(String type, DomainEntity identifiedBy, Collection<Attribute> definition, EntityReference priorCommandRef, EntityReference changedModelElementRef) throws IllegalArgumentException {
+        if (type == null || type.isEmpty()) throw new IllegalArgumentException("Type parameter is required!");
+        ConcreteDomainChangeEvent event = new ConcreteDomainChangeEvent(identifiedBy, type);
+        if (definition != null) {
+            // Add change event attributes
+            for (Attribute at : definition) {
+                event.appendSpecification(at);
+            }
+        }
+        if (priorCommandRef != null) {
+            event.setChangeCommandRef(priorCommandRef);
+        }
+        if (changedModelElementRef != null) {
+            event.setChangedModelElementRef(changedModelElementRef);
+        }
+        return event;
     }
 
     @JsonIgnore
