@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.cybnity</groupId>
 		<artifactId>techstack</artifactId>
-		<version>0.32.0</version>
+		<version>0.35.0</version>
 	</parent>
 
 	<artifactId>defense-platform</artifactId>
@@ -121,9 +121,6 @@
 		</repository>-->
 	</repositories>
 
-	<pluginRepositories>
-	</pluginRepositories>
-
 	<!-- List of advice about project -->
 	<mailingLists>
 		<mailingList>
@@ -136,6 +133,7 @@
 			<name>${project.name} users list</name>
 		</mailingList>
 	</mailingLists>
+
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/cybnity/foundation/issues/</url>

@@ -63,8 +63,7 @@ public class TenantUseCaseTest {
         // Created tenant with a name (organization sample)
 
         // Define a new organization changed regarding the tenant (e.g simulate a
-        // company brand
-        // change)
+        // company brand change)
         String renamedAs = "CYBNITY Corp";
         HashMap<String, Object> attr = new HashMap<String, Object>();
         attr.put(TenantDescriptor.PropertyAttributeKey.LABEL.name(), renamedAs);

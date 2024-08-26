@@ -15,4 +15,3 @@ Projects providing templates of Docker images which are usable as bases for the 
 Each Docker template generation is designed and build via Maven plugin in a structured POM project.
 
 - [Java TEE container](java-tee-container): Trusted Execution Environmnent (TEE) template of Eclipse Temurin JRE with Linux operating system
-- [Services Registry container](services-registry-container): Zookeeper template

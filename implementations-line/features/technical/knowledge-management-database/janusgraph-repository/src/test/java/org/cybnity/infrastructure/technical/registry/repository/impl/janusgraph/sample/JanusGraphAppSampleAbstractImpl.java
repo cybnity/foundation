@@ -15,22 +15,15 @@
 
 package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample;
 
-import org.apache.commons.configuration2.ex.ConfigurationException;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.ContextualizedJanusGraphActiveTestContainer;
-import org.janusgraph.core.JanusGraph;
-import org.janusgraph.core.JanusGraphFactory;
 import org.janusgraph.core.Multiplicity;
-import org.janusgraph.core.RelationType;
 import org.janusgraph.core.attribute.Geoshape;
 import org.janusgraph.core.schema.JanusGraphManagement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 /**
  * Specialized GraphApp using JanusGraph-specific methods to create the schema.
@@ -65,54 +58,8 @@ public class JanusGraphAppSampleAbstractImpl extends GraphAppSampleAbstractImpl 
         this.supportsGeoshape = true;
     }
 
-    @Override
-    public GraphTraversalSource openGraph() throws ConfigurationException, IOException {
-        super.openGraph();
-        return g;
-    }
 
     @Override
-    public void dropGraph() throws UnoperationalStateException {
-        if (graph != null) {
-            try {
-                JanusGraphFactory.drop(getJanusGraph());
-            } catch (Exception e) {
-                throw new UnoperationalStateException(e);
-            }
-        }
-    }
-
-    /**
-     * Returns the JanusGraph instance.
-     */
-    protected JanusGraph getJanusGraph() {
-        return (JanusGraph) graph;
-    }
-
-    @Override
-    public void createSchema() {
-        final JanusGraphManagement management = getJanusGraph().openManagement();
-        try {
-            // naive check if the schema was previously created
-            if (management.getRelationTypes(RelationType.class).iterator().hasNext()) {
-                management.rollback();
-                return;
-            }
-            LOGGER.info("creating schema");
-            createProperties(management);
-            createVertexLabels(management);
-            createEdgeLabels(management);
-            createCompositeIndexes(management);
-            createMixedIndexes(management);
-            management.commit();
-        } catch (Exception e) {
-            management.rollback();
-        }
-    }
-
-    /**
-     * Creates the vertex labels.
-     */
     protected void createVertexLabels(final JanusGraphManagement management) {
         management.makeVertexLabel("titan").make();
         management.makeVertexLabel("location").make();
@@ -122,9 +69,8 @@ public class JanusGraphAppSampleAbstractImpl extends GraphAppSampleAbstractImpl 
         management.makeVertexLabel("monster").make();
     }
 
-    /**
-     * Creates the edge labels.
-     */
+
+    @Override
     protected void createEdgeLabels(final JanusGraphManagement management) {
         management.makeEdgeLabel("father").multiplicity(Multiplicity.MANY2ONE).make();
         management.makeEdgeLabel("mother").multiplicity(Multiplicity.MANY2ONE).make();
@@ -134,9 +80,8 @@ public class JanusGraphAppSampleAbstractImpl extends GraphAppSampleAbstractImpl 
         management.makeEdgeLabel("battled").make();
     }
 
-    /**
-     * Creates the properties for vertices, edges, and meta-properties.
-     */
+
+    @Override
     protected void createProperties(final JanusGraphManagement management) {
         management.makePropertyKey("name").dataType(String.class).make();
         management.makePropertyKey("age").dataType(Integer.class).make();
@@ -145,21 +90,15 @@ public class JanusGraphAppSampleAbstractImpl extends GraphAppSampleAbstractImpl 
         management.makePropertyKey("place").dataType(Geoshape.class).make();
     }
 
-    /**
-     * Creates the composite indexes. A composite index is best used for
-     * exact match lookups.
-     */
+
+    @Override
     protected void createCompositeIndexes(final JanusGraphManagement management) {
         management.buildIndex("nameIndex", Vertex.class).addKey(management.getPropertyKey("name")).buildCompositeIndex();
     }
 
-    /**
-     * Creates the mixed indexes. A mixed index requires that an external
-     * indexing backend is configured on the graph instance. A mixed index
-     * is best for full text search, numerical range, and geospatial queries.
-     */
-    protected void createMixedIndexes(final JanusGraphManagement management) {
 
+    @Override
+    protected void createMixedIndexes(final JanusGraphManagement management) {
     }
 
     /**
@@ -169,7 +108,6 @@ public class JanusGraphAppSampleAbstractImpl extends GraphAppSampleAbstractImpl 
      * server.
      */
     protected String createSchemaRequest() {
-
         String s = "JanusGraphManagement management = graph.openManagement(); " +
                 "boolean created = false; " +
 
@@ -211,8 +149,8 @@ public class JanusGraphAppSampleAbstractImpl extends GraphAppSampleAbstractImpl 
         final boolean drop = (args != null && args.length > 1) && "drop".equalsIgnoreCase(args[1]);
         final JanusGraphAppSampleAbstractImpl app = new JanusGraphAppSampleAbstractImpl(ContextualizedJanusGraphActiveTestContainer.getContextInstance());
         if (drop) {
-            app.openGraph();
-            app.dropGraph();
+            app.open();
+            app.drop();
         } else {
             app.runApp();
         }

@@ -11,7 +11,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 /**
  * Stream store (with an append-only approach) which maintain history of a type
  * of domain fact (e.g Aggregate versions).
- * <p>
+ * <br>
  * For example, manage the domain data (e.g sharded database for a tenant)
  * ensuring isolation of persistent domain model from the other bounded
  * contexts.
