@@ -36,7 +36,7 @@ public class SnapshotRepositoryRedisImpl implements ISnapshotRepository {
     }
 
     @Override
-    public void freeResources() {
+    public void freeUpResources() {
         // Freedom of resources allocated by the adapter
         this.adapter.freeUpResources();
     }

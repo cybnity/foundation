@@ -47,7 +47,7 @@ public class KNRAdapterJanusGraphImpl implements KNRAdapter {
     }
 
     @Override
-    public void freeResources() {
+    public void freeUpResources() {
 
     }
 

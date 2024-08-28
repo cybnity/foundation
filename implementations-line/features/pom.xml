@@ -21,6 +21,7 @@
 		<module>operating-system</module>
 		<module>physical</module>
 		<module>integrated-partners</module>-->
+		<module>test</module>
 	</modules>
 
 	<dependencies>

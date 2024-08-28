@@ -1,22 +1,11 @@
 package org.cybnity.infrastructure.technical.registry.adapter.api;
 
-import org.cybnity.framework.UnoperationalStateException;
+import org.cybnity.framework.domain.ICleanup;
+import org.cybnity.framework.domain.IHealthControl;
 
 /**
  * Knowledge Repository adapter which expose the API services that allow interactions with the knowledge database.
  */
-public interface KNRAdapter {
+public interface KNRAdapter extends ICleanup, IHealthControl {
 
-    /**
-     * For example, disconnect the adapter from the Knowledge Repository.
-     */
-    void freeResources();
-
-    /**
-     * Verify the current status of the adapter as healthy and operable for
-     * interactions with the knowledge repository.
-     *
-     * @throws UnoperationalStateException When adapter status problem detected.
-     */
-    void checkHealthyState() throws UnoperationalStateException;
 }

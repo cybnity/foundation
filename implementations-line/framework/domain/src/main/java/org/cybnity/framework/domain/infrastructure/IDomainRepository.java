@@ -1,6 +1,7 @@
 package org.cybnity.framework.domain.infrastructure;
 
 import org.cybnity.framework.UnoperationalStateException;
+import org.cybnity.framework.domain.ICleanup;
 import org.cybnity.framework.domain.ISessionContext;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.persistence.IFactRepository;
@@ -24,12 +25,7 @@ import java.util.Map;
  * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Robusteness, reqId = "REQ_ROB_3")
-public interface IDomainRepository<T> extends IFactRepository<T> {
-
-    /**
-     * Stop allocated resources specific to this repository (e.g database access...).
-     */
-    public void freeResources();
+public interface IDomainRepository<T> extends IFactRepository<T>, ICleanup {
 
     /**
      * Get a next technical identity manageable by this repository.
@@ -99,7 +95,7 @@ public interface IDomainRepository<T> extends IFactRepository<T> {
      * @return A list of found result(s), or null.
      * @throws IllegalArgumentException      When any mandatory parameter (e.g unknown query name not provided by parameters list); when a required parameter's value is missing or is not valid (e.g not supported by the real query executed regarding a database data structure).
      * @throws UnsupportedOperationException When impossible execution of requested query.
-     * @throws UnoperationalStateException When query execution technical problem occurred.
+     * @throws UnoperationalStateException   When query execution technical problem occurred.
      */
     public List<T> queryWhere(Map<String, String> queryParameters, ISessionContext ctx) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException;
 

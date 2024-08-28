@@ -5,6 +5,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSo
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
+import org.cybnity.framework.domain.ICleanup;
 import org.cybnity.infrastructure.technical.registry.adapter.impl.janusgraph.ReadModelConfigurationVariable;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
@@ -20,7 +21,7 @@ import java.util.Map;
 /**
  * Represent a graph of domain elements (e.g structure of data views relative to a domain scope) and implementation capabilities regarding schema manipulation, graph data update, and graph queries via the selected query framework (e.g Tinkerpop).
  */
-public abstract class AbstractDomainGraphImpl {
+public abstract class AbstractDomainGraphImpl implements ICleanup {
 
     /**
      * Repository logger.
@@ -134,24 +135,20 @@ public abstract class AbstractDomainGraphImpl {
 
     /**
      * Closes the graph instance.
-     *
-     * @throws UnoperationalStateException Problem occurred during the attempt to close the graph connection.
      */
-    public final void close() throws UnoperationalStateException {
+    public final void close() {
         logger().info("Closing graph (" + graphName() + ")");
         try {
             if (graph != null) {
                 try {
                     graph.traversal().close();
-                } catch (Exception e) {
-                    throw new UnoperationalStateException(e);
+                } catch (Exception ignored) {
                 }
             }
             if (graph != null) {
                 try {
                     graph.close();
-                } catch (Exception e) {
-                    throw new UnoperationalStateException(e);
+                } catch (Exception ignored) {
                 }
             }
         } finally {
@@ -318,10 +315,9 @@ public abstract class AbstractDomainGraphImpl {
 
     /**
      * Stop allocated resources specific to this domain graph.
-     *
-     * @throws UnoperationalStateException When problem during graph model close() operation.
      */
-    public void freeResources() throws UnoperationalStateException {
+    @Override
+    public void freeUpResources() {
         close();
     }
 

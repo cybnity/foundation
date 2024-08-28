@@ -1,0 +1,89 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>features-impl</artifactId>
+		<groupId>org.cybnity</groupId>
+		<version>${revision}</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<groupId>org.cybnity.features</groupId>
+	<artifactId>test</artifactId>
+	<version>${revision}</version>
+	<packaging>jar</packaging>
+	<name>- Test utilities library</name>
+	<dependencies>
+		<dependency>
+			<!-- Management and usage of environment variables -->
+			<groupId>uk.org.webcompere</groupId>
+			<artifactId>system-stubs-jupiter</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-suite</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.cybnity.framework</groupId>
+			<artifactId>vertx-common</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.cybnity.framework</groupId>
+			<artifactId>domain</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<!-- Embedded Redis test server (https://github.com/signalapp/embedded-redis) -->
+			<groupId>org.signal</groupId>
+			<artifactId>embedded-redis</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<!-- Integration with Redis middleware -->
+			<groupId>org.cybnity.features.technical.persistence</groupId>
+			<artifactId>redis-store</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<!-- Read-model repository supported as data layer element -->
+			<groupId>org.cybnity.features.technical.persistence</groupId>
+			<artifactId>janusgraph-repository</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<!-- Keycloak test server in docker image -->
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-junit5</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-unit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<!-- io.netty.resolver.dns.DnsServerAddressStreamProviders ignored about 'io.netty:netty-resolver-dns-native-macos" NOTIFICATION on Mac -->
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

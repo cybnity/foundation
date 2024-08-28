@@ -60,7 +60,7 @@ public class DomainEventInMemoryStoreImpl extends EventStore {
     }
 
     @Override
-    public void freeResources() {
+    public void freeUpResources() {
         registries.clear();
     }
 

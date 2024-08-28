@@ -65,12 +65,8 @@ public class SampleDomainTransactionsRepository extends AbstractReadModelReposit
      * Close the graph model.
      */
     @Override
-    public void freeResources() {
-        try {
-            this.graphModel().freeResources();
-        } catch (UnoperationalStateException e) {
-            throw new RuntimeException(e);
-        }
+    public void freeUpResources() {
+        this.graphModel().freeUpResources();
     }
 
     @Override
