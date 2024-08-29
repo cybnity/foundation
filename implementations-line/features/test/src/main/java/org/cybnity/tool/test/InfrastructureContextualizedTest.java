@@ -131,9 +131,9 @@ public class InfrastructureContextualizedTest {
     /**
      * Default constructor with Keycloak instance (when desired by parameter) not stopped after each unit test execution.
      *
-     * @param withRedis      True when Redis embedded server shall be started.
-     * @param withJanusGraph True when JanusGraph embedded server shall be started.
-     * @param withKeycloak   True when Keycloak embedded server shall be started.
+     * @param withRedis                     True when Redis embedded server shall be started.
+     * @param withJanusGraph                True when JanusGraph embedded server shall be started.
+     * @param withKeycloak                  True when Keycloak embedded server shall be started.
      * @param supportedBySnapshotRepository True when snapshots usage shall be configured for potential reuse by a store.
      */
     public InfrastructureContextualizedTest(boolean withRedis, boolean withJanusGraph, boolean withKeycloak, boolean supportedBySnapshotRepository) {
@@ -245,29 +245,31 @@ public class InfrastructureContextualizedTest {
      * Take care to call it in a subclass method if this method is redefined.
      */
     protected void initRedisEnvVariables() {
-        // Define environment variables regarding write model
-        environmentVariables.set(
-                WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD.getName(),
-                REDIS_DEFAULT_AUTH_PASSWORD);
-        environmentVariables.set(
-                WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_USERACCOUNT.getName(),
-                REDIS_CONNECTION_USER_ACCOUNT);
-        environmentVariables.set(WriteModelConfigurationVariable.REDIS_WRITEMODEL_DATABASE_NUMBER.getName(),
-                REDIS_DATABASE_NUMBER);
-        environmentVariables.set(WriteModelConfigurationVariable.REDIS_WRITEMODEL_SERVER_HOST.getName(), REDIS_SERVER_HOST);
-        environmentVariables.set(WriteModelConfigurationVariable.REDIS_WRITEMODEL_SERVER_PORT.getName(), Integer.toString(REDIS_SERVER_PORT));
+        if (environmentVariables != null) {
+            // Define environment variables regarding write model
+            environmentVariables.set(
+                    WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD.getName(),
+                    REDIS_DEFAULT_AUTH_PASSWORD);
+            environmentVariables.set(
+                    WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_USERACCOUNT.getName(),
+                    REDIS_CONNECTION_USER_ACCOUNT);
+            environmentVariables.set(WriteModelConfigurationVariable.REDIS_WRITEMODEL_DATABASE_NUMBER.getName(),
+                    REDIS_DATABASE_NUMBER);
+            environmentVariables.set(WriteModelConfigurationVariable.REDIS_WRITEMODEL_SERVER_HOST.getName(), REDIS_SERVER_HOST);
+            environmentVariables.set(WriteModelConfigurationVariable.REDIS_WRITEMODEL_SERVER_PORT.getName(), Integer.toString(REDIS_SERVER_PORT));
 
-        // Variables regarding read model
-        environmentVariables.set(
-                ReadModelConfigurationVariable.REDIS_READMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD.getName(),
-                REDIS_DEFAULT_AUTH_PASSWORD);
-        environmentVariables.set(
-                ReadModelConfigurationVariable.REDIS_READMODEL_CONNECTION_DEFAULT_USERACCOUNT.getName(),
-                REDIS_CONNECTION_USER_ACCOUNT);
-        environmentVariables.set(ReadModelConfigurationVariable.REDIS_READMODEL_DATABASE_NUMBER.getName(),
-                REDIS_DATABASE_NUMBER);
-        environmentVariables.set(ReadModelConfigurationVariable.REDIS_READMODEL_SERVER_HOST.getName(), REDIS_SERVER_HOST);
-        environmentVariables.set(ReadModelConfigurationVariable.REDIS_READMODEL_SERVER_PORT.getName(), Integer.toString(REDIS_SERVER_PORT));
+            // Variables regarding read model
+            environmentVariables.set(
+                    ReadModelConfigurationVariable.REDIS_READMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD.getName(),
+                    REDIS_DEFAULT_AUTH_PASSWORD);
+            environmentVariables.set(
+                    ReadModelConfigurationVariable.REDIS_READMODEL_CONNECTION_DEFAULT_USERACCOUNT.getName(),
+                    REDIS_CONNECTION_USER_ACCOUNT);
+            environmentVariables.set(ReadModelConfigurationVariable.REDIS_READMODEL_DATABASE_NUMBER.getName(),
+                    REDIS_DATABASE_NUMBER);
+            environmentVariables.set(ReadModelConfigurationVariable.REDIS_READMODEL_SERVER_HOST.getName(), REDIS_SERVER_HOST);
+            environmentVariables.set(ReadModelConfigurationVariable.REDIS_READMODEL_SERVER_PORT.getName(), Integer.toString(REDIS_SERVER_PORT));
+        }
     }
 
     /**
@@ -294,7 +296,7 @@ public class InfrastructureContextualizedTest {
         if (snapshotsRepo != null) {
             try {
                 snapshotsRepo.freeUpResources();
-            } catch(Exception ignored) {
+            } catch (Exception ignored) {
             }
         }
         snapshotsRepo = null;
@@ -302,7 +304,7 @@ public class InfrastructureContextualizedTest {
             try {
                 // Stop redis server used by worker
                 redisServer.stop();
-            } catch(Exception ignored) {
+            } catch (Exception ignored) {
             }
         }
         if (this.stopKeycloakAfterEach) {
@@ -356,6 +358,7 @@ public class InfrastructureContextualizedTest {
 
     /**
      * Get the started Redis server as defined by the constructor parameter.
+     *
      * @return A server instance ready for use. Or null.
      */
     final protected RedisServer getRedisServer() {
@@ -364,6 +367,7 @@ public class InfrastructureContextualizedTest {
 
     /**
      * Get session context.
+     *
      * @return A session context instance created for this test scope.
      */
     final protected ISessionContext sessionContext() {
