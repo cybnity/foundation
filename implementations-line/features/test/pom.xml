@@ -59,7 +59,28 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+			<!-- Graph in memory support -->
+			<groupId>org.janusgraph</groupId>
+			<artifactId>janusgraph-inmemory</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.janusgraph</groupId>
+			<artifactId>janusgraph-test</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<!-- Redefine default dependency version which is embedded by testcontainers and that include 2 vulnerabilities -->
+			<!-- The version ensuring CVE correction is managed by Techstack project's dependency management -->
+			<!-- Take care that dependency shall be before the testcontainers dependency declared, to force replacement of inherited version with CVE -->
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<!-- Keycloak test server in docker image -->
+			<!-- Be care full because inherited dependency include CVE -->
 			<groupId>org.testcontainers</groupId>
 			<artifactId>testcontainers</artifactId>
 			<scope>compile</scope>
@@ -69,16 +90,8 @@
 			<artifactId>junit-jupiter</artifactId>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>io.vertx</groupId>
-			<artifactId>vertx-junit5</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.vertx</groupId>
-			<artifactId>vertx-unit</artifactId>
-			<scope>test</scope>
-		</dependency>
+
+		<!-- Test dependencies -->
 		<dependency>
 			<!-- io.netty.resolver.dns.DnsServerAddressStreamProviders ignored about 'io.netty:netty-resolver-dns-native-macos" NOTIFICATION on Mac -->
 			<groupId>io.netty</groupId>

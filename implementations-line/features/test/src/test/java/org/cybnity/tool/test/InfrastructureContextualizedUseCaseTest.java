@@ -1,20 +1,17 @@
 package org.cybnity.tool.test;
 
-import io.vertx.junit5.VertxExtension;
 import org.cybnity.framework.domain.infrastructure.ISnapshotRepository;
 import org.cybnity.tool.test.sample.SampleDomainGraphImpl;
 import org.cybnity.tool.test.sample.SampleGraphRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.testcontainers.containers.GenericContainer;
 import redis.embedded.RedisServer;
 
 /**
  * Unit test validating the usage of the InfrastructureContextualizedTest utility class like could be done by a project reusing this facility.
  */
-@ExtendWith({VertxExtension.class})
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class InfrastructureContextualizedUseCaseTest extends InfrastructureContextualizedTest {
 
