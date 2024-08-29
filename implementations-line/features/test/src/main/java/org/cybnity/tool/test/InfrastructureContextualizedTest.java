@@ -208,13 +208,13 @@ public class InfrastructureContextualizedTest {
         context.addResource(JANUSGRAPH_STORAGE_BACKEND_TYPE, org.cybnity.infrastructure.technical.registry.adapter.impl.janusgraph.ReadModelConfigurationVariable.JANUSGRAPH_STORAGE_BACKEND.getName(), false);
     }
 
-    private void initKeycloakEnvVariables() {
+    protected void initKeycloakEnvVariables() {
         if (environmentVariables != null) {
             // Define environment variables regarding server initialization
         }
     }
 
-    private void initJanusGraphEnvVariables() {
+    protected void initJanusGraphEnvVariables() {
         if (environmentVariables != null) {
             // Define environment variables regarding server initialization
             environmentVariables.set(
@@ -223,7 +223,7 @@ public class InfrastructureContextualizedTest {
         }
     }
 
-    private void initRedisEnvVariables() {
+    protected void initRedisEnvVariables() {
         // Define environment variables regarding write model
         environmentVariables.set(
                 WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD.getName(),
@@ -249,7 +249,7 @@ public class InfrastructureContextualizedTest {
         environmentVariables.set(ReadModelConfigurationVariable.REDIS_READMODEL_SERVER_PORT.getName(), Integer.toString(REDIS_SERVER_PORT));
     }
 
-    private void initGatewayVariables() {
+    protected void initGatewayVariables() {
         // Define additional environment variables regarding gateway
         environmentVariables.set(
                 AppConfigurationVariable.ENDPOINT_HTTP_SERVER_PORT.getName(),
