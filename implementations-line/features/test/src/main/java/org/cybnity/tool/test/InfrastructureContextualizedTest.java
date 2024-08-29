@@ -141,7 +141,7 @@ public class InfrastructureContextualizedTest {
     }
 
     @BeforeEach
-    public void initServices() throws Exception {
+    final public void initServices() {
         // Initialize shared data and configurations
         logger = Logger.getLogger(this.getClass().getName());
         // Build reusable context
@@ -164,9 +164,9 @@ public class InfrastructureContextualizedTest {
     }
 
     /**
-     * Define runtime environment variable set.
+     * Define runtime environment variable sets relative to each server.
      */
-    protected void initEnvVariables() {
+    private void initEnvVariables() {
         if (this.activeJanusGraph)
             initJanusGraphEnvVariables();
         if (this.activeRedis)
@@ -176,6 +176,9 @@ public class InfrastructureContextualizedTest {
         initGatewayVariables();
     }
 
+    /**
+     * Start Keycloak server instance.
+     */
     private void setKeycloakServer() {
         // Get server image ready for start (singleton instance)
         boolean reusableActivation = !stopKeycloakAfterEach; // Inverse of reuse requested by this class constructor
@@ -186,6 +189,9 @@ public class InfrastructureContextualizedTest {
         Assertions.assertTrue(keycloak.isRunning(), "Shall have been started via command environment variable!");
     }
 
+    /**
+     * Start Redis server instance.
+     */
     private void setRedisServer() {
         // Start Redis instance (EmbeddedRedisExtension.class for Redis 6.0.5 used by default)
         // See https://redis.io/docs/management/config-file/ for more detail about supported start options
@@ -203,17 +209,28 @@ public class InfrastructureContextualizedTest {
         redisServer.start();
     }
 
+    /**
+     * Prepare JanusGraph server's specific required resources (e.g backend type).
+     */
     private void setJanusGraphServer(IContext context) {
         // Set configuration resources required by JanusGraph server
         context.addResource(JANUSGRAPH_STORAGE_BACKEND_TYPE, org.cybnity.infrastructure.technical.registry.adapter.impl.janusgraph.ReadModelConfigurationVariable.JANUSGRAPH_STORAGE_BACKEND.getName(), false);
     }
 
+    /**
+     * Define common variable required by Keycloak server to start.
+     * Take care to call it in a subclass method if this method is redefined.
+     */
     protected void initKeycloakEnvVariables() {
         if (environmentVariables != null) {
             // Define environment variables regarding server initialization
         }
     }
 
+    /**
+     * Define common variable required by JanusGraph server to start.
+     * Take care to call it in a subclass method if this method is redefined.
+     */
     protected void initJanusGraphEnvVariables() {
         if (environmentVariables != null) {
             // Define environment variables regarding server initialization
@@ -223,6 +240,10 @@ public class InfrastructureContextualizedTest {
         }
     }
 
+    /**
+     * Define common variable required by Redis server to start.
+     * Take care to call it in a subclass method if this method is redefined.
+     */
     protected void initRedisEnvVariables() {
         // Define environment variables regarding write model
         environmentVariables.set(
@@ -249,6 +270,10 @@ public class InfrastructureContextualizedTest {
         environmentVariables.set(ReadModelConfigurationVariable.REDIS_READMODEL_SERVER_PORT.getName(), Integer.toString(REDIS_SERVER_PORT));
     }
 
+    /**
+     * Define common variable required by Gateway server to start.
+     * Take care to call it in a subclass method if this method is redefined.
+     */
     protected void initGatewayVariables() {
         // Define additional environment variables regarding gateway
         environmentVariables.set(
@@ -315,7 +340,7 @@ public class InfrastructureContextualizedTest {
      *
      * @return A context instance including environment variable names and values.
      */
-    protected IContext context() {
+    final protected IContext context() {
         return this.context;
     }
 
@@ -325,7 +350,7 @@ public class InfrastructureContextualizedTest {
      *
      * @return Instance or null (when none started according to the test's constructor execution defined).
      */
-    protected GenericContainer<?> getKeycloak() {
+    final protected GenericContainer<?> getKeycloak() {
         return this.keycloak;
     }
 
@@ -333,7 +358,7 @@ public class InfrastructureContextualizedTest {
      * Get the started Redis server as defined by the constructor parameter.
      * @return A server instance ready for use. Or null.
      */
-    protected RedisServer getRedisServer() {
+    final protected RedisServer getRedisServer() {
         return this.redisServer;
     }
 
@@ -341,7 +366,7 @@ public class InfrastructureContextualizedTest {
      * Get session context.
      * @return A session context instance created for this test scope.
      */
-    protected ISessionContext sessionContext() {
+    final protected ISessionContext sessionContext() {
         return this.sessionCtx;
     }
 
