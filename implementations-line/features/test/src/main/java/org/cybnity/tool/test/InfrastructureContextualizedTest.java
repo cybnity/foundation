@@ -107,8 +107,19 @@ public class InfrastructureContextualizedTest {
 
     private ISessionContext sessionCtx;
 
+    /**
+     * Is Redis server shall be started in unit test execution context.
+     */
     private final boolean activeRedis;
+
+    /**
+     * Is JanusGraph server shall be started in unit test execution context.
+     */
     private final boolean activeJanusGraph;
+
+    /**
+     * Is Keycloak server shall be started in unit test execution context.
+     */
     private final boolean activeKeycloak;
 
     /**

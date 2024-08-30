@@ -13,6 +13,11 @@ import java.time.Duration;
 public class SSOTestContainer {
 
     /**
+     * Waiting time of Keycloak docker image start.
+     */
+    static public final Duration KEYCLOAK_STARTUP_TIMEOUT = Duration.ofSeconds(500);
+
+    /**
      * Singleton container.
      */
     static GenericContainer<?> KEYCLOAK_CONTAINER;
@@ -83,7 +88,7 @@ public class SSOTestContainer {
                     // See definition of each health check endpoints at https://www.keycloak.org/server/health#_keycloak_health_check_endpoints
                     .waitingFor(Wait.forHttp("/health"))
                     // Avoid image registry rate limiting (see https://java.testcontainers.org/features/startup_and_waits/#one-shot-startup-strategy-example)
-                    .withStartupTimeout(/* Image build by Quarkus is long */ Duration.ofSeconds(400))
+                    .withStartupTimeout(/* Image build by Quarkus is long */ KEYCLOAK_STARTUP_TIMEOUT)
                     // Enable reusable container (see https://java.testcontainers.org/features/reuse/)
                     .withReuse(reuseActivation);
         }
