@@ -49,8 +49,19 @@ public class InfrastructureContextualizedTest {
     @SystemStub
     protected EnvironmentVariables environmentVariables;
 
-    static protected Integer GATEWAY_HTTP_SERVER_PORT = 8080;
+    /**
+     * Gateway port shall be different from Keycloak server's port (using 8080 http)
+     */
+    static protected Integer GATEWAY_HTTP_SERVER_PORT = 8082;
+
+    /**
+     * Default quantity of vertx instances started.
+     */
     static protected int WORKER_INSTANCES = 1;
+
+    /**
+     * Default quantity of vertx worker thread defined in pool.
+     */
     static protected int WORKER_THREAD_POOL = 1;
 
     /**
