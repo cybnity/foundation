@@ -52,12 +52,22 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
     private final IContext context;
 
     /**
+     * Less instantiation constructor required by Vertx deployment without pre-determined context.
+     *
+     * @throws UnoperationalStateException When problem of context configuration (e.g missing environment variable defined to join the UIS or DIS).
+     */
+    public AbstractEndpointPipelineImpl() throws UnoperationalStateException {
+        this(null);
+    }
+
+    /**
      * Default constructor.
      *
      * @param ctx Optional current context.
      * @throws UnoperationalStateException When problem of context configuration (e.g missing environment variable defined to join the UIS or DIS).
      */
     public AbstractEndpointPipelineImpl(IContext ctx) throws UnoperationalStateException {
+        super();
         try {
             // Reuse defined context or instantiate a new one
             this.context = (ctx != null) ? ctx : new Context();

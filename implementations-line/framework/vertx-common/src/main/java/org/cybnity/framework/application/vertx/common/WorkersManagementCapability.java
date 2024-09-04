@@ -139,9 +139,9 @@ public class WorkersManagementCapability {
     public void configureWorkerThreadsPoolSize(DeploymentOptions options) {
         if (options != null) {
             // Define worker threads pool size
-            String workerInstances = context.get(AppConfigurationVariable.DOMAIN_WORKER_THREAD_POOL_SIZE);
-            if (!"".equalsIgnoreCase(workerInstances))
-                options.setInstances(Integer.parseInt(workerInstances));
+            String workersPoolSize = context.get(AppConfigurationVariable.DOMAIN_WORKER_THREAD_POOL_SIZE);
+            if (!"".equalsIgnoreCase(workersPoolSize))
+                options.setInstances(Integer.parseInt(workersPoolSize));
         }
     }
 
