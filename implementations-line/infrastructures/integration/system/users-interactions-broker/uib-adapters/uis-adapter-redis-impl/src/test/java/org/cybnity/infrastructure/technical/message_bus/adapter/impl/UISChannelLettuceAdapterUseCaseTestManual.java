@@ -1,4 +1,4 @@
-package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
+package org.cybnity.infrastructure.technical.message_bus.adapter.impl;
 
 import org.cybnity.framework.domain.*;
 import org.cybnity.framework.domain.event.CollaborationEventType;
@@ -6,6 +6,10 @@ import org.cybnity.framework.domain.event.CorrelationIdFactory;
 import org.cybnity.framework.domain.event.ProcessingUnitPresenceAnnounced;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.ChannelObserverImpl;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.ContextualizedRedisActiveTestContainer;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.MessageMapperFactory;
+import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.UISAdapterRedisImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,9 +25,9 @@ import java.util.logging.Logger;
  * This test is available for local and manual test from developer workstation because asserts relative to time observation for validation of the async messages receptions can be variant according to the hardware platform performance used during this test run.
  */
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class UISChannelLettuceAdapterUseCaseTest extends ContextualizedRedisActiveTestContainer {
+public class UISChannelLettuceAdapterUseCaseTestManual extends ContextualizedRedisActiveTestContainer {
 
-    private final Logger logger = Logger.getLogger(UISChannelLettuceAdapterUseCaseTest.class.getName());
+    private final Logger logger = Logger.getLogger(UISChannelLettuceAdapterUseCaseTestManual.class.getName());
 
     private UISAdapter adapter;
 
