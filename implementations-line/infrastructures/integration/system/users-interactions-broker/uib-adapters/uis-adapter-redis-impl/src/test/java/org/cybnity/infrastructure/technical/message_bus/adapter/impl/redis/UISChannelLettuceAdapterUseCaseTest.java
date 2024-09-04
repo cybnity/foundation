@@ -1,4 +1,4 @@
-package org.cybnity.infrastructure.technical.message_bus.adapter.impl;
+package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis;
 
 import org.cybnity.framework.domain.*;
 import org.cybnity.framework.domain.event.CollaborationEventType;
@@ -6,10 +6,6 @@ import org.cybnity.framework.domain.event.CorrelationIdFactory;
 import org.cybnity.framework.domain.event.ProcessingUnitPresenceAnnounced;
 import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.*;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.ChannelObserverImpl;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.ContextualizedRedisActiveTestContainer;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.MessageMapperFactory;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.UISAdapterRedisImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,9 +21,9 @@ import java.util.logging.Logger;
  * This test is available for local and manual test from developer workstation because asserts relative to time observation for validation of the async messages receptions can be variant according to the hardware platform performance used during this test run.
  */
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class UISChannelLettuceAdapterUseCaseTestManual extends ContextualizedRedisActiveTestContainer {
+public class UISChannelLettuceAdapterUseCaseTest extends ContextualizedRedisActiveTestContainer {
 
-    private final Logger logger = Logger.getLogger(UISChannelLettuceAdapterUseCaseTestManual.class.getName());
+    private final Logger logger = Logger.getLogger(UISChannelLettuceAdapterUseCaseTest.class.getName());
 
     private UISAdapter adapter;
 
@@ -160,7 +156,7 @@ public class UISChannelLettuceAdapterUseCaseTestManual extends ContextualizedRed
         second.join();
 
         // Wait for give time to message to be processed
-        Assertions.assertTrue(waiter.await(80 /* large wait time is required when test executed on low-performant build worker on CI environment */, TimeUnit.SECONDS), "Timeout reached before messages treated! Sufficient waiting time to check (in case of required increasing according to the test computer performance)");// Wait confirmation of processed message before timeout
+        Assertions.assertTrue(waiter.await(180 /* large wait time is required when test executed on low-performant build worker on CI environment */, TimeUnit.SECONDS), "Timeout reached before messages treated! Sufficient waiting time to check (in case of required increasing according to the test computer performance)");// Wait confirmation of processed message before timeout
 
         // Check that all published messages (qtyOfMessageToProcess) had been treated by observers
         // messagesToProcess shall be empty (all prepared message correlation identifiers shall have been removed as processed with success by observer)

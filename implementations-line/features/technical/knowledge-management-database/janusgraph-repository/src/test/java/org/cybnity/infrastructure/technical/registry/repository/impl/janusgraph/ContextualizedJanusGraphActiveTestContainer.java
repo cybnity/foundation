@@ -2,8 +2,6 @@ package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph
 
 import org.cybnity.framework.Context;
 import org.cybnity.framework.IContext;
-import org.cybnity.framework.domain.ISessionContext;
-import org.cybnity.framework.domain.model.SessionContext;
 import org.cybnity.infrastructure.technical.registry.adapter.impl.janusgraph.ReadModelConfigurationVariable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,14 +41,12 @@ public class ContextualizedJanusGraphActiveTestContainer {
      **/
     private IContext ctx;
 
-    protected ISessionContext sessionCtx;
-
     /**
      * Get test context.
      *
      * @return A context instance including environment variable names and values.
      */
-    protected IContext getContext() {
+    protected IContext context() {
         return this.ctx;
     }
 
@@ -59,7 +55,6 @@ public class ContextualizedJanusGraphActiveTestContainer {
         logger = Logger.getLogger(this.getClass().getName());
         // Build reusable context
         this.ctx = new Context();
-        this.sessionCtx = new SessionContext(null);
         ctx.addResource(STORAGE_BACKEND_TYPE, ReadModelConfigurationVariable.JANUSGRAPH_STORAGE_BACKEND.getName(), false);
 
         // Synchronize environment variables test values
@@ -86,7 +81,7 @@ public class ContextualizedJanusGraphActiveTestContainer {
     public static IContext getContextInstance() {
         ContextualizedJanusGraphActiveTestContainer c = new ContextualizedJanusGraphActiveTestContainer();
         c.initJanusGraphConnectionChainValues();
-        return c.getContext();
+        return c.context();
     }
 
     @AfterEach

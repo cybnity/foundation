@@ -30,8 +30,6 @@ public class InfrastructureContextualizedUseCaseTest extends InfrastructureConte
      */
     @Test
     public void givenStartedServers_whenUsed_thenOperationalStateConfirmed() throws Exception {
-        // Verification that session context have been created
-        Assertions.assertNotNull(sessionContext(), "Shall have been prepared before any test execution!");
         // Verification that context instance have been prepared
         Assertions.assertNotNull(context(), "Shall have been prepared before any test execution!");
 

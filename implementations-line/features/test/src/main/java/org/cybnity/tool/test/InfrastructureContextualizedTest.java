@@ -4,9 +4,7 @@ import org.cybnity.framework.Context;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.application.vertx.common.AppConfigurationVariable;
-import org.cybnity.framework.domain.ISessionContext;
 import org.cybnity.framework.domain.infrastructure.ISnapshotRepository;
-import org.cybnity.framework.domain.model.SessionContext;
 import org.cybnity.infastructure.technical.persistence.store.impl.redis.SnapshotRepositoryRedisImpl;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.ReadModelConfigurationVariable;
 import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.WriteModelConfigurationVariable;
@@ -105,8 +103,6 @@ public class InfrastructureContextualizedTest {
      */
     static public final String JANUSGRAPH_STORAGE_BACKEND_TYPE = "inmemory";
 
-    private ISessionContext sessionCtx;
-
     /**
      * Is Redis server shall be started in unit test execution context.
      */
@@ -164,11 +160,10 @@ public class InfrastructureContextualizedTest {
 
     @BeforeEach
     final public void initServices() {
-        // Initialize shared data and configurations
-        logger = Logger.getLogger(this.getClass().getName());
         // Build reusable context
         this.context = new Context();
-        this.sessionCtx = new SessionContext(null);
+        // Initialize shared data and configurations
+        logger = Logger.getLogger(this.getClass().getName());
 
         if (this.activeJanusGraph)
             // Set JanusGraph repository environment
@@ -385,15 +380,6 @@ public class InfrastructureContextualizedTest {
      */
     final protected RedisServer getRedisServer() {
         return this.redisServer;
-    }
-
-    /**
-     * Get session context.
-     *
-     * @return A session context instance created for this test scope.
-     */
-    final protected ISessionContext sessionContext() {
-        return this.sessionCtx;
     }
 
 }

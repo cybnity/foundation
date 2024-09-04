@@ -13,7 +13,7 @@ import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 /**
- * Auto configuration and start of Redis container usable during a test execution.
+ * Auto-configuration and start of Redis container usable during a test execution.
  * Each unit test requiring a redis container started shall extend this class.
  * EmbeddedRedisExtension.class for Redis 6.0.5 used by default
  **/

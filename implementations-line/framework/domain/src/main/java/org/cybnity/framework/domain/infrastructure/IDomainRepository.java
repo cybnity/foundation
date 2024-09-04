@@ -1,8 +1,8 @@
 package org.cybnity.framework.domain.infrastructure;
 
+import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.ICleanup;
-import org.cybnity.framework.domain.ISessionContext;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.persistence.IFactRepository;
 import org.cybnity.framework.support.annotation.Requirement;
@@ -34,7 +34,7 @@ public interface IDomainRepository<T> extends IFactRepository<T>, ICleanup {
      *            id) usable for persistence management.
      * @return A technical identifier.
      */
-    public T nextIdentity(ISessionContext ctx);
+    public T nextIdentity(IContext ctx);
 
     /**
      * Find a historical fact identified.
@@ -44,7 +44,7 @@ public interface IDomainRepository<T> extends IFactRepository<T>, ICleanup {
      *                tenant id) usable for persistence management.
      * @return Found fact or null.
      */
-    public T factOfId(Identifier aFactId, ISessionContext ctx);
+    public T factOfId(Identifier aFactId, IContext ctx);
 
     /**
      * Delete a fact from this repository.
@@ -55,7 +55,7 @@ public interface IDomainRepository<T> extends IFactRepository<T>, ICleanup {
      * @return True if previous existent item was found and was removed from this
      * repository. False if none previous fact found and removed.
      */
-    public boolean remove(T fact, ISessionContext ctx);
+    public boolean remove(T fact, IContext ctx);
 
     /**
      * Delete a collection of facts from this repository.
@@ -64,7 +64,7 @@ public interface IDomainRepository<T> extends IFactRepository<T>, ICleanup {
      * @param ctx              Optional context of persistence providing elements
      *                         (e.g tenant id) usable for persistence management.
      */
-    public void removeAll(Collection<T> aFactsCollection, ISessionContext ctx);
+    public void removeAll(Collection<T> aFactsCollection, IContext ctx);
 
     /**
      * Save an instance of fact into this repository.
@@ -76,7 +76,7 @@ public interface IDomainRepository<T> extends IFactRepository<T>, ICleanup {
      * auto-generated if new one created for the saved instance). Null if no
      * saved fact.
      */
-    public T save(T aFact, ISessionContext ctx);
+    public T save(T aFact, IContext ctx);
 
     /**
      * Save a collection of facts into this repository.
@@ -85,7 +85,7 @@ public interface IDomainRepository<T> extends IFactRepository<T>, ICleanup {
      * @param ctx             Optional context of persistence providing elements
      *                        (e.g tenant id) usable for persistence management.
      */
-    public void saveAll(Collection<T> aFactCollection, ISessionContext ctx);
+    public void saveAll(Collection<T> aFactCollection, IContext ctx);
 
     /**
      * Find facts from specific parameters.
@@ -97,7 +97,7 @@ public interface IDomainRepository<T> extends IFactRepository<T>, ICleanup {
      * @throws UnsupportedOperationException When impossible execution of requested query.
      * @throws UnoperationalStateException   When query execution technical problem occurred.
      */
-    public List<T> queryWhere(Map<String, String> queryParameters, ISessionContext ctx) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException;
+    public List<T> queryWhere(Map<String, String> queryParameters, IContext ctx) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException;
 
     /**
      * Get the name of the search criteria that can be evaluated to identify a query.
