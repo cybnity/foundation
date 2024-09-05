@@ -29,7 +29,7 @@ public enum WriteModelConfigurationVariable implements IReadableConfiguration {
     /**
      * Redis Kubernetes configuration's REDISCLI_AUTH environment variable
      */
-    REDIS_WRITEMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD("REDISCLI_AUTH"),
+    REDISCLI_AUTH("REDISCLI_AUTH"),
     /**
      * Index of the database dedicated to the write model
      */

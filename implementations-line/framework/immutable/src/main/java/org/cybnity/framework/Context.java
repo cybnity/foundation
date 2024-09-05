@@ -33,7 +33,7 @@ public class Context implements IContext {
     public boolean remove(String resourceName) {
         boolean wasRemoved = false;
         if (resourceName != null && !resourceName.isBlank()) {
-            // Find existant resources with equals name
+            // Find existing resources with equals name
             wasRemoved = (resources.remove(resourceName) != null);
         }
         return wasRemoved;

@@ -24,8 +24,8 @@ public class DefinedEnvVariableVerificationRule {
     static public void verifyEnvironmentVariablesDefinedForContext(IContext ctx, boolean redisCheck, boolean janusGraphCheck, boolean keycloakCheck, boolean gatewayCheck) throws IllegalArgumentException {
         if (redisCheck) {
             // Search a Redis variable (sampling)
-            Assertions.assertNotNull(ctx.get(WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD), "Should be retrieved by context from the system current env!"); // from enum
-            Assertions.assertNotNull(ctx.get(WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD.getName()), "Should be retrieved by context from the system current env!"); // from resource name
+            Assertions.assertNotNull(ctx.get(WriteModelConfigurationVariable.REDISCLI_AUTH), "Should be retrieved by context from the system current env!"); // from enum
+            Assertions.assertNotNull(ctx.get(WriteModelConfigurationVariable.REDISCLI_AUTH.getName()), "Should be retrieved by context from the system current env!"); // from resource name
         }
         if (janusGraphCheck) {
             // Search a JanusGraph variable (sampling)

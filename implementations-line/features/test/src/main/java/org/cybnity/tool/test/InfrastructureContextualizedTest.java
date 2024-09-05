@@ -265,7 +265,7 @@ public class InfrastructureContextualizedTest {
         if (environmentVariables != null) {
             // Define environment variables regarding write model
             environmentVariables.set(
-                    WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD.getName(),
+                    WriteModelConfigurationVariable.REDISCLI_AUTH.getName(),
                     REDIS_DEFAULT_AUTH_PASSWORD);
             environmentVariables.set(
                     WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_USERACCOUNT.getName(),
@@ -276,9 +276,6 @@ public class InfrastructureContextualizedTest {
             environmentVariables.set(WriteModelConfigurationVariable.REDIS_WRITEMODEL_SERVER_PORT.getName(), Integer.toString(REDIS_SERVER_PORT));
 
             // Variables regarding read model
-            environmentVariables.set(
-                    ReadModelConfigurationVariable.REDIS_READMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD.getName(),
-                    REDIS_DEFAULT_AUTH_PASSWORD);
             environmentVariables.set(
                     ReadModelConfigurationVariable.REDIS_READMODEL_CONNECTION_DEFAULT_USERACCOUNT.getName(),
                     REDIS_CONNECTION_USER_ACCOUNT);
