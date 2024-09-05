@@ -166,6 +166,8 @@ public class InfrastructureContextualizedTest {
         logger = Logger.getLogger(this.getClass().getName());
 
         // Synchronize all environment variables test values
+        if (this.environmentVariables == null)
+            this.environmentVariables = new EnvironmentVariables(); // Init in place of injection protocol managed by extension
         initEnvVariables();
 
         if (this.activeJanusGraph)
