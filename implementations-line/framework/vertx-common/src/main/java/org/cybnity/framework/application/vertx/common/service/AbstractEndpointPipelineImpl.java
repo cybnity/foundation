@@ -139,6 +139,9 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
      */
     @Override
     public void stop() {
+        // Execute by default the stop operations relative to channels and streams previously observed
+        super.stop();
+
         // Tag the current operational as ended and no active status
         currentPresenceStatus = PresenceState.UNAVAILABLE;
 
@@ -152,9 +155,6 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
             if (logger != null)
                 logger.log(Level.SEVERE, me.getMessage(), me);
         }
-
-        // Execute by default the stop operations relative to channels and streams previously observed
-        super.stop();
     }
 
     @Override
