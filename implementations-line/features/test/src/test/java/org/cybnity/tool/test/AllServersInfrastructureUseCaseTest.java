@@ -1,12 +1,8 @@
 package org.cybnity.tool.test;
 
-import org.cybnity.framework.IContext;
-import org.cybnity.framework.application.vertx.common.AppConfigurationVariable;
 import org.cybnity.framework.domain.infrastructure.ISnapshotRepository;
-import org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.WriteModelConfigurationVariable;
 import org.cybnity.tool.test.sample.SampleDomainGraphImpl;
 import org.cybnity.tool.test.sample.SampleGraphRepository;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
