@@ -10,7 +10,7 @@ import org.junit.platform.suite.api.Suite;
  * @author olivier
  */
 @Suite
-@SelectClasses({InfrastructureContextualizedUseCaseTest.class})
+@SelectClasses({RedisOnlyServerInfrastructureUseCaseTest.class, RedisAndJanusGraphOnlyServersInfrastructureUseCaseTest.class, AllServersInfrastructureUseCaseTest.class})
 public class AllUseCaseTests {
 
 }

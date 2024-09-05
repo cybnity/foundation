@@ -165,17 +165,15 @@ public class InfrastructureContextualizedTest {
         // Initialize shared data and configurations
         logger = Logger.getLogger(this.getClass().getName());
 
-        if (this.activeJanusGraph)
-            // Set JanusGraph repository environment
-            setJanusGraphServer(this.context);
-
         // Synchronize all environment variables test values
         initEnvVariables();
 
+        if (this.activeJanusGraph)
+            // Set JanusGraph repository environment
+            setJanusGraphServer(this.context);
         if (this.activeRedis)
             // Set Redis server environment
             setRedisServer();
-
         if (this.activeKeycloak) // Set Keycloak server environment
             setKeycloakServer();
     }
@@ -209,7 +207,7 @@ public class InfrastructureContextualizedTest {
     /**
      * Start Redis server instance.
      */
-    private void setRedisServer() {
+    private synchronized void setRedisServer() {
         // Start Redis instance (EmbeddedRedisExtension.class for Redis 6.0.5 used by default)
         // See https://redis.io/docs/management/config-file/ for more detail about supported start options
         redisServer = RedisServer.builder().port(REDIS_SERVER_PORT)
@@ -333,7 +331,6 @@ public class InfrastructureContextualizedTest {
                 }
             }
         }
-        this.environmentVariables = null;
         this.redisServer = null;
         this.keycloak = null;
         context = null;
