@@ -34,7 +34,7 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
     /**
      * Client managing interactions with Users Interactions Space.
      */
-    protected final UISAdapter uisClient;
+    protected UISAdapter uisClient;
 
     /**
      * Collection of fact event consumers (observing DIS entry items) of streams managed by this worker.
@@ -49,7 +49,7 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
     /**
      * Current context of this pipeline.
      */
-    private final IContext context;
+    private IContext context;
 
     /**
      * Less instantiation constructor required by Vertx deployment without pre-determined context.
@@ -57,7 +57,9 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
      * @throws UnoperationalStateException When problem of context configuration (e.g missing environment variable defined to join the UIS or DIS).
      */
     public AbstractEndpointPipelineImpl() throws UnoperationalStateException {
-        this(null);
+        super();
+        setContext(null);
+        initUISClient();
     }
 
     /**
@@ -68,18 +70,45 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
      */
     public AbstractEndpointPipelineImpl(IContext ctx) throws UnoperationalStateException {
         super();
-        try {
-            // Reuse defined context or instantiate a new one
-            this.context = (ctx != null) ? ctx : new Context();
+        setContext(ctx);
+        initUISClient();
+    }
 
+    /**
+     * Initialize a connector to User Interface Space.
+     *
+     * @throws UnoperationalStateException When problem of current context configuration (e.g missing environment variable defined to join the UIS or DIS), or when not found current context.
+     */
+    private void initUISClient() throws UnoperationalStateException {
+        try {
             // Prepare client configured for interactions with the UIS
             // according to the defined environment variables (autonomous connection from worker to UIS)
             // defined on the runtime server executing this worker
-            uisClient = new UISAdapterRedisImpl(this.context /* Current context of adapter runtime*/);
+            uisClient = new UISAdapterRedisImpl(context() /* Current context of adapter runtime*/);
         } catch (IllegalArgumentException iae) {
             // Problem of context read
             throw new UnoperationalStateException(iae);
         }
+    }
+
+    /**
+     * Set an existing current context as current context.
+     * Or when null, instantiate a new one as current context of this pipeline.
+     *
+     * @param ctx Optional context to defined as current context.
+     */
+    private void setContext(IContext ctx) {
+        // Reuse defined context or instantiate a new one
+        this.context = (ctx != null) ? ctx : new Context();
+    }
+
+    /**
+     * Get the current context.
+     *
+     * @return A current context that was provided to this pipeline during constructor execution. Or new context initialized when constructor context parameter was not defined from an existing context.
+     */
+    protected IContext context() {
+        return this.context;
     }
 
     /**
@@ -144,15 +173,6 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
      * @return A dedicated and customized logger instance singleton.
      */
     protected abstract Logger logger();
-
-    /**
-     * Get the current context.
-     *
-     * @return A current context that was provided to this pipeline during constructor execution. Or new context initialized when constructor context parameter was not defined from an existing context.
-     */
-    protected IContext context() {
-        return this.context;
-    }
 
     /**
      * Read the current operational presence status.
