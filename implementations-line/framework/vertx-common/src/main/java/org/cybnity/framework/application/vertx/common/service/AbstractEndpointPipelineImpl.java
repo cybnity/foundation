@@ -139,11 +139,11 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
      */
     @Override
     public void stop() {
-        // Execute by default the stop operations relative to channels and streams previously observed
-        super.stop();
-
         // Tag the current operational as ended and no active status
         currentPresenceStatus = PresenceState.UNAVAILABLE;
+
+        // Execute by default the stop operations relative to channels and streams previously observed
+        super.stop();
 
         // Notify any other component about the processing unit presence in end of lifecycle status
         try {
