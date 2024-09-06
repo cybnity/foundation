@@ -22,7 +22,7 @@ public class RedisURIFactory {
                     .redis(ctx.get(WriteModelConfigurationVariable.REDIS_WRITEMODEL_SERVER_HOST), Integer.parseInt(ctx.get(WriteModelConfigurationVariable.REDIS_WRITEMODEL_SERVER_PORT)));
 
             return builder
-                    .withAuthentication(/* username*/ ctx.get(WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_USERACCOUNT), /* password */ctx.get(WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD))
+                    .withAuthentication(/* username*/ ctx.get(WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_USERACCOUNT), /* password */ctx.get(WriteModelConfigurationVariable.REDISCLI_AUTH))
                     .withDatabase(Integer.parseInt(ctx.get(WriteModelConfigurationVariable.REDIS_WRITEMODEL_DATABASE_NUMBER)))
                     .withHost(ctx.get(WriteModelConfigurationVariable.REDIS_WRITEMODEL_SERVER_HOST))
                     .withPort(Integer.parseInt(ctx.get(WriteModelConfigurationVariable.REDIS_WRITEMODEL_SERVER_PORT)))

@@ -94,6 +94,7 @@ Several categories of features are implemented through Java libraries regarding:
 - [technical](features/technical): features providing technical services (e.g strongbox, traceability, versioning, encryption) and implementing reusable functions by any CYBNITY component
 - [transport](features/transport): features relative to communication layer between systems and/or application components (e.g firewalling, network monitoring)
 - [workflow-process](features/workflow-process): features providing generic workflow and processes management implementation models
+- [Test library](features/test/README.md): java test library of utility elements reusable by unit tests of any CYBNITY project. Provide utility classes that realize common behaviour that make sens for standard test execution in implementation projects.
 
 ### Domain Layer
 Each application domain can more or less separate its features in micro-services as deployable **Feature Modules** to manage the processing parallelization via Real-Time Stream Computation Units.

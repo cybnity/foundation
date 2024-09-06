@@ -21,8 +21,11 @@ public class UICapabilitiesHTTPRouterImpl extends RouterImpl {
 
 	/**
 	 * Initialize all the routes supported by this routing service.
+	 * @param router Mandatory router.
+	 * @throws IllegalArgumentException When mandatory parameter is missing.
 	 */
-	static public void initRoutes(Router router) {
+	static public void initRoutes(Router router) throws IllegalArgumentException {
+		if (router ==null) throw new IllegalArgumentException("Router parameter is required!");
 		// Mount the handlers for all incoming requests at every path and HTTP method
 		// via creation of the several routes supported
 		router.get("/acsc/").produces("application/json").handler(context -> {
@@ -37,17 +40,18 @@ public class UICapabilitiesHTTPRouterImpl extends RouterImpl {
 	/**
 	 * Simulate a JSON answer provided on HTTP protocol by an API service.
 	 *
-	 * @param context
-	 * @param calledResourceName
+	 * @param context Mandatory context.
+	 * @param calledResourceName Mandatory resource name.
+	 * @throws IllegalArgumentException When mandatory parameter is missing.
 	 */
-	static public void sendJSONUICapabilityResponse(RoutingContext context, String calledResourceName) {
+	static public void sendJSONUICapabilityResponse(RoutingContext context, String calledResourceName) throws IllegalArgumentException {
 		// Get the address of the request
 		String address = context.request().connection().remoteAddress().toString();
 		// Get the query parameter "name"
 		MultiMap queryParams = context.queryParams();
 		String name = queryParams.contains("name") ? queryParams.get("name") : "unknown";
-		// Write a json response (re­turns a JSON ob­ject con­tain­ing the ad­dress of
-		// the re­quest, the query pa­ra­me­ter name, and a greet­ing mes­sage)
+		// Write a json response (returns a JSON object containing the address of
+		// the request, the query parameter name, and a greeting message)
 		String json = new JsonObject().put("name", name).put("address", address).put("message",
 				"Hello " + name + " (connected from " + address) + "), welcome on the called resource ("
 				+ calledResourceName + ")";

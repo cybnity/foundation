@@ -43,11 +43,11 @@ public class UISPersistentStreamAdapterUseCaseTest extends ContextualizedRedisAc
 
     @AfterEach
     public void cleanValues() {
-        if (persistenceOrientedStore != null) persistenceOrientedStore.freeResources();
+        if (persistenceOrientedStore != null) persistenceOrientedStore.freeUpResources();
         persistenceOrientedStore = null;
         persistentObjectNamingConvention = null;
         dataOwner = null;
-        if (snapshotsRepo != null) snapshotsRepo.freeResources();
+        if (snapshotsRepo != null) snapshotsRepo.freeUpResources();
         snapshotsRepo = null;
         super.cleanValues();
     }

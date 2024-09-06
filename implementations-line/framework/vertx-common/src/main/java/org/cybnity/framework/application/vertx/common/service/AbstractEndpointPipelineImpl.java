@@ -2,6 +2,7 @@ package org.cybnity.framework.application.vertx.common.service;
 
 import io.lettuce.core.StreamMessage;
 import org.cybnity.framework.Context;
+import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.application.vertx.common.AbstractMessageConsumerEndpoint;
 import org.cybnity.framework.application.vertx.common.routing.GatewayRecipientsManagerObserver;
@@ -33,7 +34,7 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
     /**
      * Client managing interactions with Users Interactions Space.
      */
-    protected final UISAdapter uisClient;
+    protected UISAdapter uisClient;
 
     /**
      * Collection of fact event consumers (observing DIS entry items) of streams managed by this worker.
@@ -46,20 +47,68 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
     protected final Collection<ChannelObserver> topicsConsumers = new ArrayList<>();
 
     /**
-     * Default constructor.
+     * Current context of this pipeline.
+     */
+    private IContext context;
+
+    /**
+     * Less instantiation constructor required by Vertx deployment without pre-determined context.
      *
      * @throws UnoperationalStateException When problem of context configuration (e.g missing environment variable defined to join the UIS or DIS).
      */
     public AbstractEndpointPipelineImpl() throws UnoperationalStateException {
+        super();
+        setContext(null);
+        initUISClient();
+    }
+
+    /**
+     * Default constructor.
+     *
+     * @param ctx Optional current context.
+     * @throws UnoperationalStateException When problem of context configuration (e.g missing environment variable defined to join the UIS or DIS).
+     */
+    public AbstractEndpointPipelineImpl(IContext ctx) throws UnoperationalStateException {
+        super();
+        setContext(ctx);
+        initUISClient();
+    }
+
+    /**
+     * Initialize a connector to User Interface Space.
+     *
+     * @throws UnoperationalStateException When problem of current context configuration (e.g missing environment variable defined to join the UIS or DIS), or when not found current context.
+     */
+    private void initUISClient() throws UnoperationalStateException {
         try {
             // Prepare client configured for interactions with the UIS
             // according to the defined environment variables (autonomous connection from worker to UIS)
             // defined on the runtime server executing this worker
-            uisClient = new UISAdapterRedisImpl(new Context() /* Current context of adapter runtime*/);
+            uisClient = new UISAdapterRedisImpl(context() /* Current context of adapter runtime*/);
         } catch (IllegalArgumentException iae) {
             // Problem of context read
             throw new UnoperationalStateException(iae);
         }
+    }
+
+    /**
+     * Set an existing current context as current context.
+     * Or when null, instantiate a new one as current context of this pipeline.
+     *
+     * @param ctx Optional context to defined as current context.
+     */
+    private void setContext(IContext ctx) {
+        // Reuse defined context or instantiate a new one
+        this.context = (ctx != null) ? ctx : new Context();
+    }
+
+    /**
+     * Get the current context.
+     *
+     * @return A current context that was provided to this pipeline during constructor execution. Or new context initialized when constructor context parameter was not defined from an existing context.
+     */
+    protected IContext context() {
+        return this.context;
     }
 
     /**
@@ -93,6 +142,9 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
         // Tag the current operational as ended and no active status
         currentPresenceStatus = PresenceState.UNAVAILABLE;
 
+        // Execute by default the stop operations relative to channels and streams previously observed
+        super.stop();
+
         // Notify any other component about the processing unit presence in end of lifecycle status
         try {
             // Promote announce about the supported event types consumption end by this pipeline
@@ -103,9 +155,6 @@ public abstract class AbstractEndpointPipelineImpl extends AbstractMessageConsum
             if (logger != null)
                 logger.log(Level.SEVERE, me.getMessage(), me);
         }
-
-        // Execute by default the stop operations relative to channels and streams previously observed
-        super.stop();
     }
 
     @Override

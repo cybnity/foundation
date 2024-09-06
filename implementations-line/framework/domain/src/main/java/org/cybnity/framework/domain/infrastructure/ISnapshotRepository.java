@@ -1,6 +1,7 @@
 package org.cybnity.framework.domain.infrastructure;
 
 import org.cybnity.framework.UnoperationalStateException;
+import org.cybnity.framework.domain.ICleanup;
 import org.cybnity.framework.domain.model.ISnapshot;
 
 /**
@@ -9,12 +10,7 @@ import org.cybnity.framework.domain.model.ISnapshot;
  * This capability allow to produce or to find the latest snapshot of an Aggregate instance as snapshots which are serialized copies of an Aggregate's full state, taken at certain moments in time, and that
  * can reside in an Event Stream as specific versions.
  */
-public interface ISnapshotRepository {
-
-    /**
-     * Stop allocated resources specific to this repository (e.g database access...).
-     */
-    void freeResources();
+public interface ISnapshotRepository extends ICleanup {
 
     /**
      * Find latest snapshot of a domain object identifier (subject that have been source of snapshot).

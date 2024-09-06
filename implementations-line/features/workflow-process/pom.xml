@@ -10,7 +10,7 @@
 	<artifactId>workflow-process</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Workflow and process features</name>
+	<name>Workflow &amp; process features</name>
 	<modules>
 		<module>security-activity-orchestration</module>
 		<module>defense-template</module>

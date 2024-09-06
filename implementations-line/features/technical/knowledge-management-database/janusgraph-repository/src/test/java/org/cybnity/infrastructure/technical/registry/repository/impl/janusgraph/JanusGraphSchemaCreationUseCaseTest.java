@@ -41,7 +41,7 @@ public class JanusGraphSchemaCreationUseCaseTest extends ContextualizedJanusGrap
 
     @Test
     public void createSchema() throws ConfigurationException, IOException, UnoperationalStateException {
-        final JanusGraphAppSampleAbstractImpl app = new JanusGraphAppSampleAbstractImpl(this.getContext());
+        final JanusGraphAppSampleAbstractImpl app = new JanusGraphAppSampleAbstractImpl(context());
         final GraphTraversalSource g = app.open();
         app.createSchema();
         final JanusGraph janusGraph = (JanusGraph) g.getGraph();

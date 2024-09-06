@@ -49,6 +49,11 @@
 				<version>${revision}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.cybnity.framework</groupId>
+				<artifactId>vertx-common</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.cybnity.infrastructure.integration.uis.adapters</groupId>
 				<artifactId>api</artifactId>
 				<version>${revision}</version>
@@ -67,6 +72,22 @@
 				<groupId>org.cybnity.infrastructure.registry.knr.adapters</groupId>
 				<artifactId>janusgraph-impl</artifactId>
 				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.cybnity.features.technical.persistence</groupId>
+				<artifactId>redis-store</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.cybnity.features</groupId>
+				<artifactId>test</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.cybnity.features.technical.persistence</groupId>
+				<artifactId>janusgraph-repository</artifactId>
+				<version>${revision}</version>
+				<scope>compile</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

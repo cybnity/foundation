@@ -47,13 +47,13 @@ public class DomainTransactionsRepositoryUseCaseTest extends ContextualizedJanus
     @BeforeEach
     public void initRepository() throws UnoperationalStateException {
         // Prepare a repository of a sample domain managing a read-model projections perimeter
-        repo = SampleDomainTransactionsRepository.instance(getContext(), null /* None observed domain objects store */);
+        repo = SampleDomainTransactionsRepository.instance(context(), null /* None observed domain objects store */);
     }
 
     @AfterEach
     public void cleanResources() throws UnoperationalStateException {
         repo.drop();//delete previous created schema and records
-        repo.freeResources();
+        repo.freeUpResources();
         repo = null;
     }
 
@@ -99,7 +99,7 @@ public class DomainTransactionsRepositoryUseCaseTest extends ContextualizedJanus
         if (committed.get()) {
             // Execute query based on label filtering
             Map<String, String> queryParameters = prepareQueryBasedOnLabel(aggregateLabel, SampleDataView.class.getSimpleName(), SampleDomainQueryEventType.SAMPLE_DATAVIEW_FIND_BY_LABEL);
-            List<SampleDataView> results = repo.queryWhere(queryParameters, sessionCtx);
+            List<SampleDataView> results = repo.queryWhere(queryParameters, context());
 
             // Verify if a first version of the data view (projection view relative to the aggregate) have been created into the graph model
             Assertions.assertNotNull(results, "Existing data view should have been found!");
@@ -128,7 +128,7 @@ public class DomainTransactionsRepositoryUseCaseTest extends ContextualizedJanus
 
         // Execute query based on label filtering to find new updated data-view
         Map<String, String> queryParameters = prepareQueryBasedOnLabel(aggregateLabel, SampleDataView.class.getSimpleName(), SampleDomainQueryEventType.SAMPLE_DATAVIEW_FIND_BY_LABEL);
-        List<SampleDataView> results = repo.queryWhere(queryParameters, sessionCtx);
+        List<SampleDataView> results = repo.queryWhere(queryParameters, context());
 
         // Verify if a only one version of the data view type (projection view relative to the aggregate) have been retrieved from the graph model
         Assertions.assertEquals(1, results.size(), "Only unique existing data view should have been found!");

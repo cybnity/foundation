@@ -65,41 +65,37 @@ public class SampleDomainTransactionsRepository extends AbstractReadModelReposit
      * Close the graph model.
      */
     @Override
-    public void freeResources() {
-        try {
-            this.graphModel().freeResources();
-        } catch (UnoperationalStateException e) {
-            throw new RuntimeException(e);
-        }
+    public void freeUpResources() {
+        this.graphModel().freeUpResources();
     }
 
     @Override
-    public SampleDataView nextIdentity(ISessionContext iSessionContext) {
+    public SampleDataView nextIdentity(IContext iSessionContext) {
         return null;
     }
 
     @Override
-    public SampleDataView factOfId(Identifier identifier, ISessionContext iSessionContext) {
+    public SampleDataView factOfId(Identifier identifier, IContext iSessionContext) {
         return null;
     }
 
     @Override
-    public boolean remove(SampleDataView sampleDataView, ISessionContext iSessionContext) {
+    public boolean remove(SampleDataView sampleDataView,IContext iSessionContext) {
         return false;
     }
 
     @Override
-    public void removeAll(Collection<SampleDataView> collection, ISessionContext iSessionContext) {
+    public void removeAll(Collection<SampleDataView> collection, IContext iSessionContext) {
 
     }
 
     @Override
-    public SampleDataView save(SampleDataView sampleDataView, ISessionContext iSessionContext) {
+    public SampleDataView save(SampleDataView sampleDataView, IContext iSessionContext) {
         return null;
     }
 
     @Override
-    public void saveAll(Collection<SampleDataView> collection, ISessionContext iSessionContext) {
+    public void saveAll(Collection<SampleDataView> collection, IContext iSessionContext) {
 
     }
 
@@ -109,7 +105,7 @@ public class SampleDomainTransactionsRepository extends AbstractReadModelReposit
     }
 
     @Override
-    public List<SampleDataView> queryWhere(Map<String, String> searchCriteria, ISessionContext ctx) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException {
+    public List<SampleDataView> queryWhere(Map<String, String> searchCriteria, IContext ctx) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException {
         if (searchCriteria != null) {
             // Identify the query name based on query type (projection that support the query parameters and specific data path/structure)
             String queryName = searchCriteria.get(queryNameBasedOn());

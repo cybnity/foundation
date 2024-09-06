@@ -1,7 +1,7 @@
 package org.cybnity.framework.domain.infrastructure;
 
+import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
-import org.cybnity.framework.domain.ISessionContext;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
 import org.cybnity.framework.immutable.persistence.IFactStore;
@@ -33,7 +33,7 @@ public interface IDomainStore<T> extends IFactStore<T> {
      *                                     event is occurred.
      * @throws UnoperationalStateException When technical problem is occurred regarding this store usage.
      */
-    void append(T fact, ISessionContext ctx) throws IllegalArgumentException, ImmutabilityException, UnoperationalStateException;
+    void append(T fact, IContext ctx) throws IllegalArgumentException, ImmutabilityException, UnoperationalStateException;
 
     /**
      * Search a fact from store.
@@ -45,6 +45,6 @@ public interface IDomainStore<T> extends IFactStore<T> {
      * @throws IllegalArgumentException    When missing mandatory parameter.
      * @throws UnoperationalStateException When technical problem is occurred regarding this store usage.
      */
-    T findEventFrom(Identifier uid, ISessionContext ctx) throws IllegalArgumentException, UnoperationalStateException;
+    T findEventFrom(Identifier uid, IContext ctx) throws IllegalArgumentException, UnoperationalStateException;
 
 }

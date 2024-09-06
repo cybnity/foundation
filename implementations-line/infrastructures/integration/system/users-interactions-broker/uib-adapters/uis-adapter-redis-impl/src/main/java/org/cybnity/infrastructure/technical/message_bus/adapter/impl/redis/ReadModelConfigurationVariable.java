@@ -28,10 +28,6 @@ public enum ReadModelConfigurationVariable implements IReadableConfiguration {
      */
     REDIS_READMODEL_SERVER_PORT("REDIS_READMODEL_SERVER_PORT"),
     /**
-     * Redis Kubernetes configuration's REDISCLI_AUTH environment variable
-     */
-    REDIS_READMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD("REDISCLI_AUTH"),
-    /**
      * Index of the database dedicated to the read model
      */
     REDIS_READMODEL_DATABASE_NUMBER("REDIS_READMODEL_DATABASE_NUMBER"),
