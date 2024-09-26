@@ -14,7 +14,7 @@ Contain each module (e.g applicative or technical service module that is propose
 One sub-directory is defined per deploying capability of a technical or applicative module.
 
 ## Utility scripts
-Cluster folder includes shell scripts that help to create minikube cluster according to resource available on a computer used as centralized development server.
+Cluster sub-folder includes shell scripts that help to create minikube cluster according to resource available on a computer used as centralized development server.
 
 Several types of clusters can be build over command lines executions:
 - Cluster of 4 nodes dedicated to receive only CYBNITY application systems deployed by the global Helm project relative to cybnity-platform (see IAC Helm Charts repository);
@@ -23,9 +23,13 @@ Several types of clusters can be build over command lines executions:
 ## Prerequisites
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
+|RKE2|[Linux distributions](https://www.suse.com/suse-rke2/support-matrix/all-supported-versions/rke2-v1-30/), Windows Server LTSC|__Linux/Windows__:<br>- RAM: 4GB (minimum), 8GB+ (recommended)<br>- CPU: 2 cores (minimum), 4+ cores (recommended)| |
 |Minikube|MacOS, Linux, or Windows|__dev (1 node)__:<br>- RAM: 64Go<br>- Storage: 200Go<br>__dev-env4 (4 app nodes)__:<br>- RAM: 32Go<br>- Storage: 200Go|[Minikube documentation](https://minikube.sigs.k8s.io/docs/)|
 
 ## Usages
+### RKE2
+The [RKE2 is Rancher's Kubernetes distribution](https://docs.rke2.io/) that focuses on security.
+
 ### Minikube
 The Minikube folders contain scripts simplifying creation of K8S cluster according to several types:
 - dev: medium resources allocation for developer workstation based on only 1 node defined into a K8S cluster;
