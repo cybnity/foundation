@@ -34,9 +34,10 @@ These prerequisites are about technologies and/or systems (e.g open source datab
 |Cassandra|Debian 8-9, Java 11|__Production__:<br>- CPU: 2 cores (minimum), 8+ cores (typical)<br>- RAM: 8Go (minimum), 32GB (typical)<br>- Storage: SSDs|[Hardware choices](https://cassandra.apache.org/doc/stable/cassandra/operating/hardware.html)|
 
 # PREREQUISITES PER MODULARIZED ENVIRONMENT
+- [SUPPORT-ENV](modules/support-env/README.md): transversal environment provided tools that allow administration and support (e.g CI tools) of software development/delivery activities.
 - [LOCAL-ENV](modules/local-env/README.md): standalone or sandboxed environment used for projects development.
 - [DEV-ENV](modules/dev-env/README.md): centralized environment between multiples projects and/or developers in a shared tools approach.
-- [QA-ENV](modules/qa-env/README.md): resources and tools allocated for quality check activities (e.g remotely controlled by the CI tools) in a centralized and automated approach.
+- [QA-ENV](modules/qa-env/README.md): resources and tools allocated for quality check activities (e.g remotely controlled by the CI tools of SUPPORT-ENV) in a centralized and automated approach.
 - [LIVE-ENV](modules/live-env/README.md): production resources requirements for deployment and operating of CYBNITY solutions.
 
 #
