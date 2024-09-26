@@ -16,7 +16,6 @@ One sub-directory is defined per deploying capability of a technical or applicat
 ## Utility scripts
 Cluster folder includes shell scripts that help to create a cluster according to resource available on a computer used as centralized tools server allowing transversal control of other environments (e.g dev, qa, uat...).
 
-
 ## Prerequisites
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
@@ -46,6 +45,25 @@ One sub-directory is defined per reusable module name.
 Contain each module specifically for supporting the CYBNITY other infrastructures, environments and application systems.
 
 One sub-directory is defined per support tool/server deployable as a Kubernetes service.
+
+# HARDWARE INFRASTRUCTURE
+Current support environment is built over a set of physical resources.
+
+## Harvester node 1
+A DELL Precision Tower 5810 physical server is currently deployed to provide physical resources:
+- CPU (__18 cores__, 36 virtual cores): Intel Xeon E5-2695 v4 2,2Ghz supporting
+  - Turbo mode at 2,5Ghz (all cores)
+  - 3,3Ghz mode (1 core)
+- RAM (__128Go__): DDR4 (extendable to 256GB)
+- Storage
+  - 512Go SSD Nvme
+- Graphic card: NVidia Geforce GTX 1060 (memory 6Go)
+- Networking:
+  - 1 port Giga Ethernet
+- Power Supply: 685W
+
+## Harvester node 2 (future)
+Not already built and deployed into the Harvester cluster dedicated to support environment.
 
 #
 [Back To Home](../README.md)
