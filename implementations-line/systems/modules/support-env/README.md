@@ -43,9 +43,9 @@ Reusable scripts are available into sub-folder.
 One sub-directory is defined per reusable module name.
 
 # SERVICES MODULES
-Contain each module specifically for deploying the CYBNITY containerized application component.
+Contain each module specifically for supporting the CYBNITY other infrastructures, environments and application systems.
 
-One sub-directory is defined per CYBNITY application deployable as a Kubernetes service.
+One sub-directory is defined per support tool/server deployable as a Kubernetes service.
 
 #
 [Back To Home](../README.md)
