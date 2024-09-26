@@ -23,11 +23,11 @@ Several types of clusters can be build over command lines executions:
 ## Prerequisites
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
-|Minikube|MacOS, Linux, or Windows|__dev (1 node)__:<br>- RAM: 64Go<br>- Storage: 200Go<br>__dev-env4 (4 app nodes)__:<br>- RAM: 32Go<br>- Storage: 200Go|[Minikube doc](https://minikube.sigs.k8s.io/docs/)|
+|Minikube|MacOS, Linux, or Windows|__dev (1 node)__:<br>- RAM: 64Go<br>- Storage: 200Go<br>__dev-env4 (4 app nodes)__:<br>- RAM: 32Go<br>- Storage: 200Go|[Minikube documentation](https://minikube.sigs.k8s.io/docs/)|
 
 ## Usages
 ### Minikube
-The Minikube folders contain scripts simplifying creation of K8S cluster according several types:
+The Minikube folders contain scripts simplifying creation of K8S cluster according to several types:
 - dev: medium resources allocation for developer workstation based on only 1 node defined into a K8S cluster;
 - dev-env4: medium resources alloncation for integration test server based on 4 nodes (similar to production target isolated area where systems are deployed) defined into a K8S cluster.
 
@@ -40,7 +40,7 @@ Use the add-labels-to-xxxx-cluster.sh script dedicated to the used cluster for a
 # NETWORKING MODULES
 Contain each module managing connectivity and/or traffic (e.g a load balancing module) as reusable and standalone deployable module.
 
-Reusable scripts are available into sub-folders: [networking/kubectl](networking/kubectl).
+Reusable scripts are available into sub-folder: [networking/kubectl](networking/kubectl).
 
 One sub-directory is defined per reusable module name.
 
