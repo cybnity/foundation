@@ -11,7 +11,7 @@ Optional additional resources can be required for simulation activities supporti
 
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
-|K3S||||
+|RKE2||||
 
 ## Usages
 
