@@ -19,10 +19,11 @@ Cluster folder includes shell scripts that help to create a cluster according to
 ## Prerequisites
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
-|Halyard station|Docker instance of Ubuntu 18.04+|- RAM: 12Go+|- CPU: 1+ core|Command-line administration tool of Spinnaker nodes|
-|CD server|Spinnaker application, dockerized Ubuntu 18.04+|- CPU: 4+ cores per node<br>- RAM: 16Go+|CYBNITY Continuous Integration & Delivery tool into CYBNITY environments; 2 HA nodes recommended|
+|Halyard station|Docker instance of Ubuntu 18.04+|- RAM: 12GB+|- CPU: 1+ core|Command-line administration tool of Spinnaker nodes|
+|CD server|Spinnaker application, dockerized Ubuntu 18.04+|- CPU: 4+ cores per node<br>- RAM: 16GB+|CYBNITY Continuous Integration & Delivery tool into CYBNITY environments; 2 HA nodes recommended|
 |CD datastore|MinIO, Docker under K8S|__per node__:<br>- CPU: 1+ core<br>- Storage: NVMe SSD<br>- Network: 100 Gbps with dual NICs|Persistence system (object store) of Spinnaker instances' data.<br>2 HA node recommended.<br>Persistence size need is based on Spinnaker storage need.<br>[Hardwware for MinIO deployment]([https://min.io/product/reference-hardware](https://blog.min.io/selecting-hardware-for-minio-deployment/))|
 |RKE2 cluster|[Linux distributions](https://www.suse.com/suse-rke2/support-matrix/all-supported-versions/rke2-v1-30/), Windows Server LTSC|__Linux/Windows__:<br>- RAM: 8GB+<br>- CPU: 4+ cores|Kubernetes cluster executed on a physical machine virtualized by Harvester HCI cluster|
+|Harvester cluster|Harvester|__per node__:<br>- CPU: x86_64 (with hardware-assisted virtualization), 16 cores (minimum)<br>- RAM: 64GB (minimum)<br>- Storage: 500GB (minimum), SSD/NVMe<br>- Networking: 2 NICs, 1Gbps Ethernet (minimum)|[Hardware and network requirements doc](https://docs.harvesterhci.io/v1.3/install/requirements)|
 
 ## Usages
 Support environment provide multiple tools and server applications that allow support and administration of other environments like:
@@ -51,10 +52,10 @@ Current support environment is built over a set of physical resources.
 
 ## Harvester node 1
 A DELL Precision Tower 5810 physical server is currently deployed to provide physical resources:
-- CPU (__18 cores__, 36 virtual cores): Intel Xeon E5-2695 v4 2,2Ghz supporting
+- CPU (18 cores, 36 virtual cores): Intel Xeon E5-2695 v4 2,2Ghz supporting
   - Turbo mode at 2,5Ghz (all cores)
   - 3,3Ghz mode (1 core)
-- RAM (__128GB__): DDR4 (extendable to 256GB)
+- RAM (128GB): DDR4 (extendable to 256GB)
 - Storage
   - 512Go NVMe SSD
 - Graphic card: NVidia Geforce GTX 1060 (memory 6Go)
@@ -64,12 +65,12 @@ A DELL Precision Tower 5810 physical server is currently deployed to provide phy
 - Power Supply: 685W
 
 ### Harward resources sizing
-| | NEED | CURRENT |
-|:--|:--|:--|
-| CPU CORES | 11 | 18 |
-| RAM | 48Go | 128GB |
-| STORAGE SIZE | ? | 512Go |
-| NETWORK SPEED| |1Gbps card + 10Gbps card|
+| | NEED | CURRENT | SIZING STATUS |
+|:--|:--:|:--:|:--:|
+| CPU CORES | 16 | 18 | :white_check_mark: |
+| RAM | 64Go | 128GB | :white_check_mark: |
+| STORAGE SIZE | 500GB | 512GB | :interrobang: |
+| NETWORK SPEED| 10Gpbs + 10Gpbs |1Gbps + 10Gbps| :o: :white_check_mark: |
 
 ## Harvester node 2 (future)
 Not already built and deployed into the Harvester cluster dedicated to support environment.
