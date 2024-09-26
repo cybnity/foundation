@@ -15,6 +15,7 @@ Tools and required resources supporting all the environments involved into the C
 ## TOOLS
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
+|[Harvester](https://harvesterhci.io/)|HyperConverged Infrastructure (HCI) open-source solution for bare metal servers, including Linux, KVM, Kubernetes, KubeVirt and Longhorn|[Hardware & network requirements](https://docs.harvesterhci.io/v1.3/install/requirements)|[Harvester documentation](https://docs.harvesterhci.io/v1.3)|
 |Halyard|- local machine (MacOS, Ubuntu/Debian), or VM (Ubuntu 18.04+, Debian 10+), or Docker container<br>- RAM: 12GB minimum||Halyard is a command-line administration tool that manages the lifecycle of a Spinnaker deployment, including writing & validating a deployment’s configuration, deploying each of Spinnaker’s microservices, and updating the deployment.<br>[Install and configure spinnaker](https://spinnaker.io/docs/setup/install/); [local install doc](https://spinnaker.io/docs/setup/install/environment/#local-debian); [docker install doc](https://spinnaker.io/docs/setup/install/halyard/#install-halyard-on-docker)|
 |Spinnaker|RAM: 16Go minimum<br>|CPU: 4 cores minimum|[Install and configure spinnaker](https://spinnaker.io/docs/setup/install/)|
 
