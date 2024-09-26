@@ -23,7 +23,7 @@ Several types of clusters can be build over command lines executions:
 ## Prerequisites
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
-|[Rancher Desktop](https://rancherdesktop.io/|MacOs| |[cluster folder](cluster)|
+|[Rancher Desktop](https://rancherdesktop.io/)|MacOs| |[cluster folder](cluster)|
 |Minikube|MacOS, Linux, or Windows|__dev (1 node)__:<br>- RAM: 128Go<br>- Storage: 200Go<br>__dev-env4 (4 app nodes)__:<br>- RAM: 128Go<br>- Storage: 200Go|[cluster folder](cluster)|
 
 ## Usages
