@@ -23,7 +23,7 @@ Several types of clusters can be build over command lines executions:
 ## Prerequisites
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
-|[Minikube](https://minikube.sigs.k8s.io/docs/)|MacOS, Linux, or Windows|__dev (1 node)__:<br>- RAM: 64Go<br>- Storage: 200Go<br>__dev-env4 (4 app nodes)__:<br>- RAM: 32Go<br>- Storage: 200Go| |
+|Minikube|MacOS, Linux, or Windows|__dev (1 node)__:<br>- RAM: 64Go<br>- Storage: 200Go<br>__dev-env4 (4 app nodes)__:<br>- RAM: 32Go<br>- Storage: 200Go|[Minikube doc](https://minikube.sigs.k8s.io/docs/)|
 
 ## Usages
 ### Minikube
