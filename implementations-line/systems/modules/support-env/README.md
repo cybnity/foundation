@@ -20,9 +20,17 @@ Cluster folder includes shell scripts that help to create a cluster according to
 ## Prerequisites
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
-|RKE2|[Linux distributions](https://www.suse.com/suse-rke2/support-matrix/all-supported-versions/rke2-v1-30/), Windows Server LTSC|__Linux/Windows__:<br>- RAM: 4GB (minimum), 8GB+ (recommended)<br>- CPU: 2 cores (minimum), 4+ cores (recommended)| |
+|Halyard docker instance|Ubuntu 18.04+ or Debian 10+|- RAM: 12Go| |Command-line administration tool of Spinnaker nodes|
+|CD server|Spinnaker, Doker under K8S| |CYBNITY Continuous Integration & Delivery tool into CYBNITY environments|
+|CD datastore|MinIO, Docker under K8S| |Persistence system (object store) of Spinnaker instances' data|
+|RKE2 cluster|[Linux distributions](https://www.suse.com/suse-rke2/support-matrix/all-supported-versions/rke2-v1-30/), Windows Server LTSC|__Linux/Windows__:<br>- RAM: 4GB (minimum), 8GB+ (recommended)<br>- CPU: 2 cores (minimum), 4+ cores (recommended)| |
 
 ## Usages
+Support environment provide multiple tools and server applications that allow support and administration of other environments like:
+- Rancher server for administration of Harvester clusters and VMs
+- Spinnaker server for software Continuous Delivery activities management and automation
+- Spinnaker Halyard for administration tool of Spinnaker configurations and instances
+- MinIO object storage server S3-API compatible as persitence solution of Spinnaker servers (e.g pipelines, settings)
 
 ### RKE2
 The [RKE2 is Rancher's Kubernetes distribution](https://docs.rke2.io/) that focuses on security.
@@ -30,7 +38,7 @@ The [RKE2 is Rancher's Kubernetes distribution](https://docs.rke2.io/) that focu
 # NETWORKING MODULES
 Contain each module managing connectivity and/or traffic (e.g a load balancing module) as reusable and standalone deployable module.
 
-Reusable scripts are available into sub-folder: [networking](networking).
+Reusable scripts are available into sub-folder.
 
 One sub-directory is defined per reusable module name.
 
