@@ -20,10 +20,10 @@ Cluster folder includes shell scripts that help to create a cluster according to
 ## Prerequisites
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
-|Halyard docker instance|Ubuntu 18.04+ or Debian 10+|- RAM: 12Go| |Command-line administration tool of Spinnaker nodes|
-|CD server|Spinnaker, Doker under K8S| |CYBNITY Continuous Integration & Delivery tool into CYBNITY environments|
+|Halyard station|Docker instance of Ubuntu 18.04+|- RAM: 12Go+| |Command-line administration tool of Spinnaker nodes|
+|CD server|Spinnaker application, dockerized Ubuntu 18.04+|- CPU: 4+ cores<br>- RAM: 16Go+|CYBNITY Continuous Integration & Delivery tool into CYBNITY environments|
 |CD datastore|MinIO, Docker under K8S| |Persistence system (object store) of Spinnaker instances' data|
-|RKE2 cluster|[Linux distributions](https://www.suse.com/suse-rke2/support-matrix/all-supported-versions/rke2-v1-30/), Windows Server LTSC|__Linux/Windows__:<br>- RAM: 4GB (minimum), 8GB+ (recommended)<br>- CPU: 2 cores (minimum), 4+ cores (recommended)| |
+|RKE2 cluster|[Linux distributions](https://www.suse.com/suse-rke2/support-matrix/all-supported-versions/rke2-v1-30/), Windows Server LTSC|__Linux/Windows__:<br>- RAM: 8GB+<br>- CPU: 4+ cores|Kubernetes cluster executed on a physical machine virtualized by Harvester HCI cluster|
 
 ## Usages
 Support environment provide multiple tools and server applications that allow support and administration of other environments like:
