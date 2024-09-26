@@ -23,20 +23,15 @@ Several types of clusters can be build over command lines executions:
 ## Prerequisites
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
-|[Rancher Desktop](https://rancherdesktop.io/)|MacOs (Apple Silicon, Intel), Linux, Windows| |[cluster folder](cluster)|
-|[Minikube](https://minikube.sigs.k8s.io/docs/)|MacOS, Linux, or Windows|__dev (1 node)__:<br>- RAM: 128Go<br>- Storage: 200Go<br>__dev-env4 (4 app nodes)__:<br>- RAM: 128Go<br>- Storage: 200Go|[cluster folder](cluster/minikube)|
+|[Minikube](https://minikube.sigs.k8s.io/docs/)|MacOS, Linux, or Windows|__dev (1 node)__:<br>- RAM: 64Go<br>- Storage: 200Go<br>__dev-env4 (4 app nodes)__:<br>- RAM: 32Go<br>- Storage: 200Go| |
 
 ## Usages
-### Rancher Desktop
-Open-source application by SUSE that provides all the essentials to work with containers and Kubernetes on a development workstation.
-- Container Engine: dockerd (moby version as Community Edition) is used via Docker API (Docker CLI and k3d) for container images execution.
-- Virtual Machine Engine: QEMU emulator is used for virtual machine execution.
-- Kubernetes: enabled with Traefik options activated
-
 ### Minikube
-The [Minikube cluster folder](cluster/minikube) contain scripts simplifying creation of K8S cluster according several types:
+The Minikube folders contain scripts simplifying creation of K8S cluster according several types:
 - dev: medium resources allocation for developer workstation based on only 1 node defined into a K8S cluster;
 - dev-env4: medium resources alloncation for integration test server based on 4 nodes (similar to production target isolated area where systems are deployed) defined into a K8S cluster.
+
+Reusable scripts are available into sub-folders: [cluster/kubectl](cluster/kubectl), [cluster/minikube](cluster/minikube).
 
 In case of cluster stop and restart on Minikube, the assigned labels (per node) are lost by default Minikube configuration.
 
@@ -44,6 +39,8 @@ Use the add-labels-to-xxxx-cluster.sh script dedicated to the used cluster for a
 
 # NETWORKING MODULES
 Contain each module managing connectivity and/or traffic (e.g a load balancing module) as reusable and standalone deployable module.
+
+Reusable scripts are available into sub-folders: [networking/kubectl](networking/kubectl).
 
 One sub-directory is defined per reusable module name.
 
