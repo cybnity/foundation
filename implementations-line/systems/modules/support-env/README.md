@@ -31,6 +31,8 @@ Support environment provide multiple tools and server applications that allow su
 - Spinnaker server for software Continuous Delivery activities management and automation
 - Spinnaker Halyard for administration tool of Spinnaker configurations and instances
 - MinIO object storage server S3-API compatible as persitence solution of Spinnaker servers (e.g pipelines, settings)
+- RKE2 for Kubernetes containerization and clustering of resources as a private cloudified infrastructure
+- Harvester for virtualization of physical resources defining a private infrastructure layer
 
 ### RKE2
 The [RKE2 is Rancher's Kubernetes distribution](https://docs.rke2.io/) that focuses on security.
