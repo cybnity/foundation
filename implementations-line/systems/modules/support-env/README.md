@@ -73,7 +73,7 @@ A DELL Precision Tower 5810 physical server is currently deployed to provide phy
 | CPU CORES | 16 | 18 | :white_check_mark: |
 | RAM | 64Go | 128GB | :white_check_mark: |
 | STORAGE SIZE | 500GB | 1.5TB | :white_check_mark: |
-| NETWORK SPEED| 10Gpbs + 10Gpbs |1Gbps + 10Gbps + 10Gbps| :o: :white_check_mark: |
+| NETWORK SPEED| 10Gpbs + 10Gpbs |1Gbps + 10Gbps + 10Gbps| :white_check_mark: |
 
 ## CYBNITY Support Harvester nodes (future)
 Not already built and deployed as Harvester cluster (2 nodes) dedicated to support environment.
