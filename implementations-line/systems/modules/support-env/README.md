@@ -27,11 +27,11 @@ Cluster folder includes shell scripts that help to create a cluster according to
 
 ## Usages
 Support environment provide multiple tools and server applications that allow support and administration of other environments like:
-- Rancher server for administration of Harvester clusters and VMs
 - Spinnaker server for software Continuous Delivery activities management and automation
 - Spinnaker Halyard for administration tool of Spinnaker configurations and instances
 - MinIO object storage server S3-API compatible as persitence solution of Spinnaker servers (e.g pipelines, settings)
 - RKE2 for Kubernetes containerization and clustering of resources as a private cloudified infrastructure
+- Rancher server for administration of Harvester clusters and VMs
 - Harvester for virtualization of physical resources defining a private infrastructure layer
 
 ### RKE2
