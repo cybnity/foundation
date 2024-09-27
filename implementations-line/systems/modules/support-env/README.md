@@ -19,11 +19,11 @@ Cluster folder includes shell scripts that help to create a cluster according to
 ## Prerequisites
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
-|Halyard station|Docker instance of Ubuntu 18.04+|- RAM: 12GB+|- CPU: 1+ core|Command-line administration tool of Spinnaker nodes|
+|Halyard station|Docker instance of Ubuntu 18.04+|- RAM: 12GB+<br>- CPU: 1+ core|Command-line administration tool of Spinnaker nodes|
 |CD server|Spinnaker application, dockerized Ubuntu 18.04+|- CPU: 4+ cores per node<br>- RAM: 16GB+|CYBNITY Continuous Integration & Delivery tool into CYBNITY environments; 2 HA nodes recommended|
 |CD datastore|MinIO, Docker under K8S|__per node__:<br>- CPU: 1+ core<br>- Storage: NVMe SSD<br>- Network: 100 Gbps with dual NICs|Persistence system (object store) of Spinnaker instances' data.<br>2 HA node recommended.<br>Persistence size need is based on Spinnaker storage need.<br>[Hardwware for MinIO deployment]([https://min.io/product/reference-hardware](https://blog.min.io/selecting-hardware-for-minio-deployment/))|
-|RKE2 cluster|[Linux distributions](https://www.suse.com/suse-rke2/support-matrix/all-supported-versions/rke2-v1-30/), Windows Server LTSC|__Linux/Windows__:<br>- RAM: 8GB+<br>- CPU: 4+ cores|Kubernetes cluster executed on a physical machine virtualized by Harvester HCI cluster|
-|Harvester cluster|Harvester|__per node__:<br>- CPU: x86_64 (with hardware-assisted virtualization), 16 cores (minimum)<br>- RAM: 64GB (minimum)<br>- Storage: 500GB (minimum), SSD/NVMe<br>- Networking: 2 NICs, 1Gbps Ethernet (minimum)|[Hardware and network requirements doc](https://docs.harvesterhci.io/v1.3/install/requirements)|
+|RKE2 cluster|[Linux distributions](https://www.suse.com/suse-rke2/support-matrix/all-supported-versions/rke2-v1-30/), Windows Server LTSC, Linux|- RAM: 8GB+<br>- CPU: 4+ cores|Kubernetes cluster executed on a physical machine virtualized by Harvester HCI cluster|
+|Harvester cluster|Harvester|Linux OS (Elemental SUSE Linux Enterprise Micro 5.4), KubeVirt, Longhorn, Grafana, Prometheus|__per node__:<br>- CPU: x86_64 (with hardware-assisted virtualization), 16 cores (minimum)<br>- RAM: 64GB (minimum)<br>- Storage: 500GB (minimum), SSD/NVMe<br>- Networking: 2 NICs, 1Gbps Ethernet (minimum)|[Hardware and network requirements doc](https://docs.harvesterhci.io/v1.3/install/requirements).<br>[KubeVirt](https://kubevirt.io/) (virtualization management using KVM on top of Kubernetes).<br>[Longhorn doc](https://longhorn.io/) providing distributed block storage.<br>[Grafana](https://grafana.com/) and [Prometheus](https://prometheus.io/) providing monitoring and logging|
 
 ## Usages
 Support environment provide multiple tools and server applications that allow support and administration of other environments like:
