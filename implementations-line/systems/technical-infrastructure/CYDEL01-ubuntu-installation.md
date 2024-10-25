@@ -10,7 +10,6 @@ Basic BIOS and OS layer's elements are presented with detail of all technical op
   - USB configuration:
     - Enable USB 3.0 (xHCI) on super speed ports: disable (avoid potential conflict with Wake-On-Lan ability via PCI NIC card)
 - Power management planification defining auto-start of server according to project work time periods
-
   - Auto On Time: selected days and time when server shall be automatically started
   - AC recovery: last power state
   - Deep sleep control: disable
@@ -30,6 +29,19 @@ Installed by default by Ubuntu Linux server LTS version. See [AppArmor configura
 - Installation of Ubuntu LTS server version (e.g from bootable USB stick)
   - define boot and OS dedicated partitions for OS directories and mounting points
   - define independent datadisk dedicated to the K8S resources storage with a mounting point at `/srv`
+  - set installation of Open SSH server (allowing remote connection over LAN network)
+  - install third-party drivers (e.g nvidia detected card driver)
+
+After installation, storage layout and filesystem layout shall be shown (via `lsblk -f` command) as:
+
+| NAME | FSTYPE | TYPE | RO | MOUNTPOINTS |
+| sda | btrfs | disk | 0 | /srv |
+| sr0 | | rom | 0 | |
+| nvme0n1 | | disk | 0 | |
+| nvme0n1p1 | vfat| part | 0 | /boot/efi |
+| nvme0n1p2 | ext4 | part | 0 | /boot |
+| nvme0n1p3 | LVM2_member| part | 0 | |
+| - ubuntu--vg-ubuntu--lv | ext4 | lvm | / |
 
 - Swap (all nodes) disabling (change consistent after a reboot with fstb file modification) to enhance Kubernetes performance via command:
 
@@ -84,9 +96,7 @@ Installed by default by Ubuntu Linux server LTS version. See [AppArmor configura
 ## Networking
 - Check detected network card via commands:
 ```
-  sudo lspci -nnvmm | egrep -A 6 -B 1 -i 'network|ethernet'
-
-  lspci | grep -E -i --color 'network|ethernet|wireless|wi-fi'
+  sudo lspci | grep -E -i --color 'network|ethernet|wireless|wi-fi'
 ```
 
 - Check capacities of card via command `sudo lshw -class network`
@@ -99,7 +109,7 @@ Installed by default by Ubuntu Linux server LTS version. See [AppArmor configura
   - show configuration of detected ethernet controllers via command `sudo hwinfo --netcard`
 
 ### Intel 10-Gigabit X540-AT2 card drivers
-Only to install when network card were not detected/configured during the origin Linux installation.
+When NIC not detected or usable, install when network card were not detected/configured during the origin Linux installation.
 
 - Download of drivers files via command lines:
 ```
@@ -114,6 +124,7 @@ Only to install when network card were not detected/configured during the origin
    transactional-update -i pkg install ixgbe-5.21.5.tar.gz
    transactional-update -i pkg install intel-public-key-ixgbe-ko.zip
 ```
+
 - Reboot system
 - Check visibility of detected network cards via command `ip a`
 - install ifconfig via command `sudo apt install net-tools` allowing usage of __ifconfig__ command
@@ -135,19 +146,18 @@ None configuration is existing about the additional network card (e.g Intel 10-G
       # dedicated NIC to server management (e.g remote Wake On Lan) with specific ip address and hostname (not based on default server hostname configuration)
       enp0s25:
         dhcp4: true
-        dhcp6: true
         optional: true
         dhcp4-overrides:
           use-dns: true
-          send-hostname: true
+          send-hostname: false
           hostname: cybsup01_mgt
         dhcp6: true
         dhcp6-overrides:
           use-dns: true
-          send-hostname: true
+          send-hostname: false
           hostname: cybsup01_mgt
 
-      # set 100Gbps NIC card in DHCP mode as operations server endpoint
+      # set 100Gbps NIC cards in DHCP mode as operation server endpoints
       enp11s0f0:
         dhcp4: true
         optional: true
@@ -175,20 +185,27 @@ None configuration is existing about the additional network card (e.g Intel 10-G
 sudo chmod 600 /etc/netplan/*.yaml
 ```
 
+- verify file conformity and detect potential format errors via command:
+```
+sudo netplan try
+```
+
 - Apply the new configuration with command:
 ```
 sudo netplan apply
 ```
 
+- Add client static binding record into the LAN DHCP service to assign always same ip address to the NIC mac address (required by Kubernetes cluster using static ip address during node setting creation)
 - Connect a network cable between the NIC card port and the network switch, and check that machine have been detected/assigned into the DHCP client list table (e.g hostname cybsup01)
 - Try to ping external servers to check the opened route via command executions:
 ```
 # check route to Internet domains
 ping google.com
 
+# check route to other server available in default lan
 ping <external server ip>
 
-# check route to external LAN (e.g machine name known by DNS server that have been dynamically configured by DHCP client)
+# check route to potential external LAN machine (e.g machine name known by DNS server that have been dynamically configured by DHCP client)
 ping <external server name>.<domain name>
 
 ```
@@ -221,7 +238,7 @@ ping <external server name>.<domain name>
   sudo ethtool enp0s25
   ```
 
-  - Make change as permanent (see [setting doc for help](https://thedarkercorner.com/setting-up-wake-on-lan-on-ubuntu-server-22-04-lts/))
+  - If feature supported by NIC port, make change as permanent (see [setting doc for help](https://thedarkercorner.com/setting-up-wake-on-lan-on-ubuntu-server-22-04-lts/))
     - create new file `wol.service` into the `/etc/systemd/system` folder, including (used value __d__ for disable, or value __g__ for enable Wake-on mode into the ExecStart command's parameter):
     ```
     [Unit]
@@ -238,17 +255,17 @@ ping <external server name>.<domain name>
     - add wol service to the systemd services via command:
     ```
     # update and/or locate new service file
-    systemctl daemon-reload
+    sudo systemctl daemon-reload
     ```
 
     - enable the service to run on start up and to fire up the service via command:
     ```
-    systemctl enable wol.service
+    sudo systemctl enable wol.service
     ```
 
     - check status via command:
     ```
-    systemctl status wol
+    sudo systemctl status wol
     ```
 
 - test the operational state of WoL capability with:

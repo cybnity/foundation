@@ -30,9 +30,11 @@ Interconnection of physical servers is supported by a 10G Ethernet managed switc
 
 ## SUPPORT INFRASTRUCTURE
 This area of technical components and/or services are dedicated to support the other environments as tools (e.g Continuous Delivery of application components on environment) and shared services (e.g virtualization systems and containers management):
-- [CYDEL 01 - Support primary server](CYDEL01-cybsup01.md)
+- [CYDEL01 - Support primary resources server](CYDEL01-cybsup01.md)
 
-## DEVELOPMENT INFRASTRUCTURE
+## DEVELOPMENT
+This area of technical components and/or resources are dedicated to centralized development activities as shared CYBNITY software suite development cluster (e.g allowing developers of application components to merge and test CYBNITY software components that are versioned over the STAGING branch and/or that need temporary deployment from a development feature branch):
+- [CYDEL01 - Devvelopment primary resources server](CYDEL01-cybdev01.md)
 
 ## VALIDATION INFRASTRUCTURE
 

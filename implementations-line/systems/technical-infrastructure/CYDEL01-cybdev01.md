@@ -1,20 +1,21 @@
 ## PURPOSE
-This technical documentation presents the guidelines (e.g server installation instructions, configuration of system elements) allowing preparation, configuration and maintenant in operational state of the primary support server.
+This technical documentation presents the guidelines (e.g server installation instructions, configuration of system elements) allowing preparation, configuration and maintenant in operational state of the primary development server.
 
-The services provided by the CYBSUP01 server are focus on:
-- primary server of the Support Environment cluster supporting all the CYDEL version's tools
-- management of other environments (e.g other Kubernetes clusters of CYDEL01)
-- hosting of Continuous Delivery tools and applications managing the detection and installation of CYBNITY software suite versions into other K8S clusters
-- management of application systems deployment life cycle (e.g continuous delivery chain) on other K8S cluster (e.g dev, test...)
+The DEV cluster is dedicated to run of a version of CYBNITY software components which is not already released (e.g staging version, feature branch version).
+
+The services provided by the CYBDEV01 server are focus on:
+- primary server of the Dev Environment cluster
+- detection of sub-resources sizing required by any change of CYBNITY applications
+- unit test and/or integration development activities (e.g link to other external systems that integration development is in progress)
 
 # HARDWARE LAYER
-Current hardware configuration is based on a Dell 5810 server:
-- CPU: Intel Xeon E5-2695 v4, 18 cores
+Current hardware configuration is based on a Hewlett-Packard Z640 server:
+- CPU: 2 x Intel Xeon E5-2690 v4, 28 cores
 - RAM: 128 GB
 - Hard disks:
   - NVMe SSD 512 GB (Operation System & Linux based applications)
-  - 1 SATA Disk 1.5 TB (K8S applications data)
-- NVIDIA GeFore GTX 1060 graphic card, 6Go
+  - 1 SATA Disk 3 TB (K8S applications data)
+- NVIDIA Quadro P4000 graphic card, 8Go
 - 1 NIC 1Gbps: used for Wake-On-Lan (remote start of server)
 - 2 x NIC 10Gbps:
   - 1 dedicated ot Kubernetes HA clustering
@@ -24,10 +25,10 @@ Current hardware configuration is based on a Dell 5810 server:
 See [Ubuntu-installation](CYDEL01-ubuntu-installation.md) procedure to prepare a server into a __"ready for virtualization installation"__ state.
 
 Current prepared server configuration is:
-- hostname: __cybsup01__
+- hostname: __cybdev01__
 
 # VIRTUALIZATION LAYER
-RKE2 virtualization system is implemented as Kubernetes layer hosting the CYBNTY support applications deployed into a __Support cluster__.
+RKE2 virtualization system is implemented as Kubernetes layer hosting the CYBNTY staging versions deployed into a __Dev cluster__.
 
 ## Helm
 - Install Helm stable version via command:
@@ -167,70 +168,8 @@ Distributed block storage system deployed for containers data management.
 Canal solution is deployed as CNI plugin.
 
 ## Security
-### Rancher Backup
-Automated backup solution ensuring auto-save of Rancher instance into a scheduled approach, to file versions allowing restoration in case of Rancher container disaster.
 
 # APPLICATION SERVICES
-
-## Kubernetes management (Rancher)
-- Add needed helm charts to node repository list via command:
-```
-  helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
-```
-
-### Cert-Manager
-- As [documented](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/other-installation-methods/rancher-behind-an-http-proxy/install-rancher#install-cert-manager), add cert-manager Helm repository and install cert-manager with CRDs via command:
-```
-  helm repo add jetstack https://charts.jetstack.io --force-update
-  kubectl create namespace cert-manager
-  helm install \
-  cert-manager jetstack/cert-manager \
-  --namespace cert-manager \
-  --create-namespace \
-  --version v1.16.1 \
-  --set crds.enabled=true
-```
-
-- valid cert-manager deployment via commands:
-```
-kubectl rollout status deployment -n cert-manager cert-manager
-kubectl rollout status deployment -n cert-manager cert-manager-webhook
-```
-
-See [cert-manager documentation](https://cert-manager.io/docs/installation/helm/) for help.
-
-### Kubernetes clusters management (Rancher)
-Ranche instance is deployed for management of any K8S cluster of CYDEL01 infrastructure.
-
-See [Rancher technical documentation](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/install-upgrade-on-a-kubernetes-cluster) for help.
-
-- Namespace creation into the support cluster via command:
-```
-sudo kubectl create namespace cattle-system
-```
-
-- [delete certain version created certificates](https://ranchermanager.docs.rancher.com/v2.6/troubleshooting/other-troubleshooting-tips/expired-webhook-certificate-rotation) that will expire after on year via commands:
-```
-kubectl delete secret -n cattle-system cattle-webhook-tls
-kubectl delete mutatingwebhookconfigurations.admissionregistration.k8s.io --ignore-not-found=true rancher.cattle.io
-kubectl delete pod -n cattle-system -l app=rancher-webhook
-```
-
-- [Installation of Rancher](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/install-upgrade-on-a-kubernetes-cluster#5-install-rancher-with-helm-and-your-chosen-certificate-option) over Helm with Rancher-generated certificates
-```
-helm install rancher rancher-stable/rancher \
-  --namespace cattle-system \
-  --set hostname=cybsup01 \
-  --set bootstrapPassword=admin
-```
-
-- Follow command results to read the web url and to open the web console
-
-- Verify that Rancher server is successfully deployed via commands:
-```
-kubectl -n cattle-system rollout status deploy/rancher
-kubectl -n cattle-system get deploy rancher
-```
 
 ## CYBNITY software repository
 - Add complementary helm charts (e.g allowing deployment of CYBNITY applications) to node repository list via commands:
