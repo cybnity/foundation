@@ -18,5 +18,23 @@ See here the model of physical resources installed by CYBNITY to support the pro
 
 For more detail about technical and resources pre-required to support by this type of resources infrastructure, consult the [system and tools prerequisites documentation](../systems-and-tools-prerequisites.md).
 
+# COMPONENTS & GUIDELINES
+Technical documentations are available to present in detail the administration procedures that allow to install and to manage the __infrastructures elements involved__ into CYDEL 02.
+
+The configuration instructions are helping to deploy and to manage the systems (e.g hardware, virtualized components, tooling, network) for help the system deployer and/or infrastructure administrator.
+
+## NETWORK INFRASTRUCTURE
+
+## SUPPORT INFRASTRUCTURE
+This area of technical components and/or services are dedicated to support the other environments as tools (e.g Continuous Delivery of application components on environment) and shared services (e.g virtualization systems and containers management):
+
+## DEVELOPMENT INFRASTRUCTURE
+
+## VALIDATION INFRASTRUCTURE
+
+## SIMULATION INFRASTRUCTURE
+
+## PRODUCTION INFRASTRUCTURE
+
 #
 [Back To Home](../README.md)
