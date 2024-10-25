@@ -170,6 +170,16 @@ Canal solution is deployed as CNI plugin.
 ### Rancher Backup
 Automated backup solution ensuring auto-save of Rancher instance into a scheduled approach, to file versions allowing restoration in case of Rancher container disaster.
 
+## Server auto-stop
+Add a crontab directive to stop the server in a safe way (with wait of existing process secure end before make the stop) with power off:
+- open and add command into crontab via command: `sudo crontab -e`
+- add line in file and save as:
+```
+# stop and poweroff in secure way (shutdown -P) the server each day at 20:30:00
+30 20 * * * shutdown -P
+```
+
+
 # APPLICATION SERVICES
 
 ## Kubernetes management (Rancher)
