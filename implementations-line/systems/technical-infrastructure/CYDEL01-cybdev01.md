@@ -169,6 +169,17 @@ Canal solution is deployed as CNI plugin.
 
 ## Security
 
+## Server auto-stop
+Add a crontab directive to stop the server in a safe way (with wait of existing process secure end before make the stop) with power off:
+- open and add command into crontab via command: `sudo crontab -e`
+- add line in file and save as:
+```
+# stop and poweroff in secure way (shutdown -P) the server each day at 20:30:00
+30 20 * * * shutdown -P
+```
+
+- check crontab pla via command: `sudo crontab -l`
+
 # APPLICATION SERVICES
 
 ## CYBNITY software repository

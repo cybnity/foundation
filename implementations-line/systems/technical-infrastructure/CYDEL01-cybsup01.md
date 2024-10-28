@@ -179,6 +179,7 @@ Add a crontab directive to stop the server in a safe way (with wait of existing 
 30 20 * * * shutdown -P
 ```
 
+- check crontab pla via command: `sudo crontab -l`
 
 # APPLICATION SERVICES
 
