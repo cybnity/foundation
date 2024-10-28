@@ -4,9 +4,9 @@ This documentation is presenting the visual components defining the reference li
 # REFERENCE VISUAL COMPONENTS
 <table>
     <tr>
-        <td style="border: none;" valign="top">Browser<br><img src="browser.png" width=45% height=45%></td>
-        <td style="border: none;" valign="top">Buttons<br><img src="buttons.png" width=45% height=45%></td>
-        <td style="border: none;" valign="top">Colors<br><img src="colors.png" width=45% height=45%></td>
+        <td valign="top">Browser<br><img src="browser.png" width=45% height=45%></td>
+        <td valign="top">Buttons<br><img src="buttons.png" width=45% height=45%></td>
+        <td valign="top">Colors<br><img src="colors.png" width=45% height=45%></td>
     </tr>
     <tr>
         <td valign="top">Headline & header<br><img src="headline-and-header.png" width=45% height=45%></td>

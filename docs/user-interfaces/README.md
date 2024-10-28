@@ -15,7 +15,12 @@ You can find documentations relative to software maintenance like:
 
 These technical documentations are supporting the UI components development.
 
-# MAIN COCKPIT GUI
+# VISUAL ELEMENTS LIBRARIES
+The visual and ergonomic rules regarding the components used in CYBNITY graphic user interfaces are standardized via a reference library according each type of reusable component type.
+
+See the [visual components library](visual-components-library/README.md) documentation which present the component sets.
+
+# COCKPIT GUI
 The Product Requirements Definition (PRD) of CYBNITY cockpit (main screens organization of CYBNITY web presentation layer as Graphic User Interface) is detailed per test scenario on [Cockpit PRD - Usage Scenarios Functional Tests](https://cybnity.notion.site/c0e0365212984a5eaf17e8f2d068ba6f?v=8b6bc1bbe4bb432da4b7937ef7eb4ed9&pvs=4).
 
 Each scenario have been identified as a key and representative type of security use case which determine the visual behavior and/or interaction types that are required by a user with CYBNITY functions to reach a specific security mission (according to a security role like risk analysis, or CISO).
