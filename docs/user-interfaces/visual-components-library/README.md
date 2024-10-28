@@ -4,8 +4,8 @@ This documentation is presenting the visual components defining the reference li
 # REFERENCE VISUAL COMPONENTS
 <table>
     <tr>
-        <td valign="top">Avatar & picture<br><img src="avatar-and-picture.png"  width=20% height=20%></td>
-        <td style="vertical-align: top;">other</td>
+        <td valign="top">Avatar & picture<br><img src="avatar-and-picture.png" width=20% height=20%></td>
+        <td valign="top">Browser<br><img src="browser.png"  width=20% height=20%></td>
     </tr>
 </table>
 
