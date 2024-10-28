@@ -31,31 +31,31 @@ The link to specification documentation are mentionned like Scenario Detail Card
 ## CAPABILITY - Actions & Scheduling
 | Use Scenario Name | Specification Card | UI Mockup |
 | :---------------- | :----------------- | :-------- |
-| Permanent activities expected of a security team member are updated and aligned with his committed roles | [Scenario Card](https://cybnity.notion.site/Permanent-activities-expected-of-a-security-team-member-are-updated-and-aligned-with-his-committed-r-a8983c6abf21467782cf615109835372?pvs=4) | ![image](/mockups/Permanent-activities-are-updated-with-his-committed-roles.png) |
-| Recipient’s attention of new assigned tasks is visually captured to animate his motivation to treat them | [Scenario Card](https://cybnity.notion.site/Recipient-s-attention-of-new-assigned-tasks-is-visually-captured-to-animate-his-motivation-to-treat--9aabdef3f9c94acdbc09cc0b6aa38ef6?pvs=4) | ![image](/mockups/Recipient-attention-is-visually-captured.png) |
-| User is automatically alerted and notified of the exceeding of an acceptable threshold defined around a cyber risk score relating to a perimeter of assets (e.g information type) | [Scenario Card](https://cybnity.notion.site/User-is-automatically-alerted-and-notified-of-the-exceeding-of-an-acceptable-threshold-defined-aroun-bc180fa596814d409f2e0c5e16fa02e3?pvs=4) | ![image](/mockups/User-is-automatically-alerted-and-notified.png) |
+| Permanent activities expected of a security team member are updated and aligned with his committed roles | [Scenario Card](https://cybnity.notion.site/Permanent-activities-expected-of-a-security-team-member-are-updated-and-aligned-with-his-committed-r-a8983c6abf21467782cf615109835372?pvs=4) | ![image](mockups/Permanent-activities-are-updated-with-his-committed-roles.png) |
+| Recipient’s attention of new assigned tasks is visually captured to animate his motivation to treat them | [Scenario Card](https://cybnity.notion.site/Recipient-s-attention-of-new-assigned-tasks-is-visually-captured-to-animate-his-motivation-to-treat--9aabdef3f9c94acdbc09cc0b6aa38ef6?pvs=4) | ![image](mockups/Recipient-attention-is-visually-captured.png) |
+| User is automatically alerted and notified of the exceeding of an acceptable threshold defined around a cyber risk score relating to a perimeter of assets (e.g information type) | [Scenario Card](https://cybnity.notion.site/User-is-automatically-alerted-and-notified-of-the-exceeding-of-an-acceptable-threshold-defined-aroun-bc180fa596814d409f2e0c5e16fa02e3?pvs=4) | ![image](mockups/User-is-automatically-alerted-and-notified.png) |
 
 ## CAPABILITY - Missions & Programming
 | Use Scenario Name | Specification Card | UI Mockup |
 | :---------------- | :----------------- | :-------- |
-| The treatment of an urgent high-level task is quickly started by its assigned actor who was not connected on a CYBNITY user interface | [Scenario Card](https://cybnity.notion.site/The-treatment-of-an-urgent-high-level-task-is-quickly-started-by-its-assigned-actor-who-was-not-conn-660e38282fbd4d738e003473ef0ffa7e?pvs=4) | ![image](/mockups/Treatment-of-task-is-quickly-started.png) |
-| A task defined and assigned to the user is easily managed in accordance with its level of priority | [Scenario Card](https://cybnity.notion.site/A-task-defined-and-assigned-to-the-user-is-easily-managed-in-accordance-with-its-level-of-priority-fb1120b6dea744208933b53a08b1126c?pvs=4) | ![image](/mockups/task-defined-to-user-easily-managed.png) |
+| The treatment of an urgent high-level task is quickly started by its assigned actor who was not connected on a CYBNITY user interface | [Scenario Card](https://cybnity.notion.site/The-treatment-of-an-urgent-high-level-task-is-quickly-started-by-its-assigned-actor-who-was-not-conn-660e38282fbd4d738e003473ef0ffa7e?pvs=4) | ![image](mockups/Treatment-of-task-is-quickly-started.png) |
+| A task defined and assigned to the user is easily managed in accordance with its level of priority | [Scenario Card](https://cybnity.notion.site/A-task-defined-and-assigned-to-the-user-is-easily-managed-in-accordance-with-its-level-of-priority-fb1120b6dea744208933b53a08b1126c?pvs=4) | ![image](mockups/task-defined-to-user-easily-managed.png) |
 
 ## CAPABILITY - Threat/Risks Prevention & Treatment
 | Use Scenario Name | Specification Card | UI Mockup |
 | :---------------- | :----------------- | :-------- |
-| The established risk appreciation process is quickly started to frame the evaluation of a new asset | [Scenario Card](https://cybnity.notion.site/The-established-risk-appreciation-process-is-quickly-started-to-frame-the-evaluation-of-a-new-asset-905d902944a7402f871cd1a75d90c2e6?pvs=4) | ![image](/mockups/Established-risk-appreciation-process-is-quickly-started.png)|
-| Severity of weaknesses or deficiencies regarding an asset and usage is identified via risk appreciation | [Scenario Card](https://cybnity.notion.site/Severity-of-weaknesses-or-deficiencies-regarding-an-asset-and-usage-is-identified-via-risk-appreciat-e394b38cc6904caf90c885dd6b23d862?pvs=4) | ![image](/mockups/Severity-of-weaknesses-is-identified-via-risk-appreciation.png) |
+| The established risk appreciation process is quickly started to frame the evaluation of a new asset | [Scenario Card](https://cybnity.notion.site/The-established-risk-appreciation-process-is-quickly-started-to-frame-the-evaluation-of-a-new-asset-905d902944a7402f871cd1a75d90c2e6?pvs=4) | ![image](mockups/Established-risk-appreciation-process-is-quickly-started.png)|
+| Severity of weaknesses or deficiencies regarding an asset and usage is identified via risk appreciation | [Scenario Card](https://cybnity.notion.site/Severity-of-weaknesses-or-deficiencies-regarding-an-asset-and-usage-is-identified-via-risk-appreciat-e394b38cc6904caf90c885dd6b23d862?pvs=4) | ![image](mockups/Severity-of-weaknesses-is-identified-via-risk-appreciation.png) |
 
 ## CAPABILITY - ISMS & Strategy
 | Use Scenario Name | Specification Card | UI Mockup |
 | :---------------- | :----------------- | :-------- |
-| Risk assessment process is edited and approved as new revision | [Scenario Card](https://cybnity.notion.site/Risk-assessment-process-is-edited-and-approved-as-new-revision-238252809d8b49048f9fafc721ca225b?pvs=4) | ![image](/mockups/Risk-assessment-process-is-edited-and-approved-as-new-revision.png)|
+| Risk assessment process is edited and approved as new revision | [Scenario Card](https://cybnity.notion.site/Risk-assessment-process-is-edited-and-approved-as-new-revision-238252809d8b49048f9fafc721ca225b?pvs=4) | ![image](mockups/Risk-assessment-process-is-edited-and-approved-as-new-revision.png)|
 
 ## CAPABILITY - Stakeholders & Responsibilities
 | Use Scenario Name | Specification Card | UI Mockup |
 | :---------------- | :----------------- | :-------- |
-| Organization roles and responsibilities matrix is managed with visible approvals status regarding each stakeholder | [Scenario Card](https://cybnity.notion.site/Organization-roles-and-responsibilities-matrix-is-managed-with-visible-approvals-status-regarding-ea-e45aa6f8744842d988aac444fe55e7d5?pvs=4) | ![image](/mockups/Organization-roles-matrix-is-managed.png) |
+| Organization roles and responsibilities matrix is managed with visible approvals status regarding each stakeholder | [Scenario Card](https://cybnity.notion.site/Organization-roles-and-responsibilities-matrix-is-managed-with-visible-approvals-status-regarding-ea-e45aa6f8744842d988aac444fe55e7d5?pvs=4) | ![image](mockups/Organization-roles-matrix-is-managed.png) |
 
 #
 [Back To Home](../README.md)
