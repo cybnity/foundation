@@ -159,7 +159,12 @@ examples
 # RESOURCES INFRASTRUCTURE
 Several support resources are installed and provided by CYBNITY for allow deployment of environment modules during the build activities.
 
-See the __example of harware and virtualized systems__ as [support infrastructure implemented by CYBNITY project](technical-infrastructure/README.md), that can be considerated like an example for companies which would like to create a resources infrastructure supporting development of CYBNITY extension, or test/optimization of CYBNITY software suite versions, and/or providing of production environment to final users (e.g a company's security team; or a provider of managed platform as SaaS offer to other companies' security teams).
+
+## CYDEL 01 (current)
+See the __implemented harware and virtualized systems__ as [implementation infrastructure deployed by CYBNITY project](technical-infrastructure/CYDEL01.md) to support the current CYBNITY open source project.
+
+## CYDEL 02 (future)
+See the __example of harware and virtualized systems__ as [implementation infrastructure model](technical-infrastructure/CYDEL02.md), that can be considerated like an example for companies which would like to create a resources infrastructure supporting development of CYBNITY extension, or test/optimization of CYBNITY software suite versions, and/or providing of production environment to final users (e.g a company's security team; or a provider of managed platform as SaaS offer to other companies' security teams).
 
 #
 [Back To Home](../README.md)

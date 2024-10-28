@@ -24,11 +24,21 @@ BE CAREFULL: simultanuous installation of all components (e.g cybnity-platform f
 ## Prerequisites
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
-|Minikube||||
+|[Rancher Desktop](https://rancherdesktop.io/)|MacOs (Apple Silicon, Intel), Linux, Windows| | |
+|Minikube|MacOS, Linux, or Windows|__local-dev (1 node)__:<br>- RAM: 8Go<br>- Storage: 20Go|[Minikube documentation](https://minikube.sigs.k8s.io/docs/)|
 
 ## Usages
-The cluster folder include scripts simplifying creation of K8S cluster (e.g Minikube cluster) according several types:
+### Rancher Desktop
+Open-source application by SUSE that provides all the essentials to work with containers and Kubernetes on a development workstation.
+- Container Engine: dockerd (moby version as Community Edition) is used via Docker API (Docker CLI and k3d) for container images execution.
+- Virtual Machine Engine: QEMU emulator is used for virtual machine execution.
+- Kubernetes: enabled with Traefik options activated
+
+### Minikube
+The Minikube folders include scripts simplifying creation of K8S cluster according:
 - local-dev: medium resources allocation for developer workstation based on only 1 node defined into a K8S cluster.
+
+Reusable scripts are available into sub-folders: [cluster/kubectl](cluster/kubectl), [cluster/minikube](cluster/minikube).
 
 In case of cluster stop and restart on Minikube, the assigned labels (per node) are lost by default Minikube configuration.
 
@@ -36,6 +46,8 @@ Use the add-labels-to-local-cluster.sh script dedicated to the used cluster for 
 
 # NETWORKING MODULES
 Contain each module managing connectivity and/or traffic (e.g a load balancing module) as reusable and standalone deployable module.
+
+Reusable scripts are available into sub-folder: [networking/kubectl](networking/kubectl).
 
 One sub-directory is defined per reusable module name.
 

@@ -15,8 +15,10 @@ Tools and required resources supporting all the environments involved into the C
 ## TOOLS
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
-|Halyard|- local machine (MacOS, Ubuntu/Debian), or VM (Ubuntu 18.04+, Debian 10+), or Docker container<br>- RAM: 12GB minimum||Halyard is a command-line administration tool that manages the lifecycle of a Spinnaker deployment, including writing & validating a deployment’s configuration, deploying each of Spinnaker’s microservices, and updating the deployment.<br>[Install and configure spinnaker](https://spinnaker.io/docs/setup/install/); [local install doc](https://spinnaker.io/docs/setup/install/environment/#local-debian); [docker install doc](https://spinnaker.io/docs/setup/install/halyard/#install-halyard-on-docker)|
-|Spinnaker|RAM: 16Go minimum<br>|CPU: 4 cores minimum|[Install and configure spinnaker](https://spinnaker.io/docs/setup/install/)|
+|[Harvester](https://harvesterhci.io/)|Linux, KVM, Kubernetes, KubeVirt and Longhorn|[Hardware & network requirements](https://docs.harvesterhci.io/v1.3/install/requirements)|HyperConverged Infrastructure (HCI) open-source solution for bare metal servers.<br>[Harvester documentation](https://docs.harvesterhci.io/v1.3)|
+|[Halyard tool](https://spinnaker.io/docs/reference/halyard/)|Local machine (MacOS, Ubuntu/Debian), VM (Ubuntu 18.04+, Debian 10+), or Docker container|- RAM: 12GB minimum||Halyard is a command-line administration tool that manages the lifecycle of a Spinnaker deployment, including writing & validating a deployment’s configuration, deploying each of Spinnaker’s microservices, and updating the deployment.<br>[Install and configure spinnaker](https://spinnaker.io/docs/setup/install/); [local install doc](https://spinnaker.io/docs/setup/install/environment/#local-debian); [docker install doc](https://spinnaker.io/docs/setup/install/halyard/#install-halyard-on-docker)|
+|[Spinnaker](https://spinnaker.io/)|Halyard (Ubuntu 18.04+, Debian 10+), [MinIO](https://min.io/) (K8S v1.28.9+, Linux, MacOS, Docker, Windows), Spinnaker (Kubernetes)|__Halyard machine__:<br>- RAM: 12GB (minimum)<br>__Spinnaker K8S cluster__:<br>- CPU: 4 cores (minimum)<br>- RAM: 16Go (minimum)<br>__MinIO K8S node__:|- Halyard command-line administration tool that manages the lifecycle of Spinnaker deployment.<br>- [Open sourced MinIO](https://github.com/minio/minio) S3 compatible object store for persisting application settings and configured Spinnaker pipelines in self-hosted infrastructure. [Deploy MinIO over K8S operator doc](https://min.io/docs/minio/kubernetes/upstream/operations/install-deploy-manage/deploy-minio-tenant.html#deploy-minio-distributed).<br>- Spinnaker multi-cloud continuous delivery. [Install and configure spinnaker](https://spinnaker.io/docs/setup/install/)|
+|Rancher|Linux, Kubernetes| |Kubertenes clusters management|
 
 ## CYBNITY EMBEDDED SYSTEMS
 These prerequisites are about technologies and/or systems (e.g open source database systems) included or compatible with the CYBNITY software versions, that shall be considered as minimum requirements for deployment of CYBNITY systems.
@@ -33,9 +35,10 @@ These prerequisites are about technologies and/or systems (e.g open source datab
 |Cassandra|Debian 8-9, Java 11|__Production__:<br>- CPU: 2 cores (minimum), 8+ cores (typical)<br>- RAM: 8Go (minimum), 32GB (typical)<br>- Storage: SSDs|[Hardware choices](https://cassandra.apache.org/doc/stable/cassandra/operating/hardware.html)|
 
 # PREREQUISITES PER MODULARIZED ENVIRONMENT
+- [SUPPORT-ENV](modules/support-env/README.md): transversal environment provided tools that allow administration and support (e.g CI tools) of software development/delivery activities.
 - [LOCAL-ENV](modules/local-env/README.md): standalone or sandboxed environment used for projects development.
 - [DEV-ENV](modules/dev-env/README.md): centralized environment between multiples projects and/or developers in a shared tools approach.
-- [QA-ENV](modules/qa-env/README.md): resources and tools allocated for quality check activities (e.g remotely controlled by the CI tools) in a centralized and automated approach.
+- [QA-ENV](modules/qa-env/README.md): resources and tools allocated for quality check activities (e.g remotely controlled by the CI tools of SUPPORT-ENV) in a centralized and automated approach.
 - [LIVE-ENV](modules/live-env/README.md): production resources requirements for deployment and operating of CYBNITY solutions.
 
 #

@@ -12,6 +12,8 @@ These technical documentations are supporting the functional, architectural and/
 # DEVELOPMENT DOCUMENTATIONS
 ## COMPONENTS & SYSTEMS BUILD
 ### Software Design
+- [User Interfaces mockups](user-interfaces/README.md) presenting refined presentation layer principles and designed screens.
+  A UI mockup is a visual representation of a final digital product (e.g ui cockpit of CYBNITY), including layout/hierarchy, color, typography, icons, and other UI elements. While mockups are high-fidelity designs, they are static and have no functionality-like a screenshot.
 - [Architecture Models](architecture/README.md) presenting the systems and general description about components.
 - [UML documentation](uml/README.md) presenting the domain analysis, and the software specifications over several views according to an Unified Process (UP) approach (e.g Use case view, Design view, Deployment view, Implementation view and Process view).
 

@@ -14,7 +14,7 @@ Contain each module (e.g applicative or technical service module that is propose
 One sub-directory is defined per deploying capability of a technical or applicative module.
 
 ## Utility scripts
-Cluster folder includes shell scripts that help to create minikube cluster according to resource available on a computer used as centralized development server.
+Cluster sub-folder includes shell scripts that help to create minikube cluster according to resource available on a computer used as centralized development server.
 
 Several types of clusters can be build over command lines executions:
 - Cluster of 4 nodes dedicated to receive only CYBNITY application systems deployed by the global Helm project relative to cybnity-platform (see IAC Helm Charts repository);
@@ -23,12 +23,18 @@ Several types of clusters can be build over command lines executions:
 ## Prerequisites
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
-|Minikube|MacOS, Linux, or Windows|__dev (1 node)__:<br>- RAM: 128Go<br>- Storage: 200Go<br>__dev-env4 (4 app nodes)__:<br>- RAM: 128Go<br>- Storage: 200Go|[cluster folder](cluster)|
+|K3S| | | |
+|Minikube|MacOS, Linux, or Windows|__dev (1 node)__:<br>- RAM: 64Go<br>- Storage: 200Go<br>__dev-env4 (4 app nodes)__:<br>- RAM: 32Go<br>- Storage: 200Go|[Minikube documentation](https://minikube.sigs.k8s.io/docs/)|
 
 ## Usages
-The cluster folder include scripts simplifying creation of K8S cluster (e.g Minikube cluster) according several types:
+### K3S
+
+### Minikube
+The Minikube folders contain scripts simplifying creation of K8S cluster according to several types:
 - dev: medium resources allocation for developer workstation based on only 1 node defined into a K8S cluster;
 - dev-env4: medium resources alloncation for integration test server based on 4 nodes (similar to production target isolated area where systems are deployed) defined into a K8S cluster.
+
+Reusable scripts are available into sub-folders: [cluster/kubectl](cluster/kubectl), [cluster/minikube](cluster/minikube).
 
 In case of cluster stop and restart on Minikube, the assigned labels (per node) are lost by default Minikube configuration.
 
@@ -36,6 +42,8 @@ Use the add-labels-to-xxxx-cluster.sh script dedicated to the used cluster for a
 
 # NETWORKING MODULES
 Contain each module managing connectivity and/or traffic (e.g a load balancing module) as reusable and standalone deployable module.
+
+Reusable scripts are available into sub-folder: [networking/kubectl](networking/kubectl).
 
 One sub-directory is defined per reusable module name.
 
