@@ -21,24 +21,23 @@ Several types of clusters can be build over command lines executions:
 - Cluster of 1 node dedicated for installation of any CYBNITY application systems.
 
 ## Prerequisites
+### CYDDEL01
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
-|K3S| | | |
-|Minikube|MacOS, Linux, or Windows|__dev (1 node)__:<br>- RAM: 64Go<br>- Storage: 200Go<br>__dev-env4 (4 app nodes)__:<br>- RAM: 32Go<br>- Storage: 200Go|[Minikube documentation](https://minikube.sigs.k8s.io/docs/)|
+|RKE2 cluster|RKE2|- RAM: 8GB+<br>- CPU: 4+ cores|RKE2 Kubernetes platform.<br>Supported [Linux distributions](https://www.suse.com/suse-rke2/support-matrix/all-supported-versions/rke2-v1-30/)|
+|Linux|Ubuntu LTS Linux server| |Operating System of single-node|
+|Physical server| | |[CYDEL01 documentation](/implementation-line/systems/technical-infrastructure/CYDEL01-cybdev01.md)|
+
+### CYDEL02
+|System / Solution|Software Layer|Hardware Layer|Documentations|
+|:--|:--|:--|:--|
+|RKE2 cluster|RKE2|- RAM: 8GB+<br>- CPU: 4+ cores|RKE2 Kubernetes platform.<br>Supported [Linux distributions](https://www.suse.com/suse-rke2/support-matrix/all-supported-versions/rke2-v1-30/)|
 
 ## Usages
-### K3S
+Hosting environment as shared resources dedicated to deployment of CYBNITY software suite versions currently developed by CYBNITY developers.
 
-### Minikube
-The Minikube folders contain scripts simplifying creation of K8S cluster according to several types:
-- dev: medium resources allocation for developer workstation based on only 1 node defined into a K8S cluster;
-- dev-env4: medium resources alloncation for integration test server based on 4 nodes (similar to production target isolated area where systems are deployed) defined into a K8S cluster.
-
-Reusable scripts are available into sub-folders: [cluster/kubectl](cluster/kubectl), [cluster/minikube](cluster/minikube).
-
-In case of cluster stop and restart on Minikube, the assigned labels (per node) are lost by default Minikube configuration.
-
-Use the add-labels-to-xxxx-cluster.sh script dedicated to the used cluster for automatically re-assign the labels to cluster nodes.
+### RKE2
+The [RKE2 is Rancher's Kubernetes distribution](https://docs.rke2.io/) that focuses on security.
 
 # NETWORKING MODULES
 Contain each module managing connectivity and/or traffic (e.g a load balancing module) as reusable and standalone deployable module.
@@ -51,6 +50,20 @@ One sub-directory is defined per reusable module name.
 Contain each module specifically for deploying the CYBNITY containerized application component.
 
 One sub-directory is defined per CYBNITY application deployable as a Kubernetes service.
+
+# HARDWARE INFRASTRUCTURE
+Current support environment is built over a set of physical resources.
+
+## CYDEL01
+See [CYDEL01 documentation](/implementation-line/systems/technical-infrastructure/CYDEL01-cybdev01.md).
+
+### Hardware resources sizing
+| | NEED | CURRENT | SIZING STATUS |
+|:--|:--:|:--:|:--:|
+| CPU CORES | 16 | 28 | :white_check_mark: |
+| RAM | 128GB | 128GB | :white_check_mark: |
+| STORAGE SIZE | 500GB | 3.5TB | :white_check_mark: |
+| NETWORK SPEED| 10Gpbs |1Gbps + 10Gbps + 10Gbps| :white_check_mark: |
 
 #
 [Back To Home](../README.md)
