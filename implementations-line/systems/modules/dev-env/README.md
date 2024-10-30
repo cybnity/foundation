@@ -26,7 +26,7 @@ Several types of clusters can be build over command lines executions:
 |:--|:--|:--|:--|
 |RKE2 cluster|RKE2|- RAM: 8GB+<br>- CPU: 4+ cores|RKE2 Kubernetes platform.<br>Supported [Linux distributions](https://www.suse.com/suse-rke2/support-matrix/all-supported-versions/rke2-v1-30/)|
 |Linux|Ubuntu LTS Linux server| |Operating System of single-node|
-|Physical server| | |[CYDEL01 documentation](/implementation-line/systems/technical-infrastructure/CYDEL01-cybdev01.md)|
+|Physical server| | |[CYDEL01 documentation](../../technical-infrastructure/CYDEL01-cybdev01.md)|
 
 ### CYDEL02
 |System / Solution|Software Layer|Hardware Layer|Documentations|
@@ -55,7 +55,7 @@ One sub-directory is defined per CYBNITY application deployable as a Kubernetes 
 Current support environment is built over a set of physical resources.
 
 ## CYDEL01
-See [CYDEL01 documentation](/implementation-line/systems/technical-infrastructure/CYDEL01-cybdev01.md).
+See [CYDEL01 documentation](../../technical-infrastructure/CYDEL01-cybdev01.md).
 
 ### Hardware resources sizing
 | | NEED | CURRENT | SIZING STATUS |
