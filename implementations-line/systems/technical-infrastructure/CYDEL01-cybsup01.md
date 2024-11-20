@@ -415,6 +415,7 @@ kubectl -n cattle-system get deploy rancher
       - Apply resource for instantiation in cluster via command `kubectl apply -f trust-cybnity-domains-issuer.yaml` and verify good creation of ClusterIssuer and Certificate into the cluster
       - Remove created objects in cluster, and move the manifest file into `/var/lib/rancher/rke2/server/manifests/` for automatic binding by RKE2
       - Minimize accessibility regarding permissions via command `sudo chmod 600 /var/lib/rancher/rke2/server/manifests/trust-cybnity-domains-issuer.yaml`
+
       ```mermaid
       %%{
         init: {
@@ -445,8 +446,7 @@ kubectl -n cattle-system get deploy rancher
         }
       }%%
       graph LR
-        subgraph cluster["SUP Cluster"]
-          direction LR
+        subgraph cluster["Cluster"]
           clusterIssuer1["#60;#60;Cluster Issuer#62;#62; \n trust-cybnity-domains-issuer"]
           certificate1["#60;#60;Certificate#62;#62; \n trust-cybnity-domains"]
           secret1["#60;#60;Secret#62;#62; \n cybnity-domain-tls"]
@@ -465,7 +465,7 @@ kubectl -n cattle-system get deploy rancher
         classDef internalconfig fill:#0e2a43, stroke:#fff, color:#fff
 
         class clusterIssuer1,certificate1,secret1 medium;
-        class cluster reddot;
+        class cluster mediumdot;
       ```
 
 - Follow command results to read the web url allowing to change the default admin password from a web browser
