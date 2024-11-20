@@ -461,7 +461,7 @@ kubectl -n cattle-system get deploy rancher
         classDef dark fill:#0e2a43, stroke:#fff, color:#fff
         classDef internalconfig fill:#0e2a43, stroke:#fff, color:#fff
 
-        class clusterIssuer1, certificate1, secret1 mediumfill;
+        class clusterIssuer1,certificate1,secret1 mediumfill;
 
       ```
 
