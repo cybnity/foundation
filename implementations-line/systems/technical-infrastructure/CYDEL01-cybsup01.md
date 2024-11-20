@@ -462,6 +462,7 @@ kubectl -n cattle-system get deploy rancher
         classDef internalconfig fill:#0e2a43, stroke:#fff, color:#fff
 
         class clusterIssuer1, certificate1, secret1 mediumfill;
+
       ```
 
 - Follow command results to read the web url allowing to change the default admin password from a web browser
