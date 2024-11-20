@@ -272,5 +272,12 @@ ping <external server name>.<domain name>
   - on server, execute `poweroff` to stop the machine
   - on another station, wake it up with a magic packet send (e.g on mac over command execution `wakeonlan <<MAC ADDRESS>>`)
 
+### Timezone
+Change permanently the OS's timezone used as reference according to the server location, via commands:
+```
+sudo ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
+sudo dpkg-reconfigure -f noninteractive tzdata
+```
+
 #
 [Back To Home](CYDEL01.md)

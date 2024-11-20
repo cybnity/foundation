@@ -37,33 +37,85 @@ RKE2 virtualization system is implemented as Kubernetes layer hosting the CYBNTY
 ```
 
 ## RKE2 Kubernetes distribution
+### RKE2 environment preparation
 - Create tar installation directory via command:
 ```
-  mkdir /opt/rke2
+  sudo mkdir /opt/rke2
 ```
 
-- Set environment variable to use during RKE2 script installation execution via command:
+- Create root user when not already existing via commands:
+```
+  # check existing root user
+  su root
+
+  # modify root password if not defined
+  sudo passwd root
+
+  # switch from current account to the root user account
+  su root
+```
+
+### Private Certificates
+Get new CYBNITY domain certificates bundles (including CA Root, intermediates crd files) usable for DEV cluster.
+
+#### Update Ubuntu SSL certs bundles
+Add certificates (private domain, intermediate, CA root) to certificated store of OS:
+- Copy each crt file of the domain bundle into the `/usr/local/share/ca-certificates` folder (only private domain crt file original name shall be renamed for cybnity-domains.crt)
+- Update the Ubuntu certificates store via command `sudo update-ca-certificates` (auto-upgrade of `/etc/ca-certificates.conf` file)
+
+Add domain private key to OS:
+- Copy domain private key file into `/etc/ssl/private` folder.
+
+#### Update RKE2 certificates usabled for cluster
+If previous RKE2 version need to be uninstalled before defining the CA root, execute uninstall via command `/opt/rke2/bin/rke2-uninstall.sh`
+
+See [RKE2 security certificates](https://docs.rke2.io/security/certificates) documentation for help.
+- Create `/var/lib/rancher/rke2/server/tls` folder and copy into it:
+  - custom domain certificate (e.g 2299159002.crt defining the SSL certificate for domain and/or sub-domains) as `root-ca.pem` renamed file
+  - private key of the custom domain (e.g 2299159002-domain.key defining the private key of SSL certificate) as `root-ca.key` renamed file
+- Generate custom CA certs and keys via command `curl -sL https://github.com/k3s-io/k3s/raw/master/contrib/util/generate-custom-ca-certs.sh | PRODUCT=rke2 bash -` and check text shown regarding the database updates applied with success (e.g new entries made) about CA certificate generation completed.
+- Create folder `mkdir -p /opt/rke2/server/tls`
+  - Copy current service-account signing key considerated like current via `cp /var/lib/rancher/rke2/server/tls/service.key /opt/rke2/server/tls`, to avoid token lost during future custom CA certificate rotation
+
+### RKE2 Installation
+- As root user, set environment variable to use during RKE2 script installation execution via command:
 ```
   export INSTALL_RKE2_METHOD="tar"
   export INSTALL_RKE2_CHANNEL="stable"
   export INSTALL_RKE2_TYPE="server"
   export INSTALL_RKE2_TAR_PREFIX="/opt/rke2"
+
+  # check defined environment variables
+  printenv
 ```
 
-- Execute RKE2 installation script via command:
+- As root user, execute RKE2 installation script via command:
 ```
   curl -sfL https://get.rke2.io |  sh -
 ```
 
-- Add permanent path to rke2 binary (/opt/rke2/bin) and add it to PATH into file `/etc/environment`
+- Add permanent path to rke2 binary (`/opt/rke2/bin`) with adding into $PATH variable of file `/etc/environment`, and add KUBECONFIG environment variable:
+```
+  KUBECONFIG="/etc/rancher/rke2/rke2.yaml"
+```
 
-- Enable and start the rke2-server service via commands:
+- Reload environment file to activate changed file, via command:
+```
+  set -a; . /etc/environment; set +a;
+```
+
+- Execute rotation to load the updated certs into the datastore via `rke2 certificate rotate-ca --path=/opt/rke2/server`... and RKE can be started
+
+- Enable (symbolic link creation) and start the rke2-server service via commands:
 ```
   sudo systemctl enable rke2-server.service
   sudo systemctl start rke2-server.service
+
+  # If Cluster Certificate Authority data has been updated via ca-rotate success result, rke2 must be restarted
+  sudo systemctl restart rke2-server
 ```
 
-- Create symbolic link to RKE2 tools (kubectl, kubelet, crictl, ctr) via commands:
+- Create symbolic links to RKE2 tools (kubectl, kubelet, crictl, ctr) via commands:
 ```
   sudo ln -s /var/lib/rancher/rke2/bin/kubectl /usr/local/bin/kubectl
   sudo ln -s /var/lib/rancher/rke2/bin/kubelet /usr/local/bin/kubelet
@@ -77,38 +129,60 @@ RKE2 virtualization system is implemented as Kubernetes layer hosting the CYBNTY
   sudo ln -s /etc/rancher/rke2/rke2.yaml ~/.kube/config
 ```
 
+- Copy KUBECONFIG file for cluster access from outside (https://docs.rke2.io/cluster_access documentation)
+
+- Create `/etc/rancher/rke2/config.yaml` (https://docs.rke2.io/install/configuration) including:
+```
+  write-kubeconfig-mode: "0644"
+  tls-san:
+    # hostnames
+    - "cybdev01.cybnity.tech"
+    - "cybdev01.local"
+  node-label:
+    - "environment=dev"
+  debug: true
+
+  # database configuration
+  # active snapshots
+  etcd-disable-snapshots: false
+
+  # snapshot interval time every 5 hours
+  etcd-snapshot-schedule-cron: "0 */5 * * *"
+  etcd-snapshot-retention: 3
+```
+
+- Change the permission allowed to the Kubernetes configuration files to minimise accessibility to other users via command:
+```
+sudo chmod 600 /etc/rancher/rke2/*.yaml
+```
+
 - Verify the server node registration via command line:
 ```
+  # restart cluster based on config.yaml
+  sudo systemctl restart rke2-server.service
+
+  # check information about cluster nodes
   kubectl get nodes -o wide
 ```
 
-- Copy KUBECONFIG for cluster access (https://docs.rke2.io/cluster_access documentation)
-
-- create conig.yaml (https://docs.rke2.io/install/configuration)
-
 - CIS Hardening
-  - Kernel parameters (https://docs.rke2.io/security/hardening_guide#kernel-parameters)
+  Kernel parameters (https://docs.rke2.io/security/hardening_guide#kernel-parameters)
+  - when `/usr/local/share/rke2/rke2-cis-sysctl.conf` is not existing, create it:
+  ```
+    vm.panic_on_oom=0
+    vm.overcommit_memory=1
+    kernel.panic=10
+    kernel.panic_on_oops=1
+  ```
+
+  - make copy on shared directory as rke2 conf
   ```
   sudo cp -f /usr/local/share/rke2/rke2-cis-sysctl.conf /etc/sysctl.d/60-rke2-cis.conf
   sudo systemctl restart systemd-sysctl
   ```
 
-- Containerd registry
-  - create registries.yaml into /etc/rancher/rke2/ (as documented at https://docs.rke2.io/install/containerd_registry_configuration) usable by the server (e.g cybnity docker registry) including Personal Access Token used for private registries authentication
-
-- Snapshot configuration
-  - add configuration lines in `/etc/rancher/rke2/config.yaml`:
-  ```
-  # Database configuration
-  # active snapshots
-  etcd-disable-snapshots: false
-  # snapshot interval time every 5 hours
-  etcd-snapshot-schedule-cron: "0*/5 * * *"
-  etcd-snapshot-retention: 3
-  ```
-
-  - restart service via command:
-  `systemctl start rke2-server`
+- Optional containerd registry
+  - If need, create `registries.yaml` into `/etc/rancher/rke2/` (as documented at https://docs.rke2.io/install/containerd_registry_configuration) usable by the server (e.g cybnity docker registry) including Personal Access Token used for private registries authentication
 
 - Check started rke2-server service via commands:
 ```
@@ -120,52 +194,36 @@ journalctl -u rke2-server.service
 
 ## Kubernetes resources
 
-### Base data storage resource (Persistent Volume)
+### Base data storage area
 - Create a sub-directory of `/srv` dedicated to the Kubernetes resources (e.g Persistent Volumes) via commands:
   ```
-  mkdir /srv/k8s
-  mkdir /srv/k8s/data
+  sudo mkdir /srv/k8s
+  sudo mkdir /srv/k8s/data
   ```
-
-- __From root $HOME directory__, create a symbolic link simplying the identification of K8S data storage base path via command:
-  ```
-  # Allow direct access to RKE2 dedicated disk area reserved for K8S data (e.g under data folder, for PersistentVolumes creation)
-  sudo ln -s /srv/k8s/data .kube/data
-  ```
-
-- Create new PV resource file (automatic applied resource during RKE2 start) regarding base persistent volume via command:
-  `vi /var/lib/rancher/rke2/server/manifests/rke2-base-pv.yaml`
-
-  - file containing (see for help [best practices for PV](https://www.loft.sh/blog/kubernetes-persistent-volumes-examples-and-best-practices)) according to storage capacity available:
-  ```
-  apiVersion: v1
-  kind: PersistentVolume
-  metadata:
-    name: base-pv
-  spec:
-    capacity:
-      storage: 50Gi
-    volumeMode: Filesystem
-    accessModes:
-      - ReadWriteOnce
-    persistentVolumeReclaimPolicy: Retain
-    hostPath:
-      path: "/srv/k8s/data"
-  ```
-
-  - Check the automatically created resource via command: `kubectl get pv`
 
 # INFRASTRUCTURE SERVICES
 
 ## Storage
-### Longhorn
-Distributed block storage system deployed for containers data management.
 
 ## Monitoring & Logging
 
 ## Networking
 ### Container Network Interface (CNI)
 Canal solution is deployed as CNI plugin.
+
+### Remote control by Rancher (CYBSUP01)
+Server used like OS and container runtime shall support additional requirements.
+
+- Check that none firewall rule is actived on the node which block communication withing the K8S cluster. Since Kubernetes v1.19, firewall must be turned off, because it conflicts with the Kubernetes networking plugins.
+
+### Authorized cluster endpoint support for RKE2 cluster control by Rancher
+See [Rancher authorized cluster endpoint documentation](https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/register-existing-clusters#authorized-cluster-endpoint-support-for-rke2-and-k3s-clusters) for help.
+
+As root user, execute the additional configuration documented procedure:
+- Create `/var/lib/rancher/rke2/kube-api-authn-webhook.yaml` file with cluster properties defined
+- Add `kube-apiserver-arg` to `/etc/rancher/rke2/config.yaml` file
+- Stop and start the rke2-server
+- When DEV cluster is imported for remote control by Rancher (executed on CYBDEV01), enable for Authorized Endpoint with entry of FQDN (e.g cybdev01.cybnity.tech) and certificate information (e.g cybnity domains certificate)
 
 ## Security
 
@@ -178,18 +236,35 @@ Add a crontab directive to stop the server in a safe way (with wait of existing 
 30 20 * * * shutdown -P
 ```
 
-- check crontab pla via command: `sudo crontab -l`
+- check crontab plan via command: `sudo crontab -l`
+
+## Time
+Network Time Protocol (NTP) package shall be installed. This prevents errors with certificate validation that can occur when the time is not synchronized between the client and server. Timedate is by default installed on Ubuntu in place of previous ntpd tool, check that autosync of timezone from Internet is active via command:
+```
+  # check autosync time
+  timedatectl
+```
+  - If ntpd is need, install it via command:
+  ```
+    sudo apt install ntp
+  ```
+
+## Cluster remote management
+On Rancher:
+- Create a new cluster (e.g named DEV) into a Rancher application executed on SUP server (e.g CYBSUP01) from Cluster Management section
+- In Member Roles section, add user authorized to cluster management
+
+On cluster eligible to remote management:
+- Set the cluster-admin privileges for Rancher user via the command proposed by Rancher Registration section
+- From cluster to control, execute the registration command proposed by Rancher (e.g via kubectl on existing DEV cluster) to import it into Rancher management system
 
 # APPLICATION SERVICES
 
 ## CYBNITY software repository
 - Add complementary helm charts (e.g allowing deployment of CYBNITY applications) to node repository list via commands:
 ```
-  helm repo add cybnity https://cybnity.github.io/iac-helm-charts
+  sudo helm repo add cybnity https://cybnity.github.io/iac-helm-charts --force-update
 ```
-
-## Systems continuous delivery (Spinnaker)
-
 
 #
 [Back To Home](CYDEL01.md)

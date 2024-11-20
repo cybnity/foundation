@@ -25,6 +25,7 @@ Cluster folder includes shell scripts that help to create a cluster according to
 |CD datastore|MinIO, Docker under K8S|__per node__:<br>- CPU: 1+ core<br>- Storage: NVMe SSD<br>- Network: 100 Gbps with dual NICs|Persistence system (object store) of Spinnaker instances' data.<br>2 HA node recommended.<br>Persistence size need is based on Spinnaker storage need.<br>[Hardwware for MinIO deployment]([https://min.io/product/reference-hardware](https://blog.min.io/selecting-hardware-for-minio-deployment/))|
 |RKE2 cluster|RKE2|- RAM: 8GB+<br>- CPU: 4+ cores|RKE2 Kubernetes platform.<br>Supported [Linux distributions](https://www.suse.com/suse-rke2/support-matrix/all-supported-versions/rke2-v1-30/)|
 |Linux|Ubuntu LTS Linux server| |Operating System of single-node|
+|MinIO|Linux| |Block storage clustering solution for data blocks management over S3 API|
 |Physical server| | |[CYDEL01-CYBSUP01 documentation](../../technical-infrastructure/CYDEL01-cybsup01.md)|
 
 ### CYDEL02
