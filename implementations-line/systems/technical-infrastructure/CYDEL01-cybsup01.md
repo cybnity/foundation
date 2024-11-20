@@ -447,9 +447,9 @@ kubectl -n cattle-system get deploy rancher
       }%%
       graph LR
         subgraph cluster["Cluster"]
-          clusterIssuer1["#60;#60;Cluster Issuer#62;#62;&#10;&#13;trust-cybnity-domains-issuer"]
-          certificate1["#60;#60;Certificate#62;#62;&#10;&#13;trust-cybnity-domains"]
-          secret1["#60;#60;Secret#62;#62;&#10;&#13;cybnity-domain-tls"]
+          clusterIssuer1["#60;#60;Cluster Issuer#62;#62;#dix;trust-cybnity-domains-issuer"]
+          certificate1["#60;#60;Certificate#62;#62;#dix;trust-cybnity-domains"]
+          secret1["#60;#60;Secret#62;#62;#10;#13;cybnity-domain-tls"]
         end
 
         certificate1 -. "verified via" .-> clusterIssuer1
