@@ -447,15 +447,19 @@ kubectl -n cattle-system get deploy rancher
       }%%
       graph LR
         subgraph cluster["Cluster"]
-          subgraph clusterIssuer1["#60;#60;Cluster Issuer#62;#62;"]
+          subgraph clusterIssuer["#60;#60;Cluster Issuer#62;#62;"]
             issuer1["trust-cybnity-domains-issuer"]
           end
-          certificate1["#60;#60;Certificate#62;#62; \n trust-cybnity-domains "]
-          secret1["#60;#60;Secret#62;#62;#10; \n cybnity-domain-tls "]
+          subgraph certificate["#60;#60;Certificate#62;#62;"]
+            cert1["trust-cybnity-domains"]
+          end
+          subgraph secret["#60;#60;Secret#62;#62;#10;"]
+            sc1["cybnity-domain-tls"]
+          end
         end
 
-        certificate1 -. "verified via" .-> clusterIssuer1
-        certificate1 -. "using secret values" .-> secret1
+        certificate -. "verified via" .-> clusterIssuer
+        certificate -. "using secret values" .-> secret
 
         classDef mediumfill fill:#3a5572, stroke:#3a5572, color:#fff
 
@@ -466,8 +470,8 @@ kubectl -n cattle-system get deploy rancher
         classDef dark fill:#0e2a43, stroke:#fff, color:#fff
         classDef internalconfig fill:#0e2a43, stroke:#fff, color:#fff
 
-        class clusterIssuer1,certificate1,secret1 medium;
-        class cluster mediumdot;
+        class issuer1,cert1,sc1 medium;
+        class cluster,clusterIssuer,certificate1,secret mediumdot;
       ```
 
 - Follow command results to read the web url allowing to change the default admin password from a web browser
