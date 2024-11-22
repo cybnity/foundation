@@ -614,8 +614,8 @@ Object storage solution that provides an Amazon Web Services S3-compatible API a
   - Add TLS certificates (custom domain certificate and private key) in `/home/minio-user/.minio/certs` sub-folder
   - Add CA certificates into the `/home/minio-user/.minio/certs/CAs` sub-folder
   - Assign ownership and rights of all `/home/minio-user` contents via `chown -R minio-user:minio-user /home/minio-user` to minio-user account
-    [!IMPORTANT]
-    Place TLS and CA certificates in the __/home/mini-user/.minio/__ sub-directories of each MinIO hosts when server or client uses certificates signed by an unknown Certificate Authority (self-signed or internal CA). Else MinIO rejects invalid certificates (untrusted, expired or malformed)
+    >[!IMPORTANT]
+    > Place TLS and CA certificates in the __/home/mini-user/.minio/__ sub-directories of each MinIO hosts when server or client uses certificates signed by an unknown Certificate Authority (self-signed or internal CA). Else MinIO rejects invalid certificates (untrusted, expired or malformed)
 
 
 
