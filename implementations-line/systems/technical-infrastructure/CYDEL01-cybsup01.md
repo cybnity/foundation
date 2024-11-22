@@ -542,9 +542,9 @@ Object storage solution that provides an Amazon Web Services S3-compatible API a
   Create DNS hostname mapping dedicated to MiniIO nodes (see [sequential hostnames doc](https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-multi-node-multi-drive.html)) into the `/etc/hosts` file with lines to support non-sequential hostnames or IP addresses:
   ```
   # MinIO sequential hostnames configuration
-  192.168.60.18 minio-01.cydel01.cybnity.tech
-  #192.X.xx.x minio-02.cydel01.cybnity.tech
-  #192.Y.yy.y minio-03.cydel01.cybnity.tech
+  192.168.60.18 minio1.cydel01.cybnity.tech
+  #192.X.xx.x minio2.cydel01.cybnity.tech
+  #192.Y.yy.y minio3.cydel01.cybnity.tech
   ```
 
 - Define configuration of disk to use by MinIO
@@ -571,12 +571,9 @@ Object storage solution that provides an Amazon Web Services S3-compatible API a
   #chown minio-user:minio-user /mnt/disk1 /mnt/disk2 /mnt/disk3
   ```
 
-
-##### CONTINUER ICI LA CRÉATION DE CE FICHIER DANS CYBSUP01
-
 - Create the service environment file at `/etc/default/minio`, as source of all environment variables __used by MinIO and the minio.service__ file, that include:
   ```
-  # Set the hosts and volumes MinIO uses at startup
+  # Set the hosts and volumes that MinIO uses at startup
   # The command uses MinIO expansion notation {x...y} to denote a
   # sequential series.
   #
@@ -594,7 +591,6 @@ Object storage solution that provides an Amazon Web Services S3-compatible API a
   # The following explicitly sets the MinIO Console listen address to
   # port 9001 on all network interfaces. The default behavior is dynamic
   # port selection.
-
   MINIO_OPTS="--console-address :9001"
 
   # Set the root username. This user has unrestricted permissions to
@@ -602,16 +598,24 @@ Object storage solution that provides an Amazon Web Services S3-compatible API a
   # deployment.
   #
   # Defer to your organizations requirements for superadmin user name.
-
   MINIO_ROOT_USER=minioadmin
 
   # Set the root password
   #
   # Use a long, random, unique string that meets your organizations
   # requirements for passwords.
-
   MINIO_ROOT_PASSWORD=minio-secret-key-CHANGE-ME
   ```
+
+- TLS configuration
+  MinIO (systemd-managed server process) enables TLS automatically upon detecting a valid x509 certificate (.crt) and private key (.key) in the `/home/minio-user/.minio/certs` directory.
+  - Create `/home/minio-user` home directory of minio user account __used by minio.service configuration__
+  - Create `/home/minio-user/.minio/certs` and `/home/minio-user/.minio/certs/CAs` subfolders
+  - Add TLS certificates (custom domain certificate and private key) in `/home/minio-user/.minio/certs` sub-folder
+  - Add CA certificates into the `/home/minio-user/.minio/certs/CAs` sub-folder
+  - Assign ownership and rights of all `/home/minio-user` contents via `chown -R minio-user:minio-user /home/minio-user` to minio-user account
+    > [!IMPORTANT]
+    > Place TLS and CA certificates in the __/home/mini-user/.minio/__ sub-directories of each MinIO hosts when server or client uses certificates signed by an unknown Certificate Authority (self-signed or internal CA). Else MinIO rejects invalid certificates (untrusted, expired or malformed)
 
 
 
