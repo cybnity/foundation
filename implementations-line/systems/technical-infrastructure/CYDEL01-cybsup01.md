@@ -235,7 +235,10 @@ journalctl -u rke2-server.service
 
 ## Storage
 ### Longhorn
-Distributed block storage system deployed for containers data management.
+Distributed block storage system deployed in Kubernetes RKE2 for containers data management.
+
+### MinIO
+Distributes and S3-compatible storage system deployed on Linux OS for commond block-based data management between all CYDEL01 servers.
 
 ## Monitoring & Logging
 
@@ -268,6 +271,45 @@ Network Time Protocol (NTP) package shall be installed. This prevents errors wit
   ```
     sudo apt install ntp
   ```
+
+## Java Runtime
+Default openJDK java runtime is automatically installed on Ubuntu (defined by distribution version).
+
+During Halyard tool update, a more young version of Java runtime can be required that allow Halyard run.
+
+## Installation of Java alternative version on Linux OS
+- Identify available versions of Java from Ubuntu referential via command:
+```
+apt search openjdk | grep -E 'openjdk-.*-jdk/'
+```
+- Based on available jdk versions provided by Ubuntu referential, install Halyard minimum required Java version via command:
+```
+sudo apt install openjdk-21-jdk
+```
+- Verify version of compiler and console installed via commands:
+```
+java --version
+javac --version
+```
+- When multiple Java versions have been installed, a switch of current default activated version and installed versions can be managed via command:
+```
+# For Java runtime environment switch (and select version to use)
+sudo update-alternatives --config java
+
+# For Java Compiler switch (and select version to use)
+sudo update-alternatives --config javac
+```
+
+- Identify where active Java is installed via commands:
+```
+export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
+
+# Add permanent JAVA_HOME variable and with adding into $PATH variable of file `/etc/environment` ($JAVA_HOME/bin added $PATH)
+
+# Reload environment variables
+set -a; . /etc/environment; set +a;
+
+```
 
 ## Custom Resources
 Multiple dedicated resources are managed into the cluster because required by applications deployed into the cluster.
@@ -383,7 +425,7 @@ kubectl -n cattle-system get deploy rancher
     ```
 
     - Creation of a Cluster Issuer for the cluster (allow to issue certificates using CYBNITY custom domains certificate) defined in new manifest file stored in RKE2
-      - Creation of new `trust-cybnity-domains-issuer.yaml` file containing:
+      - Creation of new `rke2-trust-cybnity-domains-issuer.yaml` file containing:
       ```
       # Allow to issue certificates using the CYBNITY custom domains certificate (Secret resource)
       apiVersion: cert-manager.io/v1
@@ -412,9 +454,9 @@ kubectl -n cattle-system get deploy rancher
         - cybnity.org
         - cybnity.space
       ```
-      - Apply resource for instantiation in cluster via command `kubectl apply -f trust-cybnity-domains-issuer.yaml` and verify good creation of ClusterIssuer and Certificate into the cluster
+      - Apply resource for instantiation in cluster via command `kubectl apply -f rke2-trust-cybnity-domains-issuer.yaml` and verify good creation of ClusterIssuer and Certificate into the cluster
       - Remove created objects in cluster, and move the manifest file into `/var/lib/rancher/rke2/server/manifests/` for automatic binding by RKE2
-      - Minimize accessibility regarding permissions via command `sudo chmod 600 /var/lib/rancher/rke2/server/manifests/trust-cybnity-domains-issuer.yaml`
+      - Minimize accessibility regarding permissions via command `sudo chmod 600 /var/lib/rancher/rke2/server/manifests/rke2-trust-cybnity-domains-issuer.yaml`
 
       ```mermaid
       %%{
@@ -494,31 +536,18 @@ See [Halyard installation documentation](https://spinnaker.io/docs/setup/install
   # reload environment variables
   set -a; . /etc/environment; set +a;
   ```
-
-#### Kubernetes Cloud provider
-Select Kubernetes cloud providers as target installation (see [Kubernetes providers install doc](https://spinnaker.io/docs/setup/install/providers/kubernetes-v2/)).
-
-- Add of account via commands:
-```
-# Enabling of provider
-hal config provider kubernetes enable
-
-# Identification of RKE2 context cluster name
-CONTEXT=$(kubectl config current-context)
-
-# RKE2 operational account with permissions for cluster access and application installation
-ACCOUNT=olivier
-
-hal config provider kubernetes account add $ACCOUNT \
-    --context $CONTEXT
-```
+- Create and enable Halyard daemon and service via:
+  ```
+  sudo systemctl enable halyard.service
+  sudo systemctl start halyard.service
+  ```
 
 ### MinIO
 Object storage solution that provides an Amazon Web Services S3-compatible API and supports all core S3 features, and that is installed in Linux OS to be used in a a same approach than an external S3 cloud system by the Spinnaker solution.
 - Prerequisites
   - Create minio folder dedicated to received applications into `sudo mkdir /etc/minio`
-  - Set read, write and execution permissions on folder via command: `chmod -R 755 /etc/monio` for root
-- Installation of MinIO server, from the `/etc/minio` directory
+  - Set read, write and execution permissions on folder via command: `chmod -R 755 /etc/minio` for root
+- Installation of MinIO server on Linux OS layer from the `/etc/minio` directory
   ```
   # Download minio Debian packages
   wget https://dl.min.io/server/minio/release/linux-amd64/archive/minio_20241107005220.0.0_amd64.deb -O minio.deb
@@ -552,7 +581,7 @@ Object storage solution that provides an Amazon Web Services S3-compatible API a
   - MinIO recommend selection of disks:
     - Direct-Attached Storage (DAS) like NVMe of SSD or primary or "hot" data
     - XFS formatted drives for storage
-  - Mount and create folder dedicated to MiniIO managed data (e.g in __/srv/miniiodisk__ folder) when none dedicated disk is available for MiniIO
+  - Mount and create folder dedicated to MinIO managed data (e.g in __/srv/miniodisk1__ folder) when none dedicated disk is available for MinIO
 
 - Create the minio-user user and group defined by the `/usr/lib/systemd/system/minio.service` configuration file via command:
   ```
@@ -563,19 +592,25 @@ Object storage solution that provides an Amazon Web Services S3-compatible API a
   useradd -M -r -g minio-user minio-user
   ```
 
-- Assign ownership of each mounting point and storage are to miniio user account
+- Assign ownership of each mounting point and storage are to MinIO user account
   ```
   # Assign disk area to minio-user
-  chown minio-user:minio-user /srv/miniodisk
+  chown -R minio-user:minio-user /srv/miniodisk1
 
   #chown minio-user:minio-user /mnt/disk1 /mnt/disk2 /mnt/disk3
   ```
 
 - Create the service environment file at `/etc/default/minio`, as source of all environment variables __used by MinIO and the minio.service__ file, that include:
   ```
+  # Enable Virtual host-style requests to the MinIO deployment
+  # Set the value of the FQDN for MinIO to accept incoming virtual host requests
+  MINIO_DOMAIN=cydel01.cybnity.tech
+
   # Set the hosts and volumes that MinIO uses at startup
   # The command uses MinIO expansion notation {x...y} to denote a
   # sequential series.
+  #
+  # Specify "https" instead of "http" to enable TLS.
   #
   # The following example covers four MinIO hosts
   # with 4 drives each at the specified hostname and drive locations.
@@ -584,9 +619,10 @@ Object storage solution that provides an Amazon Web Services S3-compatible API a
   #MINIO_VOLUMES="https://minio{1...4}.cydel01.cybnity.tech:9000/mnt/disk{1...4}/minio"
 
   # Primary server is only defined in this first deployed node (that shall be updated to target othe nodes of the clusterized MinIO infrastructure)
-  MINIO_VOLUMES="https://minio1.cydel01.cybnity.tech:9000/srv/miniodisk/minio"
+  MINIO_VOLUMES="/srv/miniodisk1/minio"
 
   # Set all MinIO server options
+  # By default, the MinIO server evaluate the user account sub-directory (${HOME}/.minio/certs) to find keys and certificates enabling TLS. The evaluated sub-directory can be changed via --certs-dir or -s argument added into the MINIO_OPTS value (e.g "--certs-dir /opt/minio/certs").
   #
   # The following explicitly sets the MinIO Console listen address to
   # port 9001 on all network interfaces. The default behavior is dynamic
@@ -611,28 +647,175 @@ Object storage solution that provides an Amazon Web Services S3-compatible API a
   MinIO (systemd-managed server process) enables TLS automatically upon detecting a valid x509 certificate (.crt) and private key (.key) in the `/home/minio-user/.minio/certs` directory.
   - Create `/home/minio-user` home directory of minio user account __used by minio.service configuration__
   - Create `/home/minio-user/.minio/certs` and `/home/minio-user/.minio/certs/CAs` subfolders
-  - Add TLS certificates (custom domain certificate and private key) in `/home/minio-user/.minio/certs` sub-folder
-  - Add CA certificates into the `/home/minio-user/.minio/certs/CAs` sub-folder
+  - Add TLS certificates (custom domain public certificate as __public.crt__, and private key as __private.key__ file) in `/home/minio-user/.minio/certs` sub-folder according to the type of MiniIO deployment reached:
+    - https://minio.example.net (__default domain__ TLS certificates): files in ${HOME}/.minio/certs sub-directory
+    - https://minio1.cydel01.cybnity.tech (specific sub-folder per SAN domain when dedicated certificates shall be used  per hostname with multiple Subject Alternative Names revealing hostname to any client which inspects the server certificate): files in ${HOME}/.minio/certs/__minio1.cydel01.cybnity.tech__ sub-directory (sub-folder name is equals to MiniIO server hostname)
+  - Add CA certificates into the `/home/minio-user/.minio/certs/CAs` sub-folder (self-signed, internal, private certificates, and public CAs with intermediate certificates)
   - Assign ownership and rights of all `/home/minio-user` contents via `chown -R minio-user:minio-user /home/minio-user` to minio-user account
-    > [!WARNING]
+
     > Place TLS and CA certificates in the __/home/mini-user/.minio/__ sub-directories of each MinIO hosts when server or client uses certificates signed by an unknown Certificate Authority (self-signed or internal CA). Else MinIO rejects invalid certificates (untrusted, expired or malformed)
 
+- Run the MinIO server process via command:
+```
+sudo systemctl start minio.service
+```
 
+- Check that MiniIO service is online and functional via command:
+```
+sudo systemctl status minio.service
+journalctl -f -u minio.service
+```
 
+- Enable automatic start of the process via command:
+```
+sudo systemctl enable minio.service
+```
 
-
-
-### Environment type
-See [distributed installation documentation](https://spinnaker.io/docs/setup/install/environment/#distributed-installation) to select the type of environment where Spinnaker shall be installed.
-
-- Define the account and distribuion to install via command `hal config deploy edit --type distributed --account-name $ACCOUNT`
+- Verify access to web console over `https://cybsup01.cybnity.tech:9001`
 
 ### External storage
 Define storage provider for persisting the application settings and configured pipelines.
 
 Select [MinIO](https://spinnaker.io/docs/setup/install/storage/minio/) S3-compatible object store that is locally hosted.
 
-[Installation of MinIO](https://min.io/docs/minio/kubernetes/upstream/operations/installation.html) storage for Kubernetes:
+From MinIO web console, create an access key reusable by Spinnaker application for user of MinIO storage solution.
+
+### Kubernetes Cloud provider
+Select Kubernetes cloud providers as target installation (see [Kubernetes providers install doc](https://spinnaker.io/docs/setup/install/providers/kubernetes-v2/)).
+
+- Create Service Account (dedicated to Spinnaker) into the RKE2 cluster via commands:
+```
+# Enabling of provider
+hal config provider kubernetes enable
+
+# Identification of RKE2 context cluster name (e.g default)
+CONTEXT=$(kubectl config current-context)
+
+# Service account uses the ClusterAdmin role but more restrictive roles can be applied
+kubectl apply --context $CONTEXT -f https://spinnaker.io/downloads/kubernetes/service-account.yml
+
+# Generate account token
+TOKEN=$(kubectl get secret --context $CONTEXT \
+   $(kubectl get serviceaccount spinnaker-service-account \
+       --context $CONTEXT \
+       -n spinnaker \
+       -o jsonpath='{.secrets[0].name}') \
+   -n spinnaker \
+   -o jsonpath='{.data.token}' | base64 --decode)
+
+sudo kubectl config set-credentials ${CONTEXT}-token-user --token=$TOKEN
+
+sudo kubectl config set-context $CONTEXT --user ${CONTEXT}-token-user
+```
+
+- Add of account via commands:
+```
+# Enabling of provider
+hal config provider kubernetes enable
+
+# Identification of RKE2 context cluster name (e.g default)
+CONTEXT=$(kubectl config current-context)
+
+# RKE2 operational account with permissions for cluster access and application installation
+ACCOUNT=olivier
+
+hal config provider kubernetes account add $ACCOUNT \
+    --context $CONTEXT
+```
+
+- From __/home/spinnaker__ home directory, create copy of the RKE2 kubeconfig file (usable by Halyard for Spinnaker installation on RKE2 over K8S account) via commands:
+```
+  mkdir -p ~/.kube
+  cp /etc/rancher/rke2/rke2.yaml ~/.kube/config
+  # Assign to spinnaker account
+  chown -R spinnaker:spinnaker .kube
+```
+
+### Environment type
+See [distributed installation documentation](https://spinnaker.io/docs/setup/install/environment/#distributed-installation) to select the type of environment where Spinnaker shall be installed.
+
+- Define the account and distribution to install via command `sudo hal config deploy edit --type distributed --account-name $ACCOUNT` (e.g where $ACCOUNT have been configured as provider kubernetes account into hal config)
+
+Spinnaker deployment (set of configuration and running services) created by default is in `/home/spinnaker/.hal/default`.
+
+- Ensure that RKE2 kube config file is accessible by Halyard via commands:
+```
+# See current kubeconfigFile parameter defined by the account
+hal config provider kubernetes account get $ACCOUNT
+
+# If default file is targeted (e.g /root/.kube/config)
+# Set account parameter to force use of RKE2 config file with permission
+hal config provider kubernetes account edit $ACCOUNT --kubeconfig-file /home/spinnaker/.kube/config
+
+# Check updated parameter value
+hal config provider kubernetes account get $ACCOUNT
+```
+
+### Spinnaker storage settings
+- When not already existing, create MinIO storage settings with new file in `sudo vi /home/spinnaker/.hal/default/profiles/front50-local.yml` including `spinnaker.s3.versioning: false` (MinIO doesn't support versioning objects; so feature need to be disabled)
+
+- Define S3 access and private keys (pre-defined in MinIO over web console) into the Spinnaker settings via commands:
+```
+# Set environments variables per MinIO secret key value to use by Spinnaker
+MINIO_SECRET_KEY = xxxxxxx
+MINIO_ACCESS_KEY = yyyyyyy
+# Spinnaker started pod can't resolve DNS name of server that are defined by internal network. But ip address is found
+ENDPOINT="https://192.168.60.18:9001"
+
+# Configure settings relative to persistent store
+# Unique name of bucket (spinnaker value) is use as virtual resource endpoint name in place of random name generated by default by Halyard as Spinnaker S3 resource initialized as dedicated bucket url
+echo $MINIO_SECRET_KEY | hal config storage s3 edit --endpoint $ENDPOINT --access-key-id $MINIO_ACCESS_KEY --path-style-access true --bucket spinnaker --secret-access-key
+
+# Configure and enable the defined persistent store
+hal config storage edit --type s3
+```
+
+### Spinnaker version to deploy
+After cloud provider enabled, picked deployment environment, and configured persistent storage, defined which Spinnaker version shall be deployed and connect it.
+- List available Spinnaker versions via command: `hal version list`
+- Set the version to install (e.g $VERSION=1.36.0) via command: `hal config version edit --version $VERSION`
+
+### Authorization (RBAC) setup
+Spinnaker supports using GitHub teams for authorization. Roles from GitHub are mapped to the Teams under a specific GitHub organization.
+- Create personal access token on GitHub
+
+### SSL setup
+See [SSL documentation](https://spinnaker.io/docs/setup/other_config/security/ssl/) for help.
+- Create a Personal Access Token from GitHub administration account
+- Configure Halyard security authentication via commands:
+```
+TOKEN=xxxxxxxxGitHub created PAT secretxxxxxxxx
+ORG=cybnity
+
+# Configure group membership settings
+hal config security authz github edit --accessToken $TOKEN --organization $ORG --baseUrl https://api.github.com
+
+# Configure GitHub roles update
+hal config security authz edit --type github
+
+# Enable authentication from GitHub
+hal config security authz enable
+```
+
+- Add subfolder __192.168.60.18__ dedicated to ip addres in `/home/minio-user/.minio/certs`
+- Copy certificate and public key allowing SSL certificate check when Spinnaker (Java Spring based connection to external storage) to access on MinIO resource
+- Restart minio service
+
+### Spinnaker deployment
+From __/home/spinnaker__ folder, deploy Spinnaker via command: `sudo hal deploy apply`
+
+
+
+
+
+
+
+
+
+
+############
+
+
 
 ```
 # Show control plane and check existing and defined spec.containers.args `--cluster-signing-cert-file=XXXXX.crt` and `--cluster-signing-key-file=YYYYY.key`
