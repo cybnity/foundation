@@ -112,8 +112,7 @@ After installation, storage layout and filesystem layout shall be shown (via `ls
   - show configuration of detected ethernet controllers via command `sudo hwinfo --netcard`
 
 ### Intel 10-Gigabit X540-AT2 card drivers
-When NIC not detected or usable, install when network card were not detected/configured during the origin Linux installation.
-
+When NIC not detected, usable or not configured during the origin Linux installation, install drivers:
 - Download of drivers files via command lines:
 ```
    curl -O https://downloadmirror.intel.com/832293/ixgbe-5.21.5.tar.gz
