@@ -27,7 +27,7 @@ Current prepared server configuration is:
 - hostname: __cybsup01__
 
 # VIRTUALIZATION LAYER
-RKE2 virtualization system is implemented as Kubernetes layer hosting the CYBNTY support applications deployed into a __Support cluster__.
+RKE2 virtualization system is implemented as Kubernetes layer hosting the CYBNITY support applications deployed into a __Support cluster__.
 
 ## Helm
 - Install Helm stable version via command:
