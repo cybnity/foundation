@@ -79,7 +79,7 @@ After installation, storage layout and filesystem layout shall be shown (via `ls
 
   - to make change without closing the terminal via command `exec bash`
 
-- Update of /etc/hosts file check (e.g DHCP mode from network system) or static ip address
+- Update of /etc/hosts file check (e.g DHCP mode from network system) or static ip address.
   Ensure your system can resolve its hostname by updating the /etc/hosts file with the IP address and the new hostname via command:
 ```
   sudo vi /etc/hosts
