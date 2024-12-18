@@ -9,18 +9,25 @@ The services provided by the CYBDEV01 server are focus on:
 - unit test and/or integration development activities (e.g link to other external systems that integration development is in progress)
 
 # HARDWARE LAYER
-Current hardware configuration is based on a Hewlett-Packard Z640 server:
-- CPU: 2 x Intel Xeon E5-2690 v4, 28 cores
-- RAM: 128 GB
-- Hard disks:
-  - NVMe SSD 512 GB (Operation System & Linux based applications)
-  - 1 SATA Disk 3 TB (K8S applications data)
-- NVIDIA Quadro P4000 graphic card, 8Go
-- 1 NIC 1Gbps: used for Wake-On-Lan (remote start of server)
-- 2 x NIC 10Gbps:
-  - 1 dedicated ot Kubernetes HA clustering
-  - 1 not used
-
+Current hardware configuration is based on servers set:
+- CYDEV01
+  - server type: Hewlett-Packard Z640
+  - CPU: 2 x Intel Xeon E5-2690 v4, 28 cores
+  - RAM: 128 GB
+  - Hard disks:
+    - NVMe SSD 512 GB (Operation System & Linux based applications)
+    - 1 SATA Disk 3 TB (K8S applications data)
+  - NVIDIA Quadro P4000 graphic card, 8Go
+  - 1 NIC 1Gbps: used for Wake-On-Lan (remote start of server)
+  - 2 x NIC 10Gbps:
+    - 1 dedicated ot Kubernetes HA clustering
+    - 1 not used
+- CYDEV02
+  - server type: Hewlett-Packard Z640
+  - CPU: 2 x Intel Xeon E5-2673 v4,
+  - RAM: 256 GB
+  - Hard disks:
+  
 ## BIOS & operating system layer
 See [Ubuntu-installation](CYDEL01-ubuntu-installation.md) procedure to prepare a server into a __"ready for virtualization installation"__ state.
 
