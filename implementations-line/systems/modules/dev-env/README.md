@@ -21,7 +21,7 @@ Several types of clusters can be build over command lines executions:
 - Cluster of 1 node dedicated for installation of any CYBNITY application systems.
 
 ## Prerequisites
-### CYDDEL01
+### CYDEL01
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
 |RKE2 cluster|RKE2|- RAM: 8GB+<br>- CPU: 4+ cores|RKE2 Kubernetes platform.<br>Supported [Linux distributions](https://www.suse.com/suse-rke2/support-matrix/all-supported-versions/rke2-v1-30/)|
