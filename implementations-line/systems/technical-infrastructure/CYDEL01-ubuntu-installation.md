@@ -35,6 +35,7 @@ Installed by default by Ubuntu Linux server LTS version. See [AppArmor configura
 After installation, storage layout and filesystem layout shall be shown (via `lsblk -f` command) as:
 
 | NAME | FSTYPE | TYPE | RO | MOUNTPOINTS |
+|:--|:--|:--|:--|:--|
 | sda | btrfs | disk | 0 | /srv |
 | sr0 | | rom | 0 | |
 | nvme0n1 | | disk | 0 | |
