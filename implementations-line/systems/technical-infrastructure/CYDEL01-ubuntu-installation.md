@@ -75,7 +75,7 @@ After installation, storage layout and filesystem layout shall be shown (via `ls
   - reload the changes via command `sudo sysctl --system`
 
 - Server hostname change
-  - change default server's hostname defined during the standard SUSE installation by another one according to the server role (e.g "cybsup01" about CYBNITY Support's server 1) via command line `sudo hostnamectl set-hostname cybsup01`
+  - change default server's hostname defined during the standard Ubuntu installation by another one according to the server role (e.g "cybsup01" about CYBNITY Support's server 1) via command line `sudo hostnamectl set-hostname cybsup01`
 
   - to make change without closing the terminal via command `exec bash`
 
