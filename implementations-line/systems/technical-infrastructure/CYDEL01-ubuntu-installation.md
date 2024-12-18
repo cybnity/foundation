@@ -85,7 +85,7 @@ After installation, storage layout and filesystem layout shall be shown (via `ls
   sudo vi /etc/hosts
 
   # Add a line: server-desired-hostname
-  # For example:
+  # Local K8s application extended hostnames
   192.168.30.12 cybdev02.cybnity.tech
 ```
 
