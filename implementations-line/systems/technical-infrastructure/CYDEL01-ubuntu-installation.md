@@ -86,7 +86,7 @@ After installation, storage layout and filesystem layout shall be shown (via `ls
 
   # Add a line: server-desired-hostname
   # For example:
-  # 192.168.30.12 cybdev02.cybnity.tech
+  192.168.30.12 cybdev02.cybnity.tech
 ```
 
 - Ubuntu version update and upgrade via command line:
