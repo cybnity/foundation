@@ -159,7 +159,7 @@ None configuration is existing about the additional network card (e.g Intel 10-G
           send-hostname: false
           hostname: cybsup01_mgt
 
-      # set 100Gbps NIC cards in DHCP mode as operation server endpoints
+      # set 10Gbps NIC cards in DHCP mode as operation server endpoints
       enp11s0f0:
         dhcp4: true
         optional: true
