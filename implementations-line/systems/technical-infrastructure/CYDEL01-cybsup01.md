@@ -55,7 +55,7 @@ RKE2 virtualization system is implemented as Kubernetes layer hosting the CYBNIT
 ```
 
 ### Private Certificates
-Get new CYBNITY domain certificates bundles (including CA Root, intermediates crt and key files) usable for SUPPORT cluster (sup.cybnity.tech as Subject Alternative Name).
+Get new CYBNITY domain certificates bundle (including CA Root, intermediates crt and key files) usable for SUPPORT cluster (sup.cybnity.tech as Subject Alternative Name).
 
 ### Root CA
 From a wilcard signed certificate (e.g including cybnity.tech, and *.cybnity.tech sub-domains as Subject Alternative Name extensions):
