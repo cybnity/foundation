@@ -75,16 +75,18 @@ After installation, storage layout and filesystem layout shall be shown (via `ls
   - reload the changes via command `sudo sysctl --system`
 
 - Server hostname change
-  - change default server's hostname defined during the standard SUSE installation by another one according to the server role (e.g "cybsup01" about CYBNITY Support's server 1) via command line `sudo hostnamectl set-hostname cybsup01`
+  - change default server's hostname defined during the standard Ubuntu installation by another one according to the server role (e.g "cybsup01" about CYBNITY Support's server 1) via command line `sudo hostnamectl set-hostname cybsup01`
 
   - to make change without closing the terminal via command `exec bash`
 
-- Update of /etc/hosts file check (e.g DHCP mode from network system) or static ip address
+- Update of /etc/hosts file check (e.g DHCP mode from network system) or static ip address.
   Ensure your system can resolve its hostname by updating the /etc/hosts file with the IP address and the new hostname via command:
 ```
   sudo vi /etc/hosts
 
   # Add a line: server-desired-hostname
+  # Local K8s application extended hostnames
+  192.168.30.12 cybdev02.cybnity.tech
 ```
 
 - Ubuntu version update and upgrade via command line:
@@ -110,8 +112,7 @@ After installation, storage layout and filesystem layout shall be shown (via `ls
   - show configuration of detected ethernet controllers via command `sudo hwinfo --netcard`
 
 ### Intel 10-Gigabit X540-AT2 card drivers
-When NIC not detected or usable, install when network card were not detected/configured during the origin Linux installation.
-
+When NIC not detected, usable or not configured during the origin Linux installation, install drivers:
 - Download of drivers files via command lines:
 ```
    curl -O https://downloadmirror.intel.com/832293/ixgbe-5.21.5.tar.gz
@@ -158,7 +159,7 @@ None configuration is existing about the additional network card (e.g Intel 10-G
           send-hostname: false
           hostname: cybsup01_mgt
 
-      # set 100Gbps NIC cards in DHCP mode as operation server endpoints
+      # set 10Gbps NIC cards in DHCP mode as operation server endpoints
       enp11s0f0:
         dhcp4: true
         optional: true

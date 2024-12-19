@@ -27,7 +27,7 @@ Current prepared server configuration is:
 - hostname: __cybsup01__
 
 # VIRTUALIZATION LAYER
-RKE2 virtualization system is implemented as Kubernetes layer hosting the CYBNTY support applications deployed into a __Support cluster__.
+RKE2 virtualization system is implemented as Kubernetes layer hosting the CYBNITY support applications deployed into a __Support cluster__.
 
 ## Helm
 - Install Helm stable version via command:
@@ -55,7 +55,7 @@ RKE2 virtualization system is implemented as Kubernetes layer hosting the CYBNTY
 ```
 
 ### Private Certificates
-Get new CYBNITY domain certificates bundles (including CA Root, intermediates crt and key files) usable for SUPPORT cluster (sup.cybnity.tech as Subject Alternative Name).
+Get new CYBNITY domain certificates bundle (including CA Root, intermediates crt and key files) usable for SUPPORT cluster (sup.cybnity.tech as Subject Alternative Name).
 
 ### Root CA
 From a wilcard signed certificate (e.g including cybnity.tech, and *.cybnity.tech sub-domains as Subject Alternative Name extensions):
@@ -80,11 +80,11 @@ If previous RKE2 version need to be uninstalled before defining the CA root, exe
 See [RKE2 security certificates](https://docs.rke2.io/security/certificates) documentation for help.
 - Create `/var/lib/rancher/rke2/server/tls` folder and copy into:
   - custom domain certificate (e.g STAR_cybnity_tech.crt defining the SSL certificate for domain and/or sub-domains) as `root-ca.pem` renamed file
-  - private key of the custom domain (e.g private.key file of custom domain SSL certificate) as `root-ca.key` renamed file
+  - private key of the custom domain (e.g private.key file of custom domain SSL certificate) as `root-ca.key` renamed file.
 - Generate custom CA certs and keys via command `curl -sL https://github.com/k3s-io/k3s/raw/master/contrib/util/generate-custom-ca-certs.sh | PRODUCT=rke2 bash -` and check text shown regarding the database updates applied with success (e.g new entries made) about CA certificate generation completed.
-  - As recommended by command result, store in a secure area the root and intermediate certificate files (.pem, .crt, .key) and remove them from __/var/lib/rancher/rke2/server/tls__ folder
+  - As recommended by command result, store in a secure area the root and intermediate certificate files (.pem, .crt, .key) and remove them from __/var/lib/rancher/rke2/server/tls__ folder.
 - Create folder `mkdir -p /opt/rke2/server/tls`
-  - Copy current service-account signing key considerated like current via `cp /var/lib/rancher/rke2/server/tls/service.key /opt/rke2/server/tls`, to avoid token lost during future custom CA certificate rotation
+  - Copy current service-account signing key considerated like current via `cp /var/lib/rancher/rke2/server/tls/service.key /opt/rke2/server/tls`, to avoid token lost during future custom CA certificate rotation.
 
 ### RKE2 Installation
 - As root user, set environment variable to use during RKE2 script installation execution via command:
