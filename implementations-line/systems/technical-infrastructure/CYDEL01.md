@@ -34,7 +34,8 @@ This area of technical components and/or services are dedicated to support the o
 
 ## DEVELOPMENT
 This area of technical components and/or resources are dedicated to centralized development activities as shared CYBNITY software suite development cluster (e.g allowing developers of application components to merge and test CYBNITY software components that are versioned over the STAGING branch and/or that need temporary deployment from a development feature branch):
-- [CYDEL01 - Development primary resources server](CYDEL01-cybdev01.md)
+- [CYDEL02 - Development cluster primary server](CYDEL01-cybdev02.md)
+- [CYDEL01 - Development cluster worker server](CYDEL01-cybdev01.md)
 
 ## VALIDATION INFRASTRUCTURE
 
