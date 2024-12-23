@@ -95,11 +95,16 @@ journalctl -u rancher-system-agent -f
 ```
   sudo vi /etc/hosts
 
-  # Add a line: server-desired-hostname
+  # Add a line per server-desired-hostname (FQDN)
+  127.0.1.1 cybdev02
+
   # Local K8s application extended hostnames
   192.168.30.13 cybdev02.cybnity.tech
+  192.168.60.18 cybsup01.cybnity.tech
+
   # Cluster exposed API Endpoint FQDN (configuration managed in Rancher)
   192.168.30.13 dev.cybnity.tech
+
 ```
 
 ## Security

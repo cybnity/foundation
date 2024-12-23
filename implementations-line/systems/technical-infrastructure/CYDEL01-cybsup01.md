@@ -100,7 +100,7 @@ See [RKE2 security certificates](https://docs.rke2.io/security/certificates) doc
 
 - As root user, Execute RKE2 installation script via command:
 ```
-  curl -sfL https://get.rke2.io |  sh -
+  sudo curl -sfL https://get.rke2.io |  sh -
 ```
 
 - Add permanent path to rke2 binary (`/opt/rke2/bin`) with adding into $PATH variable of file `/etc/environment`, and add KUBECONFIG environment variable:
@@ -252,12 +252,7 @@ Distributes and S3-compatible storage system deployed on Linux OS for commond bl
 ## Monitoring & Logging
 
 ## Networking
-By default, NetworkManager (configuration file at __/etc/NetworkManager/NetworkManager.conf__) is started by Ubuntu (and mananing dynamic resolv.conf update) and status can be checked via command: `sudo systemctl status systemd-resolved`.
-
-- Creation of extended CoreDNS configuration via added file `/var/lib/rancher/rke2/server/manifests/rke2-coredns-config.yaml` including:
-```
-
-```
+By default, NetworkManager (configuration file at __/etc/NetworkManager/NetworkManager.conf__) is started by Ubuntu (and managing dynamic resolv.conf update) and status can be checked via command: `sudo systemctl status systemd-resolved`.
 
 ### Container Network Interface (CNI)
 Canal solution is deployed as CNI plugin.
