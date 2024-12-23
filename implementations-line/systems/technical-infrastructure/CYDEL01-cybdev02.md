@@ -90,6 +90,17 @@ journalctl -u rancher-system-agent -f
 ## Monitoring & Logging
 
 ## Networking
+- Update of __/etc/hosts__ file check (e.g DHCP mode from network system) or static ip address.
+  Ensure your system can resolve its hostname by updating the /etc/hosts file with the IP address and the new hostname via command:
+```
+  sudo vi /etc/hosts
+
+  # Add a line: server-desired-hostname
+  # Local K8s application extended hostnames
+  192.168.30.13 cybdev02.cybnity.tech
+  # Cluster exposed API Endpoint FQDN (configuration managed in Rancher)
+  192.168.30.13 dev.cybnity.tech
+```
 
 ## Security
 
@@ -123,6 +134,21 @@ On Rancher:
 On cluster eligible to remote management:
 - Set the cluster-admin privileges for Rancher user via the command proposed by Rancher Registration section
 - From cluster to control, execute the registration command proposed by Rancher (e.g via kubectl on existing DEV cluster) to import it into Rancher management system
+
+## Kubernetes tools usage
+When a K8S client is used, the automatic installed RKE2 CLI is hosted in __/var/lib/rancher/rke2/bin__ folder, and the kubeconfig location (automatically installed in __/etc/rancher/rke2__ folder) shall be identified during any CLI command execution.
+
+For example:
+```
+# Show started nodes
+/var/lib/rancher/rke2/bin/kubectl --kubeconfig=/etc/rancher/rke2/rke2.yaml get nodes
+
+# Show deployed pods
+/var/lib/rancher/rke2/bin/kubectl --kubeconfig=/etc/rancher/rke2/rke2.yaml get nodes -A
+
+# Show errors relative to pods instantiation
+/var/lib/rancher/rke2/bin/kubectl --kubeconfig=/etc/rancher/rke2/rke2.yaml get pods -v=10
+```
 
 # APPLICATION SERVICES
 

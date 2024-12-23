@@ -24,7 +24,6 @@ Based on default version defined by the Ubuntu LTS server version installed.
 ## AppArmor
 Installed by default by Ubuntu Linux server LTS version. See [AppArmor configuration doc](https://discourse.ubuntu.com/t/ubuntu-24-04-lts-noble-numbat-release-notes/39890#security-improvements) for help.
 
-
 ## Ubuntu Linux Server
 - Installation of Ubuntu LTS server version (e.g from bootable USB stick)
   - define boot and OS dedicated partitions for OS directories and mounting points
@@ -79,7 +78,7 @@ After installation, storage layout and filesystem layout shall be shown (via `ls
 
   - to make change without closing the terminal via command `exec bash`
 
-- Update of /etc/hosts file check (e.g DHCP mode from network system) or static ip address.
+- Update of __/etc/hosts__ file check (e.g DHCP mode from network system) or static ip address.
   Ensure your system can resolve its hostname by updating the /etc/hosts file with the IP address and the new hostname via command:
 ```
   sudo vi /etc/hosts
@@ -94,6 +93,13 @@ After installation, storage layout and filesystem layout shall be shown (via `ls
   sudo apt-get update && sudo apt-get upgrade -y
   sudo apt update && sudo apt -y full-upgrade
 
+```
+
+### Timezone
+Change permanently the OS's timezone used as reference according to the server location, via commands:
+```
+sudo ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
+sudo dpkg-reconfigure -f noninteractive tzdata
 ```
 
 ## Networking
@@ -274,11 +280,21 @@ ping <external server name>.<domain name>
   - on server, execute `poweroff` to stop the machine
   - on another station, wake it up with a magic packet send (e.g on mac over command execution `wakeonlan <<MAC ADDRESS>>`)
 
-### Timezone
-Change permanently the OS's timezone used as reference according to the server location, via commands:
+### Firewall
+- Check status of default Ubuntu installed firewall via command: `sudo ufw status`
+- and disable when not needed.
+
+### Routing
+Openining of 6443 tcp port using iptables (see [RKE doc](https://rke.docs.rancher.com/os#ports)) via command:
 ```
-sudo ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
-sudo dpkg-reconfigure -f noninteractive tzdata
+# Open TCP/6443 for all
+sudo iptables -A INPUT -p tcp --dport 6443 -j ACCEPT
+```
+
+### SSH Server configuration
+Add TCP forwarding capability to the SSH server via modification of the `/etc/ssh/sshd_config` file which shall include line:
+```
+AllowTcpForwarding yes
 ```
 
 #

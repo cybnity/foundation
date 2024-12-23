@@ -252,8 +252,20 @@ Distributes and S3-compatible storage system deployed on Linux OS for commond bl
 ## Monitoring & Logging
 
 ## Networking
+By default, NetworkManager (configuration file at __/etc/NetworkManager/NetworkManager.conf__) is started by Ubuntu (and mananing dynamic resolv.conf update) and status can be checked via command: `sudo systemctl status systemd-resolved`.
+
+- Creation of extended CoreDNS configuration via added file `/var/lib/rancher/rke2/server/manifests/rke2-coredns-config.yaml` including:
+```
+
+```
+
 ### Container Network Interface (CNI)
 Canal solution is deployed as CNI plugin.
+
+### External FQDN visibility
+By default, pods deployed into the cluster can't reach external server based on DNS (e.g Internet server name; external network server based on a FQDN and/or dns hostname).
+
+Creation of a CoreDNS configuration file allowing visibility of external machines (e.g Support cluster machine from the DEV cluster isolated network), extending the default coredns config file automatically created by the Support server during the RKE2 dynamic agent installation
 
 ## Security
 ### Rancher Backup
@@ -460,7 +472,10 @@ kubectl -n cattle-system get deploy rancher
         dnsNames:
         - cybnity.tech
         - cybsup01.cybnity.tech
+        - cybdev01.cybnity.tech
+        - cybdev02.cybnity.tech
         - sup.cybnity.tech
+        - dev.cybnity.tech
       ```
       - Apply resource for instantiation in cluster via command `kubectl apply -f rke2-trust-cybnity-tech-issuer.yaml` and verify good creation of ClusterIssuer and Certificate into the cluster
       - Remove created objects in cluster, and move the manifest file into `/var/lib/rancher/rke2/server/manifests/` for automatic binding by RKE2
