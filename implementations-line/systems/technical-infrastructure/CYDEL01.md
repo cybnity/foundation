@@ -14,7 +14,7 @@ See here mode detail about the [standardized software factory model](../../../do
 # INFRASTRUCTURES
 See here the model of physical resources installed by CYBNITY to support the project's modules build and delivery, with ability to install and operate technical activities (local or centralized development, test in continuous integration approach, performance evaluation, demonstration of CYBNITY software suite version to partners, and basic production for small companies).
 
-![image](CYDEL-01.png)
+![image](CYDEL-01.jpg)
 
 For more detail about technical and resources pre-required to support by this type of resources infrastructure, consult the [system and tools prerequisites documentation](../systems-and-tools-prerequisites.md).
 
