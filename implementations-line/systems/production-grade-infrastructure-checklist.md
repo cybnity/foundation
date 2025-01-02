@@ -5,10 +5,10 @@ Presentation of the requirements to define, manage and maintain for going to pro
 
 |Task|Description|CYBNITY tools|
 |:--|:--|:--|
-|Install|Install the software binaries and all dependencies|Spinnaker|
+|Install|Install the software binaries and all dependencies|ArgoCD|
 |Configure|Configure the software at runtime. Includes port settings, TLS certs, service discovery, leaders, followers, replication, etc.|Helm, Consul|
 |Provision|Provision the infrastructure. Include servers, load balancers, network configuration, firewall settings, IAM permissions, etc.|Terraform, Kubernetes, Calico / Kubernetes Network Policy, Nginx load-balancing & web proxy|
-|Deploy|Deploy the service on top of the infrastructure. Roll out updates with no downtime. Includes blue-green, rolling, and canary deployments.|Spinnaker, Terraform, Kubernetes|
+|Deploy|Deploy the service on top of the infrastructure. Roll out updates with no downtime. Includes blue-green, rolling, and canary deployments.|ArgoCD, Terraform, Kubernetes|
 |High availability|Withstand outages of individual processes, servers, services, data centers, and regions.|Cloud datacenter, multiregion, replication, auto scalling, load balancing Terraformed Kubernetes modules|
 |Scalability|Scale up and down in response to load. Scale horizontally (more servers) and/or vertically (bigger servers with more resources).|Auto scalling, replication, sharding, caching Terraformed Kubernetes modules|
 |Performance|Optimize CPU, memory, disk, network, and GPU usage. Includes query tuning, benchmarking, load testing, and profiling.|Kubernetes|
