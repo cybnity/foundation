@@ -43,56 +43,26 @@ After installation, storage layout and filesystem layout shall be shown (via `ls
 | nvme0n1p3 | LVM2_member| part | 0 | |
 | - ubuntu--vg-ubuntu--lv | ext4 | lvm | / |
 
+### Swapping
 - Swap (all nodes) disabling (change consistent after a reboot with fstb file modification) to enhance Kubernetes performance via command:
-
 ```
   sudo swapoff -a
   #sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
   sudo sed -i '/ swap / s/^/#/' /etc/fstab
+
+  sudo systemctl disable swap.target
 ```
 
-- Add Kernel parameters (all nodes)
-  - load the required modules on all nodes (set up IP bridge for nodes to communicate over the network) via command:
-```
-  sudo tee /etc/modules-load.d/containerd.conf <<EOF
-  overlay
-  br_netfilter
-  EOF
-  sudo modprobe overlay
-  sudo modprobe br_netfilter
-```
-
-  - configure critical kernel parameters for Kubernetes via command:
-```
-  sudo tee /etc/sysctl.d/kubernetes.conf <<EOF
-  net.bridge.bridge-nf-call-ip6tables = 1
-  net.bridge.bridge-nf-call-iptables = 1
-  net.ipv4.ip_forward = 1
-  EOF
-```
-
-  - reload the changes via command `sudo sysctl --system`
-
+### Host naming
 - Server hostname change
-  - change default server's hostname defined during the standard Ubuntu installation by another one according to the server role (e.g "cybsup01" about CYBNITY Support's server 1) via command line `sudo hostnamectl set-hostname cybsup01`
-
-  - to make change without closing the terminal via command `exec bash`
-
-- Update of __/etc/hosts__ file check (e.g DHCP mode from network system) or static ip address.
-  Ensure your system can resolve its hostname by updating the /etc/hosts file with the IP address and the new hostname via command:
-```
-  sudo vi /etc/hosts
-
-  # Add a line: server-desired-hostname
-  # Local K8s application extended hostnames
-  192.168.30.12 cybdev02.cybnity.tech
-```
+  - Change default server's hostname defined during the standard Ubuntu installation by another one according to the server role (e.g "sup1" about first CYBNITY Support's server) via command line `sudo hostnamectl set-hostname sup1`
+  - Apply change without closing the terminal via command `exec bash`
+  - Check result by running command `hostnamectl`
 
 - Ubuntu version update and upgrade via command line:
 ```
   sudo apt-get update && sudo apt-get upgrade -y
   sudo apt update && sudo apt -y full-upgrade
-
 ```
 
 ### Timezone
@@ -102,10 +72,31 @@ sudo ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
 sudo dpkg-reconfigure -f noninteractive tzdata
 ```
 
+### Command LIne color
+- Activate the command line contents by default with environment variable defined in __/etc/environment__:
+```
+CLICOLOR=1
+```
+- Reload environment file to activate changed file, via command:
+```
+set -a; . /etc/environment; set +a;
+```
+
+### Account password definition
+Set account passwords via commands:
+```
+# set the current account password
+passwd
+
+# set the root password
+sudo passwd root
+
+```
+
 ## Networking
 - Check detected network card via commands:
 ```
-  sudo lspci | grep -E -i --color 'network|ethernet|wireless|wi-fi'
+sudo lspci | grep -E -i --color 'network|ethernet|wireless|wi-fi'
 ```
 
 - Check capacities of card via command `sudo lshw -class network`
@@ -115,7 +106,30 @@ sudo dpkg-reconfigure -f noninteractive tzdata
   sudo apt-get install hwinfo
   ```
 
-  - show configuration of detected ethernet controllers via command `sudo hwinfo --netcard`
+- Show configuration of detected ethernet controllers via command `sudo hwinfo --netcard`
+
+### Kubernetes node bridge configuration
+- Add Kernel parameters (all nodes)
+  - Load the required modules on all nodes (set up IP bridge for nodes to communicate over the network) via command:
+```
+  sudo tee /etc/modules-load.d/containerd.conf <<EOF
+  overlay
+  br_netfilter
+  EOF
+
+  sudo modprobe overlay && sudo modprobe br_netfilter
+```
+
+  - Configure critical kernel parameters for Kubernetes via command:
+```
+  sudo tee /etc/sysctl.d/kubernetes.conf <<EOF
+  net.bridge.bridge-nf-call-ip6tables = 1
+  net.bridge.bridge-nf-call-iptables = 1
+  net.ipv4.ip_forward = 1
+  EOF
+```
+
+  - Reload the changes via command `sudo sysctl --system`
 
 ### Intel 10-Gigabit X540-AT2 card drivers
 When NIC not detected, usable or not configured during the origin Linux installation, install drivers:
@@ -135,7 +149,7 @@ When NIC not detected, usable or not configured during the origin Linux installa
 
 - Reboot system
 - Check visibility of detected network cards via command `ip a`
-- install ifconfig via command `sudo apt install net-tools` allowing usage of __ifconfig__ command
+- Install ifconfig via command `sudo apt install net-tools` allowing usage of `ifconfig` command
 
 ### NetworkManager configuration
 By default, only motherboard default embedded network card is configured (statically or in DHCP mode according to the choice made during the Ubuntu installation procedure).
@@ -155,20 +169,24 @@ None configuration is existing about the additional network card (e.g Intel 10-G
       enp0s25:
         dhcp4: true
         optional: true
+        nameservers:
+          search: [ cybnity.tech ]
         dhcp4-overrides:
           use-dns: true
           send-hostname: false
-          hostname: cybsup01_mgt
+          hostname: sup1
         dhcp6: true
         dhcp6-overrides:
           use-dns: true
           send-hostname: false
-          hostname: cybsup01_mgt
+          hostname: sup1
 
       # set 10Gbps NIC cards in DHCP mode as operation server endpoints
       enp11s0f0:
         dhcp4: true
         optional: true
+        nameservers:
+          search: [ cybnity.tech ]
         dhcp4-overrides:
           use-dns: true
           send-hostname: true
@@ -179,6 +197,8 @@ None configuration is existing about the additional network card (e.g Intel 10-G
       enp11s0f1:
         dhcp4: true
         optional: true
+        nameservers:
+          search: [ cybnity.tech ]
         dhcp4-overrides:
           use-dns: true
           send-hostname: true
@@ -187,24 +207,33 @@ None configuration is existing about the additional network card (e.g Intel 10-G
           use-dns: true
           send-hostname: true
 ```
+
   See [Netplan documentation](https://netplan.readthedocs.io/en/latest/netplan-yaml/) for mode detail about usable attributes for configuration file.
+
 - Change the permission allowed to the network configuration files to minimise accessibility to other users via command:
 ```
 sudo chmod 600 /etc/netplan/*.yaml
 ```
 
-- verify file conformity and detect potential format errors via command:
+- Verify file conformity and detect potential format errors via command:
 ```
 sudo netplan try
 ```
+- The nameservers.search parameter changed the domain of the server.
 
 - Apply the new configuration with command:
 ```
 sudo netplan apply
 ```
 
+- Check the value of the DNS Domain (normally equals to cybnity.tech) shown by command: `resolvectl status`
+
+- Check value automatically defined as __cybnity.tech__ into the __/etc/resolv.conf__ by Netplan
+
 - Add client static binding record into the LAN DHCP service to assign always same ip address to the NIC mac address (required by Kubernetes cluster using static ip address during node setting creation)
-- Connect a network cable between the NIC card port and the network switch, and check that machine have been detected/assigned into the DHCP client list table (e.g hostname cybsup01)
+
+- Connect a network cable between the NIC card port and the network switch, and check that machine have been detected/assigned into the DHCP client list table (e.g hostname sup1)
+
 - Try to ping external servers to check the opened route via command executions:
 ```
 # check route to Internet domains
@@ -215,8 +244,9 @@ ping <external server ip>
 
 # check route to potential external LAN machine (e.g machine name known by DNS server that have been dynamically configured by DHCP client)
 ping <external server name>.<domain name>
-
 ```
+
+By default, NetworkManager (configuration file at __/etc/NetworkManager/NetworkManager.conf__) is started by Ubuntu (and managing dynamic resolv.conf update) and status can be checked via command: `sudo systemctl status systemd-resolved`
 
 ### Wake On LAN enabling
 - Check that WOL is supported by card and activated into the OS:
@@ -247,7 +277,7 @@ ping <external server name>.<domain name>
   ```
 
   - If feature supported by NIC port, make change as permanent (see [setting doc for help](https://thedarkercorner.com/setting-up-wake-on-lan-on-ubuntu-server-22-04-lts/))
-    - create new file `wol.service` into the `/etc/systemd/system` folder, including (used value __d__ for disable, or value __g__ for enable Wake-on mode into the ExecStart command's parameter):
+    - Create new file `wol.service` into the `/etc/systemd/system` folder, including (used value __d__ for disable, or value __g__ for enable Wake-on mode into the ExecStart command's parameter):
     ```
     [Unit]
     Description=Configure Wake-up on LAN
@@ -260,32 +290,32 @@ ping <external server name>.<domain name>
     WantedBy=basic.target
     ```
 
-    - add wol service to the systemd services via command:
+    - Add wol service to the systemd services via command:
     ```
     # update and/or locate new service file
     sudo systemctl daemon-reload
     ```
 
-    - enable the service to run on start up and to fire up the service via command:
+    - Enable the service to run on start up and to fire up the service via command:
     ```
     sudo systemctl enable wol.service
     ```
 
-    - check status via command:
+    - Check status via command:
     ```
     sudo systemctl status wol
     ```
 
-- test the operational state of WoL capability with:
+- Test the operational state of WoL capability with:
   - on server, execute `poweroff` to stop the machine
   - on another station, wake it up with a magic packet send (e.g on mac over command execution `wakeonlan <<MAC ADDRESS>>`)
 
 ### Firewall
 - Check status of default Ubuntu installed firewall via command: `sudo ufw status`
-- and disable when not needed.
+- and disable when not needed
 
 ### Routing
-Openining of 6443 tcp port using iptables (see [RKE doc](https://rke.docs.rancher.com/os#ports)) via command:
+Opening of 6443 tcp port using iptables (see [RKE doc](https://rke.docs.rancher.com/os#ports)) via command:
 ```
 # Open TCP/6443 for all
 sudo iptables -A INPUT -p tcp --dport 6443 -j ACCEPT
