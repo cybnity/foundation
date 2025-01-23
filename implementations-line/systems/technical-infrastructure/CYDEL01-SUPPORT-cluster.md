@@ -25,94 +25,64 @@ Current prepared server configurations are:
 # VIRTUALIZATION LAYER
 Each RKE2 virtualization system is implemented as Kubernetes layer hosting the CYBNITY support applications deployed into a __Support cluster__.
 
-## Helm
+See [RKE High Availability documentation](https://docs.rke2.io/install/ha).
+
+See [guide for Rancher cluster setup](https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-cluster-setup/rke2-for-rancher).
+
+The global installation process between nodes followed is:
+1. RKE2 Server/Master node installation
+
+
+# VIRTUALIZATION NODE INSTALLATION
+These tasks shall be executed on each cluster node.
+
+## Helm installation
 - Install Helm stable version via command:
 ```
   sudo snap install helm --classic
 ```
 
-## RKE2 Kubernetes distribution
-### RKE2 environment preparation
-- Create tar installation directory via command:
-```
-  sudo mkdir /opt/rke2
-```
+## RKE2 Kubernetes distribution installation
+- Switch to root user via command: `su root`
 
-- Create root user when not already existing via commands:
+### Controlled location of RKE2 installation
+- Create tar installation directory via command: `sudo mkdir /opt/rke2`
+- As root user, add environment variables (into `/etc/environment` file) used by the RKE2 script installation execution:
 ```
-  # check existing root user
-  su root
-
-  # modify root password if not defined
-  sudo passwd root
-
-  # switch from current account to the root user account
-  su root
+INSTALL_RKE2_METHOD="tar"
+INSTALL_RKE2_CHANNEL="stable"
+INSTALL_RKE2_TYPE="server"
+INSTALL_RKE2_TAR_PREFIX="/opt/rke2"
 ```
-
-### RKE2 Installation
-- As root user, set environment variable to use during RKE2 script installation execution via command:
-```
-  export INSTALL_RKE2_METHOD="tar"
-  export INSTALL_RKE2_CHANNEL="stable"
-  export INSTALL_RKE2_TYPE="server"
-  export INSTALL_RKE2_TAR_PREFIX="/opt/rke2"
-
-  # check defined environment variables
-  printenv
-```
-
-- As root user, Execute RKE2 installation script via command:
-```
-  sudo curl -sfL https://get.rke2.io |  sh -
-```
-
-- Add permanent path to rke2 binary (`/opt/rke2/bin`) with adding into $PATH variable of file `/etc/environment`, and add KUBECONFIG environment variable:
-```
-  KUBECONFIG="/etc/rancher/rke2/rke2.yaml"
-```
-
 - Reload environment file to activate changed file, via command:
 ```
   set -a; . /etc/environment; set +a;
 ```
+- Check the defined static/permanent environment variables controlling RKE2 installation via command: `printenv`
 
-- Execute rotation to load the updated certs into the datastore via `rke2 certificate rotate-ca --path=/opt/rke2/server`... and RKE can be started
-
-- Enable (symbolic link creation) and start the rke2-server service via commands:
+### RKE2 installation
+- Execute RKE2 installation script via command:
 ```
-  sudo systemctl enable rke2-server.service
-  sudo systemctl start rke2-server.service
-
-  # If Cluster Certificate Authority data has been updated via ca-rotate success result, rke2 must be restarted
-  sudo systemctl restart rke2-server
+  sudo curl -sfL https://get.rke2.io | sh -
 ```
-
-- Create symbolic links to RKE2 tools (kubectl, kubelet, crictl, ctr) via commands:
+- Add permanent path to rke2 binary (`/opt/rke2/bin`) with adding into __$PATH__ variable of file `/etc/environment`
+- Add __KUBECONFIG__ environment variable:
 ```
-  sudo ln -s /var/lib/rancher/rke2/bin/kubectl /usr/local/bin/kubectl
-  sudo ln -s /var/lib/rancher/rke2/bin/kubelet /usr/local/bin/kubelet
-  sudo ln -s /var/lib/rancher/rke2/bin/crictl /usr/local/bin/crictl
-  sudo ln -s /var/lib/rancher/rke2/bin/ctr /usr/local/bin/ctr
+  KUBECONFIG="/etc/rancher/rke2/rke2.yaml"
 ```
-
-- RKE2 default __cluster configuration file is rke2.yaml__. Create symbolic link to the created kubeconfig file via commands:
+- Reload environment file to activate changed file, via command:
 ```
-  mkdir -p ~/.kube
-  sudo ln -s /etc/rancher/rke2/rke2.yaml ~/.kube/config
+  set -a; . /etc/environment; set +a;
 ```
-
-- Copy KUBECONFIG file for cluster access from outside (https://docs.rke2.io/cluster_access documentation) in other machine that would like to access and connect to RKE2 instance
-
-- Create `/etc/rancher/rke2/config.yaml` (https://docs.rke2.io/install/configuration) including:
+- Create `/etc/rancher/rke2/` folder for definition of custom configuration read during server launch
+- Create the RKE2 config file at `/etc/rancher/rke2/config.yaml` (see [help doc](https://docs.rke2.io/install/configuration)) including random 16 character token value, FQDN server names of SUPPORT cluster, automatic backup snapshot scheduling...:
 ```
+  token: support-cluster-shared-secret-token-value
   write-kubeconfig-mode: "0644"
   tls-san:
-    # hostnames
-    - "cybsup01.cybnity.tech"
-    - "sup.cybnity.tech"
-    - "cd.cybnity.tech"
-    - "cybsup01.local"
+    - sup1.cybnity.tech
+    - sup2.cybnity.tech
+    - sup3.cybnity.tech
   node-label:
     - "environment=support"
   debug: true
@@ -126,23 +96,58 @@ Each RKE2 virtualization system is implemented as Kubernetes layer hosting the C
   etcd-snapshot-retention: 3
 ```
 
+> [!IMPORTANT]
+> __On servers other than first Master node__
+The first cluster server node establishes the secret token that other server or agent nodes will register with when connecting to the cluster.
+Add additional __server__ property to the config.yaml file as `server: https://sup1.cybnity.tech:9345`
+
+> [!NOTE]
+> tls-san item can be an ip external public ip, a server hostname, a FQDNS, a Load-Balancer ip address, or a Load-Balancer dns domain.
+
+- Read generated node token which could be equals to origignal value, or new generated value in case of cluster reset via command:
+```
+# Get and check the node-token generated on primary server
+cat /var/lib/rancher/rke2/server/node-token
+
+# Replace token value into config.yaml with primary node's node-token full value
+```
 - Change the permission allowed to the Kubernetes configuration files to minimise accessibility to other users via command:
 ```
 sudo chmod 600 /etc/rancher/rke2/*.yaml
 ```
-
-- Verify the server node registration via command line:
+- Enable (symbolic link creation) and start each node's rke2-server service (from sup1 to sup3 server node) via commands:
 ```
-  # restart cluster based on config.yaml
-  sudo systemctl restart rke2-server.service
+  sudo systemctl enable rke2-server.service
+  sudo systemctl start rke2-server.service
 
-  # check information about cluster nodes
+  # Check run status
+  systemctl status rke2-server
+
+  # Show logs
+  journalctl -u rke2-server.service
+```
+- Control that cluster is functional (and each node is running control-plane, etcd and master roles) via command: `/var/lib/rancher/rke2/bin/kubectl get nodes --kubeconfig /etc/rancher/rke2/rke2.yaml`
+- Test and check the health of the cluster pods via command: `/var/lib/rancher/rke2/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml get pods --all-namespaces`
+- Create symbolic links to RKE2 tools (kubectl, kubelet, crictl, ctr) via commands:
+```
+  sudo ln -s /var/lib/rancher/rke2/bin/kubectl /usr/local/bin/kubectl
+  sudo ln -s /var/lib/rancher/rke2/bin/kubelet /usr/local/bin/kubelet
+  sudo ln -s /var/lib/rancher/rke2/bin/crictl /usr/local/bin/crictl
+  sudo ln -s /var/lib/rancher/rke2/bin/ctr /usr/local/bin/ctr
+```
+- Test symbolic link via command:
+```
+  # Check information about cluster nodes
   kubectl get nodes -o wide
 ```
-
-- CIS Hardening
-  Kernel parameters (https://docs.rke2.io/security/hardening_guide#kernel-parameters)
-  - when `/usr/local/share/rke2/rke2-cis-sysctl.conf` is not existing, create it:
+- As default user account, create symbolic link to the created kubeconfig file (rke2.yaml default cluster configuration file) via commands:
+```
+  mkdir -p ~/.kube
+  sudo ln -s /etc/rancher/rke2/rke2.yaml ~/.kube/config
+```
+- Copy __rke2.yaml__ file (allowing cluster [access from outside](https://docs.rke2.io/cluster_access documentation)) in other machine that would like to access and connect to RKE2 instance executed on the server
+- CIS Hardening via [Kernel parameters](https://docs.rke2.io/security/hardening_guide#kernel-parameters) definition:
+  - When `/usr/local/share/rke2/rke2-cis-sysctl.conf` is not existing, create it:
   ```
     vm.panic_on_oom=0
     vm.overcommit_memory=1
@@ -150,41 +155,67 @@ sudo chmod 600 /etc/rancher/rke2/*.yaml
     kernel.panic_on_oops=1
   ```
 
-  - make copy on shared directory as rke2 conf
+  - Make copy on shared directory as rke2 conf
   ```
-  sudo cp -f /usr/local/share/rke2/rke2-cis-sysctl.conf /etc/sysctl.d/60-rke2-cis.conf
-  sudo systemctl restart systemd-sysctl
-  ```
+    sudo cp -f /usr/local/share/rke2/rke2-cis-sysctl.conf /etc/sysctl.d/60-rke2-cis.conf
 
+    # Apply variables to Kernel
+    sudo systemctl restart systemd-sysctl
+
+    # Check restarted systemd
+    sudo systemctl status systemd-sysctl
+  ```
 - Optional containerd registry
-  - If need, create `registries.yaml` into `/etc/rancher/rke2/` (as documented at https://docs.rke2.io/install/containerd_registry_configuration) usable by the server (e.g cybnity docker registry) including Personal Access Token used for private registries authentication
+  - If need, create `registries.yaml` into `/etc/rancher/rke2/` (see [documentation](https://docs.rke2.io/install/private_registry)) usable by the server (e.g cybnity docker registry) including Personal Access Token used for private registries authentication
 
-- Check started rke2-server service via commands:
-```
-sudo systemctl status rke2-server
+## Cluster configuration file backup
+When you installed RKE2 on each Rancher server node, a kubeconfig file was created on the node at `/etc/rancher/rke2/rke2.yaml`.
 
-# show logs
-journalctl -u rke2-server.service
+__This file contains credentials for full access to the cluster__, and it should be saved in a secure location (e.g backup server). See [HA Rancher documentation](https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-cluster-setup/rke2-for-rancher).
+
+### Cluster remote access
+Make a copy of the `/etc/rancher/rke2/rke2.yaml` including access certificate data, accessible to K8S client or remote management tool.
+
+Edit file and change server property with FQDNS of load-balancer deployed in front of the SUPPORT cluster:
 ```
+  server: [LOAD-BALANCER-DNS]:6443 # Edit this line
+```
+
+## RKE2 cluster RESET & cleanup
+When cluster restart is in failure about etc DB problem (e.g consequently to config.yaml change), that need to reset the cluster:
+- Clean cluster nodes via commands:
+```
+  # Stop any RKE2 process
+  sudo rke2-killall.sh
+
+  # DB cleanup
+  sudo rm -rf /var/lib/rancher/rke2/server/db
+
+  # Start RKE2 server
+  sudo systemctl start rke2-server.service
+
+  # Get and check equals node-token generated OF PRIMARY SERVER
+  cat /var/lib/rancher/rke2/server/node-token
+  cat /var/lib/rancher/rke2/server/token
+```
+- Replace token into __config.yaml__ in each other node with current value of primary server (complet value of token file)
+- Restart each node
 
 ## Kubernetes resources
-
-### Base data storage area (Persistent Volume)
-- Create a sub-directory of `/srv` dedicated to the Kubernetes resources (e.g Persistent Volumes) via commands:
-  ```
-  sudo mkdir /srv/k8s
-  sudo mkdir /srv/k8s/data
-  ```
-
-- __From root $HOME directory__, create a symbolic link simplying the identification of K8S data storage base path via command:
-  ```
-  # Allow direct access to RKE2 dedicated disk area reserved for K8S data (e.g under data folder, for PersistentVolumes creation)
-  sudo ln -s /srv/k8s/data .kube/data
-  ```
+### Dynamic storage provisioning installation
+For allow dynamic provisioning  (e.g usable by Rancher application), a storage class can be defined.
 
 # INFRASTRUCTURE SERVICES
 
 ## Storage
+### Applications default storage area
+Definition of dedicated storage area on server, for applications deployed into the cluster:
+- Create a sub-directory of `/srv` dedicated to the Kubernetes resources (e.g Persistent Volumes) via command: `sudo mkdir -p /srv/k8s/data`
+- __From root $HOME directory__, create a symbolic link simplying the identification of K8S data storage base path via command:
+```
+  # Allow direct access to RKE2 dedicated disk area reserved for K8S data (e.g under data folder, for PersistentVolumes creation)
+  sudo ln -s /srv/k8s/data .kube/data
+```
 
 ## Monitoring & Logging
 
@@ -196,27 +227,15 @@ Canal solution is deployed as CNI plugin.
 ### External FQDN visibility
 By default, pods deployed into the cluster can't reach external server based on DNS (e.g Internet server name; external network server based on a FQDN and/or dns hostname).
 
-Creation of a CoreDNS configuration file allowing visibility of external machines (e.g Support cluster machine from the DEV cluster isolated network), extending the default coredns config file automatically created by the Support server during the RKE2 dynamic agent installation
+When existing DNS server allowing external access to a cluster server node via hostname.domain_name (e.g sup1.cybnity.tech,, sup2.cybnity.tech, sup3.cybnity.tech), the pods deployed into the cluster can find any other external resource from  their FQDNs.
+
+When none external DNS server is managing the server hostname and domain identification, a CoreDNS configuration file can be created allowing visibility of external machines (e.g Support cluster machine from the DEV cluster isolated network), and extending the default coredns config file automatically created by the Support server during the RKE2 dynamic agent installation.
 
 ## Security
-### Rancher Backup
-Automated backup solution ensuring auto-save of Rancher instance into a scheduled approach, to file versions allowing restoration in case of Rancher container disaster.
-
-## Server auto-stop
-Add a crontab directive to stop the server in a safe way (with wait of existing process secure end before make the stop) with power off:
-- open and add command into crontab via command: `sudo crontab -e`
-- add line in file and save as:
-```
-# stop and poweroff in secure way (shutdown -P) the server each day at 20:30:00
-30 20 * * * shutdown -P
-```
-
-- check crontab plan via command: `sudo crontab -l`
-
 ## Time
 Network Time Protocol (NTP) package shall be installed. This prevents errors with certificate validation that can occur when the time is not synchronized between the client and server. Timedate is by default installed on Ubuntu in place of previous ntpd tool, check that autosync of timezone from Internet is active via command:
 ```
-  # check autosync time
+  # Check autosync time
   timedatectl
 ```
   - If ntpd is need, install it via command:
@@ -224,101 +243,137 @@ Network Time Protocol (NTP) package shall be installed. This prevents errors wit
     sudo apt install ntp
   ```
 
-## Java Runtime
-Default openJDK java runtime is automatically installed on Ubuntu (defined by distribution version).
+## Cluster Nodes Availability Plan
+Automatic poweroff and restart of cluster node can be managed via custom scheduling planified between each cluster node (for 24/24 availability security, a minimum of 2 nodes shall be always be in active state to ensure etc database sync).
 
-During Halyard tool update, a more young version of Java runtime can be required that allow Halyard run.
+### 8/24 hr - 3/7 days Availability Stop Plan
+- __Servers Scheduling Stop Plan__ (controlled by Linux crontab service)
+|Period|Task Time|Server Node|Comment            |Residual Accepted Risk|
+|:--   |:--      |:--        |:--                |:--                   |
+|Daily |20:30    |sup3       |sup1, sup2 active  |Safe vailability      |
+|Daily |20:40    |sup2       |sup1 active        |Risk of unavailability|
+|Daily |20:50    |sup1       |None active cluster|Interrupted services  |
 
-## Installation of Java alternative version on Linux OS
-- Identify available versions of Java from Ubuntu referential via command:
+#### On each server
+Defined crontab directives on each server in a safe way (with wait of existing process secure end before make the stop) via power off:
+- Open and add command into crontab via command: `sudo crontab -e`
+- Add line in file and save:
 ```
-apt search openjdk | grep -E 'openjdk-.*-jdk/'
+# Stop and poweroff server in a secure way (shutdown -P) each day at 20:30:00
+30 20 * * * shutdown -P
 ```
-- Based on available jdk versions provided by Ubuntu referential, install Halyard minimum required Java version via command:
-```
-sudo apt install openjdk-21-jdk
-```
-- Verify version of compiler and console installed via commands:
-```
-java --version
-javac --version
-```
-- When multiple Java versions have been installed, a switch of current default activated version and installed versions can be managed via command:
-```
-# For Java runtime environment switch (and select version to use)
-sudo update-alternatives --config java
+- Crontab plan checking via command: `sudo crontab -l`
 
-# For Java Compiler switch (and select version to use)
-sudo update-alternatives --config javac
+### 8/24 hr - 3/7 days Availability Start Plan
+Controlled by BIOS setup, or via crontab on permanent available server (e.g ha.cybnity.tech).
+
+- __Servers Scheduling Start Plan__
+|Period            |Task Time|Server Node     |Comment                         |Residual Accepted Risk|
+|:--               |:--      |:--             |:--                             |:--                   |
+|Thursday, Friday  |08:45    |sup1            |sup1 active                     |Risk of unavailability|
+|Thursday, Friday  |08:48    |sup2            |sup1, sup2 active               |Safe availability     |
+|Thursday, Friday  |08:51    |sup3            |sup1, sup2, sup3 active         |Safe availability     |
+|Manual Wake-On-Lan|         |sup1, sup2, sup3|Ordered WOL from HA proxy server|                      |
+
+### On server managing start plan
+Define WOL script executing WOL call (e.g from ha.cybnity.tech server) via `/usr/local/bin/CYDEL_support_cluster_start.sh` executable script):
+
+- Edit common WOL call and server availability script including:
+```
+  #!/bin/bash
+  # Automatic server start via Wake-On-Lan magic packet send and check of server status
+  # Argument os script call:
+  # - $1 server logical name (e.g sup1.cybnity.tech)
+  # - $2 mac address number (e.g 6c:4b:90:16:4e:4c) recipient of magic packet
+
+  VAR=`ping -s 1 -c 2 $1 > /dev/null; echo $?`
+  if [ $VAR -eq 0 ];then
+  echo -e "$1 is UP as on $(date)"
+  elif [ $VAR -eq 1 ];then
+  wakeonlan $2 | echo "$1 not turned on. WOL packet sent at $(date +%H:%M)"
+  sleep 3m | echo "Waiting 3 Minutes"
+  PING=`ping -s 1 -c 4 $1 > /dev/null; echo $?`
+  if [ $PING -eq 0 ];then
+  echo "$1 is UP as on $(date +%H:%M)"
+  else
+  echo "$1 not turned on - Please Check Network Connections"
+  fi
+  fi
+```
+- Edit automated WOL calls script including:
+```
+  #!/bin/bash
+  # Automation script for ordered start of SUPPORT cluster servers
+
+  # Check and call WOL on sup1.cybnity.tech
+  /usr/local/bin/server_wol_start.sh sup1.cybnity.tech 6c:4b:90:16:4e:4c
+
+  # Check and call WOL on sup2.cybnity.tech
+  /usr/local/bin/server_wol_start.sh sup2.cybnity.tech 6c:4b:90:19:0a:81
+
+  # Check and call WOL on sup3.cybnity.tech
+  /usr/local/bin/server_wol_start.sh sup3.cybnity.tech 6c:4b:90:19:21:22
+```
+- Make each script executable via command: `sudo chmod +x /usr/local/bin/CYDEL_support_cluster_start.sh`
+- Add crontab line ensuring scheduling start plan for the periods when Support cluster WOLs shall be executed:
+```
+# Start SUPPORT servers over Wake-On-Lan script call every Thursday and Friday at 08:45:00
+45 8 * * 4,5 root bash /usr/local/bin/CYDEL_support_cluster_start.sh
 ```
 
-- Identify where active Java is installed via commands:
-```
-export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
-
-# Add permanent JAVA_HOME variable and with adding into $PATH variable of file `/etc/environment` ($JAVA_HOME/bin added $PATH)
-
-# Reload environment variables
-set -a; . /etc/environment; set +a;
-```
-
-## Custom Resources
-Multiple dedicated resources are managed into the cluster because required by applications deployed into the cluster.
-
-Find here little bit informations for help to identify them about their dissemination.
+### Rancher Backup
+Automated backup solution ensuring auto-save of Rancher instance into a scheduled approach is implemented by Rancher Backup service (to file versions allowing restoration in case of Rancher container disaster).
 
 # APPLICATION SERVICES
+## Kubernetes clusters management solution (Rancher)
+Rancher application is deployed for management of any K8S cluster of CYDEL01 infrastructure.
 
-## Kubernetes management (Rancher)
-- Add needed helm charts to node repository list via command:
+See [Rancher technical documentation](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/install-upgrade-on-a-kubernetes-cluster) for help.
+### On each cluster node
+- Create a folder dedicated to the Rancher audit logs via command: `sudo mkdir -p /srv/k8s/audit/rancher`
+
+### On primary cluster node
+> [!NOTE]
+> Any kubernetes comman executed on the primary node will generated configuration and application elements synchronizing automatically to other cluster nodes.
+
+- Add helm charts to node repository list via command:
 ```
   sudo helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
 ```
-
-### Kubernetes clusters management (Rancher)
-Ranche instance is deployed for management of any K8S cluster of CYDEL01 infrastructure.
-
-See [Rancher technical documentation](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/install-upgrade-on-a-kubernetes-cluster) for help.
-
 - Namespace creation into the support cluster via command:
 ```
 sudo kubectl create namespace cattle-system
 ```
-
-- [delete certain version created certificates](https://ranchermanager.docs.rancher.com/v2.6/troubleshooting/other-troubleshooting-tips/expired-webhook-certificate-rotation) that will expire after one year via commands:
+- [Delete potential old version created certificates](https://ranchermanager.docs.rancher.com/v2.6/troubleshooting/other-troubleshooting-tips/expired-webhook-certificate-rotation) that will expire after one year via commands:
 ```
-kubectl delete secret -n cattle-system cattle-webhook-tls
-kubectl delete mutatingwebhookconfigurations.admissionregistration.k8s.io --ignore-not-found=true rancher.cattle.io
-kubectl delete pod -n cattle-system -l app=rancher-webhook
+  kubectl delete secret -n cattle-system cattle-webhook-tls
+  kubectl delete mutatingwebhookconfigurations.admissionregistration.k8s.io --ignore-not-found=true rancher.cattle.io
+  kubectl delete pod -n cattle-system -l app=rancher-webhook
 ```
 
-- [Installation of Rancher](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/install-upgrade-on-a-kubernetes-cluster#5-install-rancher-with-helm-and-your-chosen-certificate-option) over Helm with Rancher-generated (when ingress.tls.source parameter is not defined) certificates. See [Rancher Helm chart options doc](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/helm-chart-options) regarding the common options.
-  - Create the certificate and key files usable by Rancher installer from the custom domain certificate and key files:
+[Installation of Rancher](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/install-upgrade-on-a-kubernetes-cluster#5-install-rancher-with-helm-and-your-chosen-certificate-option) over Helm with Rancher-generated (when ingress.tls.source parameter is not defined) certificates. See [Rancher Helm chart options doc](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/helm-chart-options) regarding the common options.
+
+- Create the certificate and key files usable by Rancher installer from the custom domain certificate and key files:
     tls.crt = custom domain server certificate file followed by any intermediate certificate(s)
     tls.key = custom domain certificate private key
-  - Check Common Name and Subject Alternative Names on the cusom certificate:
+- Check Common Name and Subject Alternative Names on the custom certificate:
   ```
   # Show subject recognized in certificate
   openssl x509 -noout -subject -in tls.crt
-
   ```
-  - Add TLS secrets as secret via:
+- Add TLS secrets (see [Rancher TLS Secrets documentation](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/resources/add-tls-secrets)) as secret via command:
   ```
   kubectl -n cattle-system create secret tls tls-rancher-ingress --cert=tls.crt --key=tls.key
   ```
-
-  - Create cacerts.pem file including the custom domain CA trust chain (containing only root CA certificate or certificate chain from private CA), and create `tls-ca` secret via:
+- Create cacerts.pem file including the custom domain CA trust chain (containing only root CA certificate or certificate chain from private CA), and create `tls-ca` secret via:
   ```
   kubectl -n cattle-system create secret generic tls-ca --from-file=cacerts.pem
   ```
-
-  - Create a folder dedicated to the Rancher audti logs on `/srv/k8s/audit/rancher`
-
-  - For installation (using default "system-store" allowing Rancher agent nodes trust any certificate generated by a public Certificate Authority contained in the Operating System's trust store including those signed by authorities) custom domain certificate:
+- For Rancher installation using default "system-store", allowing Rancher agent nodes trust any certificate generated by a public Certificate Authority contained in the Operating System's trust store, and including those signed by authorities:
   ```
   sudo helm install rancher rancher-stable/rancher \
     --namespace cattle-system \
-    --set hostname=cybsup01.cybnity.tech \
+    --set hostname=rancher.cybnity.tech \
     --set bootstrapPassword=cybnity \
     --set ingress.tls.source=secret \
     --set privateCA=true \
