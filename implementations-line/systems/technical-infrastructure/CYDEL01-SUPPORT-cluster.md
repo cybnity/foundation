@@ -249,8 +249,9 @@ Automatic poweroff and restart of cluster node can be managed via custom schedul
 
 ### 8/24 hr - 2/7 days Availability Stop Plan
 - __Servers Scheduling Stop Plan__ (controlled by Linux crontab service)
+
 |Period|Task Time|Server Node|Comment            |Residual Accepted Risk|
-|:--   |:--      |:--        |:--                |:--                   |
+|:-----|:--------|:----------|:-- ---------------|:---------------------|
 |Daily |20:30    |sup3       |sup1, sup2 active  |Safe vailability      |
 |Daily |20:40    |sup2       |sup1 active        |Risk of unavailability|
 |Daily |20:50    |sup1       |None active cluster|Interrupted services  |
@@ -276,8 +277,9 @@ Add crontab line ensuringa utomatic stop scheduled each day at 21:00:00 (after t
 Controlled by BIOS setup, or via crontab on permanent available server (e.g ha.cybnity.tech).
 
 - __Servers Scheduling Start Plan__
+
 |Period            |Task Time|Server Node     |Comment                         |Residual Accepted Risk|
-|:--               |:--      |:--             |:--                             |:--                   |
+|:-----------------|:--------|:---------------|:-------------------------------|:---------------------|
 |Thursday, Friday  |08:45    |sup1            |sup1 active                     |Risk of unavailability|
 |Thursday, Friday  |08:48    |sup2            |sup1, sup2 active               |Safe availability     |
 |Thursday, Friday  |08:51    |sup3            |sup1, sup2, sup3 active         |Safe availability     |

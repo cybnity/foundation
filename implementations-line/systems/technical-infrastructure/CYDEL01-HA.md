@@ -45,8 +45,9 @@ Automatic poweroff and restart of server can be managed via custom scheduling.
 
 ### 8/24 hr - Daily Availability Stop Plan
 - __Server Scheduling Stop Plan__ (controlled by Linux crontab service)
+
 |Period|Task Time|Server Node|Comment            |Residual Accepted Risk|
-|:--   |:--      |:--        |:--                |:--                   |
+|:-----|:--------|:----------|:------------------|:---------------------|
 |Daily |21:00    |ha         |None active cluster|Interrupted services  |
 
 Defined crontab directives on server in a safe way (with wait of existing process secure end before make the stop) via power off:
@@ -62,10 +63,11 @@ Defined crontab directives on server in a safe way (with wait of existing proces
 Controlled by BIOS setup and/or Wake On-Lan remote call.
 
 - __Server Scheduling Start Plan__
-|Period            |Task Time|Server Node     |Comment                         |Residual Accepted Risk|
-|:--               |:--      |:--             |:--                             |:--                   |
-|Thursday, Friday  |08:51    |ha              |Clusters load-balancing active  |                      |
-|Manual Wake-On-Lan|         |ha              |                                |                      |
+
+|Period            |Task Time|Server Node     |Comment                       |Residual Accepted Risk|
+|:-----------------|:--------|:---------------|:-----------------------------|:---------------------|
+|Thursday, Friday  |08:51    |ha              |Clusters load-balancing active|                      |
+|Manual Wake-On-Lan|         |ha              |                              |                      |
 
 - In server's BIOS setup (power management section), add start directive for poweron action performed each Thursday and Friday at 08:51:00.
 
