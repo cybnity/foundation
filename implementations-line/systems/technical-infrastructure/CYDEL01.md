@@ -32,7 +32,12 @@ Primary connectivity network is based on 10G rate LAN (Cat7 cabled) supporting t
 Interconnection of physical servers is supported by a 10G Ethernet managed switch.
 
 ## SUPPORT INFRASTRUCTURE
-This area of technical components and/or services are dedicated to support the other environments as tools (e.g Continuous Delivery of application components on environment) and shared services (e.g virtualization systems and containers management):
+This area of technical components and/or services are dedicated to support the other environments as tools (e.g Continuous Delivery of application components on environment) and shared services (e.g virtualization systems and containers management).
+
+Dedicated infrastructure services are deployed as additionnal support services according to:
+- [CYDEL01 - Clusters HA Proxy](CYDEL01-HA.md): unified and centralized load-balancing service for application endpoints deployed into clusters (e.g Rancher administration webapp hosted in SUPPORT cluster)
+
+K8S clusters management is supported by applications deployed into:
 - [CYDEL01 - Support cluster](CYDEL01-SUPPORT-cluster.md)
 
 ## DEVELOPMENT

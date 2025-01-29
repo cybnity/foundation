@@ -31,7 +31,8 @@ See [guide for Rancher cluster setup](https://ranchermanager.docs.rancher.com/ho
 
 The global installation process between nodes followed is:
 1. RKE2 Server/Master node installation
-
+2. RKE2 second server node installation with equals configuration complemented of primary server url (RKE2 conf)
+3. RKE2 third server node installation with equals configuration complemented of primary server url (RKE2 conf)
 
 # VIRTUALIZATION NODE INSTALLATION
 These tasks shall be executed on each cluster node.
@@ -246,7 +247,7 @@ Network Time Protocol (NTP) package shall be installed. This prevents errors wit
 ## Cluster Nodes Availability Plan
 Automatic poweroff and restart of cluster node can be managed via custom scheduling planified between each cluster node (for 24/24 availability security, a minimum of 2 nodes shall be always be in active state to ensure etc database sync).
 
-### 8/24 hr - 3/7 days Availability Stop Plan
+### 8/24 hr - 2/7 days Availability Stop Plan
 - __Servers Scheduling Stop Plan__ (controlled by Linux crontab service)
 |Period|Task Time|Server Node|Comment            |Residual Accepted Risk|
 |:--   |:--      |:--        |:--                |:--                   |
@@ -254,7 +255,7 @@ Automatic poweroff and restart of cluster node can be managed via custom schedul
 |Daily |20:40    |sup2       |sup1 active        |Risk of unavailability|
 |Daily |20:50    |sup1       |None active cluster|Interrupted services  |
 
-#### On each server
+#### On each cluster server
 Defined crontab directives on each server in a safe way (with wait of existing process secure end before make the stop) via power off:
 - Open and add command into crontab via command: `sudo crontab -e`
 - Add line in file and save:
@@ -263,8 +264,15 @@ Defined crontab directives on each server in a safe way (with wait of existing p
 30 20 * * * shutdown -P
 ```
 - Crontab plan checking via command: `sudo crontab -l`
+Add crontab line ensuringa utomatic stop scheduled each day at 21:00:00 (after the SUPPORT cluster servers stop time):
+```
+  # HA server auto-stop every day at 21:00:00 (after SUPPORTR cluster servers stop)
+  0 21 * * * shutdown -P
+```
 
-### 8/24 hr - 3/7 days Availability Start Plan
+#### On server managing start plan (HA server)
+
+### 8/24 hr - 2/7 days Availability Start Plan
 Controlled by BIOS setup, or via crontab on permanent available server (e.g ha.cybnity.tech).
 
 - __Servers Scheduling Start Plan__
@@ -275,51 +283,10 @@ Controlled by BIOS setup, or via crontab on permanent available server (e.g ha.c
 |Thursday, Friday  |08:51    |sup3            |sup1, sup2, sup3 active         |Safe availability     |
 |Manual Wake-On-Lan|         |sup1, sup2, sup3|Ordered WOL from HA proxy server|                      |
 
-### On server managing start plan
-Define WOL script executing WOL call (e.g from ha.cybnity.tech server) via `/usr/local/bin/CYDEL_support_cluster_start.sh` executable script):
+#### On server managing start plan (HA server)
+Define WOL script executing WOL call (e.g from ha.cybnity.tech server) via `/usr/local/bin/CYDEL_support_cluster_start.sh` executable script) and crontab orchestration. See [CYDEL01-HA documentation](CYDEL01-HA.md) for more detail.
 
-- Edit common WOL call and server availability script including:
-```
-  #!/bin/bash
-  # Automatic server start via Wake-On-Lan magic packet send and check of server status
-  # Argument os script call:
-  # - $1 server logical name (e.g sup1.cybnity.tech)
-  # - $2 mac address number (e.g 6c:4b:90:16:4e:4c) recipient of magic packet
-
-  VAR=`ping -s 1 -c 2 $1 > /dev/null; echo $?`
-  if [ $VAR -eq 0 ];then
-  echo -e "$1 is UP as on $(date)"
-  elif [ $VAR -eq 1 ];then
-  wakeonlan $2 | echo "$1 not turned on. WOL packet sent at $(date +%H:%M)"
-  sleep 3m | echo "Waiting 3 Minutes"
-  PING=`ping -s 1 -c 4 $1 > /dev/null; echo $?`
-  if [ $PING -eq 0 ];then
-  echo "$1 is UP as on $(date +%H:%M)"
-  else
-  echo "$1 not turned on - Please Check Network Connections"
-  fi
-  fi
-```
-- Edit automated WOL calls script including:
-```
-  #!/bin/bash
-  # Automation script for ordered start of SUPPORT cluster servers
-
-  # Check and call WOL on sup1.cybnity.tech
-  /usr/local/bin/server_wol_start.sh sup1.cybnity.tech 6c:4b:90:16:4e:4c
-
-  # Check and call WOL on sup2.cybnity.tech
-  /usr/local/bin/server_wol_start.sh sup2.cybnity.tech 6c:4b:90:19:0a:81
-
-  # Check and call WOL on sup3.cybnity.tech
-  /usr/local/bin/server_wol_start.sh sup3.cybnity.tech 6c:4b:90:19:21:22
-```
-- Make each script executable via command: `sudo chmod +x /usr/local/bin/CYDEL_support_cluster_start.sh`
-- Add crontab line ensuring scheduling start plan for the periods when Support cluster WOLs shall be executed:
-```
-# Start SUPPORT servers over Wake-On-Lan script call every Thursday and Friday at 08:45:00
-45 8 * * 4,5 root bash /usr/local/bin/CYDEL_support_cluster_start.sh
-```
+- In server's BIOS setup (power management section), add start directive for poweron action performed each Thursday and Friday at 08:51:00.
 
 ### Rancher Backup
 Automated backup solution ensuring auto-save of Rancher instance into a scheduled approach is implemented by Rancher Backup service (to file versions allowing restoration in case of Rancher container disaster).
@@ -353,23 +320,29 @@ sudo kubectl create namespace cattle-system
 
 [Installation of Rancher](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/install-upgrade-on-a-kubernetes-cluster#5-install-rancher-with-helm-and-your-chosen-certificate-option) over Helm with Rancher-generated (when ingress.tls.source parameter is not defined) certificates. See [Rancher Helm chart options doc](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/helm-chart-options) regarding the common options.
 
-- Create the certificate and key files usable by Rancher installer from the custom domain certificate and key files:
-    tls.crt = custom domain server certificate file followed by any intermediate certificate(s)
-    tls.key = custom domain certificate private key
+- Create the certificate and key files ([mandatory Secret resource names](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/resources/add-tls-secrets)) for K8S secret resource creation) usable by Rancher installer from the custom domain certificate and key files:
+    __tls.crt__: custom domain server certificate file followed by any intermediate certificate(s)
+    __tls.key__: custom domain certificate private key
 - Check Common Name and Subject Alternative Names on the custom certificate:
-  ```
+```
   # Show subject recognized in certificate
   openssl x509 -noout -subject -in tls.crt
-  ```
-- Add TLS secrets (see [Rancher TLS Secrets documentation](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/resources/add-tls-secrets)) as secret via command:
-  ```
+```
+- Add TLS secrets as secret via command:
+```
   kubectl -n cattle-system create secret tls tls-rancher-ingress --cert=tls.crt --key=tls.key
-  ```
-- Create cacerts.pem file including the custom domain CA trust chain (containing only root CA certificate or certificate chain from private CA), and create `tls-ca` secret via:
-  ```
+```
+- Create __cacerts.pem__ file including the custom domain CA trust chain (containing only root CA certificate or certificate chain from private CA), and create __tls-ca__ secret via:
+```
   kubectl -n cattle-system create secret generic tls-ca --from-file=cacerts.pem
-  ```
-- For Rancher installation using default "system-store", allowing Rancher agent nodes trust any certificate generated by a public Certificate Authority contained in the Operating System's trust store, and including those signed by authorities:
+```
+- Check that TLS resources are successfully available in the RKE2 cluster via command: `kubectl -n cattle-system create secret generic tls-ca --from-file=cacerts.pem`
+- Copy additional custom intermediary certificates only (trust chain without custom domain certificate) in pem format into a file named __ca-additional.pem__ and use `kubectl` to create the __tls-ca-additional__ secret in the __cattle-system__ namespace via command:
+```
+  kubectl -n cattle-system create secret generic tls-ca-additional --from-file=ca-additional.pem=./ca-additional.pem
+```
+- For Rancher installation using default __strict mode__ (Rancher's agents only trust certificates generated by the Certificate Authority contained in the __cacerts__ setting. When the value is set to system-store, Rancher's agents trust any certificate generated by a public Certificate Authority contained in the operating system's trust store; see [Helm Chart options doc](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/helm-chart-options#advanced-options)):
+  - __tls__ property value is equals to `external` when Load-Balancer is existing in front of SUPPORT cluster (else `ingress` value shall be set)
   ```
   sudo helm install rancher rancher-stable/rancher \
     --namespace cattle-system \
@@ -377,7 +350,7 @@ sudo kubectl create namespace cattle-system
     --set bootstrapPassword=cybnity \
     --set ingress.tls.source=secret \
     --set privateCA=true \
-    --set agentTLSMode=system-store \
+    --set agentTLSMode=strict \
     --set tls=ingress \
     --set auditLog.level=3 \
     --set auditLog.destination=hostPath \
@@ -388,151 +361,46 @@ sudo kubectl create namespace cattle-system
     --set debug=true \
     --set additionalTrustedCAs=true
   ```
-
-- Copy additional custom intermediary certificates only (trust chain without custom domains certificate) in pem format into a file named `ca-additional.pem` and use `kubectl` to create the `tls-ca-additional` secret in the `cattle-system` namespace via:
-```
-kubectl -n cattle-system create secret generic tls-ca-additional --from-file=ca-additional.pem=./ca-additional.pem
-```
-
 - Verify that Rancher server is successfully deployed via commands:
 ```
-kubectl -n cattle-system rollout status deploy/rancher
-kubectl -n cattle-system get deploy rancher
+  kubectl get pods -n cattle-system
+  kubectl -n cattle-system rollout status deploy/rancher
+
+  # Check on each cluster node
+  kubectl -n cattle-system get deploy rancher
+```
+- In case of deployment problem or pod in intermediary status, see description of pod via command:
+```
+  kubectl describe pod rancher-978c8d76d-jgr98 -n cattle-system
+```
+- From other machine, test and show HTTP header of forwarded request to Rancher url via command: `
+```
+  # Show header ouput
+  curl -Lvso /dev/null https://rancher.cybnity.tech
+
+  # Show detail of SSL process results
+  curl -v https://rancher.cybnity.tech`
+```
+- Open browser on Rancher web UI via commands:
+```
+# See default Rancher web app password for admin account
+kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}{{ "\n" }}'
+
+# See Rancher setup url
+echo https://rancher.cybnity.tech/dashboard/?setup=$(kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}')
 ```
 
-- Custom certificate provisioning as Secret usable across the cluster
-  - When need, extract a public key to PEM format from authority CA via command:
-    ```
-    # Extract public key of CA certificate (Sectigo authority) as PEM format file
-    openssl x509 -pubkey -noout < SectigoRSADomainValidationSecureServerCA.crt > root-ca-public.key
-
-    # Create PEM version of key usable for creation of a K8S secret based on Authority Certificate (e.g SectigoRSADomainValidationSecureServerCA.crt)
-    #openssl rsa -in any-certificate-private.key -out key-pem-formatted-version.pem
-
-    ```
-
-  - Creation of K8S secret resource including the private key and custom domains certificate (as star-cybnity-tech-tls) via commands:
-    ```
-    # Create Secret resource in cluster
-    kubectl -n cattle-system create secret tls star-cybnity-tech-tls --cert=/path/to/STAR_cybnity_tech.crt --key=private.key
-
-    # Verify the secret created
-    kubectl -n cattle-system get secret star-cybnity-tech-tls
-    ```
-
-    - Creation of a Cluster Issuer for the cluster (allow to issue certificates using CYBNITY custom domains certificate) defined in new manifest file stored in RKE2
-      - Creation of new `rke2-trust-cybnity-tech-issuer.yaml` file containing:
-      ```
-      # Allow to issue certificates using the CYBNITY.TECH custom domains certificate (Secret resource)
-      apiVersion: cert-manager.io/v1
-      kind: ClusterIssuer
-      metadata:
-        name: trust-cybnity-tech-issuer
-      spec:
-        ca:
-          secretName: star-cybnity-tech-tls # Name of the custom domains certificate stored as Secret
-      ---
-      # CYBNITY.TECH sub-domains certificate
-      apiVersion: cert-manager.io/v1
-      kind: Certificate
-      metadata:
-        name: trust-cybnity-tech
-        namespace: kube-system
-      spec:
-        isCA: false
-        commonName: trust-cybnity-tech
-        secretName: trust-cybnity-tech-secret
-        issuerRef:
-          name: trust-cybnity-tech-issuer
-          kind: ClusterIssuer
-        dnsNames:
-        - cybnity.tech
-        - cybsup01.cybnity.tech
-        - cybdev01.cybnity.tech
-        - cybdev02.cybnity.tech
-        - sup.cybnity.tech
-        - dev.cybnity.tech
-      ```
-      - Apply resource for instantiation in cluster via command `kubectl apply -f rke2-trust-cybnity-tech-issuer.yaml` and verify good creation of ClusterIssuer and Certificate into the cluster
-      - Remove created objects in cluster, and move the manifest file into `/var/lib/rancher/rke2/server/manifests/` for automatic binding by RKE2
-      - Minimize accessibility regarding permissions via command `sudo chmod 600 /var/lib/rancher/rke2/server/manifests/rke2-trust-cybnity-tech-issuer.yaml`
-
-      ```mermaid
-      %%{
-        init: {
-          'theme': 'base',
-          'themeVariables': {
-              'background': '#ffffff',
-              'fontFamily': 'arial',
-              'fontSize': '12px',
-              'primaryColor': '#fff',
-              'primaryTextColor': '#0e2a43',
-              'primaryBorderColor': '#0e2a43',
-              'secondaryColor': '#fff',
-              'secondaryTextColor': '#fff',
-              'secondaryBorderColor': '#fff',
-              'tertiaryColor': '#fff',
-              'tertiaryTextColor': '#fff',
-              'tertiaryBorderColor': '#fff',
-              'lineColor': '#0e2a43',
-              'titleColor': '#fff',
-              'textColor': '#fff',
-              'lineColor': '#0e2a43',
-              'nodeTextColor': '#fff',
-              'nodeBorder': '#0e2a43',
-              'noteTextColor': '#fff',
-              'noteBorderColor': '#fff'
-          },
-          'flowchart': { 'curve': 'monotoneY' }
-        }
-      }%%
-      graph LR
-        subgraph cluster["Cluster"]
-          subgraph clusterIssuer["#60;#60;Cluster Issuer#62;#62;"]
-            issuer1["trust-cybnity-tech-issuer"]
-          end
-          subgraph certificate["#60;#60;Certificate#62;#62;"]
-            cert1["trust-cybnity-tech"]
-          end
-          subgraph secret["#60;#60;Secret#62;#62;#10;"]
-            sc1["star-cybnity-tech-tls"]
-          end
-        end
-
-        certificate -. "verified via" .-> clusterIssuer
-        certificate -. "using secret values" .-> secret
-
-        classDef mediumfill fill:#3a5572, stroke:#3a5572, color:#fff
-
-        classDef red fill:#e5302a, stroke:#e5302a, color:#fff, stroke-width:3px
-        classDef medium fill:#fff, stroke:#3a5572, color:#3a5572
-        classDef mediumdot fill:#fff, stroke:#3a5572, color:#3a5572, stroke-dasharray: 5 5
-        classDef reddot fill:#fff, stroke:#e5302a, color:#e5302a, stroke-dasharray: 5 5, stroke-width:3px
-        classDef dark fill:#0e2a43, stroke:#fff, color:#fff
-        classDef internalconfig fill:#0e2a43, stroke:#fff, color:#fff
-
-        class issuer1,cert1,sc1 medium;
-        class cluster,clusterIssuer,certificate,secret mediumdot;
-      ```
-
-- Follow command results to read the web url allowing to change the default admin password from a web browser
-
 ## CYBNITY software repository
-- Add complementary helm charts (e.g allowing deployment of CYBNITY applications) to node repository list via commands:
+- Add complementary helm charts repository (e.g allowing deployment of CYBNITY applications) to each cluster node's repository list via commands:
 ```
   sudo helm repo add cybnity https://cybnity.github.io/iac-helm-charts --force-update
 ```
 
 ## Continuous Delivery Tool (ArgoCD)
-ArgoCD installation procedure is based on the Helm tool (see [Argo-Helm documentation](https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd) for more detail about parameters)
+ArgoCD installation procedure is based on the Helm tool (see [ArgoCD-Helm documentation](https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd) for more detail about parameters)
 
 ### Application deployment configuration
-- When hostname is not provided by network DNS server, add DNS entry for DNS hostname mapping dedicated to ArgoCD global domain name into the `/etc/hosts` file:
-  ```
-  # ArgoCD hostnames configuration
-  192.168.60.18 cd.cybnity.tech
-  ```
-- Creation of a __values.yaml__ file for configuration of the Argo CD deployment to execute including:
+Creation of a __values.yaml__ file for configuration of the Argo CD deployment to execute including:
 ```
 global:
   domain: cd.cybnity.tech
