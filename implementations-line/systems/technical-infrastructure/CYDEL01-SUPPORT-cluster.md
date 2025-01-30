@@ -233,16 +233,6 @@ When existing DNS server allowing external access to a cluster server node via h
 When none external DNS server is managing the server hostname and domain identification, a CoreDNS configuration file can be created allowing visibility of external machines (e.g Support cluster machine from the DEV cluster isolated network), and extending the default coredns config file automatically created by the Support server during the RKE2 dynamic agent installation.
 
 ## Security
-## Time
-Network Time Protocol (NTP) package shall be installed. This prevents errors with certificate validation that can occur when the time is not synchronized between the client and server. Timedate is by default installed on Ubuntu in place of previous ntpd tool, check that autosync of timezone from Internet is active via command:
-```
-  # Check autosync time
-  timedatectl
-```
-  - If ntpd is need, install it via command:
-  ```
-    sudo apt install ntp
-  ```
 
 ## Cluster Nodes Availability Plan
 Automatic poweroff and restart of cluster node can be managed via custom scheduling planified between each cluster node (for 24/24 availability security, a minimum of 2 nodes shall be always be in active state to ensure etc database sync).
@@ -287,8 +277,6 @@ Controlled by BIOS setup, or via crontab on permanent available server (e.g ha.c
 
 #### On server managing start plan (HA server)
 Define WOL script executing WOL call (e.g from ha.cybnity.tech server) via `/usr/local/bin/CYDEL_support_cluster_start.sh` executable script) and crontab orchestration. See [CYDEL01-HA documentation](CYDEL01-HA.md) for more detail.
-
-- In server's BIOS setup (power management section), add start directive for poweron action performed each Thursday and Friday at 08:51:00.
 
 ### Rancher Backup
 Automated backup solution ensuring auto-save of Rancher instance into a scheduled approach is implemented by Rancher Backup service (to file versions allowing restoration in case of Rancher container disaster).
@@ -392,6 +380,99 @@ kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{
 echo https://rancher.cybnity.tech/dashboard/?setup=$(kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}')
 ```
 
+#### Cluster shared issuer (TLS certificate for any *.cybnity.tech deployed application)
+Types of shared elements managed in the Secret resources section of the SUPPORT cluster are:
+- __tls-rancher-ingress__ including custom domain certificate and private key properties (e.g cybnity.tech custom domain)
+
+- Creation of a Cluster Issuer for the applications (allow to issue certificates using CYBNITY custom domains certificate) defined in new manifest file stored in RKE2 static manifest of SUPPORT cluster primary server:
+  - Creation of new `rke2-trust-cybnity-tech-issuer.yaml` (file into `/var/lib/rancher/rke2/server/manifests/` folder for automatic binding by RKE2) including:
+  ```
+    # SHARED CLUSTER ISSUER
+    # Allow applications deployed into the SUPPORT cluster, to issue certificates using the CYBNITY.TECH custom domains certificate (Secret resource)
+    apiVersion: cert-manager.io/v1
+    kind: ClusterIssuer
+    metadata:
+      name: trust-cybnity-tech-issuer
+    spec:
+      ca:
+        secretName: tls-rancher-ingress # Name of the custom domains certificate stored as cluster shared Secret
+    ---
+    # CYBNITY.TECH sub-domains certificate
+    apiVersion: cert-manager.io/v1
+    kind: Certificate
+    metadata:
+      name: trust-cybnity-tech
+      namespace: kube-system
+    spec:
+      isCA: false
+      commonName: trust-cybnity-tech
+      secretName: trust-cybnity-tech-secret
+      issuerRef:
+        name: trust-cybnity-tech-issuer
+        kind: ClusterIssuer
+      dnsNames:
+      - "*.cybnity.tech"
+  ```
+  - Minimize accessibility regarding permissions via command `sudo chmod 600 /var/lib/rancher/rke2/server/manifests/rke2-trust-cybnity-tech-issuer.yaml`
+
+  ```mermaid
+      %%{
+        init: {
+          'theme': 'base',
+          'themeVariables': {
+              'background': '#ffffff',
+              'fontFamily': 'arial',
+              'fontSize': '12px',
+              'primaryColor': '#fff',
+              'primaryTextColor': '#0e2a43',
+              'primaryBorderColor': '#0e2a43',
+              'secondaryColor': '#fff',
+              'secondaryTextColor': '#fff',
+              'secondaryBorderColor': '#fff',
+              'tertiaryColor': '#fff',
+              'tertiaryTextColor': '#fff',
+              'tertiaryBorderColor': '#fff',
+              'lineColor': '#0e2a43',
+              'titleColor': '#fff',
+              'textColor': '#fff',
+              'lineColor': '#0e2a43',
+              'nodeTextColor': '#fff',
+              'nodeBorder': '#0e2a43',
+              'noteTextColor': '#fff',
+              'noteBorderColor': '#fff'
+          },
+          'flowchart': { 'curve': 'monotoneY' }
+        }
+      }%%
+      graph LR
+        subgraph cluster["Cluster"]
+          subgraph clusterIssuer["#60;#60;Cluster Issuer#62;#62;"]
+            issuer1["trust-cybnity-tech-issuer"]
+          end
+          subgraph certificate["#60;#60;Certificate#62;#62;"]
+            cert1["trust-cybnity-tech"]
+          end
+          subgraph secret["#60;#60;Secret#62;#62;#10;"]
+            sc1["tls-rancher-ingress"]
+          end
+        end
+
+        certificate -. "verified via" .-> clusterIssuer
+        certificate -. "using secret values" .-> secret
+
+        classDef mediumfill fill:#3a5572, stroke:#3a5572, color:#fff
+
+        classDef red fill:#e5302a, stroke:#e5302a, color:#fff, stroke-width:3px
+        classDef medium fill:#fff, stroke:#3a5572, color:#3a5572
+        classDef mediumdot fill:#fff, stroke:#3a5572, color:#3a5572, stroke-dasharray: 5 5
+        classDef reddot fill:#fff, stroke:#e5302a, color:#e5302a, stroke-dasharray: 5 5, stroke-width:3px
+        classDef dark fill:#0e2a43, stroke:#fff, color:#fff
+        classDef internalconfig fill:#0e2a43, stroke:#fff, color:#fff
+
+        class issuer1,cert1,sc1 medium;
+        class cluster,clusterIssuer,certificate,secret mediumdot;
+   ```
+
 ## CYBNITY software repository
 - Add complementary helm charts repository (e.g allowing deployment of CYBNITY applications) to each cluster node's repository list via commands:
 ```
@@ -401,11 +482,37 @@ echo https://rancher.cybnity.tech/dashboard/?setup=$(kubectl get secret --namesp
 ## Continuous Delivery Tool (ArgoCD)
 ArgoCD installation procedure is based on the Helm tool (see [ArgoCD-Helm documentation](https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd) for more detail about parameters)
 
+### DNS configuration
+Add DNS entry for `argocd.cybnity.tech` hostname (mapping dedicated to ArgoCD global domain name) into the DNS server configuration, that is set HA proxy as clusterized ArgoCD application unique endpoint.
+
+Check that propagated hostname from DNS is active via command: `ping argocd.cybnity.tech`
+
 ### Application deployment configuration
-Creation of a __values.yaml__ file for configuration of the Argo CD deployment to execute including:
+Creation of a __argocd-values.yaml__ file for configuration of the Argo CD deployment to execute including:
 ```
+# ArgoCD HA mode with autoscaling
+redis-ha:
+  enabled: true
+
+controller:
+  replicas: 1
+
+server:
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+
+repoServer:
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+
+applicationSet:
+  replicas: 2
+
+# Ingress configuration in a multiple ingress domains (e.g many support cluster's deployed applications)
 global:
-  domain: cd.cybnity.tech
+  domain: argocd.cybnity.tech
 server:
   ingress:
     enabled: true
@@ -416,13 +523,31 @@ server:
       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     tls: true
 ```
-### Application installation
-- Add repository via command: `helm repo add argo https://argoproj.github.io/argo-helm`
-- Execute ArgoCD installation via command: `helm install -f values.yaml argocd argo/argo-cd`
-- Install Argo CD CLI (see [CLI installation doc](https://argo-cd.readthedocs.io/en/stable/cli_installation/#download-latest-version))
-  - Update admin default password as defined by Chapter 4
-  - Remove default initial password secret object
-- Verify started Argo CD application via web browser connection from https://cd.cybnity.tech, with __admin__ default account and default password (saved in __argocd-initial-admin-secret__ Secret object)
+
+### ArgoCD application installation
+Execute application deployment from SUPPORT primary server (sup1.cybnity.tech) that will manage the auto-sync of other cluster nodes.
+
+- Add Argo repository into Helm repository of the machine managing the ArgoCD deployment, via command: `sudo helm repo add argo https://argoproj.github.io/argo-helm`
+- Execute ArgoCD installation via command: `sudo helm install -f argocd-values.yaml argocd argo/argo-cd`
+
+#### Default configuration data
+The initial password for the admin account is auto-generated and stored as clear text in the field password in a secret named argocd-initial-admin-secret in your Argo CD installation namespace.
+
+From Rancher web UI, search __argocd-initial-admin-secret__ Secret automatically created during the application deployment, and copy its password value reusable for authentication with __admin__ default account from the ArgoCD web UI.
+
+#### Application check
+- Verify started Argo CD application via web browser connection from https://argocd.cybnity.tech with __admin__ default account and default password (saved in __argocd-initial-admin-secret__ Secret object)
+- From __User Info__ section, update the default password of admin account for a new one
+- Remove default initial password secret object
+
+- On SUPPORT primary server, install Argo CD CLI last version from Curl tool (see [CLI installation doc](https://argo-cd.readthedocs.io/en/stable/cli_installation/#download-latest-version)) via commands:
+```
+  curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+
+  sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+
+  rm argocd-linux-amd64
+```
 
 #
 [Back To Home](CYDEL01.md)

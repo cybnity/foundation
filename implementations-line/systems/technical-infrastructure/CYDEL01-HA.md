@@ -29,16 +29,6 @@ Current prepared server configurations is:
 Add __ha.cybnity.tech__ into DNS server configuration routing to the HA server.
 
 ## Security
-## Time
-Network Time Protocol (NTP) package shall be installed. This prevents errors with certificate validation that can occur when the time is not synchronized between the HA server and exposed cluster fronts. Timedate is by default installed on Ubuntu in place of previous ntpd tool, check that autosync of timezone from Internet is active via command:
-```
-  # Check autosync time
-  timedatectl
-```
-  - If ntpd is need, install it via command:
-  ```
-    sudo apt install ntp
-  ```
 
 ## Server Availability Plan
 Automatic poweroff and restart of server can be managed via custom scheduling.
@@ -66,10 +56,10 @@ Controlled by BIOS setup and/or Wake On-Lan remote call.
 
 |Period            |Task Time|Server Node     |Comment                       |Residual Accepted Risk|
 |:-----------------|:--------|:---------------|:-----------------------------|:---------------------|
-|Thursday, Friday  |08:51    |ha              |Clusters load-balancing active|                      |
+|Thursday, Friday  |08:35    |ha              |Clusters load-balancing active|                      |
 |Manual Wake-On-Lan|         |ha              |                              |                      |
 
-- In server's BIOS setup (power management section), add start directive for poweron action performed each Thursday and Friday at 08:51:00.
+- In server's BIOS setup (power management section), add start directive for poweron action performed each Thursday and Friday at 08:35:00.
 
 # APPLICATION SERVICES
 ## Automation scripts
@@ -183,8 +173,8 @@ http {
 }
 ```
 
-### sup.cybnity.tech
-- Add some configuration parameters into the `/etc/nginx/conf.d/*.conf` for support of RKE2 and Rancher website endpoint managed by SUPPORT K8S cluster servers:
+### Rancher application website (sup.cybnity.tech)
+- Add some configuration parameters into the `/etc/nginx/nginx.conf` for support of RKE2 and Rancher website endpoint managed by SUPPORT K8S cluster servers:
 ```
   user  nginx;
 
@@ -208,17 +198,17 @@ http {
     log_format custom '$remote_addr - $remote_user [$time_local]  $status '
                   '"$host" "$request" $body_bytes_sent "$http_referer" '
                   '"$http_user_agent" "$http_x_forwarded_for"';
-    access_log /var/log/nginx/cybnity_access.log custom;
+    access_log /var/log/nginx/support_access.log custom;
     # Disabling via 'off' parameter (e.g access_log off;)
 
     # Severity level (debug, info, notice, warm, error, crit, alert, emerg)
-    error_log /var/log/nginx/cybnity_debug_error.log debug; # DURING CONFIG DEV: highly detailed messages primarily used for troubleshooting and development (+ info, notice, warm, error, crit, alert, emerg)
-    error_log /var/log/nginx/cybnity_error.log error; # DURING OPERATING: actual arrors encountered during processing (+ crit, alert, emerg)
-    error_log /var/log/nginx/cybnity_alert_error.log alert; # DURING OPERATING + INCIDENT NOTIFICATION: errors that demand immediate action (+ emerg)
+    error_log /var/log/nginx/support_debug_error.log debug; # DURING CONFIG DEV: highly detailed messages primarily used for troubleshooting and development (+ info, notice, warm, error, crit, alert, emerg)
+    error_log /var/log/nginx/support_error.log error; # DURING OPERATING: actual arrors encountered during processing (+ crit, alert, emerg)
+    error_log /var/log/nginx/support_alert_error.log alert; # DURING OPERATING + INCIDENT NOTIFICATION: errors that demand immediate action (+ emerg)
 
     # UPSTREAM - Allow to define a group of servers able to respond to request (load-balancing, fail-over)
-    upstream rancher_servers_http { # Defined virtual server (group named) running on NGINX
-        zone rancher_servers_http 32k;
+    upstream support_servers_https { # Defined virtual server (group named) running on NGINX
+        zone support_servers_http 32k;
         ip_hash; # User's session persistence consistency for routing to the same server
 
         # Backend servers private IP addresses or hostname
@@ -232,8 +222,9 @@ http {
         ''      close;
     }
 
-    # SERVER - All options and directives relative to current domain/site
+    # RANCHER SERVER - All options and directives relative to the Rancher application
     server {
+        # APPLICATION SERVER CONTEXT
         # Defined domain name, referencing the upstream servers and headers that should be passed to the backend
         listen 443 ssl; # Assigned specific ip address resolving the potential issue of SSL protocol behaviour when connection is established before the browser sends an HTTP request and NGINX does not know the name of the requested server
         server_name rancher.cybnity.tech;
@@ -243,7 +234,7 @@ http {
         keepalive_timeout 70; # Default cache timeout is 5min, and is increased for multi-core system with 20MB shared session cache
         ssl_session_timeout 1h; # Cache lifetime of 1h (10m for 10 minutes)
 
-        # Applied *.cybnity.tech wilcard SSL certificate paths (public cert, and private key) are defined in global configuration (nginx.conf)
+        # When not applied *.cybnity.tech wilcard SSL certificate paths (public cert, and private key) are defined in global configuration (nginx.conf)
         # SSL wildcard certificate configuration relative to all cybnity.tech sub-domains and enabled servers
         ssl_certificate         /etc/nginx/ssl/cybnity.tech/certs/STAR_cybnity_tech.pem; # Specific wilcard certificate or chained certificates
         ssl_certificate_key     /etc/nginx/ssl/cybnity.tech/private/star_cybnity_tech_private.key; # Reserved NGINX read-only access
@@ -253,15 +244,81 @@ http {
         add_header Strict-Transport-Security "max-age=31536000";
 
         # Location directive per url /<path> to support (e.g /api, /static/ for root /path/to/static/files). Can be multiple for same server
-        # Define where requests will be forwarded
+        # Define where Rancher requests will be forwarded
         location / {
                 # Configuraton of NGINX for Rancher is documented at https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/helm-chart-options#example-nginx-config
 
-                #proxy_pass directive forwards HTTP requests (request URI based) to a specific network address (upstream) as backend exposed endpoint
-                proxy_pass https://rancher_servers_http;
-                # POTENTIAL ERROR IF PROXY_PASS NEED TO TARGET https://rancher_servers_https;
+                # proxy_pass directive forwards HTTP requests (request URI based) to a specific network address (upstream) as backend exposed endpoint
+                proxy_pass https://support_servers_https;
 
-                #proxy_set_header directive is used to pass vital information about the request to the upstream servers
+                # proxy_set_header directive is used to pass vital information about the request to the upstream servers
+                proxy_set_header Host $host;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection $connection_upgrade;
+
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; # Required when NGINX reverse proxy transmit a request to backend server
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-Port $server_port;
+                proxy_http_version 1.1;
+
+                # This allows the ability for the execute shell window to remain open for up to 15 minutes. Without this parameter, the default is 1 minute and will automatically close.
+                proxy_read_timeout 900s;
+                proxy_buffering off;
+
+                proxy_cache_bypass  $http_upgrade;
+        }
+    }
+
+    # Rancher UI web application
+    server {
+        listen 80;
+        server_name rancher.cybnity.tech;
+        return 301 https://$server_name$request_uri;
+    }
+```
+
+- Create a symbolic link from `sites-available` to `sites-enabled` for activate the web zone, via command:
+```
+  sudo ln -s /etc/nginx/sites-available/sup.cybnity.tech /etc/nginx/sites-enabled/
+```
+- Check valid HTTPS route over the NGINX to SUPPORT cluster via command `curl -vIL https://rancher.cybnity.tech` that show detail of request and HTTPS flow steps.
+- Check the automatix forwaring of HTTP request to HTTPS request via command `curl -vIL http://rancher.cybnity.tech`.
+- Check access to Rancher application deployed into the SUPPORT cluster over a web browser call to url `https://rancher.cybnity.tech`, confirming the  activated load-balancing of application call between SUPPORT cluster serves serving the Rancher web application url.
+
+### ArgoCD application website
+- Update the configuration file defining the load-balancing service relative to all application endpoints served by SUPPOR cluster and configured in `/etc/nginx/sites-available/sup.cybnity.tech`, with add of configuration elements:
+```
+    # ARGOCD SERVER - All options and directives relative to the ArgoCD application
+    server {
+        # APPLICATION SERVER CONTEXT
+        # Defined domain name, referencing the upstream servers and headers that should be passed to the backend
+        listen 443 ssl;
+        server_name argocd.cybnity.tech;
+
+        #--- HARDENING OF SSL CONFIGURATION ---
+        ssl_session_cache shared:SSL:20m; # Shared cache size defined to 20MB
+        keepalive_timeout 70; # Default cache timeout is 5min, and is increased for multi-core system with 20MB shared session cache
+        ssl_session_timeout 1h; # Cache lifetime of 1h (10m for 10 minutes)
+
+        # When not applied *.cybnity.tech wilcard SSL certificate paths (public cert, and private key) are defined in global configuration (nginx.conf)
+        # SSL wildcard certificate configuration relative to all cybnity.tech sub-domains and enabled servers
+        ssl_certificate         /etc/nginx/ssl/cybnity.tech/certs/STAR_cybnity_tech.pem; # Specific wilcard certificate or chained certificates
+        ssl_certificate_key     /etc/nginx/ssl/cybnity.tech/private/star_cybnity_tech_private.key; # Reserved NGINX read-only access
+        #ssl_trusted_certificate /etc/nginx/ssl/cybnity.tech/certs/ca-certs.pem;
+
+        # Instruct all supporting web browsers to use only HTTPS
+        add_header Strict-Transport-Security "max-age=31536000";
+
+        # Location directive per url /<path> to support (e.g /api, /static/ for root /path/to/static/files). Can be multiple for same server
+        # Define where ArgoCD requests will be forwarded (location match and criteria)
+        location / {
+                proxy_pass https://support_servers_https;
+
+                # Files transfers without copying to an intermediate memory buffer (incxrease I/O rate adn reduce memory use)
+                sendfile           on;
+                sendfile_max_chunk 1m; # Limits chunks to 1 Megabytes
+
+                # proxy_set_header directive is used to pass vital information about the request to the upstream servers
                 proxy_set_header Host $host;
                 proxy_set_header Upgrade $http_upgrade;
                 proxy_set_header Connection $connection_upgrade;
@@ -281,18 +338,10 @@ http {
 
     server {
         listen 80;
-        server_name rancher.cybnity.tech;
+        server_name argocd.cybnity.tech;
         return 301 https://$server_name$request_uri;
     }
 ```
-
-- Create a symbolic link from `sites-available` to `sites-enabled` for activate the web zone, via command:
-```
-  sudo ln -s /etc/nginx/sites-available/sup.cybnity.tech /etc/nginx/sites-enabled/
-```
-- Check valid HTTPS route over the NGINX to SUPPORT cluster via command `curl -vIL https://rancher.cybnity.tech` that show detail of request and HTTPS flow steps.
-- Check the automatix forwaring of HTTP request to HTTPS request via command `curl -vIL http://rancher.cybnity.tech`.
-- Check access to Rancher application deployed into the SUPPORT cluster over a web browser call to url `https://rancher.cybnity.tech`, confirming the  activated load-balancing of application call between SUPPORT cluster serves serving the Rancher web application url.
 
 #
 [Back To Home](CYDEL01.md)

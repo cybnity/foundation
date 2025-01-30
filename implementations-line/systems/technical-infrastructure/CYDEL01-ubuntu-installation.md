@@ -65,46 +65,78 @@ After installation, storage layout and filesystem layout shall be shown (via `ls
   sudo apt update && sudo apt -y full-upgrade
 ```
 
+## Time configuration
+### NTP
+Network Time Protocol (NTP) package shall be installed. This prevents errors with certificate validation that can occur when the time is not synchronized between the client and server.
+- If ntpd is need, install and start it via command:
+```
+  sudo apt install ntp
+
+  # Enable ntp service
+  sudo systemctl enable ntp
+
+  # Start ntp service
+  sudo systemctl start ntp
+```
+- Update automatic restart of NTP service (managed by daemon) via file in `/etc/systemd/system/ntp.service` including:
+```
+  [Service]
+  Restart=on-failure
+  RestartSec=5s
+```
+- Reload systemd for the changes to take effect via command:
+```
+  sudo systemctl daemon-reload
+```
 ### Timezone
 Change permanently the OS's timezone used as reference according to the server location, via commands:
 ```
-sudo ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
-sudo dpkg-reconfigure -f noninteractive tzdata
+  sudo ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
+  sudo dpkg-reconfigure -f noninteractive tzdata
+```
+
+### Hardware clock timezone sync
+Timedate is by default installed on Ubuntu in place of previous ntpd tool, check that autosync of timezone from Internet is active via command:
+```
+  # Check autosync time
+  timedatectl
+
+  # Check RTC in local TZ because, 'RTC in local TZ:' no means the hardware clock is interpreted as UTC
+  # So in case of poweron scheduling via BIOS configuration, considere the UTC to Local time zone difference (e.g hours gap) when defining a BIOS scheduling action
 ```
 
 ### Command LIne color
 - Activate the command line contents by default with environment variable defined in __/etc/environment__:
 ```
-CLICOLOR=1
+  CLICOLOR=1
 ```
 - Reload environment file to activate changed file, via command:
 ```
-set -a; . /etc/environment; set +a;
+  set -a; . /etc/environment; set +a;
 ```
 
 ### Account password definition
 Set account passwords via commands:
 ```
-# set the current account password
-passwd
+  # set the current account password
+  passwd
 
-# set the root password
-sudo passwd root
-
+  # set the root password
+  sudo passwd root
 ```
 
 ## Networking
 - Check detected network card via commands:
 ```
-sudo lspci | grep -E -i --color 'network|ethernet|wireless|wi-fi'
+  sudo lspci | grep -E -i --color 'network|ethernet|wireless|wi-fi'
 ```
 
 - Check capacities of card via command `sudo lshw -class network`
 
 - When need more hardware information, install hwinfo tool via command:
-  ```
+```
   sudo apt-get install hwinfo
-  ```
+```
 
 - Show configuration of detected ethernet controllers via command `sudo hwinfo --netcard`
 

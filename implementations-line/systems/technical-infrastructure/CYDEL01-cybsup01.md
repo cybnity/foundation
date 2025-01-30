@@ -542,7 +542,7 @@ kubectl -n cattle-system get deploy rancher
   sudo helm repo add cybnity https://cybnity.github.io/iac-helm-charts --force-update
 ```
 
-## Systems continuous delivery (Spinnaker)
+## Systems continuous delivery
 ### MinIO
 Object storage solution that provides an Amazon Web Services S3-compatible API and supports all core S3 features, and that is installed in Linux OS to be used in a a same approach than an external S3 cloud system by the Spinnaker solution.
 - Prerequisites
@@ -683,37 +683,6 @@ Define storage provider for persisting the application settings and configured p
 Select [MinIO](https://spinnaker.io/docs/setup/install/storage/minio/) S3-compatible object store that is locally hosted.
 
 From MinIO web console, create an access key reusable by other application to integrate with MinIO storage solution.
-
-## Continuous Delivery Tool (ArgoCD)
-ArgoCD installation procedure is based on the Helm tool (see [Argo-Helm documentation](https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd) for more detail about parameters)
-
-### Application deployment configuration
-- When hostname is not provided by network DNS server, add DNS entry for DNS hostname mapping dedicated to ArgoCD global domain name into the `/etc/hosts` file:
-  ```
-  # ArgoCD hostnames configuration
-  192.168.60.18 cd.cybnity.tech
-  ```
-- Creation of a __values.yaml__ file for configuration of the Argo CD deployment to execute including:
-```
-global:
-  domain: cd.cybnity.tech
-server:
-  ingress:
-    enabled: true
-    # Plug to RKE2 nginx common domain names entrypoints proxy
-    ingressClassName: nginx
-    annotations:
-      cert-manager.io/cluster-issuer: "trust-cybnity-tech-issuer"
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    tls: true
-```
-### Application installation
-- Add repository via command: `helm repo add argo https://argoproj.github.io/argo-helm`
-- Execute ArgoCD installation via command: `helm install -f values.yaml argocd argo/argo-cd`
-- Install Argo CD CLI (see [CLI installation doc](https://argo-cd.readthedocs.io/en/stable/cli_installation/#download-latest-version))
-  - Update admin default password as defined by Chapter 4
-  - Remove default initial password secret object
-- Verify started Argo CD application via web browser connection from https://cd.cybnity.tech, with __admin__ default account and default password (saved in __argocd-initial-admin-secret__ Secret object)
 
 #
 [Back To Home](CYDEL01.md)
