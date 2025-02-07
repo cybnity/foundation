@@ -50,10 +50,10 @@ These tasks shall be executed on each cluster node.
 - Create tar installation directory via command: `sudo mkdir /opt/rke2`
 - As root user, add environment variables (into `/etc/environment` file) used by the RKE2 script installation execution:
 ```
-INSTALL_RKE2_METHOD="tar"
-INSTALL_RKE2_CHANNEL="stable"
-INSTALL_RKE2_TYPE="server"
-INSTALL_RKE2_TAR_PREFIX="/opt/rke2"
+  INSTALL_RKE2_METHOD="tar"
+  INSTALL_RKE2_CHANNEL="stable"
+  INSTALL_RKE2_TYPE="server"
+  INSTALL_RKE2_TAR_PREFIX="/opt/rke2"
 ```
 - Reload environment file to activate changed file, via command:
 ```
@@ -103,18 +103,18 @@ The first cluster server node establishes the secret token that other server or 
 Add additional __server__ property to the config.yaml file as `server: https://sup1.cybnity.tech:9345`
 
 > [!NOTE]
-> tls-san item can be an ip external public ip, a server hostname, a FQDNS, a Load-Balancer ip address, or a Load-Balancer dns domain.
+> tls-san item can be an ip external public ip, a server hostname, a FQDN, a Load-Balancer ip address, or a Load-Balancer dns domain.
 
 - Read generated node token which could be equals to origignal value, or new generated value in case of cluster reset via command:
 ```
-# Get and check the node-token generated on primary server
-cat /var/lib/rancher/rke2/server/node-token
+  # Get and check the node-token generated on primary server
+  cat /var/lib/rancher/rke2/server/node-token
 
-# Replace token value into config.yaml with primary node's node-token full value
+  # Replace token value into config.yaml with primary node's node-token full value
 ```
 - Change the permission allowed to the Kubernetes configuration files to minimise accessibility to other users via command:
 ```
-sudo chmod 600 /etc/rancher/rke2/*.yaml
+  sudo chmod 600 /etc/rancher/rke2/*.yaml
 ```
 - Enable (symbolic link creation) and start each node's rke2-server service (from sup1 to sup3 server node) via commands:
 ```
@@ -177,7 +177,7 @@ __This file contains credentials for full access to the cluster__, and it should
 ### Cluster remote access
 Make a copy of the `/etc/rancher/rke2/rke2.yaml` including access certificate data, accessible to K8S client or remote management tool.
 
-Edit file and change server property with FQDNS of load-balancer deployed in front of the SUPPORT cluster:
+Edit file and change server property with FQDN of load-balancer deployed in front of the SUPPORT cluster:
 ```
   server: [LOAD-BALANCER-DNS]:6443 # Edit this line
 ```
@@ -242,11 +242,11 @@ Automatic poweroff and restart of cluster node can be managed via custom schedul
 
 |Period|Task Time|Server Node|Comment            |Residual Accepted Risk|
 |:-----|:--------|:----------|:-- ---------------|:---------------------|
-|Daily |20:30    |sup3       |sup1, sup2 active  |Safe vailability      |
-|Daily |20:40    |sup2       |sup1 active        |Risk of unavailability|
+|Daily |20:30    |sup3       |sup1, sup2 active  |Safe availability     |
+|Daily |20:40    |sup2       |sup1 active        |Cluster unavailability|
 |Daily |20:50    |sup1       |None active cluster|Interrupted services  |
 
-#### On each cluster server
+#### On each SUPPORT cluster server
 Defined crontab directives on each server in a safe way (with wait of existing process secure end before make the stop) via power off:
 - Open and add command into crontab via command: `sudo crontab -e`
 - Add line in file and save:
@@ -255,28 +255,21 @@ Defined crontab directives on each server in a safe way (with wait of existing p
 30 20 * * * shutdown -P
 ```
 - Crontab plan checking via command: `sudo crontab -l`
-Add crontab line ensuringa utomatic stop scheduled each day at 21:00:00 (after the SUPPORT cluster servers stop time):
-```
-  # HA server auto-stop every day at 21:00:00 (after SUPPORTR cluster servers stop)
-  0 21 * * * shutdown -P
-```
-
-#### On server managing start plan (HA server)
 
 ### 8/24 hr - 2/7 days Availability Start Plan
-Controlled by BIOS setup, or via crontab on permanent available server (e.g ha.cybnity.tech).
+Controlled by BIOS setup, or via crontab on permanent available server (e.g sup1.cybnity.tech, sup2.cybnity.tech, sup3.cybnity.tech).
 
 - __Servers Scheduling Start Plan__
 
 |Period            |Task Time|Server Node     |Comment                         |Residual Accepted Risk|
 |:-----------------|:--------|:---------------|:-------------------------------|:---------------------|
-|Thursday, Friday  |08:45    |sup1            |sup1 active                     |Risk of unavailability|
+|Thursday, Friday  |08:45    |sup1            |sup1 active                     |Cluster unavailability|
 |Thursday, Friday  |08:48    |sup2            |sup1, sup2 active               |Safe availability     |
 |Thursday, Friday  |08:51    |sup3            |sup1, sup2, sup3 active         |Safe availability     |
 |Manual Wake-On-Lan|         |sup1, sup2, sup3|Ordered WOL from HA proxy server|                      |
 
 #### On server managing start plan (HA server)
-Define WOL script executing WOL call (e.g from ha.cybnity.tech server) via `/usr/local/bin/CYDEL_support_cluster_start.sh` executable script) and crontab orchestration. See [CYDEL01-HA documentation](CYDEL01-HA.md) for more detail.
+Define WOL script executing WOL call (e.g by ha.cybnity.tech server) via `/usr/local/bin/CYDEL_support_cluster_start.sh` executable script) and crontab orchestration. See [CYDEL01-HA documentation](CYDEL01-HA.md) for more detail.
 
 ### Rancher Backup
 Automated backup solution ensuring auto-save of Rancher instance into a scheduled approach is implemented by Rancher Backup service (to file versions allowing restoration in case of Rancher container disaster).

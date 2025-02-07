@@ -252,7 +252,15 @@ Distributes and S3-compatible storage system deployed on Linux OS for commond bl
 ## Monitoring & Logging
 
 ## Networking
-By default, NetworkManager (configuration file at __/etc/NetworkManager/NetworkManager.conf__) is started by Ubuntu (and managing dynamic resolv.conf update) and status can be checked via command: `sudo systemctl status systemd-resolved`.
+By default, NetworkManager (configuration file at __/etc/NetworkManager/NetworkManager.conf__) is started by Ubuntu (and managing dynamic resolv.conf update) and status can be checked via commands:
+```
+  sudo systemctl status systemd-resolved
+
+  # restart rke2-server
+  sudo systemctl restart rke2-server.service
+  # restart rke2-agent
+  sudo systemctl restart rke2-agent.service
+```
 
 ### Container Network Interface (CNI)
 Canal solution is deployed as CNI plugin.

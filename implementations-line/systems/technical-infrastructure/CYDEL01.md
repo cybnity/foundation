@@ -37,13 +37,12 @@ This area of technical components and/or services are dedicated to support the o
 Dedicated infrastructure services are deployed as additionnal support services according to:
 - [CYDEL01 - Clusters HA Proxy](CYDEL01-HA.md): unified and centralized load-balancing service for application endpoints deployed into clusters (e.g Rancher administration webapp hosted in SUPPORT cluster)
 
-K8S clusters management is supported by applications deployed into:
+K8S clusters management is deployed onto servers cluster:
 - [CYDEL01 - Support cluster](CYDEL01-SUPPORT-cluster.md)
 
 ## DEVELOPMENT
 This area of technical components and/or resources are dedicated to centralized development activities as shared CYBNITY software suite development cluster (e.g allowing developers of application components to merge and test CYBNITY software components that are versioned over the STAGING branch and/or that need temporary deployment from a development feature branch):
-- [CYDEL01 - Development cluster DEV01 server](CYDEL01-cybdev01.md)
-- [CYDEL01 - Development cluster DEV02 server](CYDEL01-cybdev02.md)
+- [CYDEL01 - DEV cluster](CYDEL01-DEV-cluster.md)
 
 ## VALIDATION INFRASTRUCTURE
 
