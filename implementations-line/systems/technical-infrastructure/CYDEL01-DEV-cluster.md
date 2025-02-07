@@ -178,7 +178,7 @@ Automatic poweroff and restart of cluster node can be managed via custom schedul
 - __Servers Scheduling Stop Plan__ (controlled by Linux crontab service)
 
 |Period|Task Time|Server Node|Comment            |Residual Accepted Risk|
-|:-----|:--------|:----------|:-- ---------------|:---------------------|
+|:-----|:--------|:----------|:------------------|:---------------------|
 |Daily |20:00    |dev        |None active cluster|Interrupted services  |
 
 #### On each DEV cluster server
