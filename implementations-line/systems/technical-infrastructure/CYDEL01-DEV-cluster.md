@@ -23,7 +23,7 @@ Current hardware configuration is based on server:
   - 1 not used
   
 ## BIOS & operating system layer
-See [Ubuntu-installation](CYDEL01-ubuntu-installation.md) procedure to prepare a server into a __"ready for virtualization installation"__ state.
+See [Ubuntu-installation](CYDEL01-ubuntu-installation.md) procedure to prepare a server into a __ready for virtualization installation__ state.
 
 Current prepared server configuration is:
 - hostname: __dev__
@@ -118,7 +118,7 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
 
   |Property|Value|Comments|
   |:-------|:----|:-------|
-  |Automatic Snapshots|Enable|Default cron scheduling (0 */5 * * *) and keeped last (5)|
+  |Automatic Snapshots|Enable|Default cron scheduling (0 */2 * * *) and keeped last (5)|
   |Backup Snapshots to S3|Disable|Possible change for enabling to MinIO cluster if accessigne from context|
   |Metrics|Exposed to the public interface| |
 </details>
@@ -132,20 +132,6 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
 </details>
 
 <details>
-  <summary>Labels & Annotations</summary>
-
-  #### Labels
-  All CYBNITY Software suite managed labels for application modules dissimination are defined on unique node and shall exist for allow success deployment of CYBNITY Software Suite (respecting suite services/pods assignation per application logical layer).
-
-  |Property|Value|Comments|
-  |:-------|:----|:-------|
-  |cybnity.io/user-interfaces-area|true| |
-  |cybnity.io/domains-io-area|true| |
-  |cybnity.io/domains-area|true| |
-  |cybnity.io/infrastructure-services-area|true| |
-</details>
-
-<details>
   <summary>Networking</summary>
 
   #### Addressing
@@ -156,7 +142,7 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
   #### TLS Alternate Names
   |Property|Value|Comments|
   |:-------|:----|:-------|
-  |wildcard name|*cybnity.tech| |
+  |wildcard name|*.cybnity.tech| |
 
   #### Authorized Endpoint
   Enabled.
@@ -214,6 +200,29 @@ The executed installation script manages the deployment of all RKE2 components r
 
   sudo /var/lib/rancher/rke2/bin/kubectl --kubeconfig=/etc/rancher/rke2/rke2.yaml -n cattle-system patch deployments cattle-cluster-agent --patch '{"spec": {"template": {"spec": {"hostAliases": [{"hostnames":["rancher.cybnity.tech"],"ip": "192.168.30.2"}]}}}}'
 ```
+
+### Kubernetes CLI
+For simplify usage of Kubernetes tools automatically installed on the node:
+- Create symbolic links to RKE2 tools (kubectl, kubelet, crictl, ctr) via commands:
+```
+  sudo ln -s /var/lib/rancher/rke2/bin/kubectl /usr/local/bin/kubectl
+  sudo ln -s /var/lib/rancher/rke2/bin/kubelet /usr/local/bin/kubelet
+  sudo ln -s /var/lib/rancher/rke2/bin/crictl /usr/local/bin/crictl
+  sudo ln -s /var/lib/rancher/rke2/bin/ctr /usr/local/bin/ctr
+```
+
+### DEV Cluster configuration files
+For simplify usage of RKE2 cluster configuration automatically installed on the node (RKE2 default __cluster configuration file is rke2.yaml__):
+- Create symbolic link to the created kubeconfig file via command:
+```
+  mkdir -p ~/.kube
+  sudo ln -s /etc/rancher/rke2/rke2.yaml ~/.kube/config
+```
+
+### Cluster remote management
+From DEV cluster node eligible to remote management, get a copy of the `/etc/rancher/rke2/rke2.yaml` file allowing cluster management from external administration tool (e.g LENS standalone application for Kubernetes clusters management).
+
+Change of included server hostname value (e.g originally valued as `server: https://127.0.0.1:6443`) to externally visible cluster node hostname (e.g `server: https://dev.cybnity.tech:6443`).
 
 ## RKE2 Node cleanup
 RKE2 node cleanup to reset a cluster node, run the following commands:
@@ -291,31 +300,34 @@ Controlled by BIOS setup, or via crontab on permanent available server (e.g dev.
 #### On server managing start plan (HA server)
 Define WOL script executing WOL call (e.g by ha.cybnity.tech server) via `/usr/local/bin/CYDEL_dev_cluster_start.sh` executable script) and crontab orchestration. See [CYDEL01-HA documentation](CYDEL01-HA.md) for more detail.
 
-## Cluster remote management
-On Rancher:
-- Create a new cluster (e.g named DEV) into a Rancher application (executed on SUPPORT cluster) from Cluster Management section
-- In Member Roles section, add user authorized to cluster management
-
-On cluster eligible to remote management:
-- Set the cluster-admin privileges for Rancher user via the command proposed by Rancher Registration section
-- From cluster to control, execute the registration command proposed by Rancher (e.g via kubectl on existing DEV cluster) to import it into Rancher management system
-
 ## Kubernetes tools usage
 When a K8S client is used, the automatic installed RKE2 CLI is hosted in __/var/lib/rancher/rke2/bin__ folder, and the kubeconfig location (automatically installed in __/etc/rancher/rke2__ folder) shall be identified during any CLI command execution.
 
 For example:
 ```
-# Show started nodes
-/var/lib/rancher/rke2/bin/kubectl --kubeconfig=/etc/rancher/rke2/rke2.yaml get nodes
+  # Show started nodes
+  sudo kubectl --kubeconfig=.kube/config get nodes
 
-# Show deployed pods
-/var/lib/rancher/rke2/bin/kubectl --kubeconfig=/etc/rancher/rke2/rke2.yaml get nodes -A
+  # Show deployed pods
+  sudo kubectl --kubeconfig=.kube/config get nodes -A
 
-# Show errors relative to pods instantiation
-/var/lib/rancher/rke2/bin/kubectl --kubeconfig=/etc/rancher/rke2/rke2.yaml get pods -v=10
+  # Show errors relative to pods instantiation
+  sudo kubectl --kubeconfig=.kube/config get pods -v=10
 ```
 
 # APPLICATION SERVICES
+
+## DEV Node labelling
+CYBNITY Software suite revision deployment is based on a dissimination of application services through a logical model of application layers.
+
+Pre-established node labels are used to identify where each application module shall be started during a CYBNITY software suite full deployment on a cluster.
+
+According to the quantity of DEV cluster nodes provisioned, the labels shall be assigned to nodes reserved as __CYBNITY application architecture zones__.
+
+### Unique cluster node
+In case of DEV cluster based on unique node, all the labels shall be assigned to the same node.
+- Copy script file `add-labels-to-dev-cluster.sh` ([script version](../modules/dev-env/cluster/kubectl/add-labels-to-dev-cluster.sh) maintained in __systems/modules/dev-env/cluster/kubectl__ folder and assigning the labels to an unique started node) and save it into `/usr/local/bin` folder
+- Make each script executable via command: `sudo chmod +x /usr/local/bin/*.sh`
 
 #
 [Back To Home](CYDEL01.md)

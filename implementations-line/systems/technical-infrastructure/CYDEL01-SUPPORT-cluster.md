@@ -92,8 +92,8 @@ These tasks shall be executed on each cluster node.
   # active snapshots
   etcd-disable-snapshots: false
 
-  # snapshot interval time every 5 hours
-  etcd-snapshot-schedule-cron: "0 */5 * * *"
+  # snapshot interval time every 2 hours
+  etcd-snapshot-schedule-cron: "0 */2 * * *"
   etcd-snapshot-retention: 3
 ```
 
