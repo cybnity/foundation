@@ -11,7 +11,7 @@ The services provided by the DEV cluster are focus on:
 # HARDWARE LAYER
 Current hardware configuration is based on server:
 - server type: Hewlett-Packard Z640
-- CPU: 2 x Intel Xeon E5-2673 v4, 20 cores
+- CPU: 2 x Intel Xeon E5-2673 v4, 80 cores
 - RAM: 256 GB
 - Hard disks:
   - NVMe SSD 512 GB (Operation System & Linux based applications)
@@ -32,16 +32,10 @@ Current prepared server configuration is:
 # VIRTUALIZATION LAYER
 RKE2 virtualization system is implemented as Kubernetes layer deployed onto __Dev cluster__ servers.
 
-## Docker
-- Docker engine shall be installed on server as documented on [Docker for Ubuntu documentation](https://docs.docker.com/engine/install/ubuntu/).
-- Execute Linux post-installation steps for Docker Engine as [documented](https://docs.docker.com/engine/install/linux-postinstall/) allowing Docker usage as a non-root user.
-- Add default DEV user account into the docker group, and/or member roles referenced into in the DEV Cluster configuration under Rancher.
-- Configure Docker to start on boot with systemd
-
 ## Server ports
 Open traffic on server allowing any discussion between __dev.cybnity.tech__ server and SUPPORT cluster servers like documented on [RKE doc](https://rke.docs.rancher.com/os#ports).
 
-## RKE2 Kubernetes distribution
+## RKE2 Node installation
 ### DNS Resolver
 By default, external server ip address and hostnames is not visible from pods deployed into the cluster.
 
@@ -64,7 +58,53 @@ Like RKE2 is by default reading the resolv.conf of Linux layer, add DNS servers 
 ```
 
 ### Networking issue resolution
-According to the K8S network management system implemented by the DEV cluster, create the configuration files documented by [RKE2 know issues resolution means](https://docs.rke2.io/known_issues).
+According to the K8S network management system implemented by the DEV cluster, create the configuration files documented by [RKE2 know issues resolution means](https://docs.rke2.io/known_issues):
+
+- Creation of `90-rke2.conf` file into `/etc/sysctl.d` including:
+  ```
+    # Customization of settings defined by default 99-sysctl.conf file
+
+    # Uncomment the next line to enable packet forwarding for IPv4
+    net.ipv4.ip_forward=1
+
+    # Custom RKE2 Wicked configuration for RKE2
+    net.ipv4.conf.all.forwarding=1
+
+    # Uncomment the next line to enable packet forwarding for IPv6
+    #  Enabling this option disables Stateless Address Autoconfiguration
+    #  based on Router Advertisements for this host
+    net.ipv6.conf.all.forwarding=1
+  ```
+- Reload systemctl directives via command: ```sudo service procps force-reload```
+
+### DEV cluster preparation
+When DEV cluster is not already existing for receive new RKE2 node, create it from Rancher UI web console (clusters management tool accessible via web browser relative to SUPPORT cluster's Rancher application):
+- From Rancher Clusters management view (e.g [CYBNITY CYDEL01 Rancher view](https://rancher.cybnity.tech/dashboard/home)):
+  - Start creation of a new cluster (via __CREATE__ button)
+  - Check that RKE2/K3s feature is active, and select `Custom` template for RKE2/K3s cluster type
+- From opened view relative to new Cluster creation, set all information defining the new cluster configuration:
+<details>
+  <summary>Basics</summary>
+
+  |Property|Value|Comments|
+  |:-------|:----|:-------|
+  |Cluster Name|dev-deploy|e.g `dev-deploy` equals to isolated context for cluster targeting to host CYBNITY software suite revisions in development phase; see CYBNITY branching model for help|
+  |Cloud Provider|Default-RKE2 Embedded| |
+  |Container Network|calico| |
+  |Security CIS Profile|(None)| |
+  |Pod Security Admission Configuration Template|Default-RKE2 Embedded| |
+  |Project Network Isolation|(None)| |
+  |System Services|CoreDNS + NGINX Ingress + Metrics Server|All services active for each cluster node|
+</details>
+
+<details>
+  <summary>Member Roles</summary>
+
+  |Property|Value|Comments|
+  |:-------|:----|:-------|
+  |User|Local|Add each user account having responsibility on the cluster management|
+</details>
+
 
 ### Agent installation
 RKE2 agent node is automatically installed on the server via DEV Cluster managed by Rancher (SUPPORT cluster).
@@ -74,10 +114,10 @@ The executed installation script manages the deployment of all RKE2 components r
 
 - Check the started rke2-agent service via commands:
 ```
-  systemctl status rancher-system-agent
+  sudo systemctl status rancher-system-agent
 
   # show logs in real-time
-  journalctl -u rancher-system-agent -f
+  sudo journalctl -u rancher-system-agent -f
 
   # check pods status
   sudo /var/lib/rancher/rke2/bin/kubectl --kubeconfig=/etc/rancher/rke2/rke2.yaml get pods -A
@@ -86,6 +126,24 @@ The executed installation script manages the deployment of all RKE2 components r
   # Apply patch to resolve Cattle Cluster Agent DNS issue with host alias
 
   sudo /var/lib/rancher/rke2/bin/kubectl --kubeconfig=/etc/rancher/rke2/rke2.yaml -n cattle-system patch deployments cattle-cluster-agent --patch '{"spec": {"template": {"spec": {"hostAliases": [{"hostnames":["rancher.cybnity.tech"],"ip": "192.168.30.2"}]}}}}'
+```
+
+## RKE2 Node cleanup
+RKE2 node cleanup to reset a cluster node, run the following commands:
+```
+  # rke2-(server|agent) related
+  sudo rke2-killall.sh
+  sudo rke2-uninstall.sh
+  # rancher-system-agent related
+  sudo systemctl stop rancher-system-agent.service
+  sudo systemctl disable rancher-system-agent.service
+  sudo rm -f /etc/systemd/system/rancher-system-agent.service
+  sudo rm -f /etc/systemd/system/rancher-system-agent.env
+  sudo systemctl daemon-reload
+  sudo rm -f /usr/local/bin/rancher-system-agent
+  sudo rm -rf /etc/rancher/
+  sudo rm -rf /var/lib/rancher/
+  sudo rm -rf /usr/local/bin/rke2*
 ```
 
 # INFRASTRUCTURE SERVICES

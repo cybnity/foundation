@@ -61,7 +61,7 @@ Controlled by BIOS setup and/or Wake On-Lan remote call.
 
 - In server's BIOS setup (power management section), add start directive for poweron action performed each Thursday and Friday at 08:35:00.
 > [!NOTE]
-> timezone is UTC into NIOS by default. For example, 07:35:00 value shall be set for alignment with Europe Paris timezone when HA server shall be started at 08:35:00 in France.
+> Timezone is UTC into NIOS by default. For example, 07:35:00 value shall be set for alignment with Europe Paris timezone when HA server shall be started at 08:35:00 in France.
 
 # APPLICATION SERVICES
 ## Automation scripts
@@ -200,9 +200,12 @@ http {
 ```
 # HTTP PROXY MODE
     # Log configuration (tutorial at https://betterstack.com/community/guides/logging/how-to-view-and-configure-nginx-access-and-error-logs/)
+    # Custom log formatting definition SHALL BE MIGRATED TO DEFAULT nginx.conf FILE WHEN MULTIPLE ENABLED SITES REUSE THIS SAME FORMAT
     log_format custom '$remote_addr - $remote_user [$time_local]  $status '
                   '"$host" "$request" $body_bytes_sent "$http_referer" '
                   '"$http_user_agent" "$http_x_forwarded_for"';
+
+    # Apply cusotmized log format (define in nginx.conf default file
     access_log /var/log/nginx/support_access.log custom;
     # Disabling via 'off' parameter (e.g access_log off;)
 
@@ -213,13 +216,23 @@ http {
 
     # UPSTREAM - Allow to define a group of servers able to respond to request (load-balancing, fail-over)
     upstream support_servers_https { # Defined virtual server (group named) running on NGINX
-        zone support_servers_http 32k;
+        # IP Hash – The server to which a request is sent is determined from the client IP address. In this case, either the first three octets of the IPv4 address or the whole IPv6 address are used to calculate the hash value. The method guarantees that requests from the same address get to the same server unless it is not available.
         ip_hash; # User's session persistence consistency for routing to the same server
 
         # Backend servers private IP addresses or hostname
-        server sup1.cybnity.tech:443;
-        server sup2.cybnity.tech:443;
-        server sup3.cybnity.tech:443;
+        # Passive TCP health checks:
+        # - fail_timeout: qty of connection attempts must fail for the server to be considered unavailable (e.g default value is 10s)
+        # - max_fails: qty of failed attempts that happen during the specified time for NGINX consider the server unavailable (e.g default value is 1)
+        #
+        #   So if 5 connection attempt times out or fails at least once in a 30-second period, NGINX marks the server as unavailable for 30 seconds
+        #
+        # Active TCP health checks for continuous test of upstream servers for responsiveness that avoid servers that have failed. If a connection to the server cannot be established, the health check fails, and the server is considered unhealthy
+        # Shared memory zone (for counters and connections) shall be defined for support_servers_http
+        zone support_servers_http 64k;
+
+        server sup1.cybnity.tech:443 max_fails=5 fail_timeout=30s;
+        server sup2.cybnity.tech:443 max_fails=5 fail_timeout=30s;
+        server sup3.cybnity.tech:443 max_fails=5 fail_timeout=30s;
     }
 
     map $http_upgrade $connection_upgrade {
