@@ -105,6 +105,93 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
   |User|Local|Add each user account having responsibility on the cluster management|
 </details>
 
+<details>
+  <summary>Cluster Agent</summary>
+
+  |Property|Value|Comments|
+  |:-------|:----|:-------|
+  |Affinity|Use default affinity rules defined by Rancher| |
+</details>
+
+<details>
+  <summary>etcd</summary>
+
+  |Property|Value|Comments|
+  |:-------|:----|:-------|
+  |Automatic Snapshots|Enable|Default cron scheduling (0 */5 * * *) and keeped last (5)|
+  |Backup Snapshots to S3|Disable|Possible change for enabling to MinIO cluster if accessigne from context|
+  |Metrics|Exposed to the public interface| |
+</details>
+
+<details>
+  <summary>Fleet Agent</summary>
+
+  |Property|Value|Comments|
+  |:-------|:----|:-------|
+  |Affinity|Use default affinity rules defined by Rancher| |
+</details>
+
+<details>
+  <summary>Labels & Annotations</summary>
+
+  #### Labels
+  All CYBNITY Software suite managed labels for application modules dissimination are defined on unique node and shall exist for allow success deployment of CYBNITY Software Suite (respecting suite services/pods assignation per application logical layer).
+
+  |Property|Value|Comments|
+  |:-------|:----|:-------|
+  |cybnity.io/user-interfaces-area|true| |
+  |cybnity.io/domains-io-area|true| |
+  |cybnity.io/domains-area|true| |
+  |cybnity.io/infrastructure-services-area|true| |
+</details>
+
+<details>
+  <summary>Networking</summary>
+
+  #### Addressing
+  |Property|Value|Comments|
+  |:-------|:----|:-------|
+  |Cluster Domain|cybnity.tech|Visibility between services in cluster with any FQDN externally managed over the HA service|
+
+  #### TLS Alternate Names
+  |Property|Value|Comments|
+  |:-------|:----|:-------|
+  |wildcard name|*cybnity.tech| |
+
+  #### Authorized Endpoint
+  Enabled.
+  |Property|Value|Comments|
+  |:-------|:----|:-------|
+  |FQDN|dev-deploy.cybnity.tech|Allow cluster access over external HA server, and access to other *.cybnity.tech server (e.g Rancher)|
+  |CA Certificates|star-cybnity-tech-full-validation-chain.pem text|Include all certificates involved into the validation of keys/certificates on cybnity.tech network zone, and/or exposure of CYBNITY SOftware Suite endpoints over an HTTPS protocol with CA validation|
+</details>
+
+<details>
+  <summary>Upgrade Strategy</summary>
+
+  |Property|Value|Comments|
+  |:-------|:----|:-------|
+  |Control Plane Concurrency|1| |
+  |Worker Concurrency|1| |
+
+  #### Drain Nodes (Control Plane)
+  Yes.
+  |Property|Value|Comments|
+  |:-------|:----|:-------|
+  |Delete pods using emptyDir volumes|true| |
+  |Delete standalone pods|false| |
+  |Override pod termination grace periods|false| |
+  |Timeout after|120|Default value|
+
+  #### Drain Nodes (Worker Nodes)
+  Yes.
+  |Property|Value|Comments|
+  |:-------|:----|:-------|
+  |Delete pods using emptyDir volumes|true| |
+  |Delete standalone pods|false| |
+  |Override pod termination grace periods|false| |
+  |Timeout after|120|Default value|
+</details>
 
 ### Agent installation
 RKE2 agent node is automatically installed on the server via DEV Cluster managed by Rancher (SUPPORT cluster).
