@@ -542,5 +542,10 @@ From Rancher web UI, search __argocd-initial-admin-secret__ Secret automatically
   rm argocd-linux-amd64
 ```
 
+## Continuous Delivery (Fleet)
+### Fleet configuration
+Fleet tool is automatically installed into the Rancher solution.
+- Check installed fleet tool via command: `kubectl -n fleet-local get fleet`
+
 #
 [Back To Home](CYDEL01.md)
