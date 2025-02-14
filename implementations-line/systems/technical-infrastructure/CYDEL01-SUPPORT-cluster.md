@@ -356,7 +356,7 @@ sudo kubectl create namespace cattle-system
 ```
   kubectl describe pod rancher-978c8d76d-jgr98 -n cattle-system
 ```
-- From other machine, test and show HTTP header of forwarded request to Rancher url via command: `
+- From other machine, test and show HTTP header of forwarded request to Rancher url via command:
 ```
   # Show header ouput
   curl -Lvso /dev/null https://rancher.cybnity.tech

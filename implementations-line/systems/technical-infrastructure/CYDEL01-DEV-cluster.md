@@ -213,16 +213,19 @@ For simplify usage of Kubernetes tools automatically installed on the node:
 
 ### DEV Cluster configuration files
 For simplify usage of RKE2 cluster configuration automatically installed on the node (RKE2 default __cluster configuration file is rke2.yaml__):
-- Create symbolic link to the created kubeconfig file via command:
+- As default user account AND as root user account, create symbolic link to the created kubeconfig file (rke2.yaml default cluster configuration file) via commands:
 ```
   mkdir -p ~/.kube
   sudo ln -s /etc/rancher/rke2/rke2.yaml ~/.kube/config
 ```
 
+### Fleet Agent installation
+See [Fleet agent installation documentation](https://fleet.rancher.io/cluster-registration) for mode detail.
+
 ### Cluster remote management
 From DEV cluster node eligible to remote management, get a copy of the `/etc/rancher/rke2/rke2.yaml` file allowing cluster management from external administration tool (e.g LENS standalone application for Kubernetes clusters management).
 
-Change of included server hostname value (e.g originally valued as `server: https://127.0.0.1:6443`) to externally visible cluster node hostname (e.g `server: https://dev.cybnity.tech:6443`).
+- Modification of included server hostname value (e.g originally valued as `server: https://127.0.0.1:6443`) to externally visible cluster node hostname (e.g `server: https://dev.cybnity.tech:6443`) equals the FQDN of server (e.g `dev.cybnity.tech` defined by external DNS server)
 
 ## RKE2 Node cleanup
 RKE2 node cleanup to reset a cluster node, run the following commands:
