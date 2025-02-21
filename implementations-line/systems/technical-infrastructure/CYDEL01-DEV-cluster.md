@@ -162,6 +162,16 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
 </details>
 
 <details>
+  <summary>Labels & Annotations</summary>
+
+  #### Labels
+  |Key|Value|Comments|
+  |:-------|:----|:-------|
+  |environment|dev|label attached to objects as relative to development infrastructure|
+  |release|alpha|label attached to objects as relative to application software alpha version|
+</details>
+
+<details>
   <summary>Networking</summary>
 
   #### TLS Alternate Names
