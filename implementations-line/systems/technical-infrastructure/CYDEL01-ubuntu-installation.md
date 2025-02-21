@@ -273,7 +273,7 @@ For example, into the `/etc/bind/named.conf.options` BIND9 configuration file:
         // CYDEL SUPPORT servers (DNS clients)
         192.168.30.10;  # sup1.cybnity.tech - CYDEL01 SUPPORT cluster node
         192.168.30.11;  # sup2.cybnity.tech - CYDEL01 SUPPORT cluster node
-        192.168.30.12;  # sup2.cybnity.tech - CYDDEL01 SUPPORT cluster node
+        192.168.30.12;  # sup2.cybnity.tech - CYDEL01 SUPPORT cluster node
   };
 ```
 

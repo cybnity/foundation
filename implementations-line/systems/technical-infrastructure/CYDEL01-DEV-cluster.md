@@ -90,7 +90,7 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
   |:-------|:----|:-------|
   |Cluster Name|dev-deploy|e.g `dev-deploy` equals to isolated context for cluster targeting to host CYBNITY software suite revisions in development phase; see CYBNITY branching model for help|
   |Cloud Provider|Default-RKE2 Embedded| |
-  |Container Network|calico| |
+  |Container Network|canal| |
   |Security CIS Profile|(None)| |
   |Pod Security Admission Configuration Template|Default-RKE2 Embedded| |
   |Project Network Isolation|(None)| |
@@ -103,6 +103,36 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
   |Property|Value|Comments|
   |:-------|:----|:-------|
   |User|Local|Add each user account having responsibility on the cluster management|
+</details>
+
+<details>
+  <summary>Additional Manifest</summary>
+
+  Added CoreDNS configuration allowing Kubelet to see external DNS server that allow Cluster agent to find rancher.cybnity.tech cluster from hostname:
+
+  ```
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: coredns
+      namespace: kube-system
+    data:
+      Corefile: |
+        .:53 {
+            errors
+            health
+            kubernetes cluster.local in-addr.arpa ip6.arpa {
+              pods insecure
+              fallthrough in-addr.arpa ip6.arpa
+            }
+            prometheus :9153
+            forward . 192.168.60.28
+            cache 30
+            loop
+            reload
+            loadbalance
+        }
+    ```
 </details>
 
 <details>
@@ -133,11 +163,6 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
 
 <details>
   <summary>Networking</summary>
-
-  #### Addressing
-  |Property|Value|Comments|
-  |:-------|:----|:-------|
-  |Cluster Domain|cybnity.tech|Visibility between services in cluster with any FQDN externally managed over the HA service|
 
   #### TLS Alternate Names
   |Property|Value|Comments|
@@ -182,7 +207,7 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
 ### Agent installation
 RKE2 agent node is automatically installed on the server via DEV Cluster managed by Rancher (SUPPORT cluster).
 
-From DEV Cluster server, execute (in `sudo` mode) the URL provided by Rancher regarding the dynamic Cluster created (e.g dev-deploy cluster created via Rancher UI).
+- From DEV Cluster server, execute (in `sudo` mode) the URL provided by Rancher regarding the dynamic Cluster created (e.g dev-deploy cluster created via Rancher UI).
 The executed installation script manages the deployment of all RKE2 components required for runtime.
 
 - Check the started rke2-agent service via commands:
@@ -194,12 +219,9 @@ The executed installation script manages the deployment of all RKE2 components r
 
   # check pods status
   sudo /var/lib/rancher/rke2/bin/kubectl --kubeconfig=/etc/rancher/rke2/rke2.yaml get pods -A
-
-  # --- When crash of cattle-system-agent ---
-  # Apply patch to resolve Cattle Cluster Agent DNS issue with host alias
-
-  sudo /var/lib/rancher/rke2/bin/kubectl --kubeconfig=/etc/rancher/rke2/rke2.yaml -n cattle-system patch deployments cattle-cluster-agent --patch '{"spec": {"template": {"spec": {"hostAliases": [{"hostnames":["rancher.cybnity.tech"],"ip": "192.168.30.2"}]}}}}'
 ```
+
+- Create an initial snaphot allowing potential restoration of originla etc state when initial cluster node registration is a failure
 
 ### Kubernetes CLI
 For simplify usage of Kubernetes tools automatically installed on the node:
@@ -234,14 +256,15 @@ RKE2 node cleanup to reset a cluster node, run the following commands:
   sudo rke2-killall.sh
   sudo rke2-uninstall.sh
   # rancher-system-agent related
-  sudo systemctl stop rancher-system-agent.service
-  sudo systemctl disable rancher-system-agent.service
-  sudo rm -f /etc/systemd/system/rancher-system-agent.service
-  sudo rm -f /etc/systemd/system/rancher-system-agent.env
-  sudo systemctl daemon-reload
+  sudo systemctl stop rancher-system-agent.service \
+  sudo systemctl disable rancher-system-agent.service \
+  sudo rm -f /etc/systemd/system/rancher-system-agent.service \
+  sudo rm -f /etc/systemd/system/rancher-system-agent.env \
+  sudo systemctl daemon-reload \
   sudo rm -f /usr/local/bin/rancher-system-agent
-  sudo rm -rf /etc/rancher/
-  sudo rm -rf /var/lib/rancher/
+
+  sudo rm -rf /etc/rancher/ \
+  sudo rm -rf /var/lib/rancher/ \
   sudo rm -rf /usr/local/bin/rke2*
 ```
 
