@@ -15,7 +15,7 @@ Tools and required resources supporting all the environments involved into the C
 ## TOOLS
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
-|[ArgoCD](https://argoproj.github.io/cd/)|Helm, Kubernetes, Kubectl CLI| |Continuous Delivery solution managing deployment pipelines; [Basics](https://argo-cd.readthedocs.io/en/stable/understand_the_basics/)|
+|Rancher [Fleet](https://fleet.rancher.io)|Helm, Kubernetes, Kubectl CLI| |Continuous Delivery solution managing deployment pipelines; automated deployment flow according targeted Kubernetes cluster (e.g per environment cluster)|
 |MinIO|Linux| |S3 compatible object storage|
 |Rancher|Linux, Kubernetes| |Kubertenes clusters management|
 
