@@ -61,30 +61,30 @@ reactive-messaging-gateway
 The infrastructure projects governs the provisioning management at the Kubernetes level as an Infrastructure-As-Code implementation.
 
 ## APPLICATION MODULES PROJECTS
-Perimeter: packaged applicative or infrastructure modular systems as Services (Kubernetes service) that can be executed (e.g capability to be deployed into an environment).
+Perimeter: packaged application modular systems as Services (Kubernetes service) that can be executed (e.g capability to be deployed into an environment).
 
-Project type: Terraform implementation structure.
+Project type: Helm implementation structure.
 
-Description: main sub-folder is named `services` which contain a sub-folder per any type of modularized system supported by Infrastructure-As-Code implementation. An implemented module can represent a deployment module of an infrastructure Service (e.g Kubernetes service, CYBNITY application service) or System (e.g a cluster of backend application systems, a availability zone implemented by a Kubernetes Node).
+Description: main sub-folder is named `services` which contain a sub-folder per any type of modularized system supported by Infrastructure-As-Code implementation. An implemented module can represent a deployable module of an application Service (e.g Kubernetes service, CYBNITY application service) or System (e.g a cluster of backend application systems; an operation zone implemented by a Kubernetes Node reserved for specific type of application treatments).
 
 ## GENERIC INFRASTRUCTURE MODULES PROJECTS
-Perimeter: generic, reusable and standalone modules for deploying infrastructure modules (e.g a public load balancer).
+Perimeter: generic, reusable and standalone modules as technical modules (e.g public load balancer).
 
-Project type: Terraform implementation structure.
+Project type: Helm implementation structure.
 
 Description: some specific sub-folders are created per type of generic technical module type (e.g all the modules relative to the networking activities are hosted into a `networking` folder) regarding generic/standalone modules (e.g only one instance of alb between several area or cluster of frontend application modules) is supported by a dedicated sub-folder named by its logical name (e.g alb regarding a Application Load Balancer as `network module name`). The goal is to define one time the generic/reusable modules which are not clusterized.
 
-## DEPLOYMENT MODULES PROJECTS
-Perimeter:  generic, reusable and standalone modules implementing the deployment of clusterized infrastructure/applicative modules (e.g a cluster of multiple CYBNITY application modules).
+## SYSTEM DEPLOYMENT MODULES PROJECTS
+Perimeter: generic, reusable and standalone modules implementing the deployment of clusterized infrastructure/applicative modules (e.g a cluster of multiple CYBNITY application modules) as integrated CYBNITY solution platform.
 
-Project type: Terraform implementation structure.
+Project type: Helm implementation structure.
 
 Description one specific sub-folder is created for each type of clusterized module (e.g named specifically as a __function name__ equals to a suffix `-rolling-deploy` of the managed targeted module) into the `cluster` sub-folder. For example, a terraformed deployment module (e.g Auto Scaling Group module deployed in a rolling deployment approach the webserver-cluster of a application module, named `asg-rolling-deploy`) can do a zero-downtime rolling deployment betwen several instance of an applicative or infrastructure module.
 
 ## ENVIRONMENT MODULES PROJECTS
-Perimeter: configuration setting projects of Environments (e.g Kubernetes clusters) that can be activated, operated, monitored and restored regarding packaged Services.
+Perimeter: configuration setting projects of deployable environments (e.g Kubernetes cluster) that can be activated, operated, monitored and restored regarding packaged Services.
 
-Project type: Terraform implementation structure.
+Project type: Fleet implementation structure.
 
 Description: main folder is [modules](modules) which contain a sub-folder per __environment name__ (e.g local dev, integrated dev, test, staging & QA, live) equals to a Terraformed module where sub-modules can be operated. One configuration file (e.g .tf, .yaml) is implememented per cluster managed in the source codes repository including labeled deployment. One cluster defined by environment with fault tolerance and HA.
 - Local (LOCAL): developer's workstation terraformed environment (e.g laptop with OS and Minikube runtime platform). This environment is also supported by Maven tool profile named `localhost` and activated by default during Java component build life cycle
