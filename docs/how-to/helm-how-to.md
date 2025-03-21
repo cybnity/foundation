@@ -29,7 +29,19 @@ helm install --debug --dry-run goodly-guppy ./reactive-backend-system
 </details>
 <details><summary>Install a chart</summary>
 <p>
-Install a defined chart into the Kubernetes cluster:
+- Set KUBECONFIG environment variable to cluster configuration (e.g rke2.yaml file collected from the target cluster where application chart shall be installed) onto the machine which execute the helm install command:
+```shell
+# Define default cluster client path used by Kubectl on client machine
+export KUBECONFIG="<< path_to_rke2.yaml regarding cluster to target>>"
+
+# Check configured client
+kubectl config view
+
+# Test the Kubernetes cluster access from config
+kubectl get nodes -o wide
+```
+
+- Install a defined chart into the Kubernetes cluster:
 
 ```shell
 # Install local templates from charts directory
@@ -60,7 +72,7 @@ helm ls
 
 </p>
 </details>
-<details><summary>Rollback a release to previous versions</summary>
+<details><summary>Rollback a release to previous version</summary>
 <p>
 Specific version to roll back to or leave argument black, in which cas it rolls back to the previous version.
 

@@ -378,5 +378,8 @@ In case of DEV cluster based on unique node, all the labels shall be assigned to
 - Copy script file `add-labels-to-dev-cluster.sh` ([script version](../modules/dev-env/cluster/kubectl/add-labels-to-dev-cluster.sh) maintained in __systems/modules/dev-env/cluster/kubectl__ folder and assigning the labels to an unique started node) and save it into `/usr/local/bin` folder
 - Make each script executable via command: `sudo chmod +x /usr/local/bin/*.sh`
 
+## Longhorn
+From Rancher console (apps section on cluster), install Longhorn distributed data storage application as default storage class (by default selected by any new application installed over Helm into the cluster).
+
 #
 [Back To Home](CYDEL01.md)
