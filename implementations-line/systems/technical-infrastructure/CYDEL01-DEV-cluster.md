@@ -180,7 +180,7 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
   #### Labels
   |Key|Value|Comments|
   |:-------|:----|:-------|
-  |environment|dev-deploy|label attached to objects as relative to development environment|
+  |environment|dev|label attached to objects as relative to development environment|
 </details>
 
 <details>
