@@ -1,7 +1,7 @@
 ## PURPOSE
 Presentation of the build and delivery chain files supporting the configuration of CYBNITY environments used during the project life cycle.
 
-The modularization project ensure the programmatic provisioning management of the infrastructure as IaC (Infrastructure As Code) project (e.g via Terraform, and/or Helm).
+The modularization project ensure the programmatic provisioning management of the infrastructure as IaC (Infrastructure As Code) project (e.g via Fleet, and/or Helm).
 
 # ENVIRONMENTS SPECIFIC COMPONENTS
 Some additional and specific components and/or Kubernetes service can be added automatically during the creation of an environment according to its target usages.

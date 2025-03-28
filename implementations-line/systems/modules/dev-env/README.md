@@ -30,7 +30,7 @@ One sub-directory is defined per technology including:
 Components allowing build and deployment of CYBNITY environment running onto Minikube technology stack installed.
 
 ### Prerequisites
-- Minikube container installed on a server or a workstation as unique cluster.
+- Minikube container installed on a server or a workstation as unique cluster
 
 ### Utility scripts
 Cluster sub-folder includes shell scripts that help to create Minikube cluster according to a computer used as centralized development server.
@@ -43,7 +43,7 @@ Each type of cluster based on unique server which can be built with support of [
 Components allowing build and deployment of CYBNITY environment running onto RKE2 technology stack installed.
 
 ### Prerequisites
-- [RKE2 Rancher's Kubernetes distribution](https://docs.rke2.io/) container installed on unique or multiple servers
+- [RKE2 Rancher's Kubernetes distribution](https://docs.rke2.io/) container installed on a workstation, on an unique server or on multiple servers
 
 ### CYDEL01 infrastructure
 |System / Solution|Software Layer|Hardware Layer|Documentations|

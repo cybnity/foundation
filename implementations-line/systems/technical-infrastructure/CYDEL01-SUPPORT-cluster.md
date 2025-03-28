@@ -472,80 +472,25 @@ Types of shared elements managed in the Secret resources section of the SUPPORT 
   sudo helm repo add cybnity https://cybnity.github.io/iac-helm-charts --force-update
 ```
 
-## Continuous Delivery Tool (ArgoCD)
-ArgoCD installation procedure is based on the Helm tool (see [ArgoCD-Helm documentation](https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd) for more detail about parameters)
-
-### DNS configuration
-Add DNS entry for `argocd.cybnity.tech` hostname (mapping dedicated to ArgoCD global domain name) into the DNS server configuration, that is set HA proxy as clusterized ArgoCD application unique endpoint.
-
-Check that propagated hostname from DNS is active via command: `ping argocd.cybnity.tech`
-
-### Application deployment configuration
-Creation of a __argocd-values.yaml__ file for configuration of the Argo CD deployment to execute including:
-```
-# ArgoCD HA mode with autoscaling
-redis-ha:
-  enabled: true
-
-controller:
-  replicas: 1
-
-server:
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-
-repoServer:
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-
-applicationSet:
-  replicas: 2
-
-# Ingress configuration in a multiple ingress domains (e.g many support cluster's deployed applications)
-global:
-  domain: argocd.cybnity.tech
-server:
-  ingress:
-    enabled: true
-    # Plug to RKE2 nginx common domain names entrypoints proxy
-    ingressClassName: nginx
-    annotations:
-      cert-manager.io/cluster-issuer: "trust-cybnity-tech-issuer"
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    tls: true
-```
-
-### ArgoCD application installation
-Execute application deployment from SUPPORT primary server (sup1.cybnity.tech) that will manage the auto-sync of other cluster nodes.
-
-- Add Argo repository into Helm repository of the machine managing the ArgoCD deployment, via command: `sudo helm repo add argo https://argoproj.github.io/argo-helm`
-- Execute ArgoCD installation via command: `sudo helm install -f argocd-values.yaml argocd argo/argo-cd`
-
-#### Default configuration data
-The initial password for the admin account is auto-generated and stored as clear text in the field password in a secret named argocd-initial-admin-secret in your Argo CD installation namespace.
-
-From Rancher web UI, search __argocd-initial-admin-secret__ Secret automatically created during the application deployment, and copy its password value reusable for authentication with __admin__ default account from the ArgoCD web UI.
-
-#### Application check
-- Verify started Argo CD application via web browser connection from https://argocd.cybnity.tech with __admin__ default account and default password (saved in __argocd-initial-admin-secret__ Secret object)
-- From __User Info__ section, update the default password of admin account for a new one
-- Remove default initial password secret object
-
-- On SUPPORT primary server, install Argo CD CLI last version from Curl tool (see [CLI installation doc](https://argo-cd.readthedocs.io/en/stable/cli_installation/#download-latest-version)) via commands:
-```
-  curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
-
-  sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
-
-  rm argocd-linux-amd64
-```
-
-## Continuous Delivery (Fleet)
-### Fleet configuration
+## Continuous Delivery Tool (Fleet)
+### Configuration
 Fleet tool is automatically installed into the Rancher solution.
 - Check installed fleet tool via command: `kubectl -n fleet-local get fleet`
+
+### dev-deploy.cybnity.tech GitRepo
+Creation of the GitRepo configuration from Fleet UI with connection to the CYBNITY repository regarding fleet-cd project:
+- Repository URL: git@github.com:cybnity/fleet-cd.git
+- Git Authentication: ssh-key
+- Helm Authentication: ssh-key
+- TLS Certificate Verification: require a valid certificate
+- Watch: A branch
+- Branch Name: main
+- Resource handling
+  - Enable Self-Healing
+  - Always Keepp Resources
+- Paths: /cydel01/dev-deploy
+- DeployTo
+  - Target: development-group
 
 #
 [Back To Home](CYDEL01.md)

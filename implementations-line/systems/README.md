@@ -79,21 +79,34 @@ Perimeter: generic, reusable and standalone modules implementing the deployment 
 
 Project type: Helm implementation structure.
 
-Description one specific sub-folder is created for each type of clusterized module (e.g named specifically as a __function name__ equals to a suffix `-rolling-deploy` of the managed targeted module) into the `cluster` sub-folder. For example, a terraformed deployment module (e.g Auto Scaling Group module deployed in a rolling deployment approach the webserver-cluster of a application module, named `asg-rolling-deploy`) can do a zero-downtime rolling deployment betwen several instance of an applicative or infrastructure module.
+Description one specific sub-folder is created for each type of clusterized module (e.g named specifically as a __function name__ equals to a suffix `-rolling-deploy` of the managed targeted module) into the `cluster` sub-folder. For example, a Rancher Fleet deployment module or a terraformed deployment module (e.g Auto Scaling Group module deployed in a rolling deployment approach the webserver-cluster of a application module, named `asg-rolling-deploy`) can do a zero-downtime rolling deployment betwen several instance of an applicative or infrastructure module.
 
 ## ENVIRONMENT MODULES PROJECTS
 Perimeter: configuration setting projects of deployable environments (e.g Kubernetes cluster) that can be activated, operated, monitored and restored regarding packaged Services.
 
 Project type: Fleet implementation structure.
 
-Description: main folder is [modules](modules) which contain a sub-folder per __environment name__ (e.g local dev, integrated dev, test, staging & QA, live) equals to a Terraformed module where sub-modules can be operated. One configuration file (e.g .tf, .yaml) is implememented per cluster managed in the source codes repository including labeled deployment. One cluster defined by environment with fault tolerance and HA.
-- Local (LOCAL): developer's workstation terraformed environment (e.g laptop with OS and Minikube runtime platform). This environment is also supported by Maven tool profile named `localhost` and activated by default during Java component build life cycle
-- Integrated development (DEV): terraformed server infrastructure supporting a shared software development version (e.g temporary during a developers team validation between several features currently in coding step). This environment is also supported by Maven tool profile named `dev-deploy-environment` and activable during build life cycle with property `environment=dev-deploy`
-- Quality Acceptance (QA): terraformed server infrastructure supporting a software version qualification process as test environment. This environment is also supported by Maven tool profile named `qa-environment` and activable during build life cycle with property `environment=qa`
-- Production (LIVE): terraformed production server infrastructure supporting the applications and services hosted for the use by final users as a Live environment.
+Description: main folder is [modules](modules) which contain a sub-folder per __environment name__ (e.g local dev, integrated dev, test, staging & QA, live) equals to a deployed module where sub-modules can be operated. One configuration file (e.g .tf, .yaml) is implememented per cluster managed in the source codes repository including labeled deployment. One cluster defined by environment with fault tolerance and HA.
+- Local (LOCAL): developer's workstation installed environment (e.g laptop with OS and Minikube runtime platform). This environment is also supported by Maven tool profile named `localhost` and activated by default during Java component build life cycle
+- Integrated development (DEV): installed server infrastructure supporting a shared software development version (e.g temporary during a developers team validation between several features currently in coding step). This environment is also supported by Maven tool profile named `dev-deploy-environment` and activable during build life cycle with property `environment=dev`
+- Quality Acceptance (QA): installed server infrastructure supporting a software version qualification process as test environment. This environment is also supported by Maven tool profile named `qa-environment` and activable during build life cycle with property `environment=qa`
+- Production (LIVE): installes production server infrastructure supporting the applications and services hosted for the use by final users as a Live environment
 
 ## STANDARD STRUCTURE OF MODULES PROJECT
-The integrated terraformed modules are managed via the standard project structure:
+The installed modules are managed via a standard project structure according to the Infra-As-Code deployment technology used by development team.
+
+### FLEET installation modules
+This is the default installation solution that is implemented by CYBNITY as automated deployment modules.
+
+See the dedicated [Fleet CD](https://github.com/cybnity/fleet-cd) repository where the environment deployment projects are managed for each type of environment automated over Fleet modules:
+- dev-deploy environment
+- qa environment
+- uat environment
+- performance environment
+- live
+
+### TERRAFORM installation modules
+When Terraform installation project is managed, the standard project structure is organized according to:
 
 ```
 modules

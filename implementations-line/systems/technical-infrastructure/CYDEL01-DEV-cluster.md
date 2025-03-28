@@ -293,6 +293,8 @@ RKE2 node cleanup to reset a cluster node, run the following commands:
 # INFRASTRUCTURE SERVICES
 
 ## Storage
+### Longhorn
+Distributed block storage system deployed in Kubernetes RKE2 for containers data management.
 
 ## Monitoring & Logging
 
