@@ -98,12 +98,7 @@ The installed modules are managed via a standard project structure according to 
 ### FLEET installation modules
 This is the default installation solution that is implemented by CYBNITY as automated deployment modules.
 
-See the dedicated [Fleet CD](https://github.com/cybnity/fleet-cd) repository where the environment deployment projects are managed for each type of environment automated over Fleet modules:
-- dev-deploy environment
-- qa environment
-- uat environment
-- performance environment
-- live
+See the dedicated [Fleet CD](https://github.com/cybnity/fleet-cd) repository where the environment deployment projects are managed for each type of environment automated over Fleet modules.
 
 ### TERRAFORM installation modules
 When Terraform installation project is managed, the standard project structure is organized according to:
