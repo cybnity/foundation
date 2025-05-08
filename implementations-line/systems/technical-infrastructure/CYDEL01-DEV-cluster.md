@@ -162,7 +162,7 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
   |Property|Value|Comments|
   |:-------|:----|:-------|
   |Automatic Snapshots|Enable|Default cron scheduling (0 */2 * * *) and keeped last (5)|
-  |Backup Snapshots to S3|Disable|Possible change for enabling to MinIO cluster if accessigne from context|
+  |Backup Snapshots to S3|Disable|Possible change for enabling to MinIO cluster if accessing from context|
   |Metrics|Exposed to the public interface| |
 </details>
 
@@ -196,7 +196,7 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
   |Property|Value|Comments|
   |:-------|:----|:-------|
   |FQDN|dev-deploy.cybnity.tech|Allow cluster access over external HA server, and access to other *.cybnity.tech server (e.g Rancher)|
-  |CA Certificates|star-cybnity-tech-full-validation-chain.pem text|Include all certificates involved into the validation of keys/certificates on cybnity.tech network zone, and/or exposure of CYBNITY SOftware Suite endpoints over an HTTPS protocol with CA validation|
+  |CA Certificates|star-cybnity-tech-full-validation-chain.pem text|Include all certificates involved into the validation of keys/certificates on cybnity.tech network zone, and/or exposure of CYBNITY Software Suite endpoints over an HTTPS protocol with CA validation|
 </details>
 
 <details>
