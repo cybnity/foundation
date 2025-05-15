@@ -31,6 +31,12 @@
 							<name>cybnity/%a</name>
 							<alias>%a</alias>
 							<build>
+								<!-- Definition of targeted platform supported by image to build (e.g built of Linux based image from a Mac server ) -->
+								<buildx>
+									<platforms>
+										<platform>${docker.platforms}</platform>
+									</platforms>
+								</buildx>
 								<!-- The CYBNITY NodeJS container image name -->
 								<from>${docker.nodejs.image.name}</from>
 								<maintainer>CYBNITY Core Team</maintainer>
