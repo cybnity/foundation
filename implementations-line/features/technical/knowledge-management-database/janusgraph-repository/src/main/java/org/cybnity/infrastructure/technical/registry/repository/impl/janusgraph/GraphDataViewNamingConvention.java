@@ -20,6 +20,11 @@ public class GraphDataViewNamingConvention {
             this.label = standardLabel;
         }
 
+        /**
+         * Get the label defining the convention.
+         *
+         * @return A label or null.
+         */
         public String label() {
             return this.label;
         }

@@ -66,14 +66,25 @@ public abstract class AbstractDomainGraphImpl implements ICleanup {
         logger = LoggerFactory.getLogger(this.getClass());
     }
 
+    /**
+     * Confirm are transactions supported by this graph.
+     * @return False by default.
+     */
     public boolean isSupportsTransactions() {
         return supportsTransactions;
     }
-
+    /**
+     * Confirm is schema supported by this graph.
+     * @return False by default.
+     */
     public boolean isSupportsSchema() {
         return supportsSchema;
     }
 
+    /**
+     * Confirm is geoposition supported by this graph.
+     * @return False by default.
+     */
     public boolean isSupportsGeoshape() {
         return supportsGeoshape;
     }

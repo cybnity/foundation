@@ -65,12 +65,13 @@ public class ContextualizedJanusGraphActiveTestContainer {
      * Define current environment variables simulating their setting on the executed system host.
      */
     protected void initEnvVariables() {
-        if (environmentVariables != null) {
-            // Define environment variables regarding write model
-            environmentVariables.set(
-                    ReadModelConfigurationVariable.JANUSGRAPH_STORAGE_BACKEND.getName(),
-                    STORAGE_BACKEND_TYPE);
+        if (environmentVariables == null) {
+            environmentVariables = new EnvironmentVariables();
         }
+        // Define environment variables regarding write model
+        environmentVariables.set(
+                ReadModelConfigurationVariable.JANUSGRAPH_STORAGE_BACKEND.getName(),
+                STORAGE_BACKEND_TYPE);
     }
 
     /**
