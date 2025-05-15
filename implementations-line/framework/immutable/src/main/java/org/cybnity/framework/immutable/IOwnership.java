@@ -15,22 +15,21 @@ import java.util.Collection;
  * later grouped after they are constructed. The Ownership pattern encourages
  * multi-tenancy. When ownership needs to be transferred, consider the
  * Membership pattern instead.
- * 
+ * <p>
  * The Ownership pattern is a special case of the Entity pattern, where the
  * entity's identifiers include the identity of an owner.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public interface IOwnership {
 
     /**
      * Query for child facts given a parent.
-     * 
+     *
      * @param parent Predecessor of children to find.
      * @return List of child facts (all successors that have an equals parent
-     *         identifier), or null.
+     * identifier), or null.
      */
     Collection<ChildFact> childrenOfParent(IHistoricalFact parent);
 

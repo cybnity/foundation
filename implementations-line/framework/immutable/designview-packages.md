@@ -1,7 +1,9 @@
 ## PURPOSE
+
 Presentation of the design view regarding the sub-packages of `org.cybnity.framework.immutable` project.
 
 # DESIGN VIEW
+
 The technical description regarding behavior and best usage is maintained into the Javadoc of each component.
 
 | Class Type                                   | Motivation                                                                                                        |
@@ -49,10 +51,14 @@ The technical description regarding behavior and best usage is maintained into t
 | VersionConcreteStrategy                      |                                                                                                                   |
 
 # STRUCTURE MODELS
-Several packages are implemented to organize the components (e.g specification elements, implementation components) additionally to these provided by this package.
+
+Several packages are implemented to organize the components (e.g specification elements, implementation components)
+additionally to these provided by this package.
 
 # IMMUTABLE
-Main project's package regarding the immutability capabilities, this package include several sub-packages additionally to these components.
+
+Main project's package regarding the immutability capabilities, this package include several sub-packages additionally
+to these components.
 
 ```mermaid
 %%{
@@ -216,6 +222,7 @@ classDiagram
     }
 
 ```
+
 ```mermaid
 %%{
   init: {
@@ -255,6 +262,7 @@ classDiagram
         +isEpochSecondEquals(OffsetDateTime aDate, OffsetDateTime another)$ boolean
     }
 ```
+
 ```mermaid
 %%{
   init: {
@@ -307,6 +315,7 @@ classDiagram
         <<interface>>
     }
 ```
+
 ```mermaid
 %%{
   init: {
@@ -354,7 +363,9 @@ classDiagram
 ```
 
 ## PERSISTENCE SUB-PACKAGE
-Include types of generic facts usable by logs store (e.g traceability implementation regarding facts occurred on a write model or on a read model).
+
+Include types of generic facts usable by logs store (e.g traceability implementation regarding facts occurred on a write
+model or on a read model).
 
 ```mermaid
 %%{
@@ -435,6 +446,7 @@ classDiagram
     }
 
 ```
+
 ```mermaid
 %%{
   init: {
@@ -602,4 +614,5 @@ classDiagram
 ```
 
 #
+
 [Back To Home](README.md)

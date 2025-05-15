@@ -10,9 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test of FactType behaviors regarding its supported requirements.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 public class FactTypeUseCaseTest {
 
@@ -21,10 +20,10 @@ public class FactTypeUseCaseTest {
      */
     @Test
     public void givenUndefinedTypeName_whenConstructor_thenRejected() {
-	assertThrows(IllegalArgumentException.class, () -> {
-	    // Try to create an instance about null type name
-	    new FactType(null);
-	});
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Try to create an instance about null type name
+            new FactType(null);
+        });
     }
 
     /**
@@ -32,10 +31,10 @@ public class FactTypeUseCaseTest {
      */
     @Test
     public void givenEmptyTypeName_whenConstructor_thenRejected() {
-	assertThrows(IllegalArgumentException.class, () -> {
-	    // Try to create an instance about empty type name
-	    new FactType("");
-	});
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Try to create an instance about empty type name
+            new FactType("");
+        });
     }
 
     /**
@@ -44,29 +43,29 @@ public class FactTypeUseCaseTest {
      */
     @Test
     public void givenUnidentifiedType_whenConstructor_thenIdAutoGeneration() {
-	// Create valid fact not identified
-	FactType f = new FactType(DepartmentChanged.class.getSimpleName());
-	// Check that id was auto-generated
-	assertNotNull(f.id());
-	assertFalse(f.id().isBlank() || f.id().isEmpty());
+        // Create valid fact not identified
+        FactType f = new FactType(DepartmentChanged.class.getSimpleName());
+        // Check that id was auto-generated
+        assertNotNull(f.id());
+        assertFalse(f.id().isBlank() || f.id().isEmpty());
     }
 
     /**
      * Check that as uniqueness requirement supported, the object deliver the unique
      * good field.
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void givenFactType_whenUniquenessBasedOn_thenValidNameFieldReturned() {
-	FactType type = new FactType(DepartmentChanged.class.getSimpleName());
-	Set<Field> uniquenessBasedOn = type.basedOn();
-	assertNotNull(uniquenessBasedOn);
-	// Verify uniqueness only based on one field
-	assertEquals(1, uniquenessBasedOn.size(), "Only one field shall define the uniqueness of a FactType!");
-	// Check that only 'name' attribute value if the chain of uniqueness evaluation
-	Field nameField = uniquenessBasedOn.iterator().next();
-	assertEquals("name", nameField.getName(), "Invalid constraint identified as UNIQUE field!");
+        FactType type = new FactType(DepartmentChanged.class.getSimpleName());
+        Set<Field> uniquenessBasedOn = type.basedOn();
+        assertNotNull(uniquenessBasedOn);
+        // Verify uniqueness only based on one field
+        assertEquals(1, uniquenessBasedOn.size(), "Only one field shall define the uniqueness of a FactType!");
+        // Check that only 'name' attribute value if the chain of uniqueness evaluation
+        Field nameField = uniquenessBasedOn.iterator().next();
+        assertEquals("name", nameField.getName(), "Invalid constraint identified as UNIQUE field!");
 
     }
 }

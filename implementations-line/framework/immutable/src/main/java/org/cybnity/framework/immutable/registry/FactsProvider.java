@@ -4,9 +4,8 @@ import org.cybnity.framework.immutable.IOwnership;
 
 /**
  * Provider of historical facts (e.g repository of entities).
- * 
- * @author olivier
  *
+ * @author olivier
  */
 public abstract class FactsProvider implements IOwnership {
 

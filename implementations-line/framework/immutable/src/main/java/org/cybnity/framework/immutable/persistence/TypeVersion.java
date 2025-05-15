@@ -19,28 +19,24 @@ public class TypeVersion implements Serializable {
 
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(TypeVersion.class).hashCode();
-
-    /**
-     * Hash value of an object type as a type version value.
-     */
-    private final String hash;
-
-    /**
-     * Auto-generated identifier of this version.
-     */
-    private String id;
-
     /**
      * Configuration about the minimum number of characters for identifier
      * generation process.
      */
     @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_8")
     static private final int minLetterQty = 88;
-
+    /**
+     * Hash value of an object type as a type version value.
+     */
+    private final String hash;
     /**
      * Category of origin subject.
      */
     private final FactType factType;
+    /**
+     * Auto-generated identifier of this version.
+     */
+    private String id;
 
     /**
      * Constructor of a version relative to an existing fact type and identified version.

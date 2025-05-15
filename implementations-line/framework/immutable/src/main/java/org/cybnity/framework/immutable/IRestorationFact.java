@@ -10,24 +10,23 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * deletion in the form of undo. When the Deletion Fact does not have an
  * additional identifier (e.g timestamp of occured fact), then the entity can
  * only be deleted and restored once.
- * 
+ * <p>
  * A restoration fact references a prior deletion.
- * 
+ * <p>
  * By convention, it appends the word Restoration to the name of the entity. The
  * deletion has an extra identifier, usually a timestamp but has no extra
  * identifiers.
- * 
+ * <p>
  * Related patterns: Restore is an extension of the Delete pattern.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public interface IRestorationFact extends IHistoricalFact {
 
     /**
      * Predecessor deletion fact.
-     * 
+     *
      * @return Predecessor deletion fact that could be restored.
      */
     IDeletionFact deletion();

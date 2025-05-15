@@ -21,81 +21,81 @@
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
-					<configuration>
-						<images>
-							<!-- Base configuration of Docker NodeJS image generator -->
-							<!-- @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_1") -->
-							<!-- Create an in-memory Dockerfile, copies over the assembled files and calls the Docker daemon via its remote API -->
-							<image>
-								<!-- Unique docker repository name including registry and tag parts -->
-								<name>cybnity/%a</name>
-								<alias>%a</alias>
-								<build>
-									<!-- The CYBNITY NodeJS container image name -->
-									<from>${docker.nodejs.image.name}</from>
-									<maintainer>CYBNITY Core Team</maintainer>
-									<cleanup>try</cleanup>
-									<noCache />
-									<!-- Create app directory -->
-									<workdir>/app</workdir>
-									<tags>
-										<!-- Additional tags which an image is to be tagged after the build -->
-										<tag>${revision}${docker.images.tag.suffix}</tag>
-									</tags>
-									<labels>
-										<version>${project.version}</version>
-										<artifactId>${project.artifactId}</artifactId>
-									</labels>
-									<env>
-										<!-- defined 'development', or 'production' running type -->
-										<NODE_ENV>production</NODE_ENV>
-									</env>
-									<healthCheck>
-										<!-- Default configuration of image health check -->
-										<!-- Check every 5 minutes -->
-										<interval>5m</interval>
-										<!-- Fail if no response after 3 seconds -->
-										<timeout>3s</timeout>
-										<!-- Allow 30 minutes for the container to start before being flagged as unhealthy -->
-										<startPeriod>20s</startPeriod>
-										<!-- Fail 3 times until the container is considerd unhealthy -->
-										<retries>3</retries>
-										<!-- Command to execute in shell form -->
-										<cmd>curl --fail http://localhost:${docker.images.healtcheck.port}/healthcheck || exit 1</cmd>
-									</healthCheck>
-									<ports>
-										<!-- Expose the Health Check http port allowing control of image operational status when is running -->
-										<port>${docker.images.healtcheck.port}</port>
-									</ports>
-									<assembly>
-										<!-- Attach project’s artifacts (bundle app source codes) -->
-										<descriptor>docker-assembly.xml</descriptor>
-										<targetDir>/app</targetDir>
-										<mode>dir</mode>
-									</assembly>
-									<runCmds>
-										<!-- Install a multiple process supervisor usable by nodejs
-										<run>apt-get update</run>
-										<run>apt-get install -y supervisor</run>
-										<run>mkdir -p /var/lo/supervisor</run>-->
+				<configuration>
+					<images>
+						<!-- Base configuration of Docker NodeJS image generator -->
+						<!-- @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_1") -->
+						<!-- Create an in-memory Dockerfile, copies over the assembled files and calls the Docker daemon via its remote API -->
+						<image>
+							<!-- Unique docker repository name including registry and tag parts -->
+							<name>cybnity/%a</name>
+							<alias>%a</alias>
+							<build>
+								<!-- The CYBNITY NodeJS container image name -->
+								<from>${docker.nodejs.image.name}</from>
+								<maintainer>CYBNITY Core Team</maintainer>
+								<cleanup>try</cleanup>
+								<noCache />
+								<!-- Create app directory -->
+								<workdir>/app</workdir>
+								<tags>
+									<!-- Additional tags which an image is to be tagged after the build -->
+									<tag>${revision}${docker.images.tag.suffix}</tag>
+								</tags>
+								<labels>
+									<version>${project.version}</version>
+									<artifactId>${project.artifactId}</artifactId>
+								</labels>
+								<env>
+									<!-- defined 'development', or 'production' running type -->
+									<NODE_ENV>production</NODE_ENV>
+								</env>
+								<healthCheck>
+									<!-- Default configuration of image health check -->
+									<!-- Check every 5 minutes -->
+									<interval>5m</interval>
+									<!-- Fail if no response after 3 seconds -->
+									<timeout>3s</timeout>
+									<!-- Allow 30 minutes for the container to start before being flagged as unhealthy -->
+									<startPeriod>20s</startPeriod>
+									<!-- Fail 3 times until the container is considerd unhealthy -->
+									<retries>3</retries>
+									<!-- Command to execute in shell form -->
+									<cmd>curl --fail http://localhost:${docker.images.healtcheck.port}/healthcheck || exit 1</cmd>
+								</healthCheck>
+								<ports>
+									<!-- Expose the Health Check http port allowing control of image operational status when is running -->
+									<port>${docker.images.healtcheck.port}</port>
+								</ports>
+								<assembly>
+									<!-- Attach project’s artifacts (bundle app source codes) -->
+									<descriptor>docker-assembly.xml</descriptor>
+									<targetDir>/app</targetDir>
+									<mode>dir</mode>
+								</assembly>
+								<runCmds>
+									<!-- Install a multiple process supervisor usable by nodejs
+									<run>apt-get update</run>
+									<run>apt-get install -y supervisor</run>
+									<run>mkdir -p /var/lo/supervisor</run>-->
 
-										<!-- Install node modules and dependencies -->
-										<run>npm install</run>
-										<!--<run>npm install -production</run>-->
+									<!-- Install node modules and dependencies -->
+									<run>npm install</run>
+									<!--<run>npm install -production</run>-->
 
-										<!-- Create a build directory with a production build of the app
-										<run>npm run build</run> -->
+									<!-- Create a build directory with a production build of the app
+									<run>npm run build</run> -->
 
-										<!-- Mark files that are executable -->
-										<run>chmod +x *.sh</run>
-									</runCmds>
-									<entryPoint>
-										<shell>./start-all.sh</shell>
-									</entryPoint>
-								</build>
-							</image>
-						</images>
-					</configuration>
+									<!-- Mark files that are executable -->
+									<run>chmod +x *.sh</run>
+								</runCmds>
+								<entryPoint>
+									<shell>./start-all.sh</shell>
+								</entryPoint>
+							</build>
+						</image>
+					</images>
+				</configuration>
 				<executions>
 					<execution>
 						<id>docker-build</id>

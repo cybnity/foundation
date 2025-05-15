@@ -26,7 +26,12 @@ public class FactType implements Unmodifiable, IVersionable, Serializable, IUniq
      */
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(FactType.class).hashCode();
-
+    /**
+     * Configuration about the minimum number of characters for identifier
+     * generation process.
+     */
+    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_8")
+    static private final int minLetterQty = 88;
     /**
      * Label identifying a unique name regarding a category of fact (e.g name of
      * class regarding a concrete event (e.g OrderConfirmed).
@@ -34,19 +39,11 @@ public class FactType implements Unmodifiable, IVersionable, Serializable, IUniq
      * Define the uniqueness of this class type instance.
      */
     private final String name;
-
     /**
      * Auto-generated identifier of this fact type.
      */
     @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_8")
     private String id;
-
-    /**
-     * Configuration about the minimum number of characters for identifier
-     * generation process.
-     */
-    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_8")
-    static private final int minLetterQty = 88;
 
     /**
      * Default constructor of a fact category.

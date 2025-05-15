@@ -182,10 +182,11 @@ public abstract class ChildFact implements IHistoricalFact, IdentifiableFact {
 
     /**
      * Change the set of identifiers defining the basic of unique identifier creation regarding this child fact.
+     *
      * @param identifiers Mandatory set of identifiers. Ignored when null.
      */
     protected void setIdentifiers(ArrayList<Identifier> identifiers) {
-        if (identifiers!=null) {
+        if (identifiers != null) {
             this.identifiedBy = identifiers;
         }
     }

@@ -16,16 +16,15 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * of the entity.
  * Related pattern: when deletion should be reversible, consider using the
  * Restore pattern.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public interface IDeletionFact extends IHistoricalFact {
 
     /**
      * Predecessor fact that was deleted through this deletion act.
-     * 
+     *
      * @return Predecessor fact deleted.
      */
     Entity deleted();

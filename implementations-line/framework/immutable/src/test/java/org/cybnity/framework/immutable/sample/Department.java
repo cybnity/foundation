@@ -10,9 +10,8 @@ import java.time.OffsetDateTime;
 
 /**
  * Example of logical group regarding an organization.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 public class Department implements IGroup {
     private static final long serialVersionUID = 1L;
@@ -21,24 +20,24 @@ public class Department implements IGroup {
     private OffsetDateTime at;
 
     public Department(String label, Identifier id) {
-	this.label = label;
-	this.id = id;
-	this.at = OffsetDateTime.now();
+        this.label = label;
+        this.id = id;
+        this.at = OffsetDateTime.now();
     }
 
     @Override
     public Identifier identified() {
-	return new IdentifierImpl(id.name(), id.value().toString());
+        return new IdentifierImpl(id.name(), id.value().toString());
     }
 
     @Override
     public OffsetDateTime occurredAt() {
-	return this.at;
+        return this.at;
     }
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	return new Department(this.label, this.id).at = this.at;
+        return new Department(this.label, this.id).at = this.at;
     }
 
     /**
@@ -47,6 +46,6 @@ public class Department implements IGroup {
      */
     @Override
     public String versionHash() {
-	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+        return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 }

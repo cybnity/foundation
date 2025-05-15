@@ -35,12 +35,12 @@ public abstract class Membership implements IHistoricalFact {
 
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(Membership.class).hashCode();
+    private final IMember member;
+    private final IGroup group;
     /**
      * When the relation was created.
      */
     protected OffsetDateTime createdAt;
-    private final IMember member;
-    private final IGroup group;
 
     /**
      * Default constructor.

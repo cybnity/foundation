@@ -12,26 +12,25 @@ import java.time.OffsetDateTime;
 /**
  * Example of member implementation class (e.g an assignment regarding a role
  * into an orgoanization).
- * 
- * @author olivier
  *
+ * @author olivier
  */
 public class MemberImpl extends Membership {
 
     private static final long serialVersionUID = 1L;
 
     public MemberImpl(IMember member, IGroup group) throws IllegalArgumentException {
-	super(member, group);
+        super(member, group);
     }
 
     @Override
     public OffsetDateTime occurredAt() {
-	return this.createdAt;
+        return this.createdAt;
     }
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	return new MemberImpl(this.member(), this.group()).createdAt = this.createdAt;
+        return new MemberImpl(this.member(), this.group()).createdAt = this.createdAt;
     }
 
     /**
@@ -40,6 +39,6 @@ public class MemberImpl extends Membership {
      */
     @Override
     public String versionHash() {
-	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+        return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 }

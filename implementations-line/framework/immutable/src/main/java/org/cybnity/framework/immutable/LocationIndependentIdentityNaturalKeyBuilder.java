@@ -6,13 +6,12 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 /**
  * Represent a Builder pattern implementation of natural keys usable as
  * location-independent identifier of domain object.
- * 
+ * <p>
  * This building process execute the generation of an Identifier based on a
  * natural key according to the concrete implementation sub-class applying the
  * canonicalization process.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Robusteness, reqId = "REQ_ROB_2")
 public abstract class LocationIndependentIdentityNaturalKeyBuilder {

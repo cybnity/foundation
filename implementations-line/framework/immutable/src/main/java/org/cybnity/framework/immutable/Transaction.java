@@ -55,27 +55,28 @@ import java.util.Set;
  * transaction. Starting at the transaction fact, follow all predecessors. From
  * those facts, recursively follow their predecessors. The transitive closure is
  * the set of all facts thus visited.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public class Transaction implements IHistoricalFact {
 
     private static final long serialVersionUID = new VersionConcreteStrategy()
-	    .composeCanonicalVersionHash(Transaction.class).hashCode();
+            .composeCanonicalVersionHash(Transaction.class).hashCode();
 
     /**
      * Predecessor entity of this transaction.
      */
     protected final Entity transactionParentContext;
-
+    /**
+     * Optional identifier of this transaction.
+     */
+    private final Identifier transactionId;
     /**
      * When this fact was created or observed regarding the historized topic. This
      * creation date distingues among children within the same predecessor.
      */
     protected OffsetDateTime createdAt;
-
     /**
      * Specific versions of mutable properties that become direct or indirect
      * predecessors of this transaction.
@@ -83,13 +84,8 @@ public class Transaction implements IHistoricalFact {
     private Set<TransactionItem> items;
 
     /**
-     * Optional identifier of this transaction.
-     */
-    private final Identifier transactionId;
-
-    /**
      * Default constructor.
-     * 
+     *
      * @param transactionParentContext Mandatory parent of this transaction context.
      * @param id                       Unique and optional identifier of this
      *                                 transaction.
@@ -97,51 +93,51 @@ public class Transaction implements IHistoricalFact {
      *                                  defined or without defined identifier.
      */
     public Transaction(
-	    @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3") Entity transactionParentContext,
-	    Identifier id) throws IllegalArgumentException {
-	if (transactionParentContext == null)
-	    throw new IllegalArgumentException("transactionParentContext parameter is required!");
-	// Check conformity of optional child identifier
-	if (id != null && (id.name() == null || id.name().equals("") || id.value() == null)) {
-	    throw new IllegalArgumentException("Identifier parameter's name and value is required!");
-	}
-	try {
-	    // Check mandatory existent identifier of parent (child identifier based on its
-	    // contribution)
-	    Collection<Identifier> predecessorIdentifiers = transactionParentContext.identifiers();
-	    if (transactionParentContext.identified() == null || predecessorIdentifiers == null
-		    || predecessorIdentifiers.isEmpty())
-		throw new IllegalArgumentException("The parent identifier(s) shall be existent!");
-	    // Reference immutable copy of predecessor
-	    this.transactionParentContext = (Entity) transactionParentContext.immutable();
-	    // Get optional transaction identifier
-	    this.transactionId = id;
-	    // Create immutable time of this fact creation
-	    this.createdAt = OffsetDateTime.now();
-	} catch (ImmutabilityException cn) {
-	    throw new IllegalArgumentException(cn);
-	}
+            @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3") Entity transactionParentContext,
+            Identifier id) throws IllegalArgumentException {
+        if (transactionParentContext == null)
+            throw new IllegalArgumentException("transactionParentContext parameter is required!");
+        // Check conformity of optional child identifier
+        if (id != null && (id.name() == null || id.name().equals("") || id.value() == null)) {
+            throw new IllegalArgumentException("Identifier parameter's name and value is required!");
+        }
+        try {
+            // Check mandatory existent identifier of parent (child identifier based on its
+            // contribution)
+            Collection<Identifier> predecessorIdentifiers = transactionParentContext.identifiers();
+            if (transactionParentContext.identified() == null || predecessorIdentifiers == null
+                    || predecessorIdentifiers.isEmpty())
+                throw new IllegalArgumentException("The parent identifier(s) shall be existent!");
+            // Reference immutable copy of predecessor
+            this.transactionParentContext = (Entity) transactionParentContext.immutable();
+            // Get optional transaction identifier
+            this.transactionId = id;
+            // Create immutable time of this fact creation
+            this.createdAt = OffsetDateTime.now();
+        } catch (ImmutabilityException cn) {
+            throw new IllegalArgumentException(cn);
+        }
     }
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	Transaction copy = new Transaction(this.transactionParentContext(), this.transactionId());
-	copy.createdAt = this.createdAt;
-	copy.setItems(this.getItems());
-	return copy;
+        Transaction copy = new Transaction(this.transactionParentContext(), this.transactionId());
+        copy.createdAt = this.createdAt;
+        copy.setItems(this.getItems());
+        return copy;
     }
 
     /**
      * Location-independent unique identifier of this transaction.
-     * 
+     *
      * @return Unique based identifier or null.
      * @throws ImmutabilityException When problem to create immutable copy of this
      *                               transaction identifier.
      */
     public Identifier transactionId() throws ImmutabilityException {
-	if (this.transactionId != null)
-	    return (Identifier) this.transactionId.immutable();
-	return null;
+        if (this.transactionId != null)
+            return (Identifier) this.transactionId.immutable();
+        return null;
     }
 
     /**
@@ -149,51 +145,51 @@ public class Transaction implements IHistoricalFact {
      */
     @Override
     public OffsetDateTime occurredAt() {
-	// Return the immutable value of the fact time
-	return this.createdAt;
+        // Return the immutable value of the fact time
+        return this.createdAt;
     }
 
     /**
      * Predecessor fact of this transaction context.
-     * 
+     *
      * @return A predecessor of this transaction that is a global modification
-     *         context.
+     * context.
      * @throws ImmutabilityException When impossible cloned instance of predecessor.
      */
     @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3")
     public Entity transactionParentContext() throws ImmutabilityException {
-	// Return unmodifiable instance of predecessor
-	return (Entity) this.transactionParentContext.immutable();
+        // Return unmodifiable instance of predecessor
+        return (Entity) this.transactionParentContext.immutable();
     }
 
     /**
      * Get the current items identified as specific versions of peroperties which
      * are direct of indirect predecessors of this transaction.
-     * 
+     *
      * @return Identified items immutable version (captured state of the objects as
-     *         they are known to that user at that time) or null.
+     * they are known to that user at that time) or null.
      * @throws ImmutabilityException When impossible cloned instance of items.
      */
     public Set<TransactionItem> getItems() throws ImmutabilityException {
-	LinkedHashSet<TransactionItem> copy = null;
-	if (items != null) {
-	    copy = new LinkedHashSet<>(items.size());
-	    for (TransactionItem anItem : items) {
-		copy.add(new TransactionItem(anItem.getItemContext(), anItem.getPropertyState()));
-	    }
-	}
-	return copy;
+        LinkedHashSet<TransactionItem> copy = null;
+        if (items != null) {
+            copy = new LinkedHashSet<>(items.size());
+            for (TransactionItem anItem : items) {
+                copy.add(new TransactionItem(anItem.getItemContext(), anItem.getPropertyState()));
+            }
+        }
+        return copy;
     }
 
     /**
      * Define the items identified as specific versions of peroperties which are
      * direct of indirect predecessors of this transaction.
-     * 
+     *
      * @param items A set of items (captured state of the objects as they are known
      *              to that user at that time).
      */
     public void setItems(Set<TransactionItem> items) {
-	this.items = items;
+        this.items = items;
     }
 
     /**
@@ -202,6 +198,6 @@ public class Transaction implements IHistoricalFact {
      */
     @Override
     public String versionHash() {
-	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+        return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 }

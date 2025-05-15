@@ -5,18 +5,17 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Identification contract regarding an immutable object.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public interface IdentifiableFact {
 
     /**
      * Location-independent unique identifier of this fact.
-     * 
+     *
      * @return Unique based identifier, or derived identifier based on the multiple
-     *         identification information combined.
+     * identification information combined.
      * @throws ImmutabilityException When problem to create immutable copy of this
      *                               fact.
      */
@@ -28,9 +27,9 @@ public interface IdentifiableFact {
      * method is called by default hashCode() method of this ValueObject instance
      * and shall provide the list of values contributing to define the unit of
      * this instance (e.g also used for valueEquality() comparison).
-     * 
+     *
      * @return The unique functional values used to identify uniquely this instance.
-     *         Or empty array.
+     * Or empty array.
      */
     String[] valueHashCodeContributors();
 }

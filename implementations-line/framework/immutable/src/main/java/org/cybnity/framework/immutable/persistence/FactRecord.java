@@ -44,19 +44,6 @@ public class FactRecord implements IHistoricalFact, IUniqueness, Cloneable {
     private Integer factId;
     private Integer bodyHash;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FactRecord that = (FactRecord) o;
-        return Objects.equals(factOccurredAt, that.factOccurredAt) && Objects.equals(recordedAt, that.recordedAt) && Objects.equals(factTypeVersion, that.factTypeVersion) && Objects.equals(factId, that.factId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(factOccurredAt, recordedAt, factTypeVersion, factId);
-    }
-
     /**
      * Utility constructor of unidentifiable event which can be used by child class (e.g implementing mapping capability).
      */
@@ -100,6 +87,19 @@ public class FactRecord implements IHistoricalFact, IUniqueness, Cloneable {
             }
         }
         this.recordedAt = OffsetDateTime.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FactRecord that = (FactRecord) o;
+        return Objects.equals(factOccurredAt, that.factOccurredAt) && Objects.equals(recordedAt, that.recordedAt) && Objects.equals(factTypeVersion, that.factTypeVersion) && Objects.equals(factId, that.factId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(factOccurredAt, recordedAt, factTypeVersion, factId);
     }
 
     @Override

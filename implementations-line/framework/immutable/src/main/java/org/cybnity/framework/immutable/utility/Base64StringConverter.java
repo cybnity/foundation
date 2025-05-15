@@ -21,10 +21,10 @@ public class Base64StringConverter {
      */
     public static Optional<String> convertToString(final Serializable object) throws IllegalArgumentException {
         if (object == null) throw new IllegalArgumentException("object parameter is required!");
-        try (final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-             ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+        try (final ByteArrayOutputStream bas = new ByteArrayOutputStream();
+             ObjectOutputStream oos = new ObjectOutputStream(bas)) {
             oos.writeObject(object);
-            return Optional.of(Base64.getEncoder().encodeToString(baos.toByteArray()));
+            return Optional.of(Base64.getEncoder().encodeToString(bas.toByteArray()));
         } catch (final IOException e) {
             return Optional.empty();
         }
@@ -34,7 +34,7 @@ public class Base64StringConverter {
      * Transform Base64 encoded string into an instance.
      *
      * @param objectAsString Mandatory object string version to deserialize.
-     * @param <T> Specific output type.
+     * @param <T>            Specific output type.
      * @return Deserialized instance.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      */

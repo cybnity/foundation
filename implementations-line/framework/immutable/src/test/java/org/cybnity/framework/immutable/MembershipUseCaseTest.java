@@ -15,9 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Unit test of MemberShip behaviors regarding its immutability supported
  * requirements.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 public class MembershipUseCaseTest {
 
@@ -26,28 +25,28 @@ public class MembershipUseCaseTest {
 
     @BeforeEach
     public void initRelationOrigins() throws Exception {
-	group = new Department("Avengers Team", new IdentifierImpl("uid", UUID.randomUUID().toString()));
-	member = new Employee("Tony Stark", new IdentifierImpl("uid", UUID.randomUUID().toString()));
+        group = new Department("Avengers Team", new IdentifierImpl("uid", UUID.randomUUID().toString()));
+        member = new Employee("Tony Stark", new IdentifierImpl("uid", UUID.randomUUID().toString()));
     }
 
     @AfterEach
     public void deleteRelationOrigins() throws Exception {
-	this.group = null;
-	this.member = null;
+        this.group = null;
+        this.member = null;
     }
 
     @Test
     public void givenUnknownMember_whenConstructor_thenIllegalArgumentExceptionThrown() {
-	assertThrows(IllegalArgumentException.class, () -> {
-	    new MemberImpl(/* Unknown member violation */ null, group);
-	});
+        assertThrows(IllegalArgumentException.class, () -> {
+            new MemberImpl(/* Unknown member violation */ null, group);
+        });
     }
 
     @Test
     public void givenUnknownGroup_whenConstructor_thenIllegalArgumentExceptionThrown() {
-	assertThrows(IllegalArgumentException.class, () -> {
-	    new MemberImpl(member, /* Unknown group violation */ null);
-	});
+        assertThrows(IllegalArgumentException.class, () -> {
+            new MemberImpl(member, /* Unknown group violation */ null);
+        });
     }
 
 }

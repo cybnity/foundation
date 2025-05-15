@@ -8,9 +8,8 @@ import java.time.OffsetDateTime;
 
 /**
  * Example of command regarding a department creation request.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 public class CreateDepartment implements IHistoricalFact, IdentifiableFact, IVersionable {
 
@@ -18,22 +17,22 @@ public class CreateDepartment implements IHistoricalFact, IdentifiableFact, IVer
      * Version of this class type.
      */
     private static final long serialVersionUID = new VersionConcreteStrategy()
-	    .composeCanonicalVersionHash(CreateDepartment.class).hashCode();
+            .composeCanonicalVersionHash(CreateDepartment.class).hashCode();
     private final Entity identifiedBy;
-    private OffsetDateTime occuredAt;
     private final Department updatedVersion;
+    private OffsetDateTime occuredAt;
 
     public CreateDepartment(Entity identity, Department changed) {
-	this.identifiedBy = identity;
-	this.updatedVersion = changed;
-	this.occuredAt = OffsetDateTime.now();
+        this.identifiedBy = identity;
+        this.updatedVersion = changed;
+        this.occuredAt = OffsetDateTime.now();
     }
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	CreateDepartment instance = new CreateDepartment(this.identifiedBy, this.updatedVersion);
-	instance.occuredAt = this.occuredAt;
-	return instance;
+        CreateDepartment instance = new CreateDepartment(this.identifiedBy, this.updatedVersion);
+        instance.occuredAt = this.occuredAt;
+        return instance;
     }
 
     /**
@@ -42,12 +41,12 @@ public class CreateDepartment implements IHistoricalFact, IdentifiableFact, IVer
      */
     @Override
     public String versionHash() {
-	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+        return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 
     @Override
     public Identifier identified() throws ImmutabilityException {
-	return this.identifiedBy.identified();
+        return this.identifiedBy.identified();
     }
 
     /**
@@ -56,18 +55,18 @@ public class CreateDepartment implements IHistoricalFact, IdentifiableFact, IVer
      * method is called by default hashCode() method of this ValueObject instance
      * and shall provide the list of values contributing to define the unicity of
      * this instance (e.g also used for valueEquality() comparison).
-     * 
+     *
      * @return The unique functional values used to idenfity uniquely this instance.
-     *         Or empty array.
+     * Or empty array.
      */
     @Override
     public String[] valueHashCodeContributors() {
-	try {
-	    return new String[] { /** Based only on identifier value **/
-		    (String) this.identified().value() };
-	} catch (ImmutabilityException ie) {
-	    return new String[] {};
-	}
+        try {
+            return new String[]{ /** Based only on identifier value **/
+                    (String) this.identified().value()};
+        } catch (ImmutabilityException ie) {
+            return new String[]{};
+        }
     }
 
     /**
@@ -76,24 +75,24 @@ public class CreateDepartment implements IHistoricalFact, IdentifiableFact, IVer
      */
     @Override
     public int hashCode() {
-	// Read the contribution values of functional equality regarding this instance
-	String[] functionalValues = valueHashCodeContributors();
-	int hashCodeValue = +(169065 * 179);
-	if (functionalValues != null && functionalValues.length > 0) {
-	    for (String s : functionalValues) {
-		if (s != null) {
-		    hashCodeValue = +s.hashCode();
-		}
-	    }
-	} else {
-	    // Keep standard hashcode value calculation default implementation
-	    hashCodeValue = super.hashCode();
-	}
-	return hashCodeValue;
+        // Read the contribution values of functional equality regarding this instance
+        String[] functionalValues = valueHashCodeContributors();
+        int hashCodeValue = +(169065 * 179);
+        if (functionalValues != null && functionalValues.length > 0) {
+            for (String s : functionalValues) {
+                if (s != null) {
+                    hashCodeValue = +s.hashCode();
+                }
+            }
+        } else {
+            // Keep standard hashcode value calculation default implementation
+            hashCodeValue = super.hashCode();
+        }
+        return hashCodeValue;
     }
 
     @Override
     public OffsetDateTime occurredAt() {
-	return this.occuredAt;
+        return this.occuredAt;
     }
 }

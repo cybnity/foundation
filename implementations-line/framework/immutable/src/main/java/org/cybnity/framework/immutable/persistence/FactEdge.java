@@ -17,14 +17,13 @@ import java.util.Set;
  * relationship between two facts records. This aggregation object allow to
  * attach successors with predecessors facts similar to relations between saved
  * events in each fact record.
- * 
+ * <p>
  * For example, on edge is existing for each predecessor relationship of a fact
  * regarding composition, aggregation, relation links referenced via
  * EntityReference attributes (e.g with external other entities or value
  * objects).
- * 
- * @author olivier
  *
+ * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Robusteness, reqId = "REQ_ROB_3")
 public class FactEdge implements Unmodifiable, IVersionable, IUniqueness, Serializable {
@@ -32,7 +31,7 @@ public class FactEdge implements Unmodifiable, IVersionable, IUniqueness, Serial
      * Version of this class type.
      */
     private static final long serialVersionUID = new VersionConcreteStrategy()
-	    .composeCanonicalVersionHash(FactEdge.class).hashCode();
+            .composeCanonicalVersionHash(FactEdge.class).hashCode();
 
     /**
      * Edge point of the relation with the succeeding fact.
@@ -52,7 +51,7 @@ public class FactEdge implements Unmodifiable, IVersionable, IUniqueness, Serial
 
     /**
      * Default constructor of a relation between facts.
-     * 
+     *
      * @param successorFactIdentifier   Mandatory reference identifier of the fact which is
      *                                  successor to the preceding fact.
      * @param predecessorFactIdentifier Mandatory reference identifier of the fact which is
@@ -62,63 +61,63 @@ public class FactEdge implements Unmodifiable, IVersionable, IUniqueness, Serial
      * @throws IllegalArgumentException When any mandatory parameter is missing.
      */
     public FactEdge(String successorFactIdentifier, String predecessorFactIdentifier, RelationRole factsRelationType)
-	    throws IllegalArgumentException {
-	if (successorFactIdentifier == null)
-	    throw new IllegalArgumentException("successorFactIdentifier parameter is required!");
-	if (predecessorFactIdentifier == null)
-	    throw new IllegalArgumentException("predecessorFactIdentifier parameter is required!");
-	if (factsRelationType == null)
-	    throw new IllegalArgumentException("factsRelationType parameter is required!");
-	this.successorId = successorFactIdentifier;
-	this.predecessorId = predecessorFactIdentifier;
-	this.factsRelationType = factsRelationType;
+            throws IllegalArgumentException {
+        if (successorFactIdentifier == null)
+            throw new IllegalArgumentException("successorFactIdentifier parameter is required!");
+        if (predecessorFactIdentifier == null)
+            throw new IllegalArgumentException("predecessorFactIdentifier parameter is required!");
+        if (factsRelationType == null)
+            throw new IllegalArgumentException("factsRelationType parameter is required!");
+        this.successorId = successorFactIdentifier;
+        this.predecessorId = predecessorFactIdentifier;
+        this.factsRelationType = factsRelationType;
     }
 
     @Override
     public Set<Field> basedOn() {
-	Set<Field> uniqueness = new HashSet<>();
-	try {
-	    uniqueness.add(this.getClass().getDeclaredField("successorId"));
-	    uniqueness.add(this.getClass().getDeclaredField("predecessorId"));
-	    uniqueness.add(this.getClass().getDeclaredField("factsRelationType"));
-	} catch (NoSuchFieldException e) {
-	    // Problem of implementation that shall never be thrown
-	    // TODO: add log for developer error notification
-	}
-	return uniqueness;
+        Set<Field> uniqueness = new HashSet<>();
+        try {
+            uniqueness.add(this.getClass().getDeclaredField("successorId"));
+            uniqueness.add(this.getClass().getDeclaredField("predecessorId"));
+            uniqueness.add(this.getClass().getDeclaredField("factsRelationType"));
+        } catch (NoSuchFieldException e) {
+            // Problem of implementation that shall never be thrown
+            // TODO: add log for developer error notification
+        }
+        return uniqueness;
     }
 
     /**
      * Get the naming of this edge as relation between the successor and the
      * predecessor.
-     * 
+     *
      * @return A named relation type.
      */
     public RelationRole factsRelationType() {
-	return this.factsRelationType;
+        return this.factsRelationType;
     }
 
     /**
      * Get the identifier of the fact which is predecessor of the successor fact.
-     * 
+     *
      * @return An identifier.
      */
     public String predecessorId() {
-	return predecessorId;
+        return predecessorId;
     }
 
     /**
      * Get the identifier of the fact which is successor to the predecessor fact.
-     * 
+     *
      * @return An identifier.
      */
     public String successorId() {
-	return this.successorId;
+        return this.successorId;
     }
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	return new FactEdge(this.successorId, this.predecessorId, this.factsRelationType);
+        return new FactEdge(this.successorId, this.predecessorId, this.factsRelationType);
     }
 
     /**
@@ -127,6 +126,6 @@ public class FactEdge implements Unmodifiable, IVersionable, IUniqueness, Serial
      */
     @Override
     public String versionHash() {
-	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+        return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 }

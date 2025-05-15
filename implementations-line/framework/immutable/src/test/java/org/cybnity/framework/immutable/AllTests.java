@@ -12,13 +12,12 @@ import org.junit.platform.suite.api.Suite;
 /**
  * Suite of all technical and behavior tests regarding the immutability
  * capabilities.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 @Suite
-@SelectClasses({ EntityUseCaseTest.class, ChildFactUseCaseTest.class, MembershipUseCaseTest.class,
-	MutablePropertyUseCaseTest.class, VersionConcreteStrategyUseCaseTest.class, FactTypeUseCaseTest.class,
-	FactRecordUseCaseTest.class, RelationRoleUseCaseTest.class, FactEdgeUseCaseTest.class, Base64StringConvertionUseCaseTest.class })
+@SelectClasses({EntityUseCaseTest.class, ChildFactUseCaseTest.class, MembershipUseCaseTest.class,
+        MutablePropertyUseCaseTest.class, VersionConcreteStrategyUseCaseTest.class, FactTypeUseCaseTest.class,
+        FactRecordUseCaseTest.class, RelationRoleUseCaseTest.class, FactEdgeUseCaseTest.class, Base64StringConvertionUseCaseTest.class})
 public class AllTests {
 }

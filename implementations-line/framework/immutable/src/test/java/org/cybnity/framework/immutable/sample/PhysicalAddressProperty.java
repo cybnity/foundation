@@ -17,64 +17,63 @@ import java.util.Map;
  * (e.g by organization manager when the company's physical address is moved),
  * and which need to historized in an immutable way the history of changes
  * (version of this information).
- * 
+ * <p>
  * Sample usable to evaluate the
  * {@link org.cybnity.framework.immutable.MutableProperty} pattern.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 public class PhysicalAddressProperty extends MutableProperty {
 
-	private static final long serialVersionUID = 1L;
-	private final OffsetDateTime versionedAt;
+    private static final long serialVersionUID = 1L;
+    private final OffsetDateTime versionedAt;
 
-	/**
-	 * Example of keys set regarding the multiple attribute defining this complex
-	 * physical address, and that each change need to be versioned/treated as a
-	 * single atomic fact.
-	 */
-	public enum PropertyAttributeKey {
-		Street, City, Country, State
+    public PhysicalAddressProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue,
+                                   HistoryState status) throws IllegalArgumentException {
+        super(propertyOwner, propertyCurrentValue, status);
+        this.versionedAt = OffsetDateTime.now();
     }
 
-	public PhysicalAddressProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue,
-			HistoryState status) throws IllegalArgumentException {
-		super(propertyOwner, propertyCurrentValue, status);
-		this.versionedAt = OffsetDateTime.now();
-	}
+    public PhysicalAddressProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue,
+                                   HistoryState status, PhysicalAddressProperty... prior) throws IllegalArgumentException {
+        super(propertyOwner, propertyCurrentValue, status, prior);
+        this.versionedAt = OffsetDateTime.now();
+    }
 
-	public PhysicalAddressProperty(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue,
-			HistoryState status, PhysicalAddressProperty... prior) throws IllegalArgumentException {
-		super(propertyOwner, propertyCurrentValue, status, prior);
-		this.versionedAt = OffsetDateTime.now();
-	}
+    @Override
+    public OffsetDateTime occurredAt() {
+        return this.versionedAt;
+    }
 
-	@Override
-	public OffsetDateTime occurredAt() {
-		return this.versionedAt;
-	}
+    @Override
+    public Serializable immutable() throws ImmutabilityException {
+        return null;
+    }
 
-	@Override
-	public Serializable immutable() throws ImmutabilityException {
-		return null;
-	}
+    /**
+     * Get the current value of this complex property.
+     *
+     * @return A set of valued attributes.
+     */
+    public Map<String, Object> currentValue() {
+        return Collections.unmodifiableMap(this.value);
+    }
 
-	/**
-	 * Get the current value of this complex property.
-	 * 
-	 * @return A set of valued attributes.
-	 */
-	public Map<String, Object> currentValue() {
-		return Collections.unmodifiableMap(this.value);
-	}
+    /**
+     * Implement the generation of version hash regarding this class type according
+     * to a concrete strategy utility service.
+     */
+    @Override
+    public String versionHash() {
+        return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+    }
 
-	/**
-	 * Implement the generation of version hash regarding this class type according
-	 * to a concrete strategy utility service.
-	 */
-	@Override
-	public String versionHash() {
-		return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
-	}
+    /**
+     * Example of keys set regarding the multiple attribute defining this complex
+     * physical address, and that each change need to be versioned/treated as a
+     * single atomic fact.
+     */
+    public enum PropertyAttributeKey {
+        Street, City, Country, State
+    }
 }

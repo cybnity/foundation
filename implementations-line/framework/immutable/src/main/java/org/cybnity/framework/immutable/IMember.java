@@ -5,22 +5,21 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Represent a member of a logical group into a membership relation.
- * 
+ * <p>
  * Related pattern: usable in a Membership context
  * ({@link org.cybnity.framework.immutable.Membership}) regarding types of
  * members that can be grouped.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_5")
 public interface IMember extends IHistoricalFact {
 
     /**
      * Location-independent unique identifier of this fact.
-     * 
+     *
      * @return Unique based identifier, or derived identifier based on the multiple
-     *         identification information combined from identifiers() method.
+     * identification information combined from identifiers() method.
      */
     Identifier identified();
 

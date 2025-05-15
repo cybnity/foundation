@@ -38,12 +38,6 @@ public class EntityReference implements IHistoricalFact {
      * The owner of this reference, as primary entity.
      */
     protected Entity entity;
-
-    /**
-     * Optional referenced other entity that is often nullable.
-     */
-    private Entity referencedRelation;
-
     /**
      * Where the changed versions of this entity reference (include other reference
      * facts that refer to the same primary entity) are historized as predecessors.
@@ -64,7 +58,14 @@ public class EntityReference implements IHistoricalFact {
      */
     @Requirement(reqType = RequirementCategory.Consistency, reqId = "REQ_CONS_3")
     protected HashSet<EntityReference> prior;
-
+    /**
+     * When this relation fact was created or observed.
+     */
+    protected OffsetDateTime changedAt;
+    /**
+     * Optional referenced other entity that is often nullable.
+     */
+    private Entity referencedRelation;
     /**
      * Identify this reference value had been confirmed (e.g during a merging
      * conflict resolution act decided by a user) as official current version.
@@ -72,11 +73,6 @@ public class EntityReference implements IHistoricalFact {
      * any new instance of new instantiated property.
      */
     private HistoryState historyStatus = HistoryState.COMMITTED;
-
-    /**
-     * When this relation fact was created or observed.
-     */
-    protected OffsetDateTime changedAt;
 
     /**
      * Default constructor with automatic initialization of an empty value set

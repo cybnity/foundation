@@ -13,9 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test of RelationRole behaviors regarding its supported requirements.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 public class RelationRoleUseCaseTest {
 
@@ -24,14 +23,14 @@ public class RelationRoleUseCaseTest {
 
     @BeforeEach
     public void initFactTypes() {
-	successorRelatedFactType = new FactType(DepartmentChanged.class.getSimpleName());
-	predecessorInitialFactType = new FactType(CreateDepartment.class.getSimpleName());
+        successorRelatedFactType = new FactType(DepartmentChanged.class.getSimpleName());
+        predecessorInitialFactType = new FactType(CreateDepartment.class.getSimpleName());
     }
 
     @AfterEach
     public void cleanFactTypes() {
-	this.predecessorInitialFactType = null;
-	this.successorRelatedFactType = null;
+        this.predecessorInitialFactType = null;
+        this.successorRelatedFactType = null;
     }
 
     /**
@@ -40,10 +39,10 @@ public class RelationRoleUseCaseTest {
      */
     @Test
     public void givenUnknowPredecessorType_whenConstructor_thenRejected() {
-	assertThrows(IllegalArgumentException.class, () -> {
-	    // Try to create an instance
-	    new RelationRole("source->target", null, successorRelatedFactType);
-	});
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Try to create an instance
+            new RelationRole("source->target", null, successorRelatedFactType);
+        });
     }
 
     /**
@@ -52,36 +51,36 @@ public class RelationRoleUseCaseTest {
      */
     @Test
     public void givenUnknowSuccessorType_whenConstructor_thenRejected() {
-	assertThrows(IllegalArgumentException.class, () -> {
-	    // Try to create an instance
-	    new RelationRole("source->target", predecessorInitialFactType, null);
-	});
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Try to create an instance
+            new RelationRole("source->target", predecessorInitialFactType, null);
+        });
     }
 
     /**
      * Check that as uniqueness requirement supported, the object deliver the good
      * fields.
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void givenFactRecord_whenUniquenessBasedOn_thenValidFieldsReturned() throws Exception {
-	RelationRole role = new RelationRole("source->target", predecessorInitialFactType, successorRelatedFactType);
-	Set<Field> uniquenessBasedOn = role.basedOn();
-	assertNotNull(uniquenessBasedOn);
-	// Verify uniqueness only based on two fields
-	assertEquals(2, uniquenessBasedOn.size(), "Only two fields shall define the uniqueness of a RelationRole!");
-	// Check the chain of uniqueness evaluation
-	boolean nameFound = false;
-	boolean relationDeclaredByOwnerTypeFound = false;
-	for (Field aField : uniquenessBasedOn) {
-	    if (aField.getName().equals("relationDeclaredByOwnerType"))
-		relationDeclaredByOwnerTypeFound = true;
-	    if (aField.getName().equals("name"))
-		nameFound = true;
-	}
-	// Verify found uniqueness combination
-	assertTrue(nameFound && relationDeclaredByOwnerTypeFound,
-		"Invalid constraints identified as UNIQUE combined set!");
+        RelationRole role = new RelationRole("source->target", predecessorInitialFactType, successorRelatedFactType);
+        Set<Field> uniquenessBasedOn = role.basedOn();
+        assertNotNull(uniquenessBasedOn);
+        // Verify uniqueness only based on two fields
+        assertEquals(2, uniquenessBasedOn.size(), "Only two fields shall define the uniqueness of a RelationRole!");
+        // Check the chain of uniqueness evaluation
+        boolean nameFound = false;
+        boolean relationDeclaredByOwnerTypeFound = false;
+        for (Field aField : uniquenessBasedOn) {
+            if (aField.getName().equals("relationDeclaredByOwnerType"))
+                relationDeclaredByOwnerTypeFound = true;
+            if (aField.getName().equals("name"))
+                nameFound = true;
+        }
+        // Verify found uniqueness combination
+        assertTrue(nameFound && relationDeclaredByOwnerTypeFound,
+                "Invalid constraints identified as UNIQUE combined set!");
     }
 }

@@ -106,6 +106,14 @@ public class Context implements IContext {
         return foundRef;
     }
 
+    @Override
+    public String get(IReadableConfiguration config) throws IllegalArgumentException {
+        if (config == null)
+            throw new IllegalArgumentException("The config parameter is required!");
+        // Read the current system environment variable
+        return System.getenv(config.getName());
+    }
+
     /**
      * Represent a container of resource description (e.g additional metadata
      * allowed on the usage stats or attributes helping to categorization or search
@@ -113,8 +121,8 @@ public class Context implements IContext {
      */
     protected static class ResourceItem {
 
-        private Object sourcedInstance;
         private final Class<?> resourceType;
+        private Object sourcedInstance;
 
         /**
          * Default constructor.
@@ -141,14 +149,6 @@ public class Context implements IContext {
             return this.resourceType;
         }
 
-    }
-
-    @Override
-    public String get(IReadableConfiguration config) throws IllegalArgumentException {
-        if (config == null)
-            throw new IllegalArgumentException("The config parameter is required!");
-        // Read the current system environment variable
-        return System.getenv(config.getName());
     }
 
 }

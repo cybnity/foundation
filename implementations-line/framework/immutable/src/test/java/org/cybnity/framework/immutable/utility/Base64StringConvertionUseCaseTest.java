@@ -39,7 +39,7 @@ public class Base64StringConvertionUseCaseTest {
         // Try to convert into string version
         Optional<String> version = Base64StringConverter.convertToString(child);
         // Check converted value
-        Assertions.assertNotNull(version.get(),"String value shall have been serialized!");
+        Assertions.assertNotNull(version.get(), "String value shall have been serialized!");
         // Try to re-instantiate object
         Optional<ChildAggregate> instance = Base64StringConverter.convertFrom(version.get());
         ChildAggregate restored = instance.get();

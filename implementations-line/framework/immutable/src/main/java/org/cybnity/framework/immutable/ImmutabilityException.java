@@ -8,35 +8,34 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * Exception regarding a problem of architecture support regarding a
  * immutability requirements (e.g impossible creation of an immutable copy of a
  * fact).
- * 
- * @author olivier
  *
+ * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
 public class ImmutabilityException extends Exception {
 
     private static final long serialVersionUID = new VersionConcreteStrategy()
-	    .composeCanonicalVersionHash(ImmutabilityException.class).hashCode();
+            .composeCanonicalVersionHash(ImmutabilityException.class).hashCode();
 
     public ImmutabilityException() {
-	super();
+        super();
     }
 
     public ImmutabilityException(String message) {
-	super(message);
+        super(message);
     }
 
     public ImmutabilityException(Throwable cause) {
-	super(cause);
+        super(cause);
     }
 
     public ImmutabilityException(String message, Throwable cause) {
-	super(message, cause);
+        super(message, cause);
     }
 
     public ImmutabilityException(String message, Throwable cause, boolean enableSuppression,
-	    boolean writableStackTrace) {
-	super(message, cause, enableSuppression, writableStackTrace);
+                                 boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 
 }

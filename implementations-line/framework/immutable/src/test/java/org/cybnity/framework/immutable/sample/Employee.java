@@ -10,9 +10,8 @@ import java.time.OffsetDateTime;
 
 /**
  * Example of member type regarding an organization.
- * 
- * @author olivier
  *
+ * @author olivier
  */
 public class Employee implements IMember {
 
@@ -22,24 +21,24 @@ public class Employee implements IMember {
     private OffsetDateTime at;
 
     public Employee(String name, Identifier id) {
-	this.name = name;
-	this.id = id;
-	this.at = OffsetDateTime.now();
+        this.name = name;
+        this.id = id;
+        this.at = OffsetDateTime.now();
     }
 
     @Override
     public Identifier identified() {
-	return new IdentifierImpl(id.name(), id.value().toString());
+        return new IdentifierImpl(id.name(), id.value().toString());
     }
 
     @Override
     public OffsetDateTime occurredAt() {
-	return this.at;
+        return this.at;
     }
 
     @Override
     public Serializable immutable() throws ImmutabilityException {
-	return new Employee(this.name, this.id).at = this.at;
+        return new Employee(this.name, this.id).at = this.at;
     }
 
     /**
@@ -48,6 +47,6 @@ public class Employee implements IMember {
      */
     @Override
     public String versionHash() {
-	return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
+        return new VersionConcreteStrategy().composeCanonicalVersionHash(getClass());
     }
 }
