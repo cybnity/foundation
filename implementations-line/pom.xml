@@ -31,7 +31,7 @@
 		<docker.nodejs.image.name>node:16.17.0-bullseye</docker.nodejs.image.name>
 
 		<!-- Docker platform supported for build of Docker images (e.g linux/amd64 on x86 CPU; or linux/arm64 on Mac M4 CPU) -->
-		<docker.platforms>linux/amd64,linux/arm64,linux/386</docker.platforms>
+		<docker.platforms>linux/amd64,linux/arm64</docker.platforms>
 	</properties>
 
 	<dependencyManagement>
