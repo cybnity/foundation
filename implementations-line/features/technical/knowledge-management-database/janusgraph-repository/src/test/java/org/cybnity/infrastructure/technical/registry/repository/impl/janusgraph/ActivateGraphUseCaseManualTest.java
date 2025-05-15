@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Test of graph implementation example about its activation.
  */
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class ActivateGraphUseCaseTest extends ContextualizedJanusGraphActiveTestContainer {
+public class ActivateGraphUseCaseManualTest extends ContextualizedJanusGraphActiveTestContainer {
     protected static SampleDomainGraphImpl graphModel;
     protected static GraphTraversalSource traversal;
 
