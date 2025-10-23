@@ -32,7 +32,7 @@ These prerequisites are about technologies and/or systems (e.g open source datab
 |Kafka|Java 11|__Minimum__:<br>- CPU: multiple cores<br>- RAM: 32Go<br>__Production__:<br>- CPU: 24 cores<br>- RAM: 64Go|[Kafka in production](https://docs.confluent.io/platform/current/kafka/deployment.html)|
 |Janusgraph||||
 |Cassandra|Debian 8-9, Java 11|__Production__:<br>- CPU: 2 cores (minimum), 8+ cores (typical)<br>- RAM: 8Go (minimum), 32GB (typical)<br>- Storage: SSDs|[Hardware choices](https://cassandra.apache.org/doc/stable/cassandra/operating/hardware.html)|
-|Istio|Kubernetes, Helm| | [Istio best practices documentation](https://istio.io/latest/docs/ops/best-practices/) |
+|Istio|Kubernetes, Helm| |[Istio best practices documentation](https://istio.io/latest/docs/ops/best-practices/); [Installation with Helm](https://istio.io/latest/docs/setup/install/helm/)|
 
 # PREREQUISITES PER MODULARIZED ENVIRONMENT
 - [SUPPORT-ENV](modules/support-env/README.md): transversal environment provided tools that allow administration and support (e.g CI tools) of software development/delivery activities.

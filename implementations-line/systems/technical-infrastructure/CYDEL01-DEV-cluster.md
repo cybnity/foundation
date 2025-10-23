@@ -315,6 +315,13 @@ When existing DNS server allowing external access to a cluster server node via h
 
 When none external DNS server is managing the server hostname and domain identification, a CoreDNS configuration file can be created allowing visibility of external machines (e.g Support cluster machine from the DEV cluster isolated network), and extending the default coredns config file automatically created by the Support server during the RKE2 dynamic agent installation.
 
+## Extended Cluster Service Mesh
+### Deployment Model
+Istio Control Plane deployment model applied is applied for the development cluster traffic management.
+
+### Virtual Machine Architecture
+The Multi-Network mesh model is applied for the development cluster interactions with other networks (e.g network of the simulation servers).
+
 ## Security
 
 ## Cluster Nodes Availability Plan

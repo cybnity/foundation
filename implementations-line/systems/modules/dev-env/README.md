@@ -48,6 +48,7 @@ Components allowing build and deployment of CYBNITY environment running onto RKE
 ### CYDEL01 infrastructure
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
+|Istio|Helm, Kubernetes| |[Installation with Helm](https://istio.io/latest/docs/setup/install/helm/)|
 |RKE2 cluster|RKE2|- RAM: 8GB+<br>- CPU: 4+ cores|RKE2 Kubernetes platform.<br>Supported [Linux distributions](https://www.suse.com/suse-rke2/support-matrix/all-supported-versions/rke2-v1-30/)|
 |Linux|Ubuntu LTS Linux server| |Operating System per node|
 
