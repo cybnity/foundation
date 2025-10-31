@@ -49,13 +49,13 @@ The link to specification documentation are mentionned like Scenario Detail Card
 ## CAPABILITY - Threat/Risks Prevention & Treatment
 | Use Scenario Name | Specification Card | UI Mockup |
 | :---------------- | :----------------- | :-------- |
-| The established risk appreciation process is quickly started to frame the evaluation of a new asset | [Scenario Card](https://cybnity.notion.site/The-established-risk-appreciation-process-is-quickly-started-to-frame-the-evaluation-of-a-new-asset-905d902944a7402f871cd1a75d90c2e6?pvs=4) | ![Image](mockups/Established-risk-appreciation-process-is-quickly-started.png)|
+| The established risk appreciation process is quickly started to frame the evaluation of a new asset | [Scenario Card](https://cybnity.notion.site/The-established-risk-appreciation-process-is-quickly-started-to-frame-the-evaluation-of-a-new-asset-905d902944a7402f871cd1a75d90c2e6?pvs=4) |  ![Image](mockups/Established-risk-appreciation-process-is-quickly-started.png) |
 | Severity of weaknesses or deficiencies regarding an asset and usage is identified via risk appreciation | [Scenario Card](https://cybnity.notion.site/Severity-of-weaknesses-or-deficiencies-regarding-an-asset-and-usage-is-identified-via-risk-appreciat-e394b38cc6904caf90c885dd6b23d862?pvs=4) | ![Image](mockups/Severity-of-weaknesses-is-identified-via-risk-appreciation.png) |
 
 ## CAPABILITY - ISMS & Strategy
 | Use Scenario Name | Specification Card | UI Mockup |
 | :---------------- | :----------------- | :-------- |
-| Risk assessment process is edited and approved as new revision | [Scenario Card](https://cybnity.notion.site/Risk-assessment-process-is-edited-and-approved-as-new-revision-238252809d8b49048f9fafc721ca225b?pvs=4) | ![Image](mockups/Risk-assessment-process-is-edited-and-approved-as-new-revision.png)|
+| Risk assessment process is edited and approved as new revision | [Scenario Card](https://cybnity.notion.site/Risk-assessment-process-is-edited-and-approved-as-new-revision-238252809d8b49048f9fafc721ca225b?pvs=4) | ![Image](mockups/Risk-assessment-process-is-edited-and-approved-as-new-revision.png) |
 
 ## CAPABILITY - Stakeholders & Responsibilities
 | Use Scenario Name | Specification Card | UI Mockup |
