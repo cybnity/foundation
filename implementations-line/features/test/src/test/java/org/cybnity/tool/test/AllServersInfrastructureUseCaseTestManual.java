@@ -13,12 +13,12 @@ import redis.embedded.RedisServer;
  * Unit test validating the usage of the InfrastructureContextualizedTest utility class like could be done by a project reusing this facility.
  */
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class AllServersInfrastructureUseCaseTest extends InfrastructureContextualizedTest {
+public class AllServersInfrastructureUseCaseTestManual extends InfrastructureContextualizedTest {
 
     /**
      * Example of default constructor statically defining the configuration of the super instance.
      */
-    public AllServersInfrastructureUseCaseTest() {
+    public AllServersInfrastructureUseCaseTestManual() {
         // Define a unit test context requiring started Redis, JanusGraph and Keycloak servers ready for use by the unit tests
         super(true, true, true, false, /* snapshot repo configuration desired */ true);
     }

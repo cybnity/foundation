@@ -12,7 +12,7 @@
 	<artifactId>test</artifactId>
 	<version>${revision}</version>
 	<packaging>jar</packaging>
-	<name>- Test utilities library</name>
+	<name>Test utilities library</name>
 	<dependencies>
 		<dependency>
 			<!-- Management and usage of environment variables -->
