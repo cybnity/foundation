@@ -113,14 +113,15 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
 <details>
   <summary>Member Roles</summary>
 
-  |Property|Value|Comments|
+  |Property|
+  |Pro|Value|Comments|
   |:-------|:----|:-------|
   |User|Local|Add each user account having responsibility on the cluster management|
 </details>
 
 <details>
   <summary>Additional Manifest</summary>
-
+  
   Added CoreDNS configuration allowing Kubelet to see external DNS server that allow Cluster agent to find rancher.cybnity.tech cluster from hostname:
 
   ```
@@ -145,7 +146,7 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
             reload
             loadbalance
         }
-    ```
+   ```
 </details>
 
 <details>
@@ -197,6 +198,24 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
   |:-------|:----|:-------|
   |FQDN|dev-deploy.cybnity.tech|Allow cluster access over external HA server, and access to other *.cybnity.tech server (e.g Rancher)|
   |CA Certificates|star-cybnity-tech-full-validation-chain.pem text|Include all certificates involved into the validation of keys/certificates on cybnity.tech network zone, and/or exposure of CYBNITY Software Suite endpoints over an HTTPS protocol with CA validation|
+</details>
+
+<details>
+  <summary>Registries</summary>
+
+  #### Enable cluster scoped container registry for Rancher
+
+  |Property|Value|Comments|
+  |:-------|:----|:-------|
+  |Container Registry|registry-1.docker.io|Authentication to DockerHUB via custom account|
+  |Authentication|HTTP Basic Auth:cybnity|Reused Basic Auth configured and shared by Support cluster|
+
+  #### Registry Authentication
+
+  |Property|Value|Comments|
+  |:-------|:----|:-------|
+  |Registry Hostname|registry-1docker.io| |
+  |Authentication|HTT Basic Auth:cybnity|Reused Basic Auth configured and shared by Support cluster|
 </details>
 
 <details>
