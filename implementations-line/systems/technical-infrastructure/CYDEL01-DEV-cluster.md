@@ -203,12 +203,9 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
 <details>
   <summary>Registries</summary>
 
-  #### Enable cluster scoped container registry for Rancher
-
   |Property|Value|Comments|
   |:-------|:----|:-------|
-  |Container Registry|registry-1.docker.io|Authentication to DockerHUB via custom account|
-  |Authentication|HTTP Basic Auth:cybnity|Reused Basic Auth configured and shared by Support cluster|
+  |Enable cluster scoped container registry for Rancher|enabled| |
 
   #### Registry Authentication
 
