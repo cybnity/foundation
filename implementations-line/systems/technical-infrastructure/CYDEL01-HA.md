@@ -12,11 +12,153 @@ Current hardware configuration of the node is based on a HP ProDesk 400 G3:
 - Hard disks: NVMe SSD 512 GB (Operation System & Linux based applications)
 - 1 NIC 1Gbps
 
-## BIOS & operating system layer
+## BIOS
 See [Ubuntu-installation](CYDEL01-ubuntu-installation.md) procedure to prepare a server.
 
 Current prepared server configurations is:
 - FQDN: __ha.cybnity.tech__
+
+# OPERATING SYSTEM LAYER
+
+## System Backup
+The automatic backup of essential system files and/or data folder which could need to be restored in case of system failure is managed via [RESTIC open source solution](https://restic.readthedocs.io/en/latest/index.html).
+
+### Restic Installation
+- Create restic configuration files folder into __/etc/restic__ folder via command: `sudo mkdir /etc/restic/ssh-keys`
+
+- Create a dedicated server account onto remote server (e.g. FTP server) ensuring the backup files storage where Restic will push the backup snapshots
+
+- Create an authentication private/public key pair (usable for future Restic SSH client authentications when executing SFTP connections to remote storage server) on the system allowing to manage authentication without usage of the FTP account interactive password mode via command: `sudo ssh-keygen`
+  - Target storage of generated key pair file location shall be defined to __/etc/restic/ssh-keys/id_restic__
+  - Passphrase entry does not need to be defined regarding generated private key (never shared/transmitted out of the server)
+  - __id_restic__ (file containing the RSA private key when using SSH protocol version 1) and __id_restic.pub__ (file containing the RSA public key for authentication when you are using the SSH protocol version)
+
+- Copy the generated public key into the remote server serving as storage server for snapshots
+  - create a __.ssh__ folder into the remote server account home directory
+  - create __authorized_keys__ file into the __.ssh__ folder
+  - copy the __id_restic.pub__ public key file content into __.ssh/authorized_keys__ file into the remote server account home directory
+
+- Install Restic tool on server via vommand: `sudo apt-get install restic`
+
+### Restic Configuration
+- Add environment variables into __/etc/environment__ that are required by Restic for remote server access via command: `sudo vi /etc/environment`
+```
+  RESTIC_PASSWORD="<<repository password>>"
+  RESTIC_HOST="ha.cybnity.tech"
+
+  ha123.?UPA73;
+```
+
+- Reload environment file to activate changed file, via command `export $(cat /etc/environment | xargs) && env`
+
+- To avoid automatic close of SSH session by ftp server whe Restic is processing huge amounts of unchanged data, and sftp server connection via public key, add lines in __/etc/ssh/ssh_config__ file:
+```
+# SSH key and configuration for SFTP access without password into command line
+# (e.g. nas.agnet host name shall be equals to <<nas server name or ip address>> targeted by Restic snapshot command)
+Host restic-backup-host
+    Hostname nas.agnet
+    Port 22
+    User <<an account login opened into the remote server receiving the backup snapshots>>
+    PasswordAuthentication no
+    IdentityFile /etc/restic/ssh-keys/id_restic
+    IdentitiesOnly yes
+    ServerAliveInterval 60
+    ServerAliveCountMax 240
+```
+
+- Define files and/or folders which shall be excluded from each snapshot of the full system to be stored, into a configuration file named __restic-backup-excludes.txt__ (e.g. created into __/etc/restic__ folder) containing:
+```
+  # Exclude files or folder of RESTIC backup
+
+  # Exclude all files and sub-directories from system potentially unmounted folders
+  /dev
+  /media
+  /cdrom
+  /mnt
+
+  # virtual filesystems which reflect the state of the system and allow to change runtime parameters (never to backup)
+  /proc
+  /sys
+
+  # dynamically created at boot (memory filesystem)
+  /dev
+
+  # other system folders
+  /lost+found
+  /run
+  /lib
+  /sbin
+  /bin
+  /tmp
+  /swapfile
+
+  # var backuped but except temp and logs
+  /var/tmp
+  /var/log
+  /var/cache
+
+  # optional boot
+  /boot
+```
+
+### Initialization of backup repository in remote server
+A repository dedicated to a full backup of the HA server is defined.
+
+- Create the repository reserved into the FTP server for the system snapshots storage via command:
+`sudo restic -r sftp:restic-backup-host:restic-repo-ha.cybnity.tech-server init`
+
+### Automation Scripts
+- Create a backup server script file __/usr/local/bin/server_backup_start.sh__ :
+```
+  #!/bin/bash
+  # Automation script for RESTIC backup of all the system based on exclusion configuration file
+  #
+  echo "SYSTEM BACKUP - Server snapshot started by RESTIC to NAS server"
+
+  sudo restic -r sftp:restic-backup-host:restic-repo-ha.cybnity.tech-server backup --host ha.cybnity.tech --one-file-system / --exclude-file=/etc/restic/restic-backup-excludes.txt
+
+  echo "Server snapshot saved into NAS server"
+
+  echo "REPO CLEANING - Cleaning of previous snapshots older than one month"
+
+  sudo restic -r sftp:restic-backup-host:restic-repo-ha.cybnity.tech-server forget --keep-within-weekly 1m --prune
+
+  echo "Repository have been cleaning and only last weeklky snapshot are maintained available into the NAS server regarding the host ($RESTIC_HOST)"
+```
+
+- Make script as executable via command: `sudo chmod +x /usr/local/bin/server_backup_start.sh`
+
+- Create symbolic link to script (allowing manual call from anywhere from command `sh startBackupServer`) via command: `sudo ln -s /usr/local/bin/server_backup_start.sh startBackupServer`
+
+### Backup operations
+Usage of Restic script and commands can be manually performed according to desired actions.
+
+- To list previous existing snapshot versions (number based) stored into remote server:
+`sudo restic -r sftp:restic-backup-host:restic-repo-ha.cybnity.tech-server snapshots`
+
+- To read contents of a snapshot version stored into the remote server:
+`sudo restic -r sftp:restic-backup-host:restic-repo-ha.cybnity.tech-server ls <<snapshot ID>>`
+
+### Restoration operations
+See [Restoring from backup documentation](https://restic.readthedocs.io/en/latest/050_restore.html).
+
+- Restore a snapshot from its ID via command:
+`sudo restic -r sftp:restic-backup-host:restic-repo-ha.cybnity.tech-server restore <<snapshot ID>> --target <<destination folder>>`
+
+- Restore __latest__ backup snapshot about specific host (e.g. __ha.agnet__) and path (e.g. __/__) via command:
+`sudo restic -r sftp:restic-backup-host:restic-repo-ha.cybnity.tech-server restore latest --target <<destination folder>> --path "/" --host ha.cybnity.tech`
+
+### Deletion and cleaning operations
+See [Removing backup snapshots documentation](https://restic.readthedocs.io/en/latest/060_forget.html).
+
+- Remove a snapshot from its ID via command:
+`sudo restic -r sftp:restic-backup-host:restic-repo-ha.cybnity.tech-server forget <<snapshot ID>>`
+
+- Additionally, it is required to remove data referenced by files in the deleted snapshot which is still stored in the repository. To cleanup unreferenced data, execute the __prune__ command according to:
+`sudo restic -r sftp:restic-backup-host:restic-repo-ha.cybnity.tech-server prune`
+
+- Remove all previous snapshots and keep only latest weekly snaphots made within one month of the latest snapshot, and automatic prune directive execution via command:
+`sudo restic -r sftp:restic-backup-host:restic-repo-ha.cybnity.tech-server forget --keep-within-weekly 1m --prune`
 
 # INFRASTRUCTURE SERVICES
 
@@ -40,7 +182,7 @@ Automatic poweroff and restart of server can be managed via custom scheduling.
 |:-----|:--------|:----------|:------------------|:---------------------|
 |Daily |21:00    |ha         |None active cluster|Interrupted services  |
 
-Defined crontab directives on server in a safe way (with wait of existing process secure end before make the stop) via power off:
+Defined crontab directive on server in a safe way (with wait of existing process secure end before make the stop) via power off:
 - Open and add command into crontab via command: `sudo crontab -e`
 - Add line in file and save:
 ```
@@ -62,6 +204,25 @@ Controlled by BIOS setup and/or Wake On-Lan remote call.
 - In server's BIOS setup (power management section), add start directive for poweron action performed each Thursday and Friday at 08:35:00.
 > [!NOTE]
 > Timezone is UTC into NIOS by default. For example, 07:35:00 value shall be set for alignment with Europe Paris timezone when HA server shall be started at 08:35:00 in France.
+
+## Server Backup Plan
+Automatic full system data backup and remote on remote support server (e.g. NAS support server) automatically managed over crontab.
+
+### 2/7 days - Daily Backup Start Plan
+- __Server Backup Plan__ (controlled by Linux crontab service)
+
+|Period|Task Time|Server Node|Comment                                                    |Residual Accepted Risk                |
+|:-----|:--------|:----------|:----------------------------------------------------------|:-------------------------------------|
+|Daily |19:00    |ha         |Full system snaphot and storage to remote repository server|Deleted previous snapshots > 1 month  |
+
+Defined crontab directive on server via Restic backup script:
+- Open and add command into crontab via command: `sudo crontab -e`
+- Add line in file and save:
+```
+  # DNS serber auto-backup via Restic process to QNAP Nas Server at
+  # every Thursday and Friday (weekly day of NAS Server running between 08:35 and 21:00)
+  0 19 * * 4,5 /usr/local/bin/server_backup_start.sh
+```
 
 # APPLICATION SERVICES
 ## Automation scripts
