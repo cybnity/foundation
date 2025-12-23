@@ -320,7 +320,7 @@ By default, logs about access and errors relative to NGINX configuration and run
 ## Websites configuration
 ### SSL configuration
 - Add cybnity.tech wildcard certificate and private key for reuse by NGINX according to:
-  - Add __STAR_cybnity_tech.pem__ public certificate into `/etc/nginx/ssl/cybnity.tech/certs`
+  - Add __STAR_cybnity_tech.pem__ public certificate (e.g. concatened wilward certificate followed by intermediate certificates chain) into `/etc/nginx/ssl/cybnity.tech/certs`
   - Add __star_cybnity_tech_private.key__ file (private key) into `/etc/nginx/ssl/cybnity.tech/private`
 
 ### Web sites configuration zones
