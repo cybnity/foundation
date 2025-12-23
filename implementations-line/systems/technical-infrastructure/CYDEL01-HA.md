@@ -413,7 +413,7 @@ http {
 
         # When not applied *.cybnity.tech wilcard SSL certificate paths (public cert, and private key) are defined in global configuration (nginx.conf)
         # SSL wildcard certificate configuration relative to all cybnity.tech sub-domains and enabled servers
-        ssl_certificate         /etc/nginx/ssl/cybnity.tech/certs/STAR_cybnity_tech.pem; # Specific wilcard certificate or chained certificates
+        ssl_certificate         /etc/nginx/ssl/cybnity.tech/certs/STAR_cybnity_tech.pem; # Specific wilcard certificate or chained certificates (e.g. concatened wilward certificate followed by intermediate certificates chain)
         ssl_certificate_key     /etc/nginx/ssl/cybnity.tech/private/star_cybnity_tech_private.key; # Reserved NGINX read-only access
         #ssl_trusted_certificate /etc/nginx/ssl/cybnity.tech/certs/ca-certs.pem;
 
