@@ -45,8 +45,6 @@ The automatic backup of essential system files and/or data folder which could ne
 ```
   RESTIC_PASSWORD="<<repository password>>"
   RESTIC_HOST="ha.cybnity.tech"
-
-  ha123.?UPA73;
 ```
 
 - Reload environment file to activate changed file, via command `export $(cat /etc/environment | xargs) && env`
