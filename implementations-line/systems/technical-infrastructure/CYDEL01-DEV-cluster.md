@@ -360,6 +360,8 @@ Defined crontab directives on each server in a safe way (with wait of existing p
 ```
 - Crontab plan checking via command: `sudo crontab -l`
 
+- Reload crontab after file change via command `sudo service cron reload`
+
 ### 8/24 hr - 2/7 days Availability Start Plan
 Controlled by BIOS setup, or via crontab on permanent available server (e.g dev.cybnity.tech).
 

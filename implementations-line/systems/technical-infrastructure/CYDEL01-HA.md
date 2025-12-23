@@ -117,6 +117,8 @@ Define WOL script executing WOL call via creation of a `/usr/local/bin/CYDEL_sup
   0 9 * * 4,5 /usr/local/bin/CYDEL_dev_cluster_start.sh
 ```
 
+- Reload crontab after file change via command `sudo service cron reload`
+
 ## NGINX installation
 - Install NGINX open source version as documented by the [NGINX installation doc](https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/#installing-prebuilt-ubuntu-packages)
 - Check started default NGINX service via command:
