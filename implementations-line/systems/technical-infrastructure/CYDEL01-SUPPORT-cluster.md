@@ -304,17 +304,22 @@ sudo kubectl create namespace cattle-system
 [Installation of Rancher](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/install-upgrade-on-a-kubernetes-cluster#5-install-rancher-with-helm-and-your-chosen-certificate-option) over Helm with Rancher-generated (when ingress.tls.source parameter is not defined) certificates. See [Rancher Helm chart options doc](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/helm-chart-options) regarding the common options.
 
 - Create the certificate and key files ([mandatory Secret resource names](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/resources/add-tls-secrets)) for K8S secret resource creation) usable by Rancher installer from the custom domain certificate and key files:
-    __tls.crt__: custom domain server certificate file followed by any intermediate certificate(s)
+    __tls.crt__: custom domain server certificate file. It's a file including (PEM formatted) concatenated server certificate followed by any intermediate certificate(s)
     __tls.key__: custom domain certificate private key
 - Check Common Name and Subject Alternative Names on the custom certificate:
 ```
   # Show subject recognized in certificate
   openssl x509 -noout -subject -in tls.crt
 ```
-- Add TLS secrets as secret via command:
+- Add TLS secret as certificate secret object via command:
 ```
   kubectl -n cattle-system create secret tls tls-rancher-ingress --cert=tls.crt --key=tls.key
 ```
+    - Or update TSL secret object (see [Rancher documentation](https://github.com/rancher/rancher-docs/blob/main/docs/getting-started/installation-and-upgrade/resources/update-rancher-certificate.md)) via command:
+    ```
+      kubectl -n cattle-system create secret tls tls-rancher-ingress --cert=tls.crt \
+      --key=tls.key --dry-run --save-config -o yaml | kubectl apply -f -
+    ```
 - Create __cacerts.pem__ file including the custom domain CA trust chain (containing only root CA certificate or certificate chain from private CA), and create __tls-ca__ secret via:
 ```
   kubectl -n cattle-system create secret generic tls-ca --from-file=cacerts.pem
