@@ -150,6 +150,17 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
 </details>
 
 <details>
+  <summary>Agent Environment Vars</summary>
+  
+  Added Helm environment variable (see [Helm common default environment variable](https://apipark.com/techblog/en/master-the-default-helm-environment-variable-ultimate-guide-8/#importance-of-default-environment-variables)) relative to:
+  - default timeout for Helm operations (e.g. 5min as 300sec)
+  
+  |Variable Name|Value|
+  |:-------|:----|
+  |HELM_TIMEOUT|300|
+</details>
+
+<details>
   <summary>Cluster Agent</summary>
 
   |Property|Value|Comments|
