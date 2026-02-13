@@ -217,7 +217,7 @@ Defined crontab directive on server via Restic backup script:
 - Open and add command into crontab via command: `sudo crontab -e`
 - Add line in file and save:
 ```
-  # DNS serber auto-backup via Restic process to QNAP Nas Server at
+  # DNS server auto-backup via Restic process to QNAP Nas Server at
   # every Thursday and Friday (weekly day of NAS Server running between 08:35 and 21:00)
   0 19 * * 4,5 /usr/local/bin/server_backup_start.sh
 ```

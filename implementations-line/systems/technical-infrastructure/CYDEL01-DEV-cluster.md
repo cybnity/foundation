@@ -61,7 +61,7 @@ Like RKE2 is by default reading the `resolv.conf` file of Linux layer, add DNS s
   sudo vi /etc/systemd/resolved.conf
 
   # Uncomment property of [Resolve] section in file with
-  DNS=192.168.60.28 192.168.60.1
+  DNS=192.168.60.28
 
   # restart resolver
   sudo systemctl restart systemd-resolved
@@ -138,10 +138,11 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
             kubernetes cluster.local in-addr.arpa ip6.arpa {
               pods insecure
               fallthrough in-addr.arpa ip6.arpa
+              ttl 30
             }
             prometheus :9153
-            forward . 192.168.60.28
-            cache 30
+            forward . 8.8.8.8
+            cache
             loop
             reload
             loadbalance
