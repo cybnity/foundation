@@ -449,6 +449,48 @@ Types of shared elements managed in the Secret resources section of the SUPPORT 
       dnsNames:
       - "*.cybnity.tech"
   ```
+  - Creation of new `rke2-coredns-config.yaml` file into `/var/lib/rancher/rke2/server/manifests/` folder (see https://docs.rke2.io/add-ons/helm#customizing-packaged-components-with-helmchartconfig), to customize the packaged CoreDNS configuration (allowing external server access over infrastructure DNS server), that include:
+  ```
+    apiVersion: helm.cattle.io/v1
+    kind: HelmChartConfig
+    metadata:
+      name: rke2-coredns
+      namespace: kube-system
+    spec:
+      valuesContent: |-
+        image: coredns/coredns
+        # CoreDNS docker repository https://hub.docker.com/r/coredns/coredns/tags
+        imageTag: v1.14.1
+        # No local cache https://docs.rke2.io/networking/networking_services#coredns
+        nodelocal:
+          enabled: false
+        # See zoneFiles values structure at https://support.scc.suse.com/s/kb/How-to-customize-rke2?language=en_US
+        zoneFiles:
+          - filename: Corefile
+            contents: |
+              .:53 {
+                errors
+                health {
+                  lameduck 10s
+                }
+                ready
+                kubernetes cluster.local in-addr.arpa ip6.arpa {
+                  pods insecure
+                  fallthrough in-addr.arpa ip6.arpa
+                  ttl 30
+                }
+                prometheus 0.0.0.0:9153
+                # Forward via RKE2 node where the CoreDNS POD is executed
+                forward . 192.168.30.1 8.8.8.8 {
+                  max_concurrent 1000
+                }
+                cache
+                loop
+                reload
+                loadbalance
+              }
+    
+  ```
   - Minimize accessibility regarding permissions via command `sudo chmod 600 /var/lib/rancher/rke2/server/manifests/rke2-trust-cybnity-tech-issuer.yaml`
 
   ```mermaid
