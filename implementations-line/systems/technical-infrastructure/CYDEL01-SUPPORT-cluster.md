@@ -105,7 +105,7 @@ Add additional __server__ property to the config.yaml file as `server: https://s
 > [!NOTE]
 > tls-san item can be an ip external public ip, a server hostname, a FQDN, a Load-Balancer ip address, or a Load-Balancer dns domain.
 
-- Read generated node token which could be equals to origignal value, or new generated value in case of cluster reset via command:
+- Read generated node token which could be equals to original value, or new generated value in case of cluster reset via command:
 ```
   # Get and check the node-token generated on primary server
   cat /var/lib/rancher/rke2/server/node-token
@@ -231,6 +231,28 @@ By default, pods deployed into the cluster can't reach external server based on 
 When existing DNS server allowing external access to a cluster server node via hostname.domain_name (e.g sup1.cybnity.tech,, sup2.cybnity.tech, sup3.cybnity.tech), the pods deployed into the cluster can find any other external resource from  their FQDNs.
 
 When none external DNS server is managing the server hostname and domain identification, a CoreDNS configuration file can be created allowing visibility of external machines (e.g Support cluster machine from the DEV cluster isolated network), and extending the default coredns config file automatically created by the Support server during the RKE2 dynamic agent installation.
+
+#### DNS Resolver
+By default, external server ip address and hostnames is not visible from pods deployed into the cluster.
+
+Like RKE2 is by default reading the `resolv.conf` file of Linux layer, add DNS servers definition as global setting:
+```
+  # Read resolution status
+  sudo resolvectl status
+
+  # Update Global defaut DNS servers definition
+  sudo vi /etc/systemd/resolved.conf
+
+  # Uncomment property of [Resolve] section in file with
+  DNS=192.168.30.1
+  FallbackDNS=8.8.8.8
+
+  # restart resolver
+  sudo systemctl restart systemd-resolved
+
+  # Check updated Global DNS servers declaration
+  sudo resolvectl status
+```
 
 ## Security
 
@@ -379,7 +401,7 @@ sudo kubectl create namespace cattle-system
 ```
 - From other machine, test and show HTTP header of forwarded request to Rancher url via command:
 ```
-  # Show header ouput
+  # Show header output
   curl -Lvso /dev/null https://rancher.cybnity.tech
 
   # Show detail of SSL process results

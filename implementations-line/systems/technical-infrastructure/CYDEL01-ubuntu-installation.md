@@ -182,6 +182,26 @@ When NIC not detected, usable or not configured during the origin Linux installa
 - Check visibility of detected network cards via command `ip a`
 - Install ifconfig via command `sudo apt install net-tools` allowing usage of `ifconfig` command
 
+### Default DNS Resolver configuration
+Like Linux is by default reading the `resolv.conf` file, add DNS servers definition as global setting:
+```
+  # Read resolution status
+  sudo resolvectl status
+
+  # Update Global defaut DNS servers definition
+  sudo vi /etc/systemd/resolved.conf
+
+  # Uncomment property of [Resolve] section in file with
+  DNS=192.168.60.1
+  FallbackDNS=8.8.8.8
+
+  # restart resolver
+  sudo systemctl restart systemd-resolved
+
+  # Check updated Global DNS servers declaration
+  sudo resolvectl status
+```
+
 ### NetworkManager configuration
 By default, only motherboard default embedded network card is configured (statically or in DHCP mode according to the choice made during the Ubuntu installation procedure).
 

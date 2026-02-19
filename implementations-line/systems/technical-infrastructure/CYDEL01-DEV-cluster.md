@@ -52,7 +52,7 @@ Open traffic on server allowing any discussion between server and SUPPORT cluste
 ### DNS Resolver
 By default, external server ip address and hostnames is not visible from pods deployed into the cluster.
 
-Like RKE2 is by default reading the `resolv.conf` file of Linux layer, add DNS servers definition as Global setting:
+Like RKE2 is by default reading the `resolv.conf` file of Linux layer, add DNS servers definition as global setting:
 ```
   # Read resolution status
   sudo resolvectl status
@@ -61,7 +61,8 @@ Like RKE2 is by default reading the `resolv.conf` file of Linux layer, add DNS s
   sudo vi /etc/systemd/resolved.conf
 
   # Uncomment property of [Resolve] section in file with
-  DNS=192.168.60.28
+  DNS=192.168.30.1
+  FallbackDNS=8.8.8.8
 
   # restart resolver
   sudo systemctl restart systemd-resolved
@@ -134,14 +135,17 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
       Corefile: |
         .:53 {
             errors
-            health
+            health {
+              lameduck 10s
+            }
+            ready
             kubernetes cluster.local in-addr.arpa ip6.arpa {
               pods insecure
               fallthrough in-addr.arpa ip6.arpa
               ttl 30
             }
             prometheus :9153
-            forward . 8.8.8.8
+            forward . /etc/resolv.conf
             cache
             loop
             reload
