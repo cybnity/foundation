@@ -461,7 +461,7 @@ http {
   sudo ln -s /etc/nginx/sites-available/sup.cybnity.tech /etc/nginx/sites-enabled/
 ```
 - Check valid HTTPS route over the NGINX to SUPPORT cluster via command `curl -vIL https://rancher.cybnity.tech` that show detail of request and HTTPS flow steps.
-- Check the automatix forwaring of HTTP request to HTTPS request via command `curl -vIL http://rancher.cybnity.tech`.
+- Check the automatix forwarding of HTTP request to HTTPS request via command `curl -vIL http://rancher.cybnity.tech`.
 - Check access to Rancher application deployed into the SUPPORT cluster over a web browser call to url `https://rancher.cybnity.tech`, confirming the  activated load-balancing of application call between SUPPORT cluster serves serving the Rancher web application url.
 
 #
