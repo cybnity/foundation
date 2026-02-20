@@ -244,10 +244,10 @@ Like RKE2 is by default reading the `resolv.conf` file of Linux layer, add DNS s
   sudo vi /etc/systemd/resolved.conf
 
   # Uncomment property of [Resolve] section in file with
-  DNS=192.168.30.1
+  DNS=192.168.60.28
   FallbackDNS=8.8.8.8
 
-  # restart resolver
+  # Restart resolver
   sudo systemctl restart systemd-resolved
 
   # Check updated Global DNS servers declaration
@@ -458,12 +458,8 @@ Types of shared elements managed in the Secret resources section of the SUPPORT 
       namespace: kube-system
     spec:
       valuesContent: |-
-        image: coredns/coredns
         # CoreDNS docker repository https://hub.docker.com/r/coredns/coredns/tags
-        imageTag: v1.14.1
         # No local cache https://docs.rke2.io/networking/networking_services#coredns
-        nodelocal:
-          enabled: false
         # See zoneFiles values structure at https://support.scc.suse.com/s/kb/How-to-customize-rke2?language=en_US
         zoneFiles:
           - filename: Corefile
@@ -481,7 +477,7 @@ Types of shared elements managed in the Secret resources section of the SUPPORT 
                 }
                 prometheus 0.0.0.0:9153
                 # Forward via RKE2 node where the CoreDNS POD is executed
-                forward . 192.168.30.1 8.8.8.8 {
+                forward . 192.168.60.28 8.8.8.8 {
                   max_concurrent 1000
                 }
                 cache
