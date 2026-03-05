@@ -197,7 +197,8 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
   #### Labels
   |Key|Value|Comments|
   |:-------|:----|:-------|
-  |environment|dev|label attached to objects as relative to development environment|
+  |environment|dev|Label attached to objects as relative to activity type aupported by the server|
+  |region|eu|Label attached to objects as relative to server location|
 </details>
 
 <details>
