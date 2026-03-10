@@ -306,7 +306,7 @@ See [Rancher technical documentation](https://ranchermanager.docs.rancher.com/ge
 
 ### On primary cluster node
 > [!NOTE]
-> Any kubernetes comman executed on the primary node will generated configuration and application elements synchronizing automatically to other cluster nodes.
+> Any kubernetes command executed on the primary node will generated configuration and application elements synchronizing automatically to other cluster nodes.
 
 - Add helm charts to node repository list via command:
 ```
@@ -549,11 +549,24 @@ Types of shared elements managed in the Secret resources section of the SUPPORT 
 
 ## CYBNITY software repository
 - Add complementary helm charts repository (e.g allowing deployment of CYBNITY applications) to each cluster node's repository list via commands:
-```
+```console
   sudo helm repo add cybnity https://cybnity.github.io/iac-helm-charts --force-update
 ```
 
 ## Continuous Delivery Tool (Fleet)
+### Fleet CRDs
+For support of CRD automated creation by Fleet (e.g GitRepo resource from project) by Fleet agent via Helm, additional Fleet chart and CRD shall be installed.
+
+Update Fleet Helm charts (seed [doc](https://fleet.rancher.io/0.13/tutorials/quickstart)) on Support primary cluster node via:
+```console
+  helm -n cattle-fleet-system upgrade --wait fleet-crd fleet/fleet-crd
+```
+
+If not already existing, add Helm repo on each cluster node via command:
+```console
+  helm repo add fleet https://rancher.github.io/fleet-helm-charts/
+```
+
 ### Configuration
 Fleet tool is automatically installed into the Rancher solution.
 - Check installed fleet tool via command: `kubectl -n fleet-local get fleet`
