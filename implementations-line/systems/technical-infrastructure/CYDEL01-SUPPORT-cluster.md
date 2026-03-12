@@ -477,7 +477,8 @@ Types of shared elements managed in the Secret resources section of the SUPPORT 
                 }
                 prometheus 0.0.0.0:9153
                 # Forward via RKE2 node where the CoreDNS POD is executed
-                forward . /etc/resolv.conf
+                # /run/systemd/resolve/resolv.conf is used in place of /etc/resolv.conf on Ubuntu as known issue when node is using systemd-resolved (https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/#known-issues)
+                forward . 192.168.60.28
                 cache
                 loop
                 reload

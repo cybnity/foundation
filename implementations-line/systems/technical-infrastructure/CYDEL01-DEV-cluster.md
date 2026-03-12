@@ -145,7 +145,8 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
               ttl 30
             }
             prometheus :9153
-            forward . /etc/resolv.conf
+            # /run/systemd/resolve/resolv.conf is used in place of /etc/resolv.conf on Ubuntu as known issue when node is using systemd-resolved (https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/#known-issues)
+            forward . 192.168.60.28
             cache
             loop
             reload
