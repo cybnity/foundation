@@ -244,7 +244,7 @@ Like RKE2 is by default reading the `resolv.conf` file of Linux layer, add DNS s
   sudo vi /etc/systemd/resolved.conf
 
   # Uncomment property of [Resolve] section in file with
-  DNS=192.168.60.28
+  DNS=192.168.60.1
   FallbackDNS=8.8.8.8
 
   # Restart resolver
@@ -477,9 +477,7 @@ Types of shared elements managed in the Secret resources section of the SUPPORT 
                 }
                 prometheus 0.0.0.0:9153
                 # Forward via RKE2 node where the CoreDNS POD is executed
-                forward . 192.168.60.28 8.8.8.8 {
-                  max_concurrent 1000
-                }
+                forward . /etc/resolv.conf
                 cache
                 loop
                 reload
