@@ -405,7 +405,7 @@ sudo kubectl create namespace cattle-system
   curl -Lvso /dev/null https://rancher.cybnity.tech
 
   # Show detail of SSL process results
-  curl -v https://rancher.cybnity.tech`
+  curl -v https://rancher.cybnity.tech
 ```
 - Open browser on Rancher web UI via commands:
 ```
@@ -478,7 +478,7 @@ Types of shared elements managed in the Secret resources section of the SUPPORT 
                 prometheus 0.0.0.0:9153
                 # Forward via RKE2 node where the CoreDNS POD is executed
                 # /run/systemd/resolve/resolv.conf is used in place of /etc/resolv.conf on Ubuntu as known issue when node is using systemd-resolved (https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/#known-issues)
-                forward . 192.168.60.28
+                forward 192.168.60.1 #. /etc/resolv.conf
                 cache
                 loop
                 reload
