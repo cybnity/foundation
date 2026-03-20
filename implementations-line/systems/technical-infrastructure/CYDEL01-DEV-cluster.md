@@ -91,6 +91,19 @@ According to the K8S network management system implemented by the DEV cluster, c
   ```
 - Reload systemctl directives via command: `sudo service procps force-reload`
 
+### External IP address configuration
+For allow visible and auto-allocated external IP address to node, set __CATTLE_ADDRESS__ environment variable on host defining the IP address of server as should be visible externally to the K8S cluster.
+
+- Environment variable defined in __/etc/environment__:
+```
+  # External IPv4/IPv6 address usable by any cluster agent allowing Kubernetes node to be accessible outside of the cluster
+  CATTLE_ADDRESS=192.168.30.20
+```
+- Reload environment file to activate changed file, via command:
+```
+  set -a; . /etc/environment; set +a;
+```
+
 ### DEV cluster preparation
 When DEV cluster is not already existing for receive new RKE2 node, create it from Rancher UI web console (clusters management tool accessible via web browser relative to SUPPORT cluster's Rancher application):
 - From Rancher Clusters management view (e.g [CYBNITY CYDEL01 Rancher view](https://rancher.cybnity.tech/dashboard/home)):
@@ -263,7 +276,11 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
 ### Agent installation
 RKE2 agent node is automatically installed on the server via DEV Cluster managed by Rancher (SUPPORT cluster).
 
-- From DEV Cluster server, execute (in `sudo` mode) the URL provided by Rancher regarding the dynamic Cluster created (e.g dev-deploy cluster created via Rancher UI).
+- From DEV Cluster server:
+  - Get the agent installation command provided by Rancher regarding the dynamic Cluster node to create (e.g dev-deploy cluster created via Rancher UI)
+  - Add environment variable into the URL about CATTLE_ADDRESS=192.168.30.21 with ip address equals to node external ip address
+  - Execute (in `sudo` mode) the URL curl command
+  
 The executed installation script manages the deployment of all RKE2 components required for runtime.
 
 - Check the started rke2-agent service via commands:

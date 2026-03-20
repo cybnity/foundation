@@ -110,6 +110,8 @@ Timedate is by default installed on Ubuntu in place of previous ntpd tool, check
 - Activate the command line contents by default with environment variable defined in __/etc/environment__:
 ```
   CLICOLOR=1
+  # External IPv4/IPv6 address usable by any cluster agent allowing Kubernetes node to be accessible outside of the cluster
+  CATTLE_ADDRESS=192.168.30.20
 ```
 - Reload environment file to activate changed file, via command:
 ```
