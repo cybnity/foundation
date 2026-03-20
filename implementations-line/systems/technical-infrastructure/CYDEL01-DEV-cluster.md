@@ -91,19 +91,6 @@ According to the K8S network management system implemented by the DEV cluster, c
   ```
 - Reload systemctl directives via command: `sudo service procps force-reload`
 
-### External IP address configuration
-For allow visible and auto-allocated external IP address to node, set __CATTLE_ADDRESS__ environment variable on host defining the IP address of server as should be visible externally to the K8S cluster.
-
-- Environment variable defined in __/etc/environment__:
-```
-  # External IPv4/IPv6 address usable by any cluster agent allowing Kubernetes node to be accessible outside of the cluster
-  CATTLE_ADDRESS=192.168.30.20
-```
-- Reload environment file to activate changed file, via command:
-```
-  set -a; . /etc/environment; set +a;
-```
-
 ### DEV cluster preparation
 When DEV cluster is not already existing for receive new RKE2 node, create it from Rancher UI web console (clusters management tool accessible via web browser relative to SUPPORT cluster's Rancher application):
 - From Rancher Clusters management view (e.g [CYBNITY CYDEL01 Rancher view](https://rancher.cybnity.tech/dashboard/home)):
