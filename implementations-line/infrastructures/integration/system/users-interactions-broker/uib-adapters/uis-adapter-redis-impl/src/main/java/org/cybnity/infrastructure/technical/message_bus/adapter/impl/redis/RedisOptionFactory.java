@@ -68,11 +68,11 @@ public class RedisOptionFactory {
             throw new IllegalArgumentException("ctx parameter is required!");
         return createUsersInteractionsSpaceOptions(
                 ctx.get(WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_USERACCOUNT),
-                ctx.get(WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD),
+                ctx.get(WriteModelConfigurationVariable.REDISCLI_AUTH),
                 ctx.get(WriteModelConfigurationVariable.REDIS_WRITEMODEL_SERVER_HOST),
                 ctx.get(WriteModelConfigurationVariable.REDIS_WRITEMODEL_SERVER_PORT),
                 ctx.get(WriteModelConfigurationVariable.REDIS_WRITEMODEL_DATABASE_NUMBER),
-                ctx.get(WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD));
+                ctx.get(WriteModelConfigurationVariable.REDISCLI_AUTH));
         // Any undefined environment variable that is not found during the context
         // reading and that generate an IllegalArgumentException from the
         // createUsersInteractionsSpaceOptions(...) method call

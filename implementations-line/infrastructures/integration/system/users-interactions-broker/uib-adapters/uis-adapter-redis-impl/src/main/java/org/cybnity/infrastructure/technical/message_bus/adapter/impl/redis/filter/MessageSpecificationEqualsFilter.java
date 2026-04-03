@@ -1,8 +1,8 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.impl.redis.filter;
 
 import io.lettuce.core.StreamMessage;
+import org.cybnity.framework.IContext;
 import org.cybnity.framework.domain.Filter;
-import org.cybnity.framework.domain.ISessionContext;
 import org.cybnity.infrastructure.technical.message_bus.adapter.api.Stream;
 
 import java.util.LinkedList;
@@ -40,7 +40,7 @@ public class MessageSpecificationEqualsFilter implements Filter<List<StreamMessa
      * Filtering implementation method that return elements where origin subject have equals identifier.
      */
     @Override
-    public List<StreamMessage<String, String>> apply(List<StreamMessage<String, String>> toEvaluate, Map<String, String> selectionCriteria, ISessionContext ctx) {
+    public List<StreamMessage<String, String>> apply(List<StreamMessage<String, String>> toEvaluate, Map<String, String> selectionCriteria, IContext ctx) {
         if (selectionCriteria != null && toEvaluate != null) {
             // Read each query parameter which shall be used as comparator during evaluation
             String originSubjectIDCriteria = selectionCriteria.getOrDefault(FilteringCriteria.ORIGIN_SUBJECT_ID_PARAM_NAME.paramName(), null);

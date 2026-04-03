@@ -1,5 +1,7 @@
 package org.cybnity.framework.domain;
 
+import org.cybnity.framework.IContext;
+
 import java.util.Map;
 
 /**
@@ -17,5 +19,5 @@ public interface Filter<T> {
      * @param ctx               Optional context.
      * @return Filtered result(s) or null.
      */
-    T apply(T toEvaluate, Map<String, String> selectionCriteria, ISessionContext ctx);
+    T apply(T toEvaluate, Map<String, String> selectionCriteria, IContext ctx);
 }

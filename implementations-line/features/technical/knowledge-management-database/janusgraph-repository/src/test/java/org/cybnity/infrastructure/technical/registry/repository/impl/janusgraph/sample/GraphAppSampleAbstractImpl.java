@@ -14,26 +14,33 @@
 
 package org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.sample;
 
-import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.cybnity.framework.IContext;
 import org.cybnity.framework.UnoperationalStateException;
+import org.cybnity.infrastructure.technical.registry.adapter.impl.janusgraph.ReadModelConfigurationVariable;
 import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.AbstractDomainGraphImpl;
-import org.janusgraph.core.JanusGraphFactory;
+import org.cybnity.infrastructure.technical.registry.repository.impl.janusgraph.ContextualizedJanusGraphActiveTestContainer;
 import org.janusgraph.core.attribute.Geoshape;
+import org.janusgraph.core.schema.JanusGraphManagement;
 
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 /**
- * Abstract class that defines a basic structure for a graph application. It contains methods for configuring a graph instance, defining a graph schema, creating a graph structure, and querying a graph.
+ * Abstract class that defines a basic structure for an application domain.
+ * It contains methods for configuring a graph instance, defining a graph schema, creating a graph structure, and querying a graph.
  * Sample graph application defining a graph of sample objects.
  */
 public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
+
+    /**
+     * Example of graph label.
+     */
+    private static final String GRAPH_NAME = "Sample App";
 
     /**
      * Constructs a graph app using the given properties.
@@ -43,36 +50,53 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
     }
 
     @Override
-    public void dropGraph() throws UnoperationalStateException {
+    protected void createProperties(JanusGraphManagement management) throws IllegalArgumentException {
 
     }
 
     @Override
-    public void createSchema() {
+    protected void createVertexLabels(JanusGraphManagement management) throws IllegalArgumentException {
 
     }
 
-    /**
-     * Opens the graph instance. If the graph instance does not exist, a new
-     * graph instance is initialized.
-     */
-    public GraphTraversalSource openGraph() throws ConfigurationException, IOException {
-        logger().info("opening graph");
-        graph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
-        g = graph.traversal();
-        return g;
+    @Override
+    protected void createEdgeLabels(JanusGraphManagement management) throws IllegalArgumentException {
+
     }
-    
+
+    @Override
+    protected void createCompositeIndexes(JanusGraphManagement management) throws IllegalArgumentException {
+
+    }
+
+    @Override
+    protected void createMixedIndexes(JanusGraphManagement management) throws IllegalArgumentException {
+
+    }
+
+    @Override
+    public String graphName() {
+        return GRAPH_NAME;
+    }
+
+    @Override
+    protected Map<ReadModelConfigurationVariable, String> graphConfiguration() {
+        Map<ReadModelConfigurationVariable, String> config = new HashMap<>();
+        // Add only mandatory backend type (normally based on simulated environment variable equals to "inmemory" because defined without test container start)
+        config.put(ReadModelConfigurationVariable.JANUSGRAPH_STORAGE_BACKEND, ContextualizedJanusGraphActiveTestContainer.STORAGE_BACKEND_TYPE);
+        return config;
+    }
 
     /**
      * Adds the vertices, edges, and properties to the graph.
      */
     public void createElements() {
+        GraphTraversalSource traversal = graph.traversal();
         try {
             // naive check if the graph was previously created
-            if (g.V().has("name", "saturn").hasNext()) {
+            if (traversal.V().has("name", "saturn").hasNext()) {
                 if (supportsTransactions) {
-                    g.tx().rollback();
+                    traversal.tx().rollback();
                 }
                 return;
             }
@@ -80,62 +104,62 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
 
             // see GraphOfTheGodsFactory.java
 
-            final Vertex saturn = g.addV("titan").property("name", "saturn").property("age", 10000).next();
-            final Vertex sky = g.addV("location").property("name", "sky").next();
-            final Vertex sea = g.addV("location").property("name", "sea").next();
-            final Vertex jupiter = g.addV("god").property("name", "jupiter").property("age", 5000).next();
-            final Vertex neptune = g.addV("god").property("name", "neptune").property("age", 4500).next();
-            final Vertex hercules = g.addV("demigod").property("name", "hercules").property("age", 30).next();
-            final Vertex alcmene = g.addV("human").property("name", "alcmene").property("age", 45).next();
-            final Vertex pluto = g.addV("god").property("name", "pluto").property("age", 4000).next();
-            final Vertex nemean = g.addV("monster").property("name", "nemean").next();
-            final Vertex hydra = g.addV("monster").property("name", "hydra").next();
-            final Vertex cerberus = g.addV("monster").property("name", "cerberus").next();
-            final Vertex tartarus = g.addV("location").property("name", "tartarus").next();
+            final Vertex saturn = traversal.addV("titan").property("name", "saturn").property("age", 10000).next();
+            final Vertex sky = traversal.addV("location").property("name", "sky").next();
+            final Vertex sea = traversal.addV("location").property("name", "sea").next();
+            final Vertex jupiter = traversal.addV("god").property("name", "jupiter").property("age", 5000).next();
+            final Vertex neptune = traversal.addV("god").property("name", "neptune").property("age", 4500).next();
+            final Vertex hercules = traversal.addV("demigod").property("name", "hercules").property("age", 30).next();
+            final Vertex alcmene = traversal.addV("human").property("name", "alcmene").property("age", 45).next();
+            final Vertex pluto = traversal.addV("god").property("name", "pluto").property("age", 4000).next();
+            final Vertex nemean = traversal.addV("monster").property("name", "nemean").next();
+            final Vertex hydra = traversal.addV("monster").property("name", "hydra").next();
+            final Vertex cerberus = traversal.addV("monster").property("name", "cerberus").next();
+            final Vertex tartarus = traversal.addV("location").property("name", "tartarus").next();
 
-            g.V(jupiter).as("a").V(saturn).addE("father").from("a").next();
-            g.V(jupiter).as("a").V(sky).addE("lives").property("reason", "loves fresh breezes").from("a").next();
-            g.V(jupiter).as("a").V(neptune).addE("brother").from("a").next();
-            g.V(jupiter).as("a").V(pluto).addE("brother").from("a").next();
+            traversal.V(jupiter).as("a").V(saturn).addE("father").from("a").next();
+            traversal.V(jupiter).as("a").V(sky).addE("lives").property("reason", "loves fresh breezes").from("a").next();
+            traversal.V(jupiter).as("a").V(neptune).addE("brother").from("a").next();
+            traversal.V(jupiter).as("a").V(pluto).addE("brother").from("a").next();
 
-            g.V(neptune).as("a").V(sea).addE("lives").property("reason", "loves waves").from("a").next();
-            g.V(neptune).as("a").V(jupiter).addE("brother").from("a").next();
-            g.V(neptune).as("a").V(pluto).addE("brother").from("a").next();
+            traversal.V(neptune).as("a").V(sea).addE("lives").property("reason", "loves waves").from("a").next();
+            traversal.V(neptune).as("a").V(jupiter).addE("brother").from("a").next();
+            traversal.V(neptune).as("a").V(pluto).addE("brother").from("a").next();
 
-            g.V(hercules).as("a").V(jupiter).addE("father").from("a").next();
-            g.V(hercules).as("a").V(alcmene).addE("mother").from("a").next();
+            traversal.V(hercules).as("a").V(jupiter).addE("father").from("a").next();
+            traversal.V(hercules).as("a").V(alcmene).addE("mother").from("a").next();
 
             if (supportsGeoshape) {
-                g.V(hercules).as("a").V(nemean).addE("battled").property("time", 1)
+                traversal.V(hercules).as("a").V(nemean).addE("battled").property("time", 1)
                         .property("place", Geoshape.point(38.1f, 23.7f)).from("a").next();
-                g.V(hercules).as("a").V(hydra).addE("battled").property("time", 2)
+                traversal.V(hercules).as("a").V(hydra).addE("battled").property("time", 2)
                         .property("place", Geoshape.point(37.7f, 23.9f)).from("a").next();
-                g.V(hercules).as("a").V(cerberus).addE("battled").property("time", 12)
+                traversal.V(hercules).as("a").V(cerberus).addE("battled").property("time", 12)
                         .property("place", Geoshape.point(39f, 22f)).from("a").next();
             } else {
-                g.V(hercules).as("a").V(nemean).addE("battled").property("time", 1)
+                traversal.V(hercules).as("a").V(nemean).addE("battled").property("time", 1)
                         .property("place", getGeoFloatArray(38.1f, 23.7f)).from("a").next();
-                g.V(hercules).as("a").V(hydra).addE("battled").property("time", 2)
+                traversal.V(hercules).as("a").V(hydra).addE("battled").property("time", 2)
                         .property("place", getGeoFloatArray(37.7f, 23.9f)).from("a").next();
-                g.V(hercules).as("a").V(cerberus).addE("battled").property("time", 12)
+                traversal.V(hercules).as("a").V(cerberus).addE("battled").property("time", 12)
                         .property("place", getGeoFloatArray(39f, 22f)).from("a").next();
             }
 
-            g.V(pluto).as("a").V(jupiter).addE("brother").from("a").next();
-            g.V(pluto).as("a").V(neptune).addE("brother").from("a").next();
-            g.V(pluto).as("a").V(tartarus).addE("lives").property("reason", "no fear of death").from("a").next();
-            g.V(pluto).as("a").V(cerberus).addE("pet").from("a").next();
+            traversal.V(pluto).as("a").V(jupiter).addE("brother").from("a").next();
+            traversal.V(pluto).as("a").V(neptune).addE("brother").from("a").next();
+            traversal.V(pluto).as("a").V(tartarus).addE("lives").property("reason", "no fear of death").from("a").next();
+            traversal.V(pluto).as("a").V(cerberus).addE("pet").from("a").next();
 
-            g.V(cerberus).as("a").V(tartarus).addE("lives").from("a").next();
+            traversal.V(cerberus).as("a").V(tartarus).addE("lives").from("a").next();
 
             if (supportsTransactions) {
-                g.tx().commit();
+                traversal.tx().commit();
             }
 
         } catch (Exception e) {
             logger().error(e.getMessage(), e);
             if (supportsTransactions) {
-                g.tx().rollback();
+                traversal.tx().rollback();
             }
         }
     }
@@ -144,15 +168,16 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
      * Runs some traversal queries to get data from the graph.
      */
     public void readElements() {
+        GraphTraversalSource traversal = graph.traversal();
         try {
-            if (g == null) {
+            if (traversal == null) {
                 return;
             }
 
             logger().info("reading elements");
 
             // look up vertex by name can use a composite index in JanusGraph
-            final Optional<Map<Object, Object>> v = g.V().has("name", "jupiter").valueMap().tryNext();
+            final Optional<Map<Object, Object>> v = traversal.V().has("name", "jupiter").valueMap().tryNext();
             if (v.isPresent()) {
                 logger().info(v.get().toString());
             } else {
@@ -160,7 +185,7 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
             }
 
             // look up an incident edge
-            final Optional<Map<Object, Object>> edge = g.V().has("name", "hercules").outE("battled").as("e").inV()
+            final Optional<Map<Object, Object>> edge = traversal.V().has("name", "hercules").outE("battled").as("e").inV()
                     .has("name", "hydra").select("e").valueMap().tryNext();
             if (edge.isPresent()) {
                 logger().info(edge.get().toString());
@@ -169,11 +194,11 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
             }
 
             // numerical range query can use a mixed index in JanusGraph
-            final List<Object> list = g.V().has("age", P.gte(5000)).values("age").toList();
+            final List<Object> list = traversal.V().has("age", P.gte(5000)).values("age").toList();
             logger().info(list.toString());
 
             // pluto might be deleted
-            final boolean plutoExists = g.V().has("name", "pluto").hasNext();
+            final boolean plutoExists = traversal.V().has("name", "pluto").hasNext();
             if (plutoExists) {
                 logger().info("pluto exists");
             } else {
@@ -181,15 +206,15 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
             }
 
             // look up jupiter's brothers
-            final List<Object> brothers = g.V().has("name", "jupiter").both("brother").values("name").dedup().toList();
+            final List<Object> brothers = traversal.V().has("name", "jupiter").both("brother").values("name").dedup().toList();
             logger().info("jupiter's brothers: " + brothers.toString());
 
         } finally {
             // the default behavior automatically starts a transaction for
             // any graph interaction, so it is best to finish the transaction
             // even for read-only graph query operations
-            if (supportsTransactions && g != null) {
-                g.tx().rollback();
+            if (supportsTransactions && traversal != null) {
+                traversal.tx().rollback();
             }
         }
     }
@@ -199,20 +224,21 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
      * new vertices or edges.
      */
     public void updateElements() {
+        GraphTraversalSource traversal = graph.traversal();
         try {
-            if (g == null) {
+            if (traversal == null) {
                 return;
             }
             logger().info("updating elements");
             final long ts = System.currentTimeMillis();
-            g.V().has("name", "jupiter").property("ts", ts).iterate();
+            traversal.V().has("name", "jupiter").property("ts", ts).iterate();
             if (supportsTransactions) {
-                g.tx().commit();
+                traversal.tx().commit();
             }
         } catch (Exception e) {
             logger().error(e.getMessage(), e);
             if (supportsTransactions) {
-                g.tx().rollback();
+                traversal.tx().rollback();
             }
         }
     }
@@ -222,20 +248,21 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
      * its incident edges are also deleted.
      */
     public void deleteElements() {
+        GraphTraversalSource traversal = graph.traversal();
         try {
-            if (g == null) {
+            if (graph == null) {
                 return;
             }
             logger().info("deleting elements");
             // note that this will succeed whether or not pluto exists
-            g.V().has("name", "pluto").drop().iterate();
+            traversal.V().has("name", "pluto").drop().iterate();
             if (supportsTransactions) {
-                g.tx().commit();
+                traversal.tx().commit();
             }
         } catch (Exception e) {
             logger().error(e.getMessage(), e);
             if (supportsTransactions) {
-                g.tx().rollback();
+                traversal.tx().rollback();
             }
         }
     }
@@ -252,7 +279,7 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
     public void runApp() {
         try {
             // open and initialize the graph
-            openGraph();
+            open();
 
             // define the schema before loading data
             if (supportsSchema) {
@@ -282,7 +309,7 @@ public class GraphAppSampleAbstractImpl extends AbstractDomainGraphImpl {
             readElements();
 
             // close the graph
-            closeGraph();
+            close();
         } catch (Exception e) {
             logger().error(e.getMessage(), e);
         }

@@ -57,8 +57,7 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, IRef
     public static String CORRELATION_ID = MessageHeader.CORRELATION_ID.name();
 
     /**
-     * Standard type of the attribute specifying this command type based on a logical
-     * type.
+     * Standard type of the attribute specifying a command or query type based on a logical nature.
      */
     @JsonIgnore
     public static String TYPE = "type";

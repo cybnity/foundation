@@ -3,13 +3,13 @@
 	<parent>
 		<groupId>org.cybnity</groupId>
 		<artifactId>techstack</artifactId>
-		<version>0.32.0</version>
+		<version>0.38.0</version>
 	</parent>
 
 	<artifactId>defense-platform</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>CYBNITY defense platform</name>
+	<name>CYBNITY Defense Platform</name>
 
 	<!-- Required informations for Maven Central Repository publishing -->
 	<description>Open source cybersecurity governance solution helping security activities (e.g NIST deployment, security KPI monitoring, security activities management)</description>
@@ -121,9 +121,6 @@
 		</repository>-->
 	</repositories>
 
-	<pluginRepositories>
-	</pluginRepositories>
-
 	<!-- List of advice about project -->
 	<mailingLists>
 		<mailingList>
@@ -136,6 +133,7 @@
 			<name>${project.name} users list</name>
 		</mailingList>
 	</mailingLists>
+
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/cybnity/foundation/issues/</url>

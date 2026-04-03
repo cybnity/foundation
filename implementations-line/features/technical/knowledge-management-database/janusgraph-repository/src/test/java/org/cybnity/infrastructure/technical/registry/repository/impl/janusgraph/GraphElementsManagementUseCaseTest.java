@@ -35,7 +35,7 @@ public class GraphElementsManagementUseCaseTest extends ContextualizedJanusGraph
     @BeforeAll
     public static void setUpClass() throws ConfigurationException, IOException, UnoperationalStateException {
         app = new GraphAppSampleAbstractImpl(getContextInstance());
-        g = app.openGraph();
+        g = app.open();
     }
 
     @BeforeEach
@@ -46,7 +46,7 @@ public class GraphElementsManagementUseCaseTest extends ContextualizedJanusGraph
     @AfterAll
     public static void tearDownClass() throws Exception {
         if (app != null) {
-            app.closeGraph();
+            app.close();
         }
         app = null;
     }

@@ -72,7 +72,7 @@ public class ContextualizedRedisActiveTestContainer {
     public void initEnvVariables() {
         // Define environment variables regarding write model
         environmentVariables.set(
-                WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD.getName(),
+                WriteModelConfigurationVariable.REDISCLI_AUTH.getName(),
                 DEFAULT_AUTH_PASSWORD);
         environmentVariables.set(
                 WriteModelConfigurationVariable.REDIS_WRITEMODEL_CONNECTION_DEFAULT_USERACCOUNT.getName(),
@@ -82,9 +82,6 @@ public class ContextualizedRedisActiveTestContainer {
         environmentVariables.set(WriteModelConfigurationVariable.REDIS_WRITEMODEL_SERVER_HOST.getName(), SERVER_HOST);
         environmentVariables.set(WriteModelConfigurationVariable.REDIS_WRITEMODEL_SERVER_PORT.getName(), Integer.toString(SERVER_PORT));
         // Variables regarding read model
-        environmentVariables.set(
-                ReadModelConfigurationVariable.REDIS_READMODEL_CONNECTION_DEFAULT_AUTH_PASSWORD.getName(),
-                DEFAULT_AUTH_PASSWORD);
         environmentVariables.set(
                 ReadModelConfigurationVariable.REDIS_READMODEL_CONNECTION_DEFAULT_USERACCOUNT.getName(),
                 CONNECTION_USER_ACCOUNT);

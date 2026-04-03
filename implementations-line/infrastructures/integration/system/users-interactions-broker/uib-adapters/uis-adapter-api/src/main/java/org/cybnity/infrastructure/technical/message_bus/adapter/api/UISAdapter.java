@@ -1,7 +1,9 @@
 package org.cybnity.infrastructure.technical.message_bus.adapter.api;
 
 import org.cybnity.framework.UnoperationalStateException;
+import org.cybnity.framework.domain.ICleanup;
 import org.cybnity.framework.domain.IDescribed;
+import org.cybnity.framework.domain.IHealthControl;
 import org.cybnity.framework.domain.SerializedResource;
 import org.cybnity.framework.immutable.Identifier;
 
@@ -14,20 +16,7 @@ import java.util.List;
  *
  * @author olivier
  */
-public interface UISAdapter {
-
-    /**
-     * For example, disconnect the adapter from the Users Interactions Space.
-     */
-    void freeUpResources();
-
-    /**
-     * Verify the current status of the adapter as healthy and operable for
-     * interactions with the Users Interactions Space.
-     *
-     * @throws UnoperationalStateException When adapter status problem detected.
-     */
-    void checkHealthyState() throws UnoperationalStateException;
+public interface UISAdapter extends ICleanup, IHealthControl {
 
     /**
      * Register observers of streams regarding messages published (e.g domain event, command execution status).

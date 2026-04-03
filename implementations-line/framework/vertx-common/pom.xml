@@ -33,5 +33,6 @@
 			<groupId>org.cybnity.infrastructure.integration.uis.adapters</groupId>
 			<artifactId>redis-impl</artifactId>
 		</dependency>
+		<!-- TODO add dependency to SSO apdater lib allowing usage of SSO access control in standalone approah -->
 	</dependencies>
 </project>

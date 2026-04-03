@@ -36,17 +36,14 @@ public class TenantBuilder {
 
     public void buildInstance() throws ImmutabilityException {
         prepareTenantId();
+        prepareTenantLabel();
         createInstance();
-        prepareTenantDescription();
     }
 
     /**
-     * Prepare a tenant descriptor and assign to the tenant instance, including a default HistoryState.COMMITTED status.
-     *
-     * @throws ImmutabilityException When impossible read of tenant instance parent (predecessor identity).
+     * Prepare a tenant descriptor including validation and transformation rules on label.
      */
-    private void prepareTenantDescription() throws ImmutabilityException {
-        tenant.setLabel(tenantLabel);
+    private void prepareTenantLabel() {
     }
 
     /**

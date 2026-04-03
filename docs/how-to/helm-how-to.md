@@ -118,6 +118,9 @@ minikube tunnel
 
 # To show exposed ports
 kubectl get svc
+
+# To show the service exposed by the cluster to external IPs
+kubectl get services
 ```
 
 </p>

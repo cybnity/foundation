@@ -43,11 +43,11 @@ public class UISPersistentStreamAdapterUseCaseTest extends ContextualizedRedisAc
 
     @AfterEach
     public void cleanValues() {
-        if (persistenceOrientedStore != null) persistenceOrientedStore.freeResources();
+        if (persistenceOrientedStore != null) persistenceOrientedStore.freeUpResources();
         persistenceOrientedStore = null;
         persistentObjectNamingConvention = null;
         dataOwner = null;
-        if (snapshotsRepo != null) snapshotsRepo.freeResources();
+        if (snapshotsRepo != null) snapshotsRepo.freeUpResources();
         snapshotsRepo = null;
         super.cleanValues();
     }
@@ -271,7 +271,7 @@ public class UISPersistentStreamAdapterUseCaseTest extends ContextualizedRedisAc
         Assertions.assertEquals(totalChangesCount, BOLifecycleStream.getEvents().size(), "Invalid qty of store events regarding BO lifecycle history!");
     }
 
-    private static class EventsCheck extends DomainEventSubscriber<DomainEvent> {
+    private static class EventsCheck implements IDomainEventSubscriber<DomainEvent> {
 
         private final List<DomainEvent> notAlreadyChecked = new LinkedList<>();
         private final Class<?> observedType;

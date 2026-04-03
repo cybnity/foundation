@@ -1,6 +1,6 @@
 package org.cybnity.framework.domain;
 
-import org.cybnity.framework.domain.model.DomainEventSubscriber;
+import org.cybnity.framework.domain.model.IDomainEventSubscriber;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
@@ -19,7 +19,7 @@ public interface ISubscribable {
      * @param aSubscriber The mandatory subscriber to inform about changes.
      * @param <T> Specialized subscriber type.
      */
-    <T> void subscribe(DomainEventSubscriber<T> aSubscriber);
+    <T> void subscribe(IDomainEventSubscriber<T> aSubscriber);
 
     /**
      * Remove a subscriber of the register if existing.
@@ -27,5 +27,5 @@ public interface ISubscribable {
      * @param aSubscriber The mandatory subscriber to remove from register.
      * @param <T> Specialized subscriber type.
      */
-    <T> void remove(DomainEventSubscriber<T> aSubscriber);
+    <T> void remove(IDomainEventSubscriber<T> aSubscriber);
 }
