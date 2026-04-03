@@ -20,6 +20,29 @@
 		<dependency>
 			<groupId>io.lettuce</groupId>
 			<artifactId>lettuce-core</artifactId>
+			<version>6.5.1.RELEASE</version>
+			<exclusions>
+				<!-- Resolution of removed classes (io.netty.channel.MultithreadEventLoopGroup and io.netty.channel.MultiThreadIoEventLoopGroup from lettuce-core compile dependencies) -->
+				<exclusion>
+					<groupId>io.netty</groupId>
+					<artifactId>netty-transport</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>io.netty</groupId>
+					<artifactId>netty-common</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>io.netty</groupId>
+					<artifactId>netty-handler</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<!-- Required not only for test scope, but also for compile scope allowing execution of Lettuce Redis Client -->
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<scope>compile</scope>
+			<version>4.2.12.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -28,11 +51,6 @@
 		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-redis-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-all</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>uk.org.webcompere</groupId>

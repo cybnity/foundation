@@ -51,6 +51,25 @@ After `mvn clean package` execution, it's possible to execute additional command
 Build dockerfile (without docker-compose help) from directory from shell command line:
 `docker build -t cybnity/jre-tee .`
 
+### Rancher Desktop
+During the Docker image build by Maven, a possible need of more disk storage space can generate a build error during the generation of a Docker image. It's due to Docker __buildx__ image created by Docker (during docker-maven-plugin build step).
+
+### On Mac OS
+To change and increase the allocated disk storage size for buildx, stop Rancher Desktop and execute commands:
+```
+  rdctl shutdown
+  # Create an override.yaml file with the desired disk size, e.g
+  echo 'disk: "256GiB"' > ~/Library/Application\ Support/rancher-desktop/lima/_config/override.yaml
+  
+  # Delete the existing VM
+  rm -rf ~/Library/Application\ Support/rancher-desktop/lima/0
+  
+  # Clean Docker repository
+  docker system prune -a
+```
+
+Restart Rancher Descktop and, from Diagnostics section, activate the Container Engine setting (via Mute enabling).
+
 ## DOCKER IMAGE REPOSITORY
 List images built into the repository
 

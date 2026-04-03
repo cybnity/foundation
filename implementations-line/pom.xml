@@ -31,7 +31,7 @@
 		<docker.nodejs.image.name>node:16.17.0-bullseye</docker.nodejs.image.name>
 
 		<!-- Docker platform supported for build of Docker images (e.g linux/amd64 on x86 CPU; or linux/arm64 on Mac M4 CPU) -->
-		<docker.platforms>linux/amd64,linux/arm64</docker.platforms>
+		<docker.platforms>linux/amd64,linux/arm64,linux/arm64v8</docker.platforms>
 	</properties>
 
 	<dependencyManagement>
@@ -145,7 +145,7 @@
 				<docker.images.healtcheck.port>8080</docker.images.healtcheck.port>
 
 				<!-- Docker platform supported for build of Docker images (e.g linux/amd64 on x86 CPU; or linux/arm64 on Mac M4 CPU) -->
-				<docker.platforms>linux/amd64,linux/arm64</docker.platforms>
+				<docker.platforms>linux/amd64,linux/arm64,linux/arm64v8</docker.platforms>
 			</properties>
 		</profile>
 
@@ -171,7 +171,7 @@
 				<docker.images.healtcheck.port>8080</docker.images.healtcheck.port>
 
 				<!-- Docker platform supported for build of Docker images (e.g linux/amd64 on x86 CPU; or linux/arm64 on Mac M4 CPU) -->
-				<docker.platforms></docker.platforms>
+				<docker.platforms>linux/amd64,linux/arm64,linux/arm64v8</docker.platforms>
 			</properties>
 		</profile>
 

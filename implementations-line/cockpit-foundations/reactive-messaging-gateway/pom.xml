@@ -91,6 +91,15 @@
 									<!-- Update the default TARTED_JAR_FILE environment variable about Java application jar file name, defined as main jar to start by the container -->
 									<STARTED_JAR_FILE>${project.artifactId}-${project.version}-fat.jar</STARTED_JAR_FILE>
 								</env>
+								<!-- Definition of targeted platform supported by image to build (e.g built of Linux based image from a Mac server ) -->
+								<buildx>
+									<!-- Based buildx generated image on local default Docker configuration (because storage size can't be allocated by configuration of buildx during the execution ) -->
+									<!--<builderName>default</builderName>-->
+									<platforms>
+										<platform>${docker.platforms}</platform>
+									</platforms>
+								</buildx>
+								<cleanup>try</cleanup>
 								<healthCheck>
 									<!-- Default configuration of image health check -->
 									<!-- Check every 5 minutes -->
