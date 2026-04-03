@@ -57,7 +57,13 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
         /**
          * Date of aggregate creation.
          */
-        OCCURRED_AT
+        OCCURRED_AT,
+
+        /**
+         * Explicit commit version.
+         * When not explicitly defined commit version, can be equals to a previous change event's identifier.
+         */
+        COMMIT_VERSION
     }
 
     /**
@@ -120,6 +126,13 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
         changeEvt.setChangeSourcePredecessorReferenceId(this.parent().identified());
         changeEvt.setChangeSourceIdentifier(this.identified()); // Origin domain model object changed
         changeEvt.setChangeSourceOccurredAt(this.occurredAt);
+
+        if (this.getCommitVersion() == null) {
+            // When not explicit defined commit version, shall be defined based on prepared change event's identifier
+            this.setCommitVersion(changeEvt);
+        }
+        changeEvt.appendSpecification(new org.cybnity.framework.domain.Attribute(Attribute.COMMIT_VERSION.name(), this.getCommitVersion()));
+
         return changeEvt;
     }
 
@@ -280,10 +293,10 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
     /**
      * Get commit version regarding this instance.
      *
-     * @return A version identifier equals to the latest change event identifier which modified this instance.
+     * @return A version identifier equals to the latest change event identifier which modified this instance. Or null when unknown.
      */
     public String getCommitVersion() {
-        return String.valueOf(this.commitVersion);
+        return (this.commitVersion != null) ? this.commitVersion : null;
     }
 
     /**

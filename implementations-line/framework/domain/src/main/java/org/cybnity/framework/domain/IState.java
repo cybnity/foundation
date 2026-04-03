@@ -9,8 +9,7 @@ import java.util.List;
 /**
  * Represent a providing contract regarding the description of a state (e.g a
  * process step) based on a collection of attributes.
- * 
- * A state can include sub-state into its life cycle.
+ * A state can include sub-status into its life cycle.
  * 
  * @author olivier
  *
@@ -26,9 +25,9 @@ public interface IState {
     Collection<Attribute> properties();
 
 	/**
-	 * Get existing sub-states defining a more detailed life cycle of this state.
+	 * Get existing sub-status defining a more detailed life cycle of this state.
 	 * 
-	 * @return A list of ordered sub-states included into this state life cycle. Or
+	 * @return A list of ordered sub-status included into this state life cycle. Or
 	 *         null by default.
 	 */
     List<IState> subStates();

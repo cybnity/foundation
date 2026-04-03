@@ -41,7 +41,7 @@ public class ExecutableAdapterChecker extends ExecutableComponentChecker {
         Set<IReadableConfiguration> required = new HashSet<>();
 
         // - required
-        required.add(ConfigurationVariable.JANUSGRAPH_STORAGE_BACKEND_TYPE);
+        required.add(ReadModelConfigurationVariable.JANUSGRAPH_STORAGE_BACKEND);
 
         return required;
     }

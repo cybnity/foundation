@@ -10,7 +10,7 @@
 	<artifactId>registry</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>Persistence and registries infrastructure</name>
+	<name>Persistence &amp; registries infrastructure</name>
 	<modules>
 		<module>system</module>
 	</modules>

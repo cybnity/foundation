@@ -99,6 +99,7 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Allow-Credentials', true);
+  res.header("Content-Security-Policy", "frame-ancestors 'self'"); // add CSP (Content Security Policy) indicating to browser that page shall not be shown into a frame if the frame is not owned by the same domain
 
   console.log('Time: ', Date.now());
   //console.log("ACL headers regarding " + serverOrigin + " host have been defined in response");

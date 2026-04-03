@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.cybnity.framework.domain.Attribute;
 import org.cybnity.framework.domain.Command;
+import org.cybnity.framework.domain.model.DomainEntity;
 import org.cybnity.framework.immutable.Entity;
 import org.cybnity.framework.immutable.EntityReference;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -84,6 +85,31 @@ public class ConcreteQueryEvent extends Command {
             // Add type into specification attributes
             appendSpecification(new Attribute(TYPE, eventType));
         }
+    }
+
+    /**
+     * Factory of a type of query supported by a domain Anti-Corruption Layer API.
+     *
+     * @param type                   Mandatory type of query command to instantiate.
+     * @param identifiedBy           Optional query identity that shall identify the concrete query instance to create.
+     * @param definition             Collection of attributes defining the query.
+     * @param priorCommandRef        Optional original event reference that was previous source of this query publication.
+     * @return Instance of concrete event including all the attributes and standard additional elements.
+     * @throws IllegalArgumentException When any mandatory parameter is missing.
+     */
+    static public ConcreteQueryEvent create(String type, DomainEntity identifiedBy, Collection<Attribute> definition, EntityReference priorCommandRef) throws IllegalArgumentException {
+        if (type == null || type.isEmpty()) throw new IllegalArgumentException("Type parameter is required!");
+        ConcreteQueryEvent command = new ConcreteQueryEvent(identifiedBy, type);
+        if (definition != null) {
+            // Add command event attributes
+            for (Attribute at : definition) {
+                command.appendSpecification(at);
+            }
+        }
+        if (priorCommandRef != null) {
+            command.setPriorCommandRef(priorCommandRef);
+        }
+        return command;
     }
 
     @JsonIgnore
@@ -233,6 +259,5 @@ public class ConcreteQueryEvent extends Command {
         }
         return null;
     }
-
 
 }

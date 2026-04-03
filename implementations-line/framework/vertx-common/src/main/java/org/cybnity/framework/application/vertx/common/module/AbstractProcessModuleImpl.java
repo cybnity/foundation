@@ -5,6 +5,8 @@ import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Promise;
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.application.vertx.common.WorkersManagementCapability;
+import org.cybnity.framework.domain.ICleanup;
+import org.cybnity.framework.domain.IHealthControl;
 import org.cybnity.framework.immutable.utility.ExecutableComponentChecker;
 import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
@@ -20,7 +22,7 @@ import java.util.logging.Logger;
  * Composition module supporting the optional security services provided by a processing unit.
  */
 @Requirement(reqType = RequirementCategory.Security, reqId = "REQ_SEC_8310_AC2")
-public abstract class AbstractProcessModuleImpl extends AbstractVerticle implements ConfigurableModule {
+public abstract class AbstractProcessModuleImpl extends AbstractVerticle implements ConfigurableModule, ICleanup, IHealthControl {
 
     /**
      * Generic helper providing basic reusable services regarding workers management.
@@ -82,6 +84,7 @@ public abstract class AbstractProcessModuleImpl extends AbstractVerticle impleme
      *
      * @throws UnoperationalStateException When an issue is detected as cause of potential non stability source (e.g missing environment variable required during the runtime).
      */
+    @Override
     public void checkHealthyState() throws UnoperationalStateException {
         if (healthyChecker == null)
             healthyChecker = healthyChecker();

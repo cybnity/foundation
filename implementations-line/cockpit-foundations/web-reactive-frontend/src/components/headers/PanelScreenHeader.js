@@ -17,7 +17,7 @@ export default function PanelScreenHeader(props) {
      */
     function reconfigure(infoconLevel) {
         if (infoconLevel) {
-            // Define which visual element shall be customized (color schema, active/deactive, panels closure) according to user's role and expected focus of him during the infocon level period
+            // Define which visual element shall be customized (color schema, active/deactivate, panels closure) according to user's role and expected focus of him during the infocon level period
         }
     }
 

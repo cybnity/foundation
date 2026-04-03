@@ -81,7 +81,7 @@
 
 										<!-- Install node modules and dependencies -->
 										<run>npm install</run>
-										<!--<run>npm install - -production</run>-->
+										<!--<run>npm install -production</run>-->
 
 										<!-- Create a build directory with a production build of the app
 										<run>npm run build</run> -->

@@ -86,7 +86,7 @@ jobs:
             echo "mvn -B -DgenerateBackupPoms=true -DprocessAllModules=true versions:set -DnewVersion=${{ env.current_artifacts_revision_id }}"
 
       - name: Build and deploy ${{ env.current_artifacts_revision_id }} version of java packages to AGnet repository (Maven, Docker)
-        run: mvn --batch-mode --update-snapshots --show-version -Dstage=technical-quality -Drevision=${{ env.current_artifacts_revision_id }} -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} -Ddocker.cleanup=none --file pom.xml -DcreateChecksum=true -Denvironment=dev-deploy deploy -Dmaven.test.skip=true
+        run: mvn --batch-mode --update-snapshots --show-version -Dstage=technical-quality -Drevision=${{ env.current_artifacts_revision_id }} -Ddocker.username=${{ env.DOCKER_REGISTRY_USERNAME }} -Ddocker.password=${{ env.DOCKER_REGISTRY_PASSWORD }} -Ddocker.cleanup=none --file pom.xml -DcreateChecksum=true -Denvironment=dev-deploy -Dmaven.test.skip=true deploy
 
       # Optional: Uploads the full dependency graph to GitHub (output variable) to improve the quality of Dependabot alerts this repository can receive
       #- name: Update dependency graph

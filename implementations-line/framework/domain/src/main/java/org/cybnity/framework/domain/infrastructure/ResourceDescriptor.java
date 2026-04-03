@@ -1,17 +1,16 @@
 package org.cybnity.framework.domain.infrastructure;
 
-import org.cybnity.framework.domain.SerializationFormat;
+import org.cybnity.framework.domain.infrastructure.util.DateConvention;
 import org.cybnity.framework.immutable.utility.VersionConcreteStrategy;
 
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Common description of a resource managed into a Redis context.
+ * Common description of a resource managed into a context.
  * Customized HashMap supporting pre-determined key names based on PropertyAttributeKey set.
  */
 public class ResourceDescriptor extends HashMap<String, String> {
@@ -109,7 +108,8 @@ public class ResourceDescriptor extends HashMap<String, String> {
         String dateValue = this.getOrDefault(PropertyAttributeKey.VERSION_DATE.name(), null);
         if (dateValue != null) {
             try {
-                DateFormat format = new SimpleDateFormat(SerializationFormat.DATE_FORMAT_PATTERN);
+                // Equals format pattern than data pattern applied into an object mapper supporting a resource state translation.
+                DateFormat format = DateConvention.dateFormatter();
                 versionDate = format.parse(dateValue);
             } catch (ParseException pe) {
                 // Invalid date value found
@@ -125,7 +125,7 @@ public class ResourceDescriptor extends HashMap<String, String> {
      */
     public void setVersionDate(Date aDate) {
         if (aDate != null) {
-            DateFormat format = new SimpleDateFormat(SerializationFormat.DATE_FORMAT_PATTERN);
+            DateFormat format = DateConvention.dateFormatter();
             this.put(PropertyAttributeKey.VERSION_DATE.name(), format.format(aDate));
         }
     }

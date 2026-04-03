@@ -2,6 +2,7 @@ package org.cybnity.framework.domain.model;
 
 import org.cybnity.framework.UnoperationalStateException;
 import org.cybnity.framework.domain.DomainEvent;
+import org.cybnity.framework.domain.ICleanup;
 import org.cybnity.framework.domain.ValueObject;
 import org.cybnity.framework.immutable.Identifier;
 import org.cybnity.framework.immutable.ImmutabilityException;
@@ -17,7 +18,7 @@ import java.util.List;
  * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public interface IEventStore {
+public interface IEventStore extends ICleanup  {
 
     /**
      * Get a resource name regarding the storage space where snapshot versions are managed by this store.
@@ -25,11 +26,6 @@ public interface IEventStore {
      * @return A name space or null (when none snapshot capability is activated).
      */
     ValueObject<String> snapshotVersionsStorageNamespace();
-
-    /**
-     * Stop allocated resources specific to this store (e.g listener of stream, database access...).
-     */
-    void freeResources();
 
     /**
      * Add an event into the store stream and commit the list changes.

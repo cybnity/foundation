@@ -1,15 +1,8 @@
 package org.cybnity.application.ui.system.backend;
 
 import io.vertx.core.AbstractVerticle;
-import org.cybnity.framework.UnoperationalStateException;
+import org.cybnity.framework.domain.IHealthControl;
 
-public abstract class SockJSServer extends AbstractVerticle {
+public abstract class SockJSServer extends AbstractVerticle implements IHealthControl {
 
-    /**
-     * Verify the current status of this component as healthy and operable.
-     * 
-     * @throws UnoperationalStateException When missing required contents (e.g
-     *                                     environment variables).
-     */
-    public abstract void checkHealthyState() throws UnoperationalStateException;
 }
