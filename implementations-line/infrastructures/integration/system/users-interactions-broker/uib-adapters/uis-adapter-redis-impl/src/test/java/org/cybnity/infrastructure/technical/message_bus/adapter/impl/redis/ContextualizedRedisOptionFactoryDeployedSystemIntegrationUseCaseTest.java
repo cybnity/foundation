@@ -4,11 +4,6 @@ import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisStringCommands;
-import io.lettuce.core.resource.ClientResources;
-import io.lettuce.core.resource.DefaultEventLoopGroupProvider;
-import io.lettuce.core.resource.EventLoopGroupProvider;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.vertx.redis.client.RedisOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -25,18 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ContextualizedRedisOptionFactoryDeployedSystemIntegrationUseCaseTest extends ContextualizedRedisActiveTestContainer {
 
     private void executeLettuceClientTest(RedisOptions opts) throws Exception {
-        // Test Lettuce client (see https://lettuce.io/core/release/reference/index.html
-        // for detail)
-        EventLoopGroupProvider provider = new DefaultEventLoopGroupProvider(1 /*number of thread*/) {
-            public EventLoopGroup newEventLoopGroup(int threads) {
-                // Utilise NioEventLoopGroup au lieu de MultiThreadIoEventLoopGroup
-                return new NioEventLoopGroup(threads);
-            }
-        };
         RedisURI uri = RedisURI.Builder
                 .redis("localhost", 6379)
                 .build();
-        RedisClient client = RedisClient.create(opts.getEndpoint()); // RedisClient.create(uri); //
+        RedisClient client = RedisClient.create(opts.getEndpoint());
         StatefulRedisConnection<String, String> connection = client.connect();
         RedisStringCommands<String, String> sync = connection.sync();
 
