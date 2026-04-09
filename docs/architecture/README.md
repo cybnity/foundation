@@ -13,7 +13,7 @@ The packaging strategy applied on the project provides all the systems ready for
 
 ![image](systems-architecture.png)
 
-## SYSTEMS SOURCE CODES' PROJECTS
+## SYSTEMS SOURCE CODES PROJECTS
 The management of several types of modular systems is approached with an integrated vision that mix the best pratices proposed by each used tool, into a global common and compatible architecture of the source codes projects.
 
 The base directory that support the systems and infrastructure-as-code (IaC) modules implementations is presented into the [systems folder](/implementations-line/systems/README.md).
