@@ -67,10 +67,9 @@ One sub-directory is defined per CYBNITY application deployable as a Kubernetes 
 
 # HARDWARE INFRASTRUCTURE
 ## CYDEL01
-Infrastructure implemented resources:
-- DEV cluster models:
-  - [CYDEL01-CYBDEV01 documentation](../../technical-infrastructure/CYDEL01-cybdev01.md)
-  - [CYDEL01-CYBDEV02 documentation](../../technical-infrastructure/CYDEL01-cybdev02.md)
+Infrastructure components and resources are documented with detail into __technical-infrastructure__ area.
+- Cluster models:
+  - [CYDEL01-DEV documentation](../../technical-infrastructure/CYDEL01-DEV-cluster.md)
 
 #
 [Back To Home](../README.md)
