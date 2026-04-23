@@ -25,10 +25,10 @@ public class SSOTestContainer {
     /**
      * See CYBNITY iac-helm-charts repository, about sub-folders named access-control-sso/charts to identify the packaged version of Keycloak into the CYBNITY platform.
      * The version is specified into the charts/keycloak-XX.y.z.tgz unzipped files (see values.yaml file).
-     * Current Helm packaged Bitnami version of Keycloak is bitnami/keycloak:26.3.3-debian-12-r0.
+     * Current Helm packaged version of Keycloak is quay.io/keycloak/keycloak:26.5.1
      * See TestContainers for Java documentation about System requirements at https://java.testcontainers.org/supported_docker_environment/
      */
-    static private final String KEYCLOAK_SERVER_DOCKER_IMAGE = "quay.io/keycloak/keycloak:24.0.5"; // Same Keycloak version but used from Official Quay repository with in-memory mode
+    static private final String KEYCLOAK_SERVER_DOCKER_IMAGE = "quay.io/keycloak/keycloak:26.5.1"; // Same Keycloak version but used from Official Quay repository with in-memory mode
 
     /**
      * Keycloak administration account name.

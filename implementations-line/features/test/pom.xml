@@ -96,7 +96,7 @@
 			<!-- io.netty.resolver.dns.DnsServerAddressStreamProviders ignored about 'io.netty:netty-resolver-dns-native-macos" NOTIFICATION on Mac -->
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
-			<scope>test</scope>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>
