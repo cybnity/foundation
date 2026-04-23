@@ -48,7 +48,7 @@ public class SampleDataView extends DataTransferObject {
         /**
          * Date of last refresh regarding the sample domain object.
          */
-        LAST_UPDATED_AT;
+        LAST_UPDATED_AT
     }
 
     public SampleDataView(String identifier, String label, Date createdAt, String commitVersion, Date updatedAt) throws IllegalArgumentException {

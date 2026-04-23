@@ -10,6 +10,6 @@ public enum SampleDomainQueryEventType implements IEventType  {
     SAMPLE_DATAVIEW_FIND_BY_LABEL
     ;
 
-    private SampleDomainQueryEventType() {
+    SampleDomainQueryEventType() {
     }
 }

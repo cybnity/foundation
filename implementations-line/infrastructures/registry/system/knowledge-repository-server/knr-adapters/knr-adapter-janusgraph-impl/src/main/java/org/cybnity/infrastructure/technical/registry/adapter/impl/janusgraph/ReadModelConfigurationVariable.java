@@ -167,11 +167,19 @@ public enum ReadModelConfigurationVariable implements IReadableConfiguration {
      * None default value.
      */
     JANUSGRAPH_GRAPH_UNIQUE_INSTANCE_ID_SUFFIX("JANUSGRAPH_GRAPH_UNIQUE_INSTANCE_ID_SUFFIX", "graph.unique-instance-id-suffix"),
+
     /**
      * When this is set, this JanusGraph's unique instance identifier is set to the hostname. If unique-instance-id-suffix is also set, then the identifier is set to.
      * Default value is FALSE.
      */
     JANUSGRAPH_GRAPH_USE_HOSTNAME_FOR_UNIQUE_INSTANCE_ID("JANUSGRAPH_GRAPH_USE_HOSTNAME_FOR_UNIQUE_INSTANCE_ID", "graph.use-hostname-for-unique-instance-id"),
+
+    /**
+     * This config option is an optional configuration setting that may be supplied when opening a graph.
+     * The String value provided will be the name of the graph.
+     * If the ConfigurationManagement APIs is used, then it will be able to access the graph by this String representation using the ConfiguredGraphFactory APIs.
+     */
+    JANUSGRAPH_GRAPH_NAME("JANUSGRAPH_GRAPH_NAME", "graph.graphname"),
 
     /// GRAPH SCRIPT EVAL ///
     /**
@@ -222,6 +230,17 @@ public enum ReadModelConfigurationVariable implements IReadableConfiguration {
      * Example of HBase supported value: hbase
      */
     JANUSGRAPH_STORAGE_BACKEND("JANUSGRAPH_STORAGE_BACKEND", "storage.backend"),
+
+    /**
+     * Storage root directory for those storage backends that require local storage.
+     * If storage.directory not supplied and graph.graphname not supplied, then data will be stored in the directory equivalent to /.
+     */
+    JANUSGRAPH_STORAGE_ROOT("JANUSGRAPH_STORAGE_ROOT", "storage.root"),
+
+    /**
+     * Storage directory for those storage backends that require local storage.
+     */
+    JANUSGRAPH_STORAGE_DIRECTORY("JANUSGRAPH_STORAGE_DIRECTORY", "storage.directory"),
 
     /**
      * Ip address of the JanusGraph storage server.

@@ -14,5 +14,5 @@ public interface ISampleDomainRepository extends IDomainRepository<SampleDataVie
      *
      * @throws UnoperationalStateException Problem occurred during the attempt to close the graph or to perform the schema/data deletion.
      */
-    public void drop() throws UnoperationalStateException;
+    void drop() throws UnoperationalStateException;
 }

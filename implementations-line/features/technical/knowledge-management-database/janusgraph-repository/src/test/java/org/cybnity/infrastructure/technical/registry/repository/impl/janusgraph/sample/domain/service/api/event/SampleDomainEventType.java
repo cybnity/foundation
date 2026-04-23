@@ -12,6 +12,6 @@ public enum SampleDomainEventType implements IEventType  {
     SAMPLE_DATAVIEW_REFRESHED
     ;
 
-    private SampleDomainEventType() {
+    SampleDomainEventType() {
     }
 }

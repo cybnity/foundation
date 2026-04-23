@@ -54,6 +54,20 @@ Build dockerfile (without docker-compose help) from directory from shell command
 ### Rancher Desktop
 During the Docker image build by Maven, a possible need of more disk storage space can generate a build error during the generation of a Docker image. It's due to Docker __buildx__ image created by Docker (during docker-maven-plugin build step).
 
+### Default Docker host name
+By default, the Rancher Desktop docker instance is named rancher-desktop (not named "default" like basically used on any other Docker installation or by Maven plugin executed during the CYBNITY projects build).
+
+When __Administrative Access__ have not been enabled on Rancher Desktop (from Preferences > Application > General > __Allow to acquire administrative credentials (sudo access)__ enabled option), the automatic change of DOCKHER_HOST and default context switch of Docker socks is not made by Rancher Desktop, and require a manual change of context to use by the developer via command:
+```
+  # Show started Docker context and socket endpoints
+  docker context ls
+  
+  # Change execution context by default to rancher-desktop context
+  docker context use rancher-desktop
+```
+
+See [Docker contexts documentation](https://docs.docker.com/engine/manage-resources/contexts/) about management of host context.
+  
 ### On Mac OS
 To change and increase the allocated disk storage size for buildx, stop Rancher Desktop and execute commands:
 ```
