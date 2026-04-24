@@ -83,7 +83,7 @@
 	<repositories>
 		<repository>
 			<id>agnet-snapshots</id>
-			<!-- CYBNITY artefact snapshot versions provided -->
+			<!-- CYBNITY artifacts snapshot versions provided -->
 			<name>AG Net snapshots repository</name>
 			<url>https://nexus.agnet.fr/repository/cybnity-snapshots</url>
 			<snapshots>
@@ -96,7 +96,7 @@
 
 		<repository>
 			<id>agnet-releases</id>
-			<!-- CYBNITY artefact release versions provided -->
+			<!-- CYBNITY artificts release versions provided -->
 			<name>AG Net releases repository</name>
 			<url>https://nexus.agnet.fr/repository/cybnity-releases</url>
 			<snapshots>
