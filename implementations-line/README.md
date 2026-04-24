@@ -51,8 +51,8 @@ Some shared deployable modules (e. endpoints) are also implemented at the UI lay
 ![image](mpp-ui-systems-stack.png)
 
 # APPLICATION COMPONENTS
-The source codes managed in this independent projects are dedicated to each CYBNITY applicative domain.
-Each application module dedicated repository manages its source codes structure via repositories with prefix "domain-":
+The source codes managed in those independent projects are dedicated to each CYBNITY applicative domain.
+Each application module dedicated sub-project manages its source codes structure via repositories with prefix "domain-":
 - [Access Control module](https://github.com/cybnity/domain-access-control)
 - [API Management module](https://github.com/cybnity/domain-api-mgt)
 - [Asset Control module](https://github.com/cybnity/domain-asset-control)
@@ -137,6 +137,6 @@ Example of common event-based principles using a common infrastructure library r
 ![image](mvf-event-based-architecture.png)
 
 # DEPLOYABLE & RUNNABLE MODULES
-Several types of applicative or infrastructure modules are developed and containerized as executable systems which can be deployed and operated on standalone (e.g OS on laptop, virtualized hardware) or on cloudified hardware platforms (e.g Kubernetes, OVH Cloud hosting, public cloud).
+Several types of applicative or infrastructure module are developed and containerized as executable systems which can be deployed and operated on standalone (e.g OS on laptop, virtualized hardware) or on cloudified hardware platforms (e.g Kubernetes, OVH Cloud hosting, public cloud).
 
 See for more detail in [systems architecture documentation](../docs/architecture/README.md) about the implementation modules and packaged systems constituting the CYBNITY software suite.
