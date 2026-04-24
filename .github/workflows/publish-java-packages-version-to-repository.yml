@@ -33,18 +33,18 @@ jobs:
       GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
     steps:
       - name: Checkout source codes from branch to publish
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: ${{ github.repository }}
           token: ${{ github.token }}
           ref: ${{ inputs.config-path }}
 
       - name: Settings.xml definition for publishing to AGNet repository
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with: # running setup-java again overwrites the settings.xml
           java-version: '11'
           distribution: 'temurin'
-          cache: maven
+          cache: 'maven'
           server-id: agnet # Value of the distributionManagement/repository/id filed of the pom.xml
           server-username: MAVEN_USERNAME # env variable for username in deploy
           server-password: MAVEN_PASSWORD # env variable for token in deploy

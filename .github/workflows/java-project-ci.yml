@@ -130,18 +130,18 @@ jobs:
     steps:
       - name: Checkout source codes from branch
         id: checkout_step
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: ${{ github.repository }}
           token: ${{ github.token }}
           ref: ${{ inputs.branch_name }}
 
       - name: Set up java runtime (Temurin JDK)
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: '11'
           distribution: 'temurin'
-          cache: maven
+          cache: 'maven'
           # defined settings.xml values allowing use of CYBNITY Maven remote repository
           server-id: agnet
           server-username: MAVEN_USERNAME
