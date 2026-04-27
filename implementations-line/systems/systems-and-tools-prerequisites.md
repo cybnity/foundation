@@ -16,7 +16,7 @@ Tools and required resources supporting all the environments involved into the C
 |System / Solution|Software Layer|Hardware Layer|Documentations|
 |:--|:--|:--|:--|
 |Rancher [Fleet](https://fleet.rancher.io)|Helm, Kubernetes, Kubectl CLI| |Continuous Delivery solution managing deployment pipelines; automated deployment flow according targeted Kubernetes cluster (e.g per environment cluster)|
-|MinIO|Linux| |S3 compatible object storage|
+|Seaweedfs|Linux, Docker| |S3 compatible object storage|
 |Rancher|Linux, Kubernetes, RKE2, KS3|- Processor type: 64-bit x86|Kubertenes clusters management; [Rancher installation requirements](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-requirements)|
 |K3s Node|Linux (SUSE, Red Hat, CentOS, Fedora, Ubuntu, Debian), Raspberry Pi|- Processor type: x86_64, armhf, arm64/aarch64<br>- CPU: 1 core (agnet), 2 cores (server)<br>  - RAM: 512MB (agent), 2GB (server)|[Minimum requirements](https://docs.k3s.io/installation/requirements) about each node|
 
