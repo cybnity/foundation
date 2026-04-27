@@ -180,7 +180,7 @@ When DEV cluster is not already existing for receive new RKE2 node, create it fr
   |Property|Value|Comments|
   |:-------|:----|:-------|
   |Automatic Snapshots|Enable|Default cron scheduling (0 */2 * * *) and keeped last (5)|
-  |Backup Snapshots to S3|Disable|Possible change for enabling to MinIO cluster if accessing from context|
+  |Backup Snapshots to S3|Disable|Possible change for enabling to S3 persistence cluster if accessing from context|
   |Metrics|Exposed to the public interface| |
 </details>
 
