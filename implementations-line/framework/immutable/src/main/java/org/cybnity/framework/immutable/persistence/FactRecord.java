@@ -33,15 +33,35 @@ public class FactRecord implements IHistoricalFact, IUniqueness, Cloneable {
      */
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(FactRecord.class).hashCode();
+    /**
+     * subject of recording
+     */
     private Serializable body;
+
+    /**
+     * Origin fact occurred date
+     */
     private OffsetDateTime factOccurredAt;
+
+    /**
+     * This fact record date
+     */
     private OffsetDateTime recordedAt;
+
+    /**
+     * Version of the type of fact
+     */
     private TypeVersion factTypeVersion;
+
     /**
      * Unique identifier of this record (equals to the original identifier hash code
      * value of the recorded event).
      */
     private Integer factId;
+
+    /**
+     * Origin fact body hash code
+     */
     private Integer bodyHash;
 
     /**
@@ -66,7 +86,7 @@ public class FactRecord implements IHistoricalFact, IUniqueness, Cloneable {
      * Default constructor of a fact record based on a domain event with potential custom targeted type version of ths record.
      *
      * @param originFact      Mandatory fact that is subject of recording.
-     * @param targetedVersion Optional version of the type of fact (e.g different than default type version based on origin fact class).
+     * @param targetedVersion Optional version of the type of fact (e.g; different than default type version based on origin fact class).
      * @throws IllegalArgumentException When mandatory parameter is missing.
      * @throws ImmutabilityException    When problem of read regarding immutable
      *                                  contents sourced from the event.

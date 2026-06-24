@@ -13,7 +13,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 public interface IContext {
 
     /**
-     * Get an instance of a resource type.
+     * Get an instance of a resource type that provided services exposed to a type of contract.
      *
      * @param typeOfResult Type of resource instance to return. For example, when
      *                     value is an interface type, the context search an object
@@ -27,8 +27,8 @@ public interface IContext {
      * Find the resource name from this container's attributes set firstly.
      * If not found, try to search resource name from current system environment variables.
      *
-     * @param resourceName The name (e.g identifier, text chain) of the resource to
-     *                     search (e.g class type name, property.name).
+     * @param resourceName The name (e.g; identifier, text chain) of the resource to
+     *                     search (e.g, class type name, property.name).
      * @return The found resource instance or null.
      */
     Object get(String resourceName);
@@ -36,14 +36,14 @@ public interface IContext {
     /**
      * Read a configuration variable from this context. During the call of a
      * configuration variable, the context search the configuration name from the
-     * current system environment variables (e.g valued, existent into the operating
+     * current system environment variables (e.g; valued, existent into the operating
      * system...).
      *
      * @param config Mandatory type of variable supported by this context.
      * @return Value of the environment variable that is current available and
-     * valued into the runtime context (e.g value found) as reusable by the
+     * valued into the runtime context (e.g; value found) as reusable by the
      * context. Null when the configuration variable to search into this
-     * context is not available and defined (e.g missing definition into the
+     * context is not available and defined (e.g; missing definition into the
      * operating system) on the current runtime environment.
      * @throws IllegalArgumentException When mandatory parameter is missing.
      * @throws SecurityException        If a security manager exists and its

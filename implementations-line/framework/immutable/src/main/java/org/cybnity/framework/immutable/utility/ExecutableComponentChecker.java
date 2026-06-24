@@ -59,10 +59,9 @@ public abstract class ExecutableComponentChecker extends HealthyOperableComponen
     }
 
     /**
-     * Execute the verification of configuration settings regarding existent and
-     * valued environment variables required by the module.
+     * Execute the verification of configuration settings presence required by the module.
      *
-     * @throws UnoperationalStateException When any required environment variable is
+     * @throws UnoperationalStateException When any required configuration variable is
      *                                     not defined or have not value ready for
      *                                     use.
      */
@@ -76,14 +75,37 @@ public abstract class ExecutableComponentChecker extends HealthyOperableComponen
             if (ctx == null)
                 ctx = new Context();
             String value;
+            Object valueObj;
             for (IReadableConfiguration aVar : envVar) {
+                valueObj = null;
+                value = null;
                 if (aVar != null && aVar.getName() != null && !aVar.getName().isBlank()) {
-                    // Verify the existent defined value for this environment variable into the
+                    // Verify the existing defined value for this environment variable into the
                     // current runtime process
+
+                    // BE CAREFUL: Environment variables et can be based on resource type, or can have been defined as resource name (equals to enumeration name only)
+                    // SO FLEXIBILITY IS SUPPORTED BY THIS VERIFICATION PROCESS TO EVALUATE THE TWO OPTION (key as Enum object; or key as enum name)
+
+                    // Search context variable from resource type
                     value = ctx.get(aVar);
-                    if (value == null || value.isEmpty()) {
-                        throw new MissingConfigurationException("Required environment variable (" + aVar.getName()
+                    if (value != null && value.isBlank()) {
+                        throw new MissingConfigurationException("Required configuration variable (" + aVar.getName()
                                 + ") value is not defined by the system!");
+                    }
+
+                    if (value == null) {
+                        // Search variable from resource name
+                        valueObj = ctx.get(aVar.getName()); // None specific state of resource need to be verified
+
+                        if (valueObj == null) {
+                            // Search variable from services contract
+                            valueObj = ctx.get(aVar.getClass()); // None specific state of resource contract need to be verified
+
+                            if (valueObj == null) {
+                                throw new MissingConfigurationException("Required configuration variable (" + aVar.getName()
+                                        + ") value is not defined by the system!");
+                            }
+                        }
                     }
                 }
             }
