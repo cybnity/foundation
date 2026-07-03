@@ -167,6 +167,21 @@ public class UISAdapterRedisImpl implements UISAdapter {
     }
 
     @Override
+    public void enable() throws UnoperationalStateException {
+        // TODO implement the function
+    }
+
+    @Override
+    public void disable() throws UnoperationalStateException {
+        // TODO implement the function
+    }
+
+    @Override
+    public void resume() throws UnoperationalStateException {
+        // TODO implement the function
+    }
+
+    @Override
     public void register(Collection<StreamObserver> observers, MessageMapper eventMapper) throws IllegalArgumentException, UnoperationalStateException {
         if (observers != null && !observers.isEmpty()) {
             for (StreamObserver listener : observers) {

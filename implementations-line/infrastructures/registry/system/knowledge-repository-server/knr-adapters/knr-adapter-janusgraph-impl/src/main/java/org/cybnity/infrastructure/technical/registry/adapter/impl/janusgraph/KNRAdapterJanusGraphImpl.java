@@ -58,4 +58,19 @@ public class KNRAdapterJanusGraphImpl implements KNRAdapter {
         // Execution the health check
         healthyChecker.checkOperableState();
     }
+
+    @Override
+    public void enable() throws UnoperationalStateException {
+        // TODO implement the function
+    }
+
+    @Override
+    public void disable() throws UnoperationalStateException {
+        // TODO implement the function
+    }
+
+    @Override
+    public void resume() throws UnoperationalStateException {
+        // TODO implement the function
+    }
 }
