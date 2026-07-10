@@ -28,7 +28,7 @@ public class IdentifierStringBasedUseCaseTest {
         // Check equality based on identifier value and name
         assertNotEquals(s, s2, "Should be fals as not equals contributors (and hascode)!");
 
-        // Check than equals instance reference detect also the technical equality
+        // Check that equals instance reference detects also the technical equality
         IdentifierStringBased s3 = s2;
         assertEquals(s2, s3, "Should be true as equals references!");
     }
