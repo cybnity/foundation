@@ -139,7 +139,7 @@ jobs:
       - name: Set up java runtime (Temurin JDK)
         uses: actions/setup-java@v5
         with:
-          java-version: '11'
+          java-version: '11' # Available on 17 or 25. See https://adoptium.net/fr/installation/github-actions for help about temurin in github actions
           distribution: 'temurin'
           cache: 'maven'
           # defined settings.xml values allowing use of CYBNITY Maven remote repository
