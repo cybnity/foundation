@@ -18,7 +18,7 @@ import java.util.List;
  * @author olivier
  */
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
-public interface IEventStore extends ICleanup  {
+public interface IEventStore extends ICleanup {
 
     /**
      * Get a resource name regarding the storage space where snapshot versions are managed by this store.
@@ -31,7 +31,7 @@ public interface IEventStore extends ICleanup  {
      * Add an event into the store stream and commit the list changes.
      *
      * @param domainSubjectId Mandatory identifier of the root domain event which is subject of the changes.
-     * @param changes       Mandatory ordered new events to commit at end of the stream managed by the store.
+     * @param changes         Mandatory ordered new events to commit at end of the stream managed by the store.
      * @throws IllegalArgumentException    When event to store is not compatible to be
      *                                     stored (e.g missing mandatory content into
      *                                     the event to store).
@@ -54,7 +54,7 @@ public interface IEventStore extends ICleanup  {
     /**
      * Load all the events since a snapshot version that was taken.
      *
-     * @param domainSubjectId   Mandatory identifier of the stored subject's stream to load (e.g path name of stream).
+     * @param domainSubjectId         Mandatory identifier of the stored subject's stream to load (e.g path name of stream).
      * @param snapshotExpectedVersion Mandatory version of the snapshot stored event.
      * @return A found stream or null.
      * @throws IllegalArgumentException    When missing mandatory parameter.
@@ -66,9 +66,9 @@ public interface IEventStore extends ICleanup  {
      * Load a subset of events (as a range) regarding a stream subject.
      *
      * @param domainSubjectId Mandatory identifier of the event stream subset to load.
-     * @param skipEvents    How many event items shall be skipped before to load stream.
-     * @param maxCount      How many event instance shall be taken regarding the
-     *                      history flow.
+     * @param skipEvents      How many event items shall be skipped before to load stream.
+     * @param maxCount        How many event instance shall be taken regarding the
+     *                        history flow.
      * @return A found stream in descending ordering (last event is first of list) or null.
      * @throws IllegalArgumentException    When mandatory parameter is missing.
      * @throws UnoperationalStateException When technical problem is occurred regarding this store usage.

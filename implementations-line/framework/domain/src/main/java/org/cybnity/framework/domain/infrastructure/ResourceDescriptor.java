@@ -19,33 +19,6 @@ public class ResourceDescriptor extends HashMap<String, String> {
             .composeCanonicalVersionHash(ResourceDescriptor.class).hashCode();
 
     /**
-     * Keys set regarding the multiple attribute defining this complex
-     * descriptor, and that each change need to be versioned/treated as a single
-     * atomic fact.
-     */
-    public enum PropertyAttributeKey {
-        /**
-         * Unique logical identifier of the resource.
-         */
-        RESOURCE_ID,
-
-        /**
-         * Label regarding the space path where the resource is accessible.
-         */
-        ACCESSIBILITY_NAMESPACE,
-
-        /**
-         * Date of version regarding the resource state.
-         */
-        VERSION_DATE,
-
-        /**
-         * Serial version UID (e.g Java class version UID) regarding the resource when it's a serializable custom object type.
-         */
-        RESOURCE_TYPE_SERIAL_VERSION_UID
-    }
-
-    /**
      * Default constructor.
      */
     public ResourceDescriptor() {
@@ -54,6 +27,7 @@ public class ResourceDescriptor extends HashMap<String, String> {
 
     /**
      * Auto-feed constructor.
+     *
      * @param m Values to feed into the map.
      */
     public ResourceDescriptor(Map<? extends String, ? extends String> m) {
@@ -63,6 +37,7 @@ public class ResourceDescriptor extends HashMap<String, String> {
     /**
      * Implement the generation of version hash regarding this class type according
      * to a concrete strategy utility service.
+     *
      * @return Hash value.
      */
     public String versionHash() {
@@ -164,5 +139,32 @@ public class ResourceDescriptor extends HashMap<String, String> {
      */
     public void setResourceId(String id) {
         this.put(PropertyAttributeKey.RESOURCE_ID.name(), id);
+    }
+
+    /**
+     * Keys set regarding the multiple attribute defining this complex
+     * descriptor, and that each change need to be versioned/treated as a single
+     * atomic fact.
+     */
+    public enum PropertyAttributeKey {
+        /**
+         * Unique logical identifier of the resource.
+         */
+        RESOURCE_ID,
+
+        /**
+         * Label regarding the space path where the resource is accessible.
+         */
+        ACCESSIBILITY_NAMESPACE,
+
+        /**
+         * Date of version regarding the resource state.
+         */
+        VERSION_DATE,
+
+        /**
+         * Serial version UID (e.g Java class version UID) regarding the resource when it's a serializable custom object type.
+         */
+        RESOURCE_TYPE_SERIAL_VERSION_UID
     }
 }

@@ -29,43 +29,14 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
 
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(CommonChildFactImpl.class).hashCode();
-
-    /**
-     * Logger singleton.
-     */
-    private transient Logger logger;
-
     /**
      * Stream of changes relative to this instance.
      */
     private final List<DomainEvent> changeHistory = new LinkedList<>();
-
     /**
-     * Attribute type managed via command event allowing change of an aggregate, and/or allowing notification of information changed via a promoted event type.
+     * Logger singleton.
      */
-    public enum Attribute implements IAttribute {
-        /**
-         * Identifier value of origin predecessor.
-         */
-        PARENT_REFERENCE_ID,
-
-        /**
-         * Identifier of the aggregate.
-         */
-        IDENTIFIER,
-
-        /**
-         * Date of aggregate creation.
-         */
-        OCCURRED_AT,
-
-        /**
-         * Explicit commit version.
-         * When not explicitly defined commit version, can be equals to a previous change event's identifier.
-         */
-        COMMIT_VERSION
-    }
-
+    private transient Logger logger;
     /**
      * Commit version of this instance based on the last change identifier.
      */
@@ -275,6 +246,15 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
     }
 
     /**
+     * Get commit version regarding this instance.
+     *
+     * @return A version identifier equals to the latest change event identifier which modified this instance. Or null when unknown.
+     */
+    public String getCommitVersion() {
+        return (this.commitVersion != null) ? this.commitVersion : null;
+    }
+
+    /**
      * Update the commit version relative to this fact.
      * This method read the event identifier and store it as commit version when domain event's identifier is known.
      *
@@ -288,15 +268,6 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
             if (id != null)
                 commitVersion = id.value().toString();
         }
-    }
-
-    /**
-     * Get commit version regarding this instance.
-     *
-     * @return A version identifier equals to the latest change event identifier which modified this instance. Or null when unknown.
-     */
-    public String getCommitVersion() {
-        return (this.commitVersion != null) ? this.commitVersion : null;
     }
 
     /**
@@ -358,5 +329,31 @@ public class CommonChildFactImpl extends ChildFact implements HydrationCapabilit
     protected Identifier generateIdentifierPredecessorBased(Entity predecessor, Collection<Identifier> childOriginalIds)
             throws IllegalArgumentException {
         return Predecessors.generateIdentifierPredecessorBased(predecessor, childOriginalIds);
+    }
+
+    /**
+     * Attribute type managed via command event allowing change of an aggregate, and/or allowing notification of information changed via a promoted event type.
+     */
+    public enum Attribute implements IAttribute {
+        /**
+         * Identifier value of origin predecessor.
+         */
+        PARENT_REFERENCE_ID,
+
+        /**
+         * Identifier of the aggregate.
+         */
+        IDENTIFIER,
+
+        /**
+         * Date of aggregate creation.
+         */
+        OCCURRED_AT,
+
+        /**
+         * Explicit commit version.
+         * When not explicitly defined commit version, can be equals to a previous change event's identifier.
+         */
+        COMMIT_VERSION
     }
 }

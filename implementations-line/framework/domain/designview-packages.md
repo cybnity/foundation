@@ -1,7 +1,9 @@
 ## PURPOSE
+
 Presentation of the design view regarding the sub-packages of `org.cybnity.framework.domain` project.
 
 # DESIGN VIEW
+
 The technical description regarding behavior and best usage is maintained into the Javadoc of each component.
 
 | Class Type                   | Motivation                                                                                                                                                                                                                                                                                                                                                                                                                               |
@@ -38,10 +40,14 @@ The technical description regarding behavior and best usage is maintained into t
 | Tenant                       | Represent a logical context (e.g organization dedicated) subscription that allow to define a scope into a multi-tenant application with a name which facilitates the users registrations through invitation                                                                                                                                                                                                                              |
 
 # STRUCTURE MODELS
-Several packages are implemented to organize the components (e.g specification elements, implementation components) additionnaly to these provided by this package.
+
+Several packages are implemented to organize the components (e.g specification elements, implementation components)
+additionnaly to these provided by this package.
 
 ## MODEL.EVENT PACKAGE
-Several types of domain events are defined by each applicative domain. This package includes enabler and utilities classes which are reusable by the domain implements.
+
+Several types of domain events are defined by each applicative domain. This package includes enabler and utilities
+classes which are reusable by the domain implements.
 
 | Class Type                      | Motivation                                                                                                                                 |
 |:--------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------|
@@ -437,6 +443,7 @@ classDiagram
 ```
 
 ### Infrastructure.util sub-package
+
 Utility classes supporting the infrastructure components.
 
 | Class Type                 | Motivation                                                                                                                                                                                                                                       |
@@ -445,4 +452,5 @@ Utility classes supporting the infrastructure components.
 | DateConvention             | Convention relative to the translation of a date into or from a string version managed into the infrastructure layer                                                                                                                             |
 
 #
+
 [Back To Home](README.md)

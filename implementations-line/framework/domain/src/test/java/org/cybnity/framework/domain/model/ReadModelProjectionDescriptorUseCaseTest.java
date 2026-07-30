@@ -23,7 +23,7 @@ public class ReadModelProjectionDescriptorUseCaseTest {
         IDomainModel domain = new AccessControlDomain();
         ReadModelProjectionDescriptor desc = ReadModelProjectionDescriptor.instanceOf(label, domain);
         Assertions.assertNotNull(desc);
-        Assertions.assertEquals(label,desc.label());
+        Assertions.assertEquals(label, desc.label());
         Assertions.assertEquals(domain, desc.ownership());
     }
 

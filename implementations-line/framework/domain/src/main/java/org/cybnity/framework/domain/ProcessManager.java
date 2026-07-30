@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Requirement(reqType = RequirementCategory.Maintainability, reqId = "REQ_MAIN_7")
 public abstract class ProcessManager implements ICommandHandler {
 
+    protected IContext context;
     /**
      * Managed handlers which are specific to the aggregate type, and that can be
      * selected for processing of specific commands. The Key is equals to a Command
@@ -33,8 +34,6 @@ public abstract class ProcessManager implements ICommandHandler {
      * aggregate, and the value if the mandatory handler instance which is responsible of the treatment for this type of command.
      */
     private ConcurrentHashMap<String, ICommandHandler> mediated;
-
-    protected IContext context;
 
     /**
      * Default constructor of this mediation pattern component.

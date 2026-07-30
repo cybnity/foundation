@@ -24,22 +24,6 @@ public class ReadModelProjectionDescriptor implements Unmodifiable, Serializable
     protected HashMap<String, Object> value;
 
     /**
-     * Keys set regarding the multiple attribute defining this complex
-     * descriptor, and that each change need to be versioned/treated as a single
-     * atomic fact.
-     */
-    public enum PropertyAttributeKey {
-        /**
-         * Logical label attribute defining a name of a projection.
-         */
-        LABEL,
-        /**
-         * Logical name of perimeter (e.g specific domain name) that is owner of a projection.
-         */
-        OWNERSHIP
-    }
-
-    /**
      * Default constructor.
      *
      * @param propertyCurrentValue Mandatory set of properties including minimum expected.
@@ -133,6 +117,22 @@ public class ReadModelProjectionDescriptor implements Unmodifiable, Serializable
      */
     public HashMap<String, Object> currentValue() {
         return this.value;
+    }
+
+    /**
+     * Keys set regarding the multiple attribute defining this complex
+     * descriptor, and that each change need to be versioned/treated as a single
+     * atomic fact.
+     */
+    public enum PropertyAttributeKey {
+        /**
+         * Logical label attribute defining a name of a projection.
+         */
+        LABEL,
+        /**
+         * Logical name of perimeter (e.g specific domain name) that is owner of a projection.
+         */
+        OWNERSHIP
     }
 
     /**

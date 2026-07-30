@@ -20,7 +20,7 @@ import java.util.Set;
  * Commands should be processed once, by a single recipient. The messaging
  * infrastructure should ensure that it delivers just a single copy of a command
  * to single command handler.
- * 
+ *
  * @author olivier
  *
  */
@@ -29,7 +29,7 @@ public interface ICommandHandler {
 
     /**
      * Manage the realization of a command.
-     * 
+     *
      * @param command Mandatory command that must be treated.
      * @param ctx     Context providing resources which could be required for
      *                command treatment by this Aggregate.
@@ -43,10 +43,10 @@ public interface ICommandHandler {
     /**
      * Get the version number regarding the types of Command which are supported by
      * this handler.
-     * 
+     *
      * @return A set of versions that this handler is capable to handle (e.g
-     *         specific versions of a same type of command). Null or empty set when
-     *         any type of Command can be treated by this handler.
+     * specific versions of a same type of command). Null or empty set when
+     * any type of Command can be treated by this handler.
      */
     Set<String> handledCommandTypeVersions();
 }

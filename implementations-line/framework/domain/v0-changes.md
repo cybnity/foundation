@@ -3,11 +3,13 @@
 Release Name: V0 - FRAMEWORK
 
 # CHANGES
+
 ## BUG
 
 ## IMPROVEMENT
 
 ## ADDS
+
 | Issue | Origin/Cause     | Description                                                                                                                                                                                                      |
 |:------|:-----------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 237   | REQ_ROB_3        | DomainEventInMemoryStoreImpl in-memory EventStore implementation component providing persistence capability as generic fact table store reusable for states persistence system saving the data changes           |
@@ -21,4 +23,5 @@ Release Name: V0 - FRAMEWORK
 | 159   | REQ_SEC_8370_CM6 | Basic configuration variable support regarding a Write Model or a Read Model                                                                                                                                     |
 
 # KNOWN ISSUES
+
 None. Do not hesitate to report any problem.

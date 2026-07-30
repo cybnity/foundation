@@ -10,11 +10,11 @@ import org.cybnity.framework.immutable.ImmutabilityException;
  */
 public class TenantBuilder {
 
-    private Tenant tenant;
     private final String tenantLabel;
-    private Identifier tenantId;
     private final Entity originPredecessorEvent;
     private final Boolean isActivityStatus;
+    private Tenant tenant;
+    private Identifier tenantId;
 
     /**
      * Default constructor.

@@ -7,26 +7,26 @@ import java.io.Serializable;
 
 /**
  * Example of value object defining a name of company.
- * 
+ *
  * @author olivier
  *
  */
 public class CompanyNameObject extends ValueObject<String> implements Serializable {
 
-	private final String name;
+    private final String name;
 
-	public CompanyNameObject(String name) {
-		this.name = name;
-	}
+    public CompanyNameObject(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public String[] valueHashCodeContributors() {
-		return new String[] { this.name };
-	}
+    @Override
+    public String[] valueHashCodeContributors() {
+        return new String[]{this.name};
+    }
 
-	@Override
-	public Serializable immutable() throws ImmutabilityException {
-		return new CompanyNameObject(this.name);
-	}
+    @Override
+    public Serializable immutable() throws ImmutabilityException {
+        return new CompanyNameObject(this.name);
+    }
 
 }

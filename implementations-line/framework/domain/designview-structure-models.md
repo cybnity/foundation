@@ -1,11 +1,16 @@
 ## PURPOSE
+
 Presentation of the structural components regarding architecture implementing domain-driven design patterns.
 
 # DESIGN VIEW
-Several structural patterns are supporting the domain (e.g event sourcing) and are reusable (e.g by inheritance) for coding of application domains elements.
+
+Several structural patterns are supporting the domain (e.g event sourcing) and are reusable (e.g by inheritance) for
+coding of application domains elements.
 
 ### Key Components
-For more detail, the technical description regarding behavior and best usage is maintained into the Javadoc of each component.
+
+For more detail, the technical description regarding behavior and best usage is maintained into the Javadoc of each
+component.
 
 | Class Type                             | Motivation                                                                                                                                                                                                                                                                                                                                                                                |
 |:---------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -56,6 +61,7 @@ For more detail, the technical description regarding behavior and best usage is 
 | ValueObject                            | Describes a thing in a domain that can be maintained as immutable and integral unit                                                                                                                                                                                                                                                                                                       |
 
 ## STRUCTURE MODELS
+
 Presentation of the design view of the `org.cybnity.framework.domain` main project's artifacts package.
 
 ```mermaid
@@ -158,6 +164,7 @@ classDiagram
     }
 
 ```
+
 ```mermaid
 %%{
   init: {
@@ -222,6 +229,7 @@ classDiagram
     }
 
 ```
+
 ```mermaid
 %%{
   init: {
@@ -305,7 +313,9 @@ classDiagram
 ```
 
 ### Sub-Packages
+
 See complementary presentation of [detailed structure models implemented into the sub-packages](designview-packages.md).
 
 #
+
 [Back To Home](README.md)

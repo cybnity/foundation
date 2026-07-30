@@ -19,6 +19,7 @@ public interface ISnapshot extends Unmodifiable {
 
     /**
      * Identifier that represents the snapshot version based on last change event of the origin object that is subject of this snapshot.
+     *
      * @return Value defining unique version.
      */
     String commitVersion();

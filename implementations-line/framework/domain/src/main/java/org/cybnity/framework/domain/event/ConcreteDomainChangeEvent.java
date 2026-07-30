@@ -35,36 +35,31 @@ public class ConcreteDomainChangeEvent extends DomainEvent implements HydrationA
     @JsonIgnore
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(ConcreteDomainChangeEvent.class).hashCode();
-
-    @JsonIgnore
-    private transient final Logger logger = Logger.getLogger(ConcreteDomainChangeEvent.class.getName());
-
     /**
      * Standard type of the attribute specifying this event type based on a logical
      * type.
      */
     @JsonIgnore
     public static String TYPE = "type";
-
-    /**
-     * Identify the original command reference that was cause of this event
-     * publication.
-     */
-    @JsonProperty
-    private EntityReference changeCommandRef;
-
-    /**
-     * Identify the element of the domain model which was changed.
-     */
-    @JsonProperty
-    private EntityReference changedModelElementRef;
-
+    @JsonIgnore
+    private transient final Logger logger = Logger.getLogger(ConcreteDomainChangeEvent.class.getName());
     /**
      * Collection of contributor to the definition of this event, based on
      * unmodifiable attributes.
      */
     @JsonProperty
     protected Collection<Attribute> specification;
+    /**
+     * Identify the original command reference that was cause of this event
+     * publication.
+     */
+    @JsonProperty
+    private EntityReference changeCommandRef;
+    /**
+     * Identify the element of the domain model which was changed.
+     */
+    @JsonProperty
+    private EntityReference changedModelElementRef;
 
     @JsonCreator
     public ConcreteDomainChangeEvent() {

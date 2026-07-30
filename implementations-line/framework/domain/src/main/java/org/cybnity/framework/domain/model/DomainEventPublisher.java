@@ -17,9 +17,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @Requirement(reqType = RequirementCategory.Scalability, reqId = "REQ_SCA_4")
 public class DomainEventPublisher implements ISubscribable {
 
+    private static final ThreadLocal<Boolean> publishing = ThreadLocal.withInitial(() -> Boolean.FALSE);
     private ConcurrentLinkedQueue<IDomainEventSubscriber> subscribers;
 
-    private static final ThreadLocal<Boolean> publishing = ThreadLocal.withInitial(() -> Boolean.FALSE);
+    private DomainEventPublisher() {
+        super();
+    }
 
     /**
      * Get an instance of the domain event publisher.
@@ -28,10 +31,6 @@ public class DomainEventPublisher implements ISubscribable {
      */
     public static DomainEventPublisher instance() {
         return new DomainEventPublisher();
-    }
-
-    private DomainEventPublisher() {
-        super();
     }
 
     /**

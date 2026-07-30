@@ -22,9 +22,9 @@ public abstract class AbstractRealModelDataViewProjection implements IReadModelP
     /**
      * Default constructor regarding a standard read model projection.
      *
-     * @param label            Mandatory logical definition (e.g query name, projection finality unique name) of this projection that can be used for projections equals validation.
-     * @param ownership        Mandatory domain which is owner of the projection (as in its scope of responsibility).
-     * @param observer         Optional observer of the transaction state evolution (e.g to be notified about progress or end of performed transaction).
+     * @param label     Mandatory logical definition (e.g query name, projection finality unique name) of this projection that can be used for projections equals validation.
+     * @param ownership Mandatory domain which is owner of the projection (as in its scope of responsibility).
+     * @param observer  Optional observer of the transaction state evolution (e.g to be notified about progress or end of performed transaction).
      * @throws IllegalArgumentException When any mandatory parameter is missing.
      */
     public AbstractRealModelDataViewProjection(String label, IDomainModel ownership, ITransactionStateObserver observer) throws IllegalArgumentException {
@@ -38,8 +38,8 @@ public abstract class AbstractRealModelDataViewProjection implements IReadModelP
      * Prepare expected description of this read-model projection.
      * Called during the instance creation.
      *
-     * @param label            Mandatory logical label regarding this projection.
-     * @param ownership        Mandatory domain which is owner of this projection.
+     * @param label     Mandatory logical label regarding this projection.
+     * @param ownership Mandatory domain which is owner of this projection.
      * @throws IllegalArgumentException When any mandatory parameter is missing.
      */
     protected void prepareDescription(String label, IDomainModel ownership) throws IllegalArgumentException {

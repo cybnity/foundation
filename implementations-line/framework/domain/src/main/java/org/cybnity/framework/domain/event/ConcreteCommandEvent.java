@@ -33,26 +33,23 @@ public class ConcreteCommandEvent extends Command {
     @JsonIgnore
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(ConcreteCommandEvent.class).hashCode();
-
-    /**
-     * Identify the original event reference that was previous source of this command
-     * publication.
-     */
-    @JsonProperty
-    private EntityReference priorCommandRef;
-
-    /**
-     * Identify the element of the domain model which was subject of command.
-     */
-    @JsonProperty
-    private EntityReference changedModelElementRef;
-
     /**
      * Collection of contributor to the definition of this event, based on
      * unmodifiable attributes.
      */
     @JsonProperty
     protected Collection<Attribute> specification;
+    /**
+     * Identify the original event reference that was previous source of this command
+     * publication.
+     */
+    @JsonProperty
+    private EntityReference priorCommandRef;
+    /**
+     * Identify the element of the domain model which was subject of command.
+     */
+    @JsonProperty
+    private EntityReference changedModelElementRef;
 
     /**
      * Constructor usable by binding framework allowing mapping of instance.

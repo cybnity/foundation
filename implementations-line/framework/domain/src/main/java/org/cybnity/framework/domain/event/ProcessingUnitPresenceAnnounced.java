@@ -132,21 +132,6 @@ public class ProcessingUnitPresenceAnnounced extends ConcreteDomainChangeEvent {
     }
 
     /**
-     * Supported attributes set by a presence announce.
-     */
-    public enum SpecificationAttribute implements IAttribute {
-        /**
-         * Attribute regarding the logical identification name of a services provider (e.g UI capability processing unit which ensure domain event treatments).
-         */
-        SERVICE_NAME,
-
-        /**
-         * Attribute regarding a state of an announced presence.
-         */
-        PRESENCE_STATUS
-    }
-
-    /**
      * Add a specification relative to the service name which is subject of the announced presence statue.
      *
      * @param name A service name. Ignored when null.
@@ -196,6 +181,21 @@ public class ProcessingUnitPresenceAnnounced extends ConcreteDomainChangeEvent {
             return EventSpecification.findSpecificationByName(SpecificationAttribute.PRESENCE_STATUS.name(), this.specification);
         }
         return null;
+    }
+
+    /**
+     * Supported attributes set by a presence announce.
+     */
+    public enum SpecificationAttribute implements IAttribute {
+        /**
+         * Attribute regarding the logical identification name of a services provider (e.g UI capability processing unit which ensure domain event treatments).
+         */
+        SERVICE_NAME,
+
+        /**
+         * Attribute regarding a state of an announced presence.
+         */
+        PRESENCE_STATUS
     }
 
 }

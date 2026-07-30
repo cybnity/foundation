@@ -9,21 +9,6 @@ import org.cybnity.framework.immutable.EntityReference;
 public interface IPresenceObservability {
 
     /**
-     * Type of status regarding a presence.
-     */
-    enum PresenceState implements IAttribute {
-        /**
-         * Status of active presence and materializing a "ready state" (e.g to deliver services).
-         */
-        AVAILABLE,
-
-        /**
-         * Status of no active presence that materialize a "not ready state" (e.g end of life cycle regarding a component that previously provided services when it was in available state).
-         */
-        UNAVAILABLE
-    }
-
-    /**
      * Get the current status of presence regarding this component (e.g services providers).
      *
      * @return A status.
@@ -41,7 +26,23 @@ public interface IPresenceObservability {
 
     /**
      * Manage an acknowledge event regarding a presence declared.
+     *
      * @param event Result notification of presence declaration.
      */
     void manageDeclaredPresenceAcknowledge(IDescribed event);
+
+    /**
+     * Type of status regarding a presence.
+     */
+    enum PresenceState implements IAttribute {
+        /**
+         * Status of active presence and materializing a "ready state" (e.g to deliver services).
+         */
+        AVAILABLE,
+
+        /**
+         * Status of no active presence that materialize a "not ready state" (e.g end of life cycle regarding a component that previously provided services when it was in available state).
+         */
+        UNAVAILABLE
+    }
 }

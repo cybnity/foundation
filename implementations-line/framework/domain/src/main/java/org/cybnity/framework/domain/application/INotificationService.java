@@ -17,7 +17,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * track the domain event as having been published through that exchange
  * (without wait if subscribers confirmed reception, but allow only allow the
  * messaging mechanism to guarantee delivery).
- * 
+ *
  * @author olivier
  *
  */
@@ -28,14 +28,14 @@ public interface INotificationService {
 
     /**
      * Find a notification log from an identifier.
-     * 
+     *
      * @param aNotificationlogId Identifier to search.
      * @param eventStore         Log sourcing store.
      * @return A found log. Or null if not found.
      * @throws IllegalArgumentException When mandatory log parameter is not defined.
      */
     NotificationLog findNotificationLog(Identifier aNotificationlogId, EventStore eventStore)
-	    throws IllegalArgumentException;
+            throws IllegalArgumentException;
 
     /**
      * Publish unpublished notification event instances over a messaging mechanism.

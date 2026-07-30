@@ -24,15 +24,6 @@ public class TenantDescriptor extends MutableProperty {
 
     private OffsetDateTime versionedAt;
 
-    /**
-     * Keys set regarding the multiple attribute defining this complex
-     * descriptor, and that each change need to be versioned/treated as a single
-     * atomic fact.
-     */
-    public enum PropertyAttributeKey {
-        LABEL
-    }
-
     public TenantDescriptor(Entity propertyOwner, HashMap<String, Object> propertyCurrentValue,
                             HistoryState status) throws IllegalArgumentException {
         super(propertyOwner, propertyCurrentValue, status);
@@ -97,5 +88,14 @@ public class TenantDescriptor extends MutableProperty {
     @Override
     public String versionHash() {
         return String.valueOf(serialVersionUID);
+    }
+
+    /**
+     * Keys set regarding the multiple attribute defining this complex
+     * descriptor, and that each change need to be versioned/treated as a single
+     * atomic fact.
+     */
+    public enum PropertyAttributeKey {
+        LABEL
     }
 }

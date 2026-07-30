@@ -9,12 +9,12 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * Represent a context of information (e.g; properties, resources url, settings)
  * managed and provisioned during interaction moment (e.g during a
  * communication between several systems or users).
- * 
+ * <p>
  * For example, this type of context can specifically provide information
  * regarding an authorized session which are reusable by system components
  * requiring to check specific authorized and accessible properties opened
  * specifically during a system usage moment.
- * 
+ *
  * @author olivier
  *
  */
@@ -23,7 +23,7 @@ public interface ISessionContext extends IContext {
 
     /**
      * Get the tenant relative to this session.
-     * 
+     *
      * @return A tenant or null.
      */
     Tenant tenant();

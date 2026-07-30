@@ -7,14 +7,14 @@ import org.cybnity.framework.domain.model.sample.writemodel.UserAccountStore;
 /**
  * Example of a bounded context utility class managing informations specific to
  * an application domain.
- * 
+ *
  * @author olivier
  *
  */
 public class UserAccountManagementDomainContext extends Context implements IUserAccountManagementDomainContext {
 
     public UserAccountManagementDomainContext() {
-	super();
+        super();
     }
 
     /**
@@ -23,7 +23,7 @@ public class UserAccountManagementDomainContext extends Context implements IUser
      */
     @Override
     public UserAccountStore getWriteModelStore() {
-	return (UserAccountStore) this.get(UserAccountStore.class.getName());
+        return (UserAccountStore) this.get(UserAccountStore.class.getName());
     }
 
 }

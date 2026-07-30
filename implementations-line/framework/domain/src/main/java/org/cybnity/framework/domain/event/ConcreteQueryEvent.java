@@ -33,26 +33,23 @@ public class ConcreteQueryEvent extends Command {
     @JsonIgnore
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(ConcreteQueryEvent.class).hashCode();
-
-    /**
-     * Identify the original event reference that was previous source of this query
-     * publication.
-     */
-    @JsonProperty
-    private EntityReference priorCommandRef;
-
-    /**
-     * Identify the element of the domain model which was subject of query.
-     */
-    @JsonProperty
-    private EntityReference queriedModelElementRef;
-
     /**
      * Collection of contributor to the definition of this event, based on
      * unmodifiable attributes.
      */
     @JsonProperty
     protected Collection<Attribute> specification;
+    /**
+     * Identify the original event reference that was previous source of this query
+     * publication.
+     */
+    @JsonProperty
+    private EntityReference priorCommandRef;
+    /**
+     * Identify the element of the domain model which was subject of query.
+     */
+    @JsonProperty
+    private EntityReference queriedModelElementRef;
 
     @JsonCreator
     public ConcreteQueryEvent() {
@@ -90,10 +87,10 @@ public class ConcreteQueryEvent extends Command {
     /**
      * Factory of a type of query supported by a domain Anti-Corruption Layer API.
      *
-     * @param type                   Mandatory type of query command to instantiate.
-     * @param identifiedBy           Optional query identity that shall identify the concrete query instance to create.
-     * @param definition             Collection of attributes defining the query.
-     * @param priorCommandRef        Optional original event reference that was previous source of this query publication.
+     * @param type            Mandatory type of query command to instantiate.
+     * @param identifiedBy    Optional query identity that shall identify the concrete query instance to create.
+     * @param definition      Collection of attributes defining the query.
+     * @param priorCommandRef Optional original event reference that was previous source of this query publication.
      * @return Instance of concrete event including all the attributes and standard additional elements.
      * @throws IllegalArgumentException When any mandatory parameter is missing.
      */

@@ -5,7 +5,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Represent a component of a service layer hosted by a domain boundary.
- * 
+ *
  * @author olivier
  *
  */

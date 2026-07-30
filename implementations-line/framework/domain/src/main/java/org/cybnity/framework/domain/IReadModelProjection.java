@@ -29,7 +29,7 @@ public interface IReadModelProjection {
      * @return Provider of optional data-view status collected as request results.
      * @throws IllegalArgumentException      When any mandatory parameter is missing.
      * @throws UnsupportedOperationException When request execution generated an issue (e.g query not supported by this projection; or error of request parameter types).
-     * @throws UnoperationalStateException When query execution technical problem occurred.
+     * @throws UnoperationalStateException   When query execution technical problem occurred.
      */
     public IQueryResponse when(Command request) throws IllegalArgumentException, UnsupportedOperationException, UnoperationalStateException;
 

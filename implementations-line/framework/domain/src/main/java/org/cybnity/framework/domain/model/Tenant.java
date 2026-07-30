@@ -38,91 +38,14 @@ public class Tenant extends Aggregate {
      */
     private static final long serialVersionUID = new VersionConcreteStrategy().composeCanonicalVersionHash(Tenant.class)
             .hashCode();
-
-    /**
-     * Attribute type managed via command event allowing change of this aggregate, and/or allowing notification of information changed via a promoted event type.
-     */
-    public enum Attribute implements IAttribute {
-        /**
-         * Tenant logical label value.
-         */
-        LABEL,
-        /**
-         * True or False value regarding the tenant's activity state.
-         */
-        ACTIVITY_STATUS
-    }
-
     /**
      * Logical label naming this tenant (e.g business name of a company) that facilitate to resolve queries.
      */
     private TenantDescriptor label;
-
     /**
      * Current mutable status of activity regarding this tenant.
      */
     private ActivityState activityStatus;
-
-    /**
-     * Factory of this type of aggregate ensuring the mutation process.
-     */
-    public static class MutedTenantFactory implements MutedAggregateFactory {
-        @Override
-        public Aggregate instanceOf(Identifier instanceId, List<DomainEvent> changesHistory) throws IllegalArgumentException {
-            return Tenant.instanceOf(instanceId, changesHistory);
-        }
-    }
-
-    /**
-     * Factory of instance from historized facts (e.g fact creation, change, deletion events) allowing the instance rehydration.
-     *
-     * @param instanceId     Mandatory unique identifier of the child fact instance to rehydrate.
-     * @param changesHistory Mandatory not empty history. History order shall be ascending ordered with the last list element equals to the more young creation event relative to this instance to rehydrate.
-     * @return Re-hydrated instance. The source changes history have not been re-established into the hydrated instance.
-     * @throws IllegalArgumentException When mandatory parameter is not valid or empty. When list does not contain identifiable creation event as first list element.
-     */
-    public static Tenant instanceOf(Identifier instanceId, List<DomainEvent> changesHistory) throws IllegalArgumentException {
-        if (instanceId == null) throw new IllegalArgumentException("instanceId parameter is required!");
-        if (changesHistory == null || changesHistory.isEmpty())
-            throw new IllegalArgumentException("changesHistory parameter is required and shall be not empty!");
-
-        // Get first element as origin creation event (more old event)
-        DomainEvent event = changesHistory.get(0);
-        if (event == null) throw new IllegalArgumentException("First history item shall be not null!");
-
-        // Normally, any event relative to a tenant change shall include specification attributes allowing its instantiation
-        if (HydrationAttributeProvider.class.isAssignableFrom(event.getClass())) {
-            HydrationAttributeProvider hydrationElementsProvider = (HydrationAttributeProvider) event;
-            Identifier tenantId = hydrationElementsProvider.changeSourceIdentifier();
-            OffsetDateTime occurredAt = hydrationElementsProvider.changeSourceOccurredAt();
-            Identifier parentId = hydrationElementsProvider.changeSourcePredecessorReferenceId();
-
-            // Read identification of tenant mandatory predecessor entity reference
-            if (parentId != null && tenantId != null && occurredAt != null) {
-                DomainEntity parent = new DomainEntity(parentId);
-                parent.setCreatedAt(occurredAt); /* re-hydrate origin creation date */
-
-                // Re-instantiate the fact
-                Tenant fact = new Tenant(parent, tenantId /* re-hydrated domain data identity privileged from event attributes*/, /* Label managed by next change event auto-generated during origin instance creation*/ null);
-                fact.setOccurredAt(occurredAt);
-
-                // Quality control of normally equals re-hydrated identity of data object
-                if (!fact.identified().equals(instanceId)) {
-                    // Problem of integrity regarding the re-hydrated identification elements from the event
-                    throw new IllegalArgumentException("Non conformity of the identifiers detected into the change event history which shall be equals to the instanceId parameter requested to be re-hydrated!");
-                }
-
-                // Rehydrate its status for events history into the last known state (without lifecycle history storage by the instance)
-                fact.mutate(changesHistory);
-                // Clean the re-hydrated change events potential automatically added during mutation operations
-                fact.changeEvents().clear();
-
-                return fact; // Return re-hydrated instance
-            }
-        }
-
-        throw new IllegalArgumentException("Impossible re-hydration of tenant instance from changes history!");
-    }
 
     /**
      * Default constructor.
@@ -224,6 +147,66 @@ public class Tenant extends Aggregate {
             // Log potential coding problem relative to immutability support
             logger().log(Level.SEVERE, ie.getMessage(), ie);
         }
+    }
+
+    /**
+     * Factory of instance from historized facts (e.g fact creation, change, deletion events) allowing the instance rehydration.
+     *
+     * @param instanceId     Mandatory unique identifier of the child fact instance to rehydrate.
+     * @param changesHistory Mandatory not empty history. History order shall be ascending ordered with the last list element equals to the more young creation event relative to this instance to rehydrate.
+     * @return Re-hydrated instance. The source changes history have not been re-established into the hydrated instance.
+     * @throws IllegalArgumentException When mandatory parameter is not valid or empty. When list does not contain identifiable creation event as first list element.
+     */
+    public static Tenant instanceOf(Identifier instanceId, List<DomainEvent> changesHistory) throws IllegalArgumentException {
+        if (instanceId == null) throw new IllegalArgumentException("instanceId parameter is required!");
+        if (changesHistory == null || changesHistory.isEmpty())
+            throw new IllegalArgumentException("changesHistory parameter is required and shall be not empty!");
+
+        // Get first element as origin creation event (more old event)
+        DomainEvent event = changesHistory.get(0);
+        if (event == null) throw new IllegalArgumentException("First history item shall be not null!");
+
+        // Normally, any event relative to a tenant change shall include specification attributes allowing its instantiation
+        if (HydrationAttributeProvider.class.isAssignableFrom(event.getClass())) {
+            HydrationAttributeProvider hydrationElementsProvider = (HydrationAttributeProvider) event;
+            Identifier tenantId = hydrationElementsProvider.changeSourceIdentifier();
+            OffsetDateTime occurredAt = hydrationElementsProvider.changeSourceOccurredAt();
+            Identifier parentId = hydrationElementsProvider.changeSourcePredecessorReferenceId();
+
+            // Read identification of tenant mandatory predecessor entity reference
+            if (parentId != null && tenantId != null && occurredAt != null) {
+                DomainEntity parent = new DomainEntity(parentId);
+                parent.setCreatedAt(occurredAt); /* re-hydrate origin creation date */
+
+                // Re-instantiate the fact
+                Tenant fact = new Tenant(parent, tenantId /* re-hydrated domain data identity privileged from event attributes*/, /* Label managed by next change event auto-generated during origin instance creation*/ null);
+                fact.setOccurredAt(occurredAt);
+
+                // Quality control of normally equals re-hydrated identity of data object
+                if (!fact.identified().equals(instanceId)) {
+                    // Problem of integrity regarding the re-hydrated identification elements from the event
+                    throw new IllegalArgumentException("Non conformity of the identifiers detected into the change event history which shall be equals to the instanceId parameter requested to be re-hydrated!");
+                }
+
+                // Rehydrate its status for events history into the last known state (without lifecycle history storage by the instance)
+                fact.mutate(changesHistory);
+                // Clean the re-hydrated change events potential automatically added during mutation operations
+                fact.changeEvents().clear();
+
+                return fact; // Return re-hydrated instance
+            }
+        }
+
+        throw new IllegalArgumentException("Impossible re-hydration of tenant instance from changes history!");
+    }
+
+    /**
+     * Get the serial version UID of this class type.
+     *
+     * @return A serial version UID.
+     */
+    public static long serialVersionUID() {
+        return serialVersionUID;
     }
 
     /**
@@ -456,12 +439,27 @@ public class Tenant extends Aggregate {
     }
 
     /**
-     * Get the serial version UID of this class type.
-     *
-     * @return A serial version UID.
+     * Attribute type managed via command event allowing change of this aggregate, and/or allowing notification of information changed via a promoted event type.
      */
-    public static long serialVersionUID() {
-        return serialVersionUID;
+    public enum Attribute implements IAttribute {
+        /**
+         * Tenant logical label value.
+         */
+        LABEL,
+        /**
+         * True or False value regarding the tenant's activity state.
+         */
+        ACTIVITY_STATUS
+    }
+
+    /**
+     * Factory of this type of aggregate ensuring the mutation process.
+     */
+    public static class MutedTenantFactory implements MutedAggregateFactory {
+        @Override
+        public Aggregate instanceOf(Identifier instanceId, List<DomainEvent> changesHistory) throws IllegalArgumentException {
+            return Tenant.instanceOf(instanceId, changesHistory);
+        }
     }
 
 }

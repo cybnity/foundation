@@ -9,7 +9,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Persistence system (store) UserAccountAggregate.
- * 
+ *
  * @author olivier
  *
  */
@@ -18,7 +18,7 @@ public interface UserAccountStore extends ISubscribable {
 
     /**
      * Add object into the store.
-     * 
+     *
      * @param version          Mandatory object to store.
      * @param transactionOrder Mandatory original transaction requesting the change.
      * @throws IllegalArgumentException When object to store is not compatible to be
@@ -28,11 +28,11 @@ public interface UserAccountStore extends ISubscribable {
      *                                  object is occurred.
      */
     void append(UserAccountAggregate version, Command transactionOrder)
-	    throws IllegalArgumentException, ImmutabilityException;
+            throws IllegalArgumentException, ImmutabilityException;
 
     /**
      * Search in store an event logged.
-     * 
+     *
      * @param uid Mandatory identifier of the object to find.
      * @return Found last version of object, or null.
      */

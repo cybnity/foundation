@@ -37,30 +37,26 @@ public abstract class Command implements IHistoricalFact, IdentifiableFact, IRef
     @JsonIgnore
     private static final long serialVersionUID = new VersionConcreteStrategy()
             .composeCanonicalVersionHash(Command.class).hashCode();
-
+    /**
+     * Standard name of the attribute specifying a correlation identifier generated and assigned to this command.
+     */
+    @JsonIgnore
+    public static String CORRELATION_ID = MessageHeader.CORRELATION_ID.name();
+    /**
+     * Standard type of the attribute specifying a command or query type based on a logical nature.
+     */
+    @JsonIgnore
+    public static String TYPE = "type";
     /**
      * As event name reflect the past nature of the occurrence, an event is not
      * occurring now, but it occurred previously. This property indicates when the
      * event occurred.
      */
     protected OffsetDateTime occurredOn;
-
     /**
      * Identifying information of this event.
      */
     protected Entity identifiedBy;
-
-    /**
-     * Standard name of the attribute specifying a correlation identifier generated and assigned to this command.
-     */
-    @JsonIgnore
-    public static String CORRELATION_ID = MessageHeader.CORRELATION_ID.name();
-
-    /**
-     * Standard type of the attribute specifying a command or query type based on a logical nature.
-     */
-    @JsonIgnore
-    public static String TYPE = "type";
 
     /**
      * Default constructor of unidentifiable event.

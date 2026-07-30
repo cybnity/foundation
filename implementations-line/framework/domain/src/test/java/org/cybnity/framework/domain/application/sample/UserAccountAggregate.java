@@ -27,13 +27,11 @@ import java.util.UUID;
  */
 public class UserAccountAggregate extends Aggregate {
 
-    private EntityReference user;
-
     /**
      * Version of this class
      */
     private static final long serialVersionUID = 1L;
-
+    private EntityReference user;
     /**
      * Set of roles allowed to this user account.
      */

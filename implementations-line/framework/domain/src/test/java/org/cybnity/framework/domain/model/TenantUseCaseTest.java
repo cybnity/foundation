@@ -22,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class TenantUseCaseTest {
 
-    private Tenant tenant;
     private final String namedOrganization = "CYBNITY France";
+    private Tenant tenant;
     private TenantDescriptor organization;
     private Identifier id;
 

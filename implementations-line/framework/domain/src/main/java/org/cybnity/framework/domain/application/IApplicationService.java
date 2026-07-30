@@ -6,7 +6,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
  * Applicative behaviors contract regarding an application layer.
- * 
+ *
  * @author olivier
  *
  */

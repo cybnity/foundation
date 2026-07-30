@@ -48,26 +48,6 @@ public class IdentifierStringBased extends ValueObject<String> implements Identi
         this.value = value;
     }
 
-    @Override
-    public Serializable immutable() throws ImmutabilityException {
-        return new IdentifierStringBased(name, value);
-    }
-
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    @Override
-    public Serializable value() {
-        return this.value;
-    }
-
-    @Override
-    public String[] valueHashCodeContributors() {
-        return new String[]{this.value, this.name};
-    }
-
     /**
      * Generate an identifier based on a list (or unique contained instance) of
      * identifiers. This method is reusable for any class requiring calculation of
@@ -115,6 +95,26 @@ public class IdentifierStringBased extends ValueObject<String> implements Identi
      */
     public static Identifier generate(String salt) {
         return new IdentifierStringBased(BaseConstants.IDENTIFIER_ID.name(), RandomUUIDFactory.generate(salt));
+    }
+
+    @Override
+    public Serializable immutable() throws ImmutabilityException {
+        return new IdentifierStringBased(name, value);
+    }
+
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    @Override
+    public Serializable value() {
+        return this.value;
+    }
+
+    @Override
+    public String[] valueHashCodeContributors() {
+        return new String[]{this.value, this.name};
     }
 
 }

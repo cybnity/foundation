@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Example of denormalized version of an instance of UserAccountAggregate, ready
  * for read by a UI layer.
- * 
+ *
  * @author olivier
  *
  */
@@ -19,21 +19,21 @@ public class UserAccountDTO {
     private final Set<ApplicativeRoleDTO> roles;
 
     public UserAccountDTO(Entity accountId, OffsetDateTime versionOf, Set<ApplicativeRoleDTO> assignedRoles) {
-	this.userAccountEntityIdentifier = accountId;
-	this.versionOf = versionOf;
-	this.roles = assignedRoles;
+        this.userAccountEntityIdentifier = accountId;
+        this.versionOf = versionOf;
+        this.roles = assignedRoles;
     }
 
     public Entity getUserAccountEntityIdentifier() {
-	return this.userAccountEntityIdentifier;
+        return this.userAccountEntityIdentifier;
     }
 
     public Set<ApplicativeRoleDTO> getRoles() {
-	return roles;
+        return roles;
     }
 
     public OffsetDateTime getVersionOf() {
-	return this.versionOf;
+        return this.versionOf;
     }
 
 }
