@@ -43,7 +43,7 @@
 
 	<properties>
 		<!-- CYBNITY project default revision -->
-		<revision>0.1.0</revision>
+		<revision>feature-237-SNAPSHOT</revision>
 	</properties>
 
 	<!-- Project lines -->

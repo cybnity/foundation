@@ -8,9 +8,9 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 
 /**
- * Sample regarding an applicative role managed by a domain (e.g that could be
- * assigned to an account), and that can allow permissions (e.g read, modify,
- * delete of informations relative to a domain).
+ * Sample regarding an applicative role managed by a domain (e.g; that could be
+ * assigned to an account), and that can allow permissions (e.g; read, modify,
+ * delete of information relative to a domain).
  * 
  * @author olivier
  *
@@ -32,7 +32,7 @@ public class ApplicativeRole extends MutableProperty {
     /**
      * Default constructor.
      * 
-     * @param roleOwner Mandatory owner of this role (e.g user account entity),
+     * @param roleOwner Mandatory owner of this role (e.g; user account entity),
      *                  including the entity information.
      * @param name      Mandatory label naming this role.
      * @throws IllegalArgumentException When mandatory parameter is missing.
@@ -58,7 +58,7 @@ public class ApplicativeRole extends MutableProperty {
      *                             the property. Support included keys with null
      *                             value.
      * @param status               Optional state of this property version. If null,
-     *                             {@link org.cybnity.framework.immutable.HistoryState.Committed}
+     *                             {@link org.cybnity.framework.immutable.HistoryState.COMMITTED}
      *                             is defined as default state.
      * @throws IllegalArgumentException When mandatory parameter is missing, or when
      *                                  cant' be cloned regarding immutable entity
