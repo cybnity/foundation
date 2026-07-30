@@ -5,9 +5,9 @@ import org.cybnity.framework.domain.event.IEventType;
 import org.cybnity.framework.domain.model.ReadModelProjectionDescriptor;
 
 /**
- * Represents an optimized read-model projection allowing query and read of denormalized version of domain layer object (e.g status and value of a domain object version at a moment of life).
+ * Represents an optimized read-model projection allowing query and read of denormalized version of domain layer object (e.g; status and value of a domain object version at a moment of life).
  * This interface contract is covering a perimeter of read-model projection based on a type of denormalized domain object view.
- * Each projection specialized for a domain layer (e.g aggregate view) shall extend this type of contract to add specific methods supporting optimized queries for the type of domain object view managed.
+ * Each projection specialized for a domain layer (e.g; aggregate view) shall extend this type of contract to add specific methods supporting optimized queries for the type of domain object view managed.
  */
 public interface IReadModelProjection {
 
