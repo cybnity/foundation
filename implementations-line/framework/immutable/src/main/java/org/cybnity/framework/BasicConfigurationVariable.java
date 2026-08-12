@@ -4,7 +4,7 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Basic enumeration defining a set of variables (e.g port of server started,
+ * Basic enumeration defining a set of variables (e.g; port of server started,
  * current value of a runtime setting) usable by a component.
  * <p>
  * Each defined sub-enumeration shall be defined by the current runtime context

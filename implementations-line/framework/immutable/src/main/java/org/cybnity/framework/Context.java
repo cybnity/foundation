@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Utility class providing generic features to manage properties and resources
- * containers that can be specialized by sub-classes regarding specific types of
+ * containers that can be specialized by subclasses regarding specific types of
  * resources or specialized IContext sub-interfaces.
  *
  * @author olivier

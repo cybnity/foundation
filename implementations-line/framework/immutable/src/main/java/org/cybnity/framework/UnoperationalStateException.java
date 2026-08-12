@@ -4,7 +4,7 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Represent a state of running that is considered as non operational (e.g bad
+ * Represent a state of running that is considered as no operational (e.g; bad
  * healthy, missing setting).
  *
  * @author olivier

@@ -4,11 +4,11 @@ import org.cybnity.framework.support.annotation.Requirement;
 import org.cybnity.framework.support.annotation.RequirementCategory;
 
 /**
- * Represent the basic and common contract of value providing regarding an
- * configuration element usable by a application or service component.
+ * Represent the basic and common contract of value providing regarding a
+ * configuration element usable by an application or service component.
  * <p>
  * As defined by Security Policy, any component of the system shall be
- * configurable via settings (e.g environment variables, files, remote resources
+ * configurable via settings (e.g; environment variables, files, remote resources
  * values) that reflect the most restrictive mode consistent with operational
  * requirements. Environment variables definition is ensured by each
  * implementation component that identify the enumeration of variables that are

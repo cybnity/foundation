@@ -10,7 +10,7 @@ import org.cybnity.framework.support.annotation.RequirementCategory;
  * <p>
  * This is a Method Pattern implementation which define the algorithm squeletor
  * into a configurationHealthCheck() method that delegate each type of data
- * verification to sub-classes (e.g provided by the component which is subject
+ * verification to sub-classes (e.g; provided by the component which is subject
  * of the health control).
  *
  * @author olivier
