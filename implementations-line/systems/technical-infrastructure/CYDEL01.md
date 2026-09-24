@@ -12,19 +12,13 @@ This documentation present an integrated infrastructures version of CYBUILD (CYB
 See here mode detail about the [standardized software factory model](../../../docs/README.md).
 
 # INFRASTRUCTURES
-See here the model of physical resources installed by CYBNITY to support the project's modules build and delivery, with ability to install and operate technical activities (local or centralized development, test in continuous integration approach, performance evaluation, demonstration of CYBNITY software suite version to partners, and basic production for small companies).
 
-![image](CYDEL-01.jpg)
+## PHYSICAL INFRASTRUCTURE
+See here the model of physical resources installed by CYBNITY to support the project's modules build and delivery, with ability to install and operate technical activities (local or centralized development, test in continuous integration approach, performance evaluation, demonstration of CYBNITY software suite version to partners, and basic production for small companies).
 
 For more detail about technical and resources pre-required to support by this type of resources infrastructure, consult the [system and tools prerequisites documentation](../systems-and-tools-prerequisites.md).
 
-# COMPONENTS & GUIDELINES
-Technical documentations are available to present in detail the administration procedures that allow to install and to manage the __infrastructures elements involved__ into CYDEL 01.
-
-The configuration instructions are helping to deploy and to manage the systems (e.g hardware, virtualized components, tooling, network) for help the system deployer and/or infrastructure administrator.
-
-A standardized installation documentation is available for any physical server which is based on Linux Operating System:
-- [CYDEL01 - Ubuntu OS server installation](CYDEL01-ubuntu-installation.md)
+![image](CYDEL-01-Physical-Infrastructure.png)
 
 ## NETWORK INFRASTRUCTURE
 Primary connectivity network is based on 10G rate LAN (Cat7 cabled) supporting the direct exchange between the CYDEL01 servers.
@@ -46,9 +40,17 @@ This area of technical components and/or resources are dedicated to centralized 
 
 ## VALIDATION INFRASTRUCTURE
 
-## SIMULATION INFRASTRUCTURE
+## EXPERIMENTATION & SIMULATION INFRASTRUCTURE
 
 ## PRODUCTION INFRASTRUCTURE
+
+# COMPONENTS & GUIDELINES
+Technical documentations are available to present in detail the administration procedures that allow to install and to manage the __infrastructures elements involved__ into CYDEL01.
+
+The configuration instructions are helping to deploy and to manage the systems (e.g hardware, virtualized components, tooling, network) for help the system deployer and/or infrastructure administrator.
+
+A standardized installation documentation is available for any physical server which is based on Linux Operating System:
+- [CYDEL01 - Ubuntu OS server installation](CYDEL01-ubuntu-installation.md)
 
 #
 [Back To Home](../README.md)
