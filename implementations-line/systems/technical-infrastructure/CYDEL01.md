@@ -34,6 +34,13 @@ Dedicated infrastructure services are deployed as additionnal support services a
 K8S clusters management is deployed onto servers cluster:
 - [CYDEL01 - Support cluster](CYDEL01-SUPPORT-cluster.md)
 
+## TECHNOLOGY
+Several technology components are installed onto the infrastructure as technical system or application system.
+
+Find here an overview of technology usages and main dependencies, according to their locations of installation.
+
+![image](CYDEL-01-Technoloy-Usage.png)
+
 ## DEVELOPMENT
 This area of technical components and/or resources are dedicated to centralized development activities as shared CYBNITY software suite development cluster (e.g allowing developers of application components to merge and test CYBNITY software components that are versioned over the STAGING branch and/or that need temporary deployment from a development feature branch):
 - [CYDEL01 - DEV cluster](CYDEL01-DEV-cluster.md)
@@ -44,7 +51,7 @@ This area of technical components and/or resources are dedicated to centralized 
 
 ## PRODUCTION INFRASTRUCTURE
 
-# COMPONENTS & GUIDELINES
+# GUIDELINES
 Technical documentations are available to present in detail the administration procedures that allow to install and to manage the __infrastructures elements involved__ into CYDEL01.
 
 The configuration instructions are helping to deploy and to manage the systems (e.g hardware, virtualized components, tooling, network) for help the system deployer and/or infrastructure administrator.
