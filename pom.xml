@@ -20,6 +20,7 @@
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 		</license>
 	</licenses>
+	
 	<developers>
 		<developer>
 			<id>o.lemee</id>
@@ -35,6 +36,7 @@
 			</roles>
 		</developer>
 	</developers>
+	
 	<scm>
 		<connection>scm:git:git://github.com/cybnity/foundation.git</connection>
 		<developerConnection>scm:git:https://github.com:cybnity/foundation.git</developerConnection>
